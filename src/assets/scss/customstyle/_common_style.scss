@@ -1,0 +1,212 @@
+// ------------ common 
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+    border-radius: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: rgba($grey_shade1,0.5);
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba($sh_grey, 0.2);
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba($sh_grey, 0.2);
+}
+body{
+    box-sizing: border-box;
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+*{
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+body p:last-child { margin-bottom: 0; }
+ul { padding: 0; margin: 0; list-style: none; }
+.flex-center {
+    display: flex;
+    align-items: center;
+}
+
+.flexColumn {
+    display: flex;
+    flex-direction: column
+}
+
+.table_wrap{
+    // overflow-x: auto;
+    table{
+        // min-width: 500px;
+        width: 100%;
+        th{
+            background: $primary_1;
+            @include font($font-weight-medium,14px,normal,$neutral_8);
+            padding: 16px 12px;
+            vertical-align: middle;
+            box-shadow: none;
+            border: 0;
+            &:first-child{
+                border-radius: 12px 0px 0px 0px;
+            }
+            &:last-child{
+                border-radius: 0px 12px 0px 0px;
+            }
+            span{
+                i{
+                    color: $neutral_5;
+                    font-size: 11px;
+                    margin-left: 7px;
+                }
+            }
+        }
+        td{
+            @include font($font-weight-normal,14px,normal,$neutral_8);
+            padding: 5px 12px;
+            border-bottom: 1px solid $grey_shade1;
+            min-height: 42px;
+            height: 42px;
+            vertical-align: middle;
+            &:first-child{
+                min-width: 220px;
+            }
+            &:last-child{
+                min-width: 95px;
+            }
+            .prof_wrap {
+                @extend .flex-center;
+                .img {
+                    width: 26px;
+                    height: 26px;
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+}
+.common_dropdown{
+    .dropdown{
+        .btn{
+            background: transparent;
+            border-radius: 74px;
+            border: 1px solid $neutral_2;
+            padding: 10px 40px 10px 12px;
+            min-width: 138px;
+            position: relative;
+            @include font($font-weight-semibold,15px,normal,$neutral_8);
+            cursor: pointer;
+            text-align: left;
+            box-shadow: none;
+            &::before{
+                content: '';
+                position: absolute;
+                right: 10px;
+                top: 0;
+                bottom: 0;
+                width: 18px;
+                height: 18px;
+                background: url('../../images/icons/arrow_down.svg') no-repeat;
+                margin: auto;
+            }
+        }
+        .dropdown-menu{
+            margin-top: 7px;
+        }
+    }
+}
+.form-label{
+    display: block;
+    @include font(500,14px,normal,$neutral_8);
+}
+.form-control{
+    border-radius: 8px;
+    border: 1px solid $neutral_2;
+    background: $sh_white;
+    padding: 9px 12px;
+    @include font(400,14px,normal,$neutral_8);
+    &::placeholder{
+        color: $neutral_4;
+    }
+    &:focus{
+        border: 1px solid $primary_7;
+        box-shadow: 0px 0px 0px 4px #F1F1FE;        
+    }
+    &.is-invalid {
+        border-color: $danger_7;
+        background-image: none;
+        & + #password-addon{
+            border-color: $danger_7 !important;
+        }
+    }
+}
+.invalid-feedback {
+    @include font(400,14px,normal,$danger_7);
+}
+.tf_common_form{
+    .form-check {
+        display: flex;
+        .form-check-input{
+            width: 17px;
+            height: 17px;
+            border: 2px solid $neutral_4;
+            border-radius: 6px;
+            flex: 0 0 17px;
+            margin-right: 8px;
+            &:checked{
+                border-color: #4848F7;
+                background-color: #4848F7;
+            }
+            &:focus{
+                box-shadow: 0;
+            }
+        }
+        .form-check-label{
+            @include font(400,13px,normal,$neutral_5 !important);
+        }
+    }
+    .text-muted{
+        @include font(400,13px,normal,$neutral_5 !important);
+    }
+    .auth-pass-inputgroup{
+        input{
+            border-right: 0;
+        }
+        #password-addon {
+            background: url("../../images/icons/eye_off.svg") no-repeat center;
+            padding: 0 12px;            
+            width: 42px;
+            border: 1px solid $neutral_2;
+            border-left: 0;
+            border-radius: 0 8px 8px 0;
+            &.show{
+                background-image: url("../../images/icons/eye.svg");
+            }
+        }
+    }
+    .btn[type="submit"] {        
+        @include font(500,14px,normal,$primary_1);
+        border-radius: 8px;
+        box-shadow: none;
+        &:disabled{
+            opacity: 1;
+        }
+        &.disabled{
+            background: $neutral_1;
+            border-color: $neutral_1;
+            color: $neutral_4;
+            pointer-events: none;
+        }
+    }
+}
+
+.apexcharts-yaxis text, .apexcharts-xaxis text{
+    fill: $neutral_8;
+    font-size: 12px;
+    font-family: "IBM Plex Sans", sans-serif !important;
+}
