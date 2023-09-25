@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 
 
 //import Breadcrumbs
@@ -6,22 +6,52 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 import {
     Col,
-    Container, Row
+    Container, Row, Table
 } from "reactstrap";
 
 
 /** import Mini Widget data */
-import { exportSumData, impExColumnData, inquiryColumnData, quotSumData, salesColumnData, salesEnquiryData, salesPerformData } from "../../common/data/dashboard";
+import { exportSumData, impExColumnData, inquiryColumnData, inquirySumData, quotSumData, salesColumnData, salesEnquiryData, salesPerformData } from "../../common/data/dashboard";
 import CommonTable from './Partials/CommonTable';
 import ContainerTrackChart from './Partials/ContainerTrackChart';
 import MainDnd from './Partials/MainDnd';
 import RevenueChart from './Partials/RevenueChart';
+import { customSort } from '../../components/Common/CommonLogic';
 
 const Dashboard = () => {
+    const [tableData, setTableData] = useState(exportSumData);
+    const [tableData2, setTableData2] = useState(exportSumData);
+    const [tableData3, setTableData3] = useState(inquirySumData);
+    const [tableData4, setTableData4] = useState(salesPerformData);
 
     //meta title
     document.title="Dashboard | Minia - React Admin & Dashboard Template";
 
+    const handleSorting = (sortField, sortOrder,type) => {
+        const tables = {
+            export_sum: tableData,
+            import_sum: tableData2,
+            equiry_sum: tableData3,
+            default: tableData4,
+        };
+
+        const selectedTable = tables[type] || tables.default;
+        const sorted = customSort(selectedTable, sortField, sortOrder);
+
+        switch (type) {
+            case 'export_sum':
+                setTableData(sorted);
+                break;
+            case 'import_sum':
+                setTableData2(sorted);
+                break;
+            case 'equiry_sum':
+                setTableData3(sorted);
+                break;
+            default:
+                setTableData4(sorted);
+        }
+    };  
     return (
         <React.Fragment>
             <div className="page-content">
@@ -81,7 +111,7 @@ const Dashboard = () => {
                             <Col lg={6}>
                                 <div className="sh_summary_table_wrap">
                                     <h3 className="sub_title">Export Summary</h3>
-                                    <CommonTable column={impExColumnData} data={exportSumData} />
+                                    <CommonTable column={impExColumnData} data={tableData} handleSorting={handleSorting} type={'export_sum'} />
                                 </div>
                             </Col>
 
@@ -89,7 +119,7 @@ const Dashboard = () => {
                             <Col lg={6}>
                                 <div className="sh_summary_table_wrap">
                                     <h3 className="sub_title">Import Summary</h3>
-                                    <CommonTable column={impExColumnData} data={exportSumData} />
+                                    <CommonTable column={impExColumnData} data={tableData2} handleSorting={handleSorting} type={'import_sum'} />
                                 </div>
                             </Col>
 
@@ -97,7 +127,7 @@ const Dashboard = () => {
                             <Col lg={6}>
                                 <div className="sh_summary_table_wrap">
                                     <h3 className="sub_title">Enquiry Summary</h3>
-                                    <CommonTable column={inquiryColumnData} data={exportSumData} />
+                                    <CommonTable column={inquiryColumnData} data={tableData3} handleSorting={handleSorting} type={'equiry_sum'} />
                                 </div>
                             </Col>
 
@@ -105,7 +135,7 @@ const Dashboard = () => {
                             <Col lg={6}>
                                 <div className="sh_summary_table_wrap">
                                     <h3 className="sub_title">Sales Performance</h3>
-                                    <CommonTable column={salesColumnData} data={salesPerformData} type={'salesPerformance'} />
+                                    <CommonTable column={salesColumnData} data={tableData4} handleSorting={handleSorting} type={'salesPerformance'} />
                                 </div>
                             </Col>
                         </Row>                  

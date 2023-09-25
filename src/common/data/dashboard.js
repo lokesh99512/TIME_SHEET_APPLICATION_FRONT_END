@@ -196,20 +196,20 @@ const quotSumData = [
 // -------------------------- Table Data --------------------------------------------------
 const impExColumnData = [
     { label: "Port",accessor: "port" },
-    { label: "Total Enquires",accessor: "total_enquires" },
-    { label: "Conversion Ratio", accessor: "conversion_ratio" },
+    { label: "Total Enquires",accessor: "total_equiry" },
+    { label: "Conversion Ratio", accessor: "ratio" },
     { label: "Trend", accessor: "trend" },
 ]
 const inquiryColumnData = [
     { label: "Customer",accessor: "customer" },
-    { label: "Total Enquires", accessor: "total_enquires" },
-    { label: "Conversion Ratio", accessor: "conversion_ratio" },
-    { label: "Trend" },
+    { label: "Total Enquires", accessor: "total_equiry" },
+    { label: "Conversion Ratio", accessor: "ratio" },
+    { label: "Trend",accessor: "trend" },
 ]
 const salesColumnData = [
     { label: "Employee",accessor: "employee" },
-    { label: "Total Enquires",accessor: "total_enquires" },
-    { label: "Conversion Ratio", accessor: "conversion_ratio" },
+    { label: "Total Enquires",accessor: "total_equiry" },
+    { label: "Conversion Ratio", accessor: "ratio" },
     { label: "Trend", accessor: "trend" },
 ]
 
@@ -256,6 +256,51 @@ const exportSumData = [
         ratio: '21',
         trend: '12'
     },
+]
+const inquirySumData = [
+    {
+        id: 1,
+        customer: 'Bessie Cooper',
+        total_equiry: '59',
+        ratio: '02',
+        trend: '42'
+    },
+    {
+        id: 2,
+        customer: 'Bessie Cooper',
+        total_equiry: '59',
+        ratio: '02',
+        trend: '42'
+    },
+    {
+        id: 3,
+        customer: 'Bessie Cooper',
+        total_equiry: '59',
+        ratio: '02',
+        trend: '42'
+    },
+    {
+        id: 4,
+        customer: 'Bessie Cooper',
+        total_equiry: '59',
+        ratio: '02',
+        trend: '42'
+    },
+    {
+        id: 5,
+        customer: 'Bessie Cooper',
+        total_equiry: '59',
+        ratio: '02',
+        trend: '42'
+    },
+    {
+        id: 6,
+        customer: 'Bessie Cooper',
+        total_equiry: '59',
+        ratio: '02',
+        trend: '42'
+    },
+    
 ]
 const salesPerformData = [
     {
@@ -492,6 +537,6 @@ const chartCountryCode = {
 export {
     WidgetsData, MarketOver1YData, MarketOver6MData, MarketOver1MData, MarketOverViewAllData, PieChart1YData, PieChart6MData,
     PieChart1MData, PieChartAllData, InvestedOverviewMay, InvestedOverviewApril, InvestedOverviewMarch, InvestedOverviewFeb,
-    InvestedOverviewJan, InvestedOverviewDec,salesEnquiryData,quotSumData,impExColumnData,inquiryColumnData,salesColumnData,exportSumData,
+    InvestedOverviewJan, InvestedOverviewDec,salesEnquiryData,quotSumData,impExColumnData,inquiryColumnData,salesColumnData,exportSumData,inquirySumData,
     salesPerformData,chartCountryCode
 };

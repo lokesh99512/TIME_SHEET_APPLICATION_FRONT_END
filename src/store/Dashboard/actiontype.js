@@ -11,5 +11,7 @@ export const GET_Invested_Overview = "GET_Invested_Overview"
 export const GET_Invested_Overview_SUCCESS = "GET_Invested_Overview_SUCCESS"
 export const GET_Invested_Overview_FAIL = "GET_Invested_Overview__FAIL"
 
+export const SORT_TABLE_DATA = "SORT_TABLE_DATA"
+export const UPDATE_TABLE_DATA = "UPDATE_TABLE_DATA"
 
 

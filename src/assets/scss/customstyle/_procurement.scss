@@ -1,0 +1,55 @@
+.main_freight_wrapper{
+    .freight_tabing_wrap{
+        ul.nav{
+            gap: 12px;
+            .tab_menu {
+                border-radius: var(--border_radius_12px, 12px);
+                border: 1px solid $neutral_3;
+                background: $white;
+                padding: 0px 0px;
+                height: 40px;
+                @include font(400,14px,normal,$neutral_5);
+                @extend .flex-center;
+                justify-content: center;
+                .dropdown{
+                    width: 100%;
+                    height: 100%;
+                    & > a{
+                        display: block;
+                        width: 100%;
+                        background: transparent;
+                        padding: 0;
+                        box-shadow: none;
+                        border:0;
+                        @include font(400,14px,38px,$neutral_5);
+                        transition: 0s all;
+                    }
+                }
+                &.active{
+                    background: $primary_7;
+                    border-color: $primary_7;
+                    color: $white;
+                    .dropdown{
+                        & > a{
+                            color: #fff;
+                        }
+                    }
+                }
+            }
+            .dropdown-menu{
+                width: 100%;
+                border-radius: 12px;
+                background: $white;
+                box-shadow: 0px 7px 29px 0px rgba(100, 100, 111, 0.20);
+                margin: 10px 0 0;
+                padding: 0;
+                border: 0;
+                .dropdown-item{
+                    padding: 13px 16px;
+                    @include font(500,16px,normal,$neutral_8);
+                    border-bottom: 1px solid #E5E7EB;
+                }
+            }
+        }
+    }
+}

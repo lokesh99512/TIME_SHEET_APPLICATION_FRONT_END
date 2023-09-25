@@ -251,7 +251,7 @@ const Header = props => {
               <img src={message_Icon} alt="Message" />
             </button>
             <NotificationDropdown />
-            {/* <div
+            <div
               onClick={() =>{
                 dispatch(showRightSidebarAction(!showRightSidebar));
               }}
@@ -266,7 +266,7 @@ const Header = props => {
                   className="icon-lg"
                 />
               </button>
-            </div> */}
+            </div>
             <ProfileMenu />
 
           </div>

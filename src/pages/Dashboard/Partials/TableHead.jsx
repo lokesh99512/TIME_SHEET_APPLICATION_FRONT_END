@@ -1,12 +1,12 @@
 import React from 'react'
 
-const TableHead = () => {
+const TableHead = ({ column }) => {
     return (
         <>
             <thead className="table-light">
                 <tr>
-                    {column.map((item, index) => (
-                        <th key={index}><span className='d-flex align-items-center'>{item.label} <i className='fas fa-sort'></i></span></th>
+                    {column.map(({ label, accessor }) => (
+                        <th key={accessor}><span className='d-flex align-items-center'>{label} <i className='fas fa-sort'></i></span></th>
                     ))}
                 </tr>
             </thead>
@@ -14,4 +14,4 @@ const TableHead = () => {
     )
 }
 
-export default TableHead
+export default TableHead;

@@ -8,6 +8,8 @@ import {
     GET_Invested_Overview,
     GET_Invested_Overview_SUCCESS,
     GET_Invested_Overview_FAIL,
+    SORT_TABLE_DATA,
+    UPDATE_TABLE_DATA,
 } from "./actiontype";
 
 export const getMarketoverview = (data) => ({
@@ -54,3 +56,14 @@ export const getInvestedOverviewFail = (actionType, error) => ({
     type: GET_Invested_Overview_FAIL,
     payload: { actionType, error },
 })
+
+// 
+export const sortTableData = (type, sortField, sortOrder) => ({
+    type: SORT_TABLE_DATA,
+    payload: { type, sortField, sortOrder },
+});
+
+export const updateTableData = (type, sortedData) => ({
+    type: UPDATE_TABLE_DATA,
+    payload: { type, sortedData },
+});

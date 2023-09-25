@@ -1,3 +1,4 @@
+import { customSort } from "../../components/Common/CommonLogic";
 import {
     GET_MARKET_OVERVIEW,
     GET_MARKET_OVERVIEW_SUCCESS,
@@ -18,6 +19,22 @@ const INIT_STATE = {
 
 const dashboard = (state = INIT_STATE, action) => {
     switch (action.type) {
+        // case SORT_TABLE_DATA:
+        //     const { tableName, sortField, sortOrder } = action.payload;
+        //     // Perform sorting for the specified table
+        //     const sortedData = customSort(state[tableName], sortField, sortOrder);
+        //     return {
+        //         ...state,
+        //         [tableName]: sortedData,
+        //     };
+
+        // case UPDATE_TABLE_DATA:
+        //     const { updateTableName, updateSortedData } = action.payload;
+        //     return {
+        //         ...state,
+        //         [updateTableName]: updateSortedData,
+        //     };
+
         case GET_MARKET_OVERVIEW_SUCCESS:
             return {
                 ...state,

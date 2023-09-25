@@ -3,6 +3,15 @@ import { Navigate } from "react-router-dom";
 
 //Dashboard
 import Dashboard from "../pages/Dashboard/index";
+import AnalyticsComp from "../pages/Analytics/index";
+
+// Sales
+import QueriesComp from "../pages/Sales/Queries/index";
+import QuotationComp from "../pages/Sales/Quotations/index";
+
+//Procurement
+import FreightForward from "../pages/Procurement/FreightForwarding/index";
+import ExpressComp from "../pages/Procurement/Express/index";
 
 // Calendar
 import Calendar from "../pages/Calendar/index";
@@ -118,6 +127,19 @@ import UserProfile from "../pages/Authentication/user-profile";
 const userRoutes = [
   //dashboard
   { path: "/dashboard", component: <Dashboard/> },
+  { path: "/analytics", component: <AnalyticsComp/> },
+
+  // Sales
+  // Queries
+  { path: "/queries", component: <QueriesComp /> },
+  // Quotations
+  { path: "/quotation", component: <QuotationComp /> },
+
+  // Procurement
+  // Freight Forwarding
+  { path: "/freight", component: <FreightForward /> },
+  // Express
+  { path: "/express", component: <ExpressComp /> },
 
   //profile
   { path: "/profile", component: <UserProfile/> },
