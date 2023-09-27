@@ -285,7 +285,21 @@
             @extend .border;
             .sub_title{
                 margin-bottom: 20px;
-            }            
+            }   
+            .table_wrap{
+                table{
+                    td{
+                        min-height: 42px;
+                        height: 42px;
+                        &:first-child{
+                            min-width: 220px;
+                        }
+                        &:last-child{
+                            min-width: 95px;
+                        }
+                    }
+                }
+            }         
         }
     }
     .sh_revenue_chart_wrap,.sh_container_tracking_wrap{

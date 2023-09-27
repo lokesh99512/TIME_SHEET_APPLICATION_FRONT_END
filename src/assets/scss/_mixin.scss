@@ -4,3 +4,21 @@
     line-height: $lineHeight;
     color: $color;
 }
+
+@mixin button{
+    padding: 9px 12px;
+    @include font($font-weight-medium, 14px, normal, $primary_1);
+    border-radius: 8px;
+    background: $primary_7;
+    box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.20) inset, 0px 1px 0px 0px rgba(0, 0, 0, 0.08);
+    &:hover{
+        background: $primary_8;
+    }
+    &:focus{
+        background: $primary_9;
+    }
+    &:disabled{
+        background: $neutral_1;
+        color: $neutral_4;
+    }
+}

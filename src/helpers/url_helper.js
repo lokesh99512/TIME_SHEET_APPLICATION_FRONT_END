@@ -122,3 +122,6 @@ export const GET_WALLENT_BALANCE = "GET_WALLENT_BALANCE"
 export const GET_WALLENT_BALANCE_ALL_DATA = "GET_MARKET_ALL_DATA"
 
 export const GET_Invested_Overview = "GET_Invested_Overview"
+
+// --------------------- procurement --------------------------------
+export const GET_FCL = "/get-fcl"

@@ -298,6 +298,9 @@ export const getWallentData = (data) =>
 export const getInvestedData = (data) =>
   get(`${url.GET_Invested_Overview}/${data}`, { params: { data } });
 
+// -------------- Procurement ---------------------------------------
+export const getFCLTableData = () => get(url.GET_FCL)
+
 export {
   getLoggedInUser,
   isUserAuthenticated,

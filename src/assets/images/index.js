@@ -19,6 +19,8 @@ import noti_Icon from "./icons/tf_notification.svg";
 import message_Icon from "./icons/tf_message.svg";
 import marker_Img from './icons/grey_container.svg';
 import marker_active_Img from './icons/blue_container.svg';
+import filter_icon from './icons/filter-icon.svg';
+import upload_icon from './icons/upload.svg';
 
 export {
   avatar1,
@@ -32,5 +34,5 @@ export {
   profImg,
   google_icon,
   microsoft_icon,auth_slider1,auth_slider2,auth_slider3,auth_slider4,noti_Icon,message_Icon,
-  marker_Img,marker_active_Img
+  marker_Img,marker_active_Img,filter_icon,upload_icon
 }

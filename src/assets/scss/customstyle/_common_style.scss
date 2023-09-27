@@ -52,6 +52,7 @@ ul { padding: 0; margin: 0; list-style: none; }
             vertical-align: middle;
             box-shadow: none;
             border: 0;
+            cursor: pointer;
             &:first-child{
                 border-radius: 12px 0px 0px 0px;
             }
@@ -70,15 +71,9 @@ ul { padding: 0; margin: 0; list-style: none; }
             @include font($font-weight-normal,14px,normal,$neutral_8);
             padding: 5px 12px;
             border-bottom: 1px solid $grey_shade1;
-            min-height: 42px;
-            height: 42px;
-            vertical-align: middle;
-            &:first-child{
-                min-width: 220px;
-            }
-            &:last-child{
-                min-width: 95px;
-            }
+            min-height: 44px;
+            height: 44px;
+            vertical-align: middle;            
             .prof_wrap {
                 @extend .flex-center;
                 .img {
@@ -201,6 +196,32 @@ ul { padding: 0; margin: 0; list-style: none; }
             border-color: $neutral_1;
             color: $neutral_4;
             pointer-events: none;
+        }
+    }
+}
+
+nav.breadcrumb_wrap {
+    ul {
+        @extend .flex-center;
+        flex-wrap: wrap;
+        li{
+            a{
+                @include font($font-weight-normal,18px,23px,$neutral_5);
+                position: relative;
+                &:not(.breadcrumb_active){
+                    margin-right: 15px;
+                    &::before{
+                        content: '/';
+                        position: absolute;
+                        right: -11px;
+                        top: 0;
+                    }
+                }
+                &.breadcrumb_active{
+                    font-weight: $font-weight-bold;
+                    color: $neutral_8;
+                }
+            }
         }
     }
 }

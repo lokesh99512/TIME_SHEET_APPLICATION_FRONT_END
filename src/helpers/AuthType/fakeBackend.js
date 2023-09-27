@@ -34,6 +34,7 @@ import {
   PieChart1YData, PieChart6MData, PieChart1MData, PieChartAllData, InvestedOverviewMay, InvestedOverviewApril, InvestedOverviewMarch,
   InvestedOverviewFeb, InvestedOverviewJan, InvestedOverviewDec
 } from "../../common/data"
+import { fclTableData } from "../../common/data/procurement"
 
 let users = [
   {
@@ -832,6 +833,19 @@ const fakeBackend = () => {
           resolve([200, invoice])
         } else {
           reject([400, "Cannot get invoice"])
+        }
+      })
+    })
+  })
+
+  mock.onGet(url.GET_FCL).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (fclTableData) {
+          // Passing fake JSON data as response
+          resolve([200, fclTableData])
+        } else {
+          reject([400, "Cannot get FCL data"])
         }
       })
     })
