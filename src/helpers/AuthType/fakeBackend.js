@@ -32,9 +32,8 @@ import {
   octEarningData,
   MarketOverViewAllData, MarketOver1MData, MarketOver6MData, MarketOver1YData,
   PieChart1YData, PieChart6MData, PieChart1MData, PieChartAllData, InvestedOverviewMay, InvestedOverviewApril, InvestedOverviewMarch,
-  InvestedOverviewFeb, InvestedOverviewJan, InvestedOverviewDec
+  InvestedOverviewFeb, InvestedOverviewJan, InvestedOverviewDec, fclTableData, lclTableData
 } from "../../common/data"
-import { fclTableData } from "../../common/data/procurement"
 
 let users = [
   {
@@ -848,6 +847,19 @@ const fakeBackend = () => {
           reject([400, "Cannot get FCL data"])
         }
       })
+    })
+  })
+
+  console.log(lclTableData,"lclTableData")
+  mock.onGet(url.GET_LCL).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if(lclTableData){
+          resolve([200, lclTableData]);
+        } else {
+          reject([400, "Cannot get Lcl Data"])
+        }
+      });
     })
   })
 

@@ -299,7 +299,8 @@ export const getInvestedData = (data) =>
   get(`${url.GET_Invested_Overview}/${data}`, { params: { data } });
 
 // -------------- Procurement ---------------------------------------
-export const getFCLTableData = () => get(url.GET_FCL)
+export const getFCLTableData = () => get(url.GET_FCL);
+export const getLCLTableData = () => get(url.GET_LCL);
 
 export {
   getLoggedInUser,

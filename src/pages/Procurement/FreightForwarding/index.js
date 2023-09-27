@@ -12,7 +12,7 @@ import LclOceanFreight from "./partials/LclOceanFreight";
 import AirConsoleComp from "./partials/AirConsoleComp";
 import AirMasterBill from "./partials/AirMasterBill";
 import { useDispatch } from "react-redux";
-import { getFclData } from "../../../store/Procurement/actions";
+import { getFclData, getLclData } from "../../../store/Procurement/actions";
 import { useSelector } from "react-redux";
 
 const FreightForwarding = () => {
@@ -29,6 +29,7 @@ const FreightForwarding = () => {
 
     useEffect(() => {
         dispatch(getFclData());
+        dispatch(getLclData());
     }, [dispatch]);
 
     return (

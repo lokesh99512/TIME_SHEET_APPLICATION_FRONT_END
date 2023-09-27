@@ -125,3 +125,4 @@ export const GET_Invested_Overview = "GET_Invested_Overview"
 
 // --------------------- procurement --------------------------------
 export const GET_FCL = "/get-fcl"
+export const GET_LCL = "/get-lcl"

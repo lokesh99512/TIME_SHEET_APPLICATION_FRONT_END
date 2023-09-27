@@ -1,8 +1,10 @@
-import { GET_FCL_TABLE_DATA, GET_FCL_TABLE_DATA_FAIL, GET_FCL_TABLE_DATA_SUCCESS, UPDATE_FCL_TABLE_DATA } from "./actiontype";
+import { GET_FCL_TABLE_DATA, GET_FCL_TABLE_DATA_FAIL, GET_FCL_TABLE_DATA_SUCCESS, GET_LCL_TABLE_DATA_FAIL, GET_LCL_TABLE_DATA_SUCCESS, UPDATE_FCL_TABLE_DATA } from "./actiontype";
 
 const INIT_STATE = {
     fcl_data: [],
+    lclData: [],
     error: {},
+    lclError: {},
 }
 const procurement = (state = INIT_STATE, action) => {
     switch (action.type) {
@@ -23,6 +25,17 @@ const procurement = (state = INIT_STATE, action) => {
                 fcl_data: action.payload,
             }
     
+        case GET_LCL_TABLE_DATA_SUCCESS:
+            console.log("reducer", action.payload);
+            return{
+                ...state,
+                lclData: action.payload,
+            }
+        case GET_LCL_TABLE_DATA_FAIL:
+            return{
+                ...state,
+                lclError: action.payload,
+            }    
         default:
             return state;
     }
