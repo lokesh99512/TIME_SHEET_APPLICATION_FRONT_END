@@ -15,7 +15,6 @@ function* fetchFclData(){
 function* fetchLclData(){
     try {
         const response = yield call(getLCLTableData);
-        console.log(response,"saga object--------------------");
         yield put(getLclDataSuccess(response));
     } catch (error) {
         yield put(getLclDataFail(error));

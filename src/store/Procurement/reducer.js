@@ -26,7 +26,6 @@ const procurement = (state = INIT_STATE, action) => {
             }
     
         case GET_LCL_TABLE_DATA_SUCCESS:
-            console.log("reducer", action.payload);
             return{
                 ...state,
                 lclData: action.payload,

@@ -169,7 +169,7 @@
                     li{
                         a{
                             padding: 13px 10px 13px 24px;
-                            display: flex;
+                            // display: flex;
                             align-items: center;
                             &::before{
                                 content: "";
@@ -716,9 +716,11 @@ body[data-sidebar-size="md"] {
             ul.sub-menu {
                 li {
                     a{
-                        padding-left: 1.5rem;
+                        // padding: 0 0 14px;
+                        // padding-left: 1.5rem;
                         svg{
                             margin: 0 8px 0 0;
+                            display: none;
                         }
                     }
 

@@ -20,6 +20,9 @@ const ViaPort = (cell) => {
 const ValidFrom = (cell) => {
     return cell.value ? cell.value : '-';
 }
+const DetentionFree = (cell) => {
+    return cell.value ? cell.value : '-';
+}
 const ValidTill = (cell) => {
     return cell.value ? cell.value : '-';
 }
@@ -31,5 +34,5 @@ const CargoType = (cell) => {
 }
 
 export {
-    ChargeId,CarrierName,VendorName,OrgPort,DestPort,ViaPort,ValidFrom,ValidTill,TransitTime,CargoType
+    ChargeId,CarrierName,VendorName,OrgPort,DestPort,ViaPort,ValidFrom,ValidTill,TransitTime,CargoType,DetentionFree
 }

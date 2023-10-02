@@ -4,7 +4,7 @@ import { DefaultColumnFilter, Filter } from '../../../../components/Common/filte
 import { Button, Col, Input, Row, Table } from 'reactstrap';
 import CommonFilterComp from './CommonFilterComp';
 import { filter_icon, upload_icon } from '../../../../assets/images';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -13,7 +13,7 @@ function GlobalFilter({
     setGlobalFilter,
   }) {
     const count = preGlobalFilteredRows.length;
-    console.log(count,"count")
+    console.log(count,"count");
     const [value, setValue] = React.useState(globalFilter);
     const onChange = useAsyncDebounce(value => {
       setGlobalFilter(value || undefined);
@@ -39,29 +39,6 @@ function GlobalFilter({
                 </div>
             </form>
         </div>
-    //   <Col sm={4}>
-    //     <div className="search-box me-2 mb-2 d-inline-block">
-    //       <div className="position-relative">
-    //         <label htmlFor="search-bar-0" className="search-label">
-    //           <span id="search-bar-0-label" className="sr-only">
-    //             Search this table
-    //           </span>
-    //           <input
-    //             onChange={e => {
-    //               setValue(e.target.value);
-    //               onChange(e.target.value);
-    //             }}
-    //             id="search-bar-0"
-    //             type="text"
-    //             className="form-control"
-    //             placeholder={`${count} records...`}
-    //             value={value || ""}
-    //           />
-    //         </label>
-    //         <i className="bx bx-search-alt search-icon"></i>
-    //       </div>
-    //     </div>
-    //   </Col>
     );
   }
 
@@ -77,10 +54,8 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize}) => {
         useSortBy,
         useExpanded,
         usePagination,);
+    const navidate = useNavigate();
 
-    // const generateSortingIndicator = column => {
-    //     return column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : "";
-    // };
     const onChangeInSelect = event => {
         setPageSize(Number(event.target.value));
     };
@@ -90,21 +65,6 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize}) => {
     };
     return (
         <>
-            {/* <Row className="mb-2">
-                <Col md={1}>
-                <select
-                    className="form-select"
-                    value={pageSize}
-                    onChange={onChangeInSelect}
-                >
-                    {[10, 20, 30, 40, 50].map(pageSize => (
-                    <option key={pageSize} value={pageSize}>
-                        Show {pageSize}
-                    </option>
-                    ))}
-                </select>
-                </Col>
-            </Row> */}
             <div className="freight_filter_wrap d-flex align-items-center">
                 <p className="label flex-grow-1 m-0">Filters :</p>
 
@@ -120,7 +80,7 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize}) => {
                         <button className='bg-transparent'><img src={filter_icon} alt="filter" /></button>
                     </div>
                     <div className="upload_wrap">
-                        <button className='bg-transparent'>
+                        <button className='bg-transparent' onClick={() => {navidate('/freight/upload');}}>
                             <img src={upload_icon} alt="Upload" />Upload file
                         </button>
                     </div>
@@ -172,12 +132,12 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize}) => {
                 </div>
                 <Row className="align-items-center g-3 text-center text-sm-start pagination_wrap">
                     <div className="col-sm">
-                        <div className='pagination_left_text'>Showing<span className="fw-normal ms-1">{page.length}</span> of <span className="fw-normal">{data.length}</span> Results
+                        <div className='pagination_left_text'>Showing<span className="fw-normal ms-1">{page.length}</span> of <span className="fw-normal">{data.length}</span> entries
                         </div>
                     </div>
                     <div className="col-sm-auto">
                         <ul className="pagination pagination-separated pagination-md justify-content-center justify-content-sm-start mb-0">
-                            <li className={!canPreviousPage ?   "page-item disabled" : "page-item"}>
+                            <li className={!canPreviousPage ?   "page-item arrow_wrap previous disabled" : "page-item arrow_wrap previous"}>
                                 <Link to="#" className="page-link" onClick={previousPage}><i className='fas fa-chevron-left'></i></Link>
                             </li>
                             {pageOptions.map((item, key) => (
@@ -187,7 +147,7 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize}) => {
                                     </li>
                                 </React.Fragment>
                             ))}
-                            <li className={!canNextPage ? "page-item disabled" : "page-item"}>
+                            <li className={!canNextPage ? "page-item arrow_wrap next disabled" : "page-item arrow_wrap next"}>
                                 <Link to="#" className="page-link" onClick={nextPage}><i className='fas fa-chevron-right'></i></Link>
                             </li>
                         </ul>

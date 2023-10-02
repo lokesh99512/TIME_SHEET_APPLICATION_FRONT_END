@@ -128,7 +128,7 @@ ul { padding: 0; margin: 0; list-style: none; }
             padding: 10px 40px 10px 12px;
             min-width: 138px;
             position: relative;
-            @include font($font-weight-semibold,15px,normal,$neutral_8);
+            @include font($font-weight-semibold,14px,normal,$neutral_8);
             cursor: pointer;
             text-align: left;
             box-shadow: none;
@@ -242,6 +242,7 @@ nav.breadcrumb_wrap {
             a{
                 @include font($font-weight-normal,18px,23px,$neutral_5);
                 position: relative;
+                pointer-events: none;
                 &:not(.breadcrumb_active){
                     margin-right: 15px;
                     &::before{
@@ -254,6 +255,84 @@ nav.breadcrumb_wrap {
                 &.breadcrumb_active{
                     font-weight: $font-weight-bold;
                     color: $neutral_8;
+                    pointer-events: all;
+                }
+            }
+        }
+    }
+}
+.table_pagination_wrap {
+    border-radius: 12px;
+    background: $white;
+    box-shadow: 0px 1px 0px 0px #E1E6EF inset;
+    border: 1px solid $neutral_2;
+    overflow: hidden;
+    table{
+        margin: 0;
+    }
+    .table-responsive{
+        &::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+            border-radius: 0;
+        }
+        
+        /* Track */
+        &::-webkit-scrollbar-track {
+            border: 1px solid $neutral_2;
+            background: $neutral_1;
+        }
+        
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+            background: $neutral_3;
+            border-radius: 10px;
+        }
+        
+        /* Handle on hover */
+        &::-webkit-scrollbar-thumb:hover {
+            background: $neutral_3;
+        }
+    }
+    .pagination_wrap{
+        padding: 16px;
+        .pagination_left_text{
+            @include font(400,14px,normal,$neutral_5);
+        }
+    }
+}
+.pagination_wrap {
+    .pagination {
+        .page-link {
+            @include font($font-weight-medium,14px,normal,$neutral_5);
+            border: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            &.active{
+                color: $white;
+            }
+        }
+        .arrow_wrap{
+            .page-link{
+                border: 1px solid $neutral_3;
+                background: $white;
+                box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.05);
+            }
+            &.previous {
+                margin-right: 24px;
+            }
+            &.next {
+                margin-left: 24px;
+            }
+        }
+        .page-item{
+            &.disabled{
+                .page-link{
+                    opacity: 0.5;
                 }
             }
         }
