@@ -2,21 +2,33 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap'
 
+import { useDispatch } from 'react-redux'
 import { edit_icon, eye_icon } from '../../../../assets/images'
 import { fclBreadcrumb, fclRateData } from '../../../../common/data/procurement'
+import { getFclData } from '../../../../store/Procurement/actions'
+import FilterOffCanvasComp from './Modal/FilterOffCanvasComp'
 import ModalFreight from './Modal/ModalFreight'
 import { CargoType, CarrierName, ChargeId, DestPort, DetentionFree, OrgPort, TransitTime, ValidTill, VendorName, ViaPort } from './OceanCol'
 import TableReact from './TableReact'
 import TopBreadcrumbs from './TopBreadcrumbs'
-import { useDispatch } from 'react-redux'
-import { getFclData } from '../../../../store/Procurement/actions'
-import { useNavigate } from 'react-router-dom'
 
 export default function FclOceanFreight() {
     const fclData = useSelector((state) => state.procurement.fcl_data);
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
     const [state, setState] = useState(true);
+    const [isRight, setIsRight] = useState(false);
+    const [filterDetails, setfilterDetails] = useState(
+        {
+            vendor_name: '',
+            carrier_name: '',
+            validity_from: '',
+            validity_to: '',
+            org_port: '',
+            dest_port: '',
+            cargo_type: '',
+        }
+    );
     const dispatch = useDispatch(); 
 
     const viewPopupHandler = (data) => {
@@ -24,8 +36,19 @@ export default function FclOceanFreight() {
         setViewData(data);
     }
 
+    // modal
     const onCloseClick = () => {
         setModal(false);
+    }
+
+    // right filter sidebar 
+    const toggleRightCanvas = () => {
+        setIsRight(!isRight);
+    };
+
+    const applyFilterHandler = () => {
+        setIsRight(false);
+        console.log(filterDetails,"filterDetails-----------------------")
     }
 
     useEffect(() => {
@@ -39,7 +62,7 @@ export default function FclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <ChargeId {...cellProps} />
+                return <ChargeId cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -48,7 +71,7 @@ export default function FclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <CarrierName {...cellProps} />
+                return <CarrierName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -57,7 +80,7 @@ export default function FclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <VendorName {...cellProps} />
+                return <VendorName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -66,7 +89,7 @@ export default function FclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <OrgPort {...cellProps} />
+                return <OrgPort cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -75,7 +98,7 @@ export default function FclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <DestPort {...cellProps} />
+                return <DestPort cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -84,7 +107,7 @@ export default function FclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <ViaPort {...cellProps} />
+                return <ViaPort cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -93,7 +116,7 @@ export default function FclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <DetentionFree {...cellProps} />
+                return <DetentionFree cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -102,7 +125,7 @@ export default function FclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <ValidTill {...cellProps} />
+                return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -111,7 +134,7 @@ export default function FclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <TransitTime {...cellProps} />
+                return <TransitTime cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -120,7 +143,7 @@ export default function FclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <CargoType {...cellProps} />
+                return <CargoType cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -172,6 +195,7 @@ export default function FclOceanFreight() {
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}
+                            toggleRightCanvas={toggleRightCanvas}
                         />
 
                         {/* modal */}
@@ -179,6 +203,9 @@ export default function FclOceanFreight() {
                     </div>
                 </Container>
             </div>
+
+            {/* filter right sidebar */}
+            <FilterOffCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} />
         </>
     )
 }

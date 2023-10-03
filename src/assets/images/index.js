@@ -23,6 +23,7 @@ import filter_icon from './icons/filter-icon.svg';
 import upload_icon from './icons/upload.svg';
 import eye_icon from "./icons/eye.svg";
 import edit_icon from "./icons/edit.svg";
+import delete_icon from "./icons/delete.svg";
 
 export {
   avatar1,
@@ -36,5 +37,5 @@ export {
   profImg,
   google_icon,
   microsoft_icon,auth_slider1,auth_slider2,auth_slider3,auth_slider4,noti_Icon,message_Icon,
-  marker_Img,marker_active_Img,filter_icon,upload_icon,eye_icon,edit_icon
+  marker_Img,marker_active_Img,filter_icon,upload_icon,eye_icon,edit_icon,delete_icon
 }

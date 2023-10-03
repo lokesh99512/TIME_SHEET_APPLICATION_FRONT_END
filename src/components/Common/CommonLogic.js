@@ -10,7 +10,22 @@ export function formatBytes(bytes, decimals = 2) {
 }
 
 export const isAnyValueEmpty = (obj,removeKey) => {
-    let updatedObj = {...obj, removeKey : "1"};
+    let updatedObj = {...obj};
+    console.log(removeKey,"removeKey-----------");
+    delete updatedObj?.[removeKey];
+    console.log(updatedObj,"updatedObj-----------");
+    for (const key in updatedObj) {
+        if (Object.prototype.hasOwnProperty.call(updatedObj, key)) {
+            const value = updatedObj[key];
+            if (value === '' || value === null || value === undefined) {
+                return true;
+            }
+        }
+    }
+    return false;
+};
+export const isAnyValueEmptyArray = (obj,removeKey) => {
+    let updatedObj = {...obj};
     // delete updatedObj?.[removeKey];
     for (const key in updatedObj) {
         if (Object.prototype.hasOwnProperty.call(updatedObj, key)) {
@@ -35,3 +50,23 @@ export function customSort(array, sortField, sortOrder) {
         );
     });
 }
+
+export const isExcelFile = (fileName) => {
+    return fileName.endsWith(".xls") || fileName.endsWith(".xlsx");
+};
+
+// const downloadFormateHandler = async () => {
+//     const fileName = "example.xlsx"; 
+//     const xlsxFileData = '../../../../assets/extra/upload_Formats.xlsx';
+//     // const blob = new Blob([xlsxFileData], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+//     // const url = URL.createObjectURL(blob);
+//     const url = xlsxFileData;
+//     const element = document.createElement("a");
+//     element.href = url;
+//     element.download = fileName;
+//     document.body.appendChild(element);
+//     element.click();
+//     // document.body.removeChild(element);
+//     // URL.revokeObjectURL(url);
+// }

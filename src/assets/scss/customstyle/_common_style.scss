@@ -153,12 +153,21 @@ ul { padding: 0; margin: 0; list-style: none; }
     display: block;
     @include font(500,14px,normal,$neutral_8);
 }
-.form-control{
+input[type="date"]::-webkit-calendar-picker-indicator{
+    opacity: 1;
+    display: block;
+    background: url("../../images/icons/calender.svg") no-repeat center center;
+    background-size: 18px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+.form-control,.form-select,.select2-selection.form-select__control{
     border-radius: 8px;
     border: 1px solid $neutral_2;
-    background: $sh_white;
+    background-color: $sh_white;
     padding: 9px 12px;
-    @include font(400,14px,normal,$neutral_8);
+    @include font(400,14px,normal,$neutral_8);    
     &::placeholder{
         color: $neutral_4;
     }
@@ -173,6 +182,12 @@ ul { padding: 0; margin: 0; list-style: none; }
             border-color: $danger_7 !important;
         }
     }
+    &[type="date"]{
+        cursor: pointer;
+    }
+}
+.select2-selection.form-select__control{
+    padding: 0;
 }
 .invalid-feedback {
     @include font(400,14px,normal,$danger_7);

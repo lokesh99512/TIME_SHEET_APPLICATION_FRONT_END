@@ -2,7 +2,6 @@ import React from 'react'
 import { Col, Modal, ModalBody, ModalHeader } from 'reactstrap'
 
 const ModalFreight = ({viewData,modal,onCloseClick}) => {
-    console.log(viewData,"viewData==")
     return (
         <>
             <Modal isOpen={modal} toggle={onCloseClick} className='table_view_modal'>
@@ -90,28 +89,20 @@ const ModalFreight = ({viewData,modal,onCloseClick}) => {
                                     <span className="data">{viewData?.cargo_type || '-'}</span>
                                 </div>
                                 <div className="details">
-                                    <span className="title">Dest Port:</span>
-                                    <span className="data">{viewData?.dest_port || '-'}</span>
-                                </div>
-                                <div className="details">
-                                    <span className="title">Cargo Class:</span>
-                                    <span className="data">{viewData?.cargo_class || '-'}</span>
-                                </div>
-                                <div className="details">
-                                    <span className="title">Via Port:</span>
-                                    <span className="data">{viewData?.via_port || '-'}</span>
-                                </div>
-                                <div className="details">
-                                    <span className="title">Commodity:</span>
-                                    <span className="data">{viewData?.commodity || '-'}</span>
-                                </div>
-                                <div className="details">
                                     <span className="title">20 GP:</span>
                                     <span className="data">{viewData?.fre_gp || '-'}</span>
                                 </div>
                                 <div className="details">
                                     <span className="title">45 HQ:</span>
                                     <span className="data">{viewData?.fre_hq2 || '-'}</span>
+                                </div>
+                                <div className="details">
+                                    <span className="title">Dest Port:</span>
+                                    <span className="data">{viewData?.dest_port || '-'}</span>
+                                </div>
+                                <div className="details">
+                                    <span className="title">Cargo Class:</span>
+                                    <span className="data">{viewData?.cargo_class || '-'}</span>
                                 </div>
                                 <div className="details">
                                     <span className="title">40 GP:</span>
@@ -121,6 +112,14 @@ const ModalFreight = ({viewData,modal,onCloseClick}) => {
                                     <span className="title">20 RF:</span>
                                     <span className="data">{viewData?.fre_rf || '-'}</span>
                                 </div>
+                                <div className="details">
+                                    <span className="title">Via Port:</span>
+                                    <span className="data">{viewData?.via_port || '-'}</span>
+                                </div>
+                                <div className="details">
+                                    <span className="title">Commodity:</span>
+                                    <span className="data">{viewData?.commodity || '-'}</span>
+                                </div>                                
                                 <div className="details">
                                     <span className="title">40 HQ:</span>
                                     <span className="data">{viewData?.fre_hq || '-'}</span>

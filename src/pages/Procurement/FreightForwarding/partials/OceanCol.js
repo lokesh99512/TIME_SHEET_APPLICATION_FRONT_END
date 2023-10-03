@@ -1,36 +1,37 @@
+import React from "react";
 
-const ChargeId = (cell) => {
-    return cell.value ? cell.value : '-';
+const ChargeId = ({cellProps,viewPopupHandler}) => {
+    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }
-const CarrierName = (cell) => {
-    return cell.value ? cell.value : '-';
+const CarrierName = ({cellProps,viewPopupHandler}) => {
+    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }
-const VendorName = (cell) => {
-    return cell.value ? cell.value : '-';
+const VendorName = ({cellProps,viewPopupHandler}) => {
+    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }
-const OrgPort = (cell) => {
-    return cell.value ? cell.value : '-';
+const OrgPort = ({cellProps,viewPopupHandler}) => {
+    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }
-const DestPort = (cell) => {
-    return cell.value ? cell.value : '-';
+const DestPort = ({cellProps,viewPopupHandler}) => {
+    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }
-const ViaPort = (cell) => {
-    return cell.value ? cell.value : '-';
+const ViaPort = ({cellProps,viewPopupHandler}) => {
+    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }
-const ValidFrom = (cell) => {
-    return cell.value ? cell.value : '-';
+const ValidFrom = ({cellProps,viewPopupHandler}) => {
+    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }
-const DetentionFree = (cell) => {
-    return cell.value ? cell.value : '-';
+const DetentionFree = ({cellProps,viewPopupHandler}) => {
+    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }
-const ValidTill = (cell) => {
-    return cell.value ? cell.value : '-';
+const ValidTill = ({cellProps,viewPopupHandler}) => {
+    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }
-const TransitTime = (cell) => {
-    return cell.value ? cell.value : '-';
+const TransitTime = ({cellProps,viewPopupHandler}) => {
+    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }
-const CargoType = (cell) => {
-    return cell.value ? cell.value : '-';
+const CargoType = ({cellProps,viewPopupHandler}) => {
+    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }
 
 export {

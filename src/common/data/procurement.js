@@ -94,21 +94,6 @@ const lclRateData = [
 ]
 // --------------------- rate ----------------------------------------------
 
-
-const fclColumn = [
-    {label: 'Charge ID',accessor: 'charge_id',sortable: true},
-    {label: 'Carrier Name',accessor: 'carrier_name',sortable: true},
-    {label: 'Vendor Name',accessor: 'vendor_name',sortable: true},
-    {label: 'Org Port',accessor: 'org_port',sortable: true},
-    {label: 'Dest Port',accessor: 'dest_port',sortable: true},
-    {label: 'Via Port',accessor: 'via_port',sortable: true},
-    {label: 'Valid From',accessor: 'valid_form',sortable: true},
-    {label: 'Valid Till',accessor: 'valid_till',sortable: true},
-    {label: 'Transit Time',accessor: 'transit_time',sortable: true},
-    {label: 'Cargo Type',accessor: 'cargo_type',sortable: true},
-    {label: 'Action',accessor: 'action',sortable: false},
-]
-
 const fclTableData = [
     {
         id: 1,
@@ -882,8 +867,55 @@ const lclTableData = [
     },
 ]
 
+// --------------------------- upload form options ---------------------------------
+const optionRateType = [
+    { label: "Spot", value: "spot" },
+    { label: "Spot2", value: "spot2" },
+    { label: "Spot3", value: "spot3" },
+    { label: "Spot4", value: "spot4" },
+    { label: "Spot5", value: "spot5" },
+    { label: "Spot6", value: "spot6" }
+]
+const optionRateSource = [
+    { label: "Carrier Website", value: "carrier1" },
+    { label: "Carrier Website2", value: "carrier2" },
+    { label: "Carrier Website3", value: "carrier3" },
+    { label: "Carrier Website4", value: "carrier4" },
+    { label: "Carrier Website5", value: "carrier5" },
+    { label: "Carrier Website6", value: "carrier6" }
+]
+const optionVendorType = [
+    { label: "Agent", value: "agent" },
+    { label: "Carrier", value: "carrier" },
+]
+const optionVendorName = [
+    { label: "Vendor Name1", value: "vendorname1" },
+    { label: "Vendor Name2", value: "vendorname2" },
+]
+const optionCarrierName = [
+    { label: "Carrier Name1", value: "carriername1" },
+    { label: "Carrier Name2", value: "carriername2" },
+]
+const optionValidityApp = [
+    { label: "Validity app1", value: "validityapp1" },
+    { label: "Validity app2", value: "validityapp2" },
+]
+const optionSurchargesName = [
+    { label: "OBS", value: "obs" },
+    { label: "OBS2", value: "obs2" },
+    { label: "OBS3", value: "obs3" },
+]
+const optionMultiDestination = [
+    { label: "Mumbai", value: "mumbai" },
+    { label: "Dhaka", value: "dhaka" },
+    { label: "Channai", value: "channai" }
+]
+const optionPaymentType = [
+    { label: "Prepaid", value: "prepaid" },
+    { label: "Postpaid", value: "postpaid" },
+]
 
 export {
-    fclBreadcrumb,fclRateData,fclColumn,fclTableData,
-    lclBreadcrumb,lclRateData,lclTableData
+    fclBreadcrumb,fclRateData,fclTableData,lclBreadcrumb,lclRateData,lclTableData,
+    optionRateType,optionRateSource,optionVendorType,optionVendorName,optionCarrierName,optionValidityApp,optionSurchargesName,optionMultiDestination,optionPaymentType
 };

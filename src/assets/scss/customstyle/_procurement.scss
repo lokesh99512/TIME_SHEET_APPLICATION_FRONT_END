@@ -75,14 +75,39 @@
             .btn_wrap{
                 position: absolute;
                 bottom: 20px;
-                right: -70px;
+                right: -60px;
                 button{
-                    width: 25px;
-                    height: 25px;
-                    border-radius: 100%;
+                    width: 35px;
+                    height: 35px;
+                    border-radius: 7px;
                     font-size: 16px;
+                    img{
+                        display: block;
+                        margin: 0 auto;
+                    }
                 }
             }
+        }
+        .dropzone-previews{
+            .dz-image-preview {
+                i{
+                    width: 30px;
+                    height: 30px;
+                    display: block;
+                    background: $primary_1;
+                    border-radius: 100%;
+                    text-align: center;
+                    line-height: 30px;
+                    font-size: 20px;
+                    color: $primary_7;
+                }
+            }
+        }
+        .add_btn_box {
+            height: 120px;
+            width: 100%;
+            border: 1px dashed $neutral_3;
+            background: $neutral_1;
         }
     }
 }
@@ -332,6 +357,16 @@
             //         min-width: 120px;
             //     }
             // }
+        }
+    }
+}
+
+.fcl_filter_sidebar_wrap{
+    .btn_wrap {
+        padding: 16px 0px 0;
+        gap: 8px;
+        button{
+            width: 100%;
         }
     }
 }

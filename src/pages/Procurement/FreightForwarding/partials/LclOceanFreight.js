@@ -8,13 +8,26 @@ import { getLclData } from '../../../../store/Procurement/actions'
 import { CargoType, CarrierName, ChargeId, DestPort, DetentionFree, OrgPort, TransitTime, ValidTill, VendorName, ViaPort } from './OceanCol'
 import TableReact from './TableReact'
 import TopBreadcrumbs from './TopBreadcrumbs'
+import ModalFreight from './Modal/ModalFreight'
+import FilterOffCanvasComp from './Modal/FilterOffCanvasComp'
 
 export default function LclOceanFreight() {
     const lclData = useSelector((state) => state.procurement.lclData);
-    console.log(lclData,"lclData---")
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
     const [state, setState] = useState(true);
+    const [isRight, setIsRight] = useState(false);
+    const [filterDetails, setfilterDetails] = useState(
+        {
+            vendor_name: '',
+            carrier_name: '',
+            validity_from: '',
+            validity_to: '',
+            org_port: '',
+            dest_port: '',
+            cargo_type: '',
+        }
+    );
     const dispatch = useDispatch();
 
     const viewPopupHandler = (data) => {
@@ -24,6 +37,16 @@ export default function LclOceanFreight() {
 
     const onCloseClick = () => {
         setModal(false);
+    }
+
+    // right filter sidebar 
+    const toggleRightCanvas = () => {
+        setIsRight(!isRight);
+    };
+
+    const applyFilterHandler = () => {
+        setIsRight(false);
+        console.log(filterDetails,"filterDetails-----------------------")
     }
 
     useEffect(() => {
@@ -37,7 +60,7 @@ export default function LclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <ChargeId {...cellProps} />
+                return <ChargeId cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -46,7 +69,7 @@ export default function LclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <CarrierName {...cellProps} />
+                return <CarrierName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -55,7 +78,7 @@ export default function LclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <VendorName {...cellProps} />
+                return <VendorName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -64,7 +87,7 @@ export default function LclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <OrgPort {...cellProps} />
+                return <OrgPort cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -73,7 +96,7 @@ export default function LclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <DestPort {...cellProps} />
+                return <DestPort cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -82,7 +105,7 @@ export default function LclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <ViaPort {...cellProps} />
+                return <ViaPort cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -91,7 +114,7 @@ export default function LclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <DetentionFree {...cellProps} />
+                return <DetentionFree cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -100,7 +123,7 @@ export default function LclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <ValidTill {...cellProps} />
+                return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -109,7 +132,7 @@ export default function LclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <TransitTime {...cellProps} />
+                return <TransitTime cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -118,7 +141,7 @@ export default function LclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <CargoType {...cellProps} />
+                return <CargoType cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -169,82 +192,16 @@ export default function LclOceanFreight() {
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}
+                            toggleRightCanvas={toggleRightCanvas}
                         />
 
                         {/* modal */}
-                        <Modal isOpen={modal} toggle={onCloseClick} className='table_view_modal'>
-                            <ModalHeader tag="h4">
-                                View Details
-                                <span className="close" onClick={onCloseClick}></span>
-                            </ModalHeader>
-                            <ModalBody>
-                                <div className="table_view_data_wrap">
-                                    <div className="view_data_wrap d-flex flex-wrap">
-                                        <div className="details">
-                                            <span className="title">Cargo Type:</span>
-                                            <span className="data">{viewData?.cargo_type || '-'}</span>
-                                        </div>
-                                        <div className="details">
-                                            <span className="title">Last Update on:</span>
-                                            <span className="data">{viewData?.last_update || '-'}</span>
-                                        </div>
-                                        <div className="details">
-                                            <span className="title">Cargo Class:</span>
-                                            <span className="data">{viewData?.cargo_class || '-'}</span>
-                                        </div>
-                                        <div className="details">
-                                            <span className="title">Last Update By:</span>
-                                            <span className="data">{viewData?.last_update_by || '-'}</span>
-                                        </div>
-                                        <div className="details">
-                                            <span className="title">Product:</span>
-                                            <span className="data">{viewData?.product || '-'}</span>
-                                        </div>
-                                        <div className="details">
-                                            <span className="title">Created On:</span>
-                                            <span className="data">{viewData?.created_on || '-'}</span>
-                                        </div>
-                                        <div className="details">
-                                            <span className="title">Validity Application:</span>
-                                            <span className="data">{viewData?.validity_application || '-'}</span>
-                                        </div>
-                                    </div>
-                                    <div className="view_data_wrap d-flex flex-wrap">
-                                        <div className="details">
-                                            <span className="title">20 DV/GP:</span>
-                                            <span className="data">{viewData?.dv_gp || '-'}</span>
-                                        </div>
-                                        <div className="details">
-                                            <span className="title">War Risk Surcharge:</span>
-                                            <span className="data">{viewData?.war_surcharges || '-'}</span>
-                                        </div>
-                                        <div className="details">
-                                            <span className="title">20 DV/GP:</span>
-                                            <span className="data">{viewData?.dv_gp2 || '-'}</span>
-                                        </div>
-                                        <div className="details">
-                                            <span className="title">BAF Per Container:</span>
-                                            <span className="data">{viewData?.baf || '-'}</span>
-                                        </div>
-                                        <div className="details">
-                                            <span className="title">40 HQ/HC:</span>
-                                            <span className="data">{viewData?.hq_hc || '-'}</span>
-                                        </div>
-                                        <div className="details">
-                                            <span className="title">Currency:</span>
-                                            <span className="data">{viewData?.currency || '-'}</span>
-                                        </div>
-                                        <div className="details">
-                                            <span className="title">40 HQ/HC:</span>
-                                            <span className="data">{viewData?.hq_hc2 || '-'}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </ModalBody>
-                        </Modal>
+                        <ModalFreight modal={modal} onCloseClick={onCloseClick} viewData={viewData} />
                     </div>
                 </Container>
-            </div>            
+            </div>   
+            {/* filter right sidebar */}
+            <FilterOffCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} />         
         </>
     )
 }

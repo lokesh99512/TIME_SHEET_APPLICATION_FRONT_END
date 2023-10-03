@@ -1,10 +1,9 @@
-import React, { Fragment } from 'react'
-import { useAsyncDebounce, useExpanded, useFilters, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
-import { DefaultColumnFilter, Filter } from '../../../../components/Common/filters';
-import { Button, Col, Input, Row, Table } from 'reactstrap';
-import CommonFilterComp from './CommonFilterComp';
-import { filter_icon, upload_icon } from '../../../../assets/images';
+import React, { Fragment } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAsyncDebounce, useExpanded, useFilters, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
+import { Row, Table } from 'reactstrap';
+import { filter_icon, upload_icon } from '../../../../assets/images';
+import { DefaultColumnFilter, Filter } from '../../../../components/Common/filters';
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -13,7 +12,7 @@ function GlobalFilter({
     setGlobalFilter,
   }) {
     const count = preGlobalFilteredRows.length;
-    console.log(count,"count");
+    // console.log(count,"count");
     const [value, setValue] = React.useState(globalFilter);
     const onChange = useAsyncDebounce(value => {
       setGlobalFilter(value || undefined);
@@ -26,8 +25,10 @@ function GlobalFilter({
                     <input 
                         type="search"
                         onChange={e => {
+                            e.preventDefault();
                             setValue(e.target.value);
                             onChange(e.target.value);
+                            return false;
                         }}
                         className="form-control" 
                         placeholder="Search" 
@@ -42,7 +43,7 @@ function GlobalFilter({
     );
   }
 
-const TableReact = ({columns,data,isGlobalFilter,customPageSize}) => {
+const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanvas}) => {    
     const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow, canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize, state, preGlobalFilteredRows, setGlobalFilter, state: { pageIndex, pageSize }, } = useTable({
           columns,
           data,
@@ -55,14 +56,7 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize}) => {
         useExpanded,
         usePagination,);
     const navidate = useNavigate();
-
-    const onChangeInSelect = event => {
-        setPageSize(Number(event.target.value));
-    };
-    const onChangeInInput = event => {
-        const page = event.target.value ? Number(event.target.value) - 1 : 0;
-        gotoPage(page);
-    };
+    
     return (
         <>
             <div className="freight_filter_wrap d-flex align-items-center">
@@ -77,7 +71,7 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize}) => {
                         />
                     )}
                     <div className="filter_wrap">
-                        <button className='bg-transparent'><img src={filter_icon} alt="filter" /></button>
+                        <button className='bg-transparent' onClick={toggleRightCanvas}><img src={filter_icon} alt="filter" /></button>
                     </div>
                     <div className="upload_wrap">
                         <button className='bg-transparent' onClick={() => {navidate('/freight/upload');}}>
@@ -85,7 +79,7 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize}) => {
                         </button>
                     </div>
                     <div className="add_btn">
-                        <button className='border-0'>
+                        <button className='border-0' onClick={() => {navidate('/freight/upload');}}>
                             <i className='bx bx-plus align-middle'></i> Add
                         </button>
                     </div>
