@@ -126,3 +126,6 @@ export const GET_Invested_Overview = "GET_Invested_Overview"
 // --------------------- procurement --------------------------------
 export const GET_FCL = "/get-fcl"
 export const GET_LCL = "/get-lcl"
+export const GET_WAYBILL = "/get-waybill"
+export const GET_CONSOLE = "/get-console"
+export const GET_INLAND = "/get-inland"

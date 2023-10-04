@@ -1,21 +1,20 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, Modal, ModalBody, ModalHeader, UncontrolledDropdown } from 'reactstrap'
+import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap'
 
 import { edit_icon, eye_icon } from '../../../../assets/images'
 import { lclBreadcrumb, lclRateData } from '../../../../common/data/procurement'
-import { getLclData } from '../../../../store/Procurement/actions'
+import { getLclData, updatelclSwitchData } from '../../../../store/Procurement/actions'
+import FilterOffCanvasComp from './Modal/FilterOffCanvasComp'
+import ModalFreight from './Modal/ModalFreight'
 import { CargoType, CarrierName, ChargeId, DestPort, DetentionFree, OrgPort, TransitTime, ValidTill, VendorName, ViaPort } from './OceanCol'
 import TableReact from './TableReact'
 import TopBreadcrumbs from './TopBreadcrumbs'
-import ModalFreight from './Modal/ModalFreight'
-import FilterOffCanvasComp from './Modal/FilterOffCanvasComp'
 
 export default function LclOceanFreight() {
     const lclData = useSelector((state) => state.procurement.lclData);
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
-    const [state, setState] = useState(true);
     const [isRight, setIsRight] = useState(false);
     const [filterDetails, setfilterDetails] = useState(
         {
@@ -46,7 +45,12 @@ export default function LclOceanFreight() {
 
     const applyFilterHandler = () => {
         setIsRight(false);
-        console.log(filterDetails,"filterDetails-----------------------")
+        console.log(filterDetails,"filterDetails lcl-----------------------")
+    }
+
+    // Activate deactivate table data
+    const switchHandler = (data) => {
+        dispatch(updatelclSwitchData(data.id,data.is_active));
     }
 
     useEffect(() => {
@@ -161,9 +165,9 @@ export default function LclOceanFreight() {
                                     <FormGroup switch>
                                         <Input 
                                         type="switch"
-                                        checked={state}
+                                        checked={cellProps.row.original?.is_active || false}
                                         onClick={() => {
-                                            setState(!state);
+                                            switchHandler(cellProps.row.original);
                                         }}
                                         readOnly
                                         />
@@ -193,10 +197,11 @@ export default function LclOceanFreight() {
                             isAddInvoiceList={true}
                             customPageSize={10}
                             toggleRightCanvas={toggleRightCanvas}
+                            component={'lcl'}
                         />
 
                         {/* modal */}
-                        <ModalFreight modal={modal} onCloseClick={onCloseClick} viewData={viewData} />
+                        <ModalFreight modal={modal} onCloseClick={onCloseClick} viewData={viewData} modalType={'lcl'} />
                     </div>
                 </Container>
             </div>   

@@ -32,7 +32,7 @@ import {
   octEarningData,
   MarketOverViewAllData, MarketOver1MData, MarketOver6MData, MarketOver1YData,
   PieChart1YData, PieChart6MData, PieChart1MData, PieChartAllData, InvestedOverviewMay, InvestedOverviewApril, InvestedOverviewMarch,
-  InvestedOverviewFeb, InvestedOverviewJan, InvestedOverviewDec, fclTableData, lclTableData
+  InvestedOverviewFeb, InvestedOverviewJan, InvestedOverviewDec, fclTableData, lclTableData, waybillTableData, consoleTableData, inLandTableData
 } from "../../common/data"
 
 let users = [
@@ -850,7 +850,6 @@ const fakeBackend = () => {
     })
   })
 
-  console.log(lclTableData,"lclTableData")
   mock.onGet(url.GET_LCL).reply(() => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -863,6 +862,41 @@ const fakeBackend = () => {
     })
   })
 
+  mock.onGet(url.GET_WAYBILL).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if(waybillTableData){
+          resolve([200,waybillTableData]);
+        } else {
+          reject([400, 'Cannot get Air Way Bill Data']);
+        }
+      });
+    })
+  })
+
+  mock.onGet(url.GET_CONSOLE).reply(() => {
+    return new Promise((resolve,reject) => {
+      setTimeout(() => {
+        if(consoleTableData){
+          resolve([200,consoleTableData]);
+        } else {
+          reject([400, 'Cannot get Air Console Data']);
+        }
+      });
+    })
+  })
+
+  mock.onGet(url.GET_INLAND).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if(inLandTableData) {
+          resolve([200, inLandTableData]);
+        } else {
+          reject([400, 'Cannot get InLand Data']);
+        }
+      });
+    })
+  })
 }
 
 export default fakeBackend

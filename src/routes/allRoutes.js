@@ -151,7 +151,7 @@ const userRoutes = [
   { path: "/freight/air/masterbill", component: <AirMasterBill /> },
   { path: "/freight/air/console", component: <AirConsoleComp /> },
   { path: "/freight/air/local", component: <AirLocalFreight /> },
-  { path: "/freight/upload", component: <UploadFreightData /> },
+  { path: "/freight/upload/:tabName", component: <UploadFreightData /> },
   // Express
   { path: "/express", component: <ExpressComp /> },
 

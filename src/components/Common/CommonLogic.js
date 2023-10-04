@@ -11,9 +11,7 @@ export function formatBytes(bytes, decimals = 2) {
 
 export const isAnyValueEmpty = (obj,removeKey) => {
     let updatedObj = {...obj};
-    console.log(removeKey,"removeKey-----------");
     delete updatedObj?.[removeKey];
-    console.log(updatedObj,"updatedObj-----------");
     for (const key in updatedObj) {
         if (Object.prototype.hasOwnProperty.call(updatedObj, key)) {
             const value = updatedObj[key];

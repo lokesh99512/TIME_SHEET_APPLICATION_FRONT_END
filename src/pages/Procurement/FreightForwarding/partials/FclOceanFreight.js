@@ -5,7 +5,7 @@ import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input
 import { useDispatch } from 'react-redux'
 import { edit_icon, eye_icon } from '../../../../assets/images'
 import { fclBreadcrumb, fclRateData } from '../../../../common/data/procurement'
-import { getFclData } from '../../../../store/Procurement/actions'
+import { getFclData, updatefclSwitchData } from '../../../../store/Procurement/actions'
 import FilterOffCanvasComp from './Modal/FilterOffCanvasComp'
 import ModalFreight from './Modal/ModalFreight'
 import { CargoType, CarrierName, ChargeId, DestPort, DetentionFree, OrgPort, TransitTime, ValidTill, VendorName, ViaPort } from './OceanCol'
@@ -16,7 +16,6 @@ export default function FclOceanFreight() {
     const fclData = useSelector((state) => state.procurement.fcl_data);
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
-    const [state, setState] = useState(true);
     const [isRight, setIsRight] = useState(false);
     const [filterDetails, setfilterDetails] = useState(
         {
@@ -48,7 +47,12 @@ export default function FclOceanFreight() {
 
     const applyFilterHandler = () => {
         setIsRight(false);
-        console.log(filterDetails,"filterDetails-----------------------")
+        console.log(filterDetails,"filterDetails fcl-----------------------")
+    }
+    
+    // Activate deactivate table data
+    const switchHandler = (data) => {
+        dispatch(updatefclSwitchData(data.id,data.is_active));
     }
 
     useEffect(() => {
@@ -163,9 +167,9 @@ export default function FclOceanFreight() {
                                     <FormGroup switch>
                                         <Input 
                                         type="switch"
-                                        checked={state}
+                                        checked={cellProps.row.original?.is_active || false}
                                         onClick={() => {
-                                            setState(!state);
+                                            switchHandler(cellProps.row.original);
                                         }}
                                         readOnly
                                         />
@@ -196,10 +200,11 @@ export default function FclOceanFreight() {
                             isAddInvoiceList={true}
                             customPageSize={10}
                             toggleRightCanvas={toggleRightCanvas}
+                            component={'fcl'}
                         />
 
                         {/* modal */}
-                        <ModalFreight modal={modal} onCloseClick={onCloseClick} viewData={viewData} />
+                        <ModalFreight modal={modal} onCloseClick={onCloseClick} viewData={viewData} modalType={'fcl'} />
                     </div>
                 </Container>
             </div>

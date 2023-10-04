@@ -263,10 +263,7 @@
         .view_details_wrap,.freigth_details_wrap,.charge_details{
             padding: 20px;
             background: $neutral_1;            
-        }
-        .freigth_details_wrap {
-            background: $neutral_2;            
-        }
+        }        
         .charge_details {
             border-radius: 0px 0 10px 10px;
             .view_data_wrap {
@@ -288,17 +285,6 @@
         }
         .view_data_wrap {
             position: relative;
-            // &::before {
-            //     content: "";
-            //     position: absolute;
-            //     left: 0;
-            //     top: 0;
-            //     width: 1px;
-            //     bottom: 20px;
-            //     background: #E5E7EB;
-            //     margin: 0 auto;
-            //     right: 0;
-            // }
             &:not(:last-child){
                 margin-bottom: 20px;
                 border-bottom: 1px solid #E5E7EB;
@@ -314,16 +300,8 @@
             display: flex;
             margin-bottom: 20px;
             flex-direction: column;
-            gap: 5px;
-            // &:nth-child(2n){
-            //     padding-left: 20px;
-            // }
-            // &:nth-child(2n + 1){
-            //     padding-right: 30px;
-            // }            
+            gap: 5px;         
             .title{
-                // max-width: 260px;
-                // min-width: 260px;
                 @include font(500,14px,normal,$neutral_8);
                 margin-right: 15px;
             }
@@ -331,10 +309,6 @@
                 @include font($font-weight-bold,14px,normal,$neutral_8);
             }
             @media only screen and (max-width: 991px) {
-                // .title{
-                //     max-width: 160px;
-                //     min-width: 160px;
-                // }
                 .title,.data{
                     font-size: 14px;
                 }
@@ -351,12 +325,17 @@
                     font-size: 13px;
                 }
             }
-            // @media only screen and (max-width: 350px){
-            //     .title{
-            //         max-width: 120px;
-            //         min-width: 120px;
-            //     }
-            // }
+        }
+        .freigth_details_wrap {
+            background: $neutral_2; 
+            .left_freight_details, .right_freight_details {
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                .details{
+                    width: 50%;
+                }
+            }           
         }
     }
 }

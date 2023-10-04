@@ -301,6 +301,9 @@ export const getInvestedData = (data) =>
 // -------------- Procurement ---------------------------------------
 export const getFCLTableData = () => get(url.GET_FCL);
 export const getLCLTableData = () => get(url.GET_LCL);
+export const getAirwaybillTableData = () => get(url.GET_WAYBILL);
+export const getAirConsoleTableData = () => get(url.GET_CONSOLE);
+export const getInlandTableData = () => get(url.GET_INLAND);
 
 export {
   getLoggedInUser,

@@ -1,108 +1,276 @@
-import classnames from "classnames";
-import React, { useEffect, useState } from 'react';
-import { Container, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, UncontrolledDropdown } from 'reactstrap';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap';
 
 import { useDispatch } from "react-redux";
-import { getFclData, getLclData } from "../../../store/Procurement/actions";
-import AirConsoleComp from "./partials/AirConsoleComp";
-import AirLocalFreight from "./partials/AirLocalFreight";
-import AirMasterBill from "./partials/AirMasterBill";
-import FclOceanFreight from "./partials/FclOceanFreight";
-import InLandCharge from "./partials/InLandCharge";
-import LclOceanFreight from "./partials/LclOceanFreight";
-import PortLocalFreight from "./partials/PortLocalFreight";
+import { inLandBreadcrumb, inLandRateData, waybillBreadcrumb, waybillRateData } from "../../../common/data/procurement";
+import { getFclData, getInLandData, updateInLandSwitchData } from "../../../store/Procurement/actions";
+import TopBreadcrumbs from "./partials/TopBreadcrumbs";
+import { edit_icon, eye_icon } from '../../../assets/images';
+import { CargoType, CarrierName, ChargeId, CommonValue, DetentionFree, MinValue, TransitTime, ValidTill, VendorName } from './partials/OceanCol';
+import { useSelector } from 'react-redux';
+import TableReact from './partials/TableReact';
+import ModalFreight from './partials/Modal/ModalFreight';
+import FilterOffCanvasComp from './partials/Modal/FilterOffCanvasComp';
 
 const FreightForwarding = () => {
-    const [activeTab, setactiveTab] = useState("1");
-    const [oceanType, setOceanType] = useState('fcl');
-    const [airType, setAirTypee] = useState('master_bill');
-    const dispatch = useDispatch();    
-    const toggle = (tab) => {
-        if (activeTab !== tab) {
-            setactiveTab(tab);
+    const inlandData = useSelector((state) => state?.procurement?.inlandData);
+    const [modal, setModal] = useState(false);
+    const [viewData, setViewData] = useState(false);
+    const [isRight, setIsRight] = useState(false);
+    const [filterDetails, setfilterDetails] = useState(
+        {
+            vendor_name: '',
+            carrier_name: '',
+            validity_from: '',
+            validity_to: '',
+            org_port: '',
+            dest_port: '',
+            cargo_type: '',
         }
+    );
+    const dispatch = useDispatch();    
+
+    const viewPopupHandler = (data) => {
+        setModal(true);
+        setViewData(data);
+    }
+
+    const onCloseClick = () => {
+        setModal(false);
+    }
+
+    // right filter sidebar 
+    const toggleRightCanvas = () => {
+        setIsRight(!isRight);
     };
 
+    const applyFilterHandler = () => {
+        setIsRight(false);
+        console.log(filterDetails,"filterDetails lcl-----------------------")
+    }
+
+    // Activate deactivate table data
+    const switchHandler = (data) => {
+        dispatch(updateInLandSwitchData(data.id,data.is_active));
+    }
+
     useEffect(() => {
-        dispatch(getFclData());
-        dispatch(getLclData());
+        dispatch(getInLandData());
     }, [dispatch]);
+
+    const columns = useMemo(() => [
+        {
+            Header: 'Charge ID',
+            accessor: 'charge_id',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <ChargeId cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Charge Name',
+            accessor: 'charge_name',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Service Type',
+            accessor: 'service_type',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Carrier Name',
+            accessor: 'carrier_name',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CarrierName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Vendor Name',
+            accessor: 'vendor_name',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <VendorName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Transport Mode',
+            accessor: 'transport_mode',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Origin',
+            accessor: 'origin',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Destination',
+            accessor: 'destination',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Charge Basis',
+            accessor: 'charge_basis',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Slab',
+            accessor: 'slab',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Cargo Type',
+            accessor: 'cargo_type',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CargoType cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Min. Val',
+            accessor: 'min_value',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <MinValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Amount',
+            accessor: 'amount',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Currency',
+            accessor: 'currency',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Transit Time',
+            accessor: 'transit_time',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <TransitTime cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        }, 
+        {
+            Header: 'Detention Free',
+            accessor: 'detention_free',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <DetentionFree cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Valid Till',
+            accessor: 'valid_till',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },               
+        {
+            Header: 'Action',
+            Cell: (cellProps) => {
+                return (
+                    <UncontrolledDropdown>
+                        <DropdownToggle className="btn btn-link text-muted py-1 font-size-16 shadow-none" tag="a">
+                            <i className='bx bx-dots-vertical-rounded'></i>
+                        </DropdownToggle>
+                        <DropdownMenu className="dropdown-menu-end">
+                            <DropdownItem>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
+                            <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem>
+                            <DropdownItem onClick={(e) => e.stopPropagation()}>
+                                Activate
+                                <div className="switch_wrap">
+                                    <FormGroup switch>
+                                        <Input 
+                                            type="switch"
+                                            checked={cellProps.row.original?.is_active || false}
+                                            onClick={() => {
+                                                switchHandler(cellProps.row.original);
+                                            }}
+                                            readOnly
+                                        />
+                                    </FormGroup>
+                                </div>
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
+                )
+            }
+        },
+    ]);
 
     return (
         <>
             <div className="page-content">
                 <Container fluid>
                     <div className="main_freight_wrapper">
-                        <div className="freight_tabing_wrap">
-                            <Nav pills className="navtab-bg nav-justified">
-                                <NavItem>
-                                    <div
-                                        style={{ cursor: "pointer" }}
-                                        className={classnames({
-                                            active: activeTab === "1",
-                                        }, "tab_menu")}
-                                        onClick={() => {
-                                            toggle("1");
-                                        }}
-                                    >
-                                        <UncontrolledDropdown>
-                                            <DropdownToggle className="btn btn-secondary" type="button" tag="a" >
-                                                Ocean Freight
-                                            </DropdownToggle>
-                                            <DropdownMenu>
-                                                <DropdownItem to="#" onClick={() => { setOceanType('fcl') }}>FCL</DropdownItem>
-                                                <DropdownItem to="#" onClick={() => { setOceanType('lcl') }}>LCL</DropdownItem>
-                                                <DropdownItem to="#" onClick={() => { setOceanType('port_local') }}>Port/Local Charges</DropdownItem>
-                                            </DropdownMenu>
-                                        </UncontrolledDropdown>
-                                    </div>
-                                </NavItem>
-                                <NavItem>
-                                    <div
-                                        style={{ cursor: "pointer" }}
-                                        className={classnames({
-                                            active: activeTab === "2",
-                                        }, "tab_menu")}
-                                        onClick={() => {
-                                            toggle("2");
-                                        }}
-                                    >
-                                        <UncontrolledDropdown>
-                                            <DropdownToggle className="btn btn-secondary" type="button" tag="a" >
-                                                Air Freight
-                                            </DropdownToggle>
-                                            <DropdownMenu>
-                                                <DropdownItem to="#" onClick={() => {setAirTypee('master_bill')}}>Master Waybill</DropdownItem>
-                                                <DropdownItem to="#" onClick={() => {setAirTypee('console')}}>Console</DropdownItem>
-                                                <DropdownItem to="#" onClick={() => {setAirTypee('air_local')}}>Airport/Local Charges</DropdownItem>
-                                            </DropdownMenu>
-                                        </UncontrolledDropdown>
-                                    </div>
-                                </NavItem>
-                                <NavItem>
-                                    <div
-                                        style={{ cursor: "pointer" }}
-                                        className={classnames({
-                                            active: activeTab === "3",
-                                        }, "tab_menu")}
-                                        onClick={() => {
-                                            toggle("3");
-                                        }}
-                                    >
-                                        Inland Charges
-                                    </div>
-                                </NavItem>
-                            </Nav>
-                        </div>
-                        {/* {activeTab === '1' ?
-                            oceanType === 'lcl' ? <LclOceanFreight /> : oceanType === 'port_local' ? <PortLocalFreight /> : <FclOceanFreight />
-                            : activeTab === '2' ? 
-                                airType === 'console' ? <AirConsoleComp /> : airType === 'air_local' ? <AirLocalFreight /> : <AirMasterBill />
-                                : activeTab === '3' ? <InLandCharge /> : null} */}
+                        {/* breadcrumbs && rate */}
+                        <TopBreadcrumbs breadcrumbs={inLandBreadcrumb} data={inLandRateData} />            
 
+                        {/* React Table */}
+                        <TableReact
+                            columns={columns}
+                            data={inlandData}
+                            isGlobalFilter={true}
+                            isAddInvoiceList={true}
+                            customPageSize={10}
+                            toggleRightCanvas={toggleRightCanvas}
+                            component={'inland'}
+                        />
+
+                        {/* modal */}
+                        <ModalFreight modal={modal} onCloseClick={onCloseClick} viewData={viewData} modalType={'inland'} />
                     </div>
                 </Container>
             </div>
+            {/* filter right sidebar */}
+            <FilterOffCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} />
         </>
     );
 }

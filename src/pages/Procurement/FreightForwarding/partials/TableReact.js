@@ -43,7 +43,7 @@ function GlobalFilter({
     );
   }
 
-const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanvas}) => {    
+const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanvas,component}) => {    
     const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow, canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize, state, preGlobalFilteredRows, setGlobalFilter, state: { pageIndex, pageSize }, } = useTable({
           columns,
           data,
@@ -74,12 +74,12 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanva
                         <button className='bg-transparent' onClick={toggleRightCanvas}><img src={filter_icon} alt="filter" /></button>
                     </div>
                     <div className="upload_wrap">
-                        <button className='bg-transparent' onClick={() => {navidate('/freight/upload');}}>
+                        <button className='bg-transparent' onClick={() => {navidate(`/freight/upload/${component}`);}}>
                             <img src={upload_icon} alt="Upload" />Upload file
                         </button>
                     </div>
                     <div className="add_btn">
-                        <button className='border-0' onClick={() => {navidate('/freight/upload');}}>
+                        <button className='border-0' onClick={() => {navidate(`/freight/upload/${component}`);}}>
                             <i className='bx bx-plus align-middle'></i> Add
                         </button>
                     </div>

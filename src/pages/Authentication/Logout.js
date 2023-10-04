@@ -46,7 +46,7 @@ const Logout = props => {
                           <p className="text-muted font-size-15">Thank you for using <span className="fw-semibold text-primary">Tarifftales</span></p>
                           <div className="mt-4">
                             {/* <button className="btn btn-primary w-100 waves-effect waves-light">Sign In</button> */}
-                            <Link to="/" className="btn btn-primary w-100 waves-effect waves-light">Sign In</Link>
+                            <Link to="/dashboard" className="btn btn-primary w-100 waves-effect waves-light">Sign In</Link>
                           </div>
                         </div>
                       </div>

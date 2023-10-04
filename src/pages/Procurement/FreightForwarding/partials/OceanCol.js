@@ -33,7 +33,13 @@ const TransitTime = ({cellProps,viewPopupHandler}) => {
 const CargoType = ({cellProps,viewPopupHandler}) => {
     return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }
+const MinValue = ({cellProps,viewPopupHandler}) => {
+    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
+}
+const CommonValue = ({cellProps,viewPopupHandler}) => {
+    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
+}
 
 export {
-    ChargeId,CarrierName,VendorName,OrgPort,DestPort,ViaPort,ValidFrom,ValidTill,TransitTime,CargoType,DetentionFree
+    ChargeId,CarrierName,VendorName,OrgPort,DestPort,ViaPort,ValidFrom,ValidTill,TransitTime,CargoType,DetentionFree,MinValue,CommonValue
 }

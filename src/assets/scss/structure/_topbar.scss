@@ -103,6 +103,9 @@ body:not([data-sidebar-size="sm"]) {
             font-size: 20px;
             color: #6264A0;
         }
+        &:active{
+            border: 0 !important;
+        }
     }
 }
 
