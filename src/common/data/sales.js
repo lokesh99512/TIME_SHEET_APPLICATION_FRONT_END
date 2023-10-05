@@ -1,0 +1,193 @@
+// --------- breadcrumbs -----------------------------
+const quotationBreadcrumb = [
+    {
+        label: 'Sales',
+        link: '/#',
+        active: false
+    },
+    {
+        label: 'Quotations',
+        link: '/#',
+        active: true
+    },
+]
+
+// --------------------- rate ----------------------------------------------
+const quotationRateData = [
+    {
+        id: 1,
+        title: 'Quotation Sent',
+        rate: '59',
+        compare_rate: '15',
+        rate_type: 'down'
+    },
+    {
+        id: 2,
+        title: 'Quotation Won',
+        rate: '103',
+        compare_rate: '16',
+        rate_type: 'up'
+    },
+    {
+        id: 3,
+        title: 'Quotation Lost',
+        rate: '35',
+        compare_rate: '17',
+        rate_type: 'down'
+    },
+    {
+        id: 4,
+        title: 'Quotation In Progress',
+        rate: '67',
+        compare_rate: '18',
+        rate_type: 'up'
+    },
+]
+
+// -------------------------------- table data -----------------------------------
+const quotationTableData = [
+    {
+        id: 1,
+        quotation_date: '123456ADA',
+        quotation_id: '123456ADA',
+        enquiry_date: '12 Jun 2023',
+        enquiry_id: '123456ADA',
+        customer_name: 'Adem Marks',
+        quote_status: 'In Progress',
+        org_airport: 'Dhaka',
+        dest_port: 'Mumbai',
+        service_code: 'FCL',
+        cargo_type: 'General',
+        weight_type: '20HQ',
+    },
+    {
+        id: 2,
+        quotation_date: '123456ADB',
+        quotation_id: '123456ADB',
+        enquiry_date: '12 Jun 2023',
+        enquiry_id: '123456ADB',
+        customer_name: 'Adem Marks',
+        quote_status: 'In Progress',
+        org_airport: 'Dhaka',
+        dest_port: 'Mumbai',
+        service_code: 'FCL',
+        cargo_type: 'General',
+        weight_type: '20HQ',        
+    },
+    {
+        id: 3,
+        quotation_date: '123456ADC',
+        quotation_id: '123456ADC',
+        enquiry_date: '12 Jun 2023',
+        enquiry_id: '123456ADC',
+        customer_name: 'Adem Marks',
+        quote_status: 'In Progress',
+        org_airport: 'Dhaka',
+        dest_port: 'Mumbai',
+        service_code: 'FCL',
+        cargo_type: 'General',
+        weight_type: '20HQ',    
+    },
+    {
+        id: 4,
+        quotation_date: '123456ADD',
+        quotation_id: '123456ADD',
+        enquiry_date: '12 Jun 2023',
+        enquiry_id: '123456ADD',
+        customer_name: 'Adem Marks',
+        quote_status: 'In Progress',
+        org_airport: 'Dhaka',
+        dest_port: 'Mumbai',
+        service_code: 'FCL',
+        cargo_type: 'General',
+        weight_type: '20HQ',        
+    },
+    {
+        id: 5,
+        quotation_date: '123456ADE',
+        quotation_id: '123456ADE',
+        enquiry_date: '12 Jun 2023',
+        enquiry_id: '123456ADE',
+        customer_name: 'Adem Marks',
+        quote_status: 'In Progress',
+        org_airport: 'Dhaka',
+        dest_port: 'Mumbai',
+        service_code: 'FCL',
+        cargo_type: 'General',
+        weight_type: '20HQ',        
+    },
+    {
+        id: 6,
+        quotation_date: '123456ADF',
+        quotation_id: '123456ADF',
+        enquiry_date: '12 Jun 2023',
+        enquiry_id: '123456ADF',
+        customer_name: 'Adem Marks',
+        quote_status: 'In Progress',
+        org_airport: 'Dhaka',
+        dest_port: 'Mumbai',
+        service_code: 'FCL',
+        cargo_type: 'General',
+        weight_type: '20HQ',        
+    },
+    {
+        id: 7,
+        quotation_date: '123456ADG',
+        quotation_id: '123456ADG',
+        enquiry_date: '12 Jun 2023',
+        enquiry_id: '123456ADG',
+        customer_name: 'Adem Marks',
+        quote_status: 'In Progress',
+        org_airport: 'Dhaka',
+        dest_port: 'Mumbai',
+        service_code: 'FCL',
+        cargo_type: 'General',
+        weight_type: '20HQ',        
+    },
+    {
+        id: 8,
+        quotation_date: '123456ADH',
+        quotation_id: '123456ADH',
+        enquiry_date: '12 Jun 2023',
+        enquiry_id: '123456ADH',
+        customer_name: 'Adem Marks',
+        quote_status: 'In Progress',
+        org_airport: 'Dhaka',
+        dest_port: 'Mumbai',
+        service_code: 'FCL',
+        cargo_type: 'General',
+        weight_type: '20HQ',        
+    },
+    {
+        id: 9,
+        quotation_date: '123456ADI',
+        quotation_id: '123456ADI',
+        enquiry_date: '12 Jun 2023',
+        enquiry_id: '123456ADI',
+        customer_name: 'Adem Marks',
+        quote_status: 'In Progress',
+        org_airport: 'Dhaka',
+        dest_port: 'Mumbai',
+        service_code: 'FCL',
+        cargo_type: 'General',
+        weight_type: '20HQ',        
+    },
+    {
+        id: 10,
+        quotation_date: '123456ADJ',
+        quotation_id: '123456ADJ',
+        enquiry_date: '12 Jun 2023',
+        enquiry_id: '123456ADJ',
+        customer_name: 'Adem Marks',
+        quote_status: 'In Progress',
+        org_airport: 'Dhaka',
+        dest_port: 'Mumbai',
+        service_code: 'FCL',
+        cargo_type: 'General',
+        weight_type: '20HQ',        
+    },
+]
+
+export {
+    quotationBreadcrumb,quotationRateData,quotationTableData
+}

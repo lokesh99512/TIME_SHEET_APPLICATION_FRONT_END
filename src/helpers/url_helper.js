@@ -129,3 +129,6 @@ export const GET_LCL = "/get-lcl"
 export const GET_WAYBILL = "/get-waybill"
 export const GET_CONSOLE = "/get-console"
 export const GET_INLAND = "/get-inland"
+
+// -------------------- Sales --------------------------------------------
+export const GET_QUOTATION = "get-quotation"

@@ -32,7 +32,7 @@ import {
   octEarningData,
   MarketOverViewAllData, MarketOver1MData, MarketOver6MData, MarketOver1YData,
   PieChart1YData, PieChart6MData, PieChart1MData, PieChartAllData, InvestedOverviewMay, InvestedOverviewApril, InvestedOverviewMarch,
-  InvestedOverviewFeb, InvestedOverviewJan, InvestedOverviewDec, fclTableData, lclTableData, waybillTableData, consoleTableData, inLandTableData
+  InvestedOverviewFeb, InvestedOverviewJan, InvestedOverviewDec, fclTableData, lclTableData, waybillTableData, consoleTableData, inLandTableData, quotationTableData
 } from "../../common/data"
 
 let users = [
@@ -893,6 +893,18 @@ const fakeBackend = () => {
           resolve([200, inLandTableData]);
         } else {
           reject([400, 'Cannot get InLand Data']);
+        }
+      });
+    })
+  })
+
+  mock.onGet(url.GET_QUOTATION).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if(quotationTableData) {
+          resolve([200, quotationTableData]);
+        } else {
+          reject([400, 'Cannot get Quotation Data']);
         }
       });
     })

@@ -305,6 +305,9 @@ export const getAirwaybillTableData = () => get(url.GET_WAYBILL);
 export const getAirConsoleTableData = () => get(url.GET_CONSOLE);
 export const getInlandTableData = () => get(url.GET_INLAND);
 
+// ---------------- sales ----------------------------------------
+export const getSalesQuotTableData = () => get(url.GET_QUOTATION);
+
 export {
   getLoggedInUser,
   isUserAuthenticated,

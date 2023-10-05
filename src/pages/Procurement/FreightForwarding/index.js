@@ -1,16 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap';
 
-import { useDispatch } from "react-redux";
-import { inLandBreadcrumb, inLandRateData, waybillBreadcrumb, waybillRateData } from "../../../common/data/procurement";
-import { getFclData, getInLandData, updateInLandSwitchData } from "../../../store/Procurement/actions";
-import TopBreadcrumbs from "./partials/TopBreadcrumbs";
+import { useDispatch, useSelector } from "react-redux";
 import { edit_icon, eye_icon } from '../../../assets/images';
-import { CargoType, CarrierName, ChargeId, CommonValue, DetentionFree, MinValue, TransitTime, ValidTill, VendorName } from './partials/OceanCol';
-import { useSelector } from 'react-redux';
-import TableReact from './partials/TableReact';
-import ModalFreight from './partials/Modal/ModalFreight';
+import { inLandBreadcrumb, inLandRateData } from "../../../common/data/procurement";
+import { getInLandData, updateInLandSwitchData } from "../../../store/Procurement/actions";
 import FilterOffCanvasComp from './partials/Modal/FilterOffCanvasComp';
+import ModalFreight from './partials/Modal/ModalFreight';
+import { CargoType, CarrierName, ChargeId, CommonValue, DetentionFree, MinValue, TransitTime, ValidTill, VendorName } from './partials/OceanCol';
+import TableReact from './partials/TableReact';
+import TopBreadcrumbs from "./partials/TopBreadcrumbs";
 
 const FreightForwarding = () => {
     const inlandData = useSelector((state) => state?.procurement?.inlandData);
@@ -26,6 +25,8 @@ const FreightForwarding = () => {
             org_port: '',
             dest_port: '',
             cargo_type: '',
+            container_type: '',
+            unit_type: '',
         }
     );
     const dispatch = useDispatch();    
@@ -46,7 +47,7 @@ const FreightForwarding = () => {
 
     const applyFilterHandler = () => {
         setIsRight(false);
-        console.log(filterDetails,"filterDetails lcl-----------------------")
+        console.log(filterDetails,"filterDetails lcl-----------------------");
     }
 
     // Activate deactivate table data
@@ -270,7 +271,7 @@ const FreightForwarding = () => {
                 </Container>
             </div>
             {/* filter right sidebar */}
-            <FilterOffCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} />
+            <FilterOffCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} filterType={'inland'} />
         </>
     );
 }

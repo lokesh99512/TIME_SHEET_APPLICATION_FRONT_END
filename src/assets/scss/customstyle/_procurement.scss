@@ -340,12 +340,73 @@
     }
 }
 
+.offcanvas-header{
+    border-bottom: 1px solid $neutral_1;
+}
 .fcl_filter_sidebar_wrap{
     .btn_wrap {
-        padding: 16px 0px 0;
+        padding: 16px 0px 16px;
         gap: 8px;
         button{
             width: 100%;
+        }
+    }
+    &.sales_filter_wrap {
+        .divider {
+            display: block;
+            margin: 20px 0;
+            height: 1px;
+            width: 100%;
+            background: #E5E7EB;
+        }
+        .form-label {
+            @include font($font-weight-semibold,12px,normal,$neutral_5);
+            letter-spacing: 0.24px;
+            text-transform: uppercase;
+            margin: 0 0 12px;
+        }
+        .noUi-target {
+            margin: 18px 7px 15px;
+            background: url('../../images/icons/range_indicator.svg');
+            border: 0;
+            box-shadow: none;
+            height: 4px;
+            .noUi-connect,.noUi-handle{
+                background: $primary_7;
+            }
+            .noUi-handle {
+                height: 16px;
+                width: 16px;
+                right: -9px;
+                top: -6px;
+                box-shadow: none !important;
+                border: 0;
+            }
+        }
+        .range_label {
+            @include font($font-weight-medium,14px,normal,$neutral_8);
+            margin: 10px 0 0;
+        }
+        .radio_wrap{
+            .form-check {
+                width: 50%;
+                padding-left: 28px;
+                .form-check-input[type=radio]{
+                    width: 18px;
+                    height: 18px;
+                    margin: 1px 0 0 -26px;
+                }
+                .form-check-label{
+                    color: $neutral_8;
+                }
+            }
+        }
+        .checkbox_wrap {
+            &.half_size{
+                .form-check{
+                    width: 50%;
+                }
+            }
         }
     }
 }

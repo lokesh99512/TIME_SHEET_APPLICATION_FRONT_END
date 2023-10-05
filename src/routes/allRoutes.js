@@ -138,13 +138,13 @@ const userRoutes = [
 
   // Sales
   // Queries
-  { path: "/queries", component: <QueriesComp /> },
+  { path: "/sales/queries", component: <QueriesComp /> },
   // Quotations
-  { path: "/quotation", component: <QuotationComp /> },
+  { path: "/sales/quotation", component: <QuotationComp /> },
 
   // Procurement
   // Freight Forwarding
-  { path: "/freight", component: <FreightForward /> },
+  { path: "/freight/inland", component: <FreightForward /> },
   { path: "/freight/ocean/fcl", component: <FclOceanFreight /> },
   { path: "/freight/ocean/lcl", component: <LclOceanFreight /> },
   { path: "/freight/ocean/portlocal", component: <PortLocalFreight /> },

@@ -13,6 +13,7 @@ import contactsSaga from "./contacts/saga";
 //import dashboard
 import dashBoardSaga from "./Dashboard/saga"
 import procurementSaga from "./Procurement/saga"
+import salesSaga from "./Sales/saga"
 
 export default function* rootSaga() {
   yield all([
@@ -27,6 +28,7 @@ export default function* rootSaga() {
     fork(invoiceSaga),
     fork(contactsSaga),
     fork(dashBoardSaga),
-    fork(procurementSaga)
+    fork(procurementSaga),
+    fork(salesSaga),
   ])
 }

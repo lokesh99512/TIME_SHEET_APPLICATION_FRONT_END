@@ -3,7 +3,7 @@ import { Offcanvas, OffcanvasBody, OffcanvasHeader } from 'reactstrap';
 import Select from "react-select";
 import { optionCarrierName, optionMultiDestination, optionVendorName } from '../../../../../common/data/procurement';
 
-export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDetails,setfilterDetails,applyFilterHandler}) {
+export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDetails,setfilterDetails,applyFilterHandler,filterType}) {
     const handleSelectGroup = useCallback((name, opt) => {
         let newObj = {
             ...filterDetails,
@@ -110,7 +110,41 @@ export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDet
                                             classNamePrefix="select2-selection form-select"
                                         />
                                     </div>
-                                </div>                            
+                                </div>     
+                                {filterType === 'inland' && (
+                                    <>
+                                        <div className="col-lg-12">
+                                            <div className="mb-3">
+                                                <label className="form-label">Container Type</label>
+                                                <Select
+                                                    value={filterDetails.container_type}
+                                                    name='container_type'
+                                                    onChange={(opt) => {
+                                                        handleSelectGroup('container_type', opt)
+                                                    }}
+                                                    options={optionVendorName}
+                                                    placeholder={'Select container type'}
+                                                    classNamePrefix="select2-selection form-select"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-lg-12">
+                                            <div className="mb-3">
+                                                <label className="form-label">Unit Type</label>
+                                                <Select
+                                                    value={filterDetails.unit_type}
+                                                    name='unit_type'
+                                                    onChange={(opt) => {
+                                                        handleSelectGroup('unit_type', opt)
+                                                    }}
+                                                    options={optionVendorName}
+                                                    placeholder={'Select unit type'}
+                                                    classNamePrefix="select2-selection form-select"
+                                                />
+                                            </div>
+                                        </div>
+                                    </> 
+                                )}                       
                             </div>                        
                             <div className="btn_wrap d-flex mt-auto">
                                 <button className='btn border' type='button'>Clear</button>
