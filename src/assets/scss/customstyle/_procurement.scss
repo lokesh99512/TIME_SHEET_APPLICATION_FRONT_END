@@ -410,3 +410,251 @@
         }
     }
 }
+
+// ---------- create sales --------------------------------------
+.create_sales_wrapper {
+    min-height: calc(100vh - (#{$header-height} + 40px));
+    border-radius: 12px;
+    border: 1px solid $neutral_2;
+    background: $white;
+    padding: 18px;
+    .create_quote_top_back{
+        .back_wrap{
+            button{
+                border-radius: 8px;
+                border: 1px solid $neutral_4;
+                background: $white;
+                box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.05);
+                color: $neutral_8;
+                width: 44px;
+                padding: 0;
+                height: 36px;
+            }
+            p{
+                @include font($font-weight-semibold,18px,23px,$neutral_8);
+            }
+        }
+        > button{
+            padding: 0;
+            height: 34px;
+            min-width: 92px;
+            border-radius: 8px;
+        }
+    }
+    .create_sales_search_forms{
+        .prof_wrap{
+            border-radius: 12px;
+            border: 1px solid $neutral_2;
+            position: relative;
+            align-items: center;
+            padding: 16px;
+            cursor: pointer;
+            .icon {
+                border-radius: 999px;
+                background: $primary_1;
+                width: 38px;
+                height: 38px;
+                margin-right: 12px;
+                img{
+                    max-width: 100%;
+                }
+                &.customer_name{
+                    img{
+                        width: 100%;
+                    }
+                }
+            }
+            .con{
+                width: calc(100% - 50px);
+                pointer-events: none;
+                .value{
+                    display: block;
+                    margin-top: 4px;
+                    @include font($font-weight-medium,14px,normal,$neutral_4);
+                    &.value_focus{
+                        color: $neutral_8;
+                    }
+                }
+            }
+            .form-label{
+                @include font($font-weight-semibold,12px,normal,$neutral_8);
+                margin: 0;                                
+            }
+            .form-select__control{
+                border: 0;
+                padding: 16px 16px 16px 60px;
+                background: transparent;
+                min-height: 70px;
+                cursor: pointer;
+                *{
+                    margin: 0;
+                    padding: 0;
+                }
+                .form-select__value-container{
+                    @include font($font-weight-medium,14px,normal,$neutral_4);
+                    padding: 16px 0 0;
+                }
+            }
+            .form-select__indicator-separator{
+                display: none;
+            }
+            .form-select__indicator{
+                svg{
+                    path{
+                        fill: $neutral_4;
+                    }
+                }
+            }
+        }
+        .form-select__menu-list {
+            padding: 0;
+            .custom-option {
+                display: flex;
+                align-items: center;
+                padding: 10px 16px;
+                gap: 8px;
+                border-bottom: 1px solid $neutral_2;
+                div{
+                    @include font($font-weight-medium,16px,normal,$neutral_8);
+                    letter-spacing: 0.16px;
+                }
+            }
+        }
+        .calendar_field_wrap{
+            position: relative;
+            padding: 0;
+            min-height: 70px;
+            .form-label{
+                position: absolute;
+                left: 60px;
+                top: 16px;
+            }
+            .icon{
+                position: absolute;
+                top: 0;
+                left: 13px;
+                bottom: 0;
+                margin: auto;
+            }
+            .con{
+                pointer-events: all;
+                width: 100%;
+                .flatpickr-input{
+                    padding: 32px 16px 16px 60px;
+                    margin: 0;
+                    border: 0;
+                    @include font($font-weight-medium,14px,normal,$neutral_8);
+                    &::placeholder{
+                        color: $neutral_4;
+                    }
+                }
+            }
+        }
+    }
+}
+.common_dropdwon_btn_wrap {
+    position: relative;
+    .common_dropdown_wrap {
+        border-radius: 12px;
+        background: $white;
+        box-shadow: 0px 7px 29px 0px rgba(100, 100, 111, 0.20);
+        margin: 8px 0 0;
+        position: absolute;
+        left: 0;
+        right: 0;
+        z-index: 99;
+        li{
+            cursor: pointer;
+            &:hover,&.active{
+                background-color: $primary_1;
+            }
+            .custom-option {
+                display: flex;
+                align-items: center;
+                padding: 13px 16px;
+                gap: 8px;
+                border-bottom: 1px solid $neutral_2;            
+                p{
+                    @include font($font-weight-medium,16px,normal,$neutral_8);
+                    letter-spacing: 0.16px;
+                }
+            }
+        }
+        &.shipping{
+            li {
+                position: relative;
+                &::before{
+                    content: '';
+                    position: absolute;
+                    right: 16px;
+                    top: 0;
+                    bottom: 0;
+                    width: 20px;
+                    height: 20px;
+                    background: url("../../images/icons/ship-darkblue.svg") no-repeat;
+                    margin: auto;
+                }
+                &.land::before{
+                    background-image: url("../../images/icons/truck-darkblue.svg");
+                }
+                &.air::before{
+                    background-image: url("../../images/icons/airplane_darkblue.svg");
+                }
+                &.active::before{
+                    background-image: url("../../images/icons/ship-filled.svg");
+                }
+                &.active.land::before{
+                    background-image: url("../../images/icons/truck_filled.svg");
+                }
+                &.active.air::before{
+                    background-image: url("../../images/icons/airplane_filled.svg");
+                }
+            }
+        }
+        &.quantity_drop_wrap{
+            li{
+                .custom-option{
+                    p{
+                        margin: 0;
+                    }
+                }
+            }
+            .quantity_wrap {
+                max-width: 100px;
+                margin-left: auto;
+                display: flex;
+                input::-webkit-outer-spin-button,
+                input::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+                input {
+                    display: block;
+                    width: 100%;
+                    border: 0;
+                    text-align: center;
+                    appearance: none;
+                    background: transparent;
+                    -webkit-appearance: none;
+                    -moz-appearance: textfield;
+                    @include font($font-weight-semibold,13px,normal,$neutral_8);
+                }
+                .minus,.plus {
+                    width: 20px;
+                    flex: 0 0 20px;
+                    height: 20px;
+                    background: $primary_7;
+                    border-radius: 100%;
+                    text-align: center;
+                    line-height: 18px;
+                    border: 0;
+                    padding: 0;
+                    i{
+                        color: $white;
+                        font-size: 11px;
+                    }
+                }
+            }
+        }
+    }
+}

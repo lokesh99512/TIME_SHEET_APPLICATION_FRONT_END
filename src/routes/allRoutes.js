@@ -130,6 +130,7 @@ import AirMasterBill from "../pages/Procurement/FreightForwarding/partials/AirMa
 import AirConsoleComp from "../pages/Procurement/FreightForwarding/partials/AirConsoleComp";
 import AirLocalFreight from "../pages/Procurement/FreightForwarding/partials/AirLocalFreight";
 import UploadFreightData from "../pages/Procurement/FreightForwarding/partials/UploadFreightData";
+import CreateQuotation from "../pages/Sales/Quotations/partials/CreateQuotation";
 
 const userRoutes = [
   //dashboard
@@ -141,6 +142,7 @@ const userRoutes = [
   { path: "/sales/queries", component: <QueriesComp /> },
   // Quotations
   { path: "/sales/quotation", component: <QuotationComp /> },
+  { path: "/sales/create", component: <CreateQuotation /> },
 
   // Procurement
   // Freight Forwarding

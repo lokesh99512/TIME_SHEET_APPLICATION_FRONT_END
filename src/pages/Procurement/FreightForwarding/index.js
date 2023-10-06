@@ -16,19 +16,19 @@ const FreightForwarding = () => {
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
     const [isRight, setIsRight] = useState(false);
-    const [filterDetails, setfilterDetails] = useState(
-        {
-            vendor_name: '',
-            carrier_name: '',
-            validity_from: '',
-            validity_to: '',
-            org_port: '',
-            dest_port: '',
-            cargo_type: '',
-            container_type: '',
-            unit_type: '',
-        }
-    );
+    const inputArr = {
+        vendor_name: '',
+        carrier_name: '',
+        validity_from: '',
+        validity_to: '',
+        org_port: '',
+        dest_port: '',
+        cargo_type: '',
+        container_type: '',
+        unit_type: '',
+    };
+    const [filterDetails, setfilterDetails] = useState(inputArr);
+
     const dispatch = useDispatch();    
 
     const viewPopupHandler = (data) => {
@@ -48,6 +48,10 @@ const FreightForwarding = () => {
     const applyFilterHandler = () => {
         setIsRight(false);
         console.log(filterDetails,"filterDetails lcl-----------------------");
+    }
+
+    const clearValueHandler = () => {
+        setfilterDetails(inputArr)
     }
 
     // Activate deactivate table data
@@ -271,7 +275,7 @@ const FreightForwarding = () => {
                 </Container>
             </div>
             {/* filter right sidebar */}
-            <FilterOffCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} filterType={'inland'} />
+            <FilterOffCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} filterType={'inland'} clearValueHandler={clearValueHandler} />
         </>
     );
 }

@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 /** * Formats the size */
 export function formatBytes(bytes, decimals = 2) {
     if (bytes === 0) return "0 Bytes";
@@ -68,3 +70,26 @@ export const isExcelFile = (fileName) => {
 //     // document.body.removeChild(element);
 //     // URL.revokeObjectURL(url);
 // }
+
+
+// -------------------- outside click
+export const handleClickOutside = (event, wrapperRef, setOpenPop) => {
+    if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        if (event.target.id !== 'more_menu') {
+            setOpenPop(false);
+        }
+    }
+};
+
+export const useOutsideClick = (wrapperRef, setOpenPop) => {
+    useEffect(() => {
+        const handleOutsideClick = (event) =>
+            handleClickOutside(event, wrapperRef, setOpenPop);
+
+        document.addEventListener("mousedown", handleOutsideClick);
+
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+        };
+    }, [wrapperRef, setOpenPop]);
+};

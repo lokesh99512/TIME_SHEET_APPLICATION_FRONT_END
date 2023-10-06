@@ -1,3 +1,6 @@
+import React from "react"
+import { memoji } from "../../assets/images"
+
 // --------- breadcrumbs -----------------------------
 const quotationBreadcrumb = [
     {
@@ -188,6 +191,114 @@ const quotationTableData = [
     },
 ]
 
+// --------------- options ---------------
+// const optionCustomerName = [
+//     {value: "1", label: (
+//       <div className="custom-option">
+//         <img
+//           src={memoji}
+//           alt="Profile"
+//           className="profile-picture"
+//         />
+//         <div>Jimmy Camacho</div>
+//       </div>
+//     ), },
+//     {value: "2",label: (
+//       <div className="custom-option">
+//         <img
+//           src={memoji}
+//           alt="Profile"
+//           className="profile-picture"
+//         />
+//         <div>Hermione Walker</div>
+//       </div>
+//     ), },
+//     {value: "3",label: (
+//       <div className="custom-option">
+//         <img
+//           src={memoji}
+//           alt="Profile"
+//           className="profile-picture"
+//         />
+//         <div>Andreas Benjamin</div>
+//       </div>
+//     ), },
+//     {value: "4",label: (
+//       <div className="custom-option">
+//         <img
+//           src={memoji}
+//           alt="Profile"
+//           className="profile-picture"
+//         />
+//         <div>Mackenzie Dale</div>
+//       </div>
+//     ), },
+//     {value: "5",label: (
+//       <div className="custom-option">
+//         <img
+//           src={memoji}
+//           alt="Profile"
+//           className="profile-picture"
+//         />
+//         <div>Andreas Benjamin</div>
+//       </div>
+//     ), },
+//     {value: "6",label: (
+//       <div className="custom-option">
+//         <img
+//           src={memoji}
+//           alt="Profile"
+//           className="profile-picture"
+//         />
+//         <div>Harri Roberson</div>
+//       </div>
+//     ), }
+// ]
+const optionCustomerName = [
+    {value: "1", name: 'Jimmy Camacho',img: memoji},
+    {value: "2", name: 'Hermione Walker',img: memoji},
+    {value: "3", name: 'Andreas Benjamin',img: memoji },
+    {value: "4", name: 'Mackenzie Dale',img: memoji },
+    {value: "5", name: 'Andreas Benjamin',img: memoji },
+    {value: "6", name: 'Harri Roberson',img: memoji}
+]
+const optionServiceType = [
+    {value: "door_to_door", name: 'Door to Door'},
+    {value: "door_to_port", name: 'Door to Port'},
+    {value: "port_to_port", name: 'Port to Port'},
+    {value: "port_to_door", name: 'Port to Door'},
+]
+const optionTransportBy = [
+    {value: "fcl", name: 'FCL'},
+    {value: "lcl", name: 'LCL'},
+    {value: "bulk", name: 'Bulk'},
+]
+const optionIncoterm = [
+    {value: "CPT", name: 'Carraige Paid To(CPT)'},
+    {value: "CFR", name: 'Cost & Freight(CFR)'},
+    {value: "CIF", name: 'Cost Insurance and Freight(CIF)'},
+    {value: "CIP", name: 'Carraige and Insurance Paid To(CIP)'},
+    {value: "DAP", name: 'Delivery at Place(DAP)'},
+    {value: "DAT", name: 'Delivery At Terminal(DAT)'},
+    {value: "DDU", name: 'Delivery Duty Unpaid(DDU)'},
+    {value: "DPU", name: 'Delivered At Place Unploaded(DPU)'},
+    {value: "EXW", name: 'EX Works(EXW)'},
+]
+const optionContainerType = [
+    {id: '_standard1',value: "20_standard", name: "20' Standard"},
+    {id: '_standard2',value: "40_standard", name: "40' Standard"},
+    {id: '_high_cube1',value: "40_high_cube", name: "40' High Cube"},
+    {id: '_high_cube2',value: "40_refrigerated", name: "20' Refrigerated"},
+    {id: '_refrigerated1',value: "40_refrigerated", name: "40' Refrigerated"},
+    {id: '_refrigerated2',value: "45_high_cube", name: "45' High Cube"},
+]
+const optionCargoType = [
+    {value: "hazardous", name: "Hazardous"},
+    {value: "general", name: "General"},
+    {value: "refrigerated", name: "Refrigerated"},
+    {value: "spl_equipment", name: "SPL Equipment"},
+]
+
 export {
-    quotationBreadcrumb,quotationRateData,quotationTableData
+    quotationBreadcrumb,quotationRateData,quotationTableData,optionCustomerName,optionServiceType,optionTransportBy,optionContainerType,optionIncoterm,optionCargoType
 }

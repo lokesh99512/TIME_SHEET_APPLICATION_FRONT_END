@@ -15,22 +15,21 @@ export default function Quotations() {
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
     const [isRight, setIsRight] = useState(false);
-    const [filterDetails, setfilterDetails] = useState(
-        {
-            priceRange: [],
-            expiration_date: [],
-            containerradio: '',
-            destport: '',
-            vendorradio: '',
-            pickup: false,
-            port_origin: false,
-            ocean_freight: false,
-            port_discharge: false,
-            delivery: false,
-            shipping_cma: false,
-            shipping_msc: false,
-        }
-    );
+    const inputArr = {
+        priceRange: [],
+        expiration_date: [],
+        containerradio: '',
+        destport: '',
+        vendorradio: '',
+        pickup: false,
+        port_origin: false,
+        ocean_freight: false,
+        port_discharge: false,
+        delivery: false,
+        shipping_cma: false,
+        shipping_msc: false,
+    }
+    const [filterDetails, setfilterDetails] = useState(inputArr);
     const dispatch = useDispatch();
 
     const viewPopupHandler = (data) => {
@@ -50,6 +49,10 @@ export default function Quotations() {
     const applyFilterHandler = () => {
         setIsRight(false);
         console.log(filterDetails,"filterDetails lcl-----------------------");
+    }
+
+    const clearValueHandler = () => {
+        setfilterDetails(inputArr)
     }
 
     useEffect(() => {
@@ -210,7 +213,7 @@ export default function Quotations() {
                 </Container>
             </div>
             {/* filter right sidebar */}
-            <FilterSalesComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} />
+            <FilterSalesComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} />
         </>
     )
 }

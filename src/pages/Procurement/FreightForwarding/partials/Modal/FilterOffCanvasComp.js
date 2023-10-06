@@ -3,7 +3,7 @@ import { Offcanvas, OffcanvasBody, OffcanvasHeader } from 'reactstrap';
 import Select from "react-select";
 import { optionCarrierName, optionMultiDestination, optionVendorName } from '../../../../../common/data/procurement';
 
-export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDetails,setfilterDetails,applyFilterHandler,filterType}) {
+export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDetails,setfilterDetails,applyFilterHandler,filterType,clearValueHandler}) {
     const handleSelectGroup = useCallback((name, opt) => {
         let newObj = {
             ...filterDetails,
@@ -147,7 +147,7 @@ export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDet
                                 )}                       
                             </div>                        
                             <div className="btn_wrap d-flex mt-auto">
-                                <button className='btn border' type='button'>Clear</button>
+                                <button className='btn border' type='button' onClick={clearValueHandler}>Clear</button>
                                 <button className='btn btn-primary' type='button' onClick={applyFilterHandler}>Apply Filter</button>
                             </div>
                         </div>

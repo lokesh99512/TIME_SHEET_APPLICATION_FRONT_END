@@ -25,6 +25,17 @@ import eye_icon from "./icons/eye.svg";
 import edit_icon from "./icons/edit.svg";
 import delete_icon from "./icons/delete.svg";
 import range_indicator from "./icons/range_indicator.svg";
+import memoji from "./icons/memoji.svg";
+import avtar_filled from "./icons/avatar-filled.svg";
+import cube_filled from "./icons/cube_filled.svg";
+import calendar_filled from "./icons/calendar_filled.svg";
+import location_filled from "./icons/location_filled.svg";
+import ship_filled from "./icons/ship-filled.svg";
+import ship_darkblue from "./icons/ship-darkblue.svg";
+import airplane_darkblue from "./icons/airplane_darkblue.svg";
+import airplane_filled from "./icons/airplane_filled.svg";
+import truk_darkblue from "./icons/truck-darkblue.svg";
+import truk_filled from "./icons/truck_filled.svg";
 
 export {
   avatar1,
@@ -38,5 +49,6 @@ export {
   profImg,
   google_icon,
   microsoft_icon,auth_slider1,auth_slider2,auth_slider3,auth_slider4,noti_Icon,message_Icon,
-  marker_Img,marker_active_Img,filter_icon,upload_icon,eye_icon,edit_icon,delete_icon,range_indicator
+  marker_Img,marker_active_Img,filter_icon,upload_icon,eye_icon,edit_icon,delete_icon,range_indicator,avtar_filled,cube_filled,calendar_filled,location_filled,memoji,
+  ship_filled,ship_darkblue,airplane_darkblue,airplane_filled,truk_darkblue,truk_filled
 }

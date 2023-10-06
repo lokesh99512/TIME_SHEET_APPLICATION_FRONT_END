@@ -78,7 +78,7 @@ const SalesCommonTable = ({ columns, data, isGlobalFilter, customPageSize, toggl
                         </button>
                     </div>
                     <div className="add_btn">
-                        <button className='border-0'>
+                        <button className='border-0' onClick={() => {navidate('/sales/create')}}>
                             <i className='bx bx-plus align-middle'></i> Create
                         </button>
                     </div>

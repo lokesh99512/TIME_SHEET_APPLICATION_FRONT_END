@@ -5,7 +5,7 @@ import { Offcanvas, OffcanvasBody, OffcanvasHeader } from 'reactstrap';
 import RadioCommon from '../../Common/RadioCommon';
 import CheckboxCommon from '../../Common/CheckboxCommon';
 
-export default function FilterSalesComp({ isRight, toggleRightCanvas, filterDetails, setfilterDetails, applyFilterHandler, filterType }) {
+export default function FilterSalesComp({ isRight, toggleRightCanvas, filterDetails, setfilterDetails, applyFilterHandler, filterType,clearValueHandler }) {
     const [rangeValues, setRangeValues] = useState([45, 2500]); // Initial values for the range slider
     const [dateRange, setDateRange] = useState([new Date(2023, 0, 1), new Date(2023, 10, 5)]);
 
@@ -156,7 +156,7 @@ export default function FilterSalesComp({ isRight, toggleRightCanvas, filterDeta
                                 </div>                               
                             </div>
                             <div className="btn_wrap d-flex mt-auto">
-                                <button className='btn border' type='button'>Clear</button>
+                                <button className='btn border' type='button' onClick={() => {setRangeValues([45, 2500]);setDateRange([new Date(2023, 0, 1), new Date(2023, 10, 5)]);clearValueHandler();}}>Clear</button>
                                 <button className='btn btn-primary' type='button' onClick={applyFilterHandler}>Apply Filter</button>
                             </div>
                         </div>

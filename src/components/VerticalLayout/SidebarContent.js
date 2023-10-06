@@ -317,7 +317,7 @@ const SidebarContent = props => {
               </Link>
             </li>
 
-            <li>
+            {/* <li>
               <Link to="/#" className="has-arrow">
                 <FeatherIcon
                   icon="grid"
@@ -732,7 +732,7 @@ const SidebarContent = props => {
                   </ul>
                 </li>
               </ul>
-            </li>
+            </li> */}
           </ul>
           <div className="card sidebar-alert border-0 text-center mx-4 mb-0 mt-5">
             <div className="card-body">
