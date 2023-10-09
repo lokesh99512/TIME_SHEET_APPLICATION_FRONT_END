@@ -22,3 +22,9 @@
         color: $neutral_4;
     }
 }
+
+@mixin appearance {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+}

@@ -36,6 +36,13 @@ import airplane_darkblue from "./icons/airplane_darkblue.svg";
 import airplane_filled from "./icons/airplane_filled.svg";
 import truk_darkblue from "./icons/truck-darkblue.svg";
 import truk_filled from "./icons/truck_filled.svg";
+import swap_arrow from "./icons/swap_arrow.svg";
+import pickup_icon from "./icons/pickup_icon.svg";
+import pickup_icon2 from "./icons/pickup_icon2.svg";
+import pickup_icon3 from "./icons/pickup_icon3.svg";
+import pickup_icon4 from "./icons/pickup_icon4.svg";
+import pickup_icon5 from "./icons/pickup_icon5.svg";
+import pickup_icon6 from "./icons/pickup_icon6.svg";
 
 export {
   avatar1,
@@ -50,5 +57,6 @@ export {
   google_icon,
   microsoft_icon,auth_slider1,auth_slider2,auth_slider3,auth_slider4,noti_Icon,message_Icon,
   marker_Img,marker_active_Img,filter_icon,upload_icon,eye_icon,edit_icon,delete_icon,range_indicator,avtar_filled,cube_filled,calendar_filled,location_filled,memoji,
-  ship_filled,ship_darkblue,airplane_darkblue,airplane_filled,truk_darkblue,truk_filled
+  ship_filled,ship_darkblue,airplane_darkblue,airplane_filled,truk_darkblue,truk_filled,swap_arrow,
+  pickup_icon,pickup_icon2,pickup_icon3,pickup_icon4,pickup_icon5,pickup_icon6
 }

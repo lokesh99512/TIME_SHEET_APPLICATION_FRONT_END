@@ -1,5 +1,5 @@
 import React from "react"
-import { memoji } from "../../assets/images"
+import { memoji, pickup_icon, pickup_icon2, pickup_icon3, pickup_icon4, pickup_icon5, pickup_icon6 } from "../../assets/images"
 
 // --------- breadcrumbs -----------------------------
 const quotationBreadcrumb = [
@@ -298,7 +298,23 @@ const optionCargoType = [
     {value: "refrigerated", name: "Refrigerated"},
     {value: "spl_equipment", name: "SPL Equipment"},
 ]
+const optionCurrency = [
+    {value: "pound", name: "Pound", code: '£'},
+    {value: "usd", name: "USD", code: '$'},
+    {value: "euro", name: "Euro", code: '€'},
+    {value: "rupee", name: "Rupee", code: '₹'},
+    {value: "yen", name: "Yen", code: '¥'},
+]
+const optionlocationType = [
+    {value: "port/air", name: "Port/Airport", icon: pickup_icon},
+    {value: "ware_house", name: "Warehouse", icon: pickup_icon2},    
+    {value: "fulfilment_center", name: "Fulfilment Center", icon: pickup_icon3},
+    {value: "business_address", name: "Business Address", icon: pickup_icon4},
+    {value: "residential_address", name: "Residential Address", icon: pickup_icon5},
+    {value: "last_mile", name: "Last mile delivery warehousing",icon: pickup_icon6 },
+]
 
 export {
-    quotationBreadcrumb,quotationRateData,quotationTableData,optionCustomerName,optionServiceType,optionTransportBy,optionContainerType,optionIncoterm,optionCargoType
+    quotationBreadcrumb,quotationRateData,quotationTableData,optionCustomerName,optionServiceType,optionTransportBy,optionContainerType,optionIncoterm,optionCargoType,optionCurrency,
+    optionlocationType
 }
