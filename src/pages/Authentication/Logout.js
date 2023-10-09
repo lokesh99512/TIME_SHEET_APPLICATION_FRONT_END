@@ -5,18 +5,17 @@ import { logoutUser } from "../../store/actions"
 
 //redux
 import { useDispatch } from "react-redux"
+import { Link } from "react-router-dom"
 import { Col, Container, Row } from "reactstrap"
-import { Link, useNavigate } from "react-router-dom"
-import logo from "../../assets/images/logo-sm.png";
+import logo from "../../assets/images/logo-sm.png"
 import CarouselPage from '../../pages/AuthenticationInner/CarouselPage'
 
 
 
 const Logout = props => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(logoutUser(props.history))
+    dispatch(logoutUser(props?.history))
   }, [dispatch, props.history])
 
   return (
@@ -46,7 +45,7 @@ const Logout = props => {
                           <p className="text-muted font-size-15">Thank you for using <span className="fw-semibold text-primary">Tarifftales</span></p>
                           <div className="mt-4">
                             {/* <button className="btn btn-primary w-100 waves-effect waves-light">Sign In</button> */}
-                            <Link to="/" className="btn btn-primary w-100 waves-effect waves-light">Sign In</Link>
+                            <Link to="/dashboard" onClick={() => {window.reload();}} className="btn btn-primary w-100 waves-effect waves-light">Sign In</Link>
                           </div>
                         </div>
                       </div>

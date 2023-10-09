@@ -150,7 +150,7 @@ const Layout = props => {
           isMobile={isMobile}
         />
         <div className="main-content">{props.children}
-          <Footer />
+          {/* <Footer /> */}
         </div>
       </div>
       {showRightSidebar ? <RightSidebar onChangeLayoutMode={onChangeLayoutMode} /> : ''}

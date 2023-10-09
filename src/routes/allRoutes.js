@@ -123,6 +123,14 @@ import EmailVerification from "../pages/AuthenticationInner/EmailVerification";
 import TwoStepVerfication from "../pages/AuthenticationInner/TwoStepVerfication";
 import AuthLogout from "../pages/AuthenticationInner/Logout";
 import UserProfile from "../pages/Authentication/user-profile";
+import FclOceanFreight from "../pages/Procurement/FreightForwarding/partials/FclOceanFreight";
+import LclOceanFreight from "../pages/Procurement/FreightForwarding/partials/LclOceanFreight";
+import PortLocalFreight from "../pages/Procurement/FreightForwarding/partials/PortLocalFreight";
+import AirMasterBill from "../pages/Procurement/FreightForwarding/partials/AirMasterBill";
+import AirConsoleComp from "../pages/Procurement/FreightForwarding/partials/AirConsoleComp";
+import AirLocalFreight from "../pages/Procurement/FreightForwarding/partials/AirLocalFreight";
+import UploadFreightData from "../pages/Procurement/FreightForwarding/partials/UploadFreightData";
+import CreateQuotation from "../pages/Sales/Quotations/partials/CreateQuotation";
 
 const userRoutes = [
   //dashboard
@@ -131,13 +139,21 @@ const userRoutes = [
 
   // Sales
   // Queries
-  { path: "/queries", component: <QueriesComp /> },
+  { path: "/sales/queries", component: <QueriesComp /> },
   // Quotations
-  { path: "/quotation", component: <QuotationComp /> },
+  { path: "/sales/quotation", component: <QuotationComp /> },
+  { path: "/sales/create", component: <CreateQuotation /> },
 
   // Procurement
   // Freight Forwarding
-  { path: "/freight", component: <FreightForward /> },
+  { path: "/freight/inland", component: <FreightForward /> },
+  { path: "/freight/ocean/fcl", component: <FclOceanFreight /> },
+  { path: "/freight/ocean/lcl", component: <LclOceanFreight /> },
+  { path: "/freight/ocean/portlocal", component: <PortLocalFreight /> },
+  { path: "/freight/air/masterbill", component: <AirMasterBill /> },
+  { path: "/freight/air/console", component: <AirConsoleComp /> },
+  { path: "/freight/air/local", component: <AirLocalFreight /> },
+  { path: "/freight/upload/:tabName", component: <UploadFreightData /> },
   // Express
   { path: "/express", component: <ExpressComp /> },
 

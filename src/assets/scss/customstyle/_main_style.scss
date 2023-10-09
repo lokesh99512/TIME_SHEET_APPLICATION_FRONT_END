@@ -149,14 +149,15 @@
         margin-bottom: 24px;
     }
     .sub_title {
-        @include font($font-weight-semibold,18px,23px,$neutral_8);
+        @include font($font-weight-semibold,15px,23px,$neutral_8);
+        // @include font($font-weight-semibold,18px,23px,$neutral_8);
         margin: 0 0 10px;
         b{
             color: $primary_7;
         }
     }
     .red_text,.green_text {
-        @include font($font-weight-medium,14px,normal,$danger_7);
+        @include font($font-weight-medium,13px,normal,$danger_7);
         padding-right: 16px;
         position: relative;
         margin: 0 0 2px 5px;
@@ -265,7 +266,8 @@
                         display: flex;
                         align-items: center;
                         flex-wrap: wrap;
-                        @include font(700,20px,normal,$neutral_8);
+                        // @include font(700,20px,normal,$neutral_8);
+                        @include font(700,16px,normal,$neutral_8);
                     }
                     &:last-child{
                         margin: 0;
@@ -285,7 +287,21 @@
             @extend .border;
             .sub_title{
                 margin-bottom: 20px;
-            }            
+            }   
+            .table_wrap{
+                table{
+                    td{
+                        min-height: 42px;
+                        height: 42px;
+                        &:first-child{
+                            min-width: 220px;
+                        }
+                        &:last-child{
+                            min-width: 95px;
+                        }
+                    }
+                }
+            }         
         }
     }
     .sh_revenue_chart_wrap,.sh_container_tracking_wrap{

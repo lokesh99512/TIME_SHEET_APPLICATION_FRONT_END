@@ -1,131 +1,282 @@
-import React, { useState } from 'react';
-import { Container, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink, UncontrolledDropdown } from 'reactstrap';
-import classnames from "classnames";
-import TfBreadcrumbs from '../../../components/Common/TfBreadcrumbs';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap';
+
+import { useDispatch, useSelector } from "react-redux";
+import { edit_icon, eye_icon } from '../../../assets/images';
+import { inLandBreadcrumb, inLandRateData } from "../../../common/data/procurement";
+import { getInLandData, updateInLandSwitchData } from "../../../store/Procurement/actions";
+import FilterOffCanvasComp from './partials/Modal/FilterOffCanvasComp';
+import ModalFreight from './partials/Modal/ModalFreight';
+import { CargoType, CarrierName, ChargeId, CommonValue, DetentionFree, MinValue, TransitTime, ValidTill, VendorName } from './partials/OceanCol';
+import TableReact from './partials/TableReact';
+import TopBreadcrumbs from "./partials/TopBreadcrumbs";
 
 const FreightForwarding = () => {
-    const [activeTab, setactiveTab] = useState("1");
-    const toggle = (tab) => {
-        if (activeTab !== tab) {
-          setactiveTab(tab);
-        }
+    const inlandData = useSelector((state) => state?.procurement?.inlandData);
+    const [modal, setModal] = useState(false);
+    const [viewData, setViewData] = useState(false);
+    const [isRight, setIsRight] = useState(false);
+    const inputArr = {
+        vendor_name: '',
+        carrier_name: '',
+        validity_from: '',
+        validity_to: '',
+        org_port: '',
+        dest_port: '',
+        cargo_type: '',
+        container_type: '',
+        unit_type: '',
     };
-    const breadcrumb = [
+    const [filterDetails, setfilterDetails] = useState(inputArr);
+
+    const dispatch = useDispatch();    
+
+    const viewPopupHandler = (data) => {
+        setModal(true);
+        setViewData(data);
+    }
+
+    const onCloseClick = () => {
+        setModal(false);
+    }
+
+    // right filter sidebar 
+    const toggleRightCanvas = () => {
+        setIsRight(!isRight);
+    };
+
+    const applyFilterHandler = () => {
+        setIsRight(false);
+        console.log(filterDetails,"filterDetails lcl-----------------------");
+    }
+
+    const clearValueHandler = () => {
+        setfilterDetails(inputArr)
+    }
+
+    // Activate deactivate table data
+    const switchHandler = (data) => {
+        dispatch(updateInLandSwitchData(data.id,data.is_active));
+    }
+
+    useEffect(() => {
+        dispatch(getInLandData());
+    }, [dispatch]);
+
+    const columns = useMemo(() => [
         {
-            label: 'Procurement',
-            link: '/#',
-            active: false
+            Header: 'Charge ID',
+            accessor: 'charge_id',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <ChargeId cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
         },
         {
-            label: 'Freight Forwarding',
-            link: '/#',
-            active: false
+            Header: 'Charge Name',
+            accessor: 'charge_name',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
         },
         {
-            label: 'Ocean Freight',
-            link: '/#',
-            active: false
+            Header: 'Service Type',
+            accessor: 'service_type',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
         },
         {
-            label: 'FCL(Full Container Load)',
-            link: '/#',
-            active: true
+            Header: 'Carrier Name',
+            accessor: 'carrier_name',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CarrierName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
         },
-    ]
+        {
+            Header: 'Vendor Name',
+            accessor: 'vendor_name',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <VendorName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Transport Mode',
+            accessor: 'transport_mode',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Origin',
+            accessor: 'origin',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Destination',
+            accessor: 'destination',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Charge Basis',
+            accessor: 'charge_basis',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Slab',
+            accessor: 'slab',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Cargo Type',
+            accessor: 'cargo_type',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CargoType cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Min. Val',
+            accessor: 'min_value',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <MinValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Amount',
+            accessor: 'amount',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Currency',
+            accessor: 'currency',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Transit Time',
+            accessor: 'transit_time',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <TransitTime cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        }, 
+        {
+            Header: 'Detention Free',
+            accessor: 'detention_free',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <DetentionFree cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Valid Till',
+            accessor: 'valid_till',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },               
+        {
+            Header: 'Action',
+            Cell: (cellProps) => {
+                return (
+                    <UncontrolledDropdown>
+                        <DropdownToggle className="btn btn-link text-muted py-1 font-size-16 shadow-none" tag="a">
+                            <i className='bx bx-dots-vertical-rounded'></i>
+                        </DropdownToggle>
+                        <DropdownMenu className="dropdown-menu-end">
+                            <DropdownItem>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
+                            <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem>
+                            <DropdownItem onClick={(e) => e.stopPropagation()}>
+                                Activate
+                                <div className="switch_wrap">
+                                    <FormGroup switch>
+                                        <Input 
+                                            type="switch"
+                                            checked={cellProps.row.original?.is_active || false}
+                                            onClick={() => {
+                                                switchHandler(cellProps.row.original);
+                                            }}
+                                            readOnly
+                                        />
+                                    </FormGroup>
+                                </div>
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
+                )
+            }
+        },
+    ]);
+
     return (
-        <React.StrictMode>
+        <>
             <div className="page-content">
                 <Container fluid>
                     <div className="main_freight_wrapper">
-                        <div className="freight_tabing_wrap">
-                            <Nav pills className="navtab-bg nav-justified">
-                                <NavItem>
-                                    <div
-                                        style={{ cursor: "pointer" }}
-                                        className={classnames({
-                                            active: activeTab === "1",
-                                        },"tab_menu")}
-                                        onClick={() => {
-                                            toggle("1");
-                                        }}
-                                    >                                    
-                                        <UncontrolledDropdown>
-                                            <DropdownToggle className="btn btn-secondary" type="button" tag="a" >
-                                                Ocean Freight
-                                            </DropdownToggle>
-                                            <DropdownMenu>
-                                                <DropdownItem to="#">FCL</DropdownItem>
-                                                <DropdownItem to="#">LCL</DropdownItem>
-                                            </DropdownMenu>
-                                        </UncontrolledDropdown>
-                                    </div>
-                                </NavItem>
-                                <NavItem>
-                                    <div
-                                        style={{ cursor: "pointer" }}
-                                        className={classnames({
-                                            active: activeTab === "2",
-                                        },"tab_menu")}
-                                        onClick={() => {
-                                            toggle("2");
-                                        }}
-                                    >                                    
-                                        <UncontrolledDropdown>
-                                            <DropdownToggle className="btn btn-secondary" type="button" tag="a" >
-                                                Air Freight
-                                            </DropdownToggle>
-                                            <DropdownMenu>
-                                                <DropdownItem to="#">Master Waybill</DropdownItem>
-                                                <DropdownItem to="#">Console</DropdownItem>
-                                            </DropdownMenu>
-                                        </UncontrolledDropdown>
-                                    </div>
-                                </NavItem>
-                                <NavItem>
-                                    <div
-                                        style={{ cursor: "pointer" }}
-                                        className={classnames({
-                                            active: activeTab === "3",
-                                        },"tab_menu")}
-                                        onClick={() => {
-                                            toggle("3");
-                                        }}
-                                    >
-                                        Port & Local Charges
-                                    </div>
-                                </NavItem>
-                                <NavItem>
-                                    <div
-                                        style={{ cursor: "pointer" }}
-                                        className={classnames({
-                                            active: activeTab === "4",
-                                        },"tab_menu")}
-                                        onClick={() => {
-                                            toggle("4");
-                                        }}
-                                    >
-                                        Inland Charges
-                                    </div>
-                                </NavItem>
-                            </Nav>
-                        </div>
-                        <div className="tf_top_breadcrumb_rate_wrap">
-                            <TfBreadcrumbs breadcrumb={breadcrumb} />
-                            <div className="tf_box_wrap">
-                                {/* {(salesEnquiryData || [])?.map(item => (
-                                    <div className="sh_box" key={item?.id}>
-                                        <p className="box_title">{item?.title}</p>
-                                        <p className="sh_inquiry_rate">{item?.rate}
-                                            <span className={`${item?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{item?.compare_rate}%</span>
-                                        </p>
-                                    </div>
-                                ))} */}
-                            </div>
-                        </div>
+                        {/* breadcrumbs && rate */}
+                        <TopBreadcrumbs breadcrumbs={inLandBreadcrumb} data={inLandRateData} />            
+
+                        {/* React Table */}
+                        <TableReact
+                            columns={columns}
+                            data={inlandData}
+                            isGlobalFilter={true}
+                            isAddInvoiceList={true}
+                            customPageSize={10}
+                            toggleRightCanvas={toggleRightCanvas}
+                            component={'inland'}
+                        />
+
+                        {/* modal */}
+                        <ModalFreight modal={modal} onCloseClick={onCloseClick} viewData={viewData} modalType={'inland'} />
                     </div>
                 </Container>
             </div>
-        </React.StrictMode>
+            {/* filter right sidebar */}
+            <FilterOffCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} filterType={'inland'} clearValueHandler={clearValueHandler} />
+        </>
     );
 }
 

@@ -24,6 +24,11 @@ import contacts from "./contacts/reducer"
 //dashboard
 import dashboard from "./Dashboard/reducer"
 
+// -Procurement
+import procurement from "./Procurement/reducer"
+
+// Sales
+import sales from "./Sales/reducer"
 
 const rootReducer = combineReducers({
   // public
@@ -36,7 +41,9 @@ const rootReducer = combineReducers({
   chat,
   invoices,
   contacts,
-  dashboard
+  dashboard,
+  procurement,
+  sales
 })
 
 export default rootReducer

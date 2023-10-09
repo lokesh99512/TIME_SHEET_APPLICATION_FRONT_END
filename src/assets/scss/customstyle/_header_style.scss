@@ -149,3 +149,33 @@ body[data-sidebar-size="md"],body[data-sidebar-size="sm"]{
     }
 }
 // -------------------------- compact view -------------------------------------------
+// -------------------------- Small view -------------------------------------------
+body[data-sidebar-size=sm] {
+    .vertical-menu #sidebar-menu{
+        > ul {
+            > li{
+                > a{
+                    font-size: 13px;
+                    text-align: center;
+                    svg{
+                        margin: 0 auto 4px;
+                    }
+                }
+                &:hover {
+                    > ul{
+                        top: 0;
+                    }
+                }
+                > ul{
+                    top: 0;
+                    // li {
+                    //     ul{
+                    //         margin: 0 !important;
+                    //         top: 0;
+                    //     }
+                    // }
+                }
+            }
+        }
+    }
+}

@@ -52,6 +52,7 @@ ul { padding: 0; margin: 0; list-style: none; }
             vertical-align: middle;
             box-shadow: none;
             border: 0;
+            cursor: pointer;
             &:first-child{
                 border-radius: 12px 0px 0px 0px;
             }
@@ -70,21 +71,49 @@ ul { padding: 0; margin: 0; list-style: none; }
             @include font($font-weight-normal,14px,normal,$neutral_8);
             padding: 5px 12px;
             border-bottom: 1px solid $grey_shade1;
-            min-height: 42px;
-            height: 42px;
-            vertical-align: middle;
-            &:first-child{
-                min-width: 220px;
-            }
-            &:last-child{
-                min-width: 95px;
-            }
+            min-height: 44px;
+            height: 44px;
+            vertical-align: middle;            
             .prof_wrap {
                 @extend .flex-center;
                 .img {
                     width: 26px;
                     height: 26px;
                     margin-right: 10px;
+                }
+            }
+        }
+        .dropdown-menu {
+            border-radius: 12px;
+            background: $white;
+            box-shadow: 0px 7px 29px 0px rgba(100, 100, 111, 0.20);
+            padding: 0;
+            min-width: 190px;
+            .dropdown-item{
+                @extend .flex-center;
+                justify-content: space-between;
+                @include font(500,16px,normal,$neutral_8);
+                padding: 13px 16px;
+                &:not(:last-child){
+                    border-bottom: 1px solid $neutral_2;
+                }
+            }
+        }
+        .switch_wrap{
+            .form-check {
+                padding: 0;
+                width: 36px;
+                height: 20px;
+                .form-check-input {
+                    margin: 0;
+                    width: 36px;
+                    height: 20px;
+                    background-color: $danger_7;
+                    border: 0;
+                    background-image: url("../../images/icons/white_switch_dot.svg");
+                    &:checked{
+                        background-color: $primary_7;
+                    }
                 }
             }
         }
@@ -99,7 +128,7 @@ ul { padding: 0; margin: 0; list-style: none; }
             padding: 10px 40px 10px 12px;
             min-width: 138px;
             position: relative;
-            @include font($font-weight-semibold,15px,normal,$neutral_8);
+            @include font($font-weight-semibold,14px,normal,$neutral_8);
             cursor: pointer;
             text-align: left;
             box-shadow: none;
@@ -124,12 +153,21 @@ ul { padding: 0; margin: 0; list-style: none; }
     display: block;
     @include font(500,14px,normal,$neutral_8);
 }
-.form-control{
+input[type="date"]::-webkit-calendar-picker-indicator{
+    opacity: 1;
+    display: block;
+    background: url("../../images/icons/calender.svg") no-repeat center center;
+    background-size: 18px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+.form-control,.form-select,.select2-selection.form-select__control{
     border-radius: 8px;
     border: 1px solid $neutral_2;
-    background: $sh_white;
+    background-color: $sh_white;
     padding: 9px 12px;
-    @include font(400,14px,normal,$neutral_8);
+    @include font(400,14px,normal,$neutral_8);    
     &::placeholder{
         color: $neutral_4;
     }
@@ -144,6 +182,12 @@ ul { padding: 0; margin: 0; list-style: none; }
             border-color: $danger_7 !important;
         }
     }
+    &[type="date"]{
+        cursor: pointer;
+    }
+}
+.select2-selection.form-select__control{
+    padding: 0;
 }
 .invalid-feedback {
     @include font(400,14px,normal,$danger_7);
@@ -201,6 +245,111 @@ ul { padding: 0; margin: 0; list-style: none; }
             border-color: $neutral_1;
             color: $neutral_4;
             pointer-events: none;
+        }
+    }
+}
+
+nav.breadcrumb_wrap {
+    ul {
+        @extend .flex-center;
+        flex-wrap: wrap;
+        li{
+            a{
+                @include font($font-weight-normal,18px,23px,$neutral_5);
+                position: relative;
+                pointer-events: none;
+                &:not(.breadcrumb_active){
+                    margin-right: 15px;
+                    &::before{
+                        content: '/';
+                        position: absolute;
+                        right: -11px;
+                        top: 0;
+                    }
+                }
+                &.breadcrumb_active{
+                    font-weight: $font-weight-bold;
+                    color: $neutral_8;
+                    pointer-events: all;
+                }
+            }
+        }
+    }
+}
+.table_pagination_wrap {
+    border-radius: 12px;
+    background: $white;
+    box-shadow: 0px 1px 0px 0px #E1E6EF inset;
+    border: 1px solid $neutral_2;
+    overflow: hidden;
+    table{
+        margin: 0;
+    }
+    .table-responsive{
+        &::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+            border-radius: 0;
+        }
+        
+        /* Track */
+        &::-webkit-scrollbar-track {
+            border: 1px solid $neutral_2;
+            background: $neutral_1;
+        }
+        
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+            background: $neutral_3;
+            border-radius: 10px;
+        }
+        
+        /* Handle on hover */
+        &::-webkit-scrollbar-thumb:hover {
+            background: $neutral_3;
+        }
+    }
+    .pagination_wrap{
+        padding: 16px;
+        .pagination_left_text{
+            @include font(400,14px,normal,$neutral_5);
+        }
+    }
+}
+.pagination_wrap {
+    .pagination {
+        .page-link {
+            @include font($font-weight-medium,14px,normal,$neutral_5);
+            border: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            &.active{
+                color: $white;
+            }
+        }
+        .arrow_wrap{
+            .page-link{
+                border: 1px solid $neutral_3;
+                background: $white;
+                box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.05);
+            }
+            &.previous {
+                margin-right: 24px;
+            }
+            &.next {
+                margin-left: 24px;
+            }
+        }
+        .page-item{
+            &.disabled{
+                .page-link{
+                    opacity: 0.5;
+                }
+            }
         }
     }
 }

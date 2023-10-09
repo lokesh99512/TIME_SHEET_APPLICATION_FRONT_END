@@ -19,6 +19,30 @@ import noti_Icon from "./icons/tf_notification.svg";
 import message_Icon from "./icons/tf_message.svg";
 import marker_Img from './icons/grey_container.svg';
 import marker_active_Img from './icons/blue_container.svg';
+import filter_icon from './icons/filter-icon.svg';
+import upload_icon from './icons/upload.svg';
+import eye_icon from "./icons/eye.svg";
+import edit_icon from "./icons/edit.svg";
+import delete_icon from "./icons/delete.svg";
+import range_indicator from "./icons/range_indicator.svg";
+import memoji from "./icons/memoji.svg";
+import avtar_filled from "./icons/avatar-filled.svg";
+import cube_filled from "./icons/cube_filled.svg";
+import calendar_filled from "./icons/calendar_filled.svg";
+import location_filled from "./icons/location_filled.svg";
+import ship_filled from "./icons/ship-filled.svg";
+import ship_darkblue from "./icons/ship-darkblue.svg";
+import airplane_darkblue from "./icons/airplane_darkblue.svg";
+import airplane_filled from "./icons/airplane_filled.svg";
+import truk_darkblue from "./icons/truck-darkblue.svg";
+import truk_filled from "./icons/truck_filled.svg";
+import swap_arrow from "./icons/swap_arrow.svg";
+import pickup_icon from "./icons/pickup_icon.svg";
+import pickup_icon2 from "./icons/pickup_icon2.svg";
+import pickup_icon3 from "./icons/pickup_icon3.svg";
+import pickup_icon4 from "./icons/pickup_icon4.svg";
+import pickup_icon5 from "./icons/pickup_icon5.svg";
+import pickup_icon6 from "./icons/pickup_icon6.svg";
 
 export {
   avatar1,
@@ -32,5 +56,7 @@ export {
   profImg,
   google_icon,
   microsoft_icon,auth_slider1,auth_slider2,auth_slider3,auth_slider4,noti_Icon,message_Icon,
-  marker_Img,marker_active_Img
+  marker_Img,marker_active_Img,filter_icon,upload_icon,eye_icon,edit_icon,delete_icon,range_indicator,avtar_filled,cube_filled,calendar_filled,location_filled,memoji,
+  ship_filled,ship_darkblue,airplane_darkblue,airplane_filled,truk_darkblue,truk_filled,swap_arrow,
+  pickup_icon,pickup_icon2,pickup_icon3,pickup_icon4,pickup_icon5,pickup_icon6
 }
