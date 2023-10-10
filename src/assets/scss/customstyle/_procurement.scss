@@ -603,14 +603,22 @@
                 width: 50%;
                 border: 1px solid $neutral_2;
                 background: $white;
+                &.openmenu{
+                    box-shadow: 0px 0px 0px 4px #F1F1FE;
+                    border: 1px solid $primary_7;
+                }
             }
             .quotation_from_wrap{
                 padding: 16px 20px;
                 border-radius: 12px 0 0 12px;
+                border-right: 0 !important;
             }
             .quotation_to_wrap{
                 padding: 16px 20px 16px 40px;
                 border-radius:0 12px 12px 0;
+                &.openmenu{
+                    border-left-color: transparent;
+                }
             }
             .location_wrap {
                 .icon{
@@ -621,6 +629,16 @@
                 }
                 .value{
                     @include font($font-weight-semibold,20px,normal,$neutral_4);
+                    display: flex;
+                    align-items: center;
+                    &.value_focus{
+                        color: $neutral_8;
+                    }
+                    img{
+                        width: 20px;
+                        height: 20px;
+                        margin-right: 6px;
+                    }
                 }
             }
             .swap_btn_wrap {
@@ -635,6 +653,96 @@
                 margin: auto;
                 bottom: 0;
                 top: 0;
+            }
+            .location_dropdown_wrap{
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 100%;
+                z-index: 99;
+                margin-top: 8px;
+                border-radius: 12px;
+                background: $white;
+                box-shadow: 0px 7px 29px 0px rgba(100, 100, 111, 0.20);
+                padding: 16px 20px;
+                display: flex;
+                gap: 20px;
+                .field_input_wrap {
+                    width: 100%;
+                }
+                .dropdown {
+                    > a{
+                        border-radius: 8px;
+                        border: 1px solid #E5E7EB;
+                        background-color: $white;
+                        font-weight: 400;
+                        color: $neutral_8;
+                        height: 38px;
+                        display: flex;
+                        line-height: 38px;
+                        padding: 0 10px;
+                        align-items: center;
+                        span{
+                            display: flex;
+                            align-items: center;
+                            img{
+                                margin-right: 8px;
+                            }
+                        }
+                        i{
+                            margin-left: auto;
+                            display: block;
+                            line-height: 1;
+                            font-size: 20px;
+                            color: $neutral_8;
+                        }
+                    }
+                    .dropdown-menu{
+                        width: 100%;
+                        padding: 0;
+                        border-radius: 12px;
+                        background: $white;
+                        box-shadow: 0px 7px 29px 0px rgba(100, 100, 111, 0.2);
+                        button.dropdown-item {
+                            padding: 0;
+                            cursor: pointer;
+                            &:hover,&.active{
+                                background-color: $primary_1;
+                            }
+                        }
+                        .custom-option {
+                            display: flex;
+                            align-items: center;
+                            padding: 13px 16px;
+                            gap: 8px;
+                            border-bottom: 1px solid $neutral_2;            
+                            p{
+                                @include font($font-weight-medium,16px,normal,$neutral_8);
+                                letter-spacing: 0.16px;
+                            }
+                        }
+                    }
+                }
+                .form-select__menu-list{
+                    .form-select__option{
+                        padding: 13px 16px;
+                        border-bottom: 1px solid $neutral_2; 
+                        @include font($font-weight-medium,16px,normal,$neutral_8);
+                        letter-spacing: 0.16px;
+                        &:hover,&.form-select__option--is-selected{
+                            background-color: $primary_1;
+                        }
+                        &.form-select__option--is-focused{
+                            background-color: rgba($color: $primary_1, $alpha: 0.5);
+                        }
+                        &.form-select__option--is-disabled{
+                            &:hover{
+                                background-color: transparent;
+                            }
+                            opacity: 0.4;
+                        }
+                    }
+                }
             }
         }
     }

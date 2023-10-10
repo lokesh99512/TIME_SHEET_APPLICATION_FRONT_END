@@ -1,29 +1,40 @@
 import React, { useRef, useState } from 'react'
 import Select from 'react-select';
-import { airplane_filled, avtar_filled, calendar_filled, cube_filled, location_filled, ship_filled, swap_arrow, truk_filled } from '../../../../assets/images';
-import { optionCargoType, optionContainerType, optionCurrency, optionCustomerName, optionIncoterm, optionServiceType, optionTransportBy, optionlocationType } from '../../../../common/data/sales';
+import { airplane_filled, australia, avtar_filled, calendar_filled, cube_filled, location_filled, pickup_icon, ship_filled, swap_arrow, truk_filled } from '../../../../assets/images';
+import { countryList, optionCargoType, optionContainerType, optionCurrency, optionCustomerName, optionIncoterm, optionPortList, optionServiceType, optionTransportBy, optionlocationType } from '../../../../common/data/sales';
 import { useOutsideClick } from '../../../../components/Common/CommonLogic';
 import "react-datepicker/dist/react-datepicker.css"
 //Import Flatepicker
 import "flatpickr/dist/themes/material_blue.css"
 import Flatpickr from "react-flatpickr"
+import { optionRateType } from '../../../../common/data/procurement';
+import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { UPDATE_SEARCH_QUOTATION_CURRENCY, UPDATE_SEARCH_QUOTATION_DATA, UPDATE_SEARCH_QUOTATION_DATE, UPDATE_SEARCH_QUOTATION_LOCATION, UPDATE_SEARCH_QUOTATION_LOCATION_FROM, UPDATE_SEARCH_QUOTATION_LOCATION_TO, UPDATE_SEARCH_QUOTATION_SWAP } from '../../../../store/Sales/actiontype'; 
 
 export default function CreateQuoteTop() {
     const [isOpen, setIsOpen] = useState(false);
     const [dropId, setDropId] = useState(false);
     const dropdownRef = useRef(null);
     const [classHazardous, setClassHazardous] = useState(0);
-    const [createFields,setCreateFields] = useState({
-        customer_name: {},
-        shipping_by: {},
-        service_type: {},
-        transport_by: {},
-        container_type: {},
-        incoterm: {},
-        cargo_type: {},
-        cargo_value: {currency: {name: 'Rupee', value: 'rupee', code: '₹'}},
-        cargo_date: {},
-    })
+    // const [createFields,setCreateFields] = useState({
+    //     customer_name: {},
+    //     shipping_by: {},
+    //     service_type: {},
+    //     transport_by: {},
+    //     container_type: {},
+    //     incoterm: {},
+    //     cargo_type: {},
+    //     cargo_value: {currency: {name: 'Rupee', value: 'rupee', code: '₹'}},
+    //     cargo_date: {},
+    //     location_from: {port_type: {},country: '',address: ''},
+    //     location_to: {port_type: {},country: {value: 'AU', label:'Australia',phonecode: '61', flag: australia},address: ''},
+    // })
+
+    const createFields = useSelector((state) => state?.sales?.createFields);
+    const dispatch = useDispatch();
+    console.log(createFields,"createFields")
 
     const [unitValue, setUnitValue] = useState({
         _standard1: 0,
@@ -35,32 +46,72 @@ export default function CreateQuoteTop() {
     })
 
     const handleChangeHandler = (item,name) => {
-        let newObj = {
-            ...createFields,
-            [name]: item
-        }
-        setCreateFields(newObj);
+        // let newObj = {
+        //     ...createFields,
+        //     [name]: item
+        // }
+        dispatch({type: UPDATE_SEARCH_QUOTATION_DATA, payload: {item,name}}) 
+        // setCreateFields(newObj);
     }
 
     const handleCurrencyChangeHandler = (item, name) => {
-        let newObj = {
-            ...createFields,
-            cargo_value: {
-                ...createFields.cargo_value,
-                [name]: item
+        // let newObj = {
+        //     ...createFields,
+        //     cargo_value: {
+        //         ...createFields.cargo_value,
+        //         [name]: item
+        //     }
+        // }
+        // setCreateFields(newObj);
+        dispatch({type: UPDATE_SEARCH_QUOTATION_CURRENCY, payload: {currency_item:item,currency_name:name}})
+    }
+
+    // -------------- location from / to 
+    const locationChangeHandler = (item, name, type) => {
+        let newObj;
+        if(type === 'from'){
+            newObj = {
+                ...createFields,
+                location_from: {
+                    ...createFields.location_from,
+                    [name]: item
+                }
             }
+            dispatch({type: UPDATE_SEARCH_QUOTATION_LOCATION_FROM, payload: {location_item: item, location_name: name }})
+        } else {
+            newObj = {
+                ...createFields,
+                location_to: {
+                    ...createFields.location_to,
+                    [name]: item
+                }
+            }
+            dispatch({type: UPDATE_SEARCH_QUOTATION_LOCATION_TO, payload: {location_item2: item, location_name2: name}})
         }
-        setCreateFields(newObj);
+        // setCreateFields(newObj)
     }
 
     const handleDateChnage = (arr,value,target) => {
-        let newObj = {
-            ...createFields,
-            cargo_date: arr
-        }
-        setCreateFields(newObj);
+        // let newObj = {
+        //     ...createFields,
+        //     cargo_date: arr
+        // }
+        // setCreateFields(newObj);
+        dispatch({type: UPDATE_SEARCH_QUOTATION_DATE, payload: {arr}}) 
+        
     }
 
+    const swapHandler = () => {
+        // let newObj = {
+        //     ...createFields,
+        //     location_from: createFields.location_to,
+        //     location_to: createFields.location_from
+        // }
+        // setCreateFields(newObj);
+        dispatch({type: UPDATE_SEARCH_QUOTATION_SWAP})
+    }
+
+    // --------- increament / decreament
     const countMinusHandler = (e,id) => {
         e.stopPropagation();
         let count = unitValue[id];
@@ -204,12 +255,12 @@ export default function CreateQuoteTop() {
                 </div>
 
                 {/* Port From && To */}
-                {/* <div className="quotation_select_port_wrap d-flex mb-3">
-                    <div className="quotation_from_wrap">
-                        <div className="common_dropdwon_btn_wrap">
+                <div className="quotation_select_port_wrap d-flex mb-3">
+                    <div className={`quotation_from_wrap ${isOpen && dropId === 9 ? 'openmenu' : ''}`}>
+                        <div className={`common_dropdwon_btn_wrap`}>
                             <div 
                                 id='more_menu' 
-                                className={`location_wrap d-flex ${isOpen && dropId === 9 ? 'openmenu' : ''}`} 
+                                className={`location_wrap d-flex`} 
                                 onClick={() => { toggleDropdown(9) }}
                             >
                                 <div className="icon me-3 d-flex align-items-center justify-content-center">
@@ -217,29 +268,79 @@ export default function CreateQuoteTop() {
                                 </div>
                                 <div className="con">
                                     <label className="form-label">From</label>
-                                    <span className={`value ${createFields?.service_type?.name ? 'value_focus' : ''}`}>Select Location</span>
+                                    <span className={`value ${createFields?.location_from?.address ? 'value_focus' : ''}`}>
+                                        {(createFields?.location_from?.address !== undefined && createFields?.location_from?.address) ? (
+                                            <>
+                                                <img src={createFields?.location_from?.country?.flag} alt="Flag" />
+                                                {createFields?.location_from?.address?.label}
+                                            </>
+                                        ) : 'Select Location'}                                        
+                                    </span>
                                 </div>
                             </div>
-                            {isOpen && dropId === 9 ?
-                                <ul className="common_dropdown_wrap" ref={dropdownRef}>
-                                    {(optionlocationType || '')?.map(({value, name, icon}) => (
-                                        <li key={value}>
-                                            <div className="custom-option">
-                                                <p className='m-0'>{name}</p>
-                                                <img src={icon} alt="Location" className='ms-auto' />
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ul> : null
-                            }
                         </div>
                     </div>
-                    <button type="button" className='swap_btn_wrap'><img src={swap_arrow} alt="Swap Arrow" /></button>
-                    <div className="quotation_to_wrap">
+                    {isOpen && dropId === 9 ?
+                        <div className="location_dropdown_wrap " ref={dropdownRef}>
+                            <div className="field_input_wrap">
+                                <label htmlFor="" className='form-label'>Type</label>
+                                <UncontrolledDropdown>
+                                    <DropdownToggle className="btn btn-link shadow-none" tag="a">
+                                        <span><img src={createFields?.location_from?.port_type?.icon || pickup_icon} alt="Pickup" />
+                                            {createFields?.location_from?.port_type?.name || 'Select Type'}
+                                        </span>
+                                        <i className="mdi mdi-chevron-down" />
+                                    </DropdownToggle>
+                                    <DropdownMenu className="dropdown-menu-end">
+                                        {(optionlocationType || '')?.map((item) => (
+                                            <DropdownItem 
+                                                key={item.value} 
+                                                className={createFields?.location_from?.port_type?.value === item.value ? 'active' : ''}
+                                                onClick={() => {locationChangeHandler(item,'port_type','from')}}
+                                            >
+                                                <div className="custom-option">
+                                                    <p className='m-0'>{item.name}</p>
+                                                    <img src={item.icon} alt="Location" className='ms-auto' />
+                                                </div>
+                                            </DropdownItem>
+                                        ))}                                      
+                                    </DropdownMenu>
+                                </UncontrolledDropdown>
+                            </div>
+                            <div className="field_input_wrap">
+                                <label htmlFor="" className='form-label'>Select Country</label>
+                                <Select
+                                    value={createFields?.location_from?.country}
+                                    name='country'
+                                    onChange={(opt) => {
+                                        locationChangeHandler(opt,'country','from')
+                                    }}
+                                    options={countryList}
+                                    // isOptionDisabled={(option) => option.value === createFields?.location_to?.country?.value}
+                                    classNamePrefix="select2-selection form-select"
+                                />
+                            </div>
+                            <div className="field_input_wrap">
+                                <label htmlFor="" className='form-label'>Address</label>
+                                <Select
+                                    value={createFields?.location_from?.address}
+                                    name='address'
+                                    onChange={(opt) => {
+                                        locationChangeHandler(opt,'address','from')
+                                    }}
+                                    options={optionPortList}
+                                    isOptionDisabled={(option) => option.value === createFields?.location_to?.address?.value}
+                                    classNamePrefix="select2-selection form-select"
+                                />
+                            </div>
+                        </div> : null
+                    }
+                    <button type="button" className='swap_btn_wrap' onClick={swapHandler}><img src={swap_arrow} alt="Swap Arrow" /></button>
+                    <div className={`quotation_to_wrap ${isOpen && dropId === 10 ? 'openmenu' : ''}`}>
                         <div className="common_dropdwon_btn_wrap">
                             <div 
                                 id='more_menu' 
-                                className={`location_wrap d-flex ${isOpen && dropId === 10 ? 'openmenu' : ''}`} 
+                                className={`location_wrap d-flex`} 
                                 onClick={() => { toggleDropdown(10) }}
                             >
                                 <div className="icon me-3 d-flex align-items-center justify-content-center">
@@ -247,24 +348,75 @@ export default function CreateQuoteTop() {
                                 </div>
                                 <div className="con">
                                     <label className="form-label">To</label>
-                                    <span className={`value ${createFields?.service_type?.name ? 'value_focus' : ''}`}>Select Location</span>
+                                    <span className={`value ${createFields?.location_to?.address ? 'value_focus' : ''}`}>
+                                        {(createFields?.location_to?.address !== undefined && createFields?.location_to?.address) ? (
+                                            <>
+                                                <img src={createFields?.location_to?.country?.flag} alt="Flag" />
+                                                {createFields?.location_to?.address?.label}
+                                            </>
+                                        ) : 'Select Location'}                                        
+                                    </span>
                                 </div>                                
                             </div>
-                            {isOpen && dropId === 10 ?
-                                <ul className="common_dropdown_wrap" ref={dropdownRef}>
-                                    {(optionlocationType || '')?.map(({value, name, icon}) => (
-                                        <li key={value}>
-                                            <div className="custom-option">
-                                                <p className='m-0'>{name}</p>
-                                                <img src={icon} alt="Location" className='ms-auto' />
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ul> : null
-                            }
                         </div>
                     </div>
-                </div> */}
+                    {isOpen && dropId === 10 ?
+                        <div className="location_dropdown_wrap " ref={dropdownRef}>
+                            <div className="field_input_wrap">
+                                <label htmlFor="" className='form-label'>Type</label>
+                                <UncontrolledDropdown>
+                                    <DropdownToggle className="btn btn-link shadow-none" tag="a">
+                                        <span><img src={createFields?.location_to?.port_type?.icon || pickup_icon} alt="Pickup" />
+                                            {createFields?.location_to?.port_type?.name || 'Select Type'}
+                                        </span>
+                                        <i className="mdi mdi-chevron-down" />
+                                    </DropdownToggle>
+                                    <DropdownMenu className="dropdown-menu-end">
+                                        {(optionlocationType || '')?.map((item) => (
+                                            <DropdownItem 
+                                                key={item.value} 
+                                                className={createFields?.location_to?.port_type?.value === item.value ? 'active' : ''}
+                                                onClick={() => {locationChangeHandler(item,'port_type','to')}}
+                                            >
+                                                <div className="custom-option">
+                                                    <p className='m-0'>{item.name}</p>
+                                                    <img src={item.icon} alt="Location" className='ms-auto' />
+                                                </div>
+                                            </DropdownItem>
+                                        ))}                                      
+                                    </DropdownMenu>
+                                </UncontrolledDropdown>
+                            </div>
+                            <div className="field_input_wrap">
+                                <label htmlFor="" className='form-label'>Select Country</label>
+                                <Select
+                                    value={createFields?.location_to?.country}
+                                    name='country'
+                                    onChange={(opt) => {
+                                        locationChangeHandler(opt,'country','to')
+                                    }}
+                                    options={countryList}
+                                    classNamePrefix="select2-selection form-select"                                    
+                                    // isOptionDisabled={(option) => option.value === createFields?.location_from?.country?.value}
+                                />
+                            </div>
+                            <div className="field_input_wrap">
+                                <label htmlFor="" className='form-label'>Address</label>
+                                <Select
+                                    value={createFields?.location_to?.address}
+                                    name='address'
+                                    onChange={(opt) => {
+                                        locationChangeHandler(opt,'address','to')
+                                    }}
+                                    options={optionPortList}
+                                    isOptionDisabled={(option) => option.value === createFields?.location_from?.address?.value}
+                                    classNamePrefix="select2-selection form-select"
+                                    defaultMenuIsOpen
+                                />
+                            </div>
+                        </div> : null
+                    }
+                </div>
                 {/* Port From && To */}
 
                 <div className="row">
@@ -326,17 +478,17 @@ export default function CreateQuoteTop() {
                                 <div className="icon d-flex align-items-center justify-content-center">
                                     <img src={createFields?.shipping_by?.img || cube_filled} alt="Avatar" />
                                 </div>
-                                {/* {console.log(createFields,"createFields===========")} */}
+                                {console.log(createFields,"createFields===========")}
                                 <div className="con">
                                     <label className="form-label">Container Type</label>
                                     <span className={`value ${createFields?.container_type?.name ? 'value_focus' : ''}`}>
                                         {(createFields?.container_type?.name || 'Select Container Type')} 
-                                        {/* {(unitValue[createFields?.container_type?.id] !== undefined && unitValue[createFields?.container_type?.id] !== 0) ? (
+                                        {(unitValue[createFields?.container_type?.id] !== undefined && unitValue[createFields?.container_type?.id] !== 0) ? (
                                             <>
                                                 , unit: "{unitValue[createFields?.container_type?.id]}"
                                             </>
                                         ) : ''
-                                        } */}
+                                        }
                                     </span>
                                 </div>
                                 <i className="mdi mdi-chevron-down" />
@@ -405,11 +557,11 @@ export default function CreateQuoteTop() {
                                     <label className="form-label">Cargo Type</label>
                                     <span className={`value ${createFields?.cargo_type?.name ? 'value_focus' : ''}`}>
                                         {(createFields?.cargo_type?.name || 'Select Cargo Type')}
-                                        {/* {createFields?.cargo_type?.value === 'hazardous' && classHazardous !== 0 ? (
+                                        {createFields?.cargo_type?.value === 'hazardous' && classHazardous !== 0 ? (
                                             <>
                                                 , class: {classHazardous}
                                             </>
-                                        ) : ''} */}
+                                        ) : ''}
                                     </span>
                                 </div>
                                 <i className="mdi mdi-chevron-down" />

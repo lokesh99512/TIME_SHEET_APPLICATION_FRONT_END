@@ -1,5 +1,5 @@
 import React from "react"
-import { memoji, pickup_icon, pickup_icon2, pickup_icon3, pickup_icon4, pickup_icon5, pickup_icon6 } from "../../assets/images"
+import { australia, azerbaijan, india, memoji, pickup_icon, pickup_icon2, pickup_icon3, pickup_icon4, pickup_icon5, pickup_icon6, unitedkingdom, unitedstates } from "../../assets/images"
 
 // --------- breadcrumbs -----------------------------
 const quotationBreadcrumb = [
@@ -314,7 +314,21 @@ const optionlocationType = [
     {value: "last_mile", name: "Last mile delivery warehousing",icon: pickup_icon6 },
 ]
 
+const countryList = [
+    {value: 'AZ', label:'Azerbaijan',phonecode: '994', flag: azerbaijan},
+    {value: 'AU', label:'Australia',phonecode: '61', flag: australia},
+    {value: 'IN', label:'India',phonecode: '91', flag: india},
+    {value: 'US', label:'United States',phonecode: '1', flag: unitedstates},
+    {value: 'GB', label:'United Kingdom',phonecode: '44', flag: unitedkingdom}
+]
+const optionPortList = [
+    {value: 'chennai', label:'Chennai Port'},
+    {value: 'ennore', label:'Ennore Port'},
+    {value: 'inmaa', label:'INMAA'},
+    {value: 'usnyc', label:'USNYC'},
+]
+
 export {
     quotationBreadcrumb,quotationRateData,quotationTableData,optionCustomerName,optionServiceType,optionTransportBy,optionContainerType,optionIncoterm,optionCargoType,optionCurrency,
-    optionlocationType
+    optionlocationType,countryList,optionPortList
 }
