@@ -36,7 +36,7 @@ jobs:
         node-version: '18.x'
 
     - name: 'npm build'
-      run: ' npm install google-maps-react --legacy-peer-deps && npm install && npm run build'
+      run: ' npm install google-maps-react --legacy-peer-deps && npm run build'
 
 
       
