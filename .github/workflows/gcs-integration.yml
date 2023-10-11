@@ -15,9 +15,6 @@ env:
   API_LOCATION: "api" # location of your api source code - optional
   APP_ARTIFACT_LOCATION: "build" # location of client code build output
   # GCP config details
-  GCP_PROJECT_ID: "tarifftales-website"
-  GCP_SA_EMAIL: ${{ secrets.GCP_SA_EMAIL }} 
-  GCP_SA_KEY: ${{ secrets.GCP_SA_PRIVATE_KEY }} 
   GCP_SA_JSON: ${{secrets.GCP_SA_JSON}}
 
 # permissions:
@@ -42,6 +39,7 @@ jobs:
       with:
         credentials_json: '${{ env.GCP_SA_JSON }}'
 
+    # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
     - name: 'Set up gCloud'
       uses: 'google-github-actions/setup-gcloud@v1'
 
@@ -53,10 +51,16 @@ jobs:
         node-version: '18.x'
 
     - name: 'npm build'
-      run: ' npm install google-maps-react --legacy-peer-deps && npm run build'
+      run: ' npm install google-maps-react --legacy-peer-deps && npm run build && ls -lrta ./build'
 
-    - name: 'Copy to CLoud Storage'
-      run: ' ls -lrta '
-
+    - id: 'upload-files'
+      uses: 'google-github-actions/upload-cloud-storage@v1'
+      with:
+        path: 'build'
+        destination: 'tarifftales-spa-app'
+        parent: false
+        
+    - id: 'publish'
+      run: 'echo ${{ steps.upload-files.outputs.uploaded }}'
 
       
