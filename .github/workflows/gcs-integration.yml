@@ -1,4 +1,4 @@
-# This workflow will build and push the SPA application to GCS bucket when code change is committed.
+v# This workflow will build and push the SPA application to GCS bucket when code change is committed.
 
 name: Deploy SPA app to GCP Cloud Storage bucket
 
@@ -37,9 +37,9 @@ jobs:
     # Setup gcloud CLI
     - uses: google-github-actions/setup-gcloud@v0
       with:
-        service_account_email: ${{ GCP_SA_EMAIL }}
-        service_account_key: ${{ GCP_SA_KEY }}
-        project_id: ${{ GCP_PROJECT_ID }}
+        service_account_email: ${{ env.GCP_SA_EMAIL }}
+        service_account_key: ${{ env.GCP_SA_KEY }}
+        project_id: ${{ env.GCP_PROJECT_ID }}
 
     - uses: 'actions/setup-node@v3'
       with:
