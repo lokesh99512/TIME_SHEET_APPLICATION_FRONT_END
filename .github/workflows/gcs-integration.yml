@@ -37,22 +37,26 @@ jobs:
 
     # Setup gcloud CLI
     - id: 'auth'
+      name: 'gCloud authentication'
       uses: 'google-github-actions/auth@v1'
       with:
         credentials_json: '${{ env.GCP_SA_JSON }}'
 
-    - name: 'Set up Cloud SDK'
+    - name: 'Set up gCloud'
       uses: 'google-github-actions/setup-gcloud@v1'
 
-    - name: 'Use gcloud CLI'
+    - name: 'gcloud info'
       run: 'gcloud info'
 
     - uses: 'actions/setup-node@v3'
       with:
         node-version: '18.x'
 
-#    - name: 'npm build'
-#      run: ' npm install google-maps-react --legacy-peer-deps && npm run build'
+    - name: 'npm build'
+      run: ' npm install google-maps-react --legacy-peer-deps && npm run build'
+
+    - name: 'Copy to CLoud Storage'
+      run: ' ls -lrta '
 
 
       
