@@ -11,11 +11,11 @@ on:
 
 # Environment variables available to all jobs and steps in this workflow
 env:
-  APP_LOCATION: "/" # location of your client code
-  API_LOCATION: "api" # location of your api source code - optional
   APP_ARTIFACT_LOCATION: "build" # location of client code build output
   # GCP config details
   GCP_SA_JSON: ${{secrets.GCP_SA_JSON}}
+  GCS_BUCKET_NAME: "tarifftales-spa-app"
+  
 
 # permissions:
 #  contents: read
@@ -32,36 +32,38 @@ jobs:
      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: 'actions/checkout@v3'
 
-    # Setup gcloud CLI
-    - id: 'auth'
-      name: 'gCloud authentication'
-      uses: 'google-github-actions/auth@v1'
-      with:
-        credentials_json: '${{ env.GCP_SA_JSON }}'
-
-    # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
-    - name: 'Set up gCloud'
-      uses: 'google-github-actions/setup-gcloud@v1'
-
-    - name: 'gcloud info'
-      run: 'gcloud info'
-
     - name: 'Setup Node'
       uses: 'actions/setup-node@v3'
       with:
         node-version: '18.x'
 
-    - name: 'npm build'
-      run: ' npm install google-maps-react --legacy-peer-deps && npm run build && ls -lrta ./build'
+    - name: 'Build React App'
+      run: ' npm install google-maps-react --legacy-peer-deps && npm run build && ls -lrta ${{env.APP_ARTIFACT_LOCATION}'
+
+    # Setup gcloud CLI
+    - id: 'auth'
+      name: 'GCP: gCloud authentication'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ env.GCP_SA_JSON }}'
+
+    # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
+    - name: 'GCP: Set up gCloud'
+      uses: 'google-github-actions/setup-gcloud@v1'
+
+    - name: 'GCP: gcloud info'
+      run: 'gcloud info'
 
     - id: 'upload-files'
+      name: 'GCP: Upload files to GCS'
       uses: 'google-github-actions/upload-cloud-storage@v1'
       with:
-        path: 'build'
-        destination: 'tarifftales-spa-app'
+        path: '${{env.APP_ARTIFACT_LOCATION}}'
+        destination: '${{env.GCS_BUCKET_NAME}}'
         parent: false
         
     - id: 'publish'
+      name: 'GCP: Files uploaded to GCS'
       run: 'echo ${{ steps.upload-files.outputs.uploaded }}'
 
       
