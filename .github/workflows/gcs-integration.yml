@@ -38,7 +38,7 @@ jobs:
         node-version: '18.x'
 
     - name: 'Build React App'
-      run: ' npm install google-maps-react --legacy-peer-deps && npm run build && ls -lrta ${{env.APP_ARTIFACT_LOCATION}'
+      run: ' npm install google-maps-react --legacy-peer-deps && npm run build && ls -lrta ${{env.APP_ARTIFACT_LOCATION}}'
 
     # Setup gcloud CLI
     - id: 'auth'
