@@ -14,7 +14,10 @@ env:
   APP_LOCATION: "/" # location of your client code
   API_LOCATION: "api" # location of your api source code - optional
   APP_ARTIFACT_LOCATION: "build" # location of client code build output
-  AZURE_STATIC_WEB_APPS_API_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }} # secret containing deployment token for your static web app
+  # GCP config details
+  GCP_PROJECT_ID: "tarifftales-website"
+  GCP_SA_EMAIL: ${{ secrets.GCP_SA_EMAIL }} 
+  GCP_SA_KEY: ${{ secrets.GCP_SA_PRIVATE_KEY }} 
 
 # permissions:
 #  contents: read
@@ -31,12 +34,19 @@ jobs:
      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: 'actions/checkout@v3'
 
+    # Setup gcloud CLI
+    - uses: google-github-actions/setup-gcloud@v0
+      with:
+        service_account_email: ${{ secrets.GCP_SA_EMAIL }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+
     - uses: 'actions/setup-node@v3'
       with:
         node-version: '18.x'
 
-    - name: 'npm build'
-      run: ' npm install google-maps-react --legacy-peer-deps && npm run build'
+#    - name: 'npm build'
+#      run: ' npm install google-maps-react --legacy-peer-deps && npm run build'
 
 
       
