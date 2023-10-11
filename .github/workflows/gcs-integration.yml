@@ -46,7 +46,8 @@ jobs:
     - name: 'gcloud info'
       run: 'gcloud info'
 
-    - uses: 'actions/setup-node@v3'
+    - name: 'Setup Node'
+      uses: 'actions/setup-node@v3'
       with:
         node-version: '18.x'
 
