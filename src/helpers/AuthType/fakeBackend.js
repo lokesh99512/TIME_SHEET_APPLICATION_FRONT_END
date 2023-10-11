@@ -32,7 +32,7 @@ import {
   octEarningData,
   MarketOverViewAllData, MarketOver1MData, MarketOver6MData, MarketOver1YData,
   PieChart1YData, PieChart6MData, PieChart1MData, PieChartAllData, InvestedOverviewMay, InvestedOverviewApril, InvestedOverviewMarch,
-  InvestedOverviewFeb, InvestedOverviewJan, InvestedOverviewDec, fclTableData, lclTableData, waybillTableData, consoleTableData, inLandTableData, quotationTableData
+  InvestedOverviewFeb, InvestedOverviewJan, InvestedOverviewDec, fclTableData, lclTableData, waybillTableData, consoleTableData, inLandTableData, quotationTableData, searchQuotationResult
 } from "../../common/data"
 
 let users = [
@@ -905,6 +905,18 @@ const fakeBackend = () => {
           resolve([200, quotationTableData]);
         } else {
           reject([400, 'Cannot get Quotation Data']);
+        }
+      });
+    })
+  })
+
+  mock.onGet(url.GET_QUOTATION_SEARCH_RESULT).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if(searchQuotationResult) {
+          resolve([200, searchQuotationResult]);
+        } else {
+          reject([400, 'Cannot get Quotation Result Data']);
         }
       });
     })

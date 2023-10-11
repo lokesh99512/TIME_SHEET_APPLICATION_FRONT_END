@@ -28,6 +28,14 @@ header{
                 }
             }
         }
+        @media only screen and (max-width: 420px) {
+            width: 90px !important;
+            .logo {
+                img{
+                    height: 28px;
+                }
+            }
+        }
     }
     .header_language_drop{
         button{
@@ -174,6 +182,51 @@ body[data-sidebar-size=sm] {
                     //         top: 0;
                     //     }
                     // }
+                }
+            }
+        }
+    }
+    @media only screen and (max-width: 420px) {
+        .vertical-menu{
+            width: 70px !important;
+            #sidebar-menu {
+                > ul {
+                    > li {
+                        > a{
+                            > span{
+                                display: none !important;
+                            }
+                        }
+                        > ul{
+                            top: 0;
+                            left: 70px !important;
+                            width: 150px !important;
+                            a{
+                                width: 100% !important;
+                                display: flex;
+                                align-items: center;
+                                // justify-content: space-between;
+                                word-break: break-all;
+                                span{
+                                    max-width: 100px;
+                                    display: -webkit-box;
+                                    -webkit-line-clamp: 1;
+                                    -webkit-box-orient: vertical;
+                                    overflow: hidden;
+                                    word-break: break-all;
+                                }
+                            }
+                            li {
+                                ul{
+                                    left: 150px !important;
+                                    width: 120px !important;
+                                }
+                            }
+                        }
+                    }
+                }
+                .has-arrow:after{
+                    margin-left: auto;
                 }
             }
         }

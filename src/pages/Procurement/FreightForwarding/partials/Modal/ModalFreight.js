@@ -230,67 +230,6 @@ const ModalFreight = ({viewData,modal,onCloseClick,modalType}) => {
                                     </>
                                 )}                                
                             </div>
-                            <div className="view_data_wrap">
-                                <div className="details">
-                                    <span className="title">Charge Name:</span>
-                                    <span className="data">{viewData?.charge_name || '-'}</span>
-                                </div>
-                                <div className="details">
-                                    <span className="title">Payment Term:</span>
-                                    <span className="data">{viewData?.payment_term || '-'}</span>
-                                </div>
-                                {modalType === 'lcl' ? (
-                                    <>
-                                        <div className="details">
-                                            <span className="title">Currency</span>
-                                            <span className="data">{viewData?.charge_currency || '-'}</span>
-                                        </div>
-                                        <div className="details">
-                                            <span className="title">Charge Basis</span>
-                                            <span className="data">{viewData?.charge_basis || '-'}</span>
-                                        </div>
-                                        <div className="details">
-                                            <span className="title">Min Charge</span>
-                                            <span className="data">{viewData?.charge_mincharge || '-'}</span>
-                                        </div>
-                                        <div className="details">
-                                            <span className="title">Rate</span>
-                                            <span className="data">{viewData?.charge_rate || '-'}</span>
-                                        </div>
-                                        <div className="details">
-                                            <span className="title">Ratio</span>
-                                            <span className="data">{viewData?.charge_ratio || '-'}</span>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <>
-                                        <div className="details">
-                                            <span className="title">20 GP:</span>
-                                            <span className="data">{viewData?.fre_gp || '-'}</span>
-                                        </div>
-                                        <div className="details">
-                                            <span className="title">40 GP:</span>
-                                            <span className="data">{viewData?.fre_gp2 || '-'}</span>
-                                        </div>
-                                        <div className="details">
-                                            <span className="title">40 HQ:</span>
-                                            <span className="data">{viewData?.fre_hq || '-'}</span>
-                                        </div>
-                                        <div className="details">
-                                            <span className="title">45 HQ:</span>
-                                            <span className="data">{viewData?.fre_hq2 || '-'}</span>
-                                        </div>
-                                        <div className="details">
-                                            <span className="title">20 RF:</span>
-                                            <span className="data">{viewData?.fre_rf || '-'}</span>
-                                        </div>
-                                        <div className="details">
-                                            <span className="title">40 RF:</span>
-                                            <span className="data">{viewData?.fre_rf2 || '-'}</span>
-                                        </div>
-                                    </>
-                                )}                                
-                            </div>
                         </div>
                     </div>
                 </ModalBody>

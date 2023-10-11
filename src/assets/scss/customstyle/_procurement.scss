@@ -64,7 +64,7 @@
     .upload_freight_wrap{
         padding: 0 70px;
         max-width: 1240px;
-        margin: 0 auto;
+        margin: 0 auto;        
         .upload_surcharges_row{
             position: relative;
             &:not(:first-child){
@@ -109,6 +109,25 @@
             border: 1px dashed $neutral_3;
             background: $neutral_1;
         }
+        @media only screen and (max-width: 767px) {
+            padding: 0;
+            .upload_surcharges_row {
+                padding-right: 30px;
+                .btn_wrap{
+                    bottom: 18px;
+                    right: -12px;
+                }
+            }
+            .dropzone {
+                min-height: 130px;
+                .dz-message{
+                    padding: 20px;
+                     h4 {
+                        font-size: 18px;
+                    }
+                }
+            }
+        }
     }
 }
 .tf_top_breadcrumb_rate_wrap {
@@ -123,6 +142,9 @@
     margin-top: 18px;
     border-top: 1px solid #E5E7EB;
     gap: 30px;
+    @media only screen and (max-width: 767px) {
+        flex-direction: column;
+    }
     .red_text,.green_text {
         @include font($font-weight-medium,14px,normal,$danger_7);
         padding-right: 16px;
@@ -171,13 +193,25 @@
 
 .freight_filter_wrap {
     margin-bottom: 16px;
+    @media only screen and (max-width: 767px) {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 15px;
+    }
     .label{
         @include font(600,16px,normal,$neutral_8);   
     }
     .right_actions_wrap {
-        gap: 8px
+        gap: 8px;
+        @media only screen and (max-width: 767px) {
+            flex-wrap: wrap;
+        }
     }
     .search_form{
+        @media only screen and (max-width: 767px) {
+            width: 100%;
+            max-width: 330px;
+        }
         form{
             input{
                 @include font($font-weight-normal,14px,normal,$neutral_8);   
@@ -188,6 +222,9 @@
                 width: 323px;
                 &::placeholder{
                     color: $neutral_4;
+                }
+                @media only screen and (max-width: 767px) {
+                    width: 100%;                    
                 }
             }
             button{
@@ -269,6 +306,13 @@
             .view_data_wrap {
                 display: flex;
                 gap: 5px;
+                @media only screen and (max-width: 767px) {
+                    gap: 0;
+                    flex-wrap: wrap;
+                    .details{
+                        width: 50%;
+                    }
+                }
             }
         }
         .view_details_wrap{
@@ -276,10 +320,22 @@
                 padding-bottom: 20px;
                 margin-bottom: 20px;
                 border-bottom: 1px solid #E5E7EB;
+                @media only screen and (max-width: 767px) {
+                    padding-bottom: 15px;
+                    margin-bottom: 15px;
+                }
                 .details{
                     width: 100%;
                     flex-direction: row;
                     margin: 0;
+                    @media only screen and (max-width: 767px) {
+                        margin: 5px 0;
+                    }
+                }
+            }
+            @media only screen and (max-width: 767px) {
+                .view_data_wrap .details{
+                    width: 50%;
                 }
             }
         }
@@ -335,7 +391,12 @@
                 .details{
                     width: 50%;
                 }
-            }           
+            }    
+            @media only screen and (max-width: 767px) {
+                .view_data_wrap{
+                    flex-direction: column;
+                }
+            }       
         }
     }
 }
@@ -744,8 +805,79 @@
                     }
                 }
             }
+            @media only screen and (max-width: 767px) {
+                flex-direction: column;
+                .quotation_from_wrap{
+                    border-radius: 12px 12px 0 0;
+                    border-right: 1px solid #E5E7EB !important;
+                }
+                .quotation_to_wrap{
+                    border-radius: 0 0 12px 12px;
+                }
+                .quotation_from_wrap,.quotation_to_wrap{
+                    width: 100%;
+                    padding: 16px 10px;
+                    &.openmenu{
+                        border: 1px solid #4848F7 !important;
+                    }
+                }
+                .location_wrap {
+                    align-items: center;
+                    .icon{
+                        width: 40px;
+                        height: 40px;
+                        img{
+                            width: 28px;
+                        }
+                    }
+                    .form-label{
+                        font-size: 12px;
+                        margin: 0 0 5px;
+                    }
+                    .value {
+                        font-size: 14px;
+                        img{
+                            width: 15px;
+                            height: 15px;
+                        }
+                    }
+                }
+                .location_dropdown_wrap{
+                    flex-direction: column;
+                    // position: static;
+                }
+            }
         }
     }
+    @media only screen and (max-width: 767px) {
+        .create_quote_top_back{
+            flex-direction: column;
+            align-items: flex-start !important;
+            gap: 10px;
+            .back_wrap {
+                p{
+                    font-size: 14px;
+                    line-height: 16px;
+                }
+            }
+            > button{
+                margin: 0 !important;
+            }
+        }
+        .create_sales_search_forms .quotation_select_port_wrap{
+            .location_dropdown_wrap {
+                .dropdown {
+                    .dropdown-menu .custom-option{
+                        flex-wrap: wrap;
+                        padding: 10px;
+                        p{
+                            font-size: 13px;
+                        }
+                    }
+                }
+            }
+        }
+    }   
 }
 .common_dropdwon_btn_wrap {
     position: relative;
@@ -773,6 +905,12 @@
                     @include font($font-weight-medium,16px,normal,$neutral_8);
                     letter-spacing: 0.16px;
                 }
+                @media only screen and (max-width: 767px) {
+                    padding: 10px;
+                    p{
+                        font-size: 14px;
+                    }
+                }   
             }
         }
         &.shipping{
@@ -849,5 +987,114 @@
                 }
             }
         }
+    }
+}
+
+.common_dropdown_wrap.container_drop_wrap {
+    padding: 16px;
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type="number"]{
+        @include appearance;
+    }
+    .accordion-item {
+        border-radius: 12px;
+        border: 1px solid $neutral_2;
+        background: $white;
+        &:not(:last-child){
+            margin-bottom: 16px;
+        }
+    }
+    .accordion-header{
+        .accordion-button {
+            background: transparent;
+            padding: 12px 12px 12px 40px;
+            @include font(500,14px,normal,$neutral_8);
+            box-shadow: none;
+            &::after{
+                right: auto;
+                left: 16px;
+                position: absolute;
+                background-size: 13px;
+                background-position: center;
+            }
+        }
+    }
+    .accordion-body{
+        padding-top: 0;
+        .field_wrap {
+            display: flex;
+            gap: 12px;
+            .input_field {
+                width: 100%;
+            }
+            .field_dropdown {
+                position: relative;
+                input[type="number"]{
+                    padding-right: 60px;
+                }
+                .dropdown {
+                    position: absolute;
+                    right: 1px;
+                    bottom: 1px;
+                    & > a {
+                        @include font(400,14px,36px,$neutral_8);
+                        padding: 0;
+                        height: 36px;
+                        padding-right: 10px;
+                        background: $white;
+                        border-radius: 8px;
+                    }
+                }
+            }
+        }
+    }    
+    .dimention_field{
+        .form-label{
+            @include font(600,12px,normal,$neutral_5);
+            letter-spacing: 0.24px;
+            text-transform: uppercase;
+        }
+        .input_field_wrap {
+            gap: 8px;
+            .input_field{
+                width: 100%;
+                position: relative;
+                &::before{
+                    content: 'L';
+                    position: absolute;
+                    right: 12px;
+                    top: 10px;
+                    @include font(400,14px,normal,$neutral_5);
+                }
+                &.dimention_w::before{
+                    content: 'W';
+                }
+                &.dimention_h::before{
+                    content: 'H';
+                }
+                input[type="number"]{
+                    padding-right: 24px;                    
+                }
+                .dropdown{
+                    .dimention_drop{
+                        border-radius: 8px;
+                        border: 1px solid #E5E7EB;
+                        background-color: #ffffff;
+                        width: 100%;
+                        @include font(400,14px,normal,$neutral_8);
+                    }
+                }
+            }
+        }
+    }
+    .btn_wrap{
+        border-top: 1px solid $neutral_2;
+        padding-top: 16px;
+        margin-top: 16px;
+        gap: 16px;
     }
 }

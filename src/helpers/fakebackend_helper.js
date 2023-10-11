@@ -307,6 +307,7 @@ export const getInlandTableData = () => get(url.GET_INLAND);
 
 // ---------------- sales ----------------------------------------
 export const getSalesQuotTableData = () => get(url.GET_QUOTATION);
+export const getSearchResultData = () => get(url.GET_QUOTATION_SEARCH_RESULT);
 
 export {
   getLoggedInUser,

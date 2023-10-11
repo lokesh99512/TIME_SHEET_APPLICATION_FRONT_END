@@ -132,3 +132,4 @@ export const GET_INLAND = "/get-inland"
 
 // -------------------- Sales --------------------------------------------
 export const GET_QUOTATION = "get-quotation"
+export const GET_QUOTATION_SEARCH_RESULT = "get-quotation-result"

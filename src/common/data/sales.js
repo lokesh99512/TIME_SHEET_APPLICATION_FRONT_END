@@ -1,5 +1,5 @@
 import React from "react"
-import { australia, azerbaijan, india, memoji, pickup_icon, pickup_icon2, pickup_icon3, pickup_icon4, pickup_icon5, pickup_icon6, unitedkingdom, unitedstates } from "../../assets/images"
+import { australia, azerbaijan, cma_logo, india, memoji, pickup_icon, pickup_icon2, pickup_icon3, pickup_icon4, pickup_icon5, pickup_icon6, unitedkingdom, unitedstates } from "../../assets/images"
 
 // --------- breadcrumbs -----------------------------
 const quotationBreadcrumb = [
@@ -191,69 +191,42 @@ const quotationTableData = [
     },
 ]
 
+const searchQuotationResult = [
+    {
+        id: '1234567890',
+        logo: cma_logo,
+        name: 'CMA CGM',
+        location_from: 'Shenzhen',
+        location_to: 'Winnipeg',
+        duration: '41',
+        valid_from: '01 Jan 2023',
+        co_two: '7213.27 kg CO2',
+        pickup_co: '7213.27 kg CO2',
+        truck_day: '1',
+        truck_km: '4.68',
+        truck_charge: '207',
+        rail_charge: '0',
+        origin_port_co: '18.52 kg CO2',
+        origin_pch_charge: '75',
+        origin_pcsd_charge: '600',
+        origin_sbcio_charge: '600',
+        origin_dfo_charge: '70',
+        origin_dtc_charge: '40',
+        origin_eds_charge: '25',
+        origin_ips_charge: '75',
+        origin_sse_charge: '4',
+        origin_war_charge: '36',
+        origin_othc_charge: '400',
+        ocean_freight_co: '7213.27 kg CO2',
+        fifo_standard: '5242',
+        pickport_discharge_co: '18.52 kg CO2',
+        pickport_discharge_charge: '680',
+        delivery_charge: '12.03 kg CO2',
+        delivery_charge: '2473',
+    }
+]
+
 // --------------- options ---------------
-// const optionCustomerName = [
-//     {value: "1", label: (
-//       <div className="custom-option">
-//         <img
-//           src={memoji}
-//           alt="Profile"
-//           className="profile-picture"
-//         />
-//         <div>Jimmy Camacho</div>
-//       </div>
-//     ), },
-//     {value: "2",label: (
-//       <div className="custom-option">
-//         <img
-//           src={memoji}
-//           alt="Profile"
-//           className="profile-picture"
-//         />
-//         <div>Hermione Walker</div>
-//       </div>
-//     ), },
-//     {value: "3",label: (
-//       <div className="custom-option">
-//         <img
-//           src={memoji}
-//           alt="Profile"
-//           className="profile-picture"
-//         />
-//         <div>Andreas Benjamin</div>
-//       </div>
-//     ), },
-//     {value: "4",label: (
-//       <div className="custom-option">
-//         <img
-//           src={memoji}
-//           alt="Profile"
-//           className="profile-picture"
-//         />
-//         <div>Mackenzie Dale</div>
-//       </div>
-//     ), },
-//     {value: "5",label: (
-//       <div className="custom-option">
-//         <img
-//           src={memoji}
-//           alt="Profile"
-//           className="profile-picture"
-//         />
-//         <div>Andreas Benjamin</div>
-//       </div>
-//     ), },
-//     {value: "6",label: (
-//       <div className="custom-option">
-//         <img
-//           src={memoji}
-//           alt="Profile"
-//           className="profile-picture"
-//         />
-//         <div>Harri Roberson</div>
-//       </div>
-//     ), }
-// ]
 const optionCustomerName = [
     {value: "1", name: 'Jimmy Camacho',img: memoji},
     {value: "2", name: 'Hermione Walker',img: memoji},
@@ -272,6 +245,10 @@ const optionTransportBy = [
     {value: "fcl", name: 'FCL'},
     {value: "lcl", name: 'LCL'},
     {value: "bulk", name: 'Bulk'},
+]
+const optionAirTransportBy = [
+    {value: "console", name: 'Console'},
+    {value: "master_waybill", name: 'Master Waybill'},
 ]
 const optionIncoterm = [
     {value: "CPT", name: 'Carraige Paid To(CPT)'},
@@ -328,7 +305,14 @@ const optionPortList = [
     {value: 'usnyc', label:'USNYC'},
 ]
 
+const weightUnitOption= [
+    {value: 'kg', name: 'KG'},
+    {value: 'mg', name: 'MG'},
+    {value: 'gt', name: 'GT'},
+    {value: 't', name: 'Tonne'},
+]
+
 export {
     quotationBreadcrumb,quotationRateData,quotationTableData,optionCustomerName,optionServiceType,optionTransportBy,optionContainerType,optionIncoterm,optionCargoType,optionCurrency,
-    optionlocationType,countryList,optionPortList
+    optionlocationType,countryList,optionPortList,optionAirTransportBy,searchQuotationResult,weightUnitOption
 }
