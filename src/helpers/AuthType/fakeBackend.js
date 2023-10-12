@@ -34,6 +34,7 @@ import {
   PieChart1YData, PieChart6MData, PieChart1MData, PieChartAllData, InvestedOverviewMay, InvestedOverviewApril, InvestedOverviewMarch,
   InvestedOverviewFeb, InvestedOverviewJan, InvestedOverviewDec, fclTableData, lclTableData, waybillTableData, consoleTableData, inLandTableData, quotationTableData, searchQuotationResult
 } from "../../common/data"
+import { fclSurchargeTableData } from "../../common/data/rate"
 
 let users = [
   {
@@ -921,6 +922,28 @@ const fakeBackend = () => {
       });
     })
   })
+
+
+  
+
+  // rate/surcharge/ fclsurcharge
+  
+  mock.onGet(url.GET_FCL_SURCHARGE).reply(() => {
+    // console.log("hello");
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (fclSurchargeTableData) {
+          // console.log(fclSurchargeTableData,"<<tdata");
+          // Passing fake JSON data as response
+          resolve([200, fclSurchargeTableData])
+        } else {
+          reject([400, "Cannot get FCL data"])
+        }
+      })
+    })
+  })
 }
+
+
 
 export default fakeBackend

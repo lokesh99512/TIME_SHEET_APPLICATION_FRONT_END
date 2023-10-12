@@ -27,6 +27,9 @@ import dashboard from "./Dashboard/reducer"
 // -Procurement
 import procurement from "./Procurement/reducer"
 
+// rate
+import rate from "./RateManagement/reducer"
+
 // Sales
 import sales from "./Sales/reducer"
 
@@ -43,7 +46,8 @@ const rootReducer = combineReducers({
   contacts,
   dashboard,
   procurement,
-  sales
+  sales,
+  rate
 })
 
 export default rootReducer

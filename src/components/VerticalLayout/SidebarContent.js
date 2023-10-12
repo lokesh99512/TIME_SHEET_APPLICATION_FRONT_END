@@ -18,6 +18,10 @@ import withRouter from "../Common/withRouter"
 //i18n
 import { withTranslation } from "react-i18next"
 
+const option = [
+  {}
+]
+
 const SidebarContent = props => {
   const ref = useRef();
   const activateParentDropdown = useCallback((item) => {
@@ -275,6 +279,28 @@ const SidebarContent = props => {
               </Link>
               <ul className="sub-menu">
                 <li>
+                  <Link to="/#" className="has-arrow">
+                    <span>Surcharge Master</span>
+                  </Link>
+                  <ul className="sub-menu">
+                    <li>
+                      <Link to="/rate/surcharge/fcl">
+                        <span>FCL Surcharge Master</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/freight/ocean/lcl">
+                        <span>LCL Surcharge Master</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/freight/ocean/portlocal">
+                        <span>Air Surcharge Master</span>
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+                {/* <li>
                   <Link to="/#">
                     <span className="menu_circle"></span>
                     <span>Tariff</span>
@@ -285,8 +311,8 @@ const SidebarContent = props => {
                     <span className="menu_circle"></span>
                     <span>Charge Master</span>
                   </Link>
-                </li>
-                <li>
+                </li> */}
+                {/* <li>
                   <Link to="/#">
                     <span className="menu_circle"></span>
                     <span>Discount Master</span>
@@ -297,7 +323,7 @@ const SidebarContent = props => {
                     <span className="menu_circle"></span>
                     <span>Air Commicion Master</span>
                   </Link>
-                </li>
+                </li> */}
               </ul>
             </li>
             <li>

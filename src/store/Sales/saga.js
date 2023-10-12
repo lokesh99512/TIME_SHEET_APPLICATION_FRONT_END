@@ -15,6 +15,7 @@ function* fetchSalesQuotationData(){
 function* fetchResultData(){
     try {
         const response = yield call(getSearchResultData);
+        // console.log(response,"response");
         yield put({type: GET_QUOTATION_RESULT_SUCCESS, payload: response})
     } catch (error) {
         yield put({type: GET_QUOTATION_RESULT_FAIL, payload: error})
