@@ -244,11 +244,10 @@ const optionServiceType = [
 const optionTransportBy = [
     {value: "fcl", name: 'FCL'},
     {value: "lcl", name: 'LCL'},
-    {value: "bulk", name: 'Bulk'},
 ]
-const optionAirTransportBy = [
-    {value: "console", name: 'Console'},
-    {value: "master_waybill", name: 'Master Waybill'},
+const optionLandTransportBy = [
+    {value: "ftl", name: 'FTL'},
+    {value: "ltl", name: 'LTL'},
 ]
 const optionIncoterm = [
     {value: "CPT", name: 'Carraige Paid To(CPT)'},
@@ -265,9 +264,19 @@ const optionContainerType = [
     {id: '_standard1',value: "20_standard", name: "20' Standard"},
     {id: '_standard2',value: "40_standard", name: "40' Standard"},
     {id: '_high_cube1',value: "40_high_cube", name: "40' High Cube"},
-    {id: '_high_cube2',value: "40_refrigerated", name: "20' Refrigerated"},
-    {id: '_refrigerated1',value: "40_refrigerated", name: "40' Refrigerated"},
-    {id: '_refrigerated2',value: "45_high_cube", name: "45' High Cube"},
+    {id: '_refrigerated1',value: "40_refrigerated", name: "20' Refrigerated"},
+    {id: '_refrigerated2',value: "40_refrigerated", name: "40' Refrigerated"},
+    {id: '_high_cube2',value: "45_high_cube", name: "45' High Cube"},
+]
+const optionContainerTypeRefrigerated = [
+    {id: '_refrigerated1',value: "40_refrigerated", name: "20' Refrigerated"},
+    {id: '_refrigerated2',value: "40_refrigerated", name: "40' Refrigerated"},
+]
+const optionContainerTypeWithoutRefri = [
+    {id: '_standard1',value: "20_standard", name: "20' Standard"},
+    {id: '_standard2',value: "40_standard", name: "40' Standard"},
+    {id: '_high_cube1',value: "40_high_cube", name: "40' High Cube"},
+    {id: '_high_cube2',value: "45_high_cube", name: "45' High Cube"},
 ]
 const optionCargoType = [
     {value: "hazardous", name: "Hazardous"},
@@ -307,12 +316,10 @@ const optionPortList = [
 
 const weightUnitOption= [
     {value: 'kg', name: 'KG'},
-    {value: 'mg', name: 'MG'},
-    {value: 'gt', name: 'GT'},
-    {value: 't', name: 'Tonne'},
+    {value: 'pound', name: 'pound '},
 ]
 
 export {
     quotationBreadcrumb,quotationRateData,quotationTableData,optionCustomerName,optionServiceType,optionTransportBy,optionContainerType,optionIncoterm,optionCargoType,optionCurrency,
-    optionlocationType,countryList,optionPortList,optionAirTransportBy,searchQuotationResult,weightUnitOption
+    optionlocationType,countryList,optionPortList,optionLandTransportBy,searchQuotationResult,weightUnitOption,optionContainerTypeWithoutRefri,optionContainerTypeRefrigerated
 }

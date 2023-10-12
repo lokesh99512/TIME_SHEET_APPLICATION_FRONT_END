@@ -10,12 +10,14 @@ import SearchResultComp from './SearchResultComp';
 
 export default function CreateQuotation() {
     const [searchResult, setSearchResult] = useState(false);
+    const [searchView, setSearchView] = useState(true);
     const searchData = useSelector((state) => state?.sales?.createFields);    
     const navigate = useNavigate();
     const dispatch = useDispatch();    
 
     const searchQuoteHandler = () => {
         setSearchResult(true);
+        setSearchView(false);
         dispatch(getSalesQuotationResultData());
     }
     return (
@@ -23,21 +25,23 @@ export default function CreateQuotation() {
             <div className="page-content sales_page_content">
                 <Container fluid>
                     <div className="main_freight_wrapper main_sales_wrapper create_sales_wrapper">
-                        <div className='create_quote_top_back d-flex align-items-center'>
+                        <div className='create_quote_top_back d-flex align-items-center mb-3'>
                             <div className="back_wrap d-flex align-items-center">
                                 <button type="button" className='btn me-3' onClick={() => { navigate(-1) }}> <i className='fas fa-chevron-left'></i> </button>
                                 <p>Find the most affordable Freight Quote.</p>
                             </div>
-                            <button type="button" className='btn btn-primary ms-auto' onClick={searchQuoteHandler} disabled={isAnyValueEmpty(searchData)}>Search</button>
+                            <button type="button" className='btn btn-primary ms-auto' onClick={searchQuoteHandler} 
+                            // disabled={isAnyValueEmpty(searchData)}
+                            >{searchResult ? 'Quote Now' : 'Search'}</button>
                         </div>
 
                         {/* Create Quote Search fields */}
-                        <CreateQuoteTop />
+                        <CreateQuoteTop searchView={searchView} setSearchView={setSearchView} searchResult={searchResult} />
 
                         {/* Search Result */}
-                        {/* {searchResult && (
+                        {searchResult && (
                             <SearchResultComp />
-                        )} */}
+                        )}
                     </div>
                 </Container>
             </div>

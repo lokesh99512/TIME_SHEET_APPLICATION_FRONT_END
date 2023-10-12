@@ -1,14 +1,13 @@
-import { GET_QUOTATION_DATA_FAIL, GET_QUOTATION_DATA_SUCCESS, GET_QUOTATION_RESULT_FAIL, GET_QUOTATION_RESULT_SUCCESS, UPDATE_SEARCH_QUOTATION_CURRENCY, UPDATE_SEARCH_QUOTATION_DATA, UPDATE_SEARCH_QUOTATION_DATE, UPDATE_SEARCH_QUOTATION_LOCATION, UPDATE_SEARCH_QUOTATION_LOCATION_FROM, UPDATE_SEARCH_QUOTATION_LOCATION_TO, UPDATE_SEARCH_QUOTATION_SWAP } from "./actiontype"
+import { GET_QUOTATION_DATA_FAIL, GET_QUOTATION_DATA_SUCCESS, GET_QUOTATION_RESULT_FAIL, GET_QUOTATION_RESULT_SUCCESS, UPDATE_CONTAINERTYPE_CONFIRM, UPDATE_CONTAINER_CHANGE, UPDATE_SEARCH_QUOTATION_CURRENCY, UPDATE_SEARCH_QUOTATION_DATA, UPDATE_SEARCH_QUOTATION_DATE, UPDATE_SEARCH_QUOTATION_LOCATION, UPDATE_SEARCH_QUOTATION_LOCATION_FROM, UPDATE_SEARCH_QUOTATION_LOCATION_TO, UPDATE_SEARCH_QUOTATION_SWAP, UPDATE_VALUE_BLANK } from "./actiontype"
 
 
 const INIT_STATE = {
     quotation_data: [],
     quotation_error: {},
     createFields: {
-        customer_name: '',
+        // customer_name: '',
         shipping_by: '',
         service_type: '',
-        transport_by: '',
         container_type: '',
         incoterm: '',
         cargo_type: '',
@@ -97,6 +96,31 @@ const sales = (state=INIT_STATE,action) => {
                     ...state.createFields,
                     location_to: state.createFields.location_from,
                     location_from: state.createFields.location_to
+                }
+            }
+        case UPDATE_CONTAINERTYPE_CONFIRM:
+            let newArry = {
+                ...state,
+                createFields: {
+                    ...state.createFields,
+                    container_type: action.payload,
+                }
+            }
+            return state = newArry
+        case UPDATE_CONTAINER_CHANGE:            
+            return {
+                ...state,
+                createFields: {
+                    ...state.createFields,
+                    container_type: action.payload
+                }
+            }
+        case UPDATE_VALUE_BLANK:            
+            return {
+                ...state,
+                createFields: {
+                    ...state.createFields,
+                    [action.payload]: ''
                 }
             }
 

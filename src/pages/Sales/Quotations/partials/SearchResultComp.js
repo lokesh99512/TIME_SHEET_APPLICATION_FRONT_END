@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from "classnames";
 import SearchResultCard from './SearchResultCard';
+import { useSelector } from 'react-redux';
 
 const SearchResultComp = () => {
     const [activeTab, setactiveTab] = useState("preferred");

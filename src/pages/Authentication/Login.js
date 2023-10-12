@@ -41,10 +41,15 @@ const Login = props => {
         enableReinitialize: true,
 
         initialValues: {
-        validateonmount: true,
-            email: "admin@themesbrand.com" || '',
+            validateonmount: true,
+            email: "darshita.uidev@gmail.com" || '',
             password: "123456" || '',
         },
+        // initialValues: {
+        //     validateonmount: true,
+        //     email: "admin@themesbrand.com" || '',
+        //     password: "123456" || '',
+        // },
         validationSchema: Yup.object({
             email: Yup.string().required('Please enter an email address').matches(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/, 'Please enter a valid email address' ),
             password: Yup.string().required('Please enter a password'),
