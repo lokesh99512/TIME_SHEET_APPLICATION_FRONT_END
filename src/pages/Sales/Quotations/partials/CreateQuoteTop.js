@@ -20,7 +20,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
     const createFields = useSelector((state) => state?.sales?.createFields);
     const dispatch = useDispatch();
     const [containerArray, setcontainerArray] = useState([]);
-    const [calculateVal, setCalculateVal] = useState();
+    const [calculateVal, setCalculateVal] = useState({});
     const ref = useRef();
     const [unitValue, setUnitValue] = useState({
         _standard1: 0,
@@ -38,7 +38,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
             dimensions_l: '',
             dimensions_w: '',
             dimensions_h: '',
-            dimensions_unit: 'IN',
+            dimensions_unit: '',
         }
     ])
 
@@ -112,14 +112,35 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
 
     const contanerTypeValHandler = (val, name, index) => {
         const list = [...containerType];
+        if(name === 'weight_unit'){
+            list[index].dimensions_unit = ''
+        }
         list[index][name] = val;
         setContainerType(list);
     }
     const confirmHandler = () => {
-        // console.log(calculateVal,"calculateVal");
-        // console.log(calculateVal,"calculateVal");
+        let lval = Number(containerType[0].dimensions_l);
+        let wval = Number(containerType[0].dimensions_w);
+        let hval = Number(containerType[0].dimensions_h);
+        if(containerType[0].weight_unit === 'KG'){
+            if(containerType[0].dimensions_unit === 'CM'){
+                let amount = (lval * wval * hval)/100000
+                // let cbmAmount= amount / 6000
+                setCalculateVal({amount: amount, mesure: 'cbm'});
+            } else { 
+                let amount = (lval * wval * hval)
+                setCalculateVal({amount: amount, mesure: 'cbm'});
+            }
+        } else {
+            let lvalFeet = lval / 12  //convert inches into feet
+            let wvalFeet = wval / 12  //convert inches into feet
+            let hvalFeet = hval / 12  //convert inches into feet
+            let cftAmount = (lvalFeet * wvalFeet * hvalFeet)
+            setCalculateVal({amount: cftAmount, mesure: 'cft'});
+        }
+
         console.log(containerType, "containerType-------------");
-        dispatch({ type: UPDATE_CONTAINERTYPE_CONFIRM, payload: [...containerType] });
+        dispatch({ type: UPDATE_CONTAINERTYPE_CONFIRM, payload: containerType });
         setIsOpen(false);
     }
     // --------- increament / decreament
@@ -161,7 +182,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
     };
     useOutsideClick(dropdownRef, setIsOpen);
     // ------------ custom dropdown -------------------    
-    console.log(createFields, "createFields")
+    // console.log(createFields, "createFields")
     return (
         <>
             <div className="create_sales_search_forms">
@@ -604,7 +625,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                                         {/* {(createFields?.container_type?.name || 'Select Container Type')} */}
                                                         {createFields?.container_type?.length !== 0 ? (
                                                             <>
-                                                            {createFields?.container_type[0].no_unit} Units | 0.007 cbm | {createFields?.container_type[0].weight} {createFields?.container_type[0].weight_unit}                                                            
+                                                            {createFields?.container_type[0].no_unit} Units | {calculateVal ? `${calculateVal?.amount?.toFixed(4)} ${calculateVal?.mesure} |` : ''} {Number(createFields?.container_type[0].no_unit) * Number(createFields?.container_type[0].weight)} {createFields?.container_type[0].weight_unit}                                                            
                                                             </>
                                                         ) : 'Select Container Type'}
                                                     </span>
@@ -655,6 +676,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                                                                 <div className="input_field dimention_h">
                                                                                     <input type="number" value={containerType[index].dimensions_h || ''} className="form-control" id={`dimensions_h_${index}`} onChange={(e) => { contanerTypeValHandler(e.target.value, 'dimensions_h', index); }} />
                                                                                 </div>
+                                                                                {console.log(containerType[index].weight_unit,"containerType[index].weight_unit")}
                                                                                 <div className="input_field">
                                                                                     <UncontrolledDropdown>
                                                                                         <DropdownToggle className="btn btn-link dimention_drop d-flex justify-content-between" tag="a">
@@ -662,9 +684,9 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                                                                             <i className="mdi mdi-chevron-down" />
                                                                                         </DropdownToggle>
                                                                                         <DropdownMenu className="dropdown-menu-end">
-                                                                                            <DropdownItem onClick={() => { contanerTypeValHandler('IN', 'dimensions_unit', index); }}>IN</DropdownItem>
-                                                                                            <DropdownItem onClick={() => { contanerTypeValHandler('CM', 'dimensions_unit', index); }}>CM</DropdownItem>
-                                                                                            <DropdownItem onClick={() => { contanerTypeValHandler('MM', 'dimensions_unit', index); }}>MM</DropdownItem>
+                                                                                            <DropdownItem className={`${containerType[index].weight_unit === 'KG' ? 'disabled' : ''}`} onClick={() => { contanerTypeValHandler('IN', 'dimensions_unit', index); }}>IN</DropdownItem>
+                                                                                            <DropdownItem className={`${containerType[index].weight_unit === 'pound' ? 'disabled' : ''}`} onClick={() => { contanerTypeValHandler('CM', 'dimensions_unit', index); }}>CM</DropdownItem>
+                                                                                            <DropdownItem className={`${containerType[index].weight_unit === 'pound' ? 'disabled' : ''}`} onClick={() => { contanerTypeValHandler('MM', 'dimensions_unit', index); }}>MM</DropdownItem>
                                                                                         </DropdownMenu>
                                                                                     </UncontrolledDropdown>
                                                                                 </div>

@@ -1,18 +1,87 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CheckboxCommon from '../../../Common/CheckboxCommon'
 import { useSelector } from 'react-redux';
 import { cube_filled, truck_outline } from '../../../../assets/images';
-import { AccordionBody, AccordionHeader, AccordionItem, UncontrolledAccordion } from 'reactstrap';
+import { Accordion, AccordionBody, AccordionHeader, AccordionItem, UncontrolledAccordion } from 'reactstrap';
+import { useDispatch } from 'react-redux';
+import { UPDATE_QUOTATION_RESULT_DETAILS } from '../../../../store/Sales/actiontype';
 
-const SearchResultCard = ({data}) => {
-    const [resultCheck,setResultCheck] = useState({});
-    // const [resultCheck,setResultCheck] = useState({});
+const SearchResultCard = ({ data }) => {
+    const [resultCheck, setResultCheck] = useState({});
+    const [showDetails,setShowDetails] = useState(false);
     const createFields = useSelector((state) => state?.sales?.createFields);
-    console.log(resultCheck,"resultCheck-------")
+    const dispatch = useDispatch();
+    const [open, setOpen] = useState('');
+
+    const toggle = (id) => {
+        if (open === id) {
+        setOpen();
+        } else {
+        setOpen(id);
+        }
+    };
+
+    const showDetailsHandler = (index) => {
+        // let newArr = [...showDetails];
+        // newArr[index].details = !newArr[index].details;
+        // setShowDetails(newArr);
+        setShowDetails(!showDetails);
+    }
+
+    const handleChange = (val, name, index) => {
+        dispatch({ type: UPDATE_QUOTATION_RESULT_DETAILS, payload: { name, value: val, index } })
+    }
+
+    const countPickup = (item) => {
+        if (item.pickup_val === 'truck') {
+            return item.truck_charge
+        } else {
+            return item.rail_charge
+        }
+    }
+
+    const TotalQuotationCount = (item) => {
+        let amount = 0;
+        let pickupCharge = 0;
+        let originPortCharge = 0;
+        if (item.pickup) {
+            if (item.pickup_val === 'truck') {
+                pickupCharge = Number(item.truck_charge || 0)
+            } else {
+                pickupCharge = Number(item.rail_charge || 0)
+            }
+            amount += pickupCharge
+        }
+        if (item.origin_port) {
+            originPortCharge = Number(item.origin_pch_charge || 0) + Number(item.origin_pcsd_charge || 0) 
+            + Number(item.origin_sbcio_charge || 0) + Number(item.origin_dfo_charge || 0) 
+            + Number(item.origin_dtc_charge || 0) + Number(item.origin_eds_charge || 0) 
+            + Number(item.origin_ips_charge || 0) + Number(item.origin_por_charge || 0) 
+            + Number(item.origin_sse_charge || 0) + Number(item.origin_war_charge || 0) + Number(item.origin_othc_charge || 0)
+            amount += originPortCharge
+        }
+        if (item.ocean_freight){
+            amount+= Number(item.fifo_standard || 0);
+        }
+        if (item.pickport_discharge){
+            amount+= Number(item.pickport_discharge_charge || 0);
+        }
+        if (item.delivery){
+            amount+= Number(item.delivery_charge || 0);
+        }
+        return amount;
+    }
+    // console.log(showDetails,"showDetails----")
+    // useEffect(() => {
+    //     let array = data?.map((item) => {
+    //         return {details: false}
+    //     })
+    //     setShowDetails(array);
+    // }, [data]);
     return (
         <div>
             <div className="result_tab_content_wrap">
-                {(data || '').map((item,index) => (
+                {data?.length !== 0 ? data.map((item, index) => (
                     <div className="search_result_card_check_wrap d-flex align-items-center" key={item.id}>
                         <CheckboxCommon label={''} id={`result_card_${index}`} name={`result_card_${index}`} className={'me-3'} array={resultCheck} setArray={setResultCheck} />
                         <div className="search_result_card">
@@ -29,73 +98,261 @@ const SearchResultCard = ({data}) => {
                                         <span className="to_loc">{item.location_to}</span>
                                     </div>
                                     <div className="row">
-                                        <div className="col-lg-4 text-left"><span>Valid: <b>01 Jan 2023</b></span></div>
-                                        <div className="col-lg-4 text-center"><span>Id: <b>1234567890</b></span></div>
-                                        <div className="col-lg-4 text-right"><span>CO2: <b>7213.27 kg CO2</b></span></div>
+                                        <div className="col-lg-4 text-left"><span>Valid: <b>{item.valid_from || '-'}</b></span></div>
+                                        <div className="col-lg-4 text-center"><span>Id: <b>{item.id || '-'}</b></span></div>
+                                        <div className="col-lg-4 text-end"><span>CO2: <b>{item.co_two || '-'}</b></span></div>
                                     </div>
                                 </div>
                                 <div className="total_wrap">
-                                    <p className="total_price text-center"><b>$12,333</b></p>
+                                    <p className="total_price text-center"><b>${TotalQuotationCount(item)}</b></p>
                                     <div className="btn_wrap d-flex">
-                                        <button type='button' className='btn text-primary'>View Detail</button>
+                                        <button type='button' className='btn text-primary view_detail_btn' onClick={() => {showDetailsHandler(index);}}>
+                                            View{showDetails ? 'Less' : 'Detail'}</button>
+                                            {/* View{showDetails[index]?.details ? 'Less' : 'Detail'}</button> */}
                                         <button type='button' className='btn btn-primary'>Quote Now</button>
                                     </div>
                                 </div>
                             </div>
-                            <div className="search_result_accordion_details">
-                                {/* <UncontrolledAccordion>
+                            {showDetails && (
+                                <div className="search_result_accordion_details">
+                                    <Accordion flush open={open} toggle={toggle}>
                                         <AccordionItem>
                                             <AccordionHeader targetId={`pickup_${index}`}>
-                                                <div className="left_lable">
-                                                    <CheckboxCommon label={''} id={`pickup_${index}`} name={`pickup_${index}`} className={'me-3'} array={resultCheck} setArray={setResultCheck} />
-                                                    <img src={truck_outline} alt="Truck" />
+                                                <div className="left_lable d-flex align-items-center">
+                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.pickup, 'pickup', index); }}>
+                                                        <input
+                                                            className="form-check-input"
+                                                            type="checkbox"
+                                                            id={`pickup_${index}`}
+                                                            name={`pickup`}
+                                                            checked={item.pickup || false}
+                                                            readOnly
+                                                        />
+                                                        <label className="form-check-label" htmlFor={`pickup_${index}`}></label>
+                                                    </div>
+                                                    <img src={truck_outline} alt="Truck" className='me-2' />
+                                                    Pick up
                                                 </div>
-                                                <div className="right_con">
-                                                    <span>CO2: <b>7213.27 kg CO2</b></span>
-                                                    <span className='text-primary'>$207</span>
+                                                <div className="right_con d-flex ms-auto">
+                                                    <span>CO2: <b>{item.pickup_co}</b></span>
+                                                    <span className='text-primary'>${countPickup(item)}</span>
                                                 </div>
                                             </AccordionHeader>
                                             <AccordionBody accordionId={`pickup_${index}`}>
-                                                test
+                                                <div className="radio_wrap">
+                                                    <div className="radio_con d-flex ps-5">
+                                                        <div className={`form-check d-flex align-items-center`} onClick={(e) => handleChange('truck', 'pickup_val', index)}>
+                                                            <input
+                                                                className="form-check-input me-2"
+                                                                type="radio"
+                                                                name={'pickup_val'}
+                                                                id={'pickup_truck'}
+                                                                value={'truck'}
+                                                                checked={item.pickup_val === 'truck'}
+                                                                readOnly
+                                                            />
+                                                            <label className="form-check-label" htmlFor={'pickup_truck'}>
+                                                                Truck
+                                                            </label>
+                                                        </div>
+                                                        <div className="pickup_details ms-auto d-flex justify-content-end">
+                                                            <span>{item.truck_day ? `${item.truck_day} day` : ''}</span>
+                                                            <span>{item.truck_km} km</span>
+                                                            <span className='text-primary'>${item.truck_charge || '0'}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="radio_con d-flex ps-5 mt-3">
+                                                        <div className={`form-check d-flex align-items-center`} onClick={(e) => handleChange('rail', 'pickup_val', index)}>
+                                                            <input
+                                                                className="form-check-input me-2"
+                                                                type="radio"
+                                                                name={'pickup_val'}
+                                                                id={'pickup_rail'}
+                                                                value={'rail'}
+                                                                checked={item.pickup_val === 'rail'}
+                                                                readOnly
+                                                            />
+                                                            <label className="form-check-label" htmlFor={'pickup_rail'}>
+                                                                Rail
+                                                            </label>
+                                                        </div>
+                                                        <div className="pickup_details ms-auto d-flex justify-content-end">
+                                                            <span className='text-primary'>${item.rail_charge || '0'}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </AccordionBody>
                                         </AccordionItem>
                                         <AccordionItem>
                                             <AccordionHeader targetId={`origin_port_${index}`}>
-                                                Port of origin(Shekou)
+                                                <div className="left_lable d-flex align-items-center">
+                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.origin_port, 'origin_port', index); }}>
+                                                        <input
+                                                            className="form-check-input"
+                                                            type="checkbox"
+                                                            id={`origin_port${index}`}
+                                                            name={`origin_port`}
+                                                            checked={item.origin_port || false}
+                                                            readOnly
+                                                        />
+                                                        <label className="form-check-label" htmlFor={`origin_port${index}`}></label>
+                                                    </div>
+                                                    <img src={truck_outline} alt="Truck" className='me-2' />
+                                                    Port of origin(Shekou)
+                                                </div>
+                                                <div className="right_con d-flex ms-auto">
+                                                    <span>CO2: <b>{item.origin_port_co}</b></span>
+                                                    <span className='text-primary'>$207</span>
+                                                </div>
                                             </AccordionHeader>
                                             <AccordionBody accordionId={`origin_port_${index}`}>
-                                                Port of origin(Shekou)
+                                                <div className="price_details_wrap ps-5">
+                                                    <div className="details d-flex justify-content-between">
+                                                        <p className='me-2'><b>CMA-PCH</b> - Pre carriage haulage</p>
+                                                        <span className='text-primary'>${item.origin_pch_charge || '0'}</span>
+                                                    </div>
+                                                    <div className="details d-flex justify-content-between">
+                                                        <p className='me-2'><b>CMA-PCSD</b> - Pre carriage haulage</p>
+                                                        <span className='text-primary'>${item.origin_pcsd_charge || '0'}</span>
+                                                    </div>
+                                                    <div className="details d-flex justify-content-between">
+                                                        <p className='me-2'><b>CMA-SBCIO</b> - Scanning by customs, incl other</p>
+                                                        <span className='text-primary'>${item.origin_sbcio_charge || '0'}</span>
+                                                    </div>
+                                                    <div className="details d-flex justify-content-between">
+                                                        <p className='me-2'><b>DFO</b> - DOC FEE ORIGIN</p>
+                                                        <span className='text-primary'>${item.origin_dfo_charge || '0'}/per lot</span>
+                                                    </div>
+                                                    <div className="details d-flex justify-content-between">
+                                                        <p className='me-2'><b>DTC</b> - Import Serenity Container Guar</p>
+                                                        <span className='text-primary'>${item.origin_dtc_charge || '0'}</span>
+                                                    </div>
+                                                    <div className="details d-flex justify-content-between">
+                                                        <p className='me-2'><b>EDS</b> - Export Declaration Surcharge</p>
+                                                        <span className='text-primary'>${item.origin_eds_charge || '0'}/per lot</span>
+                                                    </div>
+                                                    <div className="details d-flex justify-content-between">
+                                                        <p className='me-2'><b>IPS</b> - Destinat.Terminal-Intl Ship&Po</p>
+                                                        <span className='text-primary'>${item.origin_ips_charge || '0'}</span>
+                                                    </div>
+                                                    <div className="details d-flex justify-content-between">
+                                                        <p className='me-2'><b>POR</b> - Port and/or Terminal wharfage</p>
+                                                        <span className='text-primary'>${item.origin_por_charge || '0'}</span>
+                                                    </div>
+                                                    <div className="details d-flex justify-content-between">
+                                                        <p className='me-2'><b>SSE</b> - Sealing service export</p>
+                                                        <span className='text-primary'>${item.origin_sse_charge || '0'}</span>
+                                                    </div>
+                                                    <div className="details d-flex justify-content-between">
+                                                        <p className='me-2'><b>WAR</b> - Extra risk coverage surcharge</p>
+                                                        <span className='text-primary'>${item.origin_war_charge || '0'}</span>
+                                                    </div>
+                                                    <div className="details d-flex justify-content-between">
+                                                        <p className='me-2'><b>OTHC</b> - Original Terminal Handling Charge</p>
+                                                        <span className='text-primary'>${item.origin_othc_charge || '0'}</span>
+                                                    </div>
+                                                </div>
                                             </AccordionBody>
                                         </AccordionItem>
                                         <AccordionItem>
                                             <AccordionHeader targetId={`ocean_freight_${index}`}>
-                                               Ocean Freight(FIFO)
+                                                <div className="left_lable d-flex align-items-center">
+                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.ocean_freight, 'ocean_freight', index); }}>
+                                                        <input
+                                                            className="form-check-input"
+                                                            type="checkbox"
+                                                            id={`ocean_freight${index}`}
+                                                            name={`ocean_freight`}
+                                                            checked={item.ocean_freight}
+                                                            readOnly
+                                                        />
+                                                        <label className="form-check-label" htmlFor={`ocean_freight${index}`}></label>
+                                                    </div>
+                                                    <img src={truck_outline} alt="Truck" className='me-2' />
+                                                    Ocean Freight(FIFO)
+                                                </div>
+                                                <div className="right_con d-flex ms-auto">
+                                                    <span>CO2: <b>{item.ocean_freight_co}</b></span>
+                                                    <span className='text-primary'>${item.fifo_standard || '0'}</span>
+                                                </div>
                                             </AccordionHeader>
                                             <AccordionBody accordionId={`ocean_freight_${index}`}>
-                                               Ocean Freight(FIFO)
+                                                <div className="price_details_wrap ps-5">
+                                                    <div className="details d-flex justify-content-between">
+                                                        <p className='me-2'>20 Standard</p>
+                                                        <span className='text-primary'>${item.fifo_standard || '0'}</span>
+                                                    </div>
+                                                </div>
                                             </AccordionBody>
                                         </AccordionItem>
                                         <AccordionItem>
                                             <AccordionHeader targetId={`pickport_discharge_${index}`}>
-                                               PickPort of discharge(Winnipeg)
+                                                <div className="left_lable d-flex align-items-center">
+                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.pickport_discharge, 'pickport_discharge', index); }}>
+                                                        <input
+                                                            className="form-check-input"
+                                                            type="checkbox"
+                                                            id={`pickport_discharge${index}`}
+                                                            name={`pickport_discharge`}
+                                                            checked={item.pickport_discharge}
+                                                            readOnly
+                                                        />
+                                                        <label className="form-check-label" htmlFor={`pickport_discharge${index}`}></label>
+                                                    </div>
+                                                    <img src={truck_outline} alt="Truck" className='me-2' />
+                                                    PickPort of discharge(Winnipeg)
+                                                </div>
+                                                <div className="right_con d-flex ms-auto">
+                                                    <span>CO2: <b>{item.pickport_discharge_co}</b></span>
+                                                    <span className='text-primary'>${item.pickport_discharge_charge || '0'}</span>
+                                                </div>
                                             </AccordionHeader>
                                             <AccordionBody accordionId={`pickport_discharge_${index}`}>
-                                               PickPort of discharge(Winnipeg)
+                                                <div className="price_details_wrap ps-5">
+                                                    <div className="details d-flex justify-content-between">
+                                                        <p className='me-2'>PickPort of discharge(Winnipeg)</p>
+                                                        <span className='text-primary'>${item.pickport_discharge_charge || '0'}</span>
+                                                    </div>
+                                                </div>
                                             </AccordionBody>
                                         </AccordionItem>
                                         <AccordionItem>
                                             <AccordionHeader targetId={`delivery_charge_${index}`}>
-                                                Delivery
+                                                <div className="left_lable d-flex align-items-center">
+                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.delivery, 'delivery', index); }}>
+                                                        <input
+                                                            className="form-check-input"
+                                                            type="checkbox"
+                                                            id={`delivery${index}`}
+                                                            name={`delivery`}
+                                                            checked={item.delivery}
+                                                            readOnly
+                                                        />
+                                                        <label className="form-check-label" htmlFor={`delivery${index}`}></label>
+                                                    </div>
+                                                    <img src={truck_outline} alt="Truck" className='me-2' />
+                                                    Delivery
+                                                </div>
+                                                <div className="right_con d-flex ms-auto">
+                                                    <span>CO2: <b>{item.delivery_co}</b></span>
+                                                    <span className='text-primary'>${item.delivery_charge || '0'}</span>
+                                                </div>
                                             </AccordionHeader>
                                             <AccordionBody accordionId={`delivery_charge_${index}`}>
-                                                Delivery
+                                                <div className="price_details_wrap ps-5">
+                                                    <div className="details d-flex justify-content-between">
+                                                        <p className='m-0 me-2'>Delivery</p>
+                                                        <span className='text-primary'>${item.delivery_charge || '0'}</span>
+                                                    </div>
+                                                </div>
                                             </AccordionBody>
                                         </AccordionItem>
-                                </UncontrolledAccordion> */}
-                            </div>
+                                    </Accordion>
+                                </div>
+                            )}
                         </div>
                     </div>
-                ))}
+                )) : ''}
             </div>
         </div>
     )

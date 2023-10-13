@@ -202,6 +202,15 @@ const searchQuotationResult = [
         valid_from: '01 Jan 2023',
         co_two: '7213.27 kg CO2',
         pickup_co: '7213.27 kg CO2',
+        pickup: true,
+        pickup_val: 'truck',
+        truck: true,
+        rail: false,
+        pickup: true,
+        origin_port: true,
+        ocean_freight: true,
+        pickport_discharge: true,
+        delivery: true,
         truck_day: '1',
         truck_km: '4.68',
         truck_charge: '207',
@@ -214,6 +223,7 @@ const searchQuotationResult = [
         origin_dtc_charge: '40',
         origin_eds_charge: '25',
         origin_ips_charge: '75',
+        origin_por_charge: '64',
         origin_sse_charge: '4',
         origin_war_charge: '36',
         origin_othc_charge: '400',
@@ -221,7 +231,7 @@ const searchQuotationResult = [
         fifo_standard: '5242',
         pickport_discharge_co: '18.52 kg CO2',
         pickport_discharge_charge: '680',
-        delivery_charge: '12.03 kg CO2',
+        delivery_co: '12.03 kg CO2',
         delivery_charge: '2473',
     }
 ]
@@ -316,7 +326,7 @@ const optionPortList = [
 
 const weightUnitOption= [
     {value: 'kg', name: 'KG'},
-    {value: 'pound', name: 'pound '},
+    {value: 'pound', name: 'pound'},
 ]
 
 export {
