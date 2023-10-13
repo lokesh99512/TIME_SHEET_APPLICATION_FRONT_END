@@ -2,8 +2,8 @@ import React, { Fragment } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAsyncDebounce, useExpanded, useFilters, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
 import { Row, Table } from 'reactstrap';
-import { filter_icon, upload_icon } from '../../../assets/images';
-import { DefaultColumnFilter, Filter } from '../../../components/Common/filters';
+import { filter_icon, upload_icon } from '../../../../assets/images';
+import { DefaultColumnFilter, Filter } from '../../../../components/Common/filters';
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -74,12 +74,12 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanva
                         <button className='bg-transparent' onClick={toggleRightCanvas}><img src={filter_icon} alt="filter" /></button>
                     </div>
                     <div className="upload_wrap">
-                        <button className='bg-transparent' onClick={() => {navidate(`/rate/upload/uploadFile`);}}>
+                        <button className='bg-transparent' onClick={() => {navidate(`/freight/upload/${component}`);}}>
                             <img src={upload_icon} alt="Upload" />Upload file
                         </button>
                     </div>
                     <div className="add_btn">
-                        <button className='border-0' onClick={() => {navidate(`/rate/upload/${component}`);}}>
+                        <button className='border-0' onClick={() => {navidate(`/freight/ocean/upload/${component}`);}}>
                             <i className='bx bx-plus align-middle'></i> Add
                         </button>
                     </div>

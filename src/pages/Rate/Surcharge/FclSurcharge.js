@@ -12,6 +12,7 @@ import { getFclSurchargeData } from '../../../store/RateManagement/actions'
 import { useDispatch } from 'react-redux'
 import { CarrierName, ChargeAliasCode, ChargeCategory, ChargeCode, ChargeDesc, ChargeId } from './SurchargeCol'
 import { edit_icon, eye_icon } from '../../../assets/images'
+import ModalAddNew from './Modal/ModalAddNewCategory'
 
 
 export default function FclSurcharge() {
@@ -34,6 +35,10 @@ export default function FclSurcharge() {
     const viewPopupHandler = (data) => {
         setModal(true);
         setViewData(data);
+    }
+
+    const onCloseClick = () => {
+        setModal(false);
     }
 
     // right filter sidebar 
@@ -102,7 +107,7 @@ export default function FclSurcharge() {
                             <i className='bx bx-dots-vertical-rounded'></i>
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-end">
-                            <DropdownItem>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
+                            <DropdownItem onClick={(e)=>{console.log(e,"e")}}>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
                             {/* <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem> */}
                             <DropdownItem onClick={(e) => e.stopPropagation()}>
                                 Activate
@@ -133,7 +138,8 @@ export default function FclSurcharge() {
                     <div className="main_freight_wrapper">
 
                         {/* breadcrumbs && rate */}
-                        <TopBreadcrumbs breadcrumbs={fclSurchargeBreadcrumb} data={fclSurchargeRateData} />
+                        {/* <TopBreadcrumbs breadcrumbs={fclSurchargeBreadcrumb} data={fclSurchargeRateData} /> */}
+                        <TopBreadcrumbs breadcrumbs={fclSurchargeBreadcrumb} />
 
                         {/* React Table */}
                         <TableReact
@@ -147,7 +153,7 @@ export default function FclSurcharge() {
                         />
 
                         {/* modal */}
-                        {/* <ModalFreight modal={modal} onCloseClick={onCloseClick} viewData={viewData} modalType={'fcl'} /> */}
+                        {/* <ModalAddNew modal={modal} onCloseClick={onCloseClick} viewData={viewData} modalType={'fclSurcharge'} /> */}
                     </div>
                 </Container>
             </div>
