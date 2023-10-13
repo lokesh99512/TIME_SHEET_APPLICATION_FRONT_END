@@ -32,8 +32,9 @@ import {
   octEarningData,
   MarketOverViewAllData, MarketOver1MData, MarketOver6MData, MarketOver1YData,
   PieChart1YData, PieChart6MData, PieChart1MData, PieChartAllData, InvestedOverviewMay, InvestedOverviewApril, InvestedOverviewMarch,
-  InvestedOverviewFeb, InvestedOverviewJan, InvestedOverviewDec, fclTableData, lclTableData, waybillTableData, consoleTableData, inLandTableData, quotationTableData
+  InvestedOverviewFeb, InvestedOverviewJan, InvestedOverviewDec, fclTableData, lclTableData, waybillTableData, consoleTableData, inLandTableData, quotationTableData, searchQuotationResult
 } from "../../common/data"
+import { fclSurchargeTableData } from "../../common/data/rate"
 
 let users = [
   {
@@ -41,7 +42,7 @@ let users = [
     username: "admin",
     role: "admin",
     password: "123456",
-    email: "admin@themesbrand.com",
+    email: "darshita.uidev@gmail.com",
   },
 ]
 
@@ -909,6 +910,40 @@ const fakeBackend = () => {
       });
     })
   })
+
+  mock.onGet(url.GET_QUOTATION_SEARCH_RESULT).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if(searchQuotationResult) {
+          resolve([200, searchQuotationResult]);
+        } else {
+          reject([400, 'Cannot get Quotation Result Data']);
+        }
+      });
+    })
+  })
+
+
+  
+
+  // rate/surcharge/ fclsurcharge
+  
+  mock.onGet(url.GET_FCL_SURCHARGE).reply(() => {
+    // console.log("hello");
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (fclSurchargeTableData) {
+          // console.log(fclSurchargeTableData,"<<tdata");
+          // Passing fake JSON data as response
+          resolve([200, fclSurchargeTableData])
+        } else {
+          reject([400, "Cannot get FCL data"])
+        }
+      })
+    })
+  })
 }
+
+
 
 export default fakeBackend

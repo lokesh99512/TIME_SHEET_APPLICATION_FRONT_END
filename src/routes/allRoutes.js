@@ -131,6 +131,7 @@ import AirConsoleComp from "../pages/Procurement/FreightForwarding/partials/AirC
 import AirLocalFreight from "../pages/Procurement/FreightForwarding/partials/AirLocalFreight";
 import UploadFreightData from "../pages/Procurement/FreightForwarding/partials/UploadFreightData";
 import CreateQuotation from "../pages/Sales/Quotations/partials/CreateQuotation";
+import FclSurcharge from "../pages/Rate/Surcharge/FclSurcharge";
 
 const userRoutes = [
   //dashboard
@@ -249,7 +250,10 @@ const userRoutes = [
   { path: "/maps-google", component: <MapsGoogle/> },
   { path: "/maps-vector", component: <MapsVector/> },
   { path: "/maps-leaflet", component: <MapsLeaflet/> },
-
+  
+  // Rate Management
+  { path: "/rate/surcharge/fcl", component: <FclSurcharge/> },
+  
   // this route should be at the end of all other routes
   { path: "/", exact: true, component: <Navigate to="/dashboard" /> },
 ];

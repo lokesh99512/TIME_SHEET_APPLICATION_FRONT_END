@@ -22,7 +22,6 @@ export default function UploadFreightData() {
     const carrierData = useSelector((state) => state?.procurement?.carrierDetails);
     const dispatch = useDispatch();
     const { tabName } = useParams();
-    console.log(tabName,"tabName")
 
     const toggleTabProgress = (tab) => {
         if (activeTabProgress !== tab) {

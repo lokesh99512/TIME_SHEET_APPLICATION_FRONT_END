@@ -255,7 +255,7 @@ const Header = props => {
               onClick={() =>{
                 dispatch(showRightSidebarAction(!showRightSidebar));
               }}
-              className="dropdown d-inline-block"
+              className="dropdown d-md-inline-block d-none"
             >
               <button
                 type="button"

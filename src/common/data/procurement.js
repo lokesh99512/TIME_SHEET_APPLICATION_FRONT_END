@@ -104,6 +104,29 @@ const inLandBreadcrumb = [
         active: true
     },
 ]
+
+const fclSurchargeBreadcrumb = [
+    {
+        label: 'Rate Management',
+        link: '/#',
+        active: false
+    },
+    {
+        label: 'Surcharge Mater',
+        link: '/#',
+        active: false
+    },
+    // {
+    //     label: 'Ocean Freight',
+    //     link: '/#',
+    //     active: false
+    // },
+    {
+        label: 'FCL Surcharge master',
+        link: '/#',
+        active: true
+    },
+]
 // ---------------------- breadcrumbs --------------------------------------
 
 // --------------------- rate ----------------------------------------------
@@ -220,6 +243,29 @@ const inLandRateData = [
         rate: '63',
         compare_rate: '05',
         rate_type: 'up'
+    },
+]
+const fclSurchargeRateData = [
+    {
+        id: 1,
+        title: 'Total Active Ports',
+        rate: '12',
+        compare_rate: '12',
+        rate_type: 'down'
+    },
+    {
+        id: 2,
+        title: 'Rate Density',
+        rate: '31',
+        compare_rate: '24',
+        rate_type: 'up'
+    },
+    {
+        id: 3,
+        title: 'Avg Conversion',
+        rate: '13',
+        compare_rate: '12',
+        rate_type: 'down'
     },
 ]
 // --------------------- rate ----------------------------------------------
@@ -2165,5 +2211,5 @@ const optionPaymentType = [
 export {
     fclBreadcrumb,fclRateData,fclTableData,lclBreadcrumb,lclRateData,lclTableData,
     optionRateType,optionRateSource,optionVendorType,optionVendorName,optionCarrierName,optionValidityApp,optionSurchargesName,optionMultiDestination,optionPaymentType,
-    waybillBreadcrumb,waybillRateData,waybillTableData,consoleBreadcrumb,consoleRateData,consoleTableData,inLandBreadcrumb,inLandRateData,inLandTableData
+    waybillBreadcrumb,waybillRateData,waybillTableData,consoleBreadcrumb,consoleRateData,consoleTableData,inLandBreadcrumb,inLandRateData,inLandTableData,fclSurchargeBreadcrumb,fclSurchargeRateData
 };

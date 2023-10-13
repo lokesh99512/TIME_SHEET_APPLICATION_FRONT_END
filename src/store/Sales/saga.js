@@ -1,6 +1,6 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects"
-import { GET_QUOTATION_DATA } from "./actiontype";
-import { getSalesQuotTableData } from "../../helpers/fakebackend_helper";
+import { GET_QUOTATION_DATA, GET_QUOTATION_RESULT_DATA, GET_QUOTATION_RESULT_FAIL, GET_QUOTATION_RESULT_SUCCESS } from "./actiontype";
+import { getSalesQuotTableData, getSearchResultData } from "../../helpers/fakebackend_helper";
 import { getSalesQuotationDataFail, getSalesQuotationDataSuccess } from "./actions";
 
 function* fetchSalesQuotationData(){
@@ -12,8 +12,19 @@ function* fetchSalesQuotationData(){
     }
 }
 
+function* fetchResultData(){
+    try {
+        const response = yield call(getSearchResultData);
+        // console.log(response,"response");
+        yield put({type: GET_QUOTATION_RESULT_SUCCESS, payload: response})
+    } catch (error) {
+        yield put({type: GET_QUOTATION_RESULT_FAIL, payload: error})
+    }
+}
+
 export function* watchGetSalesData (){
     yield takeEvery(GET_QUOTATION_DATA, fetchSalesQuotationData);
+    yield takeEvery(GET_QUOTATION_RESULT_DATA, fetchResultData);
 }
 
 function* salesSaga () {

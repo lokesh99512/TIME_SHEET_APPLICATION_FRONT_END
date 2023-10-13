@@ -130,5 +130,11 @@ export const GET_WAYBILL = "/get-waybill"
 export const GET_CONSOLE = "/get-console"
 export const GET_INLAND = "/get-inland"
 
+// --------------------- Rate Management --------------------------------
+export const GET_FCL_SURCHARGE = "/get-fcl-surcharge"
+
+
+
 // -------------------- Sales --------------------------------------------
 export const GET_QUOTATION = "get-quotation"
+export const GET_QUOTATION_SEARCH_RESULT = "get-quotation-result"
