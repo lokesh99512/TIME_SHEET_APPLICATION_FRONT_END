@@ -1209,6 +1209,12 @@
             margin-left: auto;
             padding-left: 35px;
             border-left: 1px dashed $neutral_2;
+            .view_detail_btn{
+                min-width: 95px;
+                padding: 0;
+                box-shadow: none;
+                border: 0;
+            }
         }
         // &::before{
         //     content: '';
@@ -1219,5 +1225,47 @@
         //     height: 100%;
         //     background: url("../../images/icons/result_card_shape.svg");            
         // }
+    }
+    .search_result_accordion_details{
+        margin-top: 28px;
+        .accordion-item {
+            border-radius: 12px;
+            border: 1px solid $neutral_2;
+            background: $white;
+            &:not(:last-child){
+                margin-bottom: 16px;
+            }
+        }
+        .accordion-header{
+            .accordion-button {
+                background: transparent;
+                padding: 12px 12px 12px 40px;
+                @include font(500,14px,normal,$neutral_8);
+                box-shadow: none;
+                &::after{
+                    right: auto;
+                    left: 16px;
+                    position: absolute;
+                    background-size: 13px;
+                    background-position: center;
+                }
+            }
+            .right_con{
+                gap: 10px 30px;
+            }
+        }
+        .accordion-body{
+            padding-top: 0;
+        } 
+        .radio_wrap{
+            .pickup_details {
+                max-width: calc(100% - 40%);
+                width: 100%;
+                span{
+                    flex: 1 1 auto;
+                    text-align: right;
+                }
+            }
+        }
     }
 }

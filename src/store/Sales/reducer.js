@@ -1,4 +1,4 @@
-import { GET_QUOTATION_DATA_FAIL, GET_QUOTATION_DATA_SUCCESS, GET_QUOTATION_RESULT_FAIL, GET_QUOTATION_RESULT_SUCCESS, UPDATE_CONTAINERTYPE_CONFIRM, UPDATE_CONTAINER_CHANGE, UPDATE_SEARCH_QUOTATION_CURRENCY, UPDATE_SEARCH_QUOTATION_DATA, UPDATE_SEARCH_QUOTATION_DATE, UPDATE_SEARCH_QUOTATION_LOCATION, UPDATE_SEARCH_QUOTATION_LOCATION_FROM, UPDATE_SEARCH_QUOTATION_LOCATION_TO, UPDATE_SEARCH_QUOTATION_SWAP, UPDATE_VALUE_BLANK } from "./actiontype"
+import { GET_QUOTATION_DATA_FAIL, GET_QUOTATION_DATA_SUCCESS, GET_QUOTATION_RESULT_FAIL, GET_QUOTATION_RESULT_SUCCESS, UPDATE_CONTAINERTYPE_CONFIRM, UPDATE_CONTAINER_CHANGE, UPDATE_QUOTATION_RESULT_DETAILS, UPDATE_SEARCH_QUOTATION_CURRENCY, UPDATE_SEARCH_QUOTATION_DATA, UPDATE_SEARCH_QUOTATION_DATE, UPDATE_SEARCH_QUOTATION_LOCATION, UPDATE_SEARCH_QUOTATION_LOCATION_FROM, UPDATE_SEARCH_QUOTATION_LOCATION_TO, UPDATE_SEARCH_QUOTATION_SWAP, UPDATE_VALUE_BLANK } from "./actiontype"
 
 
 const INIT_STATE = {
@@ -99,14 +99,13 @@ const sales = (state=INIT_STATE,action) => {
                 }
             }
         case UPDATE_CONTAINERTYPE_CONFIRM:
-            let newArry = {
+            return state = {
                 ...state,
                 createFields: {
                     ...state.createFields,
                     container_type: action.payload,
                 }
             }
-            return state = newArry
         case UPDATE_CONTAINER_CHANGE:            
             return {
                 ...state,
@@ -122,6 +121,20 @@ const sales = (state=INIT_STATE,action) => {
                     ...state.createFields,
                     [action.payload]: ''
                 }
+            }
+
+        case UPDATE_QUOTATION_RESULT_DETAILS: 
+            return {
+                ...state,
+                quotation_result_data: state.quotation_result_data.map((item, index) => {
+                if (index === action.payload.index) {
+                    return {
+                    ...item,
+                        [action.payload.name]: action.payload.value,
+                    };
+                }
+                return item;
+                }),
             }
 
         default:
