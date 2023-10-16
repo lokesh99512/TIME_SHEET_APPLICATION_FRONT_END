@@ -12,6 +12,7 @@ import TableReact from './TableReact'
 import TopBreadcrumbs from './TopBreadcrumbs'
 
 export default function LclOceanFreight() {
+    document.title="LCL || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
     const lclData = useSelector((state) => state.procurement.lclData);
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);

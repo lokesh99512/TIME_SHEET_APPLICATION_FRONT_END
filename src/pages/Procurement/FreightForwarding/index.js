@@ -12,6 +12,7 @@ import TableReact from './partials/TableReact';
 import TopBreadcrumbs from "./partials/TopBreadcrumbs";
 
 const FreightForwarding = () => {
+    document.title="Inland Charges || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
     const inlandData = useSelector((state) => state?.procurement?.inlandData);
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
