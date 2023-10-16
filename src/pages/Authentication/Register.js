@@ -20,7 +20,7 @@ import CarouselPage from "../AuthenticationInner/CarouselPage";
 
 const Register = (props) => {
     //meta title
-    document.title = "Register | Minia - React Admin & Dashboard Template";
+    document.title="Register || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
     const [passwordShow, setPasswordShow] = useState(false);
     const [passwordShow2, setPasswordShow2] = useState(false);
     const [toast, setToast] = useState(false);

@@ -1269,3 +1269,135 @@
         }
     }
 }
+
+// ---------------- quotation modal---------------------
+.quotation_modal_wrap {
+    max-width: 1345px;
+    .modal-body{
+        min-height: 600px;
+    }
+    .right_wrap {
+        position: relative;
+        padding-right: 48px;
+        .exchange_currency_wrap{
+            .common_dropdwon_btn_wrap{
+                #more_menu{
+                    border: 1px solid $neutral_2;
+                    border-radius: 8px 0 0 8px;
+                    padding: 8px 12px;
+                    &.openmenu{
+                        border-top: 1px solid $primary_7;
+                        border-bottom: 1px solid $primary_7;
+                        border-left: 1px solid $primary_7;
+                        box-shadow: 0px 0px 0px 4px #F1F1FE;
+                    }
+                    i{
+                        pointer-events: none;
+                    }
+                }
+                .quantity_drop_wrap {
+                    min-width: 100px;
+                    li{
+                        padding: 10px 16px;
+                        border-bottom: 1px solid $neutral_2;
+                        background: $white;
+                    }
+                }
+            }
+            .exchange_rate{
+                border: 1px solid $neutral_2;
+                padding: 8px 12px;
+                border-radius: 0 8px 8px 0;
+            }
+        }
+        button.close {
+            opacity: 1;
+            padding: 0;
+            bottom: 0;
+            margin: auto;
+            right: 10px;
+        }
+    }
+    .main_accordion {
+        .accordion-item {
+            border-radius: 12px;
+            border: 1px solid $neutral_2;
+            background: $white;
+            margin-bottom: 20px;
+            .accordion-header{
+                .accordion-button {
+                    background: transparent;
+                    padding: 18px 18px 18px 40px;
+                    @include font(500,14px,normal,$neutral_8);
+                    box-shadow: none;
+                    &::after{
+                        right: auto;
+                        left: 16px;
+                        position: absolute;
+                        background-size: 13px;
+                        background-position: center;
+                    }
+                    .img{
+                        width: 48px;
+                        height: 48px;
+                        border-radius: 99px;
+                        border: 1px solid $neutral_2;
+                        background: #F9FAFB;
+                    }
+                    .tag {
+                        padding: 4px 12px;
+                        border-radius: 99px;
+                        background: $primary_1;
+                        @include font(600,13px,normal,$primary_7);
+                        text-transform: uppercase;
+                        &.preferred{
+                            background: $primary_1;
+                            color: $primary_7;
+                        }
+                        &.cheaper{
+                            background: $danger_1;
+                            color: $danger_7;
+                        }
+                        &.faster{
+                            background: $success_1;
+                            color: $success_7;
+                        }
+                    }
+                }
+                .right_con{
+                    gap: 10px 30px;
+                }
+            }
+        }
+    }
+    .charges_wrap {
+        [class*="col-"]{
+            padding: 0 7px;
+        }
+        .field_wrap {
+            label {
+                font-size: 13px;
+            }
+            input,#more_menu {
+                width: 100%;
+                border-radius: 8px;
+                border: 1px solid $neutral_2;
+                background: $white;
+                height: 38px;
+                padding: 0 12px;
+            }
+            #more_menu {
+                align-items: center;
+                justify-content: space-between;
+                cursor: pointer;
+            }
+            .common_dropdown_wrap{
+                li{
+                    padding: 10px 16px;
+                    border-bottom: 1px solid $neutral_2;
+                    background: $white;
+                }
+            }
+        }
+    }
+}

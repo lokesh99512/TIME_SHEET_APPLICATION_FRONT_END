@@ -11,6 +11,8 @@ import { CommonValue } from '../partials/SalesCol'
 import FilterSalesComp from '../partials/FilterSalesComp'
 
 export default function Quotations() {
+    document.title="Sales || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
+
     const quotationData = useSelector((state) => state?.sales?.quotation_data);
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);

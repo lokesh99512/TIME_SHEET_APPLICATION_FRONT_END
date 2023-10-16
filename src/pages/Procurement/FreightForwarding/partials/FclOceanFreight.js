@@ -13,6 +13,7 @@ import TableReact from './TableReact'
 import TopBreadcrumbs from './TopBreadcrumbs'
 
 export default function FclOceanFreight() {
+    document.title="FCL || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
     const fclData = useSelector((state) => state.procurement.fcl_data);
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);

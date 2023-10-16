@@ -9,7 +9,7 @@ import SimpleBar from "simplebar-react"
 import "flatpickr/dist/themes/material_blue.css";
 import Flatpickr from "react-flatpickr";
 import { useDispatch, useSelector } from 'react-redux';
-import { AccordionBody, AccordionHeader, AccordionItem, Collapse, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledAccordion, UncontrolledDropdown } from 'reactstrap';
+import { Accordion, AccordionBody, AccordionHeader, AccordionItem, Collapse, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledAccordion, UncontrolledDropdown } from 'reactstrap';
 import { UPDATE_CONTAINERTYPE_CONFIRM, UPDATE_CONTAINER_CHANGE, UPDATE_SEARCH_QUOTATION_CURRENCY, UPDATE_SEARCH_QUOTATION_DATA, UPDATE_SEARCH_QUOTATION_DATE, UPDATE_SEARCH_QUOTATION_LOCATION_FROM, UPDATE_SEARCH_QUOTATION_LOCATION_TO, UPDATE_SEARCH_QUOTATION_SWAP, UPDATE_VALUE_BLANK } from '../../../../store/Sales/actiontype';
 
 export default function CreateQuoteTop({ searchView, setSearchView, searchResult }) {
@@ -22,6 +22,15 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
     const [containerArray, setcontainerArray] = useState([]);
     const [calculateVal, setCalculateVal] = useState({});
     const ref = useRef();
+    const [open, setOpen] = useState('1');
+
+    const toggle = (id) => {
+        if (open === id) {
+            setOpen('');
+        } else {
+            setOpen(id);
+        }
+    };
     const [unitValue, setUnitValue] = useState({
         _standard1: 0,
         _standard2: 0,
@@ -112,7 +121,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
 
     const contanerTypeValHandler = (val, name, index) => {
         const list = [...containerType];
-        if(name === 'weight_unit'){
+        if (name === 'weight_unit') {
             list[index].dimensions_unit = ''
         }
         list[index][name] = val;
@@ -122,21 +131,21 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
         let lval = Number(containerType[0].dimensions_l);
         let wval = Number(containerType[0].dimensions_w);
         let hval = Number(containerType[0].dimensions_h);
-        if(containerType[0].weight_unit === 'KG'){
-            if(containerType[0].dimensions_unit === 'CM'){
-                let amount = (lval * wval * hval)/100000
+        if (containerType[0].weight_unit === 'KG') {
+            if (containerType[0].dimensions_unit === 'CM') {
+                let amount = (lval * wval * hval) / 100000
                 // let cbmAmount= amount / 6000
-                setCalculateVal({amount: amount, mesure: 'cbm'});
-            } else { 
+                setCalculateVal({ amount: amount, mesure: 'cbm' });
+            } else {
                 let amount = (lval * wval * hval)
-                setCalculateVal({amount: amount, mesure: 'cbm'});
+                setCalculateVal({ amount: amount, mesure: 'cbm' });
             }
         } else {
             let lvalFeet = lval / 12  //convert inches into feet
             let wvalFeet = wval / 12  //convert inches into feet
             let hvalFeet = hval / 12  //convert inches into feet
             let cftAmount = (lvalFeet * wvalFeet * hvalFeet)
-            setCalculateVal({amount: cftAmount, mesure: 'cft'});
+            setCalculateVal({ amount: cftAmount, mesure: 'cft' });
         }
 
         console.log(containerType, "containerType-------------");
@@ -499,7 +508,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                                 {isOpen && dropId === 4 ?
                                                     <ul className="common_dropdown_wrap" ref={dropdownRef}>
                                                         {(createFields?.shipping_by?.value === 'land' ? optionLandTransportBy : optionTransportBy || '').map(({ value, name }, index) => (
-                                                            <li key={index} className={`${createFields?.transport_by?.value === value ? 'active' : ''}`} onClick={() => { handleChangeHandler({ value, name }, 'transport_by', true,'container_type'); setIsOpen(false); }}>
+                                                            <li key={index} className={`${createFields?.transport_by?.value === value ? 'active' : ''}`} onClick={() => { handleChangeHandler({ value, name }, 'transport_by', true, 'container_type'); setIsOpen(false); setcontainerArray([]); }}>
                                                                 <div className="custom-option">
                                                                     <p>{name}</p>
                                                                 </div>
@@ -573,15 +582,10 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                                 <div className="con">
                                                     <label className="form-label">Container Type</label>
                                                     <span className={`value ${createFields?.container_type.length !== 0 ? 'value_focus' : ''}`}>
-                                                        {/* {(createFields?.container_type?.name || 'Select Container Type')} */}
-                                                        {/* {(unitValue[createFields?.container_type?.id] !== undefined && unitValue[createFields?.container_type?.id] !== 0) ? (
-                                                            <>
-                                                                , unit: "{unitValue[createFields?.container_type?.id]}"
-                                                            </>
-                                                        ) : ''
-                                                        } */}
-                                                        {createFields?.container_type !== '' && createFields?.container_type !== undefined ? createFields?.container_type?.map((item) => (
-                                                            <span key={item.id}>{item.name}, unit: "{unitValue[item.id]}" ,  &nbsp;</span>
+                                                        {createFields?.container_type !== '' && createFields?.container_type !== undefined ? createFields?.container_type?.map((item, index) => (
+
+                                                            <span key={item.id}>{unitValue[item.id] !== 0 ? `${item.name}, unit: "${unitValue[item.id]}",` : null}  &nbsp;</span>
+
                                                         )) : 'Select Container Type'}
                                                     </span>
                                                 </div>
@@ -625,7 +629,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                                         {/* {(createFields?.container_type?.name || 'Select Container Type')} */}
                                                         {createFields?.container_type?.length !== 0 ? (
                                                             <>
-                                                            {createFields?.container_type[0].no_unit} Units | {calculateVal ? `${calculateVal?.amount?.toFixed(4)} ${calculateVal?.mesure} |` : ''} {Number(createFields?.container_type[0].no_unit) * Number(createFields?.container_type[0].weight)} {createFields?.container_type[0].weight_unit}                                                            
+                                                                {createFields?.container_type[0].no_unit} Units | {calculateVal ? `${calculateVal?.amount?.toFixed(4)} ${calculateVal?.mesure} |` : ''} {Number(createFields?.container_type[0].no_unit) * Number(createFields?.container_type[0].weight)} {createFields?.container_type[0].weight_unit}
                                                             </>
                                                         ) : 'Select Container Type'}
                                                     </span>
@@ -634,8 +638,9 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                             </div>
                                             {isOpen && dropId === 11 ?
                                                 <div className="common_dropdown_wrap container_drop_wrap" ref={dropdownRef}>
+                                                    {/* <UncontrolledAccordion defaultOpen="1"> */}
                                                     {containerType.length !== 0 && (
-                                                        <UncontrolledAccordion defaultOpen="1">
+                                                        <Accordion flush open={open} toggle={toggle}>
                                                             {(containerType || '')?.map((item, index) => (
                                                                 <AccordionItem key={index}>
                                                                     <AccordionHeader targetId={`${index + 1}`}>
@@ -676,7 +681,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                                                                 <div className="input_field dimention_h">
                                                                                     <input type="number" value={containerType[index].dimensions_h || ''} className="form-control" id={`dimensions_h_${index}`} onChange={(e) => { contanerTypeValHandler(e.target.value, 'dimensions_h', index); }} />
                                                                                 </div>
-                                                                                {console.log(containerType[index].weight_unit,"containerType[index].weight_unit")}
+                                                                                {console.log(containerType[index].weight_unit, "containerType[index].weight_unit")}
                                                                                 <div className="input_field">
                                                                                     <UncontrolledDropdown>
                                                                                         <DropdownToggle className="btn btn-link dimention_drop d-flex justify-content-between" tag="a">
@@ -695,8 +700,9 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                                                     </AccordionBody>
                                                                 </AccordionItem>
                                                             ))}
-                                                        </UncontrolledAccordion>
+                                                            </Accordion>
                                                     )}
+                                                    {/* </UncontrolledAccordion> */}
                                                     <div className="btn_wrap d-flex justify-content-end">
                                                         <button type="button" className='btn border_btn' onClick={AddLoadHandler}>Add Another Load</button>
                                                         <button type="button" className='btn btn-primary' onClick={confirmHandler}>Confirm</button>
@@ -723,8 +729,8 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                             <i className="mdi mdi-chevron-down" />
                                         </div>
                                         {isOpen && dropId === 6 ?
-                                                <ul className="common_dropdown_wrap" ref={dropdownRef}>
-                                                    <SimpleBar style={{ maxHeight: "300px" }} ref={ref}>
+                                            <ul className="common_dropdown_wrap" ref={dropdownRef}>
+                                                <SimpleBar style={{ maxHeight: "300px" }} ref={ref}>
                                                     {(optionIncoterm || '').map(({ value, name }, index) => (
                                                         <li key={index} className={`${createFields?.incoterm?.value === value ? 'active' : ''}`} onClick={() => { handleChangeHandler({ value, name }, 'incoterm'); setIsOpen(false); }}>
                                                             <div className="custom-option">
@@ -732,9 +738,9 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                                             </div>
                                                         </li>
                                                     ))}
-                                                    </SimpleBar>
-                                                </ul> 
-                                        : null
+                                                </SimpleBar>
+                                            </ul>
+                                            : null
                                         }
                                     </div>
                                 </div>

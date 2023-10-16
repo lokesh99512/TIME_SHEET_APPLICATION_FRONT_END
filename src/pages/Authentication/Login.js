@@ -88,8 +88,7 @@ const Login = props => {
     const facebookResponse = response => {
         signIn(response, "facebook")
     }
-
-    document.title = "Login | Minia - React Admin & Dashboard Template"
+    document.title="Login || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
 
     return (
         <React.Fragment>
