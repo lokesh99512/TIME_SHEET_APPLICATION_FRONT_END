@@ -12,6 +12,7 @@ import FilterOffCanvasComp from './Modal/FilterOffCanvasComp'
 import TableReact from './TableReact'
 
 export default function AirConsoleComp() {
+    document.title="Air Console || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
     const [isRight, setIsRight] = useState(false);

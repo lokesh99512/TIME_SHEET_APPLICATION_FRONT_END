@@ -25,7 +25,7 @@ const Dashboard = () => {
     const [tableData4, setTableData4] = useState(salesPerformData);
 
     //meta title
-    document.title="Dashboard | Minia - React Admin & Dashboard Template";
+    document.title="Dashboard || Navigating Freight Costs with Precision||Ultimate Rate Management platform";
 
     const handleSorting = (sortField, sortOrder,type) => {
         const tables = {

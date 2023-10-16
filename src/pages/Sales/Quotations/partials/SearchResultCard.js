@@ -1,31 +1,40 @@
 import React, { useEffect, useState } from 'react'
 import CheckboxCommon from '../../../Common/CheckboxCommon'
 import { useSelector } from 'react-redux';
-import { cube_filled, truck_outline } from '../../../../assets/images';
+import { cube_filled, ship_filled, truck_outline } from '../../../../assets/images';
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem, UncontrolledAccordion } from 'reactstrap';
 import { useDispatch } from 'react-redux';
 import { UPDATE_QUOTATION_RESULT_DETAILS } from '../../../../store/Sales/actiontype';
 
-const SearchResultCard = ({ data }) => {
+const SearchResultCard = ({ data, QuoteModalHandler }) => {
     const [resultCheck, setResultCheck] = useState({});
-    const [showDetails,setShowDetails] = useState(false);
+    const [showDetails,setShowDetails] = useState([]);
     const createFields = useSelector((state) => state?.sales?.createFields);
     const dispatch = useDispatch();
     const [open, setOpen] = useState('');
 
     const toggle = (id) => {
         if (open === id) {
-        setOpen();
+        setOpen('');
         } else {
         setOpen(id);
         }
     };
 
     const showDetailsHandler = (index) => {
-        // let newArr = [...showDetails];
-        // newArr[index].details = !newArr[index].details;
-        // setShowDetails(newArr);
-        setShowDetails(!showDetails);
+        let newArr = [...showDetails];
+        if(newArr?.length !== 0){
+            if(newArr[index] !== undefined){
+                newArr[index].details = !newArr[index].details;
+            } else {
+                let newObj = {details: true}
+                newArr.push(newObj);
+            }
+        } else {
+            let newObj = {details: true}
+            newArr.push(newObj);
+        }
+        setShowDetails(newArr);
     }
 
     const handleChange = (val, name, index) => {
@@ -71,13 +80,6 @@ const SearchResultCard = ({ data }) => {
         }
         return amount;
     }
-    // console.log(showDetails,"showDetails----")
-    // useEffect(() => {
-    //     let array = data?.map((item) => {
-    //         return {details: false}
-    //     })
-    //     setShowDetails(array);
-    // }, [data]);
     return (
         <div>
             <div className="result_tab_content_wrap">
@@ -94,7 +96,7 @@ const SearchResultCard = ({ data }) => {
                                     <span className="duration text-center d-block">Duration <b>{item.duration} days</b></span>
                                     <div className="from_to_wrap mt-2 mb-3 d-flex justify-content-between">
                                         <span className="from_loc">{item.location_from}</span>
-                                        <span className="icon d-flex align-items-center justify-content-center"><img src={createFields?.shipping_by?.img || cube_filled} alt="Shipping" /></span>
+                                        <span className="icon d-flex align-items-center justify-content-center"><img src={ship_filled} alt="Shipping" /></span>
                                         <span className="to_loc">{item.location_to}</span>
                                     </div>
                                     <div className="row">
@@ -107,13 +109,12 @@ const SearchResultCard = ({ data }) => {
                                     <p className="total_price text-center"><b>${TotalQuotationCount(item)}</b></p>
                                     <div className="btn_wrap d-flex">
                                         <button type='button' className='btn text-primary view_detail_btn' onClick={() => {showDetailsHandler(index);}}>
-                                            View{showDetails ? 'Less' : 'Detail'}</button>
-                                            {/* View{showDetails[index]?.details ? 'Less' : 'Detail'}</button> */}
-                                        <button type='button' className='btn btn-primary'>Quote Now</button>
+                                            View{showDetails[index]?.details ? 'Less' : 'Detail'}</button>
+                                        <button type='button' className='btn btn-primary' onClick={() => {QuoteModalHandler(item.id)}}>Quote Now</button>
                                     </div>
                                 </div>
                             </div>
-                            {showDetails && (
+                            {showDetails[index]?.details && (
                                 <div className="search_result_accordion_details">
                                     <Accordion flush open={open} toggle={toggle}>
                                         <AccordionItem>
