@@ -268,8 +268,8 @@ const fclSurchargeRateData = [
         rate_type: 'down'
     },
 ]
-// --------------------- rate ----------------------------------------------
 
+// --------------------- procurement ----------------------------------------------
 const fclTableData = [
     {
         id: 1,
@@ -1090,6 +1090,41 @@ const lclTableData = [
         charge_rate: '10',
         charge_ratio: '1:1000',
         charge_currency: 'USD'
+    },
+]
+export const plChargesTableData = [
+    {
+        id: 1,
+        surcharge_id: '123908AB',
+        surcharge_category: 'Port Charges',
+        port_name: "INMAA",
+        terminals: 'ABC',
+        movement_type: 'import',
+        carrier_name: 'YML',
+        vendor_name: 'test',
+        valid_till: 'Jul 17 2023',
+    },
+    {
+        id: 2,
+        surcharge_id: '123908AB',
+        surcharge_category: 'Port Charges',
+        port_name: "INMAA",
+        terminals: 'ABC',
+        movement_type: 'import',
+        carrier_name: 'YML',
+        vendor_name: 'test',
+        valid_till: 'Jul 17 2023',
+    },
+    {
+        id: 3,
+        surcharge_id: '123908AB',
+        surcharge_category: 'Port Charges',
+        port_name: "INMAA",
+        terminals: 'ABC',
+        movement_type: 'import',
+        carrier_name: 'YML',
+        vendor_name: 'test',
+        valid_till: 'Jul 17 2023',
     },
 ]
 const waybillTableData = [

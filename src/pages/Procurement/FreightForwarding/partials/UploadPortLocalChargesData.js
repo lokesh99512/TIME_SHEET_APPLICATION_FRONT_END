@@ -1,6 +1,6 @@
 import classnames from "classnames";
-import { useFormik } from "formik";
-import React, { useCallback, useState } from "react";
+import { FieldArray, FormikProvider, useFormik } from "formik";
+import React, { useCallback, useRef, useState } from "react";
 import Dropzone from "react-dropzone";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -21,20 +21,72 @@ import {
   TabPane,
   UncontrolledTooltip,
 } from "reactstrap";
+import ModalAddTerm from "./Modal/ModalAddTerm";
+
+const chargeCategory = [
+  { label: "Port Charges", value: "Port Charges" },
+  { label: "Other Charges", value: "Other Charges" },
+];
+
+const portName = [
+  { label: "Surat Port", value: "Surat Port" },
+  { label: "Hajira", value: "Hajira" },
+];
+
+const terminalName = [
+  { label: "Surat", value: "Surat" },
+  { label: "Porbandar", value: "Porbandar" },
+];
+
+const movementType = [
+  { label: "Import", value: "Import" },
+  { label: "Export", value: "Export" },
+];
+
+const carrierName = [
+  { label: "OOCL", value: "OOCL" },
+  { label: "ABC", value: "ABC" },
+];
+
+const vendorName = [
+  { label: "Vendor A", value: "Vendor A" },
+  { label: "Vendor B", value: "Vendor B" },
+];
 
 const chargeCode = [
-  { label: "ActivesurchargeCategory", value: "ActivesurchargeCategory" },
-  { label: "surchargeCategory test", value: "surchargeCategory test" },
-  { label: "Add New", value: "Add New" },
+  { label: "THC", value: "THC" },
+  { label: "DOC", value: "DOC" },
 ];
 const chargeBasis = [
-  { label: "surchargeAliasCodeABC", value: "surchargeAliasCodeABC" },
-  { label: "AliasCode test", value: "AliasCode test" },
-  { label: "Add New", value: "Add New" },
+  { label: "Per Container", value: "Per Container" },
+  { label: "Per Bill", value: "Per Bill" },
 ];
 const calculationType = [
-  { label: "Active", value: "Active" },
-  { label: "In-Active", value: "In-Active" },
+  { label: "Flat", value: "Flat" },
+  { label: "Slab", value: "Slab" },
+  { label: "Percentage", value: "Percentage" },
+];
+const slabBasis = [
+  { label: "Container Count", value: "Container Count" },
+  { label: "Bill Count", value: "Bill Count" },
+];
+const currency = [
+  { label: "INR", value: "INR" },
+  { label: "USD", value: "USD" },
+];
+const cargoType = [
+  { label: "General", value: "General" },
+  { label: "Refer", value: "Refer" },
+  { label: "Haz", value: "Haz" },
+];
+const containerType = [
+  { label: "20 GP", value: "20 GP" },
+  { label: "40 GP", value: "40 GP" },
+  { label: "40 RF", value: "40 RF" },
+];
+const fromSlab = [
+  { label: "0", value: "0" },
+  { label: "10", value: "10" },
 ];
 
 const initialValue = {
@@ -42,28 +94,45 @@ const initialValue = {
   portName:"",
   terminalName:"",
   movementType:"",
-  CarrierName:"",
+  carrierName:"",
   vendorName:"",
   validityFrom:"",
   validityTo:"",
 
-  chargeCode:"",
-  chargeBasis:"",
-  calculationType:"",
-  currency:"",
-  slabBasis:"",
-  minValue:"",
-  addTerms:false,
-
-  cargoType:"",
-  containerType:"",
-  fromSlab:"",
-  toSlab:"",
-  rate:0,
+  mainBox:[
+    {
+      chargeCode:"",
+      chargeBasis:"",
+      calculationType:"",
+      slabBasis:"",
+      currency:"",
+      minValue:"",
+      addTerms:{},
+      subBox:[
+        {
+          cargoType:"",
+          containerType:"",
+          fromSlab:"",
+          toSlab:"",
+          rate:"",
+        }
+      ]
+    }
+  ],
 }
 
 export default function UploadPortLocalChargesData() {
+  const [addTermsModal, setAddTermsModal] = useState({isOpen:false,id:""})
   const navigate = useNavigate();
+  console.log(addTermsModal,"mdl");
+
+  const onCloseClick = () => {
+    setAddTermsModal(prev=>({...prev,isOpen:false,id:""}));
+  }
+
+  const setTermHandler = (obj)=>{
+    formik.setFieldValue(`mainBox[${addTermsModal.id}].addTerms`,obj)
+  }
 
  const formik = useFormik({
   initialValues:initialValue,
@@ -91,283 +160,495 @@ export default function UploadPortLocalChargesData() {
                 <Card>
                   <CardBody>
                     <div className="row">
-                      <div className="col-4 mb-4">
-                        <div className="row">
-                          <Label
-                            htmlFor="horizontal-firstname-input"
-                            className="col-sm-3 col-form-label"
-                          >
-                            Charge Category
-                          </Label>
-                          <div className="col-9">
-                            <Select
-                              // value={addDetails.surchargeCategory}
-                              name="chargeCategory"
-                              // onChange={(opt) => {
-                              //   handleSelectGroup("surchargeCategory", opt);
-                              // }}
-                              // options={surchargeCategory}
-                              onChange={formik.handleChange}
-                              placeholder={"Select Charge Category"}
-                              classNamePrefix="select2-selection form-select"
-                            />
-                          </div>
-                        </div>
-                      </div>
 
-                      <div className="col-4 mb-4">
-                        <div className="row">
-                          <Label
-                            htmlFor="horizontal-firstname-input"
-                            className="col-sm-3 col-form-label"
-                          >
-                            Port Name
-                          </Label>
-                          <div className="col-9">
-                            <Select
-                              // value={addDetails.surchargeAliasCode}
-                              name="portName"
-                              // onChange={(opt) => {
-                              //   handleSelectGroup("surchargeAliasCode", opt);
-                              // }}
-                              // options={surchargeAliasCode}
-                              placeholder={"Select Port Name"}
-                              classNamePrefix="select2-selection form-select"
-                            />
+                        {/* Charge Category */}
+                        <div className="col-4 mb-4">
+                          <div className="row">
+                            <Label
+                              htmlFor="horizontal-firstname-input"
+                              className="col-sm-3 col-form-label"
+                            >
+                              Charge Category
+                            </Label>
+                            <div className="col-9">
+                              <Select
+                                value={chargeCategory ? chargeCategory.find(option => option.value === formik.values.chargeCategory) : ''}
+                                onChange={e=>{formik.setFieldValue(`chargeCategory`,e.value)}}
+                                name="chargeCategory"
+                                options={chargeCategory}
+                                placeholder={"Select Charge Category"}
+                                classNamePrefix="select2-selection form-select"
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div className="col-4 mb-4">
-                        <div className="row">
-                          <Label
-                            htmlFor="horizontal-firstname-input"
-                            className="col-sm-3 col-form-label"
-                          >
-                            Terminal Name
-                          </Label>
-                          <div className="col-9">
-                            <Select
-                              // value={addDetails.surchargeAliasDesc}
-                              name="terminalName"
-                              // onChange={(opt) => {
-                              //   handleSelectGroup("surchargeAliasDesc", opt);
-                              // }}
-                              // options={surchargeAliasDesc}
-                              placeholder={"Select Terminal Name"}
-                              classNamePrefix="select2-selection form-select"
-                            />
+                        {/* Port Name */}
+                        <div className="col-4 mb-4">
+                          <div className="row">
+                            <Label
+                              htmlFor="horizontal-firstname-input"
+                              className="col-sm-3 col-form-label"
+                            >
+                              Port Name
+                            </Label>
+                            <div className="col-9">
+                              <Select
+                                name="portName"
+                                value={portName ? portName.find(option => option.value === formik.values.portName) : ''}
+                                onChange={e=>{formik.setFieldValue(`portName`,e.value)}}
+                                options={portName}
+                                placeholder={"Select Port Name"}
+                                classNamePrefix="select2-selection form-select"
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
+
+                        {/* Terminal Name */}
+                        <div className="col-4 mb-4">
+                          <div className="row">
+                            <Label
+                              htmlFor="horizontal-firstname-input"
+                              className="col-sm-3 col-form-label"
+                            >
+                              Terminal Name
+                            </Label>
+                            <div className="col-9">
+                              <Select
+                                // value={addDetails.surchargeAliasDesc}
+                                name="terminalName"
+                                value={terminalName ? terminalName.find(option => option.value === formik.values.terminalName) : ''}
+                                onChange={e=>{formik.setFieldValue(`terminalName`,e.value)}}
+                                options={terminalName}
+                                placeholder={"Select Terminal Name"}
+                                classNamePrefix="select2-selection form-select"
+                              />
+                            </div>
+                          </div>
+                        </div>
                     </div>
 
                     <div className="row">
-                      <div className="col-4 mb-4">
-                        <div className="row">
-                          <Label
-                            htmlFor="horizontal-firstname-input"
-                            className="col-sm-3 col-form-label"
-                          >
-                            Movement Type
-                          </Label>
-                          <div className="col-9">
-                            <Select
-                              // value={addDetails.surchargeCategory}
-                              name="movementType"
-                              // onChange={(opt) => {
-                              //   handleSelectGroup("surchargeCategory", opt);
-                              // }}
-                              // options={surchargeCategory}
-                              placeholder={"Select Movement Type"}
-                              classNamePrefix="select2-selection form-select"
-                            />
-                          </div>
-                        </div>
-                      </div>
 
-                      <div className="col-4 mb-4">
-                        <div className="row">
-                          <Label
-                            htmlFor="horizontal-firstname-input"
-                            className="col-sm-3 col-form-label"
-                          >
-                            Carrier Name
-                          </Label>
-                          <div className="col-9">
-                            <Select
-                              // value={addDetails.surchargeAliasCode}
-                              name="CarrierName"
-                              // onChange={(opt) => {
-                              //   handleSelectGroup("surchargeAliasCode", opt);
-                              // }}
-                              // options={surchargeAliasCode}
-                              placeholder={"Select Carrier Name"}
-                              classNamePrefix="select2-selection form-select"
-                            />
+                        {/* Movement Type */}
+                        <div className="col-4 mb-4">
+                          <div className="row">
+                            <Label
+                              htmlFor="horizontal-firstname-input"
+                              className="col-sm-3 col-form-label"
+                            >
+                              Movement Type
+                            </Label>
+                            <div className="col-9">
+                              <Select
+                                name="movementType"
+                                value={movementType ? movementType.find(option => option.value === formik.values.movementType) : ''}
+                                onChange={e=>{formik.setFieldValue(`movementType`,e.value)}}
+                                options={movementType}
+                                placeholder={"Select Movement Type"}
+                                classNamePrefix="select2-selection form-select"
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div className="col-4 mb-4">
-                        <div className="row">
-                          <Label
-                            htmlFor="horizontal-firstname-input"
-                            className="col-sm-3 col-form-label"
-                          >
-                            Vendor Name
-                          </Label>
-                          <div className="col-9">
-                            <Select
-                              // value={addDetails.surchargeAliasDesc}
-                              name="vendorName"
-                              // onChange={(opt) => {
-                              //   handleSelectGroup("surchargeAliasDesc", opt);
-                              // }}
-                              // options={surchargeAliasDesc}
-                              placeholder={"Select Vendor Name"}
-                              classNamePrefix="select2-selection form-select"
-                            />
+                        {/* Carrier Name */}
+                        <div className="col-4 mb-4">
+                          <div className="row">
+                            <Label
+                              htmlFor="horizontal-firstname-input"
+                              className="col-sm-3 col-form-label"
+                            >
+                              Carrier Name
+                            </Label>
+                            <div className="col-9">
+                              <Select
+                                name="carrierName"
+                                value={carrierName ? carrierName.find(option => option.value === formik.values.carrierName) : ''}
+                                onChange={e=>{formik.setFieldValue(`carrierName`,e.value)}}
+                                options={carrierName}
+                                placeholder={"Select Carrier Name"}
+                                classNamePrefix="select2-selection form-select"
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
+
+                        {/* Vendor Name */}
+                        <div className="col-4 mb-4">
+                          <div className="row">
+                            <Label
+                              htmlFor="horizontal-firstname-input"
+                              className="col-sm-3 col-form-label"
+                            >
+                              Vendor Name
+                            </Label>
+                            <div className="col-9">
+                              <Select
+                                // value={addDetails.surchargeAliasDesc}
+                                name="vendorName"
+                                value={vendorName ? vendorName.find(option => option.value === formik.values.vendorName) : ''}
+                                onChange={e=>{formik.setFieldValue(`vendorName`,e.value)}}
+                                options={vendorName}
+                                placeholder={"Select Vendor Name"}
+                                classNamePrefix="select2-selection form-select"
+                              />
+                            </div>
+                          </div>
+                        </div>
                     </div>
 
                     <div className="row">
-                      <div className="col-4 mb-4">
-                        <div className="row">
-                          <Label
-                            htmlFor="horizontal-firstname-input"
-                            className="col-sm-3 col-form-label"
-                          >
-                            Validity From
-                          </Label>
-                          <div className="col-9">
-                            <input
-                              type="date"
-                              name="validityFrom"
-                              id="validity_from"
-                              className="form-control"
-                              // value={carrierData.validity_from}
-                              // onChange={(e) =>
-                              //   handleSelectGroup("validity_from", e.target.value)
-                              // }
-                            />
-                          </div>
-                        </div>
-                      </div>
 
-                      <div className="col-4 mb-4">
-                        <div className="row">
-                          <Label
-                            htmlFor="horizontal-firstname-input"
-                            className="col-sm-3 col-form-label"
-                          >
-                            Validity To
-                          </Label>
-                          <div className="col-9">
-                            <input
-                              type="date"
-                              name="validityTo"
-                              id="validity_to"
-                              className="form-control"
-                              // value={carrierData.validity_to}
-                              // onChange={(e) =>
-                              //   handleSelectGroup("validity_to", e.target.value)
-                              // }
-                            />
+                        {/* Validity From */}
+                        <div className="col-4 mb-4">
+                          <div className="row">
+                            <Label
+                              htmlFor="horizontal-firstname-input"
+                              className="col-sm-3 col-form-label"
+                            >
+                              Validity From
+                            </Label>
+                            <div className="col-9">
+                              <input
+                                type="date"
+                                name="validityFrom"
+                                id="validity_from"
+                                value={formik.values.validityFrom}
+                                onChange={formik.handleChange}
+                                className="form-control"
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
+
+                        {/* Validity To */}
+                        <div className="col-4 mb-4">
+                          <div className="row">
+                            <Label
+                              htmlFor="horizontal-firstname-input"
+                              className="col-sm-3 col-form-label"
+                            >
+                              Validity To
+                            </Label>
+                            <div className="col-9">
+                              <input
+                                type="date"
+                                name="validityTo"
+                                id="validity_to"
+                                value={formik.values.validityTo}
+                                onChange={formik.handleChange}
+                                className="form-control"
+                              />
+                            </div>
+                          </div>
+                        </div>
                     </div>
 
                     <div className="p-4"></div>
 
+                    {/* Field Array started------------------------------------------------- */}
+
+                    <FormikProvider value={formik}>
+                    <FieldArray name="mainBox">
+                      {(arrayHelpers)=>{
+                        return(<>
+                        {formik.values.mainBox.length > 0 &&
+                      formik.values.mainBox.map((item,index)=>{
+                        return(<>
+                        <hr/>
+                        <div className="d-flex" key={index}>
+
+                            {/* Charge Code */}
+                              <div className="w-100 mx-1">
+                                <div className="mb-3">
+                                  <label className="form-label">Charge Code</label>
+                                  <Select
+                                    name={`mainBox[${index}].chargeCode`}
+                                    value={chargeCode ? chargeCode.find(option => option.value === formik.values.mainBox[index].chargeCode) : ''}
+                                    onChange={e=>{formik.setFieldValue(`mainBox[${index}].chargeCode`,e.value)}}
+                                    options={chargeCode}
+                                    classNamePrefix="select2-selection form-select"
+                                  />
+                                </div>
+                              </div>
+
+                              {/* Charge Basis */}
+                              <div className="w-100 mx-1">
+                                <div className="mb-3">
+                                  <label className="form-label">Charge Basis</label>
+                                  <Select
+                                    name={`mainBox[${index}].chargeBasis`}
+                                    value={chargeBasis ? chargeBasis.find(option => option.value === formik.values.mainBox[index].chargeBasis) : ''}
+                                    onChange={e=>{formik.setFieldValue(`mainBox[${index}].chargeBasis`,e.value)}}
+                                    options={chargeBasis}
+                                    classNamePrefix="select2-selection form-select"
+                                  />
+                                </div>
+                              </div>
+
+                              {/* Calculation Type */}
+                              <div className="w-100 mx-1">
+                                <div className="mb-3">
+                                  <label className="form-label">Calculation Type</label>
+                                  <Select
+                                    name={`mainBox[${index}].calculationType`}
+                                    value={calculationType ? calculationType.find(option => option.value === formik.values.mainBox[index].calculationType) : ''}
+                                    onChange={e=>{formik.setFieldValue(`mainBox[${index}].calculationType`,e.value)}}
+                                    options={calculationType}
+                                    classNamePrefix="select2-selection form-select"
+                                  />
+                                </div>
+                              </div>
+
+                              {/* Slab Basis */}
+                              {/* {console.log(formik.values.mainBox[index].calculationType,"<-------val<<")} */}
+                              {/* {console.log(formik.values,"<-------val<<")} */}
+                              {formik.values.mainBox[index].calculationType === "Slab" &&
+                              <div className="w-100 mx-1">
+                                <div className="mb-3">
+                                  <label className="form-label">Slab Basis</label>
+                                  <Select
+                                    name={`mainBox[${index}].slabBasis`}
+                                    value={slabBasis ? slabBasis.find(option => option.value === formik.values.mainBox[index].slabBasis) : ''}
+                                    onChange={e=>{formik.setFieldValue(`mainBox[${index}].slabBasis`,e.value)}}
+                                    options={slabBasis}
+                                    classNamePrefix="select2-selection form-select"
+                                  />
+                                </div>
+                              </div>}
+
+                              {/* Currency */}
+                              <div className="w-100 mx-1">
+                                <div className="mb-3">
+                                  <label className="form-label">Currency</label>
+                                  <Select
+                                    name={`mainBox[${index}].currency`}
+                                    value={slabBasis ? slabBasis.find(option => option.value === formik.values.mainBox[index].currency) : ''}
+                                    onChange={e=>{formik.setFieldValue(`mainBox[${index}].currency`,e.value)}}
+                                    options={currency}
+                                    classNamePrefix="select2-selection form-select"
+                                  />
+                                </div>
+                              </div>
+
+                              {/* Min Value */}
+                              <div className="w-100 mx-1">
+                                <div className="mb-3">
+                                  <label className="form-label">Min Value</label>
+                                  <Input
+                                  type="text"
+                                    name={`mainBox[${index}].minValue`}
+                                    value={formik.values.mainBox[index].minValue}
+                                    onChange={formik.handleChange}
+                                    classNamePrefix="select2-selection form-select"
+                                  />
+                                </div>
+                              </div>
+
+                              {/* checkbox */}
+                              <div className="d-flex w-100 mx-1 align-items-center justify-content-center">
+                                  <div className="form-check">
+                                    <input
+                                      className="form-check-input"
+                                      type="checkbox"
+                                      id="formCheck1"
+                                      name={`mainBox[${index}].addTerms`}
+                                      // onChange={e=>{formik.setFieldValue(`mainBox[${index}].addTerms`,e.target.checked)}}
+                                      onChange={e=>{setAddTermsModal({isOpen:e.target.checked,id:index})}}
+                                    />
+                                    <label className="form-check-label" htmlFor="formCheck1">
+                                    Add Terms
+                                    </label>
+                                </div>
+                              </div>
+
+                              {/* add remove */}
+                              <div className="d-flex align-items-center">
+                                <div>
+                                  <button className='btn btn-primary m-1' onClick={()=>{
+                                    arrayHelpers.push({
+                                      chargeCode:"",
+                                      chargeBasis:"",
+                                      calculationType:"",
+                                      slabBasis:"",
+                                      currency:"",
+                                      minValue:"",
+                                      addTerms:false,
+                                      subBox:[
+                                        {
+                                          cargoType:"",
+                                          containerType:"",
+                                          fromSlab:"",
+                                          toSlab:"",
+                                          rate:null
+                                        }
+                                      ]
+                                    })
+                                  }}><i className='bx bx-plus align-middle'></i></button>
+                                </div>
+                                <div>
+                                  {formik.values.mainBox.length > 1 && <button className='btn btn-primary m-1' onClick={()=>{
+                                    arrayHelpers.remove(index)
+                                  }}><i className='bx bx-minus align-middle'></i></button>}
+                                </div>
+                              </div>
+
+                        </div>
+
+                        {/* SUB Field Array started------------------------------------------------- */}
+                        <FieldArray name={`mainBox[${index}].subBox`}>
+                          {(arrayHelpersTwo)=>{
+                            return(<>
+                            {item.subBox.length > 0 &&
+                            item.subBox.map((subItem,subIndex)=>{
+                              return(<>
+
+{/* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
+                              {formik.values.mainBox[index].calculationType && <div className="d-flex">
+                            {/* Cargo Type */}
+                                {(formik.values.mainBox[index].calculationType === "Flat" || formik.values.mainBox[index].calculationType === "Percentage") && 
+                                <div className="w-100 mx-1">
+                                  <div className="mb-3">
+                                    <label className="form-label">Cargo Type</label>
+                                    <Select
+                                      name={`mainBox[${index}].subBox[${subIndex}].cargoType`}
+                                      value={cargoType ? cargoType.find(option => option.value === formik.values.mainBox[index].subBox[subIndex].cargoType):""}
+                                      onChange={e=>{formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].cargoType`, e.value)}}
+                                      options={cargoType}
+                                      classNamePrefix="select2-selection form-select"
+                                    />
+                                  </div>
+                                </div>}
+                            
+                            {/* Container Type */}
+                                <div className="w-100 mx-1">
+                                  <div className="mb-3">
+                                    <label className="form-label">Container Type</label>
+                                    <Select
+                                      name={`mainBox[${index}].subBox[${subIndex}].containerType`}
+                                      value={containerType ? containerType.find(option => option.value === formik.values.mainBox[index].subBox[subIndex].containerType):""}
+                                      onChange={e=>{formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].containerType`, e.value)}}
+                                      
+                                      options={containerType}
+                                      classNamePrefix="select2-selection form-select"
+                                    />
+                                  </div>
+                                </div>
+
+                            {/* From Slab */}
+                                {formik.values.mainBox[index].calculationType === "Slab" &&
+                                 <div className="w-100 mx-1">
+                                  <div className="mb-3">
+                                    <label className="form-label">From Slab</label>
+                                    <Select
+                                      name={`mainBox[${index}].subBox[${subIndex}].fromSlab`}
+                                      value={fromSlab ? fromSlab.find(option => option.value === formik.values.mainBox[index].subBox[subIndex].fromSlab):""}
+                                      onChange={e=>{formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].fromSlab`, e.value)}}
+                                      
+                                      options={fromSlab}
+                                      classNamePrefix="select2-selection form-select"
+                                    />
+                                  </div>
+                                </div>}
+
+                              {/* To Slab */}
+                              {formik.values.mainBox[index].calculationType === "Slab" &&
+                               <div className="w-100 mx-1">
+                                <div className="mb-3">
+                                  <label className="form-label">To Slab</label>
+                                  <Input
+                                  type="text"
+                                    name={`mainBox[${index}].subBox[${subIndex}].toSlab`}
+                                    value={formik.values.mainBox[index].subBox[subIndex].toSlab}
+                                    onChange={formik.handleChange}
+                                    classNamePrefix="select2-selection form-select"
+                                  />
+                                </div>
+                              </div>}
+
+                              {/* Rate */}
+                              <div className="w-100 mx-1">
+                                <div className="mb-3">
+                                  <label className="form-label">Rate</label>
+                                  <Input
+                                  type="text"
+                                    name={`mainBox[${index}].subBox[${subIndex}].rate`}
+                                    value={formik.values.mainBox[index].subBox[subIndex].rate}
+                                    onChange={formik.handleChange}
+                                    classNamePrefix="select2-selection form-select"
+                                  />
+                                </div>
+                              </div>
+
+                              {/* Add remove  */}
+                              <div className="d-flex align-items-center">
+                                <div>
+                                  <button className='btn btn-primary m-1' onClick={()=>{
+                                    arrayHelpersTwo.push({
+                                      cargoType:"",
+                                      containerType:"",
+                                      fromSlab:"",
+                                      toSlab:"",
+                                      rate:"",
+                                    })
+                                  }}>
+                                      <i className='bx bx-plus align-middle'></i>
+                                  </button>
+                                  </div>
+
+
+                                <div>
+                                <button className='btn btn-primary m-1' onClick={()=>{
+                                    arrayHelpersTwo.remove(subIndex)
+                                  }}>
+                                  <i className='bx bx-minus align-middle'></i>
+                              </button>
+                                </div>
+
+                              </div>
+
+                          </div>}
+
+    {/* <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */}
+
+                              </>)
+                            })}
+                            </>)
+                          }}
+                          
+                          </FieldArray>
+                        {/* SUB Field Array ended------------------------------------------------- */}
+
+                        </>
+                        )
+                      })}
+                        </>)
+                      }}
+                    
+                    </FieldArray>
+                    </FormikProvider>
+
+                      <ModalAddTerm modal={addTermsModal} onCloseClick={onCloseClick} setTermHandler={setTermHandler}/>
                     <div className="row">
-                      <div className="col-lg-2">
-                        <div className="mb-3">
-                          <label className="form-label">Charge Code</label>
-                          <Select
-                            // value={carrierData.rate_type}
-                            name="chargeCode"
-                            // onChange={(opt) => {
-                            //   handleSelectGroup("rate_type", opt);
-                            // }}
-                            options={chargeCode}
-                            classNamePrefix="select2-selection form-select"
-                          />
+                      <div className="d-flex justify-content-center">
+
+                        <div className="mt-3 mx-3 d-flex justify-content-end">
+                          <button className=" btn btn-primary" onClick={formik.handleSubmit}>Save</button>
                         </div>
-                      </div>
-                      <div className="col-lg-2">
-                        <div className="mb-3">
-                          <label className="form-label">Charge Basis</label>
-                          <Select
-                            // value={carrierData.rate_source}
-                            name="chargeBasis"
-                            // onChange={(opt) => {
-                            //   handleSelectGroup("rate_source", opt);
-                            // }}
-                            options={chargeBasis}
-                            classNamePrefix="select2-selection form-select"
-                          />
+                        <div className="mt-3 mx-3 d-flex justify-content-end">
+                          <button className=" btn btn-primary" 
+                            onClick={() => {
+                              navigate(-1);
+                            }}>
+                            Cancel
+                          </button>
                         </div>
-                      </div>
-                      <div className="col-lg-2">
-                        <div className="mb-3">
-                          <label className="form-label">Calculation Type</label>
-                          <Select
-                            // value={carrierData.rate_source}
-                            name="calculationType"
-                            // onChange={(opt) => {
-                            //   handleSelectGroup("rate_source", opt);
-                            // }}
-                            options={calculationType}
-                            classNamePrefix="select2-selection form-select"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-lg-2">
-                        <div className="mb-3">
-                          <label className="form-label">Currency</label>
-                          <Select
-                            // value={carrierData.rate_source}
-                            name="currency"
-                            // onChange={(opt) => {
-                            //   handleSelectGroup("rate_source", opt);
-                            // }}
-                            // options={optionRateSource}
-                            classNamePrefix="select2-selection form-select"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-lg-2">
-                        <div className="mb-3">
-                          <label className="form-label">Min Value</label>
-                          <Input
-                          type="text"
-                            // value={carrierData.rate_source}
-                            name="minValue"
-                            // onChange={(opt) => {
-                            //   handleSelectGroup("rate_source", opt);
-                            // }}
-                            // options={optionRateSource}
-                            classNamePrefix="select2-selection form-select"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-lg-2 d-flex align-items-center justify-content-center">
-                      <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        id="formCheck1"
-                      />
-                      <label className="form-check-label" htmlFor="formCheck1">
-                        Form Checkbox
-                      </label>
-                    </div>
+
                       </div>
                     </div>
+
                   </CardBody>
                 </Card>
               </Col>

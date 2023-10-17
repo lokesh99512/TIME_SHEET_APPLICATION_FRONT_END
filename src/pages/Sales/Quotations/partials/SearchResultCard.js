@@ -1,37 +1,36 @@
-import React, { useEffect, useState } from 'react'
-import CheckboxCommon from '../../../Common/CheckboxCommon'
-import { useSelector } from 'react-redux';
-import { cube_filled, ship_filled, truck_outline } from '../../../../assets/images';
-import { Accordion, AccordionBody, AccordionHeader, AccordionItem, UncontrolledAccordion } from 'reactstrap';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { UPDATE_QUOTATION_RESULT_DETAILS } from '../../../../store/Sales/actiontype';
-
+import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from 'reactstrap';
+import { ship_filled, truck_outline } from '../../../../assets/images';
+import { QUOTATION_RESULT_SELECTED, UPDATE_QUOTATION_RESULT_DETAILS } from '../../../../store/Sales/actiontype';
+import { useSelector } from 'react-redux';
+import Select from "react-select";
+import { optionCustomerName } from '../../../../common/data/sales';
 const SearchResultCard = ({ data, QuoteModalHandler }) => {
-    const [resultCheck, setResultCheck] = useState({});
-    const [showDetails,setShowDetails] = useState([]);
-    const createFields = useSelector((state) => state?.sales?.createFields);
+    const [showDetails, setShowDetails] = useState([]);
     const dispatch = useDispatch();
     const [open, setOpen] = useState('');
+    const quote_Selected = useSelector((state) => state.sales.quote_selected_data);
 
     const toggle = (id) => {
         if (open === id) {
-        setOpen('');
+            setOpen('');
         } else {
-        setOpen(id);
+            setOpen(id);
         }
     };
 
     const showDetailsHandler = (index) => {
         let newArr = [...showDetails];
-        if(newArr?.length !== 0){
-            if(newArr[index] !== undefined){
+        if (newArr?.length !== 0) {
+            if (newArr[index] !== undefined) {
                 newArr[index].details = !newArr[index].details;
             } else {
-                let newObj = {details: true}
+                let newObj = { details: true }
                 newArr.push(newObj);
             }
         } else {
-            let newObj = {details: true}
+            let newObj = { details: true }
             newArr.push(newObj);
         }
         setShowDetails(newArr);
@@ -62,30 +61,59 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
             amount += pickupCharge
         }
         if (item.origin_port) {
-            originPortCharge = Number(item.origin_pch_charge || 0) + Number(item.origin_pcsd_charge || 0) 
-            + Number(item.origin_sbcio_charge || 0) + Number(item.origin_dfo_charge || 0) 
-            + Number(item.origin_dtc_charge || 0) + Number(item.origin_eds_charge || 0) 
-            + Number(item.origin_ips_charge || 0) + Number(item.origin_por_charge || 0) 
-            + Number(item.origin_sse_charge || 0) + Number(item.origin_war_charge || 0) + Number(item.origin_othc_charge || 0)
+            originPortCharge = Number(item.origin_pch_charge || 0) + Number(item.origin_pcsd_charge || 0)
+                + Number(item.origin_sbcio_charge || 0) + Number(item.origin_dfo_charge || 0)
+                + Number(item.origin_dtc_charge || 0) + Number(item.origin_eds_charge || 0)
+                + Number(item.origin_ips_charge || 0) + Number(item.origin_por_charge || 0)
+                + Number(item.origin_sse_charge || 0) + Number(item.origin_war_charge || 0) + Number(item.origin_othc_charge || 0)
             amount += originPortCharge
         }
-        if (item.ocean_freight){
-            amount+= Number(item.fifo_standard || 0);
+        if (item.ocean_freight) {
+            amount += Number(item.fifo_standard || 0);
         }
-        if (item.pickport_discharge){
-            amount+= Number(item.pickport_discharge_charge || 0);
+        if (item.pickport_discharge) {
+            amount += Number(item.pickport_discharge_charge || 0);
         }
-        if (item.delivery){
-            amount+= Number(item.delivery_charge || 0);
+        if (item.delivery) {
+            amount += Number(item.delivery_charge || 0);
         }
         return amount;
+    }
+
+    const quotationCheckHandler = (item) => {        
+        if(quote_Selected.length !== 0){
+            let newItem = quote_Selected.includes(item)
+            if(newItem){
+                let newArry = quote_Selected.filter(obj => obj.id !== item.id);
+                dispatch({type: QUOTATION_RESULT_SELECTED, payload: newArry})
+            } else {
+                let newArry = [...quote_Selected, item]
+                dispatch({type: QUOTATION_RESULT_SELECTED, payload: newArry})
+            }
+        } else {
+            let newArry = [...quote_Selected, item]
+            dispatch({type: QUOTATION_RESULT_SELECTED, payload: newArry})
+        }
+    }
+    const singleQuoteModal = (item) => {
+        let newArry = [item]
+        dispatch({type: QUOTATION_RESULT_SELECTED, payload: newArry})
     }
     return (
         <div>
             <div className="result_tab_content_wrap">
                 {data?.length !== 0 ? data.map((item, index) => (
                     <div className="search_result_card_check_wrap d-flex align-items-center" key={item.id}>
-                        <CheckboxCommon label={''} id={`result_card_${index}`} name={`result_card_${index}`} className={'me-3'} array={resultCheck} setArray={setResultCheck} />
+                        <div className={`form-check me-2`}>
+                            <input
+                                className="form-check-input"
+                                type="checkbox"
+                                id={`result_card_${index}`}
+                                name={`result_card_${index}`}
+                                onChange={(e) => quotationCheckHandler(item)}
+                                // checked={quote_Selected?.includes(item)}
+                            />
+                        </div>
                         <div className="search_result_card">
                             <div className="search_result_card_header d-flex align-items-center">
                                 <div className="card_img">
@@ -108,9 +136,9 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                 <div className="total_wrap">
                                     <p className="total_price text-center"><b>${TotalQuotationCount(item)}</b></p>
                                     <div className="btn_wrap d-flex">
-                                        <button type='button' className='btn text-primary view_detail_btn' onClick={() => {showDetailsHandler(index);}}>
+                                        <button type='button' className='btn text-primary view_detail_btn' onClick={() => { showDetailsHandler(index); }}>
                                             View{showDetails[index]?.details ? 'Less' : 'Detail'}</button>
-                                        <button type='button' className='btn btn-primary' onClick={() => {QuoteModalHandler(item.id)}}>Quote Now</button>
+                                        <button type='button' className='btn btn-primary' onClick={() => { QuoteModalHandler(item.id); singleQuoteModal(item)}}>Quote Now</button>
                                     </div>
                                 </div>
                             </div>
@@ -353,7 +381,11 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                             )}
                         </div>
                     </div>
-                )) : ''}
+                )) : (
+                    <div className='no_data_found p-5 border rounded mt-4'>
+                        <p className='text-center'><b>No Data Found</b></p>
+                    </div>
+                )}
             </div>
         </div>
     )

@@ -67,11 +67,7 @@ export default function UploadRateData() {
         } else if(name === "surchargeAliasCode" && opt.value === "Add New"){
           setAliasModal(true)
         }
-      let newObj = {
-        ...addDetails,
-        [name]: opt,
-      };
-      setAddDetails(newObj);
+      setAddDetails(prev=>({...prev,[name]: opt}));
     },
     [addDetails]
   );
