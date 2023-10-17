@@ -1,8 +1,9 @@
-import { GET_CONSOLE_TABLE_DATA_FAIL, GET_CONSOLE_TABLE_DATA_SUCCESS, GET_FCL_TABLE_DATA_FAIL, GET_FCL_TABLE_DATA_SUCCESS, GET_INLAND_TABLE_DATA_FAIL, GET_INLAND_TABLE_DATA_SUCCESS, GET_LCL_TABLE_DATA_FAIL, GET_LCL_TABLE_DATA_SUCCESS, GET_WAYBILL_TABLE_DATA_FAIL, GET_WAYBILL_TABLE_DATA_SUCCESS, UPDATE_AIRCONSOLE_SWITCH, UPDATE_AIRWAYBILL_SWITCH, UPDATE_CARRIER_DATA, UPDATE_FCL_SWITCH, UPDATE_FCL_TABLE_DATA, UPDATE_INLAND_SWITCH, UPDATE_LCL_SWITCH } from "./actiontype";
+import { GET_CONSOLE_TABLE_DATA_FAIL, GET_CONSOLE_TABLE_DATA_SUCCESS, GET_FCL_TABLE_DATA_FAIL, GET_FCL_TABLE_DATA_SUCCESS, GET_INLAND_TABLE_DATA_FAIL, GET_INLAND_TABLE_DATA_SUCCESS, GET_LCL_TABLE_DATA_FAIL, GET_LCL_TABLE_DATA_SUCCESS, GET_PORTLOCALCHARGES_TABLE_DATA_FAIL, GET_PORTLOCALCHARGES_TABLE_DATA_SUCCESS, GET_WAYBILL_TABLE_DATA_FAIL, GET_WAYBILL_TABLE_DATA_SUCCESS, UPDATE_AIRCONSOLE_SWITCH, UPDATE_AIRWAYBILL_SWITCH, UPDATE_CARRIER_DATA, UPDATE_FCL_SWITCH, UPDATE_FCL_TABLE_DATA, UPDATE_INLAND_SWITCH, UPDATE_LCL_SWITCH } from "./actiontype";
 
 const INIT_STATE = {
     fcl_data: [],
     lclData: [],
+    portLocalChargesData: [],
     waybillData: [],
     consoleData: [],
     inlandData: [],
@@ -40,7 +41,7 @@ const procurement = (state = INIT_STATE, action) => {
                 ...state,
                 fcl_data: action.payload,
             }
-    
+        // lcl
         case GET_LCL_TABLE_DATA_SUCCESS:
             return{
                 ...state,
@@ -51,6 +52,19 @@ const procurement = (state = INIT_STATE, action) => {
                 ...state,
                 lclError: action.payload,
             }   
+        // port local charges
+        case GET_PORTLOCALCHARGES_TABLE_DATA_SUCCESS:
+            return{
+                ...state,
+                portLocalChargesData: action.payload,
+            }
+        case GET_PORTLOCALCHARGES_TABLE_DATA_FAIL:
+            return{
+                ...state,
+                portLocalChargesData: action.payload,
+            }  
+
+
         case GET_WAYBILL_TABLE_DATA_SUCCESS: 
             return{
                 ...state,

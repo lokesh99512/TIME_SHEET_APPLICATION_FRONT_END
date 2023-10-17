@@ -1,17 +1,21 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap'
 import TopBreadcrumbs from './TopBreadcrumbs'
 import TableReact from './TableReactPortLocalCharges'
 import ModalFreight from './Modal/ModalFreight'
 import { fclBreadcrumb, fclRateData } from '../../../../common/data/procurement'
 import FilterOffCanvasComp from './Modal/FilterOffCanvasComp'
-import { CargoType, CarrierName, ChargeId, DestPort, DetentionFree, OrgPort, TransitTime, ValidTill, VendorName, ViaPort } from './OceanCol'
+import { CargoType, CarrierName, Carriername, ChargeId, DestPort, DetentionFree, MovementType, OrgPort, PortName, SurchargeCategory, SurchargeId, Terminals, TransitTime, ValidTill, Validtill, VendorName, Vendorname, ViaPort } from './OceanCol'
 import { useSelector } from 'react-redux'
 import { edit_icon, eye_icon } from '../../../../assets/images'
+import { getPortLocalChargesData } from '../../../../store/Procurement/actions'
+import { useDispatch } from 'react-redux'
 
 export default function PortLocalFreight() {
     const [isRight, setIsRight] = useState(false);
-    const fclData = useSelector((state) => state.procurement.fcl_data);
+    const dispatch = useDispatch();
+    const portLocalData = useSelector((state) => state.procurement.portLocalChargesData);
+    // console.log(portLocalData,"<---plcharges table data");
 
     const viewPopupHandler = (data) => {
         // setModal(true);
@@ -22,14 +26,54 @@ export default function PortLocalFreight() {
         setIsRight(!isRight);
     };
 
+    useEffect(() => {
+        dispatch(getPortLocalChargesData());
+    }, [dispatch]);
+
     const columns = useMemo(() => [
         {
-            Header: 'Charge ID',
-            accessor: 'charge_id',
+            Header: 'Surcharge ID',
+            accessor: 'surcharge_id',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <ChargeId cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <SurchargeId cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Surcharge Category',
+            accessor: 'surcharge_category',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <SurchargeCategory cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Port Name',
+            accessor: 'port_name',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <PortName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Terminals',
+            accessor: 'terminals',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <Terminals cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Movement Type',
+            accessor: 'movement_type',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <MovementType cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -38,7 +82,7 @@ export default function PortLocalFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <CarrierName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <Carriername cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -47,43 +91,7 @@ export default function PortLocalFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <VendorName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Org Port',
-            accessor: 'org_port',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <OrgPort cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Dest Port',
-            accessor: 'dest_port',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <DestPort cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Via Port',
-            accessor: 'via_port',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <ViaPort cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Detention Free',
-            accessor: 'detention_free',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <DetentionFree cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <Vendorname cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -92,25 +100,7 @@ export default function PortLocalFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Transit Time',
-            accessor: 'transit_time',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <TransitTime cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Cargo Type',
-            accessor: 'cargo_type',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <CargoType cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <Validtill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -123,7 +113,7 @@ export default function PortLocalFreight() {
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-end">
                             <DropdownItem>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
-                            <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem>
+                            {/* <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem> */}
                             <DropdownItem onClick={(e) => e.stopPropagation()}>
                                 Activate
                                 <div className="switch_wrap">
@@ -158,7 +148,7 @@ export default function PortLocalFreight() {
                         {/* React Table */}
                         <TableReact
                             columns={columns}
-                            data={fclData}
+                            data={portLocalData}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}

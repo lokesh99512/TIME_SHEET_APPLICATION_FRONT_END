@@ -32,7 +32,7 @@ import {
   octEarningData,
   MarketOverViewAllData, MarketOver1MData, MarketOver6MData, MarketOver1YData,
   PieChart1YData, PieChart6MData, PieChart1MData, PieChartAllData, InvestedOverviewMay, InvestedOverviewApril, InvestedOverviewMarch,
-  InvestedOverviewFeb, InvestedOverviewJan, InvestedOverviewDec, fclTableData, lclTableData, waybillTableData, consoleTableData, inLandTableData, quotationTableData, searchQuotationResult
+  InvestedOverviewFeb, InvestedOverviewJan, InvestedOverviewDec, fclTableData, lclTableData, waybillTableData, consoleTableData, inLandTableData, quotationTableData, searchQuotationResult, plChargesTableData
 } from "../../common/data"
 import { fclSurchargeTableData } from "../../common/data/rate"
 
@@ -863,6 +863,18 @@ const fakeBackend = () => {
     })
   })
 
+  mock.onGet(url.GET_PORTLOCALCHARGES).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if(plChargesTableData){
+          resolve([200, plChargesTableData]);
+        } else {
+          reject([400, "Cannot get Port Local Charges Data"])
+        }
+      });
+    })
+  })
+
   mock.onGet(url.GET_WAYBILL).reply(() => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -937,7 +949,7 @@ const fakeBackend = () => {
           // Passing fake JSON data as response
           resolve([200, fclSurchargeTableData])
         } else {
-          reject([400, "Cannot get FCL data"])
+          reject([400, "Cannot get FCL Surcharge data"])
         }
       })
     })

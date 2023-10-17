@@ -21,6 +21,37 @@ import {
   TabPane,
   UncontrolledTooltip,
 } from "reactstrap";
+import ModalAddTerm from "./Modal/ModalAddTerm";
+
+const chargeCategory = [
+  { label: "Port Charges", value: "Port Charges" },
+  { label: "Other Charges", value: "Other Charges" },
+];
+
+const portName = [
+  { label: "Surat Port", value: "Surat Port" },
+  { label: "Hajira", value: "Hajira" },
+];
+
+const terminalName = [
+  { label: "Surat", value: "Surat" },
+  { label: "Porbandar", value: "Porbandar" },
+];
+
+const movementType = [
+  { label: "Import", value: "Import" },
+  { label: "Export", value: "Export" },
+];
+
+const carrierName = [
+  { label: "OOCL", value: "OOCL" },
+  { label: "ABC", value: "ABC" },
+];
+
+const vendorName = [
+  { label: "Vendor A", value: "Vendor A" },
+  { label: "Vendor B", value: "Vendor B" },
+];
 
 const chargeCode = [
   { label: "THC", value: "THC" },
@@ -76,7 +107,7 @@ const initialValue = {
       slabBasis:"",
       currency:"",
       minValue:"",
-      addTerms:false,
+      addTerms:{},
       subBox:[
         {
           cargoType:"",
@@ -91,7 +122,17 @@ const initialValue = {
 }
 
 export default function UploadPortLocalChargesData() {
+  const [addTermsModal, setAddTermsModal] = useState({isOpen:false,id:""})
   const navigate = useNavigate();
+  console.log(addTermsModal,"mdl");
+
+  const onCloseClick = () => {
+    setAddTermsModal(prev=>({...prev,isOpen:false,id:""}));
+  }
+
+  const setTermHandler = (obj)=>{
+    formik.setFieldValue(`mainBox[${addTermsModal.id}].addTerms`,obj)
+  }
 
  const formik = useFormik({
   initialValues:initialValue,
@@ -99,8 +140,6 @@ export default function UploadPortLocalChargesData() {
     console.log(value,"value");
   }
  })
-
- const removeMainboxHandler = ()=>{}
 
   return (
     <>
@@ -133,10 +172,10 @@ export default function UploadPortLocalChargesData() {
                             </Label>
                             <div className="col-9">
                               <Select
-                                value={formik.values.chargeCategory}
-                                onChange={formik.handleChange}
+                                value={chargeCategory ? chargeCategory.find(option => option.value === formik.values.chargeCategory) : ''}
+                                onChange={e=>{formik.setFieldValue(`chargeCategory`,e.value)}}
                                 name="chargeCategory"
-                                // options={surchargeCategory}
+                                options={chargeCategory}
                                 placeholder={"Select Charge Category"}
                                 classNamePrefix="select2-selection form-select"
                               />
@@ -155,14 +194,10 @@ export default function UploadPortLocalChargesData() {
                             </Label>
                             <div className="col-9">
                               <Select
-                                // value={addDetails.surchargeAliasCode}
                                 name="portName"
-                                value={formik.values.portName}
-                                onChange={formik.handleChange}
-                                // onChange={(opt) => {
-                                //   handleSelectGroup("surchargeAliasCode", opt);
-                                // }}
-                                // options={surchargeAliasCode}
+                                value={portName ? portName.find(option => option.value === formik.values.portName) : ''}
+                                onChange={e=>{formik.setFieldValue(`portName`,e.value)}}
+                                options={portName}
                                 placeholder={"Select Port Name"}
                                 classNamePrefix="select2-selection form-select"
                               />
@@ -183,12 +218,9 @@ export default function UploadPortLocalChargesData() {
                               <Select
                                 // value={addDetails.surchargeAliasDesc}
                                 name="terminalName"
-                                value={formik.values.terminalName}
-                                onChange={formik.handleChange}
-                                // onChange={(opt) => {
-                                //   handleSelectGroup("surchargeAliasDesc", opt);
-                                // }}
-                                // options={surchargeAliasDesc}
+                                value={terminalName ? terminalName.find(option => option.value === formik.values.terminalName) : ''}
+                                onChange={e=>{formik.setFieldValue(`terminalName`,e.value)}}
+                                options={terminalName}
                                 placeholder={"Select Terminal Name"}
                                 classNamePrefix="select2-selection form-select"
                               />
@@ -210,14 +242,10 @@ export default function UploadPortLocalChargesData() {
                             </Label>
                             <div className="col-9">
                               <Select
-                                // value={addDetails.surchargeCategory}
                                 name="movementType"
-                                value={formik.values.movementType}
-                                onChange={formik.handleChange}
-                                // onChange={(opt) => {
-                                //   handleSelectGroup("surchargeCategory", opt);
-                                // }}
-                                // options={surchargeCategory}
+                                value={movementType ? movementType.find(option => option.value === formik.values.movementType) : ''}
+                                onChange={e=>{formik.setFieldValue(`movementType`,e.value)}}
+                                options={movementType}
                                 placeholder={"Select Movement Type"}
                                 classNamePrefix="select2-selection form-select"
                               />
@@ -236,14 +264,10 @@ export default function UploadPortLocalChargesData() {
                             </Label>
                             <div className="col-9">
                               <Select
-                                // value={addDetails.surchargeAliasCode}
                                 name="carrierName"
-                                value={formik.values.carrierName}
-                                onChange={formik.handleChange}
-                                // onChange={(opt) => {
-                                //   handleSelectGroup("surchargeAliasCode", opt);
-                                // }}
-                                // options={surchargeAliasCode}
+                                value={carrierName ? carrierName.find(option => option.value === formik.values.carrierName) : ''}
+                                onChange={e=>{formik.setFieldValue(`carrierName`,e.value)}}
+                                options={carrierName}
                                 placeholder={"Select Carrier Name"}
                                 classNamePrefix="select2-selection form-select"
                               />
@@ -264,12 +288,9 @@ export default function UploadPortLocalChargesData() {
                               <Select
                                 // value={addDetails.surchargeAliasDesc}
                                 name="vendorName"
-                                value={formik.values.vendorName}
-                                onChange={formik.handleChange}
-                                // onChange={(opt) => {
-                                //   handleSelectGroup("surchargeAliasDesc", opt);
-                                // }}
-                                // options={surchargeAliasDesc}
+                                value={vendorName ? vendorName.find(option => option.value === formik.values.vendorName) : ''}
+                                onChange={e=>{formik.setFieldValue(`vendorName`,e.value)}}
+                                options={vendorName}
                                 placeholder={"Select Vendor Name"}
                                 classNamePrefix="select2-selection form-select"
                               />
@@ -434,8 +455,8 @@ export default function UploadPortLocalChargesData() {
                                       type="checkbox"
                                       id="formCheck1"
                                       name={`mainBox[${index}].addTerms`}
-                                      onChange={e=>{formik.setFieldValue(`mainBox[${index}].addTerms`,e.target.checked)}}
-                                      // checked={formik.values.mainBox[index].addTerms}
+                                      // onChange={e=>{formik.setFieldValue(`mainBox[${index}].addTerms`,e.target.checked)}}
+                                      onChange={e=>{setAddTermsModal({isOpen:e.target.checked,id:index})}}
                                     />
                                     <label className="form-check-label" htmlFor="formCheck1">
                                     Add Terms
@@ -444,9 +465,9 @@ export default function UploadPortLocalChargesData() {
                               </div>
 
                               {/* add remove */}
-                              <div>
+                              <div className="d-flex align-items-center">
                                 <div>
-                                  <button onClick={()=>{
+                                  <button className='btn btn-primary m-1' onClick={()=>{
                                     arrayHelpers.push({
                                       chargeCode:"",
                                       chargeBasis:"",
@@ -465,12 +486,12 @@ export default function UploadPortLocalChargesData() {
                                         }
                                       ]
                                     })
-                                  }}>Add</button>
+                                  }}><i className='bx bx-plus align-middle'></i></button>
                                 </div>
                                 <div>
-                                  {formik.values.mainBox.length > 1 && <button onClick={()=>{
+                                  {formik.values.mainBox.length > 1 && <button className='btn btn-primary m-1' onClick={()=>{
                                     arrayHelpers.remove(index)
-                                  }}>Remove</button>}
+                                  }}><i className='bx bx-minus align-middle'></i></button>}
                                 </div>
                               </div>
 
@@ -562,9 +583,9 @@ export default function UploadPortLocalChargesData() {
                               </div>
 
                               {/* Add remove  */}
-                              <div>
+                              <div className="d-flex align-items-center">
                                 <div>
-                                  <button onClick={()=>{
+                                  <button className='btn btn-primary m-1' onClick={()=>{
                                     arrayHelpersTwo.push({
                                       cargoType:"",
                                       containerType:"",
@@ -572,13 +593,20 @@ export default function UploadPortLocalChargesData() {
                                       toSlab:"",
                                       rate:"",
                                     })
-                                  }}>Add</button>
-                                </div>
+                                  }}>
+                                      <i className='bx bx-plus align-middle'></i>
+                                  </button>
+                                  </div>
+
+
                                 <div>
-                              <button onClick={()=>{
+                                <button className='btn btn-primary m-1' onClick={()=>{
                                     arrayHelpersTwo.remove(subIndex)
-                                  }}>Remove</button>
+                                  }}>
+                                  <i className='bx bx-minus align-middle'></i>
+                              </button>
                                 </div>
+
                               </div>
 
                           </div>}
@@ -592,6 +620,7 @@ export default function UploadPortLocalChargesData() {
                           
                           </FieldArray>
                         {/* SUB Field Array ended------------------------------------------------- */}
+
                         </>
                         )
                       })}
@@ -601,7 +630,24 @@ export default function UploadPortLocalChargesData() {
                     </FieldArray>
                     </FormikProvider>
 
-                    
+                      <ModalAddTerm modal={addTermsModal} onCloseClick={onCloseClick} setTermHandler={setTermHandler}/>
+                    <div className="row">
+                      <div className="d-flex justify-content-center">
+
+                        <div className="mt-3 mx-3 d-flex justify-content-end">
+                          <button className=" btn btn-primary" onClick={formik.handleSubmit}>Save</button>
+                        </div>
+                        <div className="mt-3 mx-3 d-flex justify-content-end">
+                          <button className=" btn btn-primary" 
+                            onClick={() => {
+                              navigate(-1);
+                            }}>
+                            Cancel
+                          </button>
+                        </div>
+
+                      </div>
+                    </div>
 
                   </CardBody>
                 </Card>
