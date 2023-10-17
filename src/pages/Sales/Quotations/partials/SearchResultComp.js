@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from "classnames";
 import SearchResultCard from './SearchResultCard';
 import { useSelector } from 'react-redux';
 import QuotationModalComp from './QuotationModalComp';
 
-const SearchResultComp = () => {
+const SearchResultComp = ({QuoteModalHandler}) => {
     const [activeTab, setactiveTab] = useState("preferred");
-    const [quoteModal, setQuoteModal] = useState(false);
-    const [quoteModalId, setQuoteModalId] = useState(false);
+    const [prefferedData, setPrefferedData] = useState([]);
+    const [cheaperData, setCheaperData] = useState([]);
+    const [fasterData, setFasterData] = useState([]);
     const data = useSelector((state) => state?.sales?.quotation_result_data);
     const navToggle = (tab) => {
         if (activeTab !== tab) {
@@ -16,15 +17,19 @@ const SearchResultComp = () => {
         }
     };
 
-    function removeBodyCss() {
-        document.body.classList.add("no_padding");
-      }
-
-    function QuoteModalHandler(id) {
-        setQuoteModalId(id);
-        setQuoteModal(!quoteModal);
-        removeBodyCss();
-    }
+    useEffect(() => {
+        data?.map((item) => {
+            if(item.quote_type === 'preffered'){
+                return setPrefferedData([...prefferedData,item]);
+            } 
+            if(item.quote_type === 'cheaper'){
+                return setCheaperData([...cheaperData,item]);
+            } 
+            if(item.quote_type === 'faster'){
+                return setFasterData([...fasterData,item]);
+            } 
+        })
+    },[data]);
     return (
         <>
             <div className="search_result_wrap">
@@ -54,14 +59,14 @@ const SearchResultComp = () => {
                 {activeTab === 'preferred' ? (
                     <SearchResultCard data={data} QuoteModalHandler={QuoteModalHandler} />
                 ) : activeTab === "cheaper" ? (
-                    <SearchResultCard data={data} />
+                    <SearchResultCard data={data} QuoteModalHandler={QuoteModalHandler} />
                 ) : (
-                    <SearchResultCard data={data} />
+                    <SearchResultCard data={data} QuoteModalHandler={QuoteModalHandler} />
                 )}
             </div>
 
             {/* Quotation Modal */}
-            <QuotationModalComp quoteModal={quoteModal} setQuoteModal={setQuoteModal} QuoteModalHandler={QuoteModalHandler} quoteModalId={quoteModalId} />
+            {/* <QuotationModalComp quoteModal={quoteModal} setQuoteModal={setQuoteModal} QuoteModalHandler={QuoteModalHandler} quoteModalId={quoteModalId} /> */}
         </>
     )
 }

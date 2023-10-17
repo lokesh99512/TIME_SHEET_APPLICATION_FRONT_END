@@ -7,18 +7,34 @@ import { isAnyValueEmpty } from '../../../../components/Common/CommonLogic';
 import { useDispatch } from 'react-redux';
 import { getSalesQuotationResultData } from '../../../../store/Sales/actions';
 import SearchResultComp from './SearchResultComp';
+import QuotationModalComp from './QuotationModalComp';
 
 export default function CreateQuotation() {
     const [searchResult, setSearchResult] = useState(false);
     const [searchView, setSearchView] = useState(true);
+    const [quoteModal, setQuoteModal] = useState(false);
+    const [quoteModalId, setQuoteModalId] = useState(false);
     const searchData = useSelector((state) => state?.sales?.createFields);    
     const navigate = useNavigate();
     const dispatch = useDispatch();    
 
+    function removeBodyCss() {
+        document.body.classList.add("no_padding");
+      }
+
+    function QuoteModalHandler() {
+        setQuoteModal(!quoteModal);
+        removeBodyCss();
+    }
+
     const searchQuoteHandler = () => {
-        setSearchResult(true);
-        setSearchView(false);
-        dispatch(getSalesQuotationResultData());
+        if(searchResult){
+            QuoteModalHandler();
+        } else {
+            setSearchResult(true);
+            setSearchView(false);
+            dispatch(getSalesQuotationResultData());
+        }
     }
     return (
         <>
@@ -40,11 +56,13 @@ export default function CreateQuotation() {
 
                         {/* Search Result */}
                         {searchResult && (
-                            <SearchResultComp />
+                            <SearchResultComp QuoteModalHandler={QuoteModalHandler} />
                         )}
                     </div>
                 </Container>
             </div>
+            {/* Quotation Modal */}
+            <QuotationModalComp quoteModal={quoteModal} setQuoteModal={setQuoteModal} QuoteModalHandler={QuoteModalHandler} quoteModalId={quoteModalId} />
         </>
     )
 }
