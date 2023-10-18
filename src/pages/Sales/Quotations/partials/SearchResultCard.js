@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from 'reactstrap';
 import { ship_filled, truck_outline } from '../../../../assets/images';
-import { QUOTATION_RESULT_SELECTED, UPDATE_QUOTATION_RESULT_DETAILS } from '../../../../store/Sales/actiontype';
-import { useSelector } from 'react-redux';
-import Select from "react-select";
-import { optionCustomerName } from '../../../../common/data/sales';
+import { QUOTATION_RESULT_SELECTED, UPDATE_QUOTATION_RESULT_DETAILS, UPDATE_QUOTATION_RESULT_DETAILS_CHEAPER, UPDATE_QUOTATION_RESULT_DETAILS_FASTER } from '../../../../store/Sales/actiontype';
 const SearchResultCard = ({ data, QuoteModalHandler }) => {
     const [showDetails, setShowDetails] = useState([]);
     const dispatch = useDispatch();
@@ -20,24 +17,32 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
         }
     };
 
-    const showDetailsHandler = (index) => {
+    const showDetailsHandler = (index,id) => {
         let newArr = [...showDetails];
         if (newArr?.length !== 0) {
-            if (newArr[index] !== undefined) {
-                newArr[index].details = !newArr[index].details;
+            if(newArr.some(obj => obj.id === id)){
+                newArr.find(obj => obj.id === id).details = !newArr.find(obj => obj.id === id).details
             } else {
-                let newObj = { details: true }
+                let newObj = { details: true,id }
                 newArr.push(newObj);
             }
         } else {
-            let newObj = { details: true }
+            let newObj = { details: true,id }
             newArr.push(newObj);
         }
         setShowDetails(newArr);
     }
 
-    const handleChange = (val, name, index) => {
-        dispatch({ type: UPDATE_QUOTATION_RESULT_DETAILS, payload: { name, value: val, index } })
+    const handleChange = (val, name, index, id) => {
+        if(data[0].quote_type === 'preffered'){
+            dispatch({ type: UPDATE_QUOTATION_RESULT_DETAILS, payload: { name, value: val, id } })
+        } 
+        if (data[0].quote_type === 'cheaper'){
+            dispatch({ type: UPDATE_QUOTATION_RESULT_DETAILS_CHEAPER, payload: { name, value: val, id } })
+        } 
+        if(data[0].quote_type === 'faster') {
+            dispatch({ type: UPDATE_QUOTATION_RESULT_DETAILS_FASTER, payload: { name, value: val, id } })
+        }
     }
 
     const countPickup = (item) => {
@@ -104,14 +109,14 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
             <div className="result_tab_content_wrap">
                 {data?.length !== 0 ? data.map((item, index) => (
                     <div className="search_result_card_check_wrap d-flex align-items-center" key={item.id}>
-                        <div className={`form-check me-2`}>
+                        <div className={`form-check me-2`} onClick={(e) => quotationCheckHandler(item)}>
                             <input
                                 className="form-check-input"
                                 type="checkbox"
                                 id={`result_card_${index}`}
                                 name={`result_card_${index}`}
-                                onChange={(e) => quotationCheckHandler(item)}
-                                // checked={quote_Selected?.includes(item)}
+                                checked={quote_Selected.some(obj => obj.id === item.id)}
+                                readOnly
                             />
                         </div>
                         <div className="search_result_card">
@@ -136,19 +141,19 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                 <div className="total_wrap">
                                     <p className="total_price text-center"><b>${TotalQuotationCount(item)}</b></p>
                                     <div className="btn_wrap d-flex">
-                                        <button type='button' className='btn text-primary view_detail_btn' onClick={() => { showDetailsHandler(index); }}>
-                                            View{showDetails[index]?.details ? 'Less' : 'Detail'}</button>
-                                        <button type='button' className='btn btn-primary' onClick={() => { QuoteModalHandler(item.id); singleQuoteModal(item)}}>Quote Now</button>
+                                        <button type='button' className='btn text-primary view_detail_btn' onClick={() => { showDetailsHandler(index,item.id); }}>
+                                            View{showDetails?.find(obj => obj.id === item.id)?.details ? 'Less' : 'Detail'}</button>
+                                        <button type='button' className='btn btn-primary' onClick={() => { QuoteModalHandler(item.id); singleQuoteModal(item)}} disabled={quote_Selected.some(obj => obj.id === item.id)}>Quote Now</button>
                                     </div>
                                 </div>
                             </div>
-                            {showDetails[index]?.details && (
+                            {showDetails?.find(obj => obj.id === item.id)?.details && (
                                 <div className="search_result_accordion_details">
                                     <Accordion flush open={open} toggle={toggle}>
                                         <AccordionItem>
                                             <AccordionHeader targetId={`pickup_${index}`}>
                                                 <div className="left_lable d-flex align-items-center">
-                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.pickup, 'pickup', index); }}>
+                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.pickup, 'pickup', index, item.id); }}>
                                                         <input
                                                             className="form-check-input"
                                                             type="checkbox"
@@ -170,7 +175,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                             <AccordionBody accordionId={`pickup_${index}`}>
                                                 <div className="radio_wrap">
                                                     <div className="radio_con d-flex ps-5">
-                                                        <div className={`form-check d-flex align-items-center`} onClick={(e) => handleChange('truck', 'pickup_val', index)}>
+                                                        <div className={`form-check d-flex align-items-center`} onClick={(e) => handleChange('truck', 'pickup_val', index, item.id)}>
                                                             <input
                                                                 className="form-check-input me-2"
                                                                 type="radio"
@@ -191,7 +196,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                         </div>
                                                     </div>
                                                     <div className="radio_con d-flex ps-5 mt-3">
-                                                        <div className={`form-check d-flex align-items-center`} onClick={(e) => handleChange('rail', 'pickup_val', index)}>
+                                                        <div className={`form-check d-flex align-items-center`} onClick={(e) => handleChange('rail', 'pickup_val', index, item.id)}>
                                                             <input
                                                                 className="form-check-input me-2"
                                                                 type="radio"
@@ -215,7 +220,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                         <AccordionItem>
                                             <AccordionHeader targetId={`origin_port_${index}`}>
                                                 <div className="left_lable d-flex align-items-center">
-                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.origin_port, 'origin_port', index); }}>
+                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.origin_port, 'origin_port', index,item.id); }}>
                                                         <input
                                                             className="form-check-input"
                                                             type="checkbox"
@@ -286,7 +291,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                         <AccordionItem>
                                             <AccordionHeader targetId={`ocean_freight_${index}`}>
                                                 <div className="left_lable d-flex align-items-center">
-                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.ocean_freight, 'ocean_freight', index); }}>
+                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.ocean_freight, 'ocean_freight', index,item.id); }}>
                                                         <input
                                                             className="form-check-input"
                                                             type="checkbox"
@@ -317,7 +322,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                         <AccordionItem>
                                             <AccordionHeader targetId={`pickport_discharge_${index}`}>
                                                 <div className="left_lable d-flex align-items-center">
-                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.pickport_discharge, 'pickport_discharge', index); }}>
+                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.pickport_discharge, 'pickport_discharge', index,item.id); }}>
                                                         <input
                                                             className="form-check-input"
                                                             type="checkbox"
@@ -348,7 +353,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                         <AccordionItem>
                                             <AccordionHeader targetId={`delivery_charge_${index}`}>
                                                 <div className="left_lable d-flex align-items-center">
-                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.delivery, 'delivery', index); }}>
+                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.delivery, 'delivery', index, item.id); }}>
                                                         <input
                                                             className="form-check-input"
                                                             type="checkbox"

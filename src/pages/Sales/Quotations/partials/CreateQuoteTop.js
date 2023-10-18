@@ -11,6 +11,7 @@ import Flatpickr from "react-flatpickr";
 import { useDispatch, useSelector } from 'react-redux';
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem, Collapse, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledAccordion, UncontrolledDropdown } from 'reactstrap';
 import { UPDATE_CONTAINERTYPE_CONFIRM, UPDATE_CONTAINER_CHANGE, UPDATE_SEARCH_QUOTATION_CURRENCY, UPDATE_SEARCH_QUOTATION_DATA, UPDATE_SEARCH_QUOTATION_DATE, UPDATE_SEARCH_QUOTATION_LOCATION_FROM, UPDATE_SEARCH_QUOTATION_LOCATION_TO, UPDATE_SEARCH_QUOTATION_SWAP, UPDATE_VALUE_BLANK } from '../../../../store/Sales/actiontype';
+import { useFormik } from 'formik';
 
 export default function CreateQuoteTop({ searchView, setSearchView, searchResult }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -192,6 +193,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
     useOutsideClick(dropdownRef, setIsOpen);
     // ------------ custom dropdown -------------------    
     // console.log(createFields, "createFields")
+
     return (
         <>
             <div className="create_sales_search_forms">
@@ -626,7 +628,6 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                                 <div className="con">
                                                     <label className="form-label">Shipment Details</label>
                                                     <span className={`value ${createFields?.container_type?.length !== 0 ? 'value_focus' : ''}`}>
-                                                        {/* {(createFields?.container_type?.name || 'Select Container Type')} */}
                                                         {createFields?.container_type?.length !== 0 ? (
                                                             <>
                                                                 {createFields?.container_type[0].no_unit} Units | {calculateVal ? `${calculateVal?.amount?.toFixed(4)} ${calculateVal?.mesure} |` : ''} {Number(createFields?.container_type[0].no_unit) * Number(createFields?.container_type[0].weight)} {createFields?.container_type[0].weight_unit}
@@ -638,7 +639,6 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                             </div>
                                             {isOpen && dropId === 11 ?
                                                 <div className="common_dropdown_wrap container_drop_wrap" ref={dropdownRef}>
-                                                    {/* <UncontrolledAccordion defaultOpen="1"> */}
                                                     {containerType.length !== 0 && (
                                                         <Accordion flush open={open} toggle={toggle}>
                                                             {(containerType || '')?.map((item, index) => (
@@ -702,7 +702,6 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                                             ))}
                                                             </Accordion>
                                                     )}
-                                                    {/* </UncontrolledAccordion> */}
                                                     <div className="btn_wrap d-flex justify-content-end">
                                                         <button type="button" className='btn border_btn' onClick={AddLoadHandler}>Add Another Load</button>
                                                         <button type="button" className='btn btn-primary' onClick={confirmHandler}>Confirm</button>

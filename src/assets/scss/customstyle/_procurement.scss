@@ -1,3 +1,12 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"]{
+    @include appearance;
+}
+
 .main_freight_wrapper{
     .freight_tabing_wrap{
         ul.nav{
@@ -994,15 +1003,7 @@
 }
 
 .common_dropdown_wrap.container_drop_wrap {
-    padding: 16px;
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-    input[type="number"]{
-        @include appearance;
-    }
+    padding: 16px;    
     .accordion-item {
         border-radius: 12px;
         border: 1px solid $neutral_2;
@@ -1301,6 +1302,9 @@
                         padding: 10px 16px;
                         border-bottom: 1px solid $neutral_2;
                         background: $white;
+                        &.active{
+                            background: $primary_1;
+                        }
                     }
                 }
             }
@@ -1308,6 +1312,12 @@
                 border: 1px solid $neutral_2;
                 padding: 8px 12px;
                 border-radius: 0 8px 8px 0;
+                input {
+                    border: 0;
+                    padding: 0 0px 0 5px;
+                    width: 60px;
+                    color: $primary_7;
+                }
             }
         }
         button.close {
