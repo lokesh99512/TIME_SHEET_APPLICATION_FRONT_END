@@ -415,8 +415,23 @@ const weightUnitOption= [
     {value: 'kg', name: 'KG'},
     {value: 'pound', name: 'pound'},
 ]
+const optionPickupCharge = [
+    {value: "fuel_charge", label: "Fuel Surcharge"},
+    {value: "fuel_charge2", label: "Fuel Surcharge"},
+]
+const optionMarkupType = [
+    {value: "percentage", label: "Percentage"},
+]
+const optionCurrencyCharges = [
+    {value: "pound", label: "Pound", code: '£'},
+    {value: "usd", label: "USD", code: '$'},
+    {value: "euro", label: "Euro", code: '€'},
+    {value: "rupee", label: "Rupee", code: '₹'},
+    {value: "yen", label: "Yen", code: '¥'},
+]
 
 export {
     quotationBreadcrumb,quotationRateData,quotationTableData,optionCustomerName,optionServiceType,optionTransportBy,optionContainerType,optionIncoterm,optionCargoType,optionCurrency,
-    optionlocationType,countryList,optionPortList,optionLandTransportBy,searchQuotationResult,weightUnitOption,optionContainerTypeWithoutRefri,optionContainerTypeRefrigerated
+    optionlocationType,countryList,optionPortList,optionLandTransportBy,searchQuotationResult,weightUnitOption,optionContainerTypeWithoutRefri,optionContainerTypeRefrigerated,
+    optionPickupCharge,optionMarkupType,optionCurrencyCharges
 }
