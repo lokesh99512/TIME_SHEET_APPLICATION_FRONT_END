@@ -35,6 +35,7 @@ import {
   InvestedOverviewFeb, InvestedOverviewJan, InvestedOverviewDec, fclTableData, lclTableData, waybillTableData, consoleTableData, inLandTableData, quotationTableData, searchQuotationResult, plChargesTableData
 } from "../../common/data"
 import { fclSurchargeTableData } from "../../common/data/rate"
+import exchangeRateData from "../../assets/extra/inr.json";
 
 let users = [
   {
@@ -928,6 +929,17 @@ const fakeBackend = () => {
       setTimeout(() => {
         if(searchQuotationResult) {
           resolve([200, searchQuotationResult]);
+        } else {
+          reject([400, 'Cannot get Quotation Result Data']);
+        }
+      });
+    })
+  })
+  mock.onGet(url.GET_quote_exchange_rate).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if(exchangeRateData) {
+          resolve([200, exchangeRateData]);
         } else {
           reject([400, 'Cannot get Quotation Result Data']);
         }

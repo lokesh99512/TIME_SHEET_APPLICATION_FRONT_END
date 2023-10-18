@@ -139,3 +139,4 @@ export const GET_FCL_SURCHARGE = "/get-fcl-surcharge"
 // -------------------- Sales --------------------------------------------
 export const GET_QUOTATION = "get-quotation"
 export const GET_QUOTATION_SEARCH_RESULT = "get-quotation-result"
+export const GET_quote_exchange_rate = "get-exchangerate"

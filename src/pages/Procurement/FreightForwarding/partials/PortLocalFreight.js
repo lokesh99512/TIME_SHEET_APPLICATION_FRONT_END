@@ -10,16 +10,23 @@ import { useSelector } from 'react-redux'
 import { edit_icon, eye_icon } from '../../../../assets/images'
 import { getPortLocalChargesData } from '../../../../store/Procurement/actions'
 import { useDispatch } from 'react-redux'
+import ModalSurchargeValue from './Modal/ModalSurchargeValue'
 
 export default function PortLocalFreight() {
     const [isRight, setIsRight] = useState(false);
+    const [modal, setModal] = useState(false);
+    const [viewData, setViewData] = useState(false);
     const dispatch = useDispatch();
     const portLocalData = useSelector((state) => state.procurement.portLocalChargesData);
     // console.log(portLocalData,"<---plcharges table data");
 
     const viewPopupHandler = (data) => {
-        // setModal(true);
-        // setViewData(data);
+        setModal(true);
+        setViewData(data);
+    }
+
+    const onCloseClick = () => {
+        setModal(false);
     }
 
     const toggleRightCanvas = () => {
@@ -157,7 +164,7 @@ export default function PortLocalFreight() {
                         />
 
                         {/* modal */}
-                        {/* <ModalFreight modal={modal} onCloseClick={onCloseClick} viewData={viewData} modalType={'fcl'} /> */}
+                        <ModalSurchargeValue modal={modal} onCloseClick={onCloseClick} viewData={viewData} modalType={'PortLocalCharges'} />
                     </div>
                 </Container>
             </div>

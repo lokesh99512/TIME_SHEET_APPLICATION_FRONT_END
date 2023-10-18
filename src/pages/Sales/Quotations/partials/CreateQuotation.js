@@ -13,10 +13,10 @@ export default function CreateQuotation() {
     const [searchResult, setSearchResult] = useState(false);
     const [searchView, setSearchView] = useState(true);
     const [quoteModal, setQuoteModal] = useState(false);
-    const [quoteModalId, setQuoteModalId] = useState(false);
     const searchData = useSelector((state) => state?.sales?.createFields);    
     const navigate = useNavigate();
     const dispatch = useDispatch();    
+    const quote_Selected = useSelector((state) => state.sales.quote_selected_data);
 
     function removeBodyCss() {
         document.body.classList.add("no_padding");
@@ -31,9 +31,11 @@ export default function CreateQuotation() {
         if(searchResult){
             QuoteModalHandler();
         } else {
-            setSearchResult(true);
-            setSearchView(false);
-            dispatch(getSalesQuotationResultData());
+            if(!isAnyValueEmpty(searchData)){
+                setSearchResult(true);
+                setSearchView(false);
+                dispatch(getSalesQuotationResultData());
+            }
         }
     }
     return (
@@ -46,9 +48,10 @@ export default function CreateQuotation() {
                                 <button type="button" className='btn me-3' onClick={() => { navigate(-1) }}> <i className='fas fa-chevron-left'></i> </button>
                                 <p>Find the most affordable Freight Quote.</p>
                             </div>
+                            {searchResult ? <button type="button" className='btn btn-primary ms-auto' onClick={searchQuoteHandler} 
+                             disabled={quote_Selected?.length === 0}>Quote Now</button> : 
                             <button type="button" className='btn btn-primary ms-auto' onClick={searchQuoteHandler} 
-                            // disabled={isAnyValueEmpty(searchData)}
-                            >{searchResult ? 'Quote Now' : 'Search'}</button>
+                             disabled={!(!isAnyValueEmpty(searchData) && searchData?.cargo_value?.value !== '')}>Search</button>}
                         </div>
 
                         {/* Create Quote Search fields */}
@@ -62,7 +65,7 @@ export default function CreateQuotation() {
                 </Container>
             </div>
             {/* Quotation Modal */}
-            <QuotationModalComp quoteModal={quoteModal} setQuoteModal={setQuoteModal} QuoteModalHandler={QuoteModalHandler} quoteModalId={quoteModalId} />
+            <QuotationModalComp quoteModal={quoteModal} setQuoteModal={setQuoteModal} QuoteModalHandler={QuoteModalHandler} />
         </>
     )
 }
