@@ -1103,6 +1103,95 @@ export const plChargesTableData = [
         carrier_name: 'YML',
         vendor_name: 'test',
         valid_till: 'Jul 17 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[
+            {
+                chargeCode: "THC",
+                chargeBasis: "Per Container",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "0",
+                addTerms: {
+                    paymentTerm: "To Collect",
+                    incoTerm: [
+                        "Carraige Paid To",
+                        "Cost Insurance and Freight",
+                        "Delivery at Place"
+                    ],
+                    isStandard: "Standard Charge",
+                    commodity: [
+                        "General",
+                        "Electronics"
+                    ],
+                    serviceType: [
+                        "Door To Door",
+                        "Port To Door"
+                    ]
+                },
+                subBox: [
+                    {
+                        cargoType: "General",
+                        containerType: "20 GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10"
+                    },
+                    {
+                        cargoType: "Refer",
+                        containerType: "40 RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "11"
+                    }
+                ]
+            },
+            {
+                chargeCode: "DOC",
+                chargeBasis: "Per Bill",
+                calculationType: "Slab",
+                slabBasis: "Container Count",
+                currency: "USD",
+                minValue: "1",
+                addTerms: {
+                    paymentTerm: "Prepaid",
+                    incoTerm: [
+                        "EX WORKS",
+                        "FREE CARRIAGE"
+                    ],
+                    isStandard: "Incidental",
+                    commodity: [
+                        "Fruits",
+                        "Pulses"
+                    ],
+                    serviceType: [
+                        "Door To Door",
+                        "Door To Port"
+                    ]
+                },
+                subBox: [
+                    {
+                        cargoType: "",
+                        containerType: "40 GP",
+                        fromSlab: "",
+                        toSlab: "8",
+                        rate: "10"
+                    },
+                    {
+                        cargoType: "",
+                        containerType: "40 GP",
+                        fromSlab: "0",
+                        toSlab: "2",
+                        rate: "12"
+                    }
+                ]
+            }
+        ]
     },
     {
         id: 2,
@@ -1114,6 +1203,95 @@ export const plChargesTableData = [
         carrier_name: 'YML',
         vendor_name: 'test',
         valid_till: 'Jul 17 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[
+            {
+                chargeCode: "THC",
+                chargeBasis: "Per Container",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "0",
+                addTerms: {
+                    paymentTerm: "To Collect",
+                    incoTerm: [
+                        "Carraige Paid To",
+                        "Cost Insurance and Freight",
+                        "Delivery at Place"
+                    ],
+                    isStandard: "Standard Charge",
+                    commodity: [
+                        "General",
+                        "Electronics"
+                    ],
+                    serviceType: [
+                        "Door To Door",
+                        "Port To Door"
+                    ]
+                },
+                subBox: [
+                    {
+                        cargoType: "General",
+                        containerType: "20 GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10"
+                    },
+                    {
+                        cargoType: "Refer",
+                        containerType: "40 RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "11"
+                    }
+                ]
+            },
+            {
+                chargeCode: "DOC",
+                chargeBasis: "Per Bill",
+                calculationType: "Slab",
+                slabBasis: "Container Count",
+                currency: "USD",
+                minValue: "1",
+                addTerms: {
+                    paymentTerm: "Prepaid",
+                    incoTerm: [
+                        "EX WORKS",
+                        "FREE CARRIAGE"
+                    ],
+                    isStandard: "Incidental",
+                    commodity: [
+                        "Fruits",
+                        "Pulses"
+                    ],
+                    serviceType: [
+                        "Door To Door",
+                        "Door To Port"
+                    ]
+                },
+                subBox: [
+                    {
+                        cargoType: "",
+                        containerType: "40 GP",
+                        fromSlab: "",
+                        toSlab: "8",
+                        rate: "10"
+                    },
+                    {
+                        cargoType: "",
+                        containerType: "40 GP",
+                        fromSlab: "0",
+                        toSlab: "2",
+                        rate: "12"
+                    }
+                ]
+            }
+        ]
     },
     {
         id: 3,
@@ -1125,6 +1303,195 @@ export const plChargesTableData = [
         carrier_name: 'YML',
         vendor_name: 'test',
         valid_till: 'Jul 17 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[
+            {
+                chargeCode: "THC",
+                chargeBasis: "Per Container",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "0",
+                addTerms: {
+                    paymentTerm: "To Collect",
+                    incoTerm: [
+                        "Carraige Paid To",
+                        "Cost Insurance and Freight",
+                        "Delivery at Place"
+                    ],
+                    isStandard: "Standard Charge",
+                    commodity: [
+                        "General",
+                        "Electronics"
+                    ],
+                    serviceType: [
+                        "Door To Door",
+                        "Port To Door"
+                    ]
+                },
+                subBox: [
+                    {
+                        cargoType: "General",
+                        containerType: "20 GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10"
+                    },
+                    {
+                        cargoType: "Refer",
+                        containerType: "40 RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "11"
+                    }
+                ]
+            },
+            {
+                chargeCode: "DOC",
+                chargeBasis: "Per Bill",
+                calculationType: "Slab",
+                slabBasis: "Container Count",
+                currency: "USD",
+                minValue: "1",
+                addTerms: {
+                    paymentTerm: "Prepaid",
+                    incoTerm: [
+                        "EX WORKS",
+                        "FREE CARRIAGE"
+                    ],
+                    isStandard: "Incidental",
+                    commodity: [
+                        "Fruits",
+                        "Pulses"
+                    ],
+                    serviceType: [
+                        "Door To Door",
+                        "Door To Port"
+                    ]
+                },
+                subBox: [
+                    {
+                        cargoType: "",
+                        containerType: "40 GP",
+                        fromSlab: "",
+                        toSlab: "8",
+                        rate: "10"
+                    },
+                    {
+                        cargoType: "",
+                        containerType: "40 GP",
+                        fromSlab: "0",
+                        toSlab: "2",
+                        rate: "12"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        id: 4,
+        surcharge_id: '123908AB',
+        surcharge_category: 'Port Charges',
+        port_name: "INMAA",
+        terminals: 'ABC',
+        movement_type: 'import',
+        carrier_name: 'YML',
+        vendor_name: 'test',
+        valid_till: 'Jul 17 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[
+            {
+                chargeCode: "THC",
+                chargeBasis: "Per Container",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "0",
+                addTerms: {
+                    paymentTerm: "To Collect",
+                    incoTerm: [
+                        "Carraige Paid To",
+                        "Cost Insurance and Freight",
+                        "Delivery at Place"
+                    ],
+                    isStandard: "Standard Charge",
+                    commodity: [
+                        "General",
+                        "Electronics"
+                    ],
+                    serviceType: [
+                        "Door To Door",
+                        "Port To Door"
+                    ]
+                },
+                subBox: [
+                    {
+                        cargoType: "General",
+                        containerType: "20 GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10"
+                    },
+                    {
+                        cargoType: "Refer",
+                        containerType: "40 RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "11"
+                    }
+                ]
+            },
+            {
+                chargeCode: "DOC",
+                chargeBasis: "Per Bill",
+                calculationType: "Slab",
+                slabBasis: "Container Count",
+                currency: "USD",
+                minValue: "1",
+                addTerms: {
+                    paymentTerm: "Prepaid",
+                    incoTerm: [
+                        "EX WORKS",
+                        "FREE CARRIAGE"
+                    ],
+                    isStandard: "Incidental",
+                    commodity: [
+                        "Fruits",
+                        "Pulses"
+                    ],
+                    serviceType: [
+                        "Door To Door",
+                        "Door To Port"
+                    ]
+                },
+                subBox: [
+                    {
+                        cargoType: "",
+                        containerType: "40 GP",
+                        fromSlab: "",
+                        toSlab: "8",
+                        rate: "10"
+                    },
+                    {
+                        cargoType: "",
+                        containerType: "40 GP",
+                        fromSlab: "0",
+                        toSlab: "2",
+                        rate: "12"
+                    }
+                ]
+            }
+        ]
     },
 ]
 const waybillTableData = [
