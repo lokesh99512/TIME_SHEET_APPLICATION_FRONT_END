@@ -29,9 +29,9 @@ const surchargeCategory = [
   { label: "Add New", value: "Add New" },
 ];
 const surchargeAliasCode = [
-    { label: "surchargeAliasCodeABC", value: "surchargeAliasCodeABC" },
-    { label: "AliasCode test", value: "AliasCode test" },
-    { label: "Add New", value: "Add New" },
+  { label: "surchargeAliasCodeABC", value: "surchargeAliasCodeABC" },
+  { label: "AliasCode test", value: "AliasCode test" },
+  { label: "Add New", value: "Add New" },
 ];
 const surchargeAliasDesc = [
   { label: "Active", value: "Active" },
@@ -39,35 +39,35 @@ const surchargeAliasDesc = [
 ];
 
 export default function UploadRateData() {
-    const [categoryModal, setCategoryModal] = useState(false);
-    const [aliasModal, setAliasModal] = useState(false);
+  const [categoryModal, setCategoryModal] = useState(false);
+  const [aliasModal, setAliasModal] = useState(false);
   const navigate = useNavigate();
 
   const inputArr = {
-    surchargeCode:"",
-    surchargeDesc:"",
-    surchargeCategory:"",
-    surchargeAliasCode:"",
-    surchargeAliasDesc:"",
+    surchargeCode: "",
+    surchargeDesc: "",
+    surchargeCategory: "",
+    surchargeAliasCode: "",
+    surchargeAliasDesc: "",
   };
   const [addDetails, setAddDetails] = useState(inputArr);
 
-  console.log(addDetails,"addDetails");
+  console.log(addDetails, "addDetails");
 
   const onCloseClick = () => {
     setCategoryModal(false);
     setAliasModal(false);
-}
+  };
 
   const handleSelectGroup = useCallback(
     (name, opt) => {
-        console.log(opt,"opt");
-        if (name === "surchargeCategory" && opt.value === "Add New") {
-            setCategoryModal(true)
-        } else if(name === "surchargeAliasCode" && opt.value === "Add New"){
-          setAliasModal(true)
-        }
-      setAddDetails(prev=>({...prev,[name]: opt}));
+      console.log(opt, "opt");
+      if (name === "surchargeCategory" && opt.value === "Add New") {
+        setCategoryModal(true);
+      } else if (name === "surchargeAliasCode" && opt.value === "Add New") {
+        setAliasModal(true);
+      }
+      setAddDetails((prev) => ({ ...prev, [name]: opt }));
     },
     [addDetails]
   );
@@ -92,18 +92,18 @@ export default function UploadRateData() {
                     <div className="row">
                       <div className="col-4 mb-4">
                         <div className="row">
-                          <Label
-                            htmlFor="Surcharge_Code"
-                            className="col-sm-3 col-form-label"
-                          >
-                            Surcharge Code
-                          </Label>
+                          <label className="form-label">Surcharge Code</label>
                           <div className="col-9">
                             <Input
                               type="text"
                               name="surchargeCode"
                               value={addDetails.surchargeCode}
-                              onChange={(e)=>{handleSelectGroup("surchargeCode", e.target.value);}}
+                              onChange={(e) => {
+                                handleSelectGroup(
+                                  "surchargeCode",
+                                  e.target.value
+                                );
+                              }}
                               className="form-control"
                               id="Surcharge_Code"
                               placeholder="Enter Surcharge Code"
@@ -114,18 +114,19 @@ export default function UploadRateData() {
 
                       <div className="col-4 mb-4">
                         <div className="row">
-                          <Label
-                            htmlFor="Surcharge_Desc"
-                            className="col-sm-3 col-form-label"
-                          >
-                            Surcharge Desc
-                          </Label>
+                          <label className="form-label">Surcharge Desc</label>
+
                           <div className="col-9">
                             <Input
                               type="text"
                               name="surchargeDesc"
                               value={addDetails.surchargeDesc}
-                              onChange={(e)=>{handleSelectGroup("surchargeDesc", e.target.value);}}
+                              onChange={(e) => {
+                                handleSelectGroup(
+                                  "surchargeDesc",
+                                  e.target.value
+                                );
+                              }}
                               className="form-control"
                               id="Surcharge_Desc"
                               placeholder="Enter Surcharge Desc"
@@ -138,12 +139,9 @@ export default function UploadRateData() {
                     <div className="row">
                       <div className="col-4 mb-4">
                         <div className="row">
-                          <Label
-                            htmlFor="horizontal-firstname-input"
-                            className="col-sm-3 col-form-label"
-                          >
+                          <label className="form-label">
                             Surcharge Category
-                          </Label>
+                          </label>
                           <div className="col-9">
                             <Select
                               value={addDetails.surchargeCategory}
@@ -161,12 +159,9 @@ export default function UploadRateData() {
 
                       <div className="col-4 mb-4">
                         <div className="row">
-                          <Label
-                            htmlFor="horizontal-firstname-input"
-                            className="col-sm-3 col-form-label"
-                          >
+                          <label className="form-label">
                             Surcharge Alias Code
-                          </Label>
+                          </label>
                           <div className="col-9">
                             <Select
                               value={addDetails.surchargeAliasCode}
@@ -184,12 +179,10 @@ export default function UploadRateData() {
 
                       <div className="col-4 mb-4">
                         <div className="row">
-                          <Label
-                            htmlFor="horizontal-firstname-input"
-                            className="col-sm-3 col-form-label"
-                          >
+                          <label className="form-label">
                             Surcharge Alias Desc
-                          </Label>
+                          </label>
+
                           <div className="col-9">
                             <Select
                               value={addDetails.surchargeAliasDesc}
@@ -208,21 +201,22 @@ export default function UploadRateData() {
 
                     <div className="row">
                       <div className="d-flex justify-content-center">
-
                         <div className="mb-3 mx-3 d-flex justify-content-end">
                           <button className=" btn btn-primary">Save</button>
                         </div>
                         <div className="mb-3 mx-3 d-flex justify-content-end">
                           <button className=" btn btn-primary">Cancel</button>
                         </div>
-
                       </div>
                     </div>
                   </CardBody>
                 </Card>
               </Col>
             </Row>
-            <ModalAddNewCategory modal={categoryModal} onCloseClick={onCloseClick} />
+            <ModalAddNewCategory
+              modal={categoryModal}
+              onCloseClick={onCloseClick}
+            />
             <ModalAddNewAlias modal={aliasModal} onCloseClick={onCloseClick} />
           </div>
         </Container>
