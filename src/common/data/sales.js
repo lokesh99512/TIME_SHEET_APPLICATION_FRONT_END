@@ -233,7 +233,58 @@ const searchQuotationResult = [
         pickport_discharge_charge: '680',
         delivery_co: '12.03 kg CO2',
         delivery_charge: '2473',
-        quote_type: 'preffered'
+        quote_type: 'preffered',
+        pickup_quote_charge: [
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: '',
+                tax: '18',
+                total_sale_cost: '2200'
+            },
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: '',
+                tax: '18',
+                total_sale_cost: '2200'
+            }
+        ],
+        originport_quote_charge: [
+            {
+                charges_name: 'OTHC',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: '',
+                tax: '18',
+                total_sale_cost: '2200'
+            },
+            {
+                charges_name: 'DFO',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: '',
+                tax: '18',
+                total_sale_cost: '2200'
+            },
+        ],
+        ocean_quote_charge: [
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: '',
+                tax: '18',
+                total_sale_cost: '2200'
+            }
+        ]
     },
     {
         id: '1234567891',
@@ -276,7 +327,48 @@ const searchQuotationResult = [
         pickport_discharge_charge: '680',
         delivery_co: '12.03 kg CO2',
         delivery_charge: '2473',
-        quote_type: 'cheaper'
+        quote_type: 'cheaper',
+        pickup_quote_charge: [
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: '',
+                tax: '18',
+                total_sale_cost: '2200'
+            },
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: '',
+                tax: '18',
+                total_sale_cost: '2200'
+            }
+        ],
+        originport_quote_charge: [
+            {
+                charges_name: 'OTHC',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: '',
+                tax: '18',
+                total_sale_cost: '2200'
+            },
+            {
+                charges_name: 'DFO',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: '',
+                tax: '18',
+                total_sale_cost: '2200'
+            },
+        ],
+        ocean_quote_charge: []
     },
     {
         id: '1234567892',
@@ -319,7 +411,30 @@ const searchQuotationResult = [
         pickport_discharge_charge: '680',
         delivery_co: '12.03 kg CO2',
         delivery_charge: '2473',
-        quote_type: 'faster'
+        quote_type: 'faster',
+        pickup_quote_charge: [
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: '',
+                tax: '18',
+                total_sale_cost: '2200'
+            },
+        ],
+        originport_quote_charge: [
+            {
+                charges_name: 'OTHC',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: '',
+                tax: '18',
+                total_sale_cost: '2200'
+            },
+        ],
+        ocean_quote_charge: []
     },
 ]
 
