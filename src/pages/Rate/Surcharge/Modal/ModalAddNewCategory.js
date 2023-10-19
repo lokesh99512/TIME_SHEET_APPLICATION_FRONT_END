@@ -13,43 +13,33 @@ const ModalAddNewCategory = ({ modal, onCloseClick }) => {
           <div className="table_view_data_wrap">
             <div className="charge_details">
               {/* <div className="view_data_wrap"> */}
-                {/* //// */}
-                <div className="row mt-4 mb-2">
-                  <div className="col-6 mb-4">
-                    <div className="row">
-                      <Label
-                        htmlFor="Surcharge_Code"
-                        className="col-sm-3 col-form-label"
-                      >
-                        Surcharge Code
-                      </Label>
-                      <div className="col-9">
-                        <Input
-                          type="text"
+              {/* //// */}
+              <div className="row mt-4 mb-2">
+                <div className="col-6 mb-4">
+                  <div className="row">
+                    <label className="form-label">Surcharge Category</label>
+                    <div className="col-9">
+                      <Input
+                        type="text"
                         //   name="surchargeCode"
                         //   value={addDetails.surchargeCode}
                         //   onChange={(e) => {
                         //     handleSelectGroup("surchargeCode", e.target.value);
                         //   }}
                         // id="Surcharge_Code"
-                          className="form-control"
-                          placeholder="Enter Surcharge Code"
-                        />
-                      </div>
+                        className="form-control"
+                        placeholder="Enter Surcharge Code"
+                      />
                     </div>
                   </div>
+                </div>
 
-                  <div className="col-6 mb-4">
-                    <div className="row">
-                      <Label
-                        htmlFor="Surcharge_Desc"
-                        className="col-sm-3 col-form-label"
-                      >
-                        Surcharge Desc
-                      </Label>
-                      <div className="col-9">
-                        <Input
-                          type="text"
+                <div className="col-6 mb-4">
+                  <div className="row">
+                    <label className="form-label">Surcharge Desc</label>
+                    <div className="col-9">
+                      <Input
+                        type="text"
                         //   name="surchargeDesc"
                         //   value={addDetails.surchargeDesc}
                         //   onChange={(e) => {
@@ -57,27 +47,26 @@ const ModalAddNewCategory = ({ modal, onCloseClick }) => {
                         //   }}
                         // id="Surcharge_Desc"
                         className="form-control"
-                          placeholder="Enter Surcharge Desc"
-                        />
-                      </div>
+                        placeholder="Enter Surcharge Desc"
+                      />
                     </div>
                   </div>
                 </div>
+              </div>
 
-                <div className="row">
-                      <div className="d-flex justify-content-center">
-                      
-                        <div className="mb-3 mx-3 d-flex justify-content-end">
-                          <button className=" btn btn-primary">Save</button>
-                        </div>
-                        <div className="mb-3 mx-3 d-flex justify-content-end">
-                          <button className=" btn btn-primary" onClick={onCloseClick}>Cancel</button>
-                        </div>
-
-
-                      </div>
-                    </div>
-                {/* //// */}
+              <div className="row">
+                <div className="d-flex justify-content-center">
+                  <div className="mb-3 mx-3 d-flex justify-content-end">
+                    <button className=" btn btn-primary">Save</button>
+                  </div>
+                  <div className="mb-3 mx-3 d-flex justify-content-end">
+                    <button className=" btn btn-primary" onClick={onCloseClick}>
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+              {/* //// */}
               {/* </div> */}
             </div>
           </div>
