@@ -1,4 +1,4 @@
-import { GET_QUOTATION_DATA_FAIL, GET_QUOTATION_DATA_SUCCESS, GET_QUOTATION_RESULT_FAIL, GET_QUOTATION_RESULT_SUCCESS, QUOTATION_RESULT_SELECTED, UPDATE_CONTAINERTYPE_CONFIRM, UPDATE_CONTAINER_CHANGE, UPDATE_QUOTATION_RESULT_DETAILS, UPDATE_SEARCH_QUOTATION_CURRENCY, UPDATE_SEARCH_QUOTATION_DATA, UPDATE_SEARCH_QUOTATION_DATE, UPDATE_SEARCH_QUOTATION_LOCATION, UPDATE_SEARCH_QUOTATION_LOCATION_FROM, UPDATE_SEARCH_QUOTATION_LOCATION_TO, UPDATE_SEARCH_QUOTATION_SWAP, UPDATE_VALUE_BLANK } from "./actiontype"
+import { GET_QUOTATION_DATA_FAIL, GET_QUOTATION_DATA_SUCCESS, GET_QUOTATION_RESULT_FAIL, GET_QUOTATION_RESULT_SUCCESS, QUOTATION_RESULT_SELECTED, UPDATE_CONTAINERTYPE_CONFIRM, UPDATE_CONTAINER_CHANGE, UPDATE_QUOTATION_RESULT_DETAILS, UPDATE_QUOTATION_RESULT_DETAILS_CHEAPER, UPDATE_QUOTATION_RESULT_DETAILS_FASTER, UPDATE_SEARCH_QUOTATION_CURRENCY, UPDATE_SEARCH_QUOTATION_DATA, UPDATE_SEARCH_QUOTATION_DATE, UPDATE_SEARCH_QUOTATION_LOCATION, UPDATE_SEARCH_QUOTATION_LOCATION_FROM, UPDATE_SEARCH_QUOTATION_LOCATION_TO, UPDATE_SEARCH_QUOTATION_SWAP, UPDATE_VALUE_BLANK } from "./actiontype"
 
 
 const INIT_STATE = {
@@ -9,31 +9,53 @@ const INIT_STATE = {
         shipping_by: '',
         service_type: '',
         container_type: '',
-        incoterm: '',
+        // incoterm: '',
         cargo_type: '',
-        cargo_value: {currency: {name: 'Rupee', value: 'rupee', code: '₹'}},
+        cargo_value: { currency: { name: 'Rupee', value: 'rupee', code: '₹' }, value: '' },
         cargo_date: '',
         location_from: '',
         location_to: '',
     },
     quotation_result_data: [],
+    quotation_result_prefData: [],
+    quotation_result_cheapData: [],
+    quotation_result_fasterData: [],
     quotation_result_error: [],
     quote_selected_data: [],
 }
 
-const sales = (state=INIT_STATE,action) => {
-    switch (action.type){
+const sales = (state = INIT_STATE, action) => {
+    switch (action.type) {
         case GET_QUOTATION_DATA_SUCCESS:
-            return{ ...state, quotation_data: action.payload }
+            return { ...state, quotation_data: action.payload }
 
         case GET_QUOTATION_DATA_FAIL:
-            return {...state,quotation_error: action.payload}
+            return { ...state, quotation_error: action.payload }
 
         case GET_QUOTATION_RESULT_SUCCESS:
-            return{ ...state, quotation_result_data: action.payload }
+            const updatedState = { ...state };
+            action.payload?.forEach((item) => {
+                if (item?.quote_type === 'preffered') {
+                    updatedState.quotation_result_prefData = [
+                        ...updatedState.quotation_result_prefData,
+                        item
+                    ];
+                } else if (item?.quote_type === 'cheaper') {
+                    updatedState.quotation_result_cheapData = [
+                        ...updatedState.quotation_result_cheapData,
+                        item
+                    ];
+                } else if (item?.quote_type === 'faster') {
+                    updatedState.quotation_result_fasterData = [
+                        ...updatedState.quotation_result_fasterData,
+                        item
+                    ];
+                }
+            });
+            return updatedState;
 
         case GET_QUOTATION_RESULT_FAIL:
-            return {...state,quotation_result_error: action.payload}
+            return { ...state, quotation_result_error: action.payload }
 
         case UPDATE_SEARCH_QUOTATION_DATA:
             const { item, name } = action.payload
@@ -89,7 +111,7 @@ const sales = (state=INIT_STATE,action) => {
                     cargo_date: [...arrItem],
                 }
             }
-            return state= newObj
+            return state = newObj
         case UPDATE_SEARCH_QUOTATION_SWAP:
             return {
                 ...state,
@@ -107,7 +129,7 @@ const sales = (state=INIT_STATE,action) => {
                     container_type: action.payload,
                 }
             }
-        case UPDATE_CONTAINER_CHANGE:            
+        case UPDATE_CONTAINER_CHANGE:
             return {
                 ...state,
                 createFields: {
@@ -115,7 +137,7 @@ const sales = (state=INIT_STATE,action) => {
                     container_type: action.payload
                 }
             }
-        case UPDATE_VALUE_BLANK:            
+        case UPDATE_VALUE_BLANK:
             return {
                 ...state,
                 createFields: {
@@ -124,20 +146,46 @@ const sales = (state=INIT_STATE,action) => {
                 }
             }
 
-        case UPDATE_QUOTATION_RESULT_DETAILS: 
+        case UPDATE_QUOTATION_RESULT_DETAILS:
             return {
                 ...state,
-                quotation_result_data: state.quotation_result_data.map((item, index) => {
-                if (index === action.payload.index) {
-                    return {
-                    ...item,
-                        [action.payload.name]: action.payload.value,
-                    };
-                }
-                return item;
+                quotation_result_prefData: state.quotation_result_prefData.map((item, index) => {
+                    if (item.id === action.payload.id) {
+                        return {
+                            ...item,
+                            [action.payload.name]: action.payload.value,
+                        };
+                    }
+                    return item;
                 }),
             }
-        case QUOTATION_RESULT_SELECTED: 
+        case UPDATE_QUOTATION_RESULT_DETAILS_CHEAPER:
+            return {
+                ...state,
+                quotation_result_cheapData: state.quotation_result_cheapData.map((item, index) => {
+                    if (item.id === action.payload.id) {
+                        return {
+                            ...item,
+                            [action.payload.name]: action.payload.value,
+                        };
+                    }
+                    return item;
+                }),
+            }
+        case UPDATE_QUOTATION_RESULT_DETAILS_FASTER:
+            return {
+                ...state,
+                quotation_result_fasterData: state.quotation_result_fasterData.map((item, index) => {
+                    if (item.id === action.payload.id) {
+                        return {
+                            ...item,
+                            [action.payload.name]: action.payload.value,
+                        };
+                    }
+                    return item;
+                }),
+            }
+        case QUOTATION_RESULT_SELECTED:
             return {
                 ...state,
                 quote_selected_data: action.payload

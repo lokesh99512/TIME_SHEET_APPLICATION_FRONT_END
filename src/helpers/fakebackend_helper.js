@@ -312,6 +312,7 @@ export const getFCLSurcharge = () => get(url.GET_FCL_SURCHARGE);
 // ---------------- sales ----------------------------------------
 export const getSalesQuotTableData = () => get(url.GET_QUOTATION);
 export const getSearchResultData = () => get(url.GET_QUOTATION_SEARCH_RESULT);
+export const getExchangeRate = () => get(url.GET_quote_exchange_rate);
 
 export {
   getLoggedInUser,
