@@ -1,4 +1,45 @@
-.main_accordion {
+// .main_accordion {
+//     .accordion-item {
+//         border-radius: 12px;
+//         // border: 1px solid $neutral_2;
+//         border: 1px solid #E5E7EB;
+//         border-top: 1px solid #E5E7EB !important;
+//         border-bottom: 1px solid #E5E7EB !important;
+//         // background: $white;
+//         margin-bottom: 20px;
+//         .accordion-header{
+//             .accordion-button {
+//                 display: grid;
+//   grid-template-columns: repeat(7, 1fr);
+//                 // justify-content: space-around;
+//                 background: transparent;
+//                 padding: 18px 18px 18px 40px;
+//                 @include font(500,14px,normal,$neutral_8);
+//                 box-shadow: none;
+//                 &::after{
+//                     right: auto;
+//                     left: 16px;
+//                     position: absolute;
+//                     background-size: 13px;
+//                     background-position: center;
+//                 }
+//                 .details{
+//                     width: 25%;
+//                     display: flex;
+//                     margin-bottom: 20px;
+//                     flex-direction: column;
+//                     gap: 5px;         
+                   
+//                 }
+//             }
+//             .right_con{
+//                 gap: 10px 30px;
+//             }
+//         }
+//     }
+// }
+
+.main_accordion.common_accordion_wrap {
     .accordion-item {
         border-radius: 12px;
         border: 1px solid $neutral_2;
@@ -6,7 +47,6 @@
         margin-bottom: 20px;
         .accordion-header{
             .accordion-button {
-                justify-content: space-around;
                 background: transparent;
                 padding: 18px 18px 18px 40px;
                 @include font(500,14px,normal,$neutral_8);
@@ -18,18 +58,31 @@
                     background-size: 13px;
                     background-position: center;
                 }
-                .head_value{
-                    // width: 70px;
-                    display: flex;
-                    justify-content: center;
+                .img{
+                    width: 48px;
+                    height: 48px;
+                    border-radius: 99px;
+                    border: 1px solid $neutral_2;
+                    background: #F9FAFB;
                 }
-                .details{
-                    width: 25%;
-                    display: flex;
-                    margin-bottom: 20px;
-                    flex-direction: column;
-                    gap: 5px;         
-                   
+                .tag {
+                    padding: 4px 12px;
+                    border-radius: 99px;
+                    background: $primary_1;
+                    @include font(600,13px,normal,$primary_7);
+                    text-transform: uppercase;
+                    &.preferred{
+                        background: $primary_1;
+                        color: $primary_7;
+                    }
+                    &.cheaper{
+                        background: $danger_1;
+                        color: $danger_7;
+                    }
+                    &.faster{
+                        background: $success_1;
+                        color: $success_7;
+                    }
                 }
             }
             .right_con{
