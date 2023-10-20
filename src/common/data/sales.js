@@ -240,7 +240,7 @@ const searchQuotationResult = [
                 uom: '20GP',
                 quantity: '2',
                 currency: 'USD',
-                buy_cost: '',
+                buy_cost: 2000,
                 tax: '18',
                 total_sale_cost: '2200'
             },
@@ -249,7 +249,7 @@ const searchQuotationResult = [
                 uom: '20GP',
                 quantity: '2',
                 currency: 'USD',
-                buy_cost: '',
+                buy_cost: 2000,
                 tax: '18',
                 total_sale_cost: '2200'
             }
@@ -260,7 +260,7 @@ const searchQuotationResult = [
                 uom: '20GP',
                 quantity: '2',
                 currency: 'USD',
-                buy_cost: '',
+                buy_cost: 2000,
                 tax: '18',
                 total_sale_cost: '2200'
             },
@@ -269,7 +269,7 @@ const searchQuotationResult = [
                 uom: '20GP',
                 quantity: '2',
                 currency: 'USD',
-                buy_cost: '',
+                buy_cost: 2000,
                 tax: '18',
                 total_sale_cost: '2200'
             },
@@ -280,7 +280,7 @@ const searchQuotationResult = [
                 uom: '20GP',
                 quantity: '2',
                 currency: 'USD',
-                buy_cost: '',
+                buy_cost: 2000,
                 tax: '18',
                 total_sale_cost: '2200'
             }
@@ -334,7 +334,7 @@ const searchQuotationResult = [
                 uom: '20GP',
                 quantity: '2',
                 currency: 'USD',
-                buy_cost: '',
+                buy_cost: 2000,
                 tax: '18',
                 total_sale_cost: '2200'
             },
@@ -343,7 +343,7 @@ const searchQuotationResult = [
                 uom: '20GP',
                 quantity: '2',
                 currency: 'USD',
-                buy_cost: '',
+                buy_cost: 2000,
                 tax: '18',
                 total_sale_cost: '2200'
             }
@@ -354,7 +354,7 @@ const searchQuotationResult = [
                 uom: '20GP',
                 quantity: '2',
                 currency: 'USD',
-                buy_cost: '',
+                buy_cost: 2000,
                 tax: '18',
                 total_sale_cost: '2200'
             },
@@ -363,7 +363,7 @@ const searchQuotationResult = [
                 uom: '20GP',
                 quantity: '2',
                 currency: 'USD',
-                buy_cost: '',
+                buy_cost: 2000,
                 tax: '18',
                 total_sale_cost: '2200'
             },
@@ -418,7 +418,7 @@ const searchQuotationResult = [
                 uom: '20GP',
                 quantity: '2',
                 currency: 'USD',
-                buy_cost: '',
+                buy_cost: 2000,
                 tax: '18',
                 total_sale_cost: '2200'
             },
@@ -429,7 +429,7 @@ const searchQuotationResult = [
                 uom: '20GP',
                 quantity: '2',
                 currency: 'USD',
-                buy_cost: '',
+                buy_cost: 2000,
                 tax: '18',
                 total_sale_cost: '2200'
             },
@@ -528,7 +528,7 @@ const optionPortList = [
 
 const weightUnitOption= [
     {value: 'kg', name: 'KG'},
-    {value: 'pound', name: 'pound'},
+    {value: 'lbs', name: 'Lbs'},
 ]
 const optionPickupCharge = [
     {value: "fuel_charge", label: "Fuel Surcharge"},
@@ -536,13 +536,14 @@ const optionPickupCharge = [
 ]
 const optionMarkupType = [
     {value: "percentage", label: "Percentage"},
+    {value: "flate", label: "Flate"},
 ]
 const optionCurrencyCharges = [
-    {value: "pound", label: "Pound", code: '£'},
+    {value: "gbp", label: "Pound", code: '£'},
     {value: "usd", label: "USD", code: '$'},
-    {value: "euro", label: "Euro", code: '€'},
+    {value: "eur", label: "Euro", code: '€'},
     {value: "rupee", label: "Rupee", code: '₹'},
-    {value: "yen", label: "Yen", code: '¥'},
+    {value: "jpy", label: "Yen", code: '¥'},
 ]
 
 export {

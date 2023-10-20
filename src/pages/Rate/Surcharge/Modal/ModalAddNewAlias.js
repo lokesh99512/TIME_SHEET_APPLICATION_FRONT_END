@@ -15,10 +15,10 @@ const ModalAddNewAlias = ({ modal, onCloseClick }) => {
               {/* <div className="view_data_wrap"> */}
               {/* //// */}
               <div className="row mt-4 mb-2">
-                <div className="col-6 mb-4">
-                  <div className="row">
+                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
+                  {/* <div className="row"> */}
                     <label className="form-label">Surcharge Alias Code</label>
-                    <div className="col-9">
+                    {/* <div className="col-9"> */}
                       <Input
                         type="text"
                         //   name="surchargeCode"
@@ -30,14 +30,14 @@ const ModalAddNewAlias = ({ modal, onCloseClick }) => {
                         className="form-control"
                         placeholder="Enter Surcharge Code"
                       />
-                    </div>
-                  </div>
+                    {/* </div> */}
+                  {/* </div> */}
                 </div>
 
-                <div className="col-6 mb-4">
-                  <div className="row">
+                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
+                  {/* <div className="row"> */}
                     <label className="form-label">Alias Desc</label>
-                    <div className="col-9">
+                    {/* <div className="col-9"> */}
                       <Input
                         type="text"
                         //   name="surchargeDesc"
@@ -49,8 +49,8 @@ const ModalAddNewAlias = ({ modal, onCloseClick }) => {
                         className="form-control"
                         placeholder="Enter Surcharge Desc"
                       />
-                    </div>
-                  </div>
+                    {/* </div> */}
+                  {/* </div> */}
                 </div>
               </div>
 

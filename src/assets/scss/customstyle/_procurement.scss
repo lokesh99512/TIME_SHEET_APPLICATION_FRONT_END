@@ -1130,7 +1130,30 @@ input[type="number"]{
             margin: 0 auto;
         }
     }
+    .result_tab_wrap {
+        ul.nav {
+            gap: 12px;
+            .nav-item {
+                .nav-link {
+                    border: 1px solid $neutral_3;
+                    cursor: pointer;
+                    border-radius: 12px;
+                    &.active{
+                        border-color: $primary_7;
+                    }
+                }
+                &.filter_wrap{
+                    flex: 0 0 40px;
+                    .nav-link {
+                        padding-left: 0;
+                        padding-right: 0;
+                    }
+                }
+            }
+        }
+    }
     .search_result_card_check_wrap{
+        margin-top: 20px;
         .form-check{
             .form-check-input{
                 width: 20px;
@@ -1144,8 +1167,7 @@ input[type="number"]{
         position: relative;
         background: #F9FAFB;
         border: 1px solid $neutral_2;
-        border-radius: 12px;
-        margin-top: 20px;
+        border-radius: 12px;        
         .card_img {
             min-width: 120px;
             padding-right: 40px;

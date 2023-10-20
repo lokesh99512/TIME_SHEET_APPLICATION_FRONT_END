@@ -76,7 +76,7 @@ const ModalAddTerm = ({ modal, onCloseClick, setTermHandler }) => {
         className="table_view_modal"
       >
         <ModalHeader tag="h4">
-          Add New
+          Add Terms
           <span className="close" onClick={onCloseClick}></span>
         </ModalHeader>
         <ModalBody>
@@ -85,10 +85,10 @@ const ModalAddTerm = ({ modal, onCloseClick, setTermHandler }) => {
               {/* //// */}
               <div className="row mt-4 mb-2">
                 {/* Payment Term */}
-                <div className="col-6 mb-4">
-                  <div className="row">
+                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
+                  {/* <div className="row"> */}
                     <label className="form-label">Payment Term</label>
-                    <div className="col-9">
+                    {/* <div className="col-9"> */}
                       <Select
                         name="paymentTerm"
                         value={
@@ -106,15 +106,15 @@ const ModalAddTerm = ({ modal, onCloseClick, setTermHandler }) => {
                         options={paymentTerm}
                         classNamePrefix="select2-selection form-select"
                       />
-                    </div>
-                  </div>
+                    {/* </div> */}
+                  {/* </div> */}
                 </div>
 
                 {/* Inco Term */}
-                <div className="col-6 mb-4">
-                  <div className="row">
+                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
+                  {/* <div className="row"> */}
                     <label className="form-label">Inco Term</label>
-                    <div className="col-9">
+                    {/* <div className="col-9"> */}
                       <Select
                         name="incoTerm"
                         isMulti
@@ -133,17 +133,17 @@ const ModalAddTerm = ({ modal, onCloseClick, setTermHandler }) => {
                         options={incoTerm}
                         classNamePrefix="select2-selection form-select"
                       />
-                    </div>
-                  </div>
+                    {/* </div> */}
+                  {/* </div> */}
                 </div>
-              </div>
+              {/* </div> */}
 
-              <div className="row mt-4 mb-2">
+              {/* <div className="row mt-4 mb-2"> */}
                 {/* Is Standard */}
-                <div className="col-6 mb-4">
-                  <div className="row">
+                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
+                  {/* <div className="row"> */}
                     <label className="form-label">Is Standard</label>
-                    <div className="col-9">
+                    {/* <div className="col-9"> */}
                       <Select
                         name="isStandard"
                         value={
@@ -161,15 +161,15 @@ const ModalAddTerm = ({ modal, onCloseClick, setTermHandler }) => {
                         options={isStandard}
                         classNamePrefix="select2-selection form-select"
                       />
-                    </div>
-                  </div>
+                    {/* </div> */}
+                  {/* </div> */}
                 </div>
 
                 {/* Commodity */}
-                <div className="col-6 mb-4">
-                  <div className="row">
+                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
+                  {/* <div className="row"> */}
                     <label className="form-label">Commodity</label>
-                    <div className="col-9">
+                    {/* <div className="col-9"> */}
                       <Select
                         name="commodity"
                         isMulti
@@ -188,17 +188,17 @@ const ModalAddTerm = ({ modal, onCloseClick, setTermHandler }) => {
                         options={commodity}
                         classNamePrefix="select2-selection form-select"
                       />
-                    </div>
-                  </div>
+                    {/* </div> */}
+                  {/* </div> */}
                 </div>
-              </div>
+              {/* </div> */}
 
-              <div className="row mt-4 mb-2">
+              {/* <div className="row mt-4 mb-2"> */}
                 {/* Service Type */}
-                <div className="col-6 mb-4">
-                  <div className="row">
+                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
+                  {/* <div className="row"> */}
                     <label className="form-label">Service Type</label>
-                    <div className="col-9">
+                    {/* <div className="col-9"> */}
                       <Select
                         name="serviceType"
                         isMulti
@@ -217,8 +217,8 @@ const ModalAddTerm = ({ modal, onCloseClick, setTermHandler }) => {
                         options={serviceType}
                         classNamePrefix="select2-selection form-select"
                       />
-                    </div>
-                  </div>
+                    {/* </div> */}
+                  {/* </div> */}
                 </div>
               </div>
 
