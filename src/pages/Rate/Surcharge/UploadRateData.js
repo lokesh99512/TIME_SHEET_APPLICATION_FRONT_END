@@ -90,10 +90,10 @@ export default function UploadRateData() {
                 <Card>
                   <CardBody>
                     <div className="row">
-                      <div className="col-4 mb-4">
+                      <div className="col-md-6 col-lg-4 mb-4">
                         <div className="row">
                           <label className="form-label">Surcharge Code</label>
-                          <div className="col-9">
+                          <div className="">
                             <Input
                               type="text"
                               name="surchargeCode"
@@ -112,11 +112,11 @@ export default function UploadRateData() {
                         </div>
                       </div>
 
-                      <div className="col-4 mb-4">
+                      <div className="col-md-6 col-lg-4 mb-4">
                         <div className="row">
                           <label className="form-label">Surcharge Desc</label>
 
-                          <div className="col-9">
+                          <div className="">
                             <Input
                               type="text"
                               name="surchargeDesc"
@@ -137,12 +137,12 @@ export default function UploadRateData() {
                     </div>
 
                     <div className="row">
-                      <div className="col-4 mb-4">
+                      <div className="col-md-6 col-lg-4 mb-4">
                         <div className="row">
                           <label className="form-label">
                             Surcharge Category
                           </label>
-                          <div className="col-9">
+                          <div className="">
                             <Select
                               value={addDetails.surchargeCategory}
                               name="surchargeCategory"
@@ -157,12 +157,12 @@ export default function UploadRateData() {
                         </div>
                       </div>
 
-                      <div className="col-4 mb-4">
+                      <div className="col-md-6 col-lg-4 mb-4">
                         <div className="row">
                           <label className="form-label">
                             Surcharge Alias Code
                           </label>
-                          <div className="col-9">
+                          <div className="">
                             <Select
                               value={addDetails.surchargeAliasCode}
                               name="surchargeAliasCode"
@@ -177,13 +177,13 @@ export default function UploadRateData() {
                         </div>
                       </div>
 
-                      <div className="col-4 mb-4">
+                      <div className="col-md-6 col-lg-4 mb-4">
                         <div className="row">
                           <label className="form-label">
                             Surcharge Alias Desc
                           </label>
 
-                          <div className="col-9">
+                          <div className="">
                             <Select
                               value={addDetails.surchargeAliasDesc}
                               name="surchargeAliasDesc"
