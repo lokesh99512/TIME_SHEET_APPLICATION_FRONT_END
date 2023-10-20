@@ -8,6 +8,7 @@ import { optionCurrency, optionCurrencyCharges, optionMarkupType, optionPickupCh
 import { useOutsideClick } from '../../../../components/Common/CommonLogic';
 import { getCurrencyExchangeRate } from '../../../../store/Sales/actions';
 import { ADD_QUOTE_MODAL_CHARGES, REMOVE_QUOTE_MODAL_CHARGES, UPDATE_QUOTE_MODAL_CHARGES } from '../../../../store/Sales/Quotation/actiontype';
+import { QUOTATION_RESULT_SELECTED, QUOTATION_RESULT_UPDATE } from '../../../../store/Sales/actiontype';
 
 
 const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) => {
@@ -84,6 +85,11 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
         dispatch({ type: REMOVE_QUOTE_MODAL_CHARGES, payload: { index, id, charge_name } })
     }
 
+    const existingHandleChange = (value, name, index, charge_name, objId,sales_cost) => {
+        dispatch({type: QUOTATION_RESULT_UPDATE, payload: {value,name,index,charge_name,id: objId,sales_cost} })
+    }
+    console.log(quoteData,"quoteData")
+
     // ------------ custom dropdown -------------------
     const toggleDropdown = (id) => {
         setIsOpen(!isOpen);
@@ -91,7 +97,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
     };
     useOutsideClick(dropdownRef, setIsOpen);
     // ------------ custom dropdown -------------------  
-    console.log(mainChargeObj, "mainChargeObj")
+    // console.log(mainChargeObj, "mainChargeObj")
     return (
         <>
             <Modal size="xl" isOpen={quoteModal} toggle={() => { QuoteModalHandler(); }} className='quotation_modal_wrap' >
@@ -146,9 +152,9 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
                 <div className="modal-body">
                     {quoteData?.length !== 0 ? (
                         <Accordion flush open={open} toggle={toggle} className='main_accordion'>
-                            {quoteData.map((item, index) => (
+                            {quoteData.map((item, mainindex) => (
                                 <AccordionItem key={item.id}>
-                                    <AccordionHeader targetId={`main_${index}`}>
+                                    <AccordionHeader targetId={`main_${mainindex}`}>
                                         <div className="card_img d-flex align-items-center">
                                             <span className='d-flex align-items-center justify-content-center img me-2'><img src={item.logo || cma_logo} alt="Logo" /></span>
                                             <div className="con d-flex align-items-center">
@@ -161,7 +167,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
                                             <span className='text-primary'>₹12,333</span>
                                         </div>
                                     </AccordionHeader>
-                                    <AccordionBody accordionId={`main_${index}`}>
+                                    <AccordionBody accordionId={`main_${mainindex}`}>
                                         <Accordion flush open={openInner} toggle={toggle2}>
                                             {item.pickup && (
                                                 <AccordionItem>
@@ -209,11 +215,11 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label htmlFor='markup_type' className='form-label'>Markup Type</label>}
                                                                             <Select
-                                                                                // value={item.surcharges_name}
+                                                                                value={optionMarkupType? optionMarkupType.find(obj => obj.value === data?.markup_type) : '' }
                                                                                 name='markup_type'
-                                                                                // onChange={(opt) => {
-                                                                                //     handleSelectGroup2(opt, 'surcharges_name', index);
-                                                                                // }}
+                                                                                onChange={(opt) => {
+                                                                                    existingHandleChange(opt.value, 'markup_type', index, 'pickup_quote_charge', item.id);
+                                                                                }}
                                                                                 options={optionMarkupType}
                                                                                 classNamePrefix="select2-selection form-select"
                                                                             />
@@ -222,7 +228,18 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
                                                                     <div className="col-lg-1">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label htmlFor="markup_val">Markup Value</label>}
-                                                                            <input type="text" name="markup_val" id="markup_val" defaultValue={'2'} placeholder='Enter value' />
+                                                                            <input type="text" name="markup_val" id="markup_val" 
+                                                                                value={data?.markup_val} 
+                                                                                onChange={(e) => {
+                                                                                    let sale_cost;
+                                                                                    if(data?.markup_type === 'percentage'){
+                                                                                        sale_cost = Number(data?.buy_cost) + ((Number(data?.buy_cost) * Number(e.target.value)/100));
+                                                                                    } else {
+                                                                                        sale_cost = Number(data?.buy_cost) + Number(e.target.value);
+                                                                                    }
+                                                                                    existingHandleChange(e.target.value, 'markup_val', index, 'pickup_quote_charge', item.id,sale_cost);
+                                                                                }} 
+                                                                                placeholder='Enter value' />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-lg-1">
@@ -376,11 +393,11 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label htmlFor='markup_type' className='form-label'>Markup Type</label>}
                                                                             <Select
-                                                                                // value={item.surcharges_name}
+                                                                                value={optionMarkupType? optionMarkupType.find(obj => obj.value === data?.markup_type) : '' }
                                                                                 name='markup_type'
-                                                                                // onChange={(opt) => {
-                                                                                //     handleSelectGroup2(opt, 'surcharges_name', index);
-                                                                                // }}
+                                                                                onChange={(opt) => {
+                                                                                    existingHandleChange(opt.value, 'markup_type', index, 'originport_quote_charge', item.id);
+                                                                                }}
                                                                                 options={optionMarkupType}
                                                                                 classNamePrefix="select2-selection form-select"
                                                                             />
@@ -389,7 +406,18 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
                                                                     <div className="col-lg-1">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label htmlFor="markup_val">Markup Value</label>}
-                                                                            <input type="text" name="markup_val" id="markup_val" defaultValue={'2'} placeholder='Enter value' />
+                                                                            <input type="text" name="markup_val" id="markup_val" 
+                                                                                value={data?.markup_val} 
+                                                                                onChange={(e) => {
+                                                                                    let sale_cost;
+                                                                                    if(data?.markup_type === 'percentage'){
+                                                                                        sale_cost = Number(data?.buy_cost) + ((Number(data?.buy_cost) * Number(e.target.value)/100));
+                                                                                    } else {
+                                                                                        sale_cost = Number(data?.buy_cost) + Number(e.target.value);
+                                                                                    }
+                                                                                    existingHandleChange(e.target.value, 'markup_val', index, 'originport_quote_charge', item.id,sale_cost);
+                                                                                }} 
+                                                                                placeholder='Enter value' />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-lg-1">
@@ -543,11 +571,11 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label htmlFor='markup_type' className='form-label'>Markup Type</label>}
                                                                             <Select
-                                                                                // value={item.surcharges_name}
+                                                                                value={optionMarkupType? optionMarkupType.find(obj => obj.value === data?.markup_type) : '' }
                                                                                 name='markup_type'
-                                                                                // onChange={(opt) => {
-                                                                                //     handleSelectGroup2(opt, 'surcharges_name', index);
-                                                                                // }}
+                                                                                onChange={(opt) => {
+                                                                                    existingHandleChange(opt.value, 'markup_type', index, 'ocean_quote_charge', item.id);
+                                                                                }}
                                                                                 options={optionMarkupType}
                                                                                 classNamePrefix="select2-selection form-select"
                                                                             />
@@ -556,7 +584,17 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
                                                                     <div className="col-lg-1">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label htmlFor="markup_val">Markup Value</label>}
-                                                                            <input type="text" name="markup_val" id="markup_val" defaultValue={'2'} placeholder='Enter value' />
+                                                                            <input type="text" name="markup_val" id="markup_val" 
+                                                                                    value={data?.markup_val} 
+                                                                                    onChange={(e) => {
+                                                                                        let sale_cost;
+                                                                                        if(data?.markup_type === 'percentage'){
+                                                                                            sale_cost = Number(data?.buy_cost) + ((Number(data?.buy_cost) * Number(e.target.value)/100));
+                                                                                        } else {
+                                                                                            sale_cost = Number(data?.buy_cost) + Number(e.target.value);
+                                                                                        }
+                                                                                        existingHandleChange(e.target.value, 'markup_val', index, 'ocean_quote_charge', item.id,sale_cost);
+                                                                                    }} placeholder='Enter value' />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-lg-1">

@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { getSalesQuotationResultData } from '../../../../store/Sales/actions';
 import SearchResultComp from './SearchResultComp';
 import QuotationModalComp from './QuotationModalComp';
+import { SEARCH_QUOTATION_BLANK } from '../../../../store/Sales/actiontype';
 
 export default function CreateQuotation() {
     const [searchResult, setSearchResult] = useState(false);
@@ -38,6 +39,15 @@ export default function CreateQuotation() {
             }
         }
     }
+    const backHandler = () => {
+        if(searchResult){
+            setSearchView(true);
+            setSearchResult(false);
+        } else {
+            navigate(-1);
+            dispatch({type: SEARCH_QUOTATION_BLANK});
+        }
+    }
     return (
         <>
             <div className="page-content sales_page_content">
@@ -45,13 +55,13 @@ export default function CreateQuotation() {
                     <div className="main_freight_wrapper main_sales_wrapper create_sales_wrapper">
                         <div className='create_quote_top_back d-flex align-items-center mb-3'>
                             <div className="back_wrap d-flex align-items-center">
-                                <button type="button" className='btn me-3' onClick={() => { navigate(-1) }}> <i className='fas fa-chevron-left'></i> </button>
+                                <button type="button" className='btn me-3' onClick={() => { backHandler();}}> <i className='fas fa-chevron-left'></i> </button>
                                 <p>Find the most affordable Freight Quote.</p>
                             </div>
                             {searchResult ? <button type="button" className='btn btn-primary ms-auto' onClick={searchQuoteHandler} 
                              disabled={quote_Selected?.length === 0}>Quote Now</button> : 
                             <button type="button" className='btn btn-primary ms-auto' onClick={searchQuoteHandler} 
-                             disabled={!(!isAnyValueEmpty(searchData) && searchData?.cargo_value?.value !== '')}>Search</button>}
+                            disabled={!(!isAnyValueEmpty(searchData))}>Search</button>}
                         </div>
 
                         {/* Create Quote Search fields */}
