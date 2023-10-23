@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from 'reactstrap';
 import { ship_filled, truck_outline } from '../../../../assets/images';
-import { QUOTATION_RESULT_SELECTED, UPDATE_QUOTATION_RESULT_DETAILS, UPDATE_QUOTATION_RESULT_DETAILS_CHEAPER, UPDATE_QUOTATION_RESULT_DETAILS_FASTER } from '../../../../store/Sales/actiontype';
+import { QUOTATION_RESULT_SELECTED, UPDATE_QUOTATION_RESULT_DETAILS } from '../../../../store/Sales/actiontype';
 const SearchResultCard = ({ data, QuoteModalHandler }) => {
     const [showDetails, setShowDetails] = useState([]);
     const dispatch = useDispatch();
@@ -34,15 +34,9 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
     }
 
     const handleChange = (val, name, index, id) => {
-        if(data[0].quote_type === 'preffered'){
-            dispatch({ type: UPDATE_QUOTATION_RESULT_DETAILS, payload: { name, value: val, id } })
-        } 
-        if (data[0].quote_type === 'cheaper'){
-            dispatch({ type: UPDATE_QUOTATION_RESULT_DETAILS_CHEAPER, payload: { name, value: val, id } })
-        } 
-        if(data[0].quote_type === 'faster') {
-            dispatch({ type: UPDATE_QUOTATION_RESULT_DETAILS_FASTER, payload: { name, value: val, id } })
-        }
+        dispatch({ type: UPDATE_QUOTATION_RESULT_DETAILS, payload: { name, value: val, id } })
+        let newArry = [];
+        dispatch({type: QUOTATION_RESULT_SELECTED, payload: newArry})
     }
 
     const countPickup = (item) => {
@@ -143,7 +137,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                     <div className="btn_wrap d-flex">
                                         <button type='button' className='btn text-primary view_detail_btn' onClick={() => { showDetailsHandler(index,item.id); }}>
                                             View{showDetails?.find(obj => obj.id === item.id)?.details ? 'Less' : 'Detail'}</button>
-                                        <button type='button' className='btn btn-primary' onClick={() => { QuoteModalHandler(item.id); singleQuoteModal(item)}} disabled={quote_Selected.some(obj => obj.id === item.id)}>Quote Now</button>
+                                        <button type='button' className='btn btn-primary' onClick={() => { QuoteModalHandler(); singleQuoteModal(item)}} disabled={quote_Selected.some(obj => obj.id === item.id)}>Quote Now</button>
                                     </div>
                                 </div>
                             </div>
