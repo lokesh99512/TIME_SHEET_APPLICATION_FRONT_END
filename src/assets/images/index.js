@@ -8,6 +8,7 @@ import avatar7 from "./users/avatar-7.jpg"
 import avatar8 from "./users/avatar-8.jpg"
 
 // ----------- shipment Images
+import sitelogo from "../images/logo.png"
 import google_icon from "./icons/google.svg";
 import microsoft_icon from "./icons/microsoft.svg";
 import profImg from "./icons/avatar.png";
@@ -63,7 +64,7 @@ export {
   avatar7,
   avatar8,
   profImg,
-  google_icon,
+  google_icon,sitelogo,
   microsoft_icon,auth_slider1,auth_slider2,auth_slider3,auth_slider4,noti_Icon,message_Icon,
   marker_Img,marker_active_Img,filter_icon,upload_icon,eye_icon,edit_icon,delete_icon,range_indicator,avtar_filled,cube_filled,calendar_filled,location_filled,memoji,
   ship_filled,ship_darkblue,airplane_darkblue,airplane_filled,truk_darkblue,truk_filled,swap_arrow,

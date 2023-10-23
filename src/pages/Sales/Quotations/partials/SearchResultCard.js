@@ -79,19 +79,26 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
         return amount;
     }
 
-    const quotationCheckHandler = (item) => {        
-        if(quote_Selected.length !== 0){
-            let newItem = quote_Selected.includes(item)
-            if(newItem){
-                let newArry = quote_Selected.filter(obj => obj.id !== item.id);
-                dispatch({type: QUOTATION_RESULT_SELECTED, payload: newArry})
+    const quotationCheckHandler = (item) => { 
+        const maxSelection = 3;
+
+        if (quote_Selected.length < maxSelection) {
+            const isItemSelected = quote_Selected.some(selectedItem => selectedItem.id === item.id);
+
+            if (isItemSelected) {
+                const updatedSelection = quote_Selected.filter(selectedItem => selectedItem.id !== item.id);
+                dispatch({ type: QUOTATION_RESULT_SELECTED, payload: updatedSelection });
             } else {
-                let newArry = [...quote_Selected, item]
-                dispatch({type: QUOTATION_RESULT_SELECTED, payload: newArry})
+                const updatedSelection = [...quote_Selected, item];
+                dispatch({ type: QUOTATION_RESULT_SELECTED, payload: updatedSelection });
             }
         } else {
-            let newArry = [...quote_Selected, item]
-            dispatch({type: QUOTATION_RESULT_SELECTED, payload: newArry})
+            const isItemSelected = quote_Selected.some(selectedItem => selectedItem.id === item.id);
+            if (isItemSelected) {
+                const updatedSelection = quote_Selected.filter(selectedItem => selectedItem.id !== item.id);
+                dispatch({ type: QUOTATION_RESULT_SELECTED, payload: updatedSelection });
+            }
+            console.log("You can select a maximum of 3 items.");
         }
     }
     const singleQuoteModal = (item) => {

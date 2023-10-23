@@ -11,7 +11,7 @@ import { ADD_QUOTE_MODAL_CHARGES, REMOVE_QUOTE_MODAL_CHARGES, UPDATE_QUOTE_MODAL
 import { QUOTATION_RESULT_SELECTED, QUOTATION_RESULT_UPDATE } from '../../../../store/Sales/actiontype';
 
 
-const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) => {
+const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPreviewModal }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [dropId, setDropId] = useState(false);
     const dropdownRef = useRef(null);
@@ -61,9 +61,9 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
         currency: '',
         buy_cost: '',
         markup_type: '',
-        markup_value: '',
+        markup_val: '',
         tax: '',
-        total_cost: ''
+        total_sale_cost: ''
     }
     // ------------- dynamic field ------------------------
     const mappCharge = {
@@ -77,8 +77,8 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
         dispatch({ type: ADD_QUOTE_MODAL_CHARGES, payload: { name: charge_name, id, charges: mappCharge[charge_name] } })
     }
 
-    const handleChange = (value, name, index, charge_name, objId) => {
-        dispatch({ type: UPDATE_QUOTE_MODAL_CHARGES, payload: { charge_name: charge_name, id: objId, value: value, name: name, index: index } })
+    const handleChange = (value, name, index, charge_name, objId,sales_cost) => {
+        dispatch({ type: UPDATE_QUOTE_MODAL_CHARGES, payload: { charge_name, id: objId, value, name, index,sales_cost } })
     }
 
     const removeInputFields = (index, id, charge_name) => {
@@ -88,7 +88,14 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
     const existingHandleChange = (value, name, index, charge_name, objId,sales_cost) => {
         dispatch({type: QUOTATION_RESULT_UPDATE, payload: {value,name,index,charge_name,id: objId,sales_cost} })
     }
-    console.log(quoteData,"quoteData")
+
+    // ----------------- preview quotation -------------------
+    const previewQuotationHandler = () => {
+        console.log(quoteData,"quoteData");
+        console.log(mainChargeObj,"mainChargeObj");
+        setPreviewModal(true);
+        QuoteModalHandler();
+    }
 
     // ------------ custom dropdown -------------------
     const toggleDropdown = (id) => {
@@ -96,8 +103,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
         setDropId(id);
     };
     useOutsideClick(dropdownRef, setIsOpen);
-    // ------------ custom dropdown -------------------  
-    // console.log(mainChargeObj, "mainChargeObj")
+    // ------------ custom dropdown ------------------- 
     return (
         <>
             <Modal size="xl" isOpen={quoteModal} toggle={() => { QuoteModalHandler(); }} className='quotation_modal_wrap' >
@@ -251,7 +257,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
                                                                     <div className="col-lg-2">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label htmlFor="total_sale_cost">Total Sale Cost</label>}
-                                                                            <input type="text" value={data?.total_sale_cost || ''} name="total_sale_cost" id="total_sale_cost" placeholder='2200' readOnly disabled />
+                                                                            <input type="text" value={Number(data?.total_sale_cost).toFixed(2) || ''} name="total_sale_cost" id="total_sale_cost" placeholder='2200' readOnly disabled />
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -269,10 +275,10 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
                                                                     <div className="col-lg-2">
                                                                         <div className="field_wrap">
                                                                             <Select
-                                                                                value={optionPickupCharge ? optionPickupCharge.find(obj => obj.value === data?.charges_name) : ''}
+                                                                                value={optionPickupCharge ? optionPickupCharge.find(obj => obj.name === data?.charges_name) : ''}
                                                                                 name='charges_name'
                                                                                 onChange={(opt) => {
-                                                                                    handleChange(opt?.value, 'charges_name', i, 'pickup_quote_charge', item.id);
+                                                                                    handleChange(opt?.name, 'charges_name', i, 'pickup_quote_charge', item.id);
                                                                                 }}
                                                                                 options={optionPickupCharge}
                                                                                 classNamePrefix="select2-selection form-select"
@@ -323,17 +329,36 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
                                                                     </div>
                                                                     <div className="col-lg-1">
                                                                         <div className="field_wrap">
-                                                                            <input type="text" name={`markup_value`} id="markup_value" value={data?.markup_value} onChange={(e) => handleChange(e.target.value, 'markup_value', i, 'pickup_quote_charge', item.id)} placeholder='Enter value' />
+                                                                            <input type="text" name={`markup_val`} id="markup_val" 
+                                                                            value={data?.markup_val} 
+                                                                            onChange={(e) => {
+                                                                                let sale_cost;
+                                                                                if(data?.markup_type === 'percentage'){
+                                                                                    sale_cost = Number(data?.buy_cost) + ((Number(data?.buy_cost) * Number(e.target.value)/100));
+                                                                                } else {
+                                                                                    sale_cost = Number(data?.buy_cost) + Number(e.target.value);
+                                                                                }
+                                                                                handleChange(e.target.value, 'markup_val', i, 'pickup_quote_charge', item.id,sale_cost)
+                                                                            }} 
+                                                                            placeholder='Enter value' />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-lg-1">
                                                                         <div className="field_wrap">
-                                                                            <input type="text" name="tax" id="tax" value={data?.tax} onChange={(e) => handleChange(e.target.value, 'tax', i, 'pickup_quote_charge', item.id)} placeholder='Enter tax' />
+                                                                            <input type="text" name="tax" id="tax" 
+                                                                            value={data?.tax} 
+                                                                            onChange={(e) => {
+                                                                                let sale_cost = Number(data?.total_sale_cost) + ((Number(data?.buy_cost) * Number(e.target.value)/100));
+                                                                                handleChange(e.target.value, 'tax', i, 'pickup_quote_charge', item.id,sale_cost)
+                                                                            }} 
+                                                                            placeholder='Enter tax' 
+                                                                            disabled={data?.total_sale_cost === ''}
+                                                                            />                                                                            
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-lg-2">
                                                                         <div className="field_wrap">
-                                                                            <input type="text" name="total_cost" id="total_cost" value={data?.total_cost} onChange={(e) => handleChange(e.target.value, 'total_cost', i, 'pickup_quote_charge', item.id)} placeholder='Enter cost' />
+                                                                            <input type="text" name="total_sale_cost" id="total_sale_cost" value={Number(data?.total_sale_cost).toFixed(2)} placeholder='Enter cost' readOnly disabled />
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -429,7 +454,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
                                                                     <div className="col-lg-2">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label htmlFor="total_sale_cost">Total Sale Cost</label>}
-                                                                            <input type="text" value={data?.total_sale_cost || ''} name="total_sale_cost" id="total_sale_cost" placeholder='2200' readOnly disabled />
+                                                                            <input type="text" value={Number(data?.total_sale_cost).toFixed(2) || ''} name="total_sale_cost" id="total_sale_cost" placeholder='2200' readOnly disabled />
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -501,17 +526,37 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
                                                                     </div>
                                                                     <div className="col-lg-1">
                                                                         <div className="field_wrap">
-                                                                            <input type="text" name={`markup_value`} id="markup_value" value={data?.markup_value} onChange={(e) => handleChange(e.target.value, 'markup_value', i, 'originport_quote_charge', item.id)} placeholder='Enter value' />
+                                                                            <input type="text" name={`markup_val`} id="markup_val" 
+                                                                            value={data?.markup_val} 
+                                                                            onChange={(e) => {
+                                                                                let sale_cost;
+                                                                                if(data?.markup_type === 'percentage'){
+                                                                                    sale_cost = Number(data?.buy_cost) + ((Number(data?.buy_cost) * Number(e.target.value)/100));
+                                                                                } else {
+                                                                                    sale_cost = Number(data?.buy_cost) + Number(e.target.value);
+                                                                                }
+                                                                                console.log(sale_cost,"sale_cost")
+                                                                                handleChange(e.target.value, 'markup_val', i, 'originport_quote_charge', item.id,sale_cost)
+                                                                            }} 
+                                                                            placeholder='Enter value' />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-lg-1">
                                                                         <div className="field_wrap">
-                                                                            <input type="text" name="tax" id="tax" value={data?.tax} onChange={(e) => handleChange(e.target.value, 'tax', i, 'originport_quote_charge', item.id)} placeholder='Enter tax' />
+                                                                            <input type="text" name="tax" id="tax" 
+                                                                                value={data?.tax} 
+                                                                                onChange={(e) => {
+                                                                                    let sale_cost = Number(data?.total_sale_cost) + ((Number(data?.buy_cost) * Number(e.target.value)/100));
+                                                                                    handleChange(e.target.value, 'tax', i, 'originport_quote_charge', item.id,sale_cost)
+                                                                                }} 
+                                                                                placeholder='Enter tax' 
+                                                                                disabled={data?.total_sale_cost === ''}
+                                                                            /> 
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-lg-2">
                                                                         <div className="field_wrap">
-                                                                            <input type="text" name="total_cost" id="total_cost" value={data?.total_cost} onChange={(e) => handleChange(e.target.value, 'total_cost', i, 'originport_quote_charge', item.id)} placeholder='Enter cost' />
+                                                                            <input type="text" name="total_sale_cost" id="total_sale_cost" value={Number(data?.total_sale_cost).toFixed(2)} placeholder='Enter cost' readOnly disabled />
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -606,7 +651,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
                                                                     <div className="col-lg-2">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label htmlFor="total_sale_cost">Total Sale Cost</label>}
-                                                                            <input type="text" value={data?.total_sale_cost || ''} name="total_sale_cost" id="total_sale_cost" placeholder='2200' readOnly disabled />
+                                                                            <input type="text" value={Number(data?.total_sale_cost).toFixed(2) || ''} name="total_sale_cost" id="total_sale_cost" placeholder='2200' readOnly disabled />
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -678,17 +723,36 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
                                                                     </div>
                                                                     <div className="col-lg-1">
                                                                         <div className="field_wrap">
-                                                                            <input type="text" name={`markup_value`} id="markup_value" value={data?.markup_value} onChange={(e) => handleChange(e.target.value, 'markup_value', i, 'ocean_quote_charge', item.id)} placeholder='Enter value' />
+                                                                            <input type="text" name={`markup_val`} id="markup_val" 
+                                                                            value={data?.markup_val} 
+                                                                            onChange={(e) => {
+                                                                                let sale_cost;
+                                                                                if(data?.markup_type === 'percentage'){
+                                                                                    sale_cost = Number(data?.buy_cost) + ((Number(data?.buy_cost) * Number(e.target.value)/100));
+                                                                                } else {
+                                                                                    sale_cost = Number(data?.buy_cost) + Number(e.target.value);
+                                                                                }
+                                                                                handleChange(e.target.value, 'markup_val', i, 'ocean_quote_charge', item.id,sale_cost)
+                                                                            }} 
+                                                                            placeholder='Enter value' />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-lg-1">
                                                                         <div className="field_wrap">
-                                                                            <input type="text" name="tax" id="tax" value={data?.tax} onChange={(e) => handleChange(e.target.value, 'tax', i, 'ocean_quote_charge', item.id)} placeholder='Enter tax' />
+                                                                            <input type="text" name="tax" id="tax" 
+                                                                                value={data?.tax} 
+                                                                                onChange={(e) => {
+                                                                                    let sale_cost = Number(data?.total_sale_cost) + ((Number(data?.buy_cost) * Number(e.target.value)/100));
+                                                                                    handleChange(e.target.value, 'tax', i, 'ocean_quote_charge', item.id,sale_cost)
+                                                                                }} 
+                                                                                placeholder='Enter tax' 
+                                                                                disabled={data?.total_sale_cost === ''}
+                                                                            />     
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-lg-2">
                                                                         <div className="field_wrap">
-                                                                            <input type="text" name="total_cost" id="total_cost" value={data?.total_cost} onChange={(e) => handleChange(e.target.value, 'total_cost', i, 'ocean_quote_charge', item.id)} placeholder='Enter cost' />
+                                                                            <input type="text" name="total_sale_cost" id="total_sale_cost" value={Number(data?.total_sale_cost).toFixed(2)} placeholder='Enter cost' />
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -767,7 +831,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler }) =>
                 <div className="modal-footer">
                     <div className="btn_wrap">
                         <button type="button" className='btn border_btn'>Cancel</button>
-                        <button type="button" className='btn btn-primary ms-2'>Preview Quotation</button>
+                        <button type="button" className='btn btn-primary ms-2' onClick={() => {previewQuotationHandler()}}>Preview Quotation</button>
                     </div>
                 </div>
             </Modal>

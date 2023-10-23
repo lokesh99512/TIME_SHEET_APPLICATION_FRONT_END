@@ -1440,3 +1440,163 @@ input[type="number"]{
         }
     }
 }
+
+// --------------- preview modal --------------------------
+.preview_modal_wrap {
+    max-width: 595px;
+    .modal-body{
+        padding: 0;
+    }
+    .common_bg_wrap {
+        padding: 12px;
+    }
+    .white_box {
+        border-radius: 8px;
+        border: 1px solid #EEEFF2;
+        background: $white;
+        padding: 10px;
+    }
+    .half_wrap {
+        display: flex;
+        gap: 4px;
+        .half_box {
+            width: 100%;
+            .details:not(:last-child){
+                margin-bottom: 8px;
+            }
+        }
+    }
+    .title {
+        @include font(700,10px,normal,$neutral_8);
+        margin-bottom: 6px;
+    }
+    .details{
+        span{
+            @include font(400,10px,normal,$neutral_5);
+            font-style: italic;
+            display: block;
+            margin-bottom: 3px;
+        }
+        p{
+            @include font(500,10px,normal,$neutral_8);
+        }
+    }
+    .modal-content{
+        border: 0;
+        background: $white url("../../images/img/preview_shape.png") repeat-y;
+        position: relative;
+        border-radius: 0;
+        .modal-header{
+            position: absolute;
+            right: -130px;
+            display: block;
+            border: 0;
+            padding: 0;
+            width: auto;
+            button{
+                background: $white;
+                padding: 4px 16px 4px 12px;
+                border: 0;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                height: 36px;
+                margin-bottom: 12px;
+                @include font(500,14px,normal,$neutral_8);
+                border: 1px solid $neutral_3;
+                box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.05);
+                i{
+                    font-size: 21px;
+                    &.bx-plus{
+                        transform: rotate(45deg);
+                    }
+                }
+            }
+        }
+    }
+    .preview_top_details{
+        .left_details{
+            p{
+                @include font(400,11px,normal,$neutral_8);
+                b{
+                    font-weight: 600;
+                }
+            }
+        }
+        .right_logo{
+            img{
+                height: 44px;
+            }
+        }
+    }
+    .top_creation_details{
+        &:not(:last-child) {
+            padding-bottom: 6px;
+            margin-bottom: 6px;
+            border-bottom: 1px dashed $primary_1;
+        }
+    }
+    .preview_table_wrap {
+        margin: 8px 0;
+        table {
+            width: 100%;
+            border-radius: 0 0 8px 8px;
+            border: 1px solid #EEEFF2;
+            background-color: $white;
+            border-collapse: separate;
+            caption-side: top;
+            border-spacing: 0;
+            caption {
+                background: #F0F2F4;
+                padding: 8px;
+                border-radius: 8px 8px 0 0;
+                p{
+                    @include font(600,10px,normal,$neutral_8);
+                    text-transform: uppercase;
+                    .tag{
+                        border-radius: 99px;
+                        background: $primary_7;
+                        padding: 3px 6px;
+                        @include font(600,9px,normal,$white);
+                        &.cheaper{
+                            background: $danger_7;
+                        }
+                        &.faster{
+                            background: $success_7;
+                        }
+                    }
+                }
+            }
+            th{
+                @include font(400,10px,normal,$neutral_5);
+                font-style: italic;
+                padding: 8px;
+                border-bottom: 1px solid #F0F2F4;
+            }
+            td{
+                @include font(500,9px,normal,$neutral_8);                
+                padding: 8px;
+                border-bottom: 1px solid #F0F2F4;
+                &.title_row{
+                    padding: 4px 8px;
+                    // border-bottom: 1px solid #F0F2F4;
+                    background: #F0F2F4;
+                    text-transform: uppercase;
+                }
+            }
+            tfoot{
+                tr{
+                    td{
+                        p{
+                            text-align: right;
+                            span{
+                                margin-left: 5px;
+                                font-size: 11px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
