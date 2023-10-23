@@ -182,8 +182,7 @@ const sales = (state = INIT_STATE, action) => {
                                 ...item,
                                 [action.payload.name]: action.payload.value
                             };
-                        }
-                        
+                        }                        
                     }
                     return item;
                 })

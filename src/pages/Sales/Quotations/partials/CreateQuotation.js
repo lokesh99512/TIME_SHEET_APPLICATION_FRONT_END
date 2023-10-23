@@ -9,11 +9,13 @@ import { getSalesQuotationResultData } from '../../../../store/Sales/actions';
 import SearchResultComp from './SearchResultComp';
 import QuotationModalComp from './QuotationModalComp';
 import { SEARCH_QUOTATION_BLANK } from '../../../../store/Sales/actiontype';
+import PreviewQuotationModal from './PreviewQuotationModal';
 
 export default function CreateQuotation() {
     const [searchResult, setSearchResult] = useState(false);
     const [searchView, setSearchView] = useState(true);
     const [quoteModal, setQuoteModal] = useState(false);
+    const [previewModal, setPreviewModal] = useState(false);
     const searchData = useSelector((state) => state?.sales?.createFields);    
     const navigate = useNavigate();
     const dispatch = useDispatch();    
@@ -21,11 +23,15 @@ export default function CreateQuotation() {
 
     function removeBodyCss() {
         document.body.classList.add("no_padding");
-      }
+    }
 
     function QuoteModalHandler() {
         setQuoteModal(!quoteModal);
         removeBodyCss();
+    }
+
+    const previewModalHand = () => {
+        setPreviewModal(!previewModal);
     }
 
     const searchQuoteHandler = () => {
@@ -75,7 +81,10 @@ export default function CreateQuotation() {
                 </Container>
             </div>
             {/* Quotation Modal */}
-            <QuotationModalComp quoteModal={quoteModal} setQuoteModal={setQuoteModal} QuoteModalHandler={QuoteModalHandler} />
+            <QuotationModalComp quoteModal={quoteModal} setQuoteModal={setQuoteModal} QuoteModalHandler={QuoteModalHandler} setPreviewModal={setPreviewModal} />
+
+            {/* Preview Quotation Modal */}
+            <PreviewQuotationModal previewModal={previewModal} previewModalHand={previewModalHand} setPreviewModal={setPreviewModal} QuoteModalHandler={QuoteModalHandler} />
         </>
     )
 }

@@ -53,10 +53,24 @@ const quotation = (state = INIT_STATE, action) => {
                 ...newArray[existingIndex],
                 [action.payload.charge_name]: newArray[existingIndex][action.payload.charge_name].map((item, index) => {
                     if (index === action.payload.index) {
-                        return {
-                            ...item,
-                            [action.payload.name]: action.payload.value
-                        };
+                        if(action.payload.name === 'markup_val'){
+                            return {
+                                ...item,
+                                [action.payload.name]: action.payload.value,
+                                total_sale_cost: action.payload.sales_cost
+                            };
+                        } else if(action.payload.name === 'tax'){
+                            return {
+                                ...item,
+                                [action.payload.name]: action.payload.value,
+                                total_sale_cost: action.payload.sales_cost
+                            };
+                        } else {
+                            return {
+                                ...item,
+                                [action.payload.name]: action.payload.value
+                            };
+                        }
                     }
                     return item;
                 })

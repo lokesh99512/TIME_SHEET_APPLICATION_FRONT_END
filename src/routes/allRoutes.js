@@ -135,6 +135,7 @@ import FclSurcharge from "../pages/Rate/Surcharge/FclSurcharge";
 import UploadRateData from "../pages/Rate/Surcharge/UploadRateData";
 import UploadFile from "../pages/Rate/Surcharge/UploadFile";
 import UploadPortLocalChargesData from "../pages/Procurement/FreightForwarding/partials/UploadPortLocalChargesData";
+import Settings from "../pages/Settings/Settings";
 
 const userRoutes = [
   //dashboard
@@ -159,6 +160,15 @@ const userRoutes = [
   { path: "/freight/air/local", component: <AirLocalFreight /> },
   { path: "/freight/upload/:tabName", component: <UploadFreightData /> },
   { path: "/freight/ocean/upload/:tabName", component: <UploadPortLocalChargesData /> },
+
+  // Rate Management
+  { path: "/rate/surcharge/fcl", component: <FclSurcharge/> },
+  { path: "/rate/upload/:tabName", component: <UploadRateData /> },
+  { path: "/rate/upload/uploadFile", component: <UploadFile /> },
+  
+  // Settings
+  { path: "/settings", component: <Settings /> },
+
   // Express
   { path: "/express", component: <ExpressComp /> },
 
@@ -254,11 +264,6 @@ const userRoutes = [
   { path: "/maps-google", component: <MapsGoogle/> },
   { path: "/maps-vector", component: <MapsVector/> },
   { path: "/maps-leaflet", component: <MapsLeaflet/> },
-  
-  // Rate Management
-  { path: "/rate/surcharge/fcl", component: <FclSurcharge/> },
-  { path: "/rate/upload/:tabName", component: <UploadRateData /> },
-  { path: "/rate/upload/uploadFile", component: <UploadFile /> },
   
   // this route should be at the end of all other routes
   { path: "/", exact: true, component: <Navigate to="/dashboard" /> },
