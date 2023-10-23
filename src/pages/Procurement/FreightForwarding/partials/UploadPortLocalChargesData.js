@@ -869,7 +869,7 @@ export default function UploadPortLocalChargesData() {
 
                                                                       {/* Add remove  */}
                                                                       <div className="col-md-3 mt-2 d-flex justify-content-end align-items-center">
-                                                                        <div>
+                                                                        {/* <div>
                                                                           <button
                                                                             className="btn btn-primary me-2"
                                                                             onClick={() => {
@@ -890,19 +890,28 @@ export default function UploadPortLocalChargesData() {
                                                                           >
                                                                             <i className="bx bx-plus"></i>
                                                                           </button>
-                                                                        </div>
+                                                                        </div> */}
 
                                                                         <div>
-                                                                          <button
-                                                                            className="btn border"
-                                                                            onClick={() => {
-                                                                              arrayHelpersTwo.remove(
-                                                                                subIndex
-                                                                              );
-                                                                            }}
-                                                                          >
-                                                                            <i className="bx bx-trash fs-5 align-middle text-danger"></i>
-                                                                          </button>
+                                                                          {formik
+                                                                            .values
+                                                                            .mainBox[
+                                                                            index
+                                                                          ]
+                                                                            .subBox
+                                                                            .length >
+                                                                            1 && (
+                                                                            <button
+                                                                              className="btn border"
+                                                                              onClick={() => {
+                                                                                arrayHelpersTwo.remove(
+                                                                                  subIndex
+                                                                                );
+                                                                              }}
+                                                                            >
+                                                                              <i className="bx bx-trash fs-5 align-middle text-danger"></i>
+                                                                            </button>
+                                                                          )}
                                                                         </div>
                                                                       </div>
                                                                     </div>
@@ -913,6 +922,26 @@ export default function UploadPortLocalChargesData() {
                                                               );
                                                             }
                                                           )}
+
+                                                        <div>
+                                                          <button
+                                                            className="btn btn-primary me-2"
+                                                            onClick={() => {
+                                                              arrayHelpersTwo.push(
+                                                                {
+                                                                  cargoType: "",
+                                                                  containerType:
+                                                                    "",
+                                                                  fromSlab: "",
+                                                                  toSlab: "",
+                                                                  rate: "",
+                                                                }
+                                                              );
+                                                            }}
+                                                          >
+                                                            <i className="bx bx-plus"></i>
+                                                          </button>
+                                                        </div>
                                                       </CardBody>
                                                     </Card>
                                                   </>
