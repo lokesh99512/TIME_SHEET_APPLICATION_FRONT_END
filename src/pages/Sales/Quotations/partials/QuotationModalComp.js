@@ -89,6 +89,28 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
         dispatch({type: QUOTATION_RESULT_UPDATE, payload: {value,name,index,charge_name,id: objId,sales_cost} })
     }
 
+    const calculateMarkupVal = (type,buycost,value) => {
+        if (type === 'percentage') {
+            return (buycost * value / 100)
+        } else {
+            return value;
+        }
+    }
+    const calculateTax = (buycost,value) => {
+        return (buycost * value / 100)
+    }
+
+    const handleChangeAndCalculate = (data,e, name, index, charge_name, objId) => {
+        let sale_cost = 0;
+        if (e.target.name === 'markup_val') {
+          sale_cost = Number(data.buy_cost) + calculateMarkupVal(data.markup_type,Number(data.buy_cost),Number(e.target.value)) + (data.tax ? calculateTax(Number(data.buy_cost),Number(data.tax)) : 0);
+        } else if (e.target.name === 'tax') {
+          sale_cost = Number(data.buy_cost) + calculateTax(Number(data.buy_cost),Number(e.target.value)) + (data.markup_val ? calculateMarkupVal(data.markup_type,Number(data.buy_cost),Number(data.markup_val)) : 0);
+        }
+        handleChange(e.target.value, name, index, charge_name, objId,sale_cost);
+    }
+
+
     // ----------------- preview quotation -------------------
     const previewQuotationHandler = () => {
         console.log(quoteData,"quoteData");
@@ -275,10 +297,10 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                     <div className="col-lg-2">
                                                                         <div className="field_wrap">
                                                                             <Select
-                                                                                value={optionPickupCharge ? optionPickupCharge.find(obj => obj.name === data?.charges_name) : ''}
+                                                                                value={optionPickupCharge ? optionPickupCharge.find(obj => obj.label === data?.charges_name) : ''}
                                                                                 name='charges_name'
                                                                                 onChange={(opt) => {
-                                                                                    handleChange(opt?.name, 'charges_name', i, 'pickup_quote_charge', item.id);
+                                                                                    handleChange(opt?.label, 'charges_name', i, 'pickup_quote_charge', item.id);
                                                                                 }}
                                                                                 options={optionPickupCharge}
                                                                                 classNamePrefix="select2-selection form-select"
@@ -332,13 +354,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                             <input type="text" name={`markup_val`} id="markup_val" 
                                                                             value={data?.markup_val} 
                                                                             onChange={(e) => {
-                                                                                let sale_cost;
-                                                                                if(data?.markup_type === 'percentage'){
-                                                                                    sale_cost = Number(data?.buy_cost) + ((Number(data?.buy_cost) * Number(e.target.value)/100));
-                                                                                } else {
-                                                                                    sale_cost = Number(data?.buy_cost) + Number(e.target.value);
-                                                                                }
-                                                                                handleChange(e.target.value, 'markup_val', i, 'pickup_quote_charge', item.id,sale_cost)
+                                                                                handleChangeAndCalculate(data,e, 'markup_val', i, 'pickup_quote_charge', item.id);
                                                                             }} 
                                                                             placeholder='Enter value' />
                                                                         </div>
@@ -348,11 +364,9 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                             <input type="text" name="tax" id="tax" 
                                                                             value={data?.tax} 
                                                                             onChange={(e) => {
-                                                                                let sale_cost = Number(data?.total_sale_cost) + ((Number(data?.buy_cost) * Number(e.target.value)/100));
-                                                                                handleChange(e.target.value, 'tax', i, 'pickup_quote_charge', item.id,sale_cost)
+                                                                                handleChangeAndCalculate(data,e, 'tax', i, 'pickup_quote_charge', item.id);
                                                                             }} 
                                                                             placeholder='Enter tax' 
-                                                                            disabled={data?.total_sale_cost === ''}
                                                                             />                                                                            
                                                                         </div>
                                                                     </div>
@@ -529,14 +543,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                             <input type="text" name={`markup_val`} id="markup_val" 
                                                                             value={data?.markup_val} 
                                                                             onChange={(e) => {
-                                                                                let sale_cost;
-                                                                                if(data?.markup_type === 'percentage'){
-                                                                                    sale_cost = Number(data?.buy_cost) + ((Number(data?.buy_cost) * Number(e.target.value)/100));
-                                                                                } else {
-                                                                                    sale_cost = Number(data?.buy_cost) + Number(e.target.value);
-                                                                                }
-                                                                                console.log(sale_cost,"sale_cost")
-                                                                                handleChange(e.target.value, 'markup_val', i, 'originport_quote_charge', item.id,sale_cost)
+                                                                                handleChangeAndCalculate(data,e, 'markup_val', i, 'originport_quote_charge', item.id);
                                                                             }} 
                                                                             placeholder='Enter value' />
                                                                         </div>
@@ -546,8 +553,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                             <input type="text" name="tax" id="tax" 
                                                                                 value={data?.tax} 
                                                                                 onChange={(e) => {
-                                                                                    let sale_cost = Number(data?.total_sale_cost) + ((Number(data?.buy_cost) * Number(e.target.value)/100));
-                                                                                    handleChange(e.target.value, 'tax', i, 'originport_quote_charge', item.id,sale_cost)
+                                                                                    handleChangeAndCalculate(data,e, 'tax', i, 'originport_quote_charge', item.id);
                                                                                 }} 
                                                                                 placeholder='Enter tax' 
                                                                                 disabled={data?.total_sale_cost === ''}
@@ -726,13 +732,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                             <input type="text" name={`markup_val`} id="markup_val" 
                                                                             value={data?.markup_val} 
                                                                             onChange={(e) => {
-                                                                                let sale_cost;
-                                                                                if(data?.markup_type === 'percentage'){
-                                                                                    sale_cost = Number(data?.buy_cost) + ((Number(data?.buy_cost) * Number(e.target.value)/100));
-                                                                                } else {
-                                                                                    sale_cost = Number(data?.buy_cost) + Number(e.target.value);
-                                                                                }
-                                                                                handleChange(e.target.value, 'markup_val', i, 'ocean_quote_charge', item.id,sale_cost)
+                                                                                handleChangeAndCalculate(data,e, 'markup_val', i, 'ocean_quote_charge', item.id);
                                                                             }} 
                                                                             placeholder='Enter value' />
                                                                         </div>
@@ -742,11 +742,9 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                             <input type="text" name="tax" id="tax" 
                                                                                 value={data?.tax} 
                                                                                 onChange={(e) => {
-                                                                                    let sale_cost = Number(data?.total_sale_cost) + ((Number(data?.buy_cost) * Number(e.target.value)/100));
-                                                                                    handleChange(e.target.value, 'tax', i, 'ocean_quote_charge', item.id,sale_cost)
+                                                                                    handleChangeAndCalculate(data,e, 'tax', i, 'ocean_quote_charge', item.id);
                                                                                 }} 
                                                                                 placeholder='Enter tax' 
-                                                                                disabled={data?.total_sale_cost === ''}
                                                                             />     
                                                                         </div>
                                                                     </div>
