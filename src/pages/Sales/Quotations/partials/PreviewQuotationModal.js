@@ -41,11 +41,10 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand,s
         dispatch({type: CONFIRM_PREVIEW_DATA, payload: mergedArray});
         dispatch({type: BLANK_MODAL_CHARGE, payload: {}});
         dispatch({type: QUOTATION_RESULT_SELECTED_BLANK, payload: {}});
+        
         setPreviewModal(false);
         console.log(mergedArray,"mergedArray");
     }
-
-    console.log(quoteData,"quoteData");
     return (
         <>
             <Modal size="md" isOpen={previewModal} toggle={() => { previewModalHand(); }} className='preview_modal_wrap'>

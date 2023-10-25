@@ -602,7 +602,7 @@ const optionPickupCharge = [
 ]
 const optionMarkupType = [
     {value: "percentage", label: "Percentage"},
-    {value: "flate", label: "Flate"},
+    {value: "flat", label: "Flat"},
 ]
 const optionCurrencyCharges = [
     {value: "gbp", label: "Pound", code: '£'},

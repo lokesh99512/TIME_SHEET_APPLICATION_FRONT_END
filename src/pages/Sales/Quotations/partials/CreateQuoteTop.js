@@ -363,6 +363,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                     }}
                                     options={countryList}
                                     // isOptionDisabled={(option) => option.value === createFields?.location_to?.country?.value}
+                                    menuPlacement="auto"
                                     classNamePrefix="select2-selection form-select"
                                 />
                             </div>
@@ -376,6 +377,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                     }}
                                     options={optionPortList}
                                     isOptionDisabled={(option) => option.value === createFields?.location_to?.address?.value}
+                                    menuPlacement="auto"
                                     classNamePrefix="select2-selection form-select"
                                 />
                             </div>
@@ -444,6 +446,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                     options={countryList}
                                     classNamePrefix="select2-selection form-select"
                                 // isOptionDisabled={(option) => option.value === createFields?.location_from?.country?.value}
+                                    menuPlacement="auto"
                                 />
                             </div>
                             <div className="field_input_wrap">
@@ -457,6 +460,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                     options={optionPortList}
                                     isOptionDisabled={(option) => option.value === createFields?.location_from?.address?.value}
                                     classNamePrefix="select2-selection form-select"
+                                    menuPlacement="auto"
                                 // defaultMenuIsOpen
                                 />
                             </div>
@@ -570,7 +574,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                         </div>
                         {createFields?.shipping_by?.value !== 'air' && (createFields?.transport_by?.value === 'fcl' || createFields?.transport_by?.value === 'ftl') && (
                             <div className="col-lg-4">
-                                <div className="common_dropdwon_btn_wrap mb-3">
+                                <div className="common_dropdwon_btn_wrap mb-3 bottom_drop_field">
                                     <div
                                         id='more_menu'
                                         className={`prof_wrap d-flex ${isOpen && dropId === 5 ? 'openmenu' : ''}`}
@@ -709,7 +713,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                             </div>
                         )}
                         <div className="col-lg-4">
-                            <div className="common_dropdwon_btn_wrap mb-3">
+                            <div className="common_dropdwon_btn_wrap mb-3 bottom_drop_field">
                                 <div
                                     id='more_menu'
                                     className={`prof_wrap d-flex ${isOpen && dropId === 6 ? 'openmenu' : ''}`}
@@ -726,7 +730,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                 </div>
                                 {isOpen && dropId === 6 ?
                                     <ul className="common_dropdown_wrap" ref={dropdownRef}>
-                                        <SimpleBar style={{ maxHeight: "300px" }} ref={ref}>
+                                        <SimpleBar style={{ maxHeight: "250px" }} ref={ref}>
                                             {(optionIncoterm || '').map(({ value, name }, index) => (
                                                 <li key={index} className={`${createFields?.incoterm?.value === value ? 'active' : ''}`} onClick={() => { handleChangeHandler({ value, name }, 'incoterm'); setIsOpen(false); }}>
                                                     <div className="custom-option">
@@ -750,7 +754,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                         <label htmlFor='cargo_value' className="form-label">Cargo Value</label>
                                         <input type="number" value={createFields?.cargo_value?.value?.value || ''} name="cargo_value" id="cargo_value" placeholder='Enter amount' onChange={(e) => { handleCurrencyChangeHandler({ value: e.target.value }, 'value') }} />
                                     </div>
-                                    <div className="common_dropdwon_btn_wrap">
+                                    <div className="common_dropdwon_btn_wrap bottom_drop_field">
                                         <div
                                             id='more_menu'
                                             className={`d-flex align-items-center ${isOpen && dropId === 8 ? 'openmenu' : ''}`}

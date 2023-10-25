@@ -7,8 +7,8 @@ import { cma_logo, delete_icon } from '../../../../assets/images';
 import { optionCurrency, optionCurrencyCharges, optionMarkupType, optionPickupCharge } from '../../../../common/data/sales';
 import { useOutsideClick } from '../../../../components/Common/CommonLogic';
 import { getCurrencyExchangeRate } from '../../../../store/Sales/actions';
-import { ADD_QUOTE_MODAL_CHARGES, REMOVE_QUOTE_MODAL_CHARGES, UPDATE_QUOTE_MODAL_CHARGES } from '../../../../store/Sales/Quotation/actiontype';
-import { QUOTATION_RESULT_SELECTED, QUOTATION_RESULT_UPDATE } from '../../../../store/Sales/actiontype';
+import { ADD_QUOTE_MODAL_CHARGES, BLANK_MODAL_CHARGE, REMOVE_QUOTE_MODAL_CHARGES, UPDATE_QUOTE_MODAL_CHARGES } from '../../../../store/Sales/Quotation/actiontype';
+import { QUOTATION_RESULT_SELECTED, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_UPDATE } from '../../../../store/Sales/actiontype';
 
 
 const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPreviewModal }) => {
@@ -53,7 +53,12 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
         }
     })
 
+    const blankFieldHandle = () => {
+        dispatch({type: BLANK_MODAL_CHARGE, payload: {}});
+        dispatch({type: QUOTATION_RESULT_SELECTED_BLANK, payload: {}});
+    }
 
+    // ------------- dynamic field ------------------------
     let inputObj = {
         charges_name: '',
         uom: '',
@@ -65,7 +70,6 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
         tax: '',
         total_sale_cost: ''
     }
-    // ------------- dynamic field ------------------------
     const mappCharge = {
         "pickup_quote_charge": inputObj,
         "originport_quote_charge": inputObj,
@@ -109,7 +113,6 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
         }
         handleChange(e.target.value, name, index, charge_name, objId,sale_cost);
     }
-
 
     // ----------------- preview quotation -------------------
     const previewQuotationHandler = () => {
@@ -166,6 +169,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                         </div>
                         <button
                             onClick={() => {
+                                blankFieldHandle();
                                 setQuoteModal(false);
                             }}
                             type="button"
@@ -209,37 +213,37 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                         {item?.pickup_quote_charge?.length !== 0 && item?.pickup_quote_charge?.map((data, index) => (
                                                             <div className="charges_wrap mb-3" key={index}>
                                                                 <div className="row">
-                                                                    <div className="col-lg-2">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="charges_name">Charge Name</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="charges_name">Charge Name</label>}
                                                                             <input type="text" value={data?.charges_name || ''} name="charges_name" id="charges_name" placeholder='Freight' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="uom">UoM</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="uom">UoM</label>}
                                                                             <input type="text" value={data?.uom || ''} name="uom" id="uom" placeholder='20GP' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="quantity">Quantity</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="quantity">Quantity</label>}
                                                                             <input type="text" value={data?.quantity || ''} name="quantity" id="quantity" placeholder='2' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="buy_currency">Buy Currency</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="buy_currency">Buy Currency</label>}
                                                                             <input type="text" value={data?.currency || ''} name="buy_currency" id="buy_currency" placeholder='USD' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="buy_cost">Total Buy Cost</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="buy_cost">Total Buy Cost</label>}
                                                                             <input type="text" value={data?.buy_cost || ''} name="buy_cost" id="buy_cost" placeholder='2000' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-2">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label htmlFor='markup_type' className='form-label'>Markup Type</label>}
                                                                             <Select
@@ -250,12 +254,13 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                                 }}
                                                                                 options={optionMarkupType}
                                                                                 classNamePrefix="select2-selection form-select"
+                                                                                menuPlacement="auto"
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="markup_val">Markup Value</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="markup_val">Markup Value</label>}
                                                                             <input type="text" name="markup_val" id="markup_val" 
                                                                                 value={data?.markup_val} 
                                                                                 onChange={(e) => {
@@ -270,15 +275,15 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                                 placeholder='Enter value' />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="tax">Tax</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="tax">Tax</label>}
                                                                             <input type="text" value={data?.tax || ''} name="tax" id="tax" placeholder='18' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-2">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="total_sale_cost">Total Sale Cost</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="total_sale_cost">Total Sale Cost</label>}
                                                                             <input type="text" value={Number(data?.total_sale_cost).toFixed(2) || ''} name="total_sale_cost" id="total_sale_cost" placeholder='2200' readOnly disabled />
                                                                         </div>
                                                                     </div>
@@ -294,7 +299,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                     </div>
                                                                 </div>
                                                                 <div className="row">
-                                                                    <div className="col-lg-2">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             <Select
                                                                                 value={optionPickupCharge ? optionPickupCharge.find(obj => obj.label === data?.charges_name) : ''}
@@ -304,21 +309,22 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                                 }}
                                                                                 options={optionPickupCharge}
                                                                                 classNamePrefix="select2-selection form-select"
+                                                                                menuPlacement="auto"
                                                                             // defaultMenuIsOpen
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="uom" id="uom" value={data?.uom} onChange={(e) => handleChange(e.target.value, 'uom', i, 'pickup_quote_charge', item.id)} placeholder='Enter uom' />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="quantity" id="quantity" value={data?.quantity} onChange={(e) => handleChange(e.target.value, 'quantity', i, 'pickup_quote_charge', item.id)} placeholder='Enter quantity' />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <Select
                                                                                 value={optionCurrencyCharges ? optionCurrencyCharges.find(obj => obj.value === data?.currency) : ''}
@@ -328,15 +334,16 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                                 }}
                                                                                 options={optionCurrencyCharges}
                                                                                 classNamePrefix="select2-selection form-select"
+                                                                                menuPlacement="auto"
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="buy_cost" id="buy_cost" value={data?.buy_cost} onChange={(e) => handleChange(e.target.value, 'buy_cost', i, 'pickup_quote_charge', item.id)} placeholder='Enter cost' />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-2">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             <Select
                                                                                 value={optionMarkupType ? optionMarkupType.find(obj => obj.value === data?.markup_type) : ''}
@@ -346,10 +353,11 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                                 }}
                                                                                 options={optionMarkupType}
                                                                                 classNamePrefix="select2-selection form-select"
+                                                                                menuPlacement="auto"
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name={`markup_val`} id="markup_val" 
                                                                             value={data?.markup_val} 
@@ -359,7 +367,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                             placeholder='Enter value' />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="tax" id="tax" 
                                                                             value={data?.tax} 
@@ -370,7 +378,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                             />                                                                            
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-2">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="total_sale_cost" id="total_sale_cost" value={Number(data?.total_sale_cost).toFixed(2)} placeholder='Enter cost' readOnly disabled />
                                                                         </div>
@@ -398,37 +406,37 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                         {item?.originport_quote_charge?.length !== 0 && item?.originport_quote_charge?.map((data, index) => (
                                                             <div className="charges_wrap mb-3" key={index}>
                                                                 <div className="row">
-                                                                    <div className="col-lg-2">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="charges_name">Charge Name</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="charges_name">Charge Name</label>}
                                                                             <input type="text" value={data?.charges_name || ''} name="charges_name" id="charges_name" placeholder='Freight' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="uom">UoM</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="uom">UoM</label>}
                                                                             <input type="text" value={data?.uom || ''} name="uom" id="uom" placeholder='20GP' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="quantity">Quantity</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="quantity">Quantity</label>}
                                                                             <input type="text" value={data?.quantity || ''} name="quantity" id="quantity" placeholder='2' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="buy_currency">Buy Currency</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="buy_currency">Buy Currency</label>}
                                                                             <input type="text" value={data?.currency || ''} name="buy_currency" id="buy_currency" placeholder='USD' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="buy_cost">Total Buy Cost</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="buy_cost">Total Buy Cost</label>}
                                                                             <input type="text" value={data?.buy_cost || ''} name="buy_cost" id="buy_cost" placeholder='2000' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-2">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label htmlFor='markup_type' className='form-label'>Markup Type</label>}
                                                                             <Select
@@ -439,12 +447,13 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                                 }}
                                                                                 options={optionMarkupType}
                                                                                 classNamePrefix="select2-selection form-select"
+                                                                                menuPlacement="auto"
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="markup_val">Markup Value</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="markup_val">Markup Value</label>}
                                                                             <input type="text" name="markup_val" id="markup_val" 
                                                                                 value={data?.markup_val} 
                                                                                 onChange={(e) => {
@@ -459,15 +468,15 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                                 placeholder='Enter value' />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="tax">Tax</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="tax">Tax</label>}
                                                                             <input type="text" value={data?.tax || ''} name="tax" id="tax" placeholder='18' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-2">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="total_sale_cost">Total Sale Cost</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="total_sale_cost">Total Sale Cost</label>}
                                                                             <input type="text" value={Number(data?.total_sale_cost).toFixed(2) || ''} name="total_sale_cost" id="total_sale_cost" placeholder='2200' readOnly disabled />
                                                                         </div>
                                                                     </div>
@@ -483,7 +492,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                     </div>
                                                                 </div>
                                                                 <div className="row">
-                                                                    <div className="col-lg-2">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             <Select
                                                                                 value={optionPickupCharge ? optionPickupCharge.find(obj => obj.value === data?.charges_name) : ''}
@@ -493,21 +502,22 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                                 }}
                                                                                 options={optionPickupCharge}
                                                                                 classNamePrefix="select2-selection form-select"
+                                                                                menuPlacement="auto"
                                                                             // defaultMenuIsOpen
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="uom" id="uom" value={data?.uom} onChange={(e) => handleChange(e.target.value, 'uom', i, 'originport_quote_charge', item.id)} placeholder='Enter uom' />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="quantity" id="quantity" value={data?.quantity} onChange={(e) => handleChange(e.target.value, 'quantity', i, 'originport_quote_charge', item.id)} placeholder='Enter quantity' />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <Select
                                                                                 value={optionCurrencyCharges ? optionCurrencyCharges.find(obj => obj.value === data?.currency) : ''}
@@ -517,15 +527,16 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                                 }}
                                                                                 options={optionCurrencyCharges}
                                                                                 classNamePrefix="select2-selection form-select"
+                                                                                menuPlacement="auto"
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="buy_cost" id="buy_cost" value={data?.buy_cost} onChange={(e) => handleChange(e.target.value, 'buy_cost', i, 'originport_quote_charge', item.id)} placeholder='Enter cost' />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-2">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             <Select
                                                                                 value={optionMarkupType ? optionMarkupType.find(obj => obj.value === data?.markup_type) : ''}
@@ -535,10 +546,11 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                                 }}
                                                                                 options={optionMarkupType}
                                                                                 classNamePrefix="select2-selection form-select"
+                                                                                menuPlacement="auto"
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name={`markup_val`} id="markup_val" 
                                                                             value={data?.markup_val} 
@@ -548,7 +560,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                             placeholder='Enter value' />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="tax" id="tax" 
                                                                                 value={data?.tax} 
@@ -560,7 +572,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                             /> 
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-2">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="total_sale_cost" id="total_sale_cost" value={Number(data?.total_sale_cost).toFixed(2)} placeholder='Enter cost' readOnly disabled />
                                                                         </div>
@@ -588,37 +600,37 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                         {item?.ocean_quote_charge?.length !== 0 && item?.ocean_quote_charge?.map((data, index) => (
                                                             <div className="charges_wrap mb-3" key={index}>
                                                                 <div className="row">
-                                                                    <div className="col-lg-2">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="charges_name">Charge Name</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="charges_name">Charge Name</label>}
                                                                             <input type="text" value={data?.charges_name || ''} name="charges_name" id="charges_name" placeholder='Freight' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="uom">UoM</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="uom">UoM</label>}
                                                                             <input type="text" value={data?.uom || ''} name="uom" id="uom" placeholder='20GP' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="quantity">Quantity</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="quantity">Quantity</label>}
                                                                             <input type="text" value={data?.quantity || ''} name="quantity" id="quantity" placeholder='2' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="buy_currency">Buy Currency</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="buy_currency">Buy Currency</label>}
                                                                             <input type="text" value={data?.currency || ''} name="buy_currency" id="buy_currency" placeholder='USD' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="buy_cost">Total Buy Cost</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="buy_cost">Total Buy Cost</label>}
                                                                             <input type="text" value={data?.buy_cost || ''} name="buy_cost" id="buy_cost" placeholder='2000' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-2">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label htmlFor='markup_type' className='form-label'>Markup Type</label>}
                                                                             <Select
@@ -629,12 +641,13 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                                 }}
                                                                                 options={optionMarkupType}
                                                                                 classNamePrefix="select2-selection form-select"
+                                                                                menuPlacement="auto"
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="markup_val">Markup Value</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="markup_val">Markup Value</label>}
                                                                             <input type="text" name="markup_val" id="markup_val" 
                                                                                     value={data?.markup_val} 
                                                                                     onChange={(e) => {
@@ -648,15 +661,15 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                                     }} placeholder='Enter value' />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="tax">Tax</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="tax">Tax</label>}
                                                                             <input type="text" value={data?.tax || ''} name="tax" id="tax" placeholder='18' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-2">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
-                                                                            {index === 0 && <label htmlFor="total_sale_cost">Total Sale Cost</label>}
+                                                                            {index === 0 && <label className='form-label' htmlFor="total_sale_cost">Total Sale Cost</label>}
                                                                             <input type="text" value={Number(data?.total_sale_cost).toFixed(2) || ''} name="total_sale_cost" id="total_sale_cost" placeholder='2200' readOnly disabled />
                                                                         </div>
                                                                     </div>
@@ -672,7 +685,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                     </div>
                                                                 </div>
                                                                 <div className="row">
-                                                                    <div className="col-lg-2">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             <Select
                                                                                 value={optionPickupCharge ? optionPickupCharge.find(obj => obj.value === data?.charges_name) : ''}
@@ -682,21 +695,22 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                                 }}
                                                                                 options={optionPickupCharge}
                                                                                 classNamePrefix="select2-selection form-select"
+                                                                                menuPlacement="auto"
                                                                             // defaultMenuIsOpen
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="uom" id="uom" value={data?.uom} onChange={(e) => handleChange(e.target.value, 'uom', i, 'ocean_quote_charge', item.id)} placeholder='Enter uom' />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="quantity" id="quantity" value={data?.quantity} onChange={(e) => handleChange(e.target.value, 'quantity', i, 'ocean_quote_charge', item.id)} placeholder='Enter quantity' />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <Select
                                                                                 value={optionCurrencyCharges ? optionCurrencyCharges.find(obj => obj.value === data?.currency) : ''}
@@ -706,15 +720,16 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                                 }}
                                                                                 options={optionCurrencyCharges}
                                                                                 classNamePrefix="select2-selection form-select"
+                                                                                menuPlacement="auto"
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="buy_cost" id="buy_cost" value={data?.buy_cost} onChange={(e) => handleChange(e.target.value, 'buy_cost', i, 'ocean_quote_charge', item.id)} placeholder='Enter cost' />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-2">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             <Select
                                                                                 value={optionMarkupType ? optionMarkupType.find(obj => obj.value === data?.markup_type) : ''}
@@ -724,10 +739,11 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                                 }}
                                                                                 options={optionMarkupType}
                                                                                 classNamePrefix="select2-selection form-select"
+                                                                                menuPlacement="auto"
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name={`markup_val`} id="markup_val" 
                                                                             value={data?.markup_val} 
@@ -737,7 +753,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                             placeholder='Enter value' />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="tax" id="tax" 
                                                                                 value={data?.tax} 
@@ -748,7 +764,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                             />     
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-lg-2">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="total_sale_cost" id="total_sale_cost" value={Number(data?.total_sale_cost).toFixed(2)} placeholder='Enter cost' />
                                                                         </div>
@@ -792,7 +808,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                             )}
                                         </Accordion>
                                         <div className="row">
-                                            <div className="col-lg-4 d-flex justify-content-between">
+                                            <div className="col-4 d-flex justify-content-between">
                                                 <span>Sub Total:</span>
                                                 <span>
                                                     <b>
@@ -801,7 +817,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                     </b>
                                                 </span>
                                             </div>
-                                            <div className="col-lg-4 d-flex justify-content-between">
+                                            <div className="col-4 d-flex justify-content-between">
                                                 <span>Tax:</span>
                                                 <span>
                                                     <b>
@@ -810,7 +826,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                     </b>
                                                 </span>
                                             </div>
-                                            <div className="col-lg-4 d-flex justify-content-between">
+                                            <div className="col-4 d-flex justify-content-between">
                                                 <span>Total Amount:</span>
                                                 <span>
                                                     <b className='h5'>
@@ -828,7 +844,10 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                 </div>
                 <div className="modal-footer">
                     <div className="btn_wrap">
-                        <button type="button" className='btn border_btn'>Cancel</button>
+                        <button type="button" className='btn border_btn' onClick={() => {                            
+                            blankFieldHandle();
+                            setQuoteModal(false);
+                        }}>Cancel</button>
                         <button type="button" className='btn btn-primary ms-2' onClick={() => {previewQuotationHandler()}}>Preview Quotation</button>
                     </div>
                 </div>
