@@ -1003,6 +1003,72 @@ input[type="number"]{
             }
         }
     }
+    &.incoterm_field_wrap{
+        .prof_wrap .con{
+            pointer-events: all;
+        }
+        .form-select__control{
+            padding: 0 !important;
+            min-height: auto !important;
+            box-shadow: none !important;
+            .form-select__value-container{
+                padding: 0 !important;
+            }
+            .form-select__indicators{
+                display: none;
+            }
+        }
+        .form-select__menu-list{
+            .form-select__option{
+                padding: 13px 16px;
+                border-bottom: 1px solid $neutral_2; 
+                @include font($font-weight-medium,16px,normal,$neutral_8);
+                letter-spacing: 0.16px;
+                &:hover,&.form-select__option--is-selected{
+                    background-color: $primary_1;
+                }
+                &.form-select__option--is-focused{
+                    background-color: rgba($color: $primary_1, $alpha: 0.5);
+                }
+                &.form-select__option--is-disabled{
+                    &:hover{
+                        background-color: transparent;
+                    }
+                    opacity: 0.4;
+                }
+            }
+        }
+    }
+    &.dropdown_smart_filter{
+        .drop_search_box {
+            padding: 15px 20px;
+            border-bottom: 1px solid $neutral_2;
+            .drop_search_input{
+                position: relative;
+                &::before{
+                    content: "\eb56";
+                    position: absolute;
+                    left: 15px;
+                    top: 0;
+                    width: 18px;
+                    height: 18px;
+                    color: #2D1C5B;
+                    font-size: 18px;
+                    font-family: boxicons !important;
+                    line-height: 1;
+                    bottom: 0;
+                    margin: auto;
+                }
+            }
+            input{
+                width: 100%;
+                height: 35px;
+                border: 1px solid $neutral_2;
+                padding: 0 15px 0 40px;
+                border-radius: 8px;
+            }
+        }
+    }
     @media only screen and (max-height: 750px) {        
         &.bottom_drop_field{
             .common_dropdown_wrap{

@@ -175,6 +175,7 @@ const sales = (state = INIT_STATE, action) => {
                             return {
                                 ...item,
                                 [action.payload.name]: action.payload.value,
+                                'margin_value': action.payload.marginVal,
                                 total_sale_cost: action.payload.sales_cost
                             };
                         } else {

@@ -335,7 +335,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                         <label className="form-check-label" htmlFor={`pickport_discharge${index}`}></label>
                                                     </div>
                                                     <img src={truck_outline} alt="Truck" className='me-2' />
-                                                    PickPort of discharge(Winnipeg)
+                                                    Port of discharge(Winnipeg)
                                                 </div>
                                                 <div className="right_con d-flex ms-auto">
                                                     <span>CO2: <b>{item.pickport_discharge_co}</b></span>

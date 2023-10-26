@@ -10,14 +10,10 @@ import { BLANK_MODAL_CHARGE } from '../../../../store/Sales/Quotation/actiontype
 export default function PreviewQuotationModal({ previewModal, previewModalHand,setPreviewModal,QuoteModalHandler }) {
     const quoteData = useSelector((state) => state.sales.quote_selected_data);
     const mainChargeObj = useSelector((state) => state?.quotation?.mainChargeObj);
-    const preferData = quoteData?.find(obj => obj.quote_type === 'preffered');
-    const cheaperData = quoteData?.find(obj => obj.quote_type === 'cheaper');
-    const fasterData = quoteData?.find(obj => obj.quote_type === 'faster');
-    const preferDataNew = mainChargeObj?.find(obj => obj.id === preferData?.id)
-    const cheaperDataNew = mainChargeObj?.find(obj => obj.id === cheaperData?.id)
-    const fasterDataNew = mainChargeObj?.find(obj => obj.id === fasterData?.id);
+    const preferData = quoteData?.filter(obj => obj.quote_type === 'preffered');
+    const cheaperData = quoteData?.filter(obj => obj.quote_type === 'cheaper');
+    const fasterData = quoteData?.filter(obj => obj.quote_type === 'faster');
     const dispatch = useDispatch();
-
     const confirmHandler = () => {
         const mergedArray = [...quoteData];
         let newArry = [...mainChargeObj];
@@ -50,7 +46,7 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand,s
             <Modal size="md" isOpen={previewModal} toggle={() => { previewModalHand(); }} className='preview_modal_wrap'>
                 <div className="modal-header">
                     <button type="button" onClick={() => {setPreviewModal(false);}}><i className='bx bx-plus me-2'></i> Close</button>
-                    <button type="button"><img src={edit_icon} alt="Edit" className='me-2' onClick={() => {setPreviewModal(false);QuoteModalHandler();}} /> Edit</button>
+                    <button type="button" onClick={() => {setPreviewModal(false);QuoteModalHandler();}}><img src={edit_icon} alt="Edit" className='me-2' /> Edit</button>
                     <button type="button" onClick={() => {confirmHandler()}}><i className='bx bx-check-circle me-2'></i> Confirm</button>
                 </div>
                 <div className="modal-body">
@@ -161,9 +157,9 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand,s
                             </table>
                         </div>
 
-                        <PreviewCommonTable data={preferData} newData={preferDataNew} />
-                        <PreviewCommonTable data={cheaperData} newData={cheaperDataNew} />
-                        <PreviewCommonTable data={fasterData} newData={fasterDataNew} />
+                        {preferData?.length !== 0 ? preferData?.map((data) => (<PreviewCommonTable data={data} key={data.id} newData={mainChargeObj.find(obj => obj.id === data.id)} />)) : null}
+                        {cheaperData?.length !== 0 ? cheaperData?.map((data) => (<PreviewCommonTable data={data} key={data.id} newData={mainChargeObj.find(obj => obj.id === data.id)} />)) : null}
+                        {fasterData?.length !== 0 ? fasterData?.map((data) => (<PreviewCommonTable data={data} key={data.id} newData={mainChargeObj.find(obj => obj.id === data.id)} />)) : null}
                         
                     </div>
                 </div>

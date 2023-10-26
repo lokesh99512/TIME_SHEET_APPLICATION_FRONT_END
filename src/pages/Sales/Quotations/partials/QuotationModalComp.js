@@ -81,17 +81,31 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
         dispatch({ type: ADD_QUOTE_MODAL_CHARGES, payload: { name: charge_name, id, charges: mappCharge[charge_name] } })
     }
 
-    const handleChange = (value, name, index, charge_name, objId,sales_cost) => {
-        dispatch({ type: UPDATE_QUOTE_MODAL_CHARGES, payload: { charge_name, id: objId, value, name, index,sales_cost } })
+    const handleChange = (value, name, index, charge_name, objId,sales_cost,newVal) => {
+        dispatch({ type: UPDATE_QUOTE_MODAL_CHARGES, payload: { charge_name, id: objId, value, name, index,sales_cost,newVal } })
     }
 
     const removeInputFields = (index, id, charge_name) => {
         dispatch({ type: REMOVE_QUOTE_MODAL_CHARGES, payload: { index, id, charge_name } })
     }
 
-    const existingHandleChange = (value, name, index, charge_name, objId,sales_cost) => {
-        dispatch({type: QUOTATION_RESULT_UPDATE, payload: {value,name,index,charge_name,id: objId,sales_cost} })
+    const existingHandleChange = (value, name, index, charge_name, objId,sales_cost,marginVal) => {
+        dispatch({type: QUOTATION_RESULT_UPDATE, payload: {value,name,index,charge_name,id: objId,sales_cost,marginVal} })
     }
+
+    const existingHandleChangeMargin = (data, e, name, index, charge_name, objId) => {
+        let sale_cost = 0;
+        let marginValue = 0;
+
+        if (e?.target?.name === 'markup_val'){
+            marginValue = calculateMarkupVal(data.markup_type,Number(data.buy_cost),Number(e.target.value));
+            sale_cost = Number(data.buy_cost) + marginValue + (data.tax ? calculateTax(Number(data.buy_cost),Number(data.tax)) : 0);
+        }
+
+        existingHandleChange(e.target.value,name,index,charge_name, objId,sale_cost,marginValue);
+    }
+
+    // console.log(quoteData,"quotedata");
 
     const calculateMarkupVal = (type,buycost,value) => {
         if (type === 'percentage') {
@@ -107,11 +121,44 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
     const handleChangeAndCalculate = (data,e, name, index, charge_name, objId) => {
         let sale_cost = 0;
         if (e.target.name === 'markup_val') {
-          sale_cost = Number(data.buy_cost) + calculateMarkupVal(data.markup_type,Number(data.buy_cost),Number(e.target.value)) + (data.tax ? calculateTax(Number(data.buy_cost),Number(data.tax)) : 0);
+            let marginValue = calculateMarkupVal(data.markup_type,Number(data.buy_cost),Number(e.target.value));
+            sale_cost = Number(data.buy_cost) + marginValue + (data.tax ? calculateTax(Number(data.buy_cost),Number(data.tax)) : 0);
+            handleChange(e.target.value, name, index, charge_name, objId,sale_cost,marginValue);
         } else if (e.target.name === 'tax') {
-          sale_cost = Number(data.buy_cost) + calculateTax(Number(data.buy_cost),Number(e.target.value)) + (data.markup_val ? calculateMarkupVal(data.markup_type,Number(data.buy_cost),Number(data.markup_val)) : 0);
-        }
-        handleChange(e.target.value, name, index, charge_name, objId,sale_cost);
+            let taxAmt = calculateTax(Number(data.buy_cost),Number(e.target.value))
+            sale_cost = Number(data.buy_cost) + taxAmt + (data.markup_val ? calculateMarkupVal(data.markup_type,Number(data.buy_cost),Number(data.markup_val)) : 0);
+            handleChange(e.target.value, name, index, charge_name, objId,sale_cost,taxAmt);
+        }        
+    }
+
+    // ---------------- SubTotal / Total and Tax ------------------------------
+    const innerTotalHandler = (array,newArray) => {
+        return array?.reduce((total, charge) => total + Number(charge.total_sale_cost),0) + (newArray !== undefined ? newArray?.reduce((total, charge) => total + Number(charge.total_sale_cost),0) : 0);
+    }
+    const subTotalHandler = (quoteObject) => {
+        let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.id);
+        let pickupbuyVal = quoteObject?.pickup_quote_charge.reduce((total, charge) => total + Number(charge.buy_cost || 0),0) + (mainChargeCurr?.pickup_quote_charge !== undefined && mainChargeCurr?.pickup_quote_charge.reduce((total, charge) => total + Number(charge.buy_cost || 0),0));
+        let pickupmarginVal = quoteObject?.pickup_quote_charge.reduce((total, charge) => total + Number(charge?.margin_value || 0),0) + (mainChargeCurr?.pickup_quote_charge !== undefined && mainChargeCurr?.pickup_quote_charge.reduce((total, charge) => total + Number(charge?.margin_value || 0),0));
+        let pickupSubTotal = pickupbuyVal + pickupmarginVal
+
+        let originbuyVal = quoteObject?.originport_quote_charge?.reduce((total, charge) => total + Number(charge?.buy_cost || 0),0) + (mainChargeCurr?.originport_quote_charge !== undefined && mainChargeCurr?.originport_quote_charge?.reduce((total, charge) => total + Number(charge?.buy_cost || 0),0));
+        let originmarginVal = quoteObject?.originport_quote_charge?.reduce((total, charge) => total + Number(charge?.margin_value || 0),0) + (mainChargeCurr?.originport_quote_charge !== undefined && mainChargeCurr?.originport_quote_charge?.reduce((total, charge) => total + Number(charge?.margin_value || 0),0));
+        let originSubTotal = originbuyVal + originmarginVal
+
+        let oceanbuyVal = quoteObject?.ocean_quote_charge?.reduce((total, charge) => total + Number(charge?.buy_cost || 0),0) + (mainChargeCurr?.ocean_quote_charge !== undefined && mainChargeCurr?.ocean_quote_charge?.reduce((total, charge) => total + Number(charge?.buy_cost || 0),0));
+        let oceanmarginVal = quoteObject?.ocean_quote_charge?.reduce((total, charge) => total + Number(charge?.margin_value || 0),0) + (mainChargeCurr?.ocean_quote_charge !== undefined && mainChargeCurr?.ocean_quote_charge?.reduce((total, charge) => total + Number(charge?.margin_value || 0),0));
+        let oceanSubTotal = oceanbuyVal + oceanmarginVal
+
+        return pickupSubTotal + originSubTotal + oceanSubTotal;
+    }
+
+    const totalTaxHandler = (quoteObject) => {
+        let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.id);
+        let pickuptaxVal = quoteObject?.pickup_quote_charge.reduce((total, charge) => total + (Number(charge?.buy_cost || 0) * Number(charge?.tax || 0)/100),0) + (mainChargeCurr?.pickup_quote_charge !== undefined && mainChargeCurr?.pickup_quote_charge.reduce((total, charge) => total + Number(charge?.tax_amount || 0),0));
+        let origintaxVal = quoteObject?.originport_quote_charge.reduce((total, charge) => total + (Number(charge?.buy_cost || 0) * Number(charge?.tax || 0)/100),0) + (mainChargeCurr?.originport_quote_charge !== undefined && mainChargeCurr?.originport_quote_charge.reduce((total, charge) => total + Number(charge?.tax_amount || 0),0));
+        let oceantaxVal = quoteObject?.ocean_quote_charge.reduce((total, charge) => total + (Number(charge?.buy_cost || 0) * Number(charge?.tax || 0)/100),0) + (mainChargeCurr?.ocean_quote_charge !== undefined && mainChargeCurr?.ocean_quote_charge.reduce((total, charge) => total + Number(charge?.tax_amount || 0),0));
+
+        return pickuptaxVal + origintaxVal + oceantaxVal;
     }
 
     // ----------------- preview quotation -------------------
@@ -196,7 +243,10 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                         </div>
                                         <div className="right_con d-flex ms-auto">
                                             <div className="margin_wrap">Margin Value: <b>12%</b></div>
-                                            <span className='text-primary'>₹12,333</span>
+                                            <span className='text-primary'>
+                                                {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '}
+                                                {formik.values.currencyVal !== 'rupee' ? ((subTotalHandler(item) + totalTaxHandler(item)) * Number(formik.values.exchangeRate)).toFixed(2) : (subTotalHandler(item) + totalTaxHandler(item))}
+                                            </span>
                                         </div>
                                     </AccordionHeader>
                                     <AccordionBody accordionId={`main_${mainindex}`}>
@@ -206,7 +256,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                     <AccordionHeader targetId={`pickup_${item.id}`}>
                                                         Pickup
                                                         <div className="right_con ms-auto">
-                                                            <span className="price text-primary">₹207</span>
+                                                            <span className="price text-primary">₹{innerTotalHandler(item?.pickup_quote_charge,mainChargeObj?.find(obj => obj.id === item.id)?.pickup_quote_charge)}</span>
                                                         </div>
                                                     </AccordionHeader>
                                                     <AccordionBody accordionId={`pickup_${item.id}`}>
@@ -264,13 +314,16 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                             <input type="text" name="markup_val" id="markup_val" 
                                                                                 value={data?.markup_val} 
                                                                                 onChange={(e) => {
-                                                                                    let sale_cost;
-                                                                                    if(data?.markup_type === 'percentage'){
-                                                                                        sale_cost = Number(data?.buy_cost) + ((Number(data?.buy_cost) * Number(e.target.value)/100));
-                                                                                    } else {
-                                                                                        sale_cost = Number(data?.buy_cost) + Number(e.target.value);
-                                                                                    }
-                                                                                    existingHandleChange(e.target.value, 'markup_val', index, 'pickup_quote_charge', item.id,sale_cost);
+                                                                                    // let sale_cost;
+                                                                                    // let marginVal = 0;
+                                                                                    // if(data?.markup_type === 'percentage'){
+                                                                                    //     marginVal = ((Number(data?.buy_cost) * Number(e.target.value)/100))
+                                                                                    // } else {
+                                                                                    //     marginVal = Number(e.target.value)
+                                                                                    // }
+                                                                                    // sale_cost = Number(data?.buy_cost) + marginVal;
+                                                                                    existingHandleChangeMargin(data, e, 'markup_val', index, 'pickup_quote_charge', item.id);
+                                                                                    // existingHandleChange(data, e, 'markup_val', index, 'pickup_quote_charge', item.id,sale_cost,marginVal);
                                                                                 }} 
                                                                                 placeholder='Enter value' />
                                                                         </div>
@@ -290,7 +343,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                 </div>
                                                             </div>
                                                         ))}
-                                                        {mainChargeObj.find(obj => obj.id === item.id)?.pickup_quote_charge?.map((data, i) => (
+                                                        {mainChargeObj?.find(obj => obj.id === item.id)?.pickup_quote_charge?.map((data, i) => (
                                                             <div className="charges_wrap mt-3" key={i}>
                                                                 <div className="label_delete_wwrap d-flex justify-content-between">
                                                                     <label className="form-label">Select Charge</label>
@@ -399,7 +452,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                     <AccordionHeader targetId={`origin_port_${item.id}`}>
                                                         Port of origin(Shekou)
                                                         <div className="right_con ms-auto">
-                                                            <span className="price text-primary">₹3731</span>
+                                                            <span className="price text-primary">₹{innerTotalHandler(item?.originport_quote_charge,mainChargeObj?.find(obj => obj.id === item.id)?.originport_quote_charge)}</span>
                                                         </div>
                                                     </AccordionHeader>
                                                     <AccordionBody accordionId={`origin_port_${item.id}`}>
@@ -457,13 +510,16 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                             <input type="text" name="markup_val" id="markup_val" 
                                                                                 value={data?.markup_val} 
                                                                                 onChange={(e) => {
-                                                                                    let sale_cost;
-                                                                                    if(data?.markup_type === 'percentage'){
-                                                                                        sale_cost = Number(data?.buy_cost) + ((Number(data?.buy_cost) * Number(e.target.value)/100));
-                                                                                    } else {
-                                                                                        sale_cost = Number(data?.buy_cost) + Number(e.target.value);
-                                                                                    }
-                                                                                    existingHandleChange(e.target.value, 'markup_val', index, 'originport_quote_charge', item.id,sale_cost);
+                                                                                    // let sale_cost;
+                                                                                    // let marginVal = 0;
+                                                                                    // if(data?.markup_type === 'percentage'){
+                                                                                    //     marginVal = ((Number(data?.buy_cost) * Number(e.target.value)/100))
+                                                                                    // } else {
+                                                                                    //     marginVal = Number(e.target.value)
+                                                                                    // }
+                                                                                    // sale_cost = Number(data?.buy_cost) + marginVal;
+                                                                                    // existingHandleChange(e.target.value, 'markup_val', index, 'originport_quote_charge', item.id,sale_cost,marginVal);
+                                                                                    existingHandleChangeMargin(data, e, 'markup_val', index, 'originport_quote_charge', item.id);
                                                                                 }} 
                                                                                 placeholder='Enter value' />
                                                                         </div>
@@ -593,7 +649,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                     <AccordionHeader targetId={`ocean_freight_${item.id}`}>
                                                         Ocean Freight(FIFO)
                                                         <div className="right_con ms-auto">
-                                                            <span className="price text-primary">₹3731</span>
+                                                            <span className="price text-primary">₹{innerTotalHandler(item?.ocean_quote_charge,mainChargeObj?.find(obj => obj.id === item.id)?.ocean_quote_charge)}</span>
                                                         </div>
                                                     </AccordionHeader>
                                                     <AccordionBody accordionId={`ocean_freight_${item.id}`}>
@@ -649,16 +705,19 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="markup_val">Markup Value</label>}
                                                                             <input type="text" name="markup_val" id="markup_val" 
-                                                                                    value={data?.markup_val} 
-                                                                                    onChange={(e) => {
-                                                                                        let sale_cost;
-                                                                                        if(data?.markup_type === 'percentage'){
-                                                                                            sale_cost = Number(data?.buy_cost) + ((Number(data?.buy_cost) * Number(e.target.value)/100));
-                                                                                        } else {
-                                                                                            sale_cost = Number(data?.buy_cost) + Number(e.target.value);
-                                                                                        }
-                                                                                        existingHandleChange(e.target.value, 'markup_val', index, 'ocean_quote_charge', item.id,sale_cost);
-                                                                                    }} placeholder='Enter value' />
+                                                                                value={data?.markup_val} 
+                                                                                onChange={(e) => {
+                                                                                    // let sale_cost;
+                                                                                    // let marginVal = 0;
+                                                                                    // if(data?.markup_type === 'percentage'){
+                                                                                    //     marginVal = ((Number(data?.buy_cost) * Number(e.target.value)/100))
+                                                                                    // } else {
+                                                                                    //     marginVal = Number(e.target.value)
+                                                                                    // }
+                                                                                    // sale_cost = Number(data?.buy_cost) + marginVal;
+                                                                                    // existingHandleChange(e.target.value, 'markup_val', index, 'ocean_quote_charge', item.id,sale_cost,marginVal);
+                                                                                    existingHandleChangeMargin(data, e, 'markup_val', index, 'ocean_quote_charge', item.id);
+                                                                                }} placeholder='Enter value' />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-1">
@@ -785,7 +844,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                     <AccordionHeader targetId={`pickport_discharge_${item.id}`}>
                                                         Port of Discharge(Winningpeg)
                                                         <div className="right_con ms-auto">
-                                                            <span className="price text-primary">₹3731</span>
+                                                            <span className="price text-primary">₹0</span>
                                                         </div>
                                                     </AccordionHeader>
                                                     <AccordionBody accordionId={`pickport_discharge_${item.id}`}>
@@ -798,7 +857,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                     <AccordionHeader targetId={`delivery_${item.id}`}>
                                                         Delivery
                                                         <div className="right_con ms-auto">
-                                                            <span className="price text-primary">₹3731</span>
+                                                            <span className="price text-primary">₹0</span>
                                                         </div>
                                                     </AccordionHeader>
                                                     <AccordionBody accordionId={`delivery_${item.id}`}>
@@ -813,7 +872,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                 <span>
                                                     <b>
                                                         {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '}
-                                                        {formik.values.currencyVal !== 'rupee' ? (Number(12333) * Number(formik.values.exchangeRate)).toFixed(2) : '12333'}
+                                                        {formik.values.currencyVal !== 'rupee' ? (subTotalHandler(item) * Number(formik.values.exchangeRate)).toFixed(2) : subTotalHandler(item)}
                                                     </b>
                                                 </span>
                                             </div>
@@ -822,7 +881,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                 <span>
                                                     <b>
                                                         {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '}
-                                                        {formik.values.currencyVal !== 'rupee' ? (Number(120) * Number(formik.values.exchangeRate)).toFixed(2) : '120'}
+                                                        {formik.values.currencyVal !== 'rupee' ? (totalTaxHandler(item) * Number(formik.values.exchangeRate)).toFixed(2) : totalTaxHandler(item)}
                                                     </b>
                                                 </span>
                                             </div>
@@ -831,7 +890,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                 <span>
                                                     <b className='h5'>
                                                         {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '}
-                                                        {formik.values.currencyVal !== 'rupee' ? (Number(12333) * Number(formik.values.exchangeRate)).toFixed(2) : '12333'}
+                                                        {formik.values.currencyVal !== 'rupee' ? ((subTotalHandler(item) + totalTaxHandler(item)) * Number(formik.values.exchangeRate)).toFixed(2) : (subTotalHandler(item) + totalTaxHandler(item))}
                                                     </b>
                                                 </span>
                                             </div>

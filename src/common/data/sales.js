@@ -241,7 +241,7 @@ const searchQuotationResult = [
                 quantity: '2',
                 currency: 'USD',
                 buy_cost: 2000,
-                tax: '18',
+                tax: '10',
                 total_sale_cost: '2200'
             },
             {
@@ -250,7 +250,7 @@ const searchQuotationResult = [
                 quantity: '2',
                 currency: 'USD',
                 buy_cost: 2000,
-                tax: '18',
+                tax: '10',
                 total_sale_cost: '2200'
             }
         ],
@@ -261,7 +261,7 @@ const searchQuotationResult = [
                 quantity: '2',
                 currency: 'USD',
                 buy_cost: 2000,
-                tax: '18',
+                tax: '10',
                 total_sale_cost: '2200'
             },
             {
@@ -270,7 +270,7 @@ const searchQuotationResult = [
                 quantity: '2',
                 currency: 'USD',
                 buy_cost: 2000,
-                tax: '18',
+                tax: '10',
                 total_sale_cost: '2200'
             },
         ],
@@ -281,7 +281,7 @@ const searchQuotationResult = [
                 quantity: '2',
                 currency: 'USD',
                 buy_cost: 2000,
-                tax: '18',
+                tax: '10',
                 total_sale_cost: '2200'
             }
         ]
@@ -335,7 +335,7 @@ const searchQuotationResult = [
                 quantity: '2',
                 currency: 'USD',
                 buy_cost: 2000,
-                tax: '18',
+                tax: '10',
                 total_sale_cost: '2200'
             },
             {
@@ -344,7 +344,7 @@ const searchQuotationResult = [
                 quantity: '2',
                 currency: 'USD',
                 buy_cost: 2000,
-                tax: '18',
+                tax: '10',
                 total_sale_cost: '2200'
             }
         ],
@@ -355,7 +355,7 @@ const searchQuotationResult = [
                 quantity: '2',
                 currency: 'USD',
                 buy_cost: 2000,
-                tax: '18',
+                tax: '10',
                 total_sale_cost: '2200'
             },
             {
@@ -364,7 +364,7 @@ const searchQuotationResult = [
                 quantity: '2',
                 currency: 'USD',
                 buy_cost: 2000,
-                tax: '18',
+                tax: '10',
                 total_sale_cost: '2200'
             },
         ],
@@ -419,7 +419,7 @@ const searchQuotationResult = [
                 quantity: '2',
                 currency: 'USD',
                 buy_cost: 2000,
-                tax: '18',
+                tax: '10',
                 total_sale_cost: '2200'
             },
         ],
@@ -430,7 +430,7 @@ const searchQuotationResult = [
                 quantity: '2',
                 currency: 'USD',
                 buy_cost: 2000,
-                tax: '18',
+                tax: '10',
                 total_sale_cost: '2200'
             },
         ],
@@ -485,7 +485,7 @@ const searchQuotationResult = [
                 quantity: '2',
                 currency: 'USD',
                 buy_cost: 2000,
-                tax: '18',
+                tax: '10',
                 total_sale_cost: '2200'
             },
         ],
@@ -496,7 +496,7 @@ const searchQuotationResult = [
                 quantity: '2',
                 currency: 'USD',
                 buy_cost: 2000,
-                tax: '18',
+                tax: '10',
                 total_sale_cost: '2200'
             },
         ],
@@ -528,15 +528,15 @@ const optionLandTransportBy = [
     {value: "ltl", name: 'LTL'},
 ]
 const optionIncoterm = [
-    {value: "CPT", name: 'Carraige Paid To(CPT)'},
-    {value: "CFR", name: 'Cost & Freight(CFR)'},
-    {value: "CIF", name: 'Cost Insurance and Freight(CIF)'},
-    {value: "CIP", name: 'Carraige and Insurance Paid To(CIP)'},
-    {value: "DAP", name: 'Delivery at Place(DAP)'},
-    {value: "DAT", name: 'Delivery At Terminal(DAT)'},
-    {value: "DDU", name: 'Delivery Duty Unpaid(DDU)'},
-    {value: "DPU", name: 'Delivered At Place Unploaded(DPU)'},
-    {value: "EXW", name: 'EX Works(EXW)'},
+    {value: "CPT", label: 'Carraige Paid To(CPT)'},
+    {value: "CFR", label: 'Cost & Freight(CFR)'},
+    {value: "CIF", label: 'Cost Insurance and Freight(CIF)'},
+    {value: "CIP", label: 'Carraige and Insurance Paid To(CIP)'},
+    {value: "DAP", label: 'Delivery at Place(DAP)'},
+    {value: "DAT", label: 'Delivery At Terminal(DAT)'},
+    {value: "DDU", label: 'Delivery Duty Unpaid(DDU)'},
+    {value: "DPU", label: 'Delivered At Place Unploaded(DPU)'},
+    {value: "EXW", label: 'EX Works(EXW)'},
 ]
 const optionContainerType = [
     {id: '_standard1',value: "20_standard", name: "20' Standard"},
