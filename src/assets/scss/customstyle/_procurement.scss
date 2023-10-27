@@ -1736,3 +1736,24 @@ input[type="number"]{
         }
     }
 }
+
+.main_column_box_wrap {
+    .column_box{
+        border: 2px solid #eee;
+        padding: 20px;
+        min-height: 80vh;
+        h2{
+            background: $primary_1;
+            color: $neutral_8;
+            margin: -20px -20px 20px;
+            padding: 12px;
+        }
+        .btn_wrap {
+            margin: 20px 0 0;
+            gap: 15px;
+            a{
+                flex: 1 1 auto;
+            }
+        }
+    }
+}

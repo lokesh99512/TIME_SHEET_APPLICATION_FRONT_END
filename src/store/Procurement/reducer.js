@@ -15,7 +15,7 @@ const INIT_STATE = {
     carrierDetails: {
         rate_type: '',
         rate_source: '',
-        vendor_type: '',
+        // vendor_type: '',
         vendor_name: '',
         carrier_name: '',
         validity_application: '',

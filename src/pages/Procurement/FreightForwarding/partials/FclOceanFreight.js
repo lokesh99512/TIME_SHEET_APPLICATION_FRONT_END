@@ -119,7 +119,7 @@ export default function FclOceanFreight() {
         },
         {
             Header: 'Detention Free',
-            accessor: 'detention_free',
+            accessor: 'org_detention_free',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {

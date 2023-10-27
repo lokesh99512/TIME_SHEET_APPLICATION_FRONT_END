@@ -161,6 +161,17 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
         return pickuptaxVal + origintaxVal + oceantaxVal;
     }
 
+    const overAllMarginHandler = (quoteObject, subtotalvalue) => {
+        let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.id);
+        let pickupmarginVal = quoteObject?.pickup_quote_charge.reduce((total, charge) => total + Number(charge?.margin_value || 0),0) + (mainChargeCurr?.pickup_quote_charge !== undefined && mainChargeCurr?.pickup_quote_charge.reduce((total, charge) => total + Number(charge?.margin_value || 0),0));
+        let originmarginVal = quoteObject?.originport_quote_charge?.reduce((total, charge) => total + Number(charge?.margin_value || 0),0) + (mainChargeCurr?.originport_quote_charge !== undefined && mainChargeCurr?.originport_quote_charge?.reduce((total, charge) => total + Number(charge?.margin_value || 0),0));
+        let oceanmarginVal = quoteObject?.ocean_quote_charge?.reduce((total, charge) => total + Number(charge?.margin_value || 0),0) + (mainChargeCurr?.ocean_quote_charge !== undefined && mainChargeCurr?.ocean_quote_charge?.reduce((total, charge) => total + Number(charge?.margin_value || 0),0));
+
+        let totalMargin = pickupmarginVal + originmarginVal + oceanmarginVal;
+        let buyvalue = subtotalvalue - totalMargin
+        return (totalMargin * 100 / buyvalue).toFixed(2)
+    }   
+
     // ----------------- preview quotation -------------------
     const previewQuotationHandler = () => {
         console.log(quoteData,"quoteData");
@@ -242,7 +253,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                             </div>
                                         </div>
                                         <div className="right_con d-flex ms-auto">
-                                            <div className="margin_wrap">Margin Value: <b>12%</b></div>
+                                            <div className="margin_wrap">Margin Value: <b>{overAllMarginHandler(item,subTotalHandler(item))}%</b></div>
                                             <span className='text-primary'>
                                                 {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '}
                                                 {formik.values.currencyVal !== 'rupee' ? ((subTotalHandler(item) + totalTaxHandler(item)) * Number(formik.values.exchangeRate)).toFixed(2) : (subTotalHandler(item) + totalTaxHandler(item))}

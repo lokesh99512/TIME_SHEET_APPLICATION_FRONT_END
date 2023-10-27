@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
+import { useNavigate } from 'react-router-dom';
 import { useAsyncDebounce, useExpanded, useFilters, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
 import { Row, Table } from 'reactstrap';
 import { filter_icon, upload_icon } from '../../../../assets/images';
@@ -130,7 +131,7 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanva
                         </div>
                     </div>
                     <div className="col-sm-auto">
-                        <ul className="pagination pagination-separated pagination-md justify-content-center justify-content-sm-start mb-0">
+                        {/* <ul className="pagination pagination-separated pagination-md justify-content-center justify-content-sm-start mb-0">
                             <li className={!canPreviousPage ?   "page-item arrow_wrap previous disabled" : "page-item arrow_wrap previous"}>
                                 <Link to="#" className="page-link" onClick={previousPage}><i className='fas fa-chevron-left'></i></Link>
                             </li>
@@ -144,7 +145,18 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanva
                             <li className={!canNextPage ? "page-item arrow_wrap next disabled" : "page-item arrow_wrap next"}>
                                 <Link to="#" className="page-link" onClick={nextPage}><i className='fas fa-chevron-right'></i></Link>
                             </li>
-                        </ul>
+                        </ul> */}
+                        <div className='react_pagination_wrap'>
+                            <ReactPaginate
+                                breakLabel="..."
+                                nextLabel="next"
+                                onPageChange={(item) => {gotoPage(item.selected)}}
+                                pageRangeDisplayed={3}
+                                pageCount={pageOptions.length}
+                                previousLabel="previous"
+                                renderOnZeroPageCount={null}
+                            />
+                        </div>
                     </div>
                 </Row>
             </div>
