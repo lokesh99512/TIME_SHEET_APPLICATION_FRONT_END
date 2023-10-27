@@ -6,7 +6,7 @@ import SalesCommonTable from '../partials/SalesCommonTable'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { getSalesQuotationData } from '../../../store/Sales/actions'
-import { edit_icon, eye_icon } from '../../../assets/images'
+import { edit_icon, eye_icon, status_update } from '../../../assets/images'
 import { CommonValue } from '../partials/SalesCol'
 import FilterSalesComp from '../partials/FilterSalesComp'
 
@@ -172,7 +172,7 @@ export default function Quotations() {
                         <DropdownMenu className="dropdown-menu-end">
                             <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View Quotation <img src={eye_icon} alt="Eye" /></DropdownItem>
                             <DropdownItem onClick={(e) => e.stopPropagation()}>
-                                Status Update
+                                Status Update <img src={status_update} alt="Status" />
                             </DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>

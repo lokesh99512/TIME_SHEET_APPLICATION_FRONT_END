@@ -1,4 +1,4 @@
-import { GET_QUOTATION_DATA_FAIL, GET_QUOTATION_DATA_SUCCESS, GET_QUOTATION_RESULT_FAIL, GET_QUOTATION_RESULT_SUCCESS, QUOTATION_RESULT_SELECTED, QUOTATION_RESULT_UPDATE, SEARCH_QUOTATION_BLANK, UPDATE_CONTAINERTYPE_CONFIRM, UPDATE_CONTAINER_CHANGE, UPDATE_QUOTATION_RESULT_DETAILS, UPDATE_QUOTATION_RESULT_DETAILS_CHEAPER, UPDATE_QUOTATION_RESULT_DETAILS_FASTER, UPDATE_SEARCH_QUOTATION_CURRENCY, UPDATE_SEARCH_QUOTATION_DATA, UPDATE_SEARCH_QUOTATION_DATE, UPDATE_SEARCH_QUOTATION_LOCATION, UPDATE_SEARCH_QUOTATION_LOCATION_FROM, UPDATE_SEARCH_QUOTATION_LOCATION_TO, UPDATE_SEARCH_QUOTATION_SWAP, UPDATE_VALUE_BLANK } from "./actiontype"
+import { CONFIRM_PREVIEW_DATA, GET_QUOTATION_DATA_FAIL, GET_QUOTATION_DATA_SUCCESS, GET_QUOTATION_RESULT_FAIL, GET_QUOTATION_RESULT_SUCCESS, QUOTATION_RESULT_SELECTED, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_UPDATE, SEARCH_QUOTATION_BLANK, UPDATE_CONTAINERTYPE_CONFIRM, UPDATE_CONTAINER_CHANGE, UPDATE_QUOTATION_RESULT_DETAILS, UPDATE_QUOTATION_RESULT_DETAILS_CHEAPER, UPDATE_QUOTATION_RESULT_DETAILS_FASTER, UPDATE_SEARCH_QUOTATION_CURRENCY, UPDATE_SEARCH_QUOTATION_DATA, UPDATE_SEARCH_QUOTATION_DATE, UPDATE_SEARCH_QUOTATION_LOCATION, UPDATE_SEARCH_QUOTATION_LOCATION_FROM, UPDATE_SEARCH_QUOTATION_LOCATION_TO, UPDATE_SEARCH_QUOTATION_SWAP, UPDATE_VALUE_BLANK } from "./actiontype"
 
 
 const INIT_STATE = {
@@ -175,6 +175,7 @@ const sales = (state = INIT_STATE, action) => {
                             return {
                                 ...item,
                                 [action.payload.name]: action.payload.value,
+                                'margin_value': action.payload.marginVal,
                                 total_sale_cost: action.payload.sales_cost
                             };
                         } else {
@@ -193,6 +194,17 @@ const sales = (state = INIT_STATE, action) => {
                 ...state,
                 quote_selected_data: newArray
             };
+
+        case CONFIRM_PREVIEW_DATA: 
+            return {
+                ...state,
+                quote_selected_data: action.payload
+            }
+        case QUOTATION_RESULT_SELECTED_BLANK: 
+            return {
+                ...state,
+                quote_selected_data: []
+            }
 
         default:
             return state;

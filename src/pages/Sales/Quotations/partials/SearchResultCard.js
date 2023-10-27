@@ -144,7 +144,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                     <div className="btn_wrap d-flex">
                                         <button type='button' className='btn text-primary view_detail_btn' onClick={() => { showDetailsHandler(index,item.id); }}>
                                             View{showDetails?.find(obj => obj.id === item.id)?.details ? 'Less' : 'Detail'}</button>
-                                        <button type='button' className='btn btn-primary' onClick={() => { QuoteModalHandler(); singleQuoteModal(item)}} disabled={quote_Selected.some(obj => obj.id === item.id)}>Quote Now</button>
+                                        <button type='button' className='btn btn-primary' onClick={() => { QuoteModalHandler(); singleQuoteModal(item)}} disabled={quote_Selected.some(obj => obj.id === item.id) || quote_Selected?.length >= 2}>Quote Now</button>
                                     </div>
                                 </div>
                             </div>
@@ -335,7 +335,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                         <label className="form-check-label" htmlFor={`pickport_discharge${index}`}></label>
                                                     </div>
                                                     <img src={truck_outline} alt="Truck" className='me-2' />
-                                                    PickPort of discharge(Winnipeg)
+                                                    Port of discharge(Winnipeg)
                                                 </div>
                                                 <div className="right_con d-flex ms-auto">
                                                     <span>CO2: <b>{item.pickport_discharge_co}</b></span>

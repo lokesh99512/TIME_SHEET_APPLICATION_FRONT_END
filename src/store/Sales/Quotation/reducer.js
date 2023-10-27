@@ -1,4 +1,4 @@
-import { ADD_QUOTE_MODAL_CHARGES, GET_CURRENCY_EXCHANGE_RATE_SUCCESS, REMOVE_QUOTE_MODAL_CHARGES, UPDATE_QUOTE_MODAL_CHARGES } from "./actiontype";
+import { ADD_QUOTE_MODAL_CHARGES, BLANK_MODAL_CHARGE, GET_CURRENCY_EXCHANGE_RATE_SUCCESS, REMOVE_QUOTE_MODAL_CHARGES, UPDATE_QUOTE_MODAL_CHARGES } from "./actiontype";
 
 const INIT_STATE = {
     quotation_modal_charge: [],
@@ -57,12 +57,14 @@ const quotation = (state = INIT_STATE, action) => {
                             return {
                                 ...item,
                                 [action.payload.name]: action.payload.value,
+                                'margin_value': action.payload.newVal,
                                 total_sale_cost: action.payload.sales_cost
                             };
-                        } else if(action.payload.name === 'tax'){
+                        } else if (action.payload.name === 'tax'){
                             return {
                                 ...item,
                                 [action.payload.name]: action.payload.value,
+                                'tax_amount': action.payload.newVal,
                                 total_sale_cost: action.payload.sales_cost
                             };
                         } else {
@@ -96,12 +98,18 @@ const quotation = (state = INIT_STATE, action) => {
                 mainChargeObj: removeArray
             };
 
-
         case GET_CURRENCY_EXCHANGE_RATE_SUCCESS:
             return {
                 ...state,
                 currency_ExchangeRate: action.payload
             }
+
+        case BLANK_MODAL_CHARGE:
+            return {
+                ...state,
+                mainChargeObj: []
+            }            
+
         default:
             return state
     }

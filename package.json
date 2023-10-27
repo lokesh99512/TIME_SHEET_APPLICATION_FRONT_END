@@ -66,6 +66,7 @@
     "react-jvectormap": "^0.0.16",
     "react-leaflet": "^4.2.0",
     "react-modal-video": "^2.0.0",
+    "react-paginate": "^8.2.0",
     "react-perfect-scrollbar": "^1.5.8",
     "react-rangeslider": "^2.2.0",
     "react-rating": "^2.0.5",

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import "react-datepicker/dist/react-datepicker.css";
 import Select from 'react-select';
 import SimpleBar from "simplebar-react";
@@ -185,6 +185,20 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
         }
         setUnitValue(newObj);
     }
+
+    const [searchTerm, setSearchTerm] = useState('');
+
+     // ------------ smart filter ------------------------------
+    const handleChange = (event) => {
+        const newValue = event.target.value;
+        setSearchTerm(newValue);
+    }
+
+    const filteredOptions = optionCustomerName !== undefined ? optionCustomerName?.filter((option) =>
+        option?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+    ) : null;
+    // ------------ smart filter ------------------------------
+    
     // ------------ custom dropdown -------------------
     const toggleDropdown = (id) => {
         setIsOpen(!isOpen);
@@ -200,7 +214,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                 {searchView && (
                     <div className="row">
                         <div className="col-lg-4">
-                            <div className="common_dropdwon_btn_wrap mb-3">
+                            <div className="common_dropdwon_btn_wrap dropdown_smart_filter mb-3">
                                 <div
                                     id='more_menu'
                                     className={`prof_wrap d-flex ${isOpen && dropId === 1 ? 'openmenu' : ''}`}
@@ -211,15 +225,26 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                     </div>
                                     <div className="con">
                                         <label className="form-label">Select Customer</label>
-                                        <span className={`value ${createFields?.customer_name?.name ? 'value_focus' : ''}`}>{(createFields?.customer_name?.name || 'Select customer')}</span>
+                                        <span className={`value ${createFields?.customer_name?.name ? 'value_focus' : ''}`}>{(createFields?.customer_name?.name || 'Select customer')}</span>                                        
                                     </div>
                                     <i className="mdi mdi-chevron-down" />
                                 </div>
                                 {isOpen && dropId === 1 ?
                                     <ul className="common_dropdown_wrap" ref={dropdownRef}>
+                                        <div className="drop_search_box">
+                                            <div className="drop_search_input">
+                                                <input
+                                                    id="select_input"
+                                                    type="text"
+                                                    value={searchTerm}
+                                                    placeholder={'Search...'}
+                                                    onChange={handleChange}
+                                                />
+                                            </div>
+                                        </div>
                                         <SimpleBar style={{ maxHeight: "300px" }} ref={ref}>
-                                            {(optionCustomerName || '').map(({ value, name, img }, index) => (
-                                                <li key={index} onClick={() => { handleChangeHandler({ value, name, img }, 'customer_name'); setIsOpen(false); }} className={createFields?.customer_name?.value === value ? 'active' : ''}>
+                                            {(filteredOptions || '').map(({ value, name, img }, index) => (
+                                                <li key={index} onClick={() => { handleChangeHandler({ value, name, img }, 'customer_name');setSearchTerm(''); setIsOpen(false); }} className={createFields?.customer_name?.value === value ? 'active' : ''}>
                                                     <div className="custom-option">
                                                         <img src={img} alt="Avatar" />
                                                         <p>{name}</p>
@@ -363,6 +388,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                     }}
                                     options={countryList}
                                     // isOptionDisabled={(option) => option.value === createFields?.location_to?.country?.value}
+                                    menuPlacement="auto"
                                     classNamePrefix="select2-selection form-select"
                                 />
                             </div>
@@ -376,6 +402,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                     }}
                                     options={optionPortList}
                                     isOptionDisabled={(option) => option.value === createFields?.location_to?.address?.value}
+                                    menuPlacement="auto"
                                     classNamePrefix="select2-selection form-select"
                                 />
                             </div>
@@ -444,6 +471,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                     options={countryList}
                                     classNamePrefix="select2-selection form-select"
                                 // isOptionDisabled={(option) => option.value === createFields?.location_from?.country?.value}
+                                    menuPlacement="auto"
                                 />
                             </div>
                             <div className="field_input_wrap">
@@ -457,6 +485,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                     options={optionPortList}
                                     isOptionDisabled={(option) => option.value === createFields?.location_from?.address?.value}
                                     classNamePrefix="select2-selection form-select"
+                                    menuPlacement="auto"
                                 // defaultMenuIsOpen
                                 />
                             </div>
@@ -570,7 +599,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                         </div>
                         {createFields?.shipping_by?.value !== 'air' && (createFields?.transport_by?.value === 'fcl' || createFields?.transport_by?.value === 'ftl') && (
                             <div className="col-lg-4">
-                                <div className="common_dropdwon_btn_wrap mb-3">
+                                <div className="common_dropdwon_btn_wrap mb-3 bottom_drop_field">
                                     <div
                                         id='more_menu'
                                         className={`prof_wrap d-flex ${isOpen && dropId === 5 ? 'openmenu' : ''}`}
@@ -709,7 +738,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                             </div>
                         )}
                         <div className="col-lg-4">
-                            <div className="common_dropdwon_btn_wrap mb-3">
+                            <div className="common_dropdwon_btn_wrap mb-3 bottom_drop_field incoterm_field_wrap">
                                 <div
                                     id='more_menu'
                                     className={`prof_wrap d-flex ${isOpen && dropId === 6 ? 'openmenu' : ''}`}
@@ -720,24 +749,21 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                     </div>
                                     <div className="con">
                                         <label className="form-label">Incoterm</label>
-                                        <span className={`value ${createFields?.incoterm?.name ? 'value_focus' : ''}`}>{(createFields?.incoterm?.name || 'Select Incoterm')}</span>
+                                        {console.log(createFields,"createFields")}
+                                        <Select
+                                            value={optionIncoterm ? optionIncoterm.find(obj => obj.value === createFields?.incoterm) : ''}
+                                            name='address'
+                                            onChange={(opt) => {
+                                                handleChangeHandler(opt.value, 'incoterm');
+                                            }}
+                                            options={optionIncoterm}
+                                            placeholder="Select Incoterm"
+                                            classNamePrefix="select2-selection form-select"
+                                            menuPlacement="auto"
+                                        />
                                     </div>
                                     <i className="mdi mdi-chevron-down" />
                                 </div>
-                                {isOpen && dropId === 6 ?
-                                    <ul className="common_dropdown_wrap" ref={dropdownRef}>
-                                        <SimpleBar style={{ maxHeight: "300px" }} ref={ref}>
-                                            {(optionIncoterm || '').map(({ value, name }, index) => (
-                                                <li key={index} className={`${createFields?.incoterm?.value === value ? 'active' : ''}`} onClick={() => { handleChangeHandler({ value, name }, 'incoterm'); setIsOpen(false); }}>
-                                                    <div className="custom-option">
-                                                        <p>{name}</p>
-                                                    </div>
-                                                </li>
-                                            ))}
-                                        </SimpleBar>
-                                    </ul>
-                                    : null
-                                }
                             </div>
                         </div>
                         <div className="col-lg-4">
@@ -750,7 +776,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                         <label htmlFor='cargo_value' className="form-label">Cargo Value</label>
                                         <input type="number" value={createFields?.cargo_value?.value?.value || ''} name="cargo_value" id="cargo_value" placeholder='Enter amount' onChange={(e) => { handleCurrencyChangeHandler({ value: e.target.value }, 'value') }} />
                                     </div>
-                                    <div className="common_dropdwon_btn_wrap">
+                                    <div className="common_dropdwon_btn_wrap bottom_drop_field">
                                         <div
                                             id='more_menu'
                                             className={`d-flex align-items-center ${isOpen && dropId === 8 ? 'openmenu' : ''}`}

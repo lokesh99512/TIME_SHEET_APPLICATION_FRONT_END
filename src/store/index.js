@@ -10,7 +10,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 const store = configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false, thunk: false }).concat(sagaMiddleware)
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false, thunk: false,immutableCheck: false, }).concat(sagaMiddleware)
 })
 sagaMiddleware.run(rootSaga)
 

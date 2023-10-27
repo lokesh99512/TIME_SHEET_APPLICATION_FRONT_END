@@ -2,22 +2,52 @@ import React from 'react'
 import { Modal } from 'reactstrap'
 import { edit_icon, sitelogo } from '../../../../assets/images';
 import { useSelector } from 'react-redux';
+import PreviewCommonTable from './PreviewCommonTable';
+import { useDispatch } from 'react-redux';
+import { CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_SELECTED_BLANK } from '../../../../store/Sales/actiontype';
+import { BLANK_MODAL_CHARGE } from '../../../../store/Sales/Quotation/actiontype';
 
 export default function PreviewQuotationModal({ previewModal, previewModalHand,setPreviewModal,QuoteModalHandler }) {
     const quoteData = useSelector((state) => state.sales.quote_selected_data);
     const mainChargeObj = useSelector((state) => state?.quotation?.mainChargeObj);
-    const preferData = quoteData?.find(obj => obj.quote_type === 'preffered');
-    const cheaperData = quoteData?.find(obj => obj.quote_type === 'cheaper');
-    const fasterData = quoteData?.find(obj => obj.quote_type === 'faster');
-    // console.log(quoteData,"quoteData------");
-    
+    const preferData = quoteData?.filter(obj => obj.quote_type === 'preffered');
+    const cheaperData = quoteData?.filter(obj => obj.quote_type === 'cheaper');
+    const fasterData = quoteData?.filter(obj => obj.quote_type === 'faster');
+    const dispatch = useDispatch();
+    const confirmHandler = () => {
+        const mergedArray = [...quoteData];
+        let newArry = [...mainChargeObj];
+        newArry.forEach(newItem => {
+            const existingIndex = mergedArray.findIndex(oldItem => oldItem.id === newItem.id);
+            if (existingIndex !== -1) {
+
+                let updateCharge1 = [...mergedArray[existingIndex].pickup_quote_charge,...newItem?.pickup_quote_charge || '']
+                let updateCharge2 = [...mergedArray[existingIndex].originport_quote_charge,...newItem?.originport_quote_charge || '']
+                let updateCharge3 = [...mergedArray[existingIndex].ocean_quote_charge,...newItem?.ocean_quote_charge || '']
+
+                mergedArray[existingIndex] = {
+                  ...mergedArray[existingIndex],
+                  pickup_quote_charge: updateCharge1,
+                  originport_quote_charge: updateCharge2,
+                  ocean_quote_charge: updateCharge3,
+                };
+            } 
+        });
+
+        dispatch({type: CONFIRM_PREVIEW_DATA, payload: mergedArray});
+        dispatch({type: BLANK_MODAL_CHARGE, payload: {}});
+        dispatch({type: QUOTATION_RESULT_SELECTED_BLANK, payload: {}});
+        
+        setPreviewModal(false);
+        console.log(mergedArray,"mergedArray");
+    }
     return (
         <>
             <Modal size="md" isOpen={previewModal} toggle={() => { previewModalHand(); }} className='preview_modal_wrap'>
                 <div className="modal-header">
                     <button type="button" onClick={() => {setPreviewModal(false);}}><i className='bx bx-plus me-2'></i> Close</button>
-                    <button type="button"><img src={edit_icon} alt="Edit" className='me-2' onClick={() => {setPreviewModal(false);QuoteModalHandler();}} /> Edit</button>
-                    <button type="button"><i className='bx bx-check-circle me-2'></i> Confirm</button>
+                    <button type="button" onClick={() => {setPreviewModal(false);QuoteModalHandler();}}><img src={edit_icon} alt="Edit" className='me-2' /> Edit</button>
+                    <button type="button" onClick={() => {confirmHandler()}}><i className='bx bx-check-circle me-2'></i> Confirm</button>
                 </div>
                 <div className="modal-body">
                     <div className="common_bg_wrap preview_top_details ">
@@ -126,287 +156,11 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand,s
                                 </tbody>
                             </table>
                         </div>
-                        {preferData !== undefined &&
-                            <div className="preview_table_wrap">
-                                <table>
-                                    <caption><p className='d-flex justify-content-between align-items-center'>Freight Charges <span className="tag preffered">{preferData.quote_type}</span></p></caption>
-                                    <thead>
-                                        <tr>
-                                            <th>Charge Name</th>
-                                            <th>UoM</th>
-                                            <th>Quantity</th>
-                                            <th>Tax</th>
-                                            <th>Total Sale Cost</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {/* pickup */}
-                                        {preferData?.pickup_quote_charge?.length !== 0 && <tr>
-                                            <td colSpan={5} className='title_row'>Pickup</td>
-                                        </tr>}
-                                        {preferData?.pickup_quote_charge?.map((data,index) => (
-                                            <tr key={`pickup_${index}`}>
-                                                <td>{data?.charges_name}</td>
-                                                <td>{data?.uom}</td>
-                                                <td>{data?.quantity}</td>
-                                                <td>{data?.tax}</td>
-                                                <td>{data?.total_sale_cost}</td>
-                                            </tr>
-                                        ))}   
-                                        {mainChargeObj?.find(obj => obj.id === preferData.id)?.pickup_quote_charge?.map((data,index) => (
-                                            <tr key={`pickupnew_${index}`}>
-                                                <td>{data?.charges_name}</td>
-                                                <td>{data?.uom}</td>
-                                                <td>{data?.quantity}</td>
-                                                <td>{data?.tax}</td>
-                                                <td>{data?.total_sale_cost}</td>
-                                            </tr>
-                                        ))}   
 
-                                        {/* Port of Origin(shekou)  */}
-                                        {preferData?.originport_quote_charge?.length !== 0 && <tr>
-                                            <td colSpan={5} className='title_row'>Port of Origin(shekou)</td>
-                                        </tr>}
-                                        {preferData?.originport_quote_charge?.map((data,index) => (
-                                            <tr key={`origin_${index}`}>
-                                                <td>{data?.charges_name}</td>
-                                                <td>{data?.uom}</td>
-                                                <td>{data?.quantity}</td>
-                                                <td>{data?.tax}</td>
-                                                <td>{data?.total_sale_cost}</td>
-                                            </tr>
-                                        ))}     
-                                        {/* Ocean Freight(FIFO)  */}
-                                        {preferData?.ocean_quote_charge?.length !== 0 && <tr>
-                                            <td colSpan={5} className='title_row'>Ocean Freight(FIFO)</td>
-                                        </tr>}
-                                        {preferData?.ocean_quote_charge?.map((data,index) => (
-                                            <tr key={`ocean_${index}`}>
-                                                <td>{data?.charges_name}</td>
-                                                <td>{data?.uom}</td>
-                                                <td>{data?.quantity}</td>
-                                                <td>{data?.tax}</td>
-                                                <td>{data?.total_sale_cost}</td>
-                                            </tr>
-                                        ))}     
-
-                                        {/* Port of Discharge(Winningpeg)  */}
-                                        <tr>
-                                            <td colSpan={5} className='title_row'>Port of Discharge(Winningpeg)</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Port of discharge</td>
-                                            <td>20GP</td>
-                                            <td>2</td>
-                                            <td>18</td>
-                                            <td>2200</td>
-                                        </tr>
-                                        
-                                        {/* Delivery  */}
-                                        <tr>
-                                            <td colSpan={5} className='title_row'>Delivery</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Delivery</td>
-                                            <td>20GP</td>
-                                            <td>2</td>
-                                            <td>18</td>
-                                            <td>2200</td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td colSpan={5}><p>Sub Total: <span>₹12,333.00</span></p></td>
-                                        </tr>
-                                        <tr>
-                                            <td colSpan={5}><p>Total: <span className='text-primary'><b>₹12,333.00</b></span></p></td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                        }
-                        {cheaperData !== undefined &&
-                            <div className="preview_table_wrap" key={cheaperData.id}>
-                                <table>
-                                    <caption><p className='d-flex justify-content-between align-items-center'>Freight Charges <span className="tag cheaper">{cheaperData.quote_type}</span></p></caption>
-                                    <thead>
-                                        <tr>
-                                            <th>Charge Name</th>
-                                            <th>UoM</th>
-                                            <th>Quantity</th>
-                                            <th>Tax</th>
-                                            <th>Total Sale Cost</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {/* pickup */}
-                                        {cheaperData?.pickup_quote_charge?.length !== 0 && <tr>
-                                            <td colSpan={5} className='title_row'>Pickup</td>
-                                        </tr>}
-                                        {cheaperData?.pickup_quote_charge?.map((data,index) => (
-                                            <tr key={`pickup_${index}`}>
-                                                <td>{data?.charges_name}</td>
-                                                <td>{data?.uom}</td>
-                                                <td>{data?.quantity}</td>
-                                                <td>{data?.tax}</td>
-                                                <td>{data?.total_sale_cost}</td>
-                                            </tr>
-                                        ))}   
-
-                                        {/* Port of Origin(shekou)  */}
-                                        {cheaperData?.originport_quote_charge?.length !== 0 && <tr>
-                                            <td colSpan={5} className='title_row'>Port of Origin(shekou)</td>
-                                        </tr>}
-                                        {cheaperData?.originport_quote_charge?.map((data,index) => (
-                                            <tr key={`origin_${index}`}>
-                                                <td>{data?.charges_name}</td>
-                                                <td>{data?.uom}</td>
-                                                <td>{data?.quantity}</td>
-                                                <td>{data?.tax}</td>
-                                                <td>{data?.total_sale_cost}</td>
-                                            </tr>
-                                        ))}     
-                                        {/* Ocean Freight(FIFO)  */}
-                                        {cheaperData?.ocean_quote_charge?.length !== 0 &&  <tr>
-                                            <td colSpan={5} className='title_row'>Ocean Freight(FIFO)</td>
-                                        </tr>}
-                                        {cheaperData?.ocean_quote_charge?.map((data,index) => (
-                                            <tr key={`ocean_${index}`}>
-                                                <td>{data?.charges_name}</td>
-                                                <td>{data?.uom}</td>
-                                                <td>{data?.quantity}</td>
-                                                <td>{data?.tax}</td>
-                                                <td>{data?.total_sale_cost}</td>
-                                            </tr>
-                                        ))}     
-
-                                        {/* Port of Discharge(Winningpeg)  */}
-                                        <tr>
-                                            <td colSpan={5} className='title_row'>Port of Discharge(Winningpeg)</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Port of discharge</td>
-                                            <td>20GP</td>
-                                            <td>2</td>
-                                            <td>18</td>
-                                            <td>2200</td>
-                                        </tr>
-
-                                        {/* Delivery  */}
-                                        <tr>
-                                            <td colSpan={5} className='title_row'>Delivery</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Delivery</td>
-                                            <td>20GP</td>
-                                            <td>2</td>
-                                            <td>18</td>
-                                            <td>2200</td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td colSpan={5}><p>Sub Total: <span>₹12,333.00</span></p></td>
-                                        </tr>
-                                        <tr>
-                                            <td colSpan={5}><p>Total: <span className='text-primary'><b>₹12,333.00</b></span></p></td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                        }
-
-                        {/* faster  */}
-                        {fasterData !== undefined &&
-                            <div className="preview_table_wrap" key={fasterData.id}>
-                                <table>
-                                    <caption><p className='d-flex justify-content-between align-items-center'>Freight Charges <span className="tag faster">{fasterData.quote_type}</span></p></caption>
-                                    <thead>
-                                        <tr>
-                                            <th>Charge Name</th>
-                                            <th>UoM</th>
-                                            <th>Quantity</th>
-                                            <th>Tax</th>
-                                            <th>Total Sale Cost</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {/* pickup */}
-                                        {fasterData?.pickup_quote_charge?.length !== 0 && <tr>
-                                            <td colSpan={5} className='title_row'>Pickup</td>
-                                        </tr>}
-                                        {fasterData?.pickup_quote_charge?.map((data,index) => (
-                                            <tr key={`pickup_${index}`}>
-                                                <td>{data?.charges_name}</td>
-                                                <td>{data?.uom}</td>
-                                                <td>{data?.quantity}</td>
-                                                <td>{data?.tax}</td>
-                                                <td>{data?.total_sale_cost}</td>
-                                            </tr>
-                                        ))}   
-
-                                        {/* Port of Origin(shekou)  */}
-                                        {fasterData?.originport_quote_charge?.length !== 0 && <tr>
-                                            <td colSpan={5} className='title_row'>Port of Origin(shekou)</td>
-                                        </tr>}
-                                        {fasterData?.originport_quote_charge?.map((data,index) => (
-                                            <tr key={`origin_${index}`}>
-                                                <td>{data?.charges_name}</td>
-                                                <td>{data?.uom}</td>
-                                                <td>{data?.quantity}</td>
-                                                <td>{data?.tax}</td>
-                                                <td>{data?.total_sale_cost}</td>
-                                            </tr>
-                                        ))}     
-                                        {/* Ocean Freight(FIFO)  */}
-                                        {fasterData?.ocean_quote_charge?.length !== 0 && <tr>
-                                            <td colSpan={5} className='title_row'>Ocean Freight(FIFO)</td>
-                                        </tr>}
-                                        {fasterData?.ocean_quote_charge?.map((data,index) => (
-                                            <tr key={`ocean_${index}`}>
-                                                <td>{data?.charges_name}</td>
-                                                <td>{data?.uom}</td>
-                                                <td>{data?.quantity}</td>
-                                                <td>{data?.tax}</td>
-                                                <td>{data?.total_sale_cost}</td>
-                                            </tr>
-                                        ))}     
-
-                                        {/* Port of Discharge(Winningpeg)  */}
-                                        <tr>
-                                            <td colSpan={5} className='title_row'>Port of Discharge(Winningpeg)</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Port of discharge</td>
-                                            <td>20GP</td>
-                                            <td>2</td>
-                                            <td>18</td>
-                                            <td>2200</td>
-                                        </tr>
-
-                                        {/* Delivery  */}
-                                        <tr>
-                                            <td colSpan={5} className='title_row'>Delivery</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Delivery</td>
-                                            <td>20GP</td>
-                                            <td>2</td>
-                                            <td>18</td>
-                                            <td>2200</td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td colSpan={5}><p>Sub Total: <span>₹12,333.00</span></p></td>
-                                        </tr>
-                                        <tr>
-                                            <td colSpan={5}><p>Total: <span className='text-primary'><b>₹12,333.00</b></span></p></td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                        }
+                        {preferData?.length !== 0 ? preferData?.map((data) => (<PreviewCommonTable data={data} key={data.id} newData={mainChargeObj.find(obj => obj.id === data.id)} />)) : null}
+                        {cheaperData?.length !== 0 ? cheaperData?.map((data) => (<PreviewCommonTable data={data} key={data.id} newData={mainChargeObj.find(obj => obj.id === data.id)} />)) : null}
+                        {fasterData?.length !== 0 ? fasterData?.map((data) => (<PreviewCommonTable data={data} key={data.id} newData={mainChargeObj.find(obj => obj.id === data.id)} />)) : null}
+                        
                     </div>
                 </div>
             </Modal>

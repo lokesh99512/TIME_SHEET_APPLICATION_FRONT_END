@@ -1,9 +1,11 @@
 import React, { Fragment } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAsyncDebounce, useExpanded, useFilters, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
 import { Row, Table } from 'reactstrap';
 import { filter_icon, upload_icon } from '../../../assets/images';
 import { DefaultColumnFilter, Filter } from '../../../components/Common/filters';
+import { QUOTATION_RESULT_SELECTED_BLANK, SEARCH_QUOTATION_BLANK } from '../../../store/Sales/actiontype';
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -56,6 +58,7 @@ const SalesCommonTable = ({ columns, data, isGlobalFilter, customPageSize, toggl
         useExpanded,
         usePagination,);
     const navidate = useNavigate();
+    const dispatch = useDispatch();
     return (
         <>
             <div className="freight_filter_wrap d-flex align-items-center">
@@ -78,7 +81,7 @@ const SalesCommonTable = ({ columns, data, isGlobalFilter, customPageSize, toggl
                         </button>
                     </div>
                     <div className="add_btn">
-                        <button className='border-0' onClick={() => {navidate('/sales/create')}}>
+                        <button className='border-0' onClick={() => {navidate('/sales/create');dispatch({type: SEARCH_QUOTATION_BLANK});dispatch({type: QUOTATION_RESULT_SELECTED_BLANK});}}>
                             <i className='bx bx-plus align-middle'></i> Create
                         </button>
                     </div>

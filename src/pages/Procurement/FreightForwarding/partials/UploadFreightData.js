@@ -204,7 +204,7 @@ export default function UploadFreightData() {
                                                         </div>
 
                                                         <div className="row">
-                                                            <div className="col-lg-4">
+                                                            {/* <div className="col-lg-4">
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Vendor Type</label>
                                                                     <Select
@@ -217,7 +217,7 @@ export default function UploadFreightData() {
                                                                         classNamePrefix="select2-selection form-select"
                                                                     />
                                                                 </div>
-                                                            </div>
+                                                            </div> */}
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Vendor Name</label>
@@ -229,7 +229,7 @@ export default function UploadFreightData() {
                                                                         }}
                                                                         options={optionVendorName}
                                                                         classNamePrefix="select2-selection form-select"
-                                                                        isDisabled={carrierData?.vendor_type?.value === 'carrier'}
+                                                                        // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
                                                                     />
                                                                 </div>
                                                             </div>
@@ -243,13 +243,11 @@ export default function UploadFreightData() {
                                                                             handleSelectGroup('carrier_name', opt)
                                                                         }}
                                                                         options={optionCarrierName}
-                                                                        isDisabled={carrierData?.vendor_type?.value === 'agent'}
+                                                                        // isDisabled={carrierData?.vendor_type?.value === 'agent'}
                                                                         classNamePrefix="select2-selection form-select"
                                                                     />
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div className="row">
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Validity Application</label>
