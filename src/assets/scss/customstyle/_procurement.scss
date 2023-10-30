@@ -96,6 +96,12 @@ input[type="number"]{
                     }
                 }
             }
+            .form-select__control{
+                .form-select__value-container{
+                    max-height: 60px;
+                    overflow-y: auto;
+                }
+            }
         }
         .dropzone-previews{
             .dz-image-preview {
@@ -295,7 +301,7 @@ input[type="number"]{
         }
     }
     .sub_modal_title{
-        margin: 0 0 20px;
+        margin: 0 0 0px;
     }
     .modal-content {
         background: #F9FAFB !important;
@@ -306,6 +312,7 @@ input[type="number"]{
         padding: 0;
     }
     .table_view_data_wrap{    
+        padding: 20px;
         .view_details_wrap,.freigth_details_wrap,.charge_details{
             padding: 20px;
             background: $neutral_1;            
@@ -406,6 +413,35 @@ input[type="number"]{
                     flex-direction: column;
                 }
             }       
+        }
+        .accordion-item {
+            border-radius: 12px;
+            border: 1px solid $neutral_2;
+            background: $white;
+            margin-bottom: 20px;            
+            .accordion-button{
+                padding: 0;
+                background: transparent !important;
+                box-shadow: none;
+                .top_details{
+                    padding: 0;
+                    margin: 0;
+                    border: 0;
+                    width: 100%;
+                }
+            }
+            .accordion-body{
+                padding: 0;
+                padding-top: 30px;
+            }
+            .right_freight_details {
+                padding-left: 20px;
+                border-left: 1px solid $neutral_2;
+                @media only screen and (max-width: 767px) {
+                    padding-left: 0;
+                    border-left: 0;
+                }
+            }
         }
     }
 }
@@ -1756,4 +1792,8 @@ input[type="number"]{
             }
         }
     }
+}
+
+.confirm_modal_wrap .modal-header {
+    border: 0;
 }
