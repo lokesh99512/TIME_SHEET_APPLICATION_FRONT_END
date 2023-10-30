@@ -13,12 +13,12 @@ const INIT_STATE = {
     consoleError: {},
     inlandError: {},
     carrierDetails: {
-        rate_type: '',
-        rate_source: '',
+        // rate_type: '',
+        // rate_source: '',
         // vendor_type: '',
-        vendor_name: '',
+        // vendor_name: '',
         carrier_name: '',
-        validity_application: '',
+        // validity_application: '',
         validity_from: '',
         validity_to: ''
     }

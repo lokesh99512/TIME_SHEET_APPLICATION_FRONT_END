@@ -4,7 +4,7 @@ import Dropzone from 'react-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Select from "react-select";
-import { Card, CardBody, Col, Container, Form, NavItem, NavLink, Progress, Row, TabContent, TabPane, UncontrolledTooltip } from 'reactstrap';
+import { Card, CardBody, Col, Container, Form, Modal, NavItem, NavLink, Progress, Row, TabContent, TabPane, UncontrolledTooltip } from 'reactstrap';
 import fileData from '../../../../assets/extra/upload_Formats.xlsx';
 import { delete_icon } from '../../../../assets/images';
 import { optionCarrierName, optionMultiDestination, optionPaymentType, optionRateSource, optionRateType, optionSurchargesName, optionValidityApp, optionVendorName, optionVendorType } from '../../../../common/data/procurement';
@@ -13,6 +13,7 @@ import { updateCarrierData } from '../../../../store/Procurement/actions';
 
 export default function UploadFreightData() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
+    const [openSaveModal, setOpenSaveModal] = useState(false);
     const [progressValue, setProgressValue] = useState(33);
     const [selectedFiles, setselectedFiles] = useState([]);
     const navigate = useNavigate();
@@ -22,6 +23,13 @@ export default function UploadFreightData() {
     const carrierData = useSelector((state) => state?.procurement?.carrierDetails);
     const dispatch = useDispatch();
     const { tabName } = useParams();
+
+    const openSaveConfirmModal = () => {
+        setOpenSaveModal(!openSaveModal);
+        setSurcharges([]);
+        setActiveTabProgress(1);
+        setProgressValue(33)
+    }
 
     const toggleTabProgress = (tab) => {
         if (activeTabProgress !== tab) {
@@ -37,6 +45,7 @@ export default function UploadFreightData() {
             console.log(carrierData, "carrierData step1");
             console.log(selectedFiles, "selectedFiles step2");
             console.log(surcharges, "surcharges step3");
+            openSaveConfirmModal();
         }
     }
 
@@ -108,17 +117,20 @@ export default function UploadFreightData() {
         setSurcharges(list);
     }, [surcharges]);
 
-    const handleMultiSelectChange = useCallback((selected,name,options,index) => {
+    const handleMultiSelectChange = useCallback((selected, name, options, index) => {
         // Check if "Select All" is selected
         const list = [...surcharges];
         if (selected.some(option => option.value === 'selectAll')) {
             list[index][name] = options.filter(option => option.value !== 'selectAll');
             setSurcharges(list);
             return;
-        }  
-        list[index][name] = selected;    
+        }
+        list[index][name] = selected;
         setSurcharges(list);
-    },[surcharges]);
+    }, [surcharges]);
+
+    
+
     return (
         <>
             <div className="page-content">
@@ -229,7 +241,7 @@ export default function UploadFreightData() {
                                                                         }}
                                                                         options={optionVendorName}
                                                                         classNamePrefix="select2-selection form-select"
-                                                                        // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
+                                                                    // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
                                                                     />
                                                                 </div>
                                                             </div>
@@ -350,12 +362,12 @@ export default function UploadFreightData() {
                                                                     <div className="row">
                                                                         <div className="col-lg-4">
                                                                             <div className="mb-3">
-                                                                                <label htmlFor="surcharges_name" className="form-label">Select Surcharge Name</label>                                                                               
+                                                                                <label htmlFor="surcharges_name" className="form-label">Select Surcharge Name</label>
                                                                                 <Select
-                                                                                    value={item.surcharges_name}
+                                                                                    value={optionSurchargesName ? optionSurchargesName.find(obj => obj.value === item.surcharges_name) : ''}
                                                                                     name='surcharges_name'
                                                                                     onChange={(opt) => {
-                                                                                        handleSelectGroup2(opt, 'surcharges_name', index);
+                                                                                        handleSelectGroup2(opt.value, 'surcharges_name', index);
                                                                                     }}
                                                                                     options={optionSurchargesName}
                                                                                     classNamePrefix="select2-selection form-select"
@@ -364,13 +376,13 @@ export default function UploadFreightData() {
                                                                         </div>
                                                                         <div className="col-lg-4">
                                                                             <div className="mb-3">
-                                                                                <label htmlFor='destination' className="form-label">Surcharge Applicable on destination</label>                   
+                                                                                <label htmlFor='destination' className="form-label">Surcharge Applicable on destination</label>
                                                                                 <Select
                                                                                     value={item.destination}
                                                                                     name='destination'
                                                                                     isMulti
                                                                                     options={optionMultiDestination}
-                                                                                    onChange={(opt) => {handleMultiSelectChange(opt,'destination',optionMultiDestination,index)}}
+                                                                                    onChange={(opt) => { handleMultiSelectChange(opt, 'destination', optionMultiDestination, index) }}
                                                                                     className="basic-multi-select"
                                                                                     classNamePrefix="select2-selection form-select"
                                                                                 />
@@ -378,7 +390,7 @@ export default function UploadFreightData() {
                                                                         </div>
                                                                         <div className="col-lg-4">
                                                                             <div className="mb-3">
-                                                                                <label htmlFor='payment_type' className="form-label">Select Payment Type For the surcharge</label>                                                                               
+                                                                                <label htmlFor='payment_type' className="form-label">Select Payment Type For the surcharge</label>
                                                                                 <Select
                                                                                     value={item.payment_type}
                                                                                     name='payment_type'
@@ -481,6 +493,47 @@ export default function UploadFreightData() {
                     </div>
                 </Container>
             </div>
+
+            {/* modal */}
+            <Modal
+                isOpen={openSaveModal}
+                toggle={() => {
+                    openSaveConfirmModal();
+                }}
+                className='confirm_modal_wrap'
+            >
+                <div className="modal-header">
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setOpenSaveModal(false);
+                        }}
+                        className="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div className="modal-body pb-5">
+                    <h4 className='text-center'>Are you sure?</h4>
+                </div>
+                <div className="modal-footer justify-content-center">
+                    <button
+                        type="button"
+                        onClick={() => {
+                            openSaveConfirmModal();
+                        }}
+                        className="btn btn-secondary "
+                        data-dismiss="modal"
+                    >
+                        Cancel
+                    </button>
+                    <button type="button" onClick={() => { openSaveConfirmModal(); }} className="btn btn-primary ">
+                        Save changes
+                    </button>
+                </div>
+            </Modal>
         </>
     )
 }
