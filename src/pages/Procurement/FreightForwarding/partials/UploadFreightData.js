@@ -26,9 +26,14 @@ export default function UploadFreightData() {
 
     const openSaveConfirmModal = () => {
         setOpenSaveModal(!openSaveModal);
+    }
+    
+    const finalSaveButton = () => {
         setSurcharges([]);
         setActiveTabProgress(1);
-        setProgressValue(33)
+        setProgressValue(33);
+        setselectedFiles([]);
+        setOpenSaveModal(false);
     }
 
     const toggleTabProgress = (tab) => {
@@ -529,7 +534,7 @@ export default function UploadFreightData() {
                     >
                         Cancel
                     </button>
-                    <button type="button" onClick={() => { openSaveConfirmModal(); }} className="btn btn-primary ">
+                    <button type="button" onClick={() => { finalSaveButton(); }} className="btn btn-primary ">
                         Save changes
                     </button>
                 </div>
