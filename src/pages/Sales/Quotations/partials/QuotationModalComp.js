@@ -6,9 +6,9 @@ import { Accordion, AccordionBody, AccordionHeader, AccordionItem, Modal } from 
 import { cma_logo, delete_icon } from '../../../../assets/images';
 import { optionCurrency, optionCurrencyCharges, optionMarkupType, optionPickupCharge } from '../../../../common/data/sales';
 import { useOutsideClick } from '../../../../components/Common/CommonLogic';
-import { getCurrencyExchangeRate } from '../../../../store/Sales/actions';
 import { ADD_QUOTE_MODAL_CHARGES, BLANK_MODAL_CHARGE, REMOVE_QUOTE_MODAL_CHARGES, UPDATE_QUOTE_MODAL_CHARGES } from '../../../../store/Sales/Quotation/actiontype';
-import { QUOTATION_RESULT_SELECTED, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_UPDATE } from '../../../../store/Sales/actiontype';
+import { getCurrencyExchangeRate } from '../../../../store/Sales/actions';
+import { QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_UPDATE } from '../../../../store/Sales/actiontype';
 
 
 const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPreviewModal }) => {

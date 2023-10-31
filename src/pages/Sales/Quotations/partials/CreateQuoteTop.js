@@ -347,6 +347,17 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                             </>
                                         ) : 'Select Location'}
                                     </span>
+                                    {/* <Select
+                                        value={createFields?.location_from?.country}
+                                        name='country'
+                                        onChange={(opt) => {
+                                            locationChangeHandler(opt, 'country', 'from')
+                                        }}
+                                        options={countryList}
+                                        // isOptionDisabled={(option) => option.value === createFields?.location_to?.country?.value}
+                                        menuPlacement="auto"
+                                        classNamePrefix="select2-selection form-select"
+                                    /> */}
                                 </div>
                             </div>
                         </div>

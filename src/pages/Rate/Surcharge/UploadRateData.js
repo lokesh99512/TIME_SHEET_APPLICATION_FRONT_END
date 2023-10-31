@@ -24,18 +24,38 @@ import ModalAddNewCategory from "./Modal/ModalAddNewCategory";
 import ModalAddNewAlias from "./Modal/ModalAddNewAlias";
 
 const surchargeCategory = [
-  { label: "ActivesurchargeCategory", value: "ActivesurchargeCategory" },
-  { label: "surchargeCategory test", value: "surchargeCategory test" },
-  { label: "Add New", value: "Add New" },
+  { label: "OCEAN SURCHARGE", value: "freight_surcharge" },
+  { label: "PORT SURCHARGE", value: "port_surcharge" },
+  { label: "LOCAL SURCHARGE", value: "local_surcharge" },
+  { label: "ORIGIN TRANSPORTATION", value: "origin_transportation" },
+  { label: "DESTINATION TRANSPORTATION", value: "destination_transportation" },
+  { label: "ANCILLARY CHARGES", value: "ancillary_charges" },
+  { label: "VAS CHARGES", value: "vas_charges" },
+  { label: "CUSTOMS", value: "custom" },
 ];
 const surchargeAliasCode = [
-  { label: "surchargeAliasCodeABC", value: "surchargeAliasCodeABC" },
-  { label: "AliasCode test", value: "AliasCode test" },
-  { label: "Add New", value: "Add New" },
+  { label: "THL", value: "THL" },
+  { label: "THD", value: "THD" },
+  { label: "FSC", value: "FSC" },
+  { label: "EIS", value: "EIS" },
+  { label: "WRC", value: "WRC" },
+  { label: "OCR", value: "OCR" },
+  { label: "ADDON", value: "ADDON" },
+  { label: "LSF", value: "LSF" },
+  { label: "ARD", value: "ARD" },
+  { label: "DOC", value: "DOC" },
 ];
 const surchargeAliasDesc = [
-  { label: "Active", value: "Active" },
-  { label: "In-Active", value: "In-Active" },
+  { label: "Original Terminal Handling Charge	", value: "OTHC" },
+  { label: "Original Terminal Handling Charge", value: "DTHC" },
+  { label: "One Bunker Surchage", value: "OBS" },
+  { label: "Equipment Imbalance Surcharge", value: "EIS" },
+  { label: "War Risk Surcharge", value: "WRC" },
+  { label: "Origin Receiving Charges", value: "OCR" },
+  { label: "Additional Charge	", value: "ADDON" },
+  { label: "Low Sulphur Surcharge	", value: "LSF" },
+  { label: "Import Haulage Charge	", value: "ARD" },
+  { label: "Documentation Fee", value: "DOC" },
 ];
 
 export default function UploadRateData() {

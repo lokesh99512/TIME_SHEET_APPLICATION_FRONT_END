@@ -117,6 +117,13 @@ const fclSurchargeTableData = [
         charge_category:"OCEAN SURCHARGE",
         charge_alias_code:"ARD",
     },
+    {
+        id: 10,
+        charge_code:"DOC",
+        charge_desc:"Documentation Fee",
+        charge_category:"LOCAL SURCHARGE",
+        charge_alias_code:"DOC",
+    },
 ]
 
 // --------------------------upload from option----------------------
