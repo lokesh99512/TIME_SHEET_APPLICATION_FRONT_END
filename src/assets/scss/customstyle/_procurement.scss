@@ -1616,8 +1616,13 @@ input[type="number"]{
 // --------------- preview modal --------------------------
 .preview_modal_wrap {
     max-width: 595px;
+    max-width: 795px;
     .modal-body{
         padding: 0;
+        border: 0;
+        background: $white url("../../images/img/preview_shape.png") repeat-y;
+        background-size: 100%;
+        position: relative;
     }
     .common_bg_wrap {
         padding: 12px;
@@ -1639,24 +1644,24 @@ input[type="number"]{
         }
     }
     .title {
-        @include font(700,10px,normal,$neutral_8);
+        @include font(700,12px,normal,$neutral_8);
         margin-bottom: 6px;
     }
     .details{
         span{
-            @include font(400,10px,normal,$neutral_5);
+            @include font(400,12px,normal,$neutral_5);
             font-style: italic;
             display: block;
             margin-bottom: 3px;
         }
         p{
-            @include font(500,10px,normal,$neutral_8);
+            @include font(500,12px,normal,$neutral_8);
         }
     }
     .modal-content{
-        border: 0;
-        background: $white url("../../images/img/preview_shape.png") repeat-y;
-        position: relative;
+        // border: 0;
+        // background: $white url("../../images/img/preview_shape.png") repeat-y;
+        // position: relative;
         border-radius: 0;
         .modal-header{
             position: absolute;
@@ -1723,13 +1728,13 @@ input[type="number"]{
                 padding: 8px;
                 border-radius: 8px 8px 0 0;
                 p{
-                    @include font(600,10px,normal,$neutral_8);
+                    @include font(600,12px,normal,$neutral_8);
                     text-transform: uppercase;
                     .tag{
                         border-radius: 99px;
                         background: $primary_7;
                         padding: 3px 6px;
-                        @include font(600,9px,normal,$white);
+                        @include font(600,12px,normal,$white);
                         &.cheaper{
                             background: $danger_7;
                         }
@@ -1740,13 +1745,13 @@ input[type="number"]{
                 }
             }
             th{
-                @include font(400,10px,normal,$neutral_5);
+                @include font(400,12px,normal,$neutral_5);
                 font-style: italic;
                 padding: 8px;
                 border-bottom: 1px solid #F0F2F4;
             }
             td{
-                @include font(500,9px,normal,$neutral_8);                
+                @include font(500,12px,normal,$neutral_8);                
                 padding: 8px;
                 border-bottom: 1px solid #F0F2F4;
                 &.title_row{
@@ -1763,7 +1768,7 @@ input[type="number"]{
                             text-align: right;
                             span{
                                 margin-left: 5px;
-                                font-size: 11px;
+                                font-size: 13px;
                             }
                         }
                     }
@@ -1796,4 +1801,10 @@ input[type="number"]{
 
 .confirm_modal_wrap .modal-header {
     border: 0;
+}
+
+// -------------- port/local 
+.sub_field_wrap.disabled {
+    pointer-events: none;
+    opacity: 0.7;
 }

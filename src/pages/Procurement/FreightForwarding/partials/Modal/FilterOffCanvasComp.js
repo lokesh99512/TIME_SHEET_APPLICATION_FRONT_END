@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { Offcanvas, OffcanvasBody, OffcanvasHeader } from 'reactstrap';
 import Select from "react-select";
-import { optionCarrierName, optionMultiDestination, optionVendorName } from '../../../../../common/data/procurement';
+import { optionCargoType, optionCarrierName, optionDestPort, optionMultiDestination, optionOrgPort, optionVendorName } from '../../../../../common/data/procurement';
 
 export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDetails,setfilterDetails,applyFilterHandler,filterType,clearValueHandler}) {
     const handleSelectGroup = useCallback((name, opt) => {
@@ -45,7 +45,7 @@ export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDet
                                             onChange={(opt) => {
                                                 handleSelectGroup('org_port', opt);
                                             }}
-                                            options={optionMultiDestination}
+                                            options={optionOrgPort}
                                             placeholder={'Select origin port'}
                                             classNamePrefix="select2-selection form-select"
                                         />
@@ -60,7 +60,7 @@ export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDet
                                             onChange={(opt) => {
                                                 handleSelectGroup('dest_port', opt);
                                             }}
-                                            options={optionMultiDestination}
+                                            options={optionDestPort}
                                             placeholder={'Select destination port'}
                                             classNamePrefix="select2-selection form-select"
                                         />
@@ -105,7 +105,7 @@ export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDet
                                             onChange={(opt) => {
                                                 handleSelectGroup('cargo_type', opt)
                                             }}
-                                            options={optionVendorName}
+                                            options={optionCargoType}
                                             placeholder={'Select cargo type'}
                                             classNamePrefix="select2-selection form-select"
                                         />

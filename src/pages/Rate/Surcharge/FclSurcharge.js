@@ -63,7 +63,7 @@ export default function FclSurcharge() {
 
     const columns = useMemo(() => [
         {
-            Header: 'Charge Code',
+            Header: 'Surcharge Code',
             accessor: 'charge_code',
             filterable: true,
             disableFilters: true,
@@ -72,7 +72,7 @@ export default function FclSurcharge() {
             }
         },
         {
-            Header: 'Charge Desc',
+            Header: 'Surcharge Desc',
             accessor: 'charge_desc',
             filterable: true,
             disableFilters: true,
@@ -81,7 +81,7 @@ export default function FclSurcharge() {
             }
         },
         {
-            Header: 'Charge Category',
+            Header: 'Surcharge Category',
             accessor: 'charge_category',
             filterable: true,
             disableFilters: true,
@@ -90,7 +90,7 @@ export default function FclSurcharge() {
             }
         },
         {
-            Header: 'ChargeAliasCode',
+            Header: 'SurchargeAliasCode',
             accessor: 'charge_alias_code',
             filterable: true,
             disableFilters: true,

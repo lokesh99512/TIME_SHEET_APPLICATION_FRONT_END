@@ -7,9 +7,10 @@ import Select from "react-select";
 import { Card, CardBody, Col, Container, Form, Modal, NavItem, NavLink, Progress, Row, TabContent, TabPane, UncontrolledTooltip } from 'reactstrap';
 import fileData from '../../../../assets/extra/upload_Formats.xlsx';
 import { delete_icon } from '../../../../assets/images';
-import { optionCarrierName, optionMultiDestination, optionPaymentType, optionRateSource, optionRateType, optionSurchargesName, optionValidityApp, optionVendorName, optionVendorType } from '../../../../common/data/procurement';
+import { optcurrency, optionCarrierName, optionMultiDestination, optionPaymentType, optionRateSource, optionRateType, optionSurchargesName, optionValidityApp, optionVendorName, optionVendorType } from '../../../../common/data/procurement';
 import { formatBytes, isAnyValueEmpty, isExcelFile } from '../../../../components/Common/CommonLogic';
 import { updateCarrierData } from '../../../../store/Procurement/actions';
+import { BLANK_CARRIER_DATA } from '../../../../store/Procurement/actiontype';
 
 export default function UploadFreightData() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
@@ -33,6 +34,7 @@ export default function UploadFreightData() {
         setActiveTabProgress(1);
         setProgressValue(33);
         setselectedFiles([]);
+        dispatch({type: BLANK_CARRIER_DATA});
         setOpenSaveModal(false);
     }
 
@@ -81,7 +83,7 @@ export default function UploadFreightData() {
             return [
                 ...s,
                 {
-                    surcharges_name: 'obs',
+                    surcharges_name: '',
                     destination: [],
                     payment_type: 'prepaid',
                     gp1: '',
@@ -365,7 +367,7 @@ export default function UploadFreightData() {
                                                             {surcharges?.map((item, index) => (
                                                                 <div key={index} className='upload_surcharges_row'>
                                                                     <div className="row">
-                                                                        <div className="col-lg-4">
+                                                                        <div className="col-lg-3">
                                                                             <div className="mb-3">
                                                                                 <label htmlFor="surcharges_name" className="form-label">Select Surcharge Name</label>
                                                                                 <Select
@@ -379,7 +381,7 @@ export default function UploadFreightData() {
                                                                                 />
                                                                             </div>
                                                                         </div>
-                                                                        <div className="col-lg-4">
+                                                                        <div className="col-lg-3">
                                                                             <div className="mb-3">
                                                                                 <label htmlFor='destination' className="form-label">Surcharge Applicable on destination</label>
                                                                                 <Select
@@ -393,7 +395,21 @@ export default function UploadFreightData() {
                                                                                 />
                                                                             </div>
                                                                         </div>
-                                                                        <div className="col-lg-4">
+                                                                        <div className="col-lg-3">
+                                                                            <div className="mb-3">
+                                                                                <label htmlFor='charge_currency' className="form-label">Select Currency</label>
+                                                                                <Select
+                                                                                    value={optcurrency ? optcurrency.find(obj => obj.value === item.charge_currency) : ''}
+                                                                                    name='charge_currency'
+                                                                                    onChange={(opt) => {
+                                                                                        handleSelectGroup2(opt.value, 'charge_currency', index);
+                                                                                    }}
+                                                                                    options={optcurrency}
+                                                                                    classNamePrefix="select2-selection form-select"
+                                                                                />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="col-lg-3">
                                                                             <div className="mb-3">
                                                                                 <label htmlFor='payment_type' className="form-label">Select Payment Type For the surcharge</label>
                                                                                 <Select
@@ -406,7 +422,7 @@ export default function UploadFreightData() {
                                                                                     classNamePrefix="select2-selection form-select"
                                                                                 />
                                                                             </div>
-                                                                        </div>
+                                                                        </div>                                                                        
                                                                     </div>
                                                                     <div className="row">
                                                                         <div className="col-lg-2">
@@ -476,7 +492,7 @@ export default function UploadFreightData() {
                                                 <li className={`${activeTabProgress === 1 ? isAnyValueEmpty(carrierData, removeValue) ? "disabled" : "" : activeTabProgress === 2 ? selectedFiles?.length === 0 ? "disabled" : "" : ""}`}>
                                                     <Link
                                                         to="#"
-                                                        className={`btn btn-primary d-flex align-items-center ${activeTabProgress === 1 ? isAnyValueEmpty(carrierData, removeValue) ? "disabled" : "" : activeTabProgress === 2 ? selectedFiles?.length === 0 ? "disabled" : "" : ""}`}
+                                                        className={`btn btn-primary d-flex align-items-center ${activeTabProgress === 1 ? !(carrierData?.carrier_name !== '' && carrierData?.validity_from !== '' && carrierData?.validity_to !== '') ? "disabled" : "" : activeTabProgress === 2 ? selectedFiles?.length === 0 ? "disabled" : "" : ""}`}
                                                         onClick={() => {
                                                             toggleTabProgress(activeTabProgress + 1);
                                                         }}
