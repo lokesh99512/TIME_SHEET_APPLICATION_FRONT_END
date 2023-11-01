@@ -1,27 +1,16 @@
-import classnames from "classnames";
 import React, { useCallback, useState } from "react";
-import Dropzone from "react-dropzone";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import {
   Card,
   CardBody,
   Col,
   Container,
-  Form,
   Input,
-  Label,
-  NavItem,
-  NavLink,
-  Progress,
-  Row,
-  TabContent,
-  TabPane,
-  UncontrolledTooltip,
+  Row
 } from "reactstrap";
-import ModalAddNewCategory from "./Modal/ModalAddNewCategory";
 import ModalAddNewAlias from "./Modal/ModalAddNewAlias";
+import ModalAddNewCategory from "./Modal/ModalAddNewCategory";
 
 const surchargeCategory = [
   { label: "OCEAN SURCHARGE", value: "freight_surcharge" },
@@ -32,11 +21,13 @@ const surchargeCategory = [
   { label: "ANCILLARY CHARGES", value: "ancillary_charges" },
   { label: "VAS CHARGES", value: "vas_charges" },
   { label: "CUSTOMS", value: "custom" },
+  { label: "Add New", value: "Add New" },
 ];
 const surchargeAliasCode = [
   { label: "THL", value: "THL" },
   { label: "THD", value: "THD" },
   { label: "FSC", value: "FSC" },
+  { label: "OBS", value: "OBS" },
   { label: "EIS", value: "EIS" },
   { label: "WRC", value: "WRC" },
   { label: "OCR", value: "OCR" },
@@ -46,8 +37,8 @@ const surchargeAliasCode = [
   { label: "DOC", value: "DOC" },
 ];
 const surchargeAliasDesc = [
-  { label: "Original Terminal Handling Charge	", value: "OTHC" },
-  { label: "Original Terminal Handling Charge", value: "DTHC" },
+  { label: "Original Terminal Handling Charge	", value: "THL" },
+  { label: "Original Terminal Handling Charge", value: "THD" },
   { label: "One Bunker Surchage", value: "OBS" },
   { label: "Equipment Imbalance Surcharge", value: "EIS" },
   { label: "War Risk Surcharge", value: "WRC" },
@@ -119,10 +110,7 @@ export default function UploadRateData() {
                               name="surchargeCode"
                               value={addDetails.surchargeCode}
                               onChange={(e) => {
-                                handleSelectGroup(
-                                  "surchargeCode",
-                                  e.target.value
-                                );
+                                handleSelectGroup( "surchargeCode", e.target.value );
                               }}
                               className="form-control"
                               id="Surcharge_Code"
@@ -142,10 +130,7 @@ export default function UploadRateData() {
                               name="surchargeDesc"
                               value={addDetails.surchargeDesc}
                               onChange={(e) => {
-                                handleSelectGroup(
-                                  "surchargeDesc",
-                                  e.target.value
-                                );
+                                handleSelectGroup( "surchargeDesc", e.target.value );
                               }}
                               className="form-control"
                               id="Surcharge_Desc"
@@ -202,10 +187,9 @@ export default function UploadRateData() {
                           <label className="form-label">
                             Surcharge Alias Desc
                           </label>
-
                           <div className="">
                             <Select
-                              value={addDetails.surchargeAliasDesc}
+                              value={surchargeAliasDesc ? surchargeAliasDesc.find(obj => obj.value === addDetails.surchargeAliasCode.value) : ''}
                               name="surchargeAliasDesc"
                               onChange={(opt) => {
                                 handleSelectGroup("surchargeAliasDesc", opt);
@@ -213,6 +197,7 @@ export default function UploadRateData() {
                               options={surchargeAliasDesc}
                               placeholder={"Select Status"}
                               classNamePrefix="select2-selection form-select"
+                              isDisabled
                             />
                           </div>
                         </div>

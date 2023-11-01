@@ -3153,6 +3153,7 @@ const fclTableData = [
         charge_hc: '44',                
     },
 ]
+
 const lclTableData = [
     {
         id: 1,
@@ -3515,117 +3516,141 @@ const lclTableData = [
         charge_currency: 'USD'
     },
 ]
+
 export const plChargesTableData = [
     {
         id: 1,
-        surcharge_id: '123908AB',
-        surcharge_category: 'Port Charges',
+        surcharge_id: 'OCTOL251023001',
+        surcharge_category: 'PORT SURCHARGE',
         port_name: "INMAA",
-        terminals: 'ABC',
-        movement_type: 'import',
-        carrier_name: 'YML',
-        vendor_name: 'test',
-        valid_till: 'Jul 17 2023',
-        chargeCode:"THC",
-        chargeBasis:"Per Shipment",
+        terminals: '',
+        movement_type: 'Export',
+        carrier_name: 'ONELINE',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
+        chargeCode:"OTHC",
+        chargeBasis:"Per Container",
         calculationType:"Flat",
         slabBasis:"",
         currency:"INR",
         minValue:"1",
         surchargeValue:[
             {
-                chargeCode: "THC",
+                chargeCode: "OTHC",
                 chargeBasis: "Per Container",
                 calculationType: "Flat",
                 slabBasis: "",
                 currency: "INR",
-                minValue: "0",
+                minValue: "",
+                tax: "18",
                 addTerms: {
-                    paymentTerm: "To Collect",
-                    incoTerm: [
-                        "Carraige Paid To",
-                        "Cost Insurance and Freight",
-                        "Delivery at Place"
-                    ],
-                    isStandard: "Standard Charge",
-                    commodity: [
-                        "General",
-                        "Electronics"
-                    ],
-                    serviceType: [
-                        "Door To Door",
-                        "Port To Door"
-                    ]
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
                 },
                 subBox: [
                     {
                         cargoType: "General",
-                        containerType: "20 GP",
+                        containerType: "20GP",
                         fromSlab: "",
                         toSlab: "",
-                        rate: "10"
+                        rate: "6800"
                     },
                     {
-                        cargoType: "Refer",
-                        containerType: "40 RF",
+                        cargoType: "General",
+                        containerType: "40GP",
                         fromSlab: "",
                         toSlab: "",
-                        rate: "11"
-                    }
+                        rate: "10100"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10100"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "14500"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "16800"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "24500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "9000"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "13500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "13500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "20000"
+                    },
+                    {
+                        cargoType: "SPL Equipment",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "9000"
+                    },
+                    {
+                        cargoType: "SPL Equipment",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "13500"
+                    },
                 ]
             },
-            {
-                chargeCode: "DOC",
-                chargeBasis: "Per Bill",
-                calculationType: "Slab",
-                slabBasis: "Container Count",
-                currency: "USD",
-                minValue: "1",
-                addTerms: {
-                    paymentTerm: "Prepaid",
-                    incoTerm: [
-                        "EX WORKS",
-                        "FREE CARRIAGE"
-                    ],
-                    isStandard: "Incidental",
-                    commodity: [
-                        "Fruits",
-                        "Pulses"
-                    ],
-                    serviceType: [
-                        "Door To Door",
-                        "Door To Port"
-                    ]
-                },
-                subBox: [
-                    {
-                        cargoType: "",
-                        containerType: "40 GP",
-                        fromSlab: "",
-                        toSlab: "8",
-                        rate: "10"
-                    },
-                    {
-                        cargoType: "",
-                        containerType: "40 GP",
-                        fromSlab: "0",
-                        toSlab: "2",
-                        rate: "12"
-                    }
-                ]
-            }
         ]
     },
     {
         id: 2,
-        surcharge_id: '123908AB',
-        surcharge_category: 'Port Charges',
-        port_name: "INMAA",
-        terminals: 'ABC',
-        movement_type: 'import',
-        carrier_name: 'YML',
-        vendor_name: 'test',
-        valid_till: 'Jul 17 2023',
+        surcharge_id: 'OCTOL251023001',
+        surcharge_category: 'PORT SURCHARGE',
+        port_name: "INKTP",
+        terminals: '',
+        movement_type: 'Export',
+        carrier_name: 'ONELINE',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
         chargeCode:"THC",
         chargeBasis:"Per Shipment",
         calculationType:"Flat",
@@ -3634,98 +3659,1585 @@ export const plChargesTableData = [
         minValue:"1",
         surchargeValue:[
             {
-                chargeCode: "THC",
+                chargeCode: "OTHC",
                 chargeBasis: "Per Container",
                 calculationType: "Flat",
                 slabBasis: "",
                 currency: "INR",
-                minValue: "0",
+                minValue: "",
+                tax: "18",
                 addTerms: {
-                    paymentTerm: "To Collect",
-                    incoTerm: [
-                        "Carraige Paid To",
-                        "Cost Insurance and Freight",
-                        "Delivery at Place"
-                    ],
-                    isStandard: "Standard Charge",
-                    commodity: [
-                        "General",
-                        "Electronics"
-                    ],
-                    serviceType: [
-                        "Door To Door",
-                        "Port To Door"
-                    ]
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
                 },
                 subBox: [
                     {
                         cargoType: "General",
-                        containerType: "20 GP",
+                        containerType: "20GP",
                         fromSlab: "",
                         toSlab: "",
-                        rate: "10"
+                        rate: "6800"
                     },
                     {
-                        cargoType: "Refer",
-                        containerType: "40 RF",
+                        cargoType: "General",
+                        containerType: "40GP",
                         fromSlab: "",
                         toSlab: "",
-                        rate: "11"
-                    }
+                        rate: "10100"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10100"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "14500"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "16800"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "24500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "9000"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "13500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "13500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "20000"
+                    },
+                    {
+                        cargoType: "SPL Equipment",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "9000"
+                    },
+                    {
+                        cargoType: "SPL Equipment",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "13500"
+                    },
                 ]
             },
-            {
-                chargeCode: "DOC",
-                chargeBasis: "Per Bill",
-                calculationType: "Slab",
-                slabBasis: "Container Count",
-                currency: "USD",
-                minValue: "1",
-                addTerms: {
-                    paymentTerm: "Prepaid",
-                    incoTerm: [
-                        "EX WORKS",
-                        "FREE CARRIAGE"
-                    ],
-                    isStandard: "Incidental",
-                    commodity: [
-                        "Fruits",
-                        "Pulses"
-                    ],
-                    serviceType: [
-                        "Door To Door",
-                        "Door To Port"
-                    ]
-                },
-                subBox: [
-                    {
-                        cargoType: "",
-                        containerType: "40 GP",
-                        fromSlab: "",
-                        toSlab: "8",
-                        rate: "10"
-                    },
-                    {
-                        cargoType: "",
-                        containerType: "40 GP",
-                        fromSlab: "0",
-                        toSlab: "2",
-                        rate: "12"
-                    }
-                ]
-            }
         ]
     },
     {
         id: 3,
-        surcharge_id: '123908AB',
-        surcharge_category: 'Port Charges',
+        surcharge_id: 'OCTOO251023001',
+        surcharge_category: 'PORT SURCHARGE',
         port_name: "INMAA",
-        terminals: 'ABC',
-        movement_type: 'import',
-        carrier_name: 'YML',
-        vendor_name: 'test',
-        valid_till: 'Jul 17 2023',
+        terminals: '',
+        movement_type: 'Export',
+        carrier_name: 'OOCL',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Container	",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[
+            {
+                chargeCode: "OTHC",
+                chargeBasis: "Per Container",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "General",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "6000"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "8500"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "14300"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "15000"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "21500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "7700"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "11000"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "19600"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "20500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "29500"
+                    },
+                ]
+            },
+        ]
+    },
+    {
+        id: 4,
+        surcharge_id: 'OCTOO251023001',
+        surcharge_category: 'PORT SURCHARGE',
+        port_name: "INKTP",
+        terminals: '',
+        movement_type: 'Export',
+        carrier_name: 'OOCL',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[
+            {
+                chargeCode: "OTHC",
+                chargeBasis: "Per Container",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "General",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "6000"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "8500"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "14300"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "15000"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "21500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "7700"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "11000"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "19600"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "20500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "29500"
+                    },
+                ]
+            },
+        ]
+    },
+    {
+        id: 5,
+        surcharge_id: 'OCTZM251023001',
+        surcharge_category: 'PORT SURCHARGE',
+        port_name: "INMAA",
+        terminals: '',
+        movement_type: 'Export',
+        carrier_name: 'ZIM',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[
+            {
+                chargeCode: "OTHC",
+                chargeBasis: "Per Container",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "0",
+                tax: "18",
+                addTerms: {
+                    paymentTerm: "Prepaid",
+                    isStandard: "Standard Charge",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "General",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "5575"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "8325"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "8325"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10700"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "14975"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "21875"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "7500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10900"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10900"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "14000"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "20500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "25950"
+                    },
+                ]
+            }
+        ]
+    },
+    {
+        id: 6,
+        surcharge_id: 'OCTZM251023001',
+        surcharge_category: 'PORT SURCHARGE',
+        port_name: "INKTP",
+        terminals: '',
+        movement_type: 'Export',
+        carrier_name: 'ZIM',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[
+            {
+                chargeCode: "OTHC",
+                chargeBasis: "Per Container",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "0",
+                tax: "18",
+                addTerms: {
+                    paymentTerm: "Prepaid",
+                    isStandard: "Standard Charge",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "General",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "5575"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "8325"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "8325"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10700"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "14975"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "21875"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "7500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10900"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10900"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "14000"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "20500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "25950"
+                    },
+                ]
+            }
+        ]
+    },
+    {
+        id: 7,
+        surcharge_id: 'OCTOL251023001',
+        surcharge_category: 'LOCAL SURCHARGE',
+        port_name: "INMAA",
+        terminals: '',
+        movement_type: 'Export',
+        carrier_name: 'ONELINE',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[
+            {
+                chargeCode: "BL FEE",
+                chargeBasis: "Per BL",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "ALL",
+                        containerType: "ALL",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "5700"
+                    },                    
+                ]
+            },
+            {
+                chargeCode: "CERTIFICATE FEE",
+                chargeBasis: "Per BL",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "ALL",
+                        containerType: "ALL",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "5700"
+                    },                    
+                ]
+            },
+            {
+                chargeCode: "EMPTY CONTAINER LIFT FEE",
+                chargeBasis: "Per Container",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "General",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "340"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "510"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "340"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "510"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "340"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "510"
+                    },
+                ]
+            },
+        ]
+    },
+    {
+        id: 8,
+        surcharge_id: 'OCTOL251023001',
+        surcharge_category: 'LOCAL SURCHARGE',
+        port_name: "INKTP",
+        terminals: '',
+        movement_type: 'Export',
+        carrier_name: 'ONELINE',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[
+            {
+                chargeCode: "BL FEE",
+                chargeBasis: "Per BL",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "ALL",
+                        containerType: "ALL",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "5700"
+                    },                    
+                ]
+            },
+            {
+                chargeCode: "CERTIFICATE FEE",
+                chargeBasis: "Per BL",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "ALL",
+                        containerType: "ALL",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "5700"
+                    },                    
+                ]
+            },
+            {
+                chargeCode: "EMPTY CONTAINER LIFT FEE",
+                chargeBasis: "Per Container",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "General",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "340"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "510"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "340"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "510"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "340"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "510"
+                    },
+                ]
+            },
+        ]
+    },
+    {
+        id: 9,
+        surcharge_id: 'OCTOO251023001',
+        surcharge_category: 'LOCAL SURCHARGE',
+        port_name: "INMAA",
+        terminals: '',
+        movement_type: 'Export',
+        carrier_name: 'OOCL',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[
+            {
+                chargeCode: "BL FEE",
+                chargeBasis: "Per BL",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "ALL",
+                        containerType: "ALL",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "3500"
+                    },                    
+                ]
+            },
+            {
+                chargeCode: "CERTIFICATE FEE",
+                chargeBasis: "Per BL",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "ALL",
+                        containerType: "ALL",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "750"
+                    },                    
+                ]
+            },
+            {
+                chargeCode: "SEAL FEE",
+                chargeBasis: "Per BL",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "USD",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "ALL",
+                        containerType: "ALL",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "5"
+                    },                    
+                ]
+            },
+            {
+                chargeCode: "GATE IN FEE",
+                chargeBasis: "Per BL",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "ALL",
+                        containerType: "ALL",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "170"
+                    },                    
+                ]
+            },
+            {
+                chargeCode: "EMPTY CONTAINER LIFT FEE",
+                chargeBasis: "Per Container",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "General",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "1000"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "2000",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "510"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "1300"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "2600"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "1500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "3000"
+                    },
+                ]
+            },
+        ]
+    },
+    {
+        id: 10,
+        surcharge_id: 'OCTOO251023001',
+        surcharge_category: 'LOCAL SURCHARGE',
+        port_name: "INKTP",
+        terminals: '',
+        movement_type: 'Export',
+        carrier_name: 'OOCL',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[
+            {
+                chargeCode: "BL FEE",
+                chargeBasis: "Per BL",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "ALL",
+                        containerType: "ALL",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "3500"
+                    },                    
+                ]
+            },
+            {
+                chargeCode: "CERTIFICATE FEE",
+                chargeBasis: "Per BL",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "ALL",
+                        containerType: "ALL",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "750"
+                    },                    
+                ]
+            },
+            {
+                chargeCode: "SEAL FEE",
+                chargeBasis: "Per BL",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "USD",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "ALL",
+                        containerType: "ALL",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "5"
+                    },                    
+                ]
+            },
+            {
+                chargeCode: "GATE IN FEE",
+                chargeBasis: "Per BL",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "ALL",
+                        containerType: "ALL",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "170"
+                    },                    
+                ]
+            },
+            {
+                chargeCode: "EMPTY CONTAINER LIFT FEE",
+                chargeBasis: "Per Container",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "General",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "1000"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "2000",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "510"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "1300"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "2600"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "1500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "3000"
+                    },
+                ]
+            },
+        ]
+    },
+    {
+        id: 11,
+        surcharge_id: 'OCTZM251023001',
+        surcharge_category: 'LOCAL SURCHARGE',
+        port_name: "INMAA",
+        terminals: '',
+        movement_type: 'Export',
+        carrier_name: 'ZIM',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[]
+    },
+    {
+        id: 12,
+        surcharge_id: 'OCTZM251023001',
+        surcharge_category: 'PORT SURCHARGE',
+        port_name: "INKTP",
+        terminals: '',
+        movement_type: 'Export',
+        carrier_name: 'ZIM',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[
+            {
+                chargeCode: "OTHC",
+                chargeBasis: "Per Container",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "0",
+                tax: "18",
+                addTerms: {
+                    paymentTerm: "Prepaid",
+                    isStandard: "Standard Charge",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "General",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "5575"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "8325"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "8325"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10700"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "14975"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "21875"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "7500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10900"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10900"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "14000"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "20500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "25950"
+                    },
+                ]
+            }
+        ]
+    },
+    {
+        id: 13,
+        surcharge_id: 'OCTOL251023001',
+        surcharge_category: 'PORT SURCHARGE',
+        port_name: "BDDAC",
+        terminals: '',
+        movement_type: 'Import',
+        carrier_name: 'ONELINE',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[
+            {
+                chargeCode: "OTHC",
+                chargeBasis: "Per Container",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "General",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "6800"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10100"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10100"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "14500"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "16800"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "24500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "9000"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "13500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "13500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "20000"
+                    },
+                    {
+                        cargoType: "SPL Equipment",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "9000"
+                    },
+                    {
+                        cargoType: "SPL Equipment",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "13500"
+                    },
+                ]
+            },
+        ]
+    },
+    {
+        id: 14,
+        surcharge_id: 'OCTOL251023001',
+        surcharge_category: 'PORT SURCHARGE',
+        port_name: "IDSUB",
+        terminals: '',
+        movement_type: 'Import',
+        carrier_name: 'ONELINE',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[
+            {
+                chargeCode: "OTHC",
+                chargeBasis: "Per Container",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "General",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "6800"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10100"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10100"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "14500"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "16800"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "24500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "9000"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "13500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "13500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "20000"
+                    },
+                    {
+                        cargoType: "SPL Equipment",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "9000"
+                    },
+                    {
+                        cargoType: "SPL Equipment",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "13500"
+                    },
+                ]
+            },
+        ]
+    },
+    {
+        id: 15,
+        surcharge_id: 'OCTOO251023001',
+        surcharge_category: 'PORT SURCHARGE',
+        port_name: "BDDAC",
+        terminals: '',
+        movement_type: 'Import',
+        carrier_name: 'OOCL',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
         chargeCode:"THC",
         chargeBasis:"Per Shipment",
         calculationType:"Flat",
@@ -3817,15 +5329,16 @@ export const plChargesTableData = [
         ]
     },
     {
-        id: 4,
-        surcharge_id: '123908AB',
-        surcharge_category: 'Port Charges',
-        port_name: "INMAA",
-        terminals: 'ABC',
-        movement_type: 'import',
-        carrier_name: 'YML',
-        vendor_name: 'test',
-        valid_till: 'Jul 17 2023',
+        id: 16,
+        surcharge_id: 'OCTOO251023001',
+        surcharge_category: 'PORT SURCHARGE',
+        port_name: "IDSUB",
+        terminals: '',
+        movement_type: 'Import',
+        carrier_name: 'OOCL',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
         chargeCode:"THC",
         chargeBasis:"Per Shipment",
         calculationType:"Flat",
@@ -3916,7 +5429,752 @@ export const plChargesTableData = [
             }
         ]
     },
+    {
+        id: 17,
+        surcharge_id: 'OCTZM251023001',
+        surcharge_category: 'PORT SURCHARGE',
+        port_name: "BDDAC",
+        terminals: '',
+        movement_type: 'Import',
+        carrier_name: 'ZIM',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[
+            {
+                chargeCode: "OTHC",
+                chargeBasis: "Per Container",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "0",
+                tax: "18",
+                addTerms: {
+                    paymentTerm: "Prepaid",
+                    isStandard: "Standard Charge",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "General",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "5575"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "8325"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "8325"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10700"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "14975"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "21875"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "7500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10900"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10900"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "14000"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "20500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "25950"
+                    },
+                ]
+            }
+        ]
+    },
+    {
+        id: 18,
+        surcharge_id: 'OCTZM251023001',
+        surcharge_category: 'PORT SURCHARGE',
+        port_name: "IDSUB",
+        terminals: '',
+        movement_type: 'Import',
+        carrier_name: 'ZIM',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[
+            {
+                chargeCode: "OTHC",
+                chargeBasis: "Per Container",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "0",
+                tax: "18",
+                addTerms: {
+                    paymentTerm: "Prepaid",
+                    isStandard: "Standard Charge",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "General",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "5575"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "8325"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "8325"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10700"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "14975"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "21875"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "7500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10900"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10900"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "45HQ",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "14000"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "20500"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "25950"
+                    },
+                ]
+            }
+        ]
+    },
+    {
+        id: 19,
+        surcharge_id: 'OCTOL251023001',
+        surcharge_category: 'LOCAL SURCHARGE',
+        port_name: "BDDAC",
+        terminals: '',
+        movement_type: 'Import',
+        carrier_name: 'ONELINE',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[
+            {
+                chargeCode: "BL FEE",
+                chargeBasis: "Per BL",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "ALL",
+                        containerType: "ALL",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "5700"
+                    },                    
+                ]
+            },
+            {
+                chargeCode: "CERTIFICATE FEE",
+                chargeBasis: "Per BL",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "ALL",
+                        containerType: "ALL",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "5700"
+                    },                    
+                ]
+            },
+            {
+                chargeCode: "EMPTY CONTAINER LIFT FEE",
+                chargeBasis: "Per Container",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "General",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "340"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "510"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "340"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "510"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "340"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "510"
+                    },
+                ]
+            },
+        ]
+    },
+    {
+        id: 20,
+        surcharge_id: 'OCTOL251023001',
+        surcharge_category: 'LOCAL SURCHARGE',
+        port_name: "IDSUB",
+        terminals: '',
+        movement_type: 'Import',
+        carrier_name: 'ONELINE',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[
+            {
+                chargeCode: "BL FEE",
+                chargeBasis: "Per BL",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "ALL",
+                        containerType: "ALL",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "5700"
+                    },                    
+                ]
+            },
+            {
+                chargeCode: "CERTIFICATE FEE",
+                chargeBasis: "Per BL",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "ALL",
+                        containerType: "ALL",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "5700"
+                    },                    
+                ]
+            },
+            {
+                chargeCode: "EMPTY CONTAINER LIFT FEE",
+                chargeBasis: "Per Container",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "",
+                tax: "18",
+                addTerms: {
+                    isStandard: "Standard",
+                    paymentTerm: "Prepaid",
+                    incoTerm: [],
+                    commodity: [],
+                    serviceType: []
+                },
+                subBox: [
+                    {
+                        cargoType: "General",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "340"
+                    },
+                    {
+                        cargoType: "General",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "510"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "20RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "340"
+                    },
+                    {
+                        cargoType: "Refrigerated",
+                        containerType: "40RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "510"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "20GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "340"
+                    },
+                    {
+                        cargoType: "Hazardous",
+                        containerType: "40GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "510"
+                    },
+                ]
+            },
+        ]
+    },
+    {
+        id: 21,
+        surcharge_id: 'OCTOO251023001',
+        surcharge_category: 'LOCAL SURCHARGE',
+        port_name: "BDDAC",
+        terminals: '',
+        movement_type: 'Import',
+        carrier_name: 'OOCL',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[
+            {
+                chargeCode: "THC",
+                chargeBasis: "Per Container",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "0",
+                addTerms: {
+                    paymentTerm: "To Collect",
+                    incoTerm: [
+                        "Carraige Paid To",
+                        "Cost Insurance and Freight",
+                        "Delivery at Place"
+                    ],
+                    isStandard: "Standard Charge",
+                    commodity: [
+                        "General",
+                        "Electronics"
+                    ],
+                    serviceType: [
+                        "Door To Door",
+                        "Port To Door"
+                    ]
+                },
+                subBox: [
+                    {
+                        cargoType: "General",
+                        containerType: "20 GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10"
+                    },
+                    {
+                        cargoType: "Refer",
+                        containerType: "40 RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "11"
+                    }
+                ]
+            },
+            {
+                chargeCode: "DOC",
+                chargeBasis: "Per Bill",
+                calculationType: "Slab",
+                slabBasis: "Container Count",
+                currency: "USD",
+                minValue: "1",
+                addTerms: {
+                    paymentTerm: "Prepaid",
+                    incoTerm: [
+                        "EX WORKS",
+                        "FREE CARRIAGE"
+                    ],
+                    isStandard: "Incidental",
+                    commodity: [
+                        "Fruits",
+                        "Pulses"
+                    ],
+                    serviceType: [
+                        "Door To Door",
+                        "Door To Port"
+                    ]
+                },
+                subBox: [
+                    {
+                        cargoType: "",
+                        containerType: "40 GP",
+                        fromSlab: "",
+                        toSlab: "8",
+                        rate: "10"
+                    },
+                    {
+                        cargoType: "",
+                        containerType: "40 GP",
+                        fromSlab: "0",
+                        toSlab: "2",
+                        rate: "12"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        id: 22,
+        surcharge_id: 'OCTOO251023001',
+        surcharge_category: 'LOCAL SURCHARGE',
+        port_name: "IDSUB",
+        terminals: '',
+        movement_type: 'Import',
+        carrier_name: 'OOCL',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[
+            {
+                chargeCode: "THC",
+                chargeBasis: "Per Container",
+                calculationType: "Flat",
+                slabBasis: "",
+                currency: "INR",
+                minValue: "0",
+                addTerms: {
+                    paymentTerm: "To Collect",
+                    incoTerm: [
+                        "Carraige Paid To",
+                        "Cost Insurance and Freight",
+                        "Delivery at Place"
+                    ],
+                    isStandard: "Standard Charge",
+                    commodity: [
+                        "General",
+                        "Electronics"
+                    ],
+                    serviceType: [
+                        "Door To Door",
+                        "Port To Door"
+                    ]
+                },
+                subBox: [
+                    {
+                        cargoType: "General",
+                        containerType: "20 GP",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "10"
+                    },
+                    {
+                        cargoType: "Refer",
+                        containerType: "40 RF",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "11"
+                    }
+                ]
+            },
+            {
+                chargeCode: "DOC",
+                chargeBasis: "Per Bill",
+                calculationType: "Slab",
+                slabBasis: "Container Count",
+                currency: "USD",
+                minValue: "1",
+                addTerms: {
+                    paymentTerm: "Prepaid",
+                    incoTerm: [
+                        "EX WORKS",
+                        "FREE CARRIAGE"
+                    ],
+                    isStandard: "Incidental",
+                    commodity: [
+                        "Fruits",
+                        "Pulses"
+                    ],
+                    serviceType: [
+                        "Door To Door",
+                        "Door To Port"
+                    ]
+                },
+                subBox: [
+                    {
+                        cargoType: "",
+                        containerType: "40 GP",
+                        fromSlab: "",
+                        toSlab: "8",
+                        rate: "10"
+                    },
+                    {
+                        cargoType: "",
+                        containerType: "40 GP",
+                        fromSlab: "0",
+                        toSlab: "2",
+                        rate: "12"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        id: 23,
+        surcharge_id: 'OCTZM251023001',
+        surcharge_category: 'LOCAL SURCHARGE',
+        port_name: "BDDAC",
+        terminals: '',
+        movement_type: 'Import',
+        carrier_name: 'ZIM',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[]
+    },
+    {
+        id: 24,
+        surcharge_id: 'OCTZM251023001',
+        surcharge_category: 'LOCAL SURCHARGE',
+        port_name: "IDSUB",
+        terminals: '',
+        movement_type: 'Import',
+        carrier_name: 'ZIM',
+        vendor_name: '',
+        valid_from: '25th OCT 2023',
+        valid_till: '31st DEC 2023',
+        chargeCode:"THC",
+        chargeBasis:"Per Shipment",
+        calculationType:"Flat",
+        slabBasis:"",
+        currency:"INR",
+        minValue:"1",
+        surchargeValue:[]
+    },  
 ]
+
 const waybillTableData = [
     {
         id: 1,
