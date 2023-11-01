@@ -443,6 +443,30 @@ input[type="number"]{
                 }
             }
         }
+        &.port_local_view_wrap {
+            .view_details_wrap {
+                background: transparent;
+                padding: 0;
+                .top_details{
+                    background: #F3F4F6;
+                    padding: 10px 0;
+                    border-radius: 10px;
+                    border: 0;
+                }
+            }
+            .accordion-item {
+                .accordion-body{
+                    padding: 0 20px;
+                    .card-header {
+                        padding: 10px;
+                        background: #F3F4F6;
+                    }
+                    .card-body{
+                        padding: 0;
+                    }
+                }
+            }
+        }
     }
 }
 

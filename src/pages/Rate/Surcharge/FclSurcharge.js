@@ -99,6 +99,33 @@ export default function FclSurcharge() {
             }
         },
         {
+            Header: 'BL FEE',
+            accessor: 'bl_fee',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <ChargeAliasCode cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'CERTIFICATE FEE',
+            accessor: 'certificate_fee',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <ChargeAliasCode cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'EMPTY CONTAINER LIFT FEE',
+            accessor: 'empty_container_fee',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <ChargeAliasCode cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
             Header: 'Action',
             Cell: (cellProps) => {
                 return (
