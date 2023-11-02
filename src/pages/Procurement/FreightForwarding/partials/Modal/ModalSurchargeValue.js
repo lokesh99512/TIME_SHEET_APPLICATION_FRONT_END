@@ -88,7 +88,7 @@ const ModalSurchargeValue = ({ viewData, modal, onCloseClick, modalType }) => {
                                 </div>
                                 {/* -------------- */}
                                 <div className="row view_data_wrap">
-                                    {viewData?.surchargeValue?.map((item, index) => (
+                                    {viewData?.surchargeValue?.length !== 0 ? viewData?.surchargeValue?.map((item, index) => (
                                         <Accordion
                                             flush
                                             open={open}
@@ -143,7 +143,7 @@ const ModalSurchargeValue = ({ viewData, modal, onCloseClick, modalType }) => {
                                                     <div className="col">
                                                         <div className="">
                                                             <span className="">
-                                                                {`${item?.tax}%` || "-"}
+                                                                {item?.tax ? `${item?.tax}%` : "-"}
                                                             </span>
                                                         </div>
                                                     </div>                                                    
@@ -286,7 +286,11 @@ const ModalSurchargeValue = ({ viewData, modal, onCloseClick, modalType }) => {
                                                 </AccordionBody>
                                             </AccordionItem>
                                         </Accordion>
-                                    ))}
+                                    )) : (
+                                        <div className="modal_no_data_wrap">
+                                            <p>There is no charges added!</p>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
