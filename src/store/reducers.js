@@ -32,7 +32,12 @@ import rate from "./RateManagement/reducer"
 
 // Sales
 import sales from "./Sales/reducer"
+
+// Quatation
 import quotation from "./Sales/Quotation/reducer"
+
+// Settings
+import settings from "./Settings/reducer"
 
 const rootReducer = combineReducers({
   // public
@@ -49,7 +54,8 @@ const rootReducer = combineReducers({
   procurement,
   sales,
   rate,
-  quotation
+  quotation,
+  settings
 })
 
 export default rootReducer

@@ -24,6 +24,7 @@ import filter_icon from './icons/filter-icon.svg';
 import upload_icon from './icons/upload.svg';
 import eye_icon from "./icons/eye.svg";
 import edit_icon from "./icons/edit.svg";
+import reset_icon from "./icons/reload.svg"
 import delete_icon from "./icons/delete.svg";
 import range_indicator from "./icons/range_indicator.svg";
 import memoji from "./icons/memoji.svg";
@@ -67,7 +68,7 @@ export {
   profImg,
   google_icon,sitelogo,
   microsoft_icon,auth_slider1,auth_slider2,auth_slider3,auth_slider4,noti_Icon,message_Icon,
-  marker_Img,marker_active_Img,filter_icon,upload_icon,eye_icon,edit_icon,delete_icon,range_indicator,avtar_filled,cube_filled,calendar_filled,location_filled,memoji,
+  marker_Img,marker_active_Img,filter_icon,upload_icon,eye_icon,edit_icon,reset_icon,delete_icon,range_indicator,avtar_filled,cube_filled,calendar_filled,location_filled,memoji,
   ship_filled,ship_darkblue,airplane_darkblue,airplane_filled,truk_darkblue,truk_filled,swap_arrow,
   pickup_icon,pickup_icon2,pickup_icon3,pickup_icon4,pickup_icon5,pickup_icon6,cma_logo,truck_outline,status_update,
 

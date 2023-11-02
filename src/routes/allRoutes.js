@@ -136,6 +136,10 @@ import UploadRateData from "../pages/Rate/Surcharge/UploadRateData";
 import UploadFile from "../pages/Rate/Surcharge/UploadFile";
 import UploadPortLocalChargesData from "../pages/Procurement/FreightForwarding/partials/UploadPortLocalChargesData";
 import Settings from "../pages/Settings/Settings";
+import Users from "../pages/Settings/Users";
+import UploadUser from "../pages/Settings/UploadUser";
+import AddUserData from "../pages/Settings/AddUserData";
+import EditUserData from "../pages/Settings/EdtUserData";
 
 const userRoutes = [
   //dashboard
@@ -167,7 +171,11 @@ const userRoutes = [
   { path: "/rate/upload/uploadFile", component: <UploadFile /> },
   
   // Settings
-  { path: "/settings", component: <Settings /> },
+  { path: "/settings/company-settings", component: <Settings /> },
+  { path: "/settings/users", component: <Users /> },
+  { path: "/settings/users/uploadFile", component: <UploadUser /> },
+  { path: "/settings/users/addUser", component: <AddUserData /> }, 
+  { path: "/settings/users/editUser", component: <EditUserData /> }, 
 
   // Express
   { path: "/express", component: <ExpressComp /> },
