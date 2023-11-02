@@ -74,16 +74,16 @@ const chargeCode = [
   { label: "ARD", value: "ARD" },
 ];
 const chargeBasis = [
-  { label: "Per Container", value: "Per Container" },
-  { label: "Per BL", value: "Per Bill" },
-  { label: "Per shipment", value: "Per Bill" },
-  { label: "Per TEU", value: "Per Bill" },
-  { label: "per day/per container", value: "Per Bill" },
-  { label: "Per House BL", value: "Per Bill" },
-  { label: "Per Day", value: "Per Bill" },
-  { label: "Per Ton", value: "Per Bill" },
-  { label: "Per Ton/Per Container", value: "Per Bill" },
-  { label: "Per CBM", value: "Per Bill" },
+  { label: "Per Container", value: "per_container" },
+  { label: "Per BL", value: "per_bill" },
+  { label: "Per Shipment", value: "per_shipment" },
+  { label: "Per TEU", value: "per_teu" },
+  { label: "Per Day/Per Container", value: "per_day_container" },
+  { label: "Per House BL", value: "per_house" },
+  { label: "Per Day", value: "per_day" },
+  { label: "Per Ton", value: "per_ton" },
+  { label: "Per Ton/Per Container", value: "per_ton_container" },
+  { label: "Per CBM", value: "per_cbm" },
 ];
 const calculationType = [
   { label: "Flat", value: "Flat" },
@@ -142,6 +142,7 @@ const initialValue = {
       slabBasis: "",
       currency: "",
       minValue: "",
+      tax: "",
       addTerms: {},
       subBox: [
         {
@@ -389,8 +390,6 @@ export default function UploadPortLocalChargesData() {
                                         </div>
 
                                         {/* Slab Basis */}
-                                        {/* {console.log(formik.values.mainBox[index].calculationType,"<-------val<<")} */}
-                                        {/* {console.log(formik.values,"<-------val<<")} */}
                                         {formik.values.mainBox[index]
                                           .calculationType === "Slab" && (
                                             <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
@@ -438,10 +437,27 @@ export default function UploadPortLocalChargesData() {
                                             <Input
                                               type="text"
                                               name={`mainBox[${index}].minValue`}
+                                              placeholder="Enter minvalue"
                                               value={
                                                 formik.values.mainBox[index]
                                                   .minValue
                                               }
+                                              onChange={formik.handleChange}
+                                            />
+                                          </div>
+                                        </div>
+
+                                        {/* Tax Value */}
+                                        <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
+                                          <div className="mb-3">
+                                            <label className="form-label">
+                                              Tax
+                                            </label>
+                                            <Input
+                                              type="text"
+                                              name={`mainBox[${index}].tax`}
+                                              placeholder="Enter tax"
+                                              value={formik.values.mainBox[index].tax}
                                               onChange={formik.handleChange}
                                             />
                                           </div>
@@ -467,304 +483,176 @@ export default function UploadPortLocalChargesData() {
                                               1 && (
                                                 <button
                                                   className="btn m-1 border"
-                                                  onClick={() => {
-                                                    arrayHelpers.remove(
-                                                      index
-                                                    );
-                                                  }}
+                                                  onClick={() => { arrayHelpers.remove(index); }}
                                                 >
                                                   <i className="bx bx-trash fs-5 align-middle text-danger"></i>
                                                 </button>
                                               )}
                                           </div>
                                         </div>
-
-                                        {/* add remove */}
-                                        {/* <div className="d-flex align-items-center">
-                                        
-                                      </div> */}
                                       </div>
 
                                       {/* SUB Field Array started------------------------------------------------- */}
-                                      {!(
-                                        formik.values.mainBox[index]
-                                          .calculationType === ""
-                                      ) && (
-                                          <FieldArray
-                                            name={`mainBox[${index}].subBox`}
-                                          >
-                                            {(arrayHelpersTwo) => {
-                                              return (
-                                                <>
-                                                  <Card>
-                                                    <CardBody>
-                                                      {item.subBox.length >
-                                                        0 &&
-                                                        item.subBox.map(
-                                                          (
-                                                            subItem,
-                                                            subIndex
-                                                          ) => {
-                                                            return (
-                                                              <>
-                                                                {/* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
-                                                                {formik.values
-                                                                  .mainBox[
-                                                                  index
-                                                                ]
-                                                                  .calculationType && (
-                                                                    <div className="row mb-3">
-                                                                      {/* Cargo Type */}
-                                                                      {(formik
-                                                                        .values
-                                                                        .mainBox[
-                                                                        index
-                                                                      ]
-                                                                        .calculationType ===
-                                                                        "Flat" ||
-                                                                        formik
-                                                                          .values
-                                                                          .mainBox[
-                                                                          index
-                                                                        ]
-                                                                          .calculationType ===
-                                                                        "Percentage") && (
-                                                                          // <div className="w-100 mx-1">
-                                                                          <div className="col-md-3 mb-2">
-                                                                            <label className="form-label">
-                                                                              Cargo
-                                                                              Type
-                                                                            </label>
-                                                                            <Select
-                                                                              name={`mainBox[${index}].subBox[${subIndex}].cargoType`}
-                                                                              value={
-                                                                                cargoType
-                                                                                  ? cargoType.find((option) => option.value === formik.values.mainBox[index].subBox[subIndex].cargoType) : ""
-                                                                              }
-                                                                              onChange={(e) => {
-                                                                                formik.setFieldValue(
-                                                                                  `mainBox[${index}].subBox[${subIndex}].cargoType`,
-                                                                                  e.value
-                                                                                );
-                                                                              }}
-                                                                              options={
-                                                                                cargoType
-                                                                              }
-                                                                              classNamePrefix="select2-selection form-select"
-                                                                            />
-                                                                          </div>
-                                                                          // </div>
-                                                                        )}
+                                      {!(formik.values.mainBox[index].calculationType === "") && (
+                                        <FieldArray name={`mainBox[${index}].subBox`} >
+                                          {(arrayHelpersTwo) => {
+                                            return (
+                                              <>
+                                                <Card>
+                                                  <CardBody>
+                                                    {item.subBox.length >
+                                                      0 &&
+                                                      item.subBox.map((subItem, subIndex) => {
+                                                        return (
+                                                          <>
+                                                            {/* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
+                                                            {formik.values.mainBox[index].calculationType && (
+                                                              <div className="row mb-3">
+                                                                {/* Cargo Type */}
+                                                                {(formik.values.mainBox[index].calculationType === "Flat" || formik.values.mainBox[index].calculationType === "Percentage") && (
+                                                                  <div className="col-md-3 mb-2">
+                                                                    <label className="form-label"> Cargo Type </label>
+                                                                    <Select
+                                                                      name={`mainBox[${index}].subBox[${subIndex}].cargoType`}
+                                                                      value={
+                                                                        cargoType
+                                                                          ? cargoType.find((option) => option.value === formik.values.mainBox[index].subBox[subIndex].cargoType) : ""
+                                                                      }
+                                                                      onChange={(e) => {
+                                                                        formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].cargoType`, e.value);
+                                                                      }}
+                                                                      options={
+                                                                        cargoType
+                                                                      }
+                                                                      classNamePrefix="select2-selection form-select"
+                                                                    />
+                                                                  </div>
+                                                                )}
 
-                                                                      {/* Container Type */}
-                                                                      {/* <div className="w-100 mx-1"> */}
-                                                                      <div className="col-md-3 mb-2">
-                                                                        <label className="form-label">
-                                                                          Container
-                                                                          Type
-                                                                        </label>
-                                                                        <Select
-                                                                          name={`mainBox[${index}].subBox[${subIndex}].containerType`}
-                                                                          value={
-                                                                            containerType
-                                                                              ? containerType.find((option) => option.value === formik.values.mainBox[index].subBox[subIndex].containerType) : ""
-                                                                          }
-                                                                          onChange={(e) => {
-                                                                            formik.setFieldValue(
-                                                                              `mainBox[${index}].subBox[${subIndex}].containerType`,
-                                                                              e.value
-                                                                            );
-                                                                          }}
-                                                                          options={
-                                                                            containerType
-                                                                          }
-                                                                          classNamePrefix="select2-selection form-select"
-                                                                        />
-                                                                      </div>
-                                                                      {/* </div> */}
+                                                                {/* Container Type */}
+                                                                <div className="col-md-3 mb-2">
+                                                                  <label className="form-label"> Container Type </label>
+                                                                  <Select
+                                                                    name={`mainBox[${index}].subBox[${subIndex}].containerType`}
+                                                                    value={
+                                                                      containerType
+                                                                        ? containerType.find((option) => option.value === formik.values.mainBox[index].subBox[subIndex].containerType) : ""
+                                                                    }
+                                                                    onChange={(e) => {
+                                                                      formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].containerType`, e.value);
+                                                                    }}
+                                                                    options={
+                                                                      containerType
+                                                                    }
+                                                                    classNamePrefix="select2-selection form-select"
+                                                                  />
+                                                                </div>
+                                                                {/* </div> */}
 
-                                                                      {/* From Slab */}
-                                                                      {formik
-                                                                        .values
-                                                                        .mainBox[
-                                                                        index
-                                                                      ]
-                                                                        .calculationType ===
-                                                                        "Slab" && (
-                                                                          // <div className="w-100 mx-1">
-                                                                          <div className="col-md-2 mb-2">
-                                                                            <label className="form-label">
-                                                                              From
-                                                                              Slab
-                                                                            </label>
-                                                                            <Select
-                                                                              name={`mainBox[${index}].subBox[${subIndex}].fromSlab`}
-                                                                              value={
-                                                                                fromSlab
-                                                                                  ? fromSlab.find((option) => option.value === formik.values.mainBox[index].subBox[subIndex].fromSlab) : ""
-                                                                              }
-                                                                              onChange={(e) => {
-                                                                                formik.setFieldValue(
-                                                                                  `mainBox[${index}].subBox[${subIndex}].fromSlab`,
-                                                                                  e.value
-                                                                                );
-                                                                              }}
-                                                                              options={
-                                                                                fromSlab
-                                                                              }
-                                                                              classNamePrefix="select2-selection form-select"
-                                                                            />
-                                                                          </div>
-                                                                          // </div>
-                                                                        )}
+                                                                {/* From Slab */}
+                                                                {formik.values.mainBox[index].calculationType === "Slab" && (
+                                                                  <div className="col-md-2 mb-2">
+                                                                    <label className="form-label"> From Slab </label>
+                                                                    <Select
+                                                                      name={`mainBox[${index}].subBox[${subIndex}].fromSlab`}
+                                                                      value={
+                                                                        fromSlab
+                                                                          ? fromSlab.find((option) => option.value === formik.values.mainBox[index].subBox[subIndex].fromSlab) : ""
+                                                                      }
+                                                                      onChange={(e) => {
+                                                                        formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].fromSlab`, e.value);
+                                                                      }}
+                                                                      options={
+                                                                        fromSlab
+                                                                      }
+                                                                      classNamePrefix="select2-selection form-select"
+                                                                    />
+                                                                  </div>
+                                                                )}
 
-                                                                      {/* To Slab */}
-                                                                      {formik
-                                                                        .values
-                                                                        .mainBox[
-                                                                        index
-                                                                      ]
-                                                                        .calculationType ===
-                                                                        "Slab" && (
-                                                                          // <div className="w-100 mx-1">
-                                                                          <div className="col-md-2 mb-2">
-                                                                            <label className="form-label">
-                                                                              To
-                                                                              Slab
-                                                                            </label>
-                                                                            <Input
-                                                                              type="text"
-                                                                              name={`mainBox[${index}].subBox[${subIndex}].toSlab`}
-                                                                              value={
-                                                                                formik
-                                                                                  .values
-                                                                                  .mainBox[
-                                                                                  index
-                                                                                ]
-                                                                                  .subBox[
-                                                                                  subIndex
-                                                                                ]
-                                                                                  .toSlab
-                                                                              }
-                                                                              onChange={
-                                                                                formik.handleChange
-                                                                              }
-                                                                            // classNamePrefix="select2-selection form-select"
-                                                                            />
-                                                                          </div>
-                                                                          // </div>
-                                                                        )}
+                                                                {/* To Slab */}
+                                                                {formik.values.mainBox[index].calculationType === "Slab" && (
+                                                                  <div className="col-md-2 mb-2">
+                                                                    <label className="form-label">
+                                                                      To
+                                                                      Slab
+                                                                    </label>
+                                                                    <Input
+                                                                      type="text"
+                                                                      name={`mainBox[${index}].subBox[${subIndex}].toSlab`}
+                                                                      value={formik.values.mainBox[index].subBox[subIndex].toSlab}
+                                                                      onChange={
+                                                                        formik.handleChange
+                                                                      }
+                                                                    />
+                                                                  </div>
+                                                                )}
 
-                                                                      {/* Rate */}
-                                                                      {/* <div className="w-100 mx-1"> */}
-                                                                      <div className="col-md-2 mb-2">
-                                                                        <label className="form-label">
-                                                                          Rate
-                                                                        </label>
-                                                                        <Input
-                                                                          type="text"
-                                                                          name={`mainBox[${index}].subBox[${subIndex}].rate`}
-                                                                          value={
-                                                                            formik
-                                                                              .values
-                                                                              .mainBox[
-                                                                              index
-                                                                            ]
-                                                                              .subBox[
-                                                                              subIndex
-                                                                            ]
-                                                                              .rate
-                                                                          }
-                                                                          onChange={
-                                                                            formik.handleChange
-                                                                          }
-                                                                        // classNamePrefix="select2-selection form-select"
-                                                                        />
-                                                                      </div>
-                                                                      {/* </div> */}
+                                                                {/* Rate */}
+                                                                <div className="col-md-2 mb-2">
+                                                                  <label className="form-label">
+                                                                    Rate
+                                                                  </label>
+                                                                  <Input
+                                                                    type="text"
+                                                                    name={`mainBox[${index}].subBox[${subIndex}].rate`}
+                                                                    value={formik.values.mainBox[index].subBox[subIndex].rate}
+                                                                    onChange={
+                                                                      formik.handleChange
+                                                                    }
+                                                                  />
+                                                                </div>
 
-                                                                      {/* Add remove  */}
-                                                                      <div className="col-md-3 mt-2 d-flex justify-content-end align-items-center">
-                                                                        {/* <div>
-                                                                        <button
-                                                                          className="btn btn-primary me-2"
-                                                                          onClick={() => {
-                                                                            arrayHelpersTwo.push(
-                                                                              {
-                                                                                cargoType:
-                                                                                  "",
-                                                                                containerType:
-                                                                                  "",
-                                                                                fromSlab:
-                                                                                  "",
-                                                                                toSlab:
-                                                                                  "",
-                                                                                rate: "",
-                                                                              }
-                                                                            );
-                                                                          }}
-                                                                        >
-                                                                          <i className="bx bx-plus"></i>
-                                                                        </button>
-                                                                      </div> */}
+                                                                {/* Add remove  */}
+                                                                <div className="col-md-3 mt-2 d-flex justify-content-end align-items-center">
+                                                                  <div>
+                                                                    {formik.values.mainBox[index].subBox.length > 1 && (
+                                                                      <button
+                                                                        className="btn border"
+                                                                        onClick={() => {
+                                                                          arrayHelpersTwo.remove(subIndex);
+                                                                        }}
+                                                                      >
+                                                                        <i className="bx bx-trash fs-5 align-middle text-danger"></i>
+                                                                      </button>
+                                                                    )}
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                            )}
 
-                                                                        <div>
-                                                                          {formik
-                                                                            .values
-                                                                            .mainBox[
-                                                                            index
-                                                                          ]
-                                                                            .subBox
-                                                                            .length >
-                                                                            1 && (
-                                                                              <button
-                                                                                className="btn border"
-                                                                                onClick={() => {
-                                                                                  arrayHelpersTwo.remove(
-                                                                                    subIndex
-                                                                                  );
-                                                                                }}
-                                                                              >
-                                                                                <i className="bx bx-trash fs-5 align-middle text-danger"></i>
-                                                                              </button>
-                                                                            )}
-                                                                        </div>
-                                                                      </div>
-                                                                    </div>
-                                                                  )}
+                                                            {/* <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */}
+                                                          </>
+                                                        );
+                                                      }
+                                                      )}
 
-                                                                {/* <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */}
-                                                              </>
-                                                            );
-                                                          }
-                                                        )}
-
-                                                      <div>
-                                                        <button
-                                                          className="btn btn-primary me-2"
-                                                          onClick={() => {
-                                                            arrayHelpersTwo.push(
-                                                              {
-                                                                cargoType: "",
-                                                                containerType:
-                                                                  "",
-                                                                fromSlab: "",
-                                                                toSlab: "",
-                                                                rate: "",
-                                                              }
-                                                            );
-                                                          }}
-                                                        >
-                                                          <i className="bx bx-plus"></i>
-                                                        </button>
-                                                      </div>
-                                                    </CardBody>
-                                                  </Card>
-                                                </>
-                                              );
-                                            }}
-                                          </FieldArray>
-                                        )}
+                                                    <div>
+                                                      <button
+                                                        className="btn btn-primary me-2"
+                                                        onClick={() => {
+                                                          arrayHelpersTwo.push(
+                                                            {
+                                                              cargoType: "",
+                                                              containerType:
+                                                                "",
+                                                              fromSlab: "",
+                                                              toSlab: "",
+                                                              rate: "",
+                                                            }
+                                                          );
+                                                        }}
+                                                      >
+                                                        <i className="bx bx-plus"></i>
+                                                      </button>
+                                                    </div>
+                                                  </CardBody>
+                                                </Card>
+                                              </>
+                                            );
+                                          }}
+                                        </FieldArray>
+                                      )}
                                       {/* SUB Field Array ended------------------------------------------------- */}
                                     </CardBody>
                                   </Card>
@@ -782,6 +670,7 @@ export default function UploadPortLocalChargesData() {
                                       slabBasis: "",
                                       currency: "",
                                       minValue: "",
+                                      tax: "",
                                       addTerms: false,
                                       subBox: [
                                         {

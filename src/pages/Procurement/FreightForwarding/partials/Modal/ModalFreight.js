@@ -80,7 +80,7 @@ const ModalFreight = ({ viewData, modal, onCloseClick, modalType }) => {
                                             <span className="data">{viewData?.org_detention_free || '-'}</span>
                                         </div>
                                         <div className="details">
-                                            <span className="title">Currency:</span>
+                                            <span className="title">Detention Free Dest:</span>
                                             <span className="data">{viewData?.dest_detention_free || '-'}</span>
                                         </div>
                                     </div>

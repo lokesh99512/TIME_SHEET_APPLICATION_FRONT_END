@@ -1,24 +1,28 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap'
-import TopBreadcrumbs from './TopBreadcrumbs'
-import TableReact from './TableReactPortLocalCharges'
-import ModalFreight from './Modal/ModalFreight'
-import { fclBreadcrumb, fclRateData } from '../../../../common/data/procurement'
-import FilterOffCanvasComp from './Modal/FilterOffCanvasComp'
-import { CargoType, CarrierName, Carriername, ChargeId, DestPort, DetentionFree, MovementType, OrgPort, PortName, SurchargeCategory, SurchargeId, Terminals, TransitTime, ValidTill, Validtill, VendorName, Vendorname, ViaPort } from './OceanCol'
-import { useSelector } from 'react-redux'
-import { edit_icon, eye_icon } from '../../../../assets/images'
+import { edit_icon } from '../../../../assets/images'
+import { fclRateData, portLocalBreadcrumb } from '../../../../common/data/procurement'
 import { getPortLocalChargesData } from '../../../../store/Procurement/actions'
-import { useDispatch } from 'react-redux'
 import ModalSurchargeValue from './Modal/ModalSurchargeValue'
+import { Carriername, MovementType, PortName, SurchargeCategory, SurchargeId, Terminals, Validtill, Vendorname } from './OceanCol'
+import TableReact from './TableReactPortLocalCharges'
+import TopBreadcrumbs from './TopBreadcrumbs'
+import FilterPortCanvasComp from './Modal/FilterPortCanvasComp'
 
 export default function PortLocalFreight() {
     const [isRight, setIsRight] = useState(false);
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
+    const inputArr = {
+        surcharge_category: '',
+        port_name: '',
+        carrier_name:'',
+        movement_type: ''
+    }
+    const [filterDetails, setfilterDetails] = useState(inputArr);
     const dispatch = useDispatch();
     const portLocalData = useSelector((state) => state.procurement.portLocalChargesData);
-    // console.log(portLocalData,"<---plcharges table data");
 
     const viewPopupHandler = (data) => {
         setModal(true);
@@ -29,9 +33,18 @@ export default function PortLocalFreight() {
         setModal(false);
     }
 
+    // right filter sidebar 
     const toggleRightCanvas = () => {
         setIsRight(!isRight);
     };
+
+    const applyFilterHandler = () => {
+        setIsRight(false);
+        console.log(filterDetails,"filterDetails fcl-----------------------")
+    }
+    const clearValueHandler = () => {
+        setfilterDetails(inputArr)
+    }
 
     useEffect(() => {
         dispatch(getPortLocalChargesData());
@@ -150,7 +163,7 @@ export default function PortLocalFreight() {
                     <div className="main_freight_wrapper">
 
                         {/* breadcrumbs && rate */}
-                        <TopBreadcrumbs breadcrumbs={fclBreadcrumb} data={fclRateData} />
+                        <TopBreadcrumbs breadcrumbs={portLocalBreadcrumb} data={fclRateData} />
 
                         {/* React Table */}
                         <TableReact
@@ -170,7 +183,7 @@ export default function PortLocalFreight() {
             </div>
 
             {/* filter right sidebar */}
-            {/* <FilterOffCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} /> */}
+            <FilterPortCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} />            
         </>
     )
 }

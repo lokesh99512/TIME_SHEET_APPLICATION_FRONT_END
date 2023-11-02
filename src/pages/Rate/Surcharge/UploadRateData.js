@@ -1,27 +1,16 @@
-import classnames from "classnames";
 import React, { useCallback, useState } from "react";
-import Dropzone from "react-dropzone";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import {
   Card,
   CardBody,
   Col,
   Container,
-  Form,
   Input,
-  Label,
-  NavItem,
-  NavLink,
-  Progress,
-  Row,
-  TabContent,
-  TabPane,
-  UncontrolledTooltip,
+  Row
 } from "reactstrap";
-import ModalAddNewCategory from "./Modal/ModalAddNewCategory";
 import ModalAddNewAlias from "./Modal/ModalAddNewAlias";
+import ModalAddNewCategory from "./Modal/ModalAddNewCategory";
 
 const surchargeCategory = [
   { label: "OCEAN SURCHARGE", value: "freight_surcharge" },
@@ -32,11 +21,13 @@ const surchargeCategory = [
   { label: "ANCILLARY CHARGES", value: "ancillary_charges" },
   { label: "VAS CHARGES", value: "vas_charges" },
   { label: "CUSTOMS", value: "custom" },
+  // { label: "Add New", value: "Add New" },
 ];
 const surchargeAliasCode = [
   { label: "THL", value: "THL" },
   { label: "THD", value: "THD" },
   { label: "FSC", value: "FSC" },
+  { label: "OBS", value: "OBS" },
   { label: "EIS", value: "EIS" },
   { label: "WRC", value: "WRC" },
   { label: "OCR", value: "OCR" },
@@ -44,10 +35,14 @@ const surchargeAliasCode = [
   { label: "LSF", value: "LSF" },
   { label: "ARD", value: "ARD" },
   { label: "DOC", value: "DOC" },
+  { label: "BL FEE", value: "bl_fee" },
+  { label: "CERTIFICATE FEE", value: "certificate_fee" },
+  { label: "EMPTY CONTAINER LIFT FEE", value: "empty_container_lift_fee" },
+  { label: "Add New", value: "Add New" },
 ];
 const surchargeAliasDesc = [
-  { label: "Original Terminal Handling Charge	", value: "OTHC" },
-  { label: "Original Terminal Handling Charge", value: "DTHC" },
+  { label: "Original Terminal Handling Charge	", value: "THL" },
+  { label: "Original Terminal Handling Charge", value: "THD" },
   { label: "One Bunker Surchage", value: "OBS" },
   { label: "Equipment Imbalance Surcharge", value: "EIS" },
   { label: "War Risk Surcharge", value: "WRC" },
@@ -55,13 +50,18 @@ const surchargeAliasDesc = [
   { label: "Additional Charge	", value: "ADDON" },
   { label: "Low Sulphur Surcharge	", value: "LSF" },
   { label: "Import Haulage Charge	", value: "ARD" },
-  { label: "Documentation Fee", value: "DOC" },
+  { label: "Documentation Fee", value: "DOC" },  
 ];
 
 export default function UploadRateData() {
   const [categoryModal, setCategoryModal] = useState(false);
   const [aliasModal, setAliasModal] = useState(false);
   const navigate = useNavigate();
+
+  const customOptSurchargeCategory = [
+    ...surchargeCategory,
+    { label: "Add New", value: "Add New" },
+  ];
 
   const inputArr = {
     surchargeCode: "",
@@ -95,16 +95,8 @@ export default function UploadRateData() {
     <>
       <div className="page-content">
         <Container fluid>
-          <div className="main_freight_wrapper">
-            <button
-              type="button"
-              className="btn border mb-3"
-              onClick={() => {
-                navigate(-1);
-              }}
-            >
-              Back
-            </button>
+          <div className="main_freight_wrapper surcharges_add_form_wrap">
+            <button type="button" className="btn border mb-3" onClick={() => { navigate(-1); }} > Back </button>
             <Row>
               <Col lg="12">
                 <Card>
@@ -119,10 +111,7 @@ export default function UploadRateData() {
                               name="surchargeCode"
                               value={addDetails.surchargeCode}
                               onChange={(e) => {
-                                handleSelectGroup(
-                                  "surchargeCode",
-                                  e.target.value
-                                );
+                                handleSelectGroup( "surchargeCode", e.target.value );
                               }}
                               className="form-control"
                               id="Surcharge_Code"
@@ -142,10 +131,7 @@ export default function UploadRateData() {
                               name="surchargeDesc"
                               value={addDetails.surchargeDesc}
                               onChange={(e) => {
-                                handleSelectGroup(
-                                  "surchargeDesc",
-                                  e.target.value
-                                );
+                                handleSelectGroup( "surchargeDesc", e.target.value );
                               }}
                               className="form-control"
                               id="Surcharge_Desc"
@@ -169,9 +155,10 @@ export default function UploadRateData() {
                               onChange={(opt) => {
                                 handleSelectGroup("surchargeCategory", opt);
                               }}
-                              options={surchargeCategory}
+                              options={customOptSurchargeCategory}
                               placeholder={"Select Surcharge Category"}
                               classNamePrefix="select2-selection form-select"
+                              // defaultMenuIsOpen
                             />
                           </div>
                         </div>
@@ -202,17 +189,16 @@ export default function UploadRateData() {
                           <label className="form-label">
                             Surcharge Alias Desc
                           </label>
-
                           <div className="">
                             <Select
-                              value={addDetails.surchargeAliasDesc}
+                              value={surchargeAliasDesc ? surchargeAliasDesc.find(obj => obj.value === addDetails.surchargeAliasCode.value) : ''}
                               name="surchargeAliasDesc"
                               onChange={(opt) => {
                                 handleSelectGroup("surchargeAliasDesc", opt);
                               }}
                               options={surchargeAliasDesc}
-                              placeholder={"Select Status"}
                               classNamePrefix="select2-selection form-select"
+                              isDisabled
                             />
                           </div>
                         </div>

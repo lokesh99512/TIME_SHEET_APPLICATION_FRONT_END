@@ -4,6 +4,7 @@ import { useAsyncDebounce, useExpanded, useFilters, useGlobalFilter, usePaginati
 import { Row, Table } from 'reactstrap';
 import { filter_icon, upload_icon } from '../../../../assets/images';
 import { DefaultColumnFilter, Filter } from '../../../../components/Common/filters';
+import ReactPaginate from 'react-paginate';
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -130,75 +131,20 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanva
                         </div>
                     </div>
                     <div className="col-sm-auto">
-                        <ul className="pagination pagination-separated pagination-md justify-content-center justify-content-sm-start mb-0">
-                            <li className={!canPreviousPage ?   "page-item arrow_wrap previous disabled" : "page-item arrow_wrap previous"}>
-                                <Link to="#" className="page-link" onClick={previousPage}><i className='fas fa-chevron-left'></i></Link>
-                            </li>
-                            {pageOptions.map((item, key) => (
-                                <React.Fragment key={key}>
-                                    <li className="page-item">
-                                    <Link to="#" className={pageIndex === item ? "page-link active" : "page-link"} onClick={() => gotoPage(item)}>{item + 1}</Link>
-                                    </li>
-                                </React.Fragment>
-                            ))}
-                            <li className={!canNextPage ? "page-item arrow_wrap next disabled" : "page-item arrow_wrap next"}>
-                                <Link to="#" className="page-link" onClick={nextPage}><i className='fas fa-chevron-right'></i></Link>
-                            </li>
-                        </ul>
+                        <div className='react_pagination_wrap'>
+                            <ReactPaginate
+                                breakLabel="..."
+                                nextLabel="next"
+                                onPageChange={(item) => {gotoPage(item.selected)}}
+                                pageRangeDisplayed={3}
+                                pageCount={pageOptions.length}
+                                previousLabel="previous"
+                                renderOnZeroPageCount={null}
+                            />
+                        </div>
                     </div>
                 </Row>
-            </div>
-            {/* <Row className="justify-content-md-end justify-content-center align-items-center">
-                <Col className="col-md-auto">
-                    <div className="d-flex gap-1">
-                        <Button
-                        color="primary"
-                        onClick={() => gotoPage(0)}
-                        disabled={!canPreviousPage}
-                        >
-                        {"<<"}
-                        </Button>
-                        <Button
-                        color="primary"
-                        onClick={previousPage}
-                        disabled={!canPreviousPage}
-                        >
-                        {"<"}
-                        </Button>
-                    </div>
-                </Col>
-                <Col className="col-md-auto d-none d-md-block">
-                    Page{" "}
-                    <strong>
-                        {pageIndex + 1} of {pageOptions.length}
-                    </strong>
-                </Col>
-                <Col className="col-md-auto">
-                    <Input
-                        type="number"
-                        min={1}
-                        style={{ width: 70 }}
-                        max={pageOptions.length}
-                        defaultValue={pageIndex + 1}
-                        onChange={onChangeInInput}
-                    />
-                </Col>
-
-                <Col className="col-md-auto">
-                    <div className="d-flex gap-1">
-                        <Button color="primary" onClick={nextPage} disabled={!canNextPage}>
-                        {">"}
-                        </Button>
-                        <Button
-                        color="primary"
-                        onClick={() => gotoPage(pageCount - 1)}
-                        disabled={!canNextPage}
-                        >
-                        {">>"}
-                        </Button>
-                    </div>
-                </Col>
-            </Row> */}
+            </div>           
         </>
     )
 }
