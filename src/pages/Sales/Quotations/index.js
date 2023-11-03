@@ -18,18 +18,23 @@ export default function Quotations() {
     const [viewData, setViewData] = useState(false);
     const [isRight, setIsRight] = useState(false);
     const inputArr = {
-        priceRange: [],
+        // priceRange: [],
         expiration_date: [],
-        containerradio: '',
-        destport: '',
-        vendorradio: '',
-        pickup: false,
-        port_origin: false,
-        ocean_freight: false,
-        port_discharge: false,
-        delivery: false,
-        shipping_cma: false,
-        shipping_msc: false,
+        origin_name: '',
+        destination_name: '',
+        quote_mode: '',
+        quote_status: '',
+        quote_value: '',
+        // containerradio: '',
+        // destport: '',
+        // vendorradio: '',
+        // pickup: false,
+        // port_origin: false,
+        // ocean_freight: false,
+        // port_discharge: false,
+        // delivery: false,
+        // shipping_cma: false,
+        // shipping_msc: false,
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
     const dispatch = useDispatch();
@@ -81,24 +86,6 @@ export default function Quotations() {
             }
         },
         {
-            Header: 'Enquiry Date',
-            accessor: 'enquiry_date',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Enquiry ID',
-            accessor: 'enquiry_id',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
             Header: 'Customer Name',
             accessor: 'customer_name',
             filterable: true,
@@ -108,8 +95,8 @@ export default function Quotations() {
             }
         },
         {
-            Header: 'Quote Status',
-            accessor: 'quote_status',
+            Header: 'Origin',
+            accessor: 'org_port',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -117,16 +104,7 @@ export default function Quotations() {
             }
         },
         {
-            Header: 'Org Airport',
-            accessor: 'org_airport',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Dest Airport',
+            Header: 'Destination',
             accessor: 'dest_port',
             filterable: true,
             disableFilters: true,
@@ -135,8 +113,8 @@ export default function Quotations() {
             }
         },
         {
-            Header: 'Service Code',
-            accessor: 'service_code',
+            Header: 'Mode',
+            accessor: 'quote_mode',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -144,23 +122,50 @@ export default function Quotations() {
             }
         },
         {
-            Header: 'Cargo Type',
-            accessor: 'cargo_type',
+            Header: 'Transport By',
+            accessor: 'transport_by',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
                 return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
-        }, 
+        },        
         {
-            Header: 'Weight/Equipment Type',
+            Header: 'Weight/Container Type',
             accessor: 'weight_type',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
                 return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
-        },                       
+        },    
+        {
+            Header: 'Quotation Value',
+            accessor: 'quote_val',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },    
+        {
+            Header: 'Status',
+            accessor: 'quote_status',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },                
+        {
+            Header: 'Sales Person',
+            accessor: 'sales_person',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },                            
         {
             Header: 'Action',
             Cell: (cellProps) => {

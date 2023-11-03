@@ -4,13 +4,14 @@ import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input
 
 import { useDispatch } from 'react-redux'
 import { edit_icon, eye_icon } from '../../../../assets/images'
-import { fclBreadcrumb, fclRateData } from '../../../../common/data/procurement'
+import { fclBreadcrumb, fclRateData, fclTableData } from '../../../../common/data/procurement'
 import { getFclData, updatefclSwitchData } from '../../../../store/Procurement/actions'
 import FilterOffCanvasComp from './Modal/FilterOffCanvasComp'
 import ModalFreight from './Modal/ModalFreight'
 import { CargoType, CarrierName, ChargeId, DestPort, DetentionFree, OrgPort, TransitTime, ValidTill, VendorName, ViaPort } from './OceanCol'
 import TableReact from './TableReact'
 import TopBreadcrumbs from './TopBreadcrumbs'
+import { FILTER_FCL_DATA } from '../../../../store/Procurement/actiontype'
 
 export default function FclOceanFreight() {
     document.title="FCL || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
@@ -47,9 +48,24 @@ export default function FclOceanFreight() {
 
     const applyFilterHandler = () => {
         setIsRight(false);
-        console.log(filterDetails,"filterDetails fcl-----------------------")
+        let newArr = [...fclTableData];
+        const filteredDataArr = newArr.filter(item => {
+            const isCarrierNameMatch = filterDetails?.carrier_name?.value === '' ||
+              item?.carrier_name?.toLowerCase().includes(filterDetails?.carrier_name?.value?.toLowerCase());
+          
+            const isDestPortMatch = filterDetails?.dest_port?.value === '' ||
+              item?.dest_port?.toLowerCase().includes(filterDetails?.dest_port?.value?.toLowerCase());
+          
+            const isOrgPortMatch = filterDetails?.org_port?.value === '' ||
+              item?.org_port?.toLowerCase().includes(filterDetails?.org_port?.value?.toLowerCase());
+          
+            return isCarrierNameMatch && isDestPortMatch && isOrgPortMatch;
+        });
+        dispatch({type: FILTER_FCL_DATA, payload: filteredDataArr});
+
     }
     const clearValueHandler = () => {
+        dispatch(getFclData());
         setfilterDetails(inputArr)
     }
     

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import Select from "react-select";
 import { Offcanvas, OffcanvasBody, OffcanvasHeader } from 'reactstrap';
-import { optionCarrierName, optionMovementType, optionOrgPort } from '../../../../../common/data/procurement';
+import { optionCarrierName, optionMovementType, optionPortlocalOrgPort } from '../../../../../common/data/procurement';
 
 const surchargeCategory = [
     { label: "OCEAN SURCHARGE", value: "freight_surcharge" },
@@ -53,7 +53,7 @@ export default function FilterPortCanvasComp({isRight,toggleRightCanvas,filterDe
                                             onChange={(opt) => {
                                                 handleSelectGroup('port_name', opt);
                                             }}
-                                            options={optionOrgPort}
+                                            options={optionPortlocalOrgPort}
                                             placeholder={'Select destination port'}
                                             classNamePrefix="select2-selection form-select"
                                         />

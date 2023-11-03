@@ -364,7 +364,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                     </div>
                     {isOpen && dropId === 9 ?
                         <div className="location_dropdown_wrap " ref={dropdownRef}>
-                            <div className="field_input_wrap">
+                            {/* <div className="field_input_wrap">
                                 <label htmlFor="" className='form-label'>Type</label>
                                 <UncontrolledDropdown>
                                     <DropdownToggle className="btn btn-link shadow-none" tag="a">
@@ -388,7 +388,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                         ))}
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
-                            </div>
+                            </div> */}
                             <div className="field_input_wrap">
                                 <label htmlFor="" className='form-label'>Select Country</label>
                                 <Select
@@ -446,7 +446,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                     </div>
                     {isOpen && dropId === 10 ?
                         <div className="location_dropdown_wrap " ref={dropdownRef}>
-                            <div className="field_input_wrap">
+                            {/* <div className="field_input_wrap">
                                 <label htmlFor="" className='form-label'>Type</label>
                                 <UncontrolledDropdown>
                                     <DropdownToggle className="btn btn-link shadow-none" tag="a">
@@ -470,7 +470,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                         ))}
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
-                            </div>
+                            </div> */}
                             <div className="field_input_wrap">
                                 <label htmlFor="" className='form-label'>Select Country</label>
                                 <Select

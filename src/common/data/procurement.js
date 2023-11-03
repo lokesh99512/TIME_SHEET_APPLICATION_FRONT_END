@@ -3542,6 +3542,7 @@ const lclTableData = [
 export const plChargesTableData = [
     {
         id: 1,
+        uniq_id: 'port_1',
         surcharge_id: 'OCTOL251023001',
         surcharge_category: 'PORT SURCHARGE',
         port_name: "INMAA",
@@ -3664,6 +3665,7 @@ export const plChargesTableData = [
     },
     {
         id: 2,
+        uniq_id: 'port_2',
         surcharge_id: 'OCTOL251023001',
         surcharge_category: 'PORT SURCHARGE',
         port_name: "INKTP",
@@ -3786,6 +3788,7 @@ export const plChargesTableData = [
     },
     {
         id: 3,
+        uniq_id: 'port_3',
         surcharge_id: 'OCTOO251023001',
         surcharge_category: 'PORT SURCHARGE',
         port_name: "INMAA",
@@ -3894,6 +3897,7 @@ export const plChargesTableData = [
     },
     {
         id: 4,
+        uniq_id: 'port_4',
         surcharge_id: 'OCTOO251023001',
         surcharge_category: 'PORT SURCHARGE',
         port_name: "INKTP",
@@ -4002,6 +4006,7 @@ export const plChargesTableData = [
     },
     {
         id: 5,
+        uniq_id: 'port_5',
         surcharge_id: 'OCTZM251023001',
         surcharge_category: 'PORT SURCHARGE',
         port_name: "INMAA",
@@ -4124,6 +4129,7 @@ export const plChargesTableData = [
     },
     {
         id: 6,
+        uniq_id: 'port_6',
         surcharge_id: 'OCTZM251023001',
         surcharge_category: 'PORT SURCHARGE',
         port_name: "INKTP",
@@ -4246,6 +4252,7 @@ export const plChargesTableData = [
     },
     {
         id: 7,
+        uniq_id: 'port_7',
         surcharge_id: 'OCTOL251023001',
         surcharge_category: 'LOCAL SURCHARGE',
         port_name: "INMAA",
@@ -4376,6 +4383,7 @@ export const plChargesTableData = [
     },
     {
         id: 8,
+        uniq_id: 'port_8',
         surcharge_id: 'OCTOL251023001',
         surcharge_category: 'LOCAL SURCHARGE',
         port_name: "INKTP",
@@ -4506,6 +4514,7 @@ export const plChargesTableData = [
     },
     {
         id: 9,
+        uniq_id: 'port_9',
         surcharge_id: 'OCTOO251023001',
         surcharge_category: 'LOCAL SURCHARGE',
         port_name: "INMAA",
@@ -4686,6 +4695,7 @@ export const plChargesTableData = [
     },
     {
         id: 10,
+        uniq_id: 'port_10',
         surcharge_id: 'OCTOO251023001',
         surcharge_category: 'LOCAL SURCHARGE',
         port_name: "INKTP",
@@ -4866,6 +4876,7 @@ export const plChargesTableData = [
     },
     {
         id: 11,
+        uniq_id: 'port_11',
         surcharge_id: 'OCTZM251023001',
         surcharge_category: 'LOCAL SURCHARGE',
         port_name: "INMAA",
@@ -4879,6 +4890,7 @@ export const plChargesTableData = [
     },
     {
         id: 12,
+        uniq_id: 'port_12',
         surcharge_id: 'OCTZM251023001',
         surcharge_category: 'LOCAL SURCHARGE',
         port_name: "INKTP",
@@ -4892,6 +4904,7 @@ export const plChargesTableData = [
     },
     {
         id: 13,
+        uniq_id: 'port_13',
         surcharge_id: 'OCTOL251023001',
         surcharge_category: 'PORT SURCHARGE',
         port_name: "BDDAC",
@@ -4905,6 +4918,7 @@ export const plChargesTableData = [
     },
     {
         id: 14,
+        uniq_id: 'port_14',
         surcharge_id: 'OCTOL251023001',
         surcharge_category: 'PORT SURCHARGE',
         port_name: "IDSUB",
@@ -4972,6 +4986,7 @@ export const plChargesTableData = [
     },
     {
         id: 15,
+        uniq_id: 'port_15',
         surcharge_id: 'OCTOO251023001',
         surcharge_category: 'PORT SURCHARGE',
         port_name: "BDDAC",
@@ -4985,6 +5000,7 @@ export const plChargesTableData = [
     },
     {
         id: 16,
+        uniq_id: 'port_16',
         surcharge_id: 'OCTOO251023001',
         surcharge_category: 'PORT SURCHARGE',
         port_name: "IDSUB",
@@ -5052,6 +5068,7 @@ export const plChargesTableData = [
     },
     {
         id: 17,
+        uniq_id: 'port_17',
         surcharge_id: 'OCTZM251023001',
         surcharge_category: 'PORT SURCHARGE',
         port_name: "BDDAC",
@@ -5065,6 +5082,7 @@ export const plChargesTableData = [
     },
     {
         id: 18,
+        uniq_id: 'port_18',
         surcharge_id: 'OCTZM251023001',
         surcharge_category: 'PORT SURCHARGE',
         port_name: "IDSUB",
@@ -5132,6 +5150,7 @@ export const plChargesTableData = [
     },
     {
         id: 19,
+        uniq_id: 'port_19',
         surcharge_id: 'OCTOL251023001',
         surcharge_category: 'LOCAL SURCHARGE',
         port_name: "BDDAC",
@@ -5196,6 +5215,7 @@ export const plChargesTableData = [
     },
     {
         id: 20,
+        uniq_id: 'port_20',
         surcharge_id: 'OCTOL251023001',
         surcharge_category: 'LOCAL SURCHARGE',
         port_name: "IDSUB",
@@ -5285,6 +5305,7 @@ export const plChargesTableData = [
     },
     {
         id: 21,
+        uniq_id: 'port_21',
         surcharge_id: 'OCTOO251023001',
         surcharge_category: 'LOCAL SURCHARGE',
         port_name: "BDDAC",
@@ -5349,6 +5370,7 @@ export const plChargesTableData = [
     },
     {
         id: 22,
+        uniq_id: 'port_22',
         surcharge_id: 'OCTOO251023001',
         surcharge_category: 'LOCAL SURCHARGE',
         port_name: "IDSUB",
@@ -5438,6 +5460,7 @@ export const plChargesTableData = [
     },
     {
         id: 23,
+        uniq_id: 'port_23',
         surcharge_id: 'OCTZM251023001',
         surcharge_category: 'LOCAL SURCHARGE',
         port_name: "BDDAC",
@@ -5502,6 +5525,7 @@ export const plChargesTableData = [
     },
     {
         id: 24,
+        uniq_id: 'port_24',
         surcharge_id: 'OCTZM251023001',
         surcharge_category: 'LOCAL SURCHARGE',
         port_name: "IDSUB",
@@ -6727,6 +6751,12 @@ const optionOrgPort = [
     { label: 'INMAA', value: 'INMAA'},
     { label: 'INKTP', value: 'INKTP'},
 ]
+const optionPortlocalOrgPort = [
+    { label: 'INMAA', value: 'INMAA'},
+    { label: 'INKTP', value: 'INKTP'},
+    { label: 'BDDAC', value: 'BDDAC'},
+    { label: 'IDSUB', value: 'IDSUB'},
+]
 const optionPaymentType = [
     { label: "Prepaid", value: "prepaid" },
     { label: "Postpaid", value: "postpaid" },
@@ -6747,5 +6777,5 @@ export {
     fclBreadcrumb,fclRateData,fclTableData,lclBreadcrumb,portLocalBreadcrumb,lclRateData,lclTableData,
     optionRateType,optionRateSource,optionVendorType,optionVendorName,optionCarrierName,optionValidityApp,optionSurchargesName,optionMultiDestination,optionPaymentType,
     waybillBreadcrumb,waybillRateData,waybillTableData,consoleBreadcrumb,consoleRateData,consoleTableData,inLandBreadcrumb,inLandRateData,inLandTableData,fclSurchargeBreadcrumb,fclSurchargeRateData,
-    optcurrency,optionOrgPort,optionDestPort,optionCargoType,optionMovementType
+    optcurrency,optionOrgPort,optionDestPort,optionCargoType,optionMovementType,optionPortlocalOrgPort
 };

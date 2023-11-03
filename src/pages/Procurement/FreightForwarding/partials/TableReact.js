@@ -122,6 +122,19 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanva
                             </Fragment>
                         );
                         })}
+                        {page?.length === 0 && (
+                            <>
+                                {headerGroups.map(headerGroup => (
+                                    <tr key={`nodata_${headerGroup.id}`}>
+                                        <td colSpan={headerGroup.headers.length}>
+                                            <div className='no_table_data_found'>
+                                                <p>No Data Found. Please Adjust Your Filter. </p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </>
+                        )}
                     </tbody>
                     </Table>
                 </div>

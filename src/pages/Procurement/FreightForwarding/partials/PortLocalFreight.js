@@ -9,6 +9,7 @@ import { Carriername, MovementType, PortName, SurchargeCategory, SurchargeId, Te
 import TableReact from './TableReactPortLocalCharges'
 import TopBreadcrumbs from './TopBreadcrumbs'
 import FilterPortCanvasComp from './Modal/FilterPortCanvasComp'
+import { FILTER_PORTLOCALCHARGES_DATA } from '../../../../store/Procurement/actiontype'
 
 export default function PortLocalFreight() {
     const [isRight, setIsRight] = useState(false);
@@ -40,10 +41,24 @@ export default function PortLocalFreight() {
 
     const applyFilterHandler = () => {
         setIsRight(false);
-        console.log(filterDetails,"filterDetails fcl-----------------------")
+        let newArr = [...portLocalData];
+        const filteredDataArr = newArr.filter(item => {
+            const isPortNameMatch = filterDetails?.port_name?.value === '' ||
+              item?.port_name?.toLowerCase().includes(filterDetails?.port_name?.value?.toLowerCase());
+          
+            const isCarrierNameMatch = filterDetails?.carrier_name?.value === '' ||
+              item?.carrier_name?.toLowerCase().includes(filterDetails?.carrier_name?.value?.toLowerCase());
+          
+            const isMovementMatch = filterDetails?.org_port?.value === '' ||
+              item?.movement_type?.toLowerCase().includes(filterDetails?.movement_type?.value?.toLowerCase());
+          
+            return isCarrierNameMatch && isPortNameMatch && isMovementMatch;
+        });
+        dispatch({type: FILTER_PORTLOCALCHARGES_DATA, payload: filteredDataArr});
     }
     const clearValueHandler = () => {
         setfilterDetails(inputArr)
+        dispatch(getPortLocalChargesData());
     }
 
     useEffect(() => {
