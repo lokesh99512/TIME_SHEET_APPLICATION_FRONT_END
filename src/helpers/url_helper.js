@@ -136,6 +136,10 @@ export const GET_FCL_SURCHARGE = "/get-fcl-surcharge"
 
 // --------------------- Settings --------------------------------
 export const GET_SETTINGS_USERS = "/get-settings-users"
+export const GET_SETTINGS_COMPANYDETAILS = "/get-settings-companydetails"
+
+// --------------------- Parties --------------------------------
+export const GET_PARTIES_CUSTOMERS = "/get-parties-customers"
 
 
 

@@ -1,21 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardBody, Container, Input, Row } from "reactstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import Select from "react-select";
 import ModalAddGST from "./Modal/ModalAddGST";
 import SimpleBar from "simplebar-react";
 import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { getCompanyDetailsData } from "../../store/Settings/actions";
 
-const industryType = [
-  { label: "Supply Chain", value: "Supply Chain" },
-]
+const industryType = [{ label: "Supply Chain", value: "Supply Chain" }];
 const entityType = [
   { label: "Private Limited", value: "Private Limited" },
   { label: "Public Limited", value: "Public Limited" },
   { label: "Single Director", value: "Single Director" },
   { label: "LLP", value: "LLP" },
   { label: "proprietorship", value: "proprietorship" },
-]
+];
 
 const placeOfSupply = [
   { label: "Jammu & Kashmir", value: "JK", Code: 1 },
@@ -60,28 +61,32 @@ const placeOfSupply = [
 
 const companyDetailsInitialValue = {
   image: "",
-  companyName:"",
-  contactNumber:"",
-  email:"",
-  companyAddress:"",
-  city:"",
-  state:"",
-  zipcode:"",
-  country:"",
-}
+  companyName: "",
+  contactNumber: "",
+  email: "",
+  companyAddress: "",
+  city: "",
+  state: "",
+  zipcode: "",
+  country: "",
+};
 
 const taxDetailsInitialValue = {
-  panNumber:"",
-  cinNumber:"",
-  tranceporterId:"",
+  panNumber: "",
+  cinNumber: "",
+  tranceporterId: "",
   gstNumber: "",
   placeOfSupply: "",
+  moreGstNumbers: {
+    gstNo: "",
+    placeOfSupply: "",
+  },
 };
 
 const bussinessTypeInitialValue = {
-  industryType:"",
-  entityType:""
-}
+  industryType: "",
+  entityType: "",
+};
 
 const stateConverter = (num) => {
   console.log(num, "number");
@@ -92,30 +97,60 @@ const Settings = () => {
   const [gstModal, setGstModal] = useState(false);
   const [viewGst, setViewGst] = useState(false);
   const [active, setActive] = useState("comapanyDetails");
+  const [companyDetailsInitial, setCompanyDetailsInitial] = useState(
+    companyDetailsInitialValue
+  );
+  const [taxDetailsInitial, setTaxDetailsInitial] = useState(
+    taxDetailsInitialValue
+  );
+  const [bussinessTypeInitial, setBussinessTypeInitial] = useState(
+    bussinessTypeInitialValue
+  );
+
+  const companyDetailsData = useSelector(
+    (state) => state.settings.settings_companydetails_data
+  );
+
+  console.log(companyDetailsData[0], "<--full data");
+  // console.log(companyDetailsInitial, "<--comppany details");
+  // console.log(taxDetailsInitial, "<--tax details");
+  // console.log(bussinessTypeInitial, "<--bussiness type");
+
+  useEffect(() => {
+    setCompanyDetailsInitial(companyDetailsData[0]);
+    setTaxDetailsInitial(companyDetailsData[0]);
+    setBussinessTypeInitial(companyDetailsData[0]);
+  }, [companyDetailsData]);
+
+  const dispatch = useDispatch();
 
   const companyDetailsFormik = useFormik({
-    initialValues: companyDetailsInitialValue,
+    initialValues: companyDetailsInitial,
+    enableReinitialize: true,
     onSubmit: (value) => {
       console.log(value, "value");
-      companyDetailsFormik.resetForm()
+      companyDetailsFormik.resetForm();
     },
-  })
+  });
 
   const taxDetailsFormik = useFormik({
-    initialValues: taxDetailsInitialValue,
+    initialValues: taxDetailsInitial,
+    enableReinitialize: true,
     onSubmit: (value) => {
       console.log(value, "value");
       taxDetailsFormik.resetForm();
     },
   });
+  // console.log(taxDetailsFormik.values.moreGstNumbers.length,"<<<");
 
   const bussinessTypeFormik = useFormik({
-    initialValues:bussinessTypeInitialValue,
-    onSubmit: (value)=>{
-      console.log(value,"value");
+    initialValues: bussinessTypeInitial,
+    enableReinitialize: true,
+    onSubmit: (value) => {
+      console.log(value, "value");
       bussinessTypeFormik.resetForm();
-    }
-  })
+    },
+  });
 
   const onCloseClick = () => {
     setGstModal(false);
@@ -128,6 +163,11 @@ const Settings = () => {
       stateConverter(e.target.value.substring(0, 2))
     );
   };
+
+  useEffect(() => {
+    dispatch(getCompanyDetailsData());
+  }, [dispatch]);
+
   return (
     <>
       <div className="page-content settings_wrapper">
@@ -222,8 +262,11 @@ const Settings = () => {
                             type="file"
                             name="image"
                             onChange={(e) => {
-                              console.log(e,"eee");
-                              companyDetailsFormik.setFieldValue('image', e.currentTarget.files[0]);
+                              console.log(e, "eee");
+                              companyDetailsFormik.setFieldValue(
+                                "image",
+                                e.currentTarget.files[0]
+                              );
                             }}
                             className="form-control"
                             placeholder=""
@@ -338,10 +381,20 @@ const Settings = () => {
                       <div className="row">
                         <div className="d-flex justify-content-center">
                           <div className="mb-3 mx-3 d-flex justify-content-end">
-                            <button onClick={companyDetailsFormik.handleSubmit} className=" btn btn-primary">Save</button>
+                            <button
+                              onClick={companyDetailsFormik.handleSubmit}
+                              className=" btn btn-primary"
+                            >
+                              Save
+                            </button>
                           </div>
                           <div className="mb-3 mx-3 d-flex justify-content-end">
-                            <button onClick={()=>companyDetailsFormik.resetForm()} className=" btn btn-primary">Cancel</button>
+                            <button
+                              onClick={() => companyDetailsFormik.resetForm()}
+                              className=" btn btn-primary"
+                            >
+                              Cancel
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -361,8 +414,8 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="panNumber"
-                            value={companyDetailsFormik.values.panNumber}
-                            onChange={companyDetailsFormik.handleChange}
+                            value={taxDetailsFormik.values.panNumber}
+                            onChange={taxDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
                           />
@@ -373,8 +426,8 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="cinNumber"
-                            value={companyDetailsFormik.values.cinNumber}
-                            onChange={companyDetailsFormik.handleChange}
+                            value={taxDetailsFormik.values.cinNumber}
+                            onChange={taxDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
                           />
@@ -387,8 +440,8 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="tranceporterId"
-                            value={companyDetailsFormik.values.tranceporterId}
-                            onChange={companyDetailsFormik.handleChange}
+                            value={taxDetailsFormik.values.tranceporterId}
+                            onChange={taxDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
                           />
@@ -424,7 +477,10 @@ const Settings = () => {
                             options={placeOfSupply}
                             placeholder={"Select Place of Supply"}
                             onChange={(e) => {
-                              taxDetailsFormik.setFieldValue(`placeOfSupply`, e.value);
+                              taxDetailsFormik.setFieldValue(
+                                `placeOfSupply`,
+                                e.value
+                              );
                             }}
                             classNamePrefix="select2-selection form-select"
                           />
@@ -440,130 +496,99 @@ const Settings = () => {
                       </div>
 
                       <div className="row mt-4 mb-2">
-                        <div className="col-12 col-md-6 mb-4">
-                          10 More GST available{" "}
-                          <span
-                            onClick={(prev) => {
-                              setViewGst(true);
+                        <a className="col-12 col-md-6 mb-4 d-flex">
+                          <p>
+                            {taxDetailsFormik?.values?.moreGstNumbers?.length}{" "}
+                            More GST available{" "}
+                          </p>
+                          <p
+                            onClick={() => {
+                              setViewGst((prev) => !prev);
                             }}
                           >
-                            View
-                          </span>
-                        </div>
+                            View {viewGst ? "less" : "More"}
+                          </p>
+                        </a>
                       </div>
+                      {/* ------------ map GST ------ */}
+                      {viewGst &&
+                        taxDetailsFormik?.values?.moreGstNumbers?.map(
+                          (gst, key) => {
+                            // console.log(gst, "KKKKKKKKKK");
+                            return (
+                              <div className="row" key={key}>
+                                <div className="col-12 col-md-6 mb-4">
+                                  <label className="form-label">
+                                    GST Number
+                                  </label>
+                                  <Input
+                                    type="text"
+                                    name="moreGstNumbers.gstNo"
+                                    onChange={gstNumberHandler}
+                                    value={gst?.gstNo}
+                                    className="form-control"
+                                    placeholder=""
+                                  />
+                                </div>
 
-                      {/* ----------- more GST --------------- */}
-                      {viewGst && (
-                        <div className="row">
-                          <div className="col-12 col-md-6 mb-4">
-                            <label className="form-label">GST Number</label>
-                            <Input
-                              type="text"
-                              className="form-control"
-                              placeholder=""
-                            />
-                          </div>
-
-                          <div className="col-10 col-md-5 mb-4">
-                            <label className="form-label">
-                              Place of Supply
-                            </label>
-                            <Select
-                              //   value={}
-                              //   name=""
-                              //   options={}
-                              //   placeholder={""}
-                              classNamePrefix="select2-selection form-select"
-                            />
-                          </div>
-                          <div className="col-2 col-md-1">
-                            <button
-                              className="btn border mt-4"
-                              // onClick={() => setGstModal(true)}
-                            >
-                              <i className="bx bx-trash fs-5 align-middle text-danger"></i>
-                            </button>
-                          </div>
-                        </div>
-                      )}
-
-                      {viewGst && (
-                        <div className="row">
-                          <div className="col-12 col-md-6 mb-4">
-                            <label className="form-label">GST Number</label>
-                            <Input
-                              type="text"
-                              className="form-control"
-                              placeholder=""
-                            />
-                          </div>
-
-                          <div className="col-10 col-md-5 mb-4">
-                            <label className="form-label">
-                              Place of Supply
-                            </label>
-                            <Select
-                              //   value={}
-                              //   name=""
-                              //   options={}
-                              //   placeholder={""}
-                              classNamePrefix="select2-selection form-select"
-                            />
-                          </div>
-                          <div className="col-2 col-md-1">
-                            <button
-                              className="btn border mt-4"
-                              // onClick={() => setGstModal(true)}
-                            >
-                              <i className="bx bx-trash fs-5 align-middle text-danger"></i>
-                            </button>
-                          </div>
-                        </div>
-                      )}
-
-                      {viewGst && (
-                        <div className="row">
-                          <div className="col-12 col-md-6 mb-4">
-                            <label className="form-label">GST Number</label>
-                            <Input
-                              type="text"
-                              className="form-control"
-                              placeholder=""
-                            />
-                          </div>
-
-                          <div className="col-10 col-md-5 mb-4">
-                            <label className="form-label">
-                              Place of Supply
-                            </label>
-                            <Select
-                              //   value={}
-                              //   name=""
-                              //   options={}
-                              //   placeholder={""}
-                              classNamePrefix="select2-selection form-select"
-                            />
-                          </div>
-                          <div className="col-2 col-md-1">
-                            <button
-                              className="btn border mt-4"
-                              // onClick={() => setGstModal(true)}
-                            >
-                              <i className="bx bx-trash fs-5 align-middle text-danger"></i>
-                            </button>
-                          </div>
-                        </div>
-                      )}
+                                <div className="col-10 col-md-5 mb-4">
+                                  <label className="form-label">
+                                    Place of Supply
+                                  </label>
+                                  <Select
+                                    value={
+                                      placeOfSupply
+                                        ? placeOfSupply.find(
+                                            (option) =>
+                                              option.value ===
+                                              gst?.placeOfSupply
+                                          )
+                                        : ""
+                                    }
+                                    name="moreGstNumbers.placeOfSupply"
+                                    options={placeOfSupply}
+                                    // onChange={(e) => {
+                                    //   taxDetailsFormik.setFieldValue(
+                                    //     `placeOfSupply`,
+                                    //     e.value
+                                    //   );
+                                    // }}
+                                    // placeholder={"Select Place of Supply"}
+                                    classNamePrefix="select2-selection form-select"
+                                  />
+                                </div>
+                                <div className="col-2 col-md-1">
+                                  <button
+                                    className="btn border mt-4"
+                                    // onClick={() => setGstModal(true)}
+                                  >
+                                    <i className="bx bx-trash fs-5 align-middle text-danger"></i>
+                                  </button>
+                                </div>
+                              </div>
+                            );
+                          }
+                        )}
 
                       {/* ----------- more GST --------------- */}
 
                       <div className="row">
                         <div className="d-flex justify-content-center">
                           <div className="mb-3 mx-3 d-flex justify-content-end">
-                            <button onClick={taxDetailsFormik.handleSubmit} className=" btn btn-primary">Save</button>
+                            <button
+                              onClick={taxDetailsFormik.handleSubmit}
+                              className=" btn btn-primary"
+                            >
+                              Save
+                            </button>
                           </div>
                           <div className="mb-3 mx-3 d-flex justify-content-end">
-                            <button onClick={()=>taxDetailsFormik.resetForm()} className=" btn btn-primary">Cancel</button>
+                            <button
+                              onClick={() => taxDetailsFormik.resetForm()}
+                              className=" btn btn-primary"
+                            >
+                              Cancel
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -590,12 +615,15 @@ const Settings = () => {
                                   )
                                 : ""
                             }
-                              name="industryType"
-                              onChange={(e) => {
-                                bussinessTypeFormik.setFieldValue(`industryType`, e.value);
-                              }}
-                              options={industryType}
-                              placeholder={"Enter Industry Type"}
+                            name="industryType"
+                            onChange={(e) => {
+                              bussinessTypeFormik.setFieldValue(
+                                `industryType`,
+                                e.value
+                              );
+                            }}
+                            options={industryType}
+                            placeholder={"Enter Industry Type"}
                             classNamePrefix="select2-selection form-select"
                           />
                         </div>
@@ -612,12 +640,15 @@ const Settings = () => {
                                   )
                                 : ""
                             }
-                              name="entityType"
-                              onChange={(e) => {
-                                bussinessTypeFormik.setFieldValue(`entityType`, e.value);
-                              }}
-                              options={entityType}
-                              placeholder={"Enter Entity Type"}
+                            name="entityType"
+                            onChange={(e) => {
+                              bussinessTypeFormik.setFieldValue(
+                                `entityType`,
+                                e.value
+                              );
+                            }}
+                            options={entityType}
+                            placeholder={"Enter Entity Type"}
                             classNamePrefix="select2-selection form-select"
                           />
                         </div>
@@ -626,10 +657,20 @@ const Settings = () => {
                       <div className="row">
                         <div className="d-flex justify-content-center">
                           <div className="mb-3 mx-3 d-flex justify-content-end">
-                            <button onClick={bussinessTypeFormik.handleSubmit} className=" btn btn-primary">Save</button>
+                            <button
+                              onClick={bussinessTypeFormik.handleSubmit}
+                              className=" btn btn-primary"
+                            >
+                              Save
+                            </button>
                           </div>
                           <div className="mb-3 mx-3 d-flex justify-content-end">
-                            <button onClick={()=>bussinessTypeFormik.resetForm()} className=" btn btn-primary">Cancel</button>
+                            <button
+                              onClick={() => bussinessTypeFormik.resetForm()}
+                              className=" btn btn-primary"
+                            >
+                              Cancel
+                            </button>
                           </div>
                         </div>
                       </div>

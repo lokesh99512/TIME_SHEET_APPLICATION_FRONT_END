@@ -1,8 +1,8 @@
 
 import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects"
-import { GET_USERS_TABLE_DATA } from "./actiontype"
-import { getUsersDataSuccess, getUsersDataFail } from "./actions"
-import { getSettingsUsers } from "../../helpers/fakebackend_helper"
+import { GET_COMPANYDETAILS_DATA, GET_USERS_TABLE_DATA } from "./actiontype"
+import { getUsersDataSuccess, getUsersDataFail, getCompanyDetailsDataFail, getCompanyDetailsDataSuccess } from "./actions"
+import { getCompanyDetails, getSettingsUsers } from "../../helpers/fakebackend_helper"
 
 function* getUsersData(){
     try {
@@ -14,11 +14,22 @@ function* getUsersData(){
     }
 }
 
+function* getCompanyDetailsData(){
+    try {
+        const response = yield call(getCompanyDetails)
+        // console.log(response,"<---surcharge response");
+        yield put(getCompanyDetailsDataSuccess(response))
+    } catch (error) {
+        yield put(getCompanyDetailsDataFail(error))
+    }
+}
+
 
 
 export function* watchGetSettingsUsersData(){
     // console.log("here");
     yield takeLatest(GET_USERS_TABLE_DATA, getUsersData)
+    yield takeLatest(GET_COMPANYDETAILS_DATA, getCompanyDetailsData)
 }
 
 function* settingsSaga() {

@@ -311,6 +311,10 @@ export const getFCLSurcharge = () => get(url.GET_FCL_SURCHARGE);
 
 // -------------- settings ---------------------------------------
 export const getSettingsUsers = () => get(url.GET_SETTINGS_USERS);
+export const getCompanyDetails = () => get(url.GET_SETTINGS_COMPANYDETAILS);
+
+// ------------ Parties -------------
+export const getPartiesCustomers = () => get(url.GET_PARTIES_CUSTOMERS);
 
 // ---------------- sales ----------------------------------------
 export const getSalesQuotTableData = () => get(url.GET_QUOTATION);

@@ -59,7 +59,7 @@ const stateConverter = (num) => {
   return placeOfSupply.find((place) => +place.Code === +num)?.value;
 };
 
-const ModalAddNewAlias = ({ modal, onCloseClick }) => {
+const ModalAddGST = ({ modal, onCloseClick }) => {
   const formik = useFormik({
     initialValues: addGstInitialValue,
     onSubmit: (value) => {
@@ -209,4 +209,4 @@ const ModalAddNewAlias = ({ modal, onCloseClick }) => {
   );
 };
 
-export default ModalAddNewAlias;
+export default ModalAddGST;

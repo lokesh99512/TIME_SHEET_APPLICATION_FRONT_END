@@ -36,7 +36,8 @@ import {
 } from "../../common/data"
 import { fclSurchargeTableData } from "../../common/data/rate"
 import exchangeRateData from "../../assets/extra/inr.json";
-import { settingsUsersData } from "../../common/data/settings"
+import { companyDetailsData, settingsUsersData } from "../../common/data/settings"
+import { PartiesCustomersData } from "../../common/data/parties"
 
 let users = [
   {
@@ -980,6 +981,39 @@ const fakeBackend = () => {
           resolve([200, settingsUsersData])
         } else {
           reject([400, "Cannot get Users"])
+        }
+      })
+    })
+  })
+
+
+  // settings / companyDetails
+  
+  mock.onGet(url.GET_SETTINGS_COMPANYDETAILS).reply(() => {
+    // console.log("hello");
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (companyDetailsData) {
+          // Passing fake JSON data as response
+          resolve([200, companyDetailsData])
+        } else {
+          reject([400, "Cannot get Company details"])
+        }
+      })
+    })
+  })
+
+
+  // parties / customers
+  
+  mock.onGet(url.GET_PARTIES_CUSTOMERS).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (PartiesCustomersData) {
+          // Passing fake JSON data as response
+          resolve([200, PartiesCustomersData])
+        } else {
+          reject([400, "Cannot get Customers"])
         }
       })
     })
