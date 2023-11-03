@@ -23,9 +23,7 @@ function* fetchLclData(){
 
 function* fetchPLChargesData(){
     try {
-        console.log("here");
         const response = yield call(getPortLocalChargesTableData);
-        console.log(response,"res");
         yield put(getPortLocalChargesDataSuccess(response));
     } catch (error) {
         yield put(getPortLocalChargesDataFail(error));

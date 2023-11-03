@@ -323,18 +323,9 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="markup_val">Markup Value</label>}
                                                                             <input type="text" name="markup_val" id="markup_val" 
-                                                                                value={data?.markup_val} 
+                                                                                value={data?.markup_val || ''} 
                                                                                 onChange={(e) => {
-                                                                                    // let sale_cost;
-                                                                                    // let marginVal = 0;
-                                                                                    // if(data?.markup_type === 'percentage'){
-                                                                                    //     marginVal = ((Number(data?.buy_cost) * Number(e.target.value)/100))
-                                                                                    // } else {
-                                                                                    //     marginVal = Number(e.target.value)
-                                                                                    // }
-                                                                                    // sale_cost = Number(data?.buy_cost) + marginVal;
                                                                                     existingHandleChangeMargin(data, e, 'markup_val', index, 'pickup_quote_charge', item.id);
-                                                                                    // existingHandleChange(data, e, 'markup_val', index, 'pickup_quote_charge', item.id,sale_cost,marginVal);
                                                                                 }} 
                                                                                 placeholder='Enter value' />
                                                                         </div>
@@ -380,12 +371,12 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                     </div>
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            <input type="text" name="uom" id="uom" value={data?.uom} onChange={(e) => handleChange(e.target.value, 'uom', i, 'pickup_quote_charge', item.id)} placeholder='Enter uom' />
+                                                                            <input type="text" name="uom" id="uom" value={data?.uom || ''} onChange={(e) => handleChange(e.target.value, 'uom', i, 'pickup_quote_charge', item.id)} placeholder='Enter uom' />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            <input type="text" name="quantity" id="quantity" value={data?.quantity} onChange={(e) => handleChange(e.target.value, 'quantity', i, 'pickup_quote_charge', item.id)} placeholder='Enter quantity' />
+                                                                            <input type="text" name="quantity" id="quantity" value={data?.quantity || ''} onChange={(e) => handleChange(e.target.value, 'quantity', i, 'pickup_quote_charge', item.id)} placeholder='Enter quantity' />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-1">
@@ -404,7 +395,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                     </div>
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            <input type="text" name="buy_cost" id="buy_cost" value={data?.buy_cost} onChange={(e) => handleChange(e.target.value, 'buy_cost', i, 'pickup_quote_charge', item.id)} placeholder='Enter cost' />
+                                                                            <input type="text" name="buy_cost" id="buy_cost" value={data?.buy_cost || ''} onChange={(e) => handleChange(e.target.value, 'buy_cost', i, 'pickup_quote_charge', item.id)} placeholder='Enter cost' />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-2">
@@ -424,7 +415,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name={`markup_val`} id="markup_val" 
-                                                                            value={data?.markup_val} 
+                                                                            value={data?.markup_val || ''} 
                                                                             onChange={(e) => {
                                                                                 handleChangeAndCalculate(data,e, 'markup_val', i, 'pickup_quote_charge', item.id);
                                                                             }} 
@@ -434,7 +425,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="tax" id="tax" 
-                                                                            value={data?.tax} 
+                                                                            value={data?.tax || ''} 
                                                                             onChange={(e) => {
                                                                                 handleChangeAndCalculate(data,e, 'tax', i, 'pickup_quote_charge', item.id);
                                                                             }} 
