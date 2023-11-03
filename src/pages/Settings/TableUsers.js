@@ -3,8 +3,8 @@ import ReactPaginate from 'react-paginate';
 import { useNavigate } from 'react-router-dom';
 import { useAsyncDebounce, useExpanded, useFilters, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
 import { Row, Table } from 'reactstrap';
-import { filter_icon, upload_icon } from '../../../../assets/images';
-import { DefaultColumnFilter, Filter } from '../../../../components/Common/filters';
+import { filter_icon, upload_icon } from "../../assets/images";
+import { DefaultColumnFilter, Filter } from '../../components/Common/filters';
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -44,7 +44,7 @@ function GlobalFilter({
     );
   }
 
-const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanvas,component}) => {    
+const TableUsers = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanvas,component}) => {    
     const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow, canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize, state, preGlobalFilteredRows, setGlobalFilter, state: { pageIndex, pageSize }, } = useTable({
           columns,
           data,
@@ -71,16 +71,16 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanva
                             setGlobalFilter={setGlobalFilter}
                         />
                     )}
-                    <div className="filter_wrap">
+                    {/* <div className="filter_wrap">
                         <button className='bg-transparent' onClick={toggleRightCanvas}><img src={filter_icon} alt="filter" /></button>
-                    </div>
+                    </div> */}
                     <div className="upload_wrap">
-                        <button className='bg-transparent' onClick={() => {navidate(`/freight/upload/${component}`);}}>
+                        <button className='bg-transparent' onClick={() => {navidate(`/settings/users/uploadFile`);}}>
                             <img src={upload_icon} alt="Upload" />Upload file
                         </button>
                     </div>
                     <div className="add_btn">
-                        <button className='border-0' onClick={() => {navidate(`/freight/upload/${component}`);}}>
+                        <button className='border-0' onClick={() => {navidate(`/settings/users/addUser`);}}>
                             <i className='bx bx-plus align-middle'></i> Add
                         </button>
                     </div>
@@ -122,19 +122,6 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanva
                             </Fragment>
                         );
                         })}
-                        {page?.length === 0 && (
-                            <>
-                                {headerGroups.map(headerGroup => (
-                                    <tr key={`nodata_${headerGroup.id}`}>
-                                        <td colSpan={headerGroup.headers.length}>
-                                            <div className='no_table_data_found'>
-                                                <p>No Data Found. Please Adjust Your Filter. </p>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </>
-                        )}
                     </tbody>
                     </Table>
                 </div>
@@ -228,4 +215,4 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanva
     )
 }
 
-export default TableReact
+export default TableUsers

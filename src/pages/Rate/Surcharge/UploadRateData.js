@@ -21,7 +21,7 @@ const surchargeCategory = [
   { label: "ANCILLARY CHARGES", value: "ancillary_charges" },
   { label: "VAS CHARGES", value: "vas_charges" },
   { label: "CUSTOMS", value: "custom" },
-  { label: "Add New", value: "Add New" },
+  // { label: "Add New", value: "Add New" },
 ];
 const surchargeAliasCode = [
   { label: "THL", value: "THL" },
@@ -35,6 +35,10 @@ const surchargeAliasCode = [
   { label: "LSF", value: "LSF" },
   { label: "ARD", value: "ARD" },
   { label: "DOC", value: "DOC" },
+  { label: "BL FEE", value: "bl_fee" },
+  { label: "CERTIFICATE FEE", value: "certificate_fee" },
+  { label: "EMPTY CONTAINER LIFT FEE", value: "empty_container_lift_fee" },
+  { label: "Add New", value: "Add New" },
 ];
 const surchargeAliasDesc = [
   { label: "Original Terminal Handling Charge	", value: "THL" },
@@ -46,13 +50,18 @@ const surchargeAliasDesc = [
   { label: "Additional Charge	", value: "ADDON" },
   { label: "Low Sulphur Surcharge	", value: "LSF" },
   { label: "Import Haulage Charge	", value: "ARD" },
-  { label: "Documentation Fee", value: "DOC" },
+  { label: "Documentation Fee", value: "DOC" },  
 ];
 
 export default function UploadRateData() {
   const [categoryModal, setCategoryModal] = useState(false);
   const [aliasModal, setAliasModal] = useState(false);
   const navigate = useNavigate();
+
+  const customOptSurchargeCategory = [
+    ...surchargeCategory,
+    { label: "Add New", value: "Add New" },
+  ];
 
   const inputArr = {
     surchargeCode: "",
@@ -86,16 +95,8 @@ export default function UploadRateData() {
     <>
       <div className="page-content">
         <Container fluid>
-          <div className="main_freight_wrapper">
-            <button
-              type="button"
-              className="btn border mb-3"
-              onClick={() => {
-                navigate(-1);
-              }}
-            >
-              Back
-            </button>
+          <div className="main_freight_wrapper surcharges_add_form_wrap">
+            <button type="button" className="btn border mb-3" onClick={() => { navigate(-1); }} > Back </button>
             <Row>
               <Col lg="12">
                 <Card>
@@ -154,9 +155,10 @@ export default function UploadRateData() {
                               onChange={(opt) => {
                                 handleSelectGroup("surchargeCategory", opt);
                               }}
-                              options={surchargeCategory}
+                              options={customOptSurchargeCategory}
                               placeholder={"Select Surcharge Category"}
                               classNamePrefix="select2-selection form-select"
+                              // defaultMenuIsOpen
                             />
                           </div>
                         </div>
@@ -195,7 +197,6 @@ export default function UploadRateData() {
                                 handleSelectGroup("surchargeAliasDesc", opt);
                               }}
                               options={surchargeAliasDesc}
-                              placeholder={"Select Status"}
                               classNamePrefix="select2-selection form-select"
                               isDisabled
                             />

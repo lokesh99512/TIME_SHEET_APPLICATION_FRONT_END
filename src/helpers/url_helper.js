@@ -134,6 +134,9 @@ export const GET_INLAND = "/get-inland"
 // --------------------- Rate Management --------------------------------
 export const GET_FCL_SURCHARGE = "/get-fcl-surcharge"
 
+// --------------------- Settings --------------------------------
+export const GET_SETTINGS_USERS = "/get-settings-users"
+
 
 
 // -------------------- Sales --------------------------------------------

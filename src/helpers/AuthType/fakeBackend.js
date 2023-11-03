@@ -36,6 +36,7 @@ import {
 } from "../../common/data"
 import { fclSurchargeTableData } from "../../common/data/rate"
 import exchangeRateData from "../../assets/extra/inr.json";
+import { settingsUsersData } from "../../common/data/settings"
 
 let users = [
   {
@@ -966,6 +967,27 @@ const fakeBackend = () => {
       })
     })
   })
+
+
+  // settings / users
+  
+  mock.onGet(url.GET_SETTINGS_USERS).reply(() => {
+    // console.log("hello");
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (settingsUsersData) {
+          // Passing fake JSON data as response
+          resolve([200, settingsUsersData])
+        } else {
+          reject([400, "Cannot get Users"])
+        }
+      })
+    })
+  })
+
+
+
+
 }
 
 

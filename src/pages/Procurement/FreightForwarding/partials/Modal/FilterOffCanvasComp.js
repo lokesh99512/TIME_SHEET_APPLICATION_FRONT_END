@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react'
-import { Offcanvas, OffcanvasBody, OffcanvasHeader } from 'reactstrap';
+import React, { useCallback } from 'react';
 import Select from "react-select";
-import { optionCargoType, optionCarrierName, optionDestPort, optionMultiDestination, optionOrgPort, optionVendorName } from '../../../../../common/data/procurement';
+import { Offcanvas, OffcanvasBody, OffcanvasHeader } from 'reactstrap';
+import { optionCargoType, optionCarrierName, optionDestPort, optionOrgPort, optionVendorName } from '../../../../../common/data/procurement';
 
 export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDetails,setfilterDetails,applyFilterHandler,filterType,clearValueHandler}) {
     const handleSelectGroup = useCallback((name, opt) => {
@@ -148,7 +148,7 @@ export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDet
                             </div>                        
                             <div className="btn_wrap d-flex mt-auto">
                                 <button className='btn border' type='button' onClick={clearValueHandler}>Clear</button>
-                                <button className='btn btn-primary' type='button' onClick={applyFilterHandler}>Apply Filter</button>
+                                <button className='btn btn-primary' type='button' onClick={applyFilterHandler} disabled={!(filterDetails.carrier_name !== '' && filterDetails.org_port !== '' && filterDetails.dest_port !== '')}>Apply Filter</button>
                             </div>
                         </div>
                     </form>

@@ -343,32 +343,32 @@ const SidebarContent = props => {
               </Link>
               <ul className="sub-menu">
                 <li>
-                  <Link to="/settings">
+                  <Link to="/settings/company-settings">
                     <span>Company Settings</span>
                   </Link>
                 </li>
                 <li>
-                  <Link to="#">
+                  <Link to="/settings/users">
                     <span>Users</span>
                   </Link>
                 </li>
                 <li>
-                  <Link to="#">
+                  <Link to="/#">
                     <span>Products</span>
                   </Link>
                 </li>
                 <li>
-                  <Link to="#">
+                  <Link to="/#">
                     <span>Network</span>
                   </Link>
                 </li>
                 <li>
-                  <Link to="#">
+                  <Link to="/#">
                     <span>Integrations</span>
                   </Link>
                 </li>
                 <li>
-                  <Link to="#">
+                  <Link to="/#">
                     <span>Subscription</span>
                   </Link>
                 </li>

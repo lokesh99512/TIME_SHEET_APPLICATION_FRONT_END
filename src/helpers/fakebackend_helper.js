@@ -309,6 +309,9 @@ export const getInlandTableData = () => get(url.GET_INLAND);
 // -------------- Rate Management ---------------------------------------
 export const getFCLSurcharge = () => get(url.GET_FCL_SURCHARGE);
 
+// -------------- settings ---------------------------------------
+export const getSettingsUsers = () => get(url.GET_SETTINGS_USERS);
+
 // ---------------- sales ----------------------------------------
 export const getSalesQuotTableData = () => get(url.GET_QUOTATION);
 export const getSearchResultData = () => get(url.GET_QUOTATION_SEARCH_RESULT);

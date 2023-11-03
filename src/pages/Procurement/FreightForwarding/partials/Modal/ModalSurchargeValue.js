@@ -88,16 +88,16 @@ const ModalSurchargeValue = ({ viewData, modal, onCloseClick, modalType }) => {
                                 </div>
                                 {/* -------------- */}
                                 <div className="row view_data_wrap">
-                                    {viewData?.surchargeValue?.map((item, index) => (
+                                    {viewData?.surchargeValue?.length !== 0 ? viewData?.surchargeValue?.map((item, index) => (
                                         <Accordion
                                             flush
                                             open={open}
                                             toggle={toggle}
                                             className="main_accordion common_accordion_wrap"
-                                            key={index}
+                                            key={viewData?.uniq_id}
                                         >
                                             <AccordionItem key={item.id}>
-                                                <AccordionHeader targetId={`main_${index}`}>
+                                                <AccordionHeader targetId={`main_${viewData?.uniq_id}_${index}`}>
                                                     <div className="col">
                                                         <div className="">
                                                             <span className="">
@@ -143,7 +143,7 @@ const ModalSurchargeValue = ({ viewData, modal, onCloseClick, modalType }) => {
                                                     <div className="col">
                                                         <div className="">
                                                             <span className="">
-                                                                {`${item?.tax}%` || "-"}
+                                                                {item?.tax ? `${item?.tax}%` : "-"}
                                                             </span>
                                                         </div>
                                                     </div>                                                    
@@ -157,7 +157,7 @@ const ModalSurchargeValue = ({ viewData, modal, onCloseClick, modalType }) => {
                                                 </AccordionHeader>
                                                 <AccordionBody
                                                     style={{ fontSize: "13px" }}
-                                                    accordionId={`main_${index}`}
+                                                    accordionId={`main_${viewData?.uniq_id}_${index}`}
                                                 >
                                                     <Card style={{ borderRadius: "12px" }}>
                                                         <CardHeader>
@@ -286,7 +286,11 @@ const ModalSurchargeValue = ({ viewData, modal, onCloseClick, modalType }) => {
                                                 </AccordionBody>
                                             </AccordionItem>
                                         </Accordion>
-                                    ))}
+                                    )) : (
+                                        <div className="modal_no_data_wrap">
+                                            <p>There is no charges added!</p>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>

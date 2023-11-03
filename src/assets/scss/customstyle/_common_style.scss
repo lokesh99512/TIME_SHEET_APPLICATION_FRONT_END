@@ -323,6 +323,16 @@ nav.breadcrumb_wrap {
             @include font(400,14px,normal,$neutral_5);
         }
     }
+    .no_table_data_found {
+        width: 100%;
+        min-height: 150px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        p{
+            @include font(600,16px,normal,$neutral_8);
+        }
+    }
 }
 .pagination_wrap {
     .pagination {
