@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { taskStatus } from './initialData';
 import { UncontrolledTooltip } from 'reactstrap';
+import AnimatedCounter from './AnimatedCounter';
 
 const onDragEnd = (result, columns, setColumns) => {
     if (!result.destination) return;
@@ -33,7 +34,6 @@ export default function MainDnd() {
     useEffect(() => {
         setColumns(taskStatus);
     },[])
-    // console.log(columns,"columns=======")
     return (
         <>
             <DragDropContext onDragEnd={(result) => onDragEnd(result, columns, setColumns)} >
@@ -72,7 +72,8 @@ export default function MainDnd() {
                                                             </span>
                                                         )} 
                                                         </p>
-                                                        <p className='sh_sum_rate'>{data?.revenue} 
+                                                        <p className='sh_sum_rate'>
+                                                            {item.id === 'revenue_sum' && '$'}<AnimatedCounter rate={Number(data?.revenue)} />
                                                             <span className={`${data?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{data?.rate}%</span>
                                                         </p>
                                                     </div> 

@@ -15,42 +15,12 @@ const quotationBreadcrumb = [
     },
 ]
 
-// --------------------- rate ----------------------------------------------
-const quotationRateData = [
-    {
-        id: 1,
-        title: 'Quotation Sent',
-        rate: '59',
-        compare_rate: '15',
-        rate_type: 'down'
-    },
-    {
-        id: 2,
-        title: 'Quotation Won',
-        rate: '103',
-        compare_rate: '16',
-        rate_type: 'up'
-    },
-    {
-        id: 3,
-        title: 'Quotation Lost',
-        rate: '35',
-        compare_rate: '17',
-        rate_type: 'down'
-    },
-    {
-        id: 4,
-        title: 'Quotation In Progress',
-        rate: '67',
-        compare_rate: '18',
-        rate_type: 'up'
-    },
-]
-
 // -------------------------------- table data -----------------------------------
 const quotationTableData = [
     {
-        id: 1,
+        id: 'quote_1',
+        logo: cma_logo,
+        name: 'CMA CGM',
         quotation_date: 'Oct 29th 2023',
         quotation_id: 'BLRFC2923001',
         customer_name: 'Apex Exports Pvt Ltd',
@@ -62,9 +32,90 @@ const quotationTableData = [
         quote_val: '',
         quote_status: 'In Progress',
         sales_person: 'Darshita',
+        quote_type: 'preffered',
+        overall_margin: '9.00',
+        pickup: true,
+        pickup: true,
+        origin_port: true,
+        ocean_freight: true,
+        pickport_discharge: true,
+        delivery: true,
+        pickup_quote_charge: [
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            },
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "flat",
+                markup_val: '100',
+                margin_value: '100',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2460'
+            }
+        ],
+        originport_quote_charge: [
+            {
+                charges_name: 'OTHC',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            },
+            {
+                charges_name: 'DFO',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            },
+        ],
+        ocean_quote_charge: [
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            }
+        ]
     },
     {
-        id: 2,
+        id: 'quote_2',
+        logo: cma_logo,
+        name: 'CMA CGM',
         quotation_date: 'Oct 29th 2023',
         quotation_id: 'BLRFC2923002',
         customer_name: 'Balaji Enterprise',
@@ -76,9 +127,89 @@ const quotationTableData = [
         quote_val: '',
         quote_status: 'In Progress',
         sales_person: 'Darshita',
+        quote_type: 'preffered',
+        pickup: true,
+        pickup: true,
+        origin_port: true,
+        ocean_freight: true,
+        pickport_discharge: true,
+        delivery: true,
+        pickup_quote_charge: [
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            },
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "flat",
+                markup_val: '100',
+                margin_value: '100',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2460'
+            }
+        ],
+        originport_quote_charge: [
+            {
+                charges_name: 'OTHC',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            },
+            {
+                charges_name: 'DFO',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            },
+        ],
+        ocean_quote_charge: [
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            }
+        ]
     },
     {
-        id: 3,
+        id: 'quote_3',
+        logo: cma_logo,
+        name: 'CMA CGM',
         quotation_date: 'Oct 29th 2023',
         quotation_id: 'BLRFC2923003',
         customer_name: 'House of Tea Exports',
@@ -90,9 +221,89 @@ const quotationTableData = [
         quote_val: '',
         quote_status: 'In Progress',
         sales_person: 'Vijay',
+        quote_type: 'cheaper',
+        pickup: true,
+        pickup: true,
+        origin_port: true,
+        ocean_freight: true,
+        pickport_discharge: true,
+        delivery: true,
+        pickup_quote_charge: [
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '10',
+                tax_amount: '200',
+                total_sale_cost: '2400'
+            },
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "flat",
+                markup_val: '100',
+                margin_value: '100',
+                tax: '10',
+                tax_amount: '200',
+                total_sale_cost: '2300'
+            }
+        ],
+        originport_quote_charge: [
+            {
+                charges_name: 'OTHC',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            },
+            {
+                charges_name: 'DFO',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            },
+        ],
+        ocean_quote_charge: [
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            }
+        ]
     },
     {
-        id: 4,
+        id: 'quote_4',
+        logo: cma_logo,
+        name: 'CMA CGM',
         quotation_date: 'Oct 25th 2023',
         quotation_id: 'BLRFC2523001',
         customer_name: 'Raj Fruits Exports',
@@ -104,9 +315,89 @@ const quotationTableData = [
         quote_val: '',
         quote_status: 'Lost',
         sales_person: 'Vijay',
+        quote_type: 'cheaper',
+        pickup: true,
+        pickup: true,
+        origin_port: true,
+        ocean_freight: true,
+        pickport_discharge: true,
+        delivery: true,
+        pickup_quote_charge: [
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '10',
+                tax_amount: '200',
+                total_sale_cost: '2400'
+            },
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "flat",
+                markup_val: '100',
+                margin_value: '100',
+                tax: '10',
+                tax_amount: '200',
+                total_sale_cost: '2300'
+            }
+        ],
+        originport_quote_charge: [
+            {
+                charges_name: 'OTHC',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            },
+            {
+                charges_name: 'DFO',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            },
+        ],
+        ocean_quote_charge: [
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            }
+        ]
     },
     {
-        id: 5,
+        id: 'quote_5',
+        logo: cma_logo,
+        name: 'CMA CGM',
         quotation_date: 'Oct 25th 2023',
         quotation_id: 'BLRFC2923002',
         customer_name: 'Raj Fruits Exports',
@@ -118,9 +409,89 @@ const quotationTableData = [
         quote_val: '',
         quote_status: 'Won',
         sales_person: 'Vijay',
+        quote_type: 'cheaper',
+        pickup: true,
+        pickup: true,
+        origin_port: true,
+        ocean_freight: true,
+        pickport_discharge: true,
+        delivery: true,
+        pickup_quote_charge: [
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '10',
+                tax_amount: '200',
+                total_sale_cost: '2400'
+            },
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "flat",
+                markup_val: '100',
+                margin_value: '100',
+                tax: '10',
+                tax_amount: '200',
+                total_sale_cost: '2300'
+            }
+        ],
+        originport_quote_charge: [
+            {
+                charges_name: 'OTHC',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            },
+            {
+                charges_name: 'DFO',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            },
+        ],
+        ocean_quote_charge: [
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            }
+        ]
     },
     {
-        id: 6,
+        id: 'quote_6',
+        logo: cma_logo,
+        name: 'CMA CGM',
         quotation_date: 'Oct 25th 2023',
         quotation_id: 'BLRFC2523003',
         customer_name: 'Apex Exports Pvt Ltd',
@@ -132,9 +503,89 @@ const quotationTableData = [
         quote_val: '',
         quote_status: 'Lost',
         sales_person: 'Sumit',
+        quote_type: 'faster',
+        pickup: true,
+        pickup: true,
+        origin_port: true,
+        ocean_freight: true,
+        pickport_discharge: true,
+        delivery: true,
+        pickup_quote_charge: [
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '20',
+                margin_value: '400',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2760'
+            },
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "flat",
+                markup_val: '100',
+                margin_value: '100',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2460'
+            }
+        ],
+        originport_quote_charge: [
+            {
+                charges_name: 'OTHC',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            },
+            {
+                charges_name: 'DFO',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            },
+        ],
+        ocean_quote_charge: [
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            }
+        ]
     },
     {
-        id: 7,
+        id: 'quote_7',
+        logo: cma_logo,
+        name: 'CMA CGM',
         quotation_date: 'Oct 29th 2023',
         quotation_id: 'BLRFC2923004',
         customer_name: 'Apex Exports Pvt Ltd',
@@ -146,9 +597,89 @@ const quotationTableData = [
         quote_val: '',
         quote_status: 'Won',
         sales_person: 'Sumit',
+        quote_type: 'faster',
+        pickup: true,
+        pickup: true,
+        origin_port: true,
+        ocean_freight: true,
+        pickport_discharge: true,
+        delivery: true,
+        pickup_quote_charge: [
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '20',
+                margin_value: '400',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2760'
+            },
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "flat",
+                markup_val: '100',
+                margin_value: '100',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2460'
+            }
+        ],
+        originport_quote_charge: [
+            {
+                charges_name: 'OTHC',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            },
+            {
+                charges_name: 'DFO',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            },
+        ],
+        ocean_quote_charge: [
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            }
+        ]
     },
     {
-        id: 8,
+        id: 'quote_8',
+        logo: cma_logo,
+        name: 'CMA CGM',
         quotation_date: 'Oct 29th 2023',
         quotation_id: 'BLRFC2923005',
         customer_name: 'Balaji Enterprise',
@@ -160,6 +691,84 @@ const quotationTableData = [
         quote_val: '',
         quote_status: 'Won',
         sales_person: 'Darshita',
+        quote_type: 'preffered',
+        pickup: true,
+        pickup: true,
+        origin_port: true,
+        ocean_freight: true,
+        pickport_discharge: true,
+        delivery: true,
+        pickup_quote_charge: [
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            },
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "flat",
+                markup_val: '100',
+                margin_value: '100',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2460'
+            }
+        ],
+        originport_quote_charge: [
+            {
+                charges_name: 'OTHC',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            },
+            {
+                charges_name: 'DFO',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            },
+        ],
+        ocean_quote_charge: [
+            {
+                charges_name: 'Freight',
+                uom: '20GP',
+                quantity: '2',
+                currency: 'USD',
+                buy_cost: 2000,
+                markup_type: "percentage",
+                markup_val: '10',
+                margin_value: '200',
+                tax: '18',
+                tax_amount: '360',
+                total_sale_cost: '2560'
+            }
+        ]
     },
 ]
 
@@ -602,7 +1211,7 @@ const optionStatusQuote = [
 const optionQuoteValueQuote = []
 
 export {
-    quotationBreadcrumb,quotationRateData,quotationTableData,optionCustomerName,optionServiceType,optionTransportBy,optionContainerType,optionIncoterm,optionCargoType,optionCurrency,
+    quotationBreadcrumb,quotationTableData,optionCustomerName,optionServiceType,optionTransportBy,optionContainerType,optionIncoterm,optionCargoType,optionCurrency,
     optionlocationType,countryList,optionPortList,optionLandTransportBy,searchQuotationResult,weightUnitOption,optionContainerTypeWithoutRefri,optionContainerTypeRefrigerated,
     optionPickupCharge,optionMarkupType,optionCurrencyCharges,optionOriginQuote,optionModeQuote,optionDestQuote,optionStatusQuote,optionQuoteValueQuote
 }

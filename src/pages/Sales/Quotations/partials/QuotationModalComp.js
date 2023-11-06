@@ -11,7 +11,7 @@ import { getCurrencyExchangeRate } from '../../../../store/Sales/actions';
 import { QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_UPDATE } from '../../../../store/Sales/actiontype';
 
 
-const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPreviewModal }) => {
+const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPreviewModal,viewData }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [dropId, setDropId] = useState(false);
     const dropdownRef = useRef(null);
@@ -186,7 +186,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
         setDropId(id);
     };
     useOutsideClick(dropdownRef, setIsOpen);
-    // ------------ custom dropdown ------------------- 
+    // ------------ custom dropdown ------------------- ")
     return (
         <>
             <Modal size="xl" isOpen={quoteModal} toggle={() => { QuoteModalHandler(); }} className='quotation_modal_wrap' >
@@ -199,7 +199,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                             <div className="common_dropdwon_btn_wrap">
                                 <div
                                     id='more_menu'
-                                    className={`d-flex align-items-center ${isOpen && dropId === 8 ? 'openmenu' : ''}`}
+                                    className={`d-flex align-items-center ${isOpen && dropId === 8 ? 'openmenu' : ''} ${viewData ? 'disable' : ''}`}
                                     onClick={() => { toggleDropdown(8) }}
                                 >
                                     {optionCurrency ? `${optionCurrency.find(obj => obj.value === formik.values.currencyVal).code} ${optionCurrency.find(obj => obj.value === formik.values.currencyVal).name}` : ''}
@@ -223,7 +223,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                             </div>
                             <span className='exchange_rate'>Exchange Rate:
                                 <input type="number" name="exchangeRate" id="exchange_rate" placeholder='-' value={formik.values.exchangeRate}
-                                    onChange={(e) => { formik.setFieldValue('exchangeRate', e.target.value) }} /></span>
+                                    onChange={(e) => { formik.setFieldValue('exchangeRate', e.target.value) }} disabled={viewData} /></span>
                         </div>
                         <button
                             onClick={() => {
@@ -277,31 +277,31 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                     <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="charges_name">Charge Name</label>}
-                                                                            <input type="text" value={data?.charges_name || ''} name="charges_name" id="charges_name" placeholder='Freight' readOnly disabled />
+                                                                            <input type="text" value={data?.charges_name || ''} name="charges_name" id="charges_name" placeholder='Freight' readOnly disabled={viewData} />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="uom">UoM</label>}
-                                                                            <input type="text" value={data?.uom || ''} name="uom" id="uom" placeholder='20GP' readOnly disabled />
+                                                                            <input type="text" value={data?.uom || ''} name="uom" id="uom" placeholder='20GP' readOnly disabled={viewData} />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="quantity">Quantity</label>}
-                                                                            <input type="text" value={data?.quantity || ''} name="quantity" id="quantity" placeholder='2' readOnly disabled />
+                                                                            <input type="text" value={data?.quantity || ''} name="quantity" id="quantity" placeholder='2' readOnly disabled={viewData} />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="buy_currency">Buy Currency</label>}
-                                                                            <input type="text" value={data?.currency || ''} name="buy_currency" id="buy_currency" placeholder='USD' readOnly disabled />
+                                                                            <input type="text" value={data?.currency || ''} name="buy_currency" id="buy_currency" placeholder='USD' readOnly disabled={viewData} />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="buy_cost">Total Buy Cost</label>}
-                                                                            <input type="text" value={data?.buy_cost || ''} name="buy_cost" id="buy_cost" placeholder='2000' readOnly disabled />
+                                                                            <input type="text" value={data?.buy_cost || ''} name="buy_cost" id="buy_cost" placeholder='2000' readOnly disabled={viewData} />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-2">
@@ -314,6 +314,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                                     existingHandleChange(opt.value, 'markup_type', index, 'pickup_quote_charge', item.id);
                                                                                 }}
                                                                                 options={optionMarkupType}
+                                                                                isDisabled={viewData}
                                                                                 classNamePrefix="select2-selection form-select"
                                                                                 menuPlacement="auto"
                                                                             />
@@ -327,19 +328,19 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                                 onChange={(e) => {
                                                                                     existingHandleChangeMargin(data, e, 'markup_val', index, 'pickup_quote_charge', item.id);
                                                                                 }} 
-                                                                                placeholder='Enter value' />
+                                                                                placeholder='Enter value' disabled={viewData} />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="tax">Tax</label>}
-                                                                            <input type="text" value={data?.tax || ''} name="tax" id="tax" placeholder='18' readOnly disabled />
+                                                                            <input type="text" value={data?.tax || ''} name="tax" id="tax" placeholder='18' readOnly disabled={viewData} />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="total_sale_cost">Total Sale Cost</label>}
-                                                                            <input type="text" value={Number(data?.total_sale_cost).toFixed(2) || ''} name="total_sale_cost" id="total_sale_cost" placeholder='2200' readOnly disabled />
+                                                                            <input type="text" value={Number(data?.total_sale_cost).toFixed(2) || ''} name="total_sale_cost" id="total_sale_cost" placeholder='2200' readOnly disabled={viewData} />
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -441,11 +442,13 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                 </div>
                                                             </div>
                                                         ))}
-                                                        <div className="add_btn_box mt-3">
-                                                            <div className="add_btn_wrap">
-                                                                <button type='button' className="btn btn-primary add_btn d-flex align-items-center" onClick={() => { addHandler('pickup_quote_charge', item.id); }}> <i className='bx bx-plus me-2'></i> Add Charges</button>
+                                                        {!viewData && (
+                                                            <div className="add_btn_box mt-3">
+                                                                <div className="add_btn_wrap">
+                                                                    <button type='button' className="btn btn-primary add_btn d-flex align-items-center" onClick={() => { addHandler('pickup_quote_charge', item.id); }}> <i className='bx bx-plus me-2'></i> Add Charges</button>
+                                                                </div>
                                                             </div>
-                                                        </div>
+                                                        )}
                                                     </AccordionBody>
                                                 </AccordionItem>
                                             )}
@@ -501,6 +504,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                                     existingHandleChange(opt.value, 'markup_type', index, 'originport_quote_charge', item.id);
                                                                                 }}
                                                                                 options={optionMarkupType}
+                                                                                isDisabled={viewData}
                                                                                 classNamePrefix="select2-selection form-select"
                                                                                 menuPlacement="auto"
                                                                             />
@@ -512,18 +516,9 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                             <input type="text" name="markup_val" id="markup_val" 
                                                                                 value={data?.markup_val} 
                                                                                 onChange={(e) => {
-                                                                                    // let sale_cost;
-                                                                                    // let marginVal = 0;
-                                                                                    // if(data?.markup_type === 'percentage'){
-                                                                                    //     marginVal = ((Number(data?.buy_cost) * Number(e.target.value)/100))
-                                                                                    // } else {
-                                                                                    //     marginVal = Number(e.target.value)
-                                                                                    // }
-                                                                                    // sale_cost = Number(data?.buy_cost) + marginVal;
-                                                                                    // existingHandleChange(e.target.value, 'markup_val', index, 'originport_quote_charge', item.id,sale_cost,marginVal);
                                                                                     existingHandleChangeMargin(data, e, 'markup_val', index, 'originport_quote_charge', item.id);
                                                                                 }} 
-                                                                                placeholder='Enter value' />
+                                                                                placeholder='Enter value' disabled={viewData} />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-1">
@@ -638,11 +633,13 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                 </div>
                                                             </div>
                                                         ))}
+                                                        {!viewData && (
                                                         <div className="add_btn_box mt-3">
                                                             <div className="add_btn_wrap">
                                                                 <button type='button' className="btn btn-primary add_btn d-flex align-items-center" onClick={() => { addHandler('originport_quote_charge', item.id); }}> <i className='bx bx-plus me-2'></i> Add Charges</button>
                                                             </div>
                                                         </div>
+                                                        )}
                                                     </AccordionBody>
                                                 </AccordionItem>
                                             )}
@@ -698,6 +695,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                                     existingHandleChange(opt.value, 'markup_type', index, 'ocean_quote_charge', item.id);
                                                                                 }}
                                                                                 options={optionMarkupType}
+                                                                                isDisabled={viewData}
                                                                                 classNamePrefix="select2-selection form-select"
                                                                                 menuPlacement="auto"
                                                                             />
@@ -709,17 +707,8 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                             <input type="text" name="markup_val" id="markup_val" 
                                                                                 value={data?.markup_val} 
                                                                                 onChange={(e) => {
-                                                                                    // let sale_cost;
-                                                                                    // let marginVal = 0;
-                                                                                    // if(data?.markup_type === 'percentage'){
-                                                                                    //     marginVal = ((Number(data?.buy_cost) * Number(e.target.value)/100))
-                                                                                    // } else {
-                                                                                    //     marginVal = Number(e.target.value)
-                                                                                    // }
-                                                                                    // sale_cost = Number(data?.buy_cost) + marginVal;
-                                                                                    // existingHandleChange(e.target.value, 'markup_val', index, 'ocean_quote_charge', item.id,sale_cost,marginVal);
                                                                                     existingHandleChangeMargin(data, e, 'markup_val', index, 'ocean_quote_charge', item.id);
-                                                                                }} placeholder='Enter value' />
+                                                                                }} placeholder='Enter value' disabled={viewData} />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-1">
@@ -833,11 +822,13 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                                                                 </div>
                                                             </div>
                                                         ))}
+                                                        {!viewData && (
                                                         <div className="add_btn_box mt-3">
                                                             <div className="add_btn_wrap">
                                                                 <button type='button' className="btn btn-primary add_btn d-flex align-items-center" onClick={() => { addHandler('ocean_quote_charge', item.id); }}> <i className='bx bx-plus me-2'></i> Add Charges</button>
                                                             </div>
                                                         </div>
+                                                        )}
                                                     </AccordionBody>
                                                 </AccordionItem>
                                             )}
@@ -903,6 +894,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                         </Accordion>
                     ) : <p>No data found</p>}
                 </div>
+                {!viewData && (
                 <div className="modal-footer">
                     <div className="btn_wrap">
                         <button type="button" className='btn border_btn' onClick={() => {                            
@@ -912,6 +904,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler,setPr
                         <button type="button" className='btn btn-primary ms-2' onClick={() => {previewQuotationHandler()}}>Preview Quotation</button>
                     </div>
                 </div>
+                )}
             </Modal>
         </>
     )
