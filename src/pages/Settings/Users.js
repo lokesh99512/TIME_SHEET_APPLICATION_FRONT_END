@@ -24,11 +24,19 @@ import { useDispatch } from "react-redux";
 import { getUsersData, updateUserSwitchData } from "../../store/Settings/actions";
 import { edit_icon } from "../../assets/images";
 import { useNavigate } from "react-router-dom";
+import ModalResetPassword from "./Modal/ModalResetPassword";
 
 const Users = () => {
   const [isRight, setIsRight] = useState(false);
+  const [resetModal, setResetModal] = useState(false);
+//   const [viewData, setViewData] = useState(false);
   const dispatch = useDispatch();
   const navidate = useNavigate()
+
+  const resetHandler = (data) => {
+    setResetModal(true);
+    // setViewData(data);
+}
 
   const settingsUsersData = useSelector(
     (state) => state.settings.settings_users_data
@@ -37,6 +45,10 @@ const Users = () => {
   const toggleRightCanvas = () => {
     setIsRight(!isRight);
   };
+
+  const onCloseClick = () => {
+    setResetModal(false);
+}
 
   const viewPopupHandler = (data) => {
     console.log("popup");
@@ -129,7 +141,7 @@ const Users = () => {
         return (
           <ResetPassword
             cellProps={cellProps}
-            viewPopupHandler={viewPopupHandler}
+            viewPopupHandler={resetHandler}
           />
         );
       },
@@ -142,30 +154,32 @@ const Users = () => {
       Cell: (cellProps) => {
         // return <Status cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
         return (
-        //   <DropdownItem onClick={(e) => e.stopPropagation()}>
-        //     <div className="switch_wrap">
-        //       <FormGroup switch>
-        //         <Input
-        //           type="switch"
-        //           checked={cellProps.row.original?.is_active || false}
-        //           onClick={() => {
-        //             switchHandler(cellProps.row.original);
-        //           }}
-        //           readOnly
-        //         />
-        //       </FormGroup>
-        //     </div>
-        //   </DropdownItem>
-        <div
-                      className="form-check form-switch form-switch-md mb-3"
-                      dir="ltr"
-                    >
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        id="customSwitchsizemd"
-                      />
-                    </div>
+          <DropdownItem onClick={(e) => e.stopPropagation()}>
+            <div className="switch_wrap">
+              <FormGroup switch>
+                <Input
+                  type="switch"
+                  checked={cellProps.row.original?.is_active || false}
+                  onClick={() => {
+                    switchHandler(cellProps.row.original);
+                  }}
+                  readOnly
+                />
+              </FormGroup>
+            </div>
+          </DropdownItem>
+
+
+        // <div
+        //               className="form-check form-switch form-switch-md mb-3"
+        //               dir="ltr"
+        //             >
+        //               <input
+        //                 type="checkbox"
+        //                 className="form-check-input"
+        //                 id="customSwitchsizemd"
+        //               />
+        //             </div>
         );
       },
     },
@@ -204,6 +218,8 @@ const Users = () => {
 
             {/* modal */}
             {/* <ModalSurchargeValue modal={modal} onCloseClick={onCloseClick} viewData={viewData} modalType={'PortLocalCharges'} /> */}
+            <ModalResetPassword modal={resetModal} onCloseClick={onCloseClick}  />
+
           </div>
         </Container>
       </div>

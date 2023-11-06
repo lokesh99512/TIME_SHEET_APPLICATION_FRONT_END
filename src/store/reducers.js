@@ -39,6 +39,9 @@ import quotation from "./Sales/Quotation/reducer"
 // Settings
 import settings from "./Settings/reducer"
 
+//Parties
+import parties from "./Parties/reducer"
+
 const rootReducer = combineReducers({
   // public
   Layout,
@@ -55,7 +58,8 @@ const rootReducer = combineReducers({
   sales,
   rate,
   quotation,
-  settings
+  settings,
+  parties
 })
 
 export default rootReducer
