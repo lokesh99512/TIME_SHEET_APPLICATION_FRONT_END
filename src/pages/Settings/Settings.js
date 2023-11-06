@@ -278,7 +278,7 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="companyName"
-                            value={companyDetailsFormik.values.companyName}
+                            value={companyDetailsFormik?.values?.companyName}
                             onChange={companyDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""

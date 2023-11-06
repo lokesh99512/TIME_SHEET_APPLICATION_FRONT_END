@@ -92,7 +92,7 @@ export default function FilterPortCanvasComp({isRight,toggleRightCanvas,filterDe
                             </div>                        
                             <div className="btn_wrap d-flex mt-auto">
                                 <button className='btn border' type='button' onClick={clearValueHandler}>Clear</button>
-                                <button className='btn btn-primary' type='button' onClick={applyFilterHandler}>Apply Filter</button>
+                                <button className='btn btn-primary' type='button' onClick={applyFilterHandler} disabled={!(filterDetails.port_name !== '' && filterDetails.carrier_name !== '' && filterDetails.movement_type !== '')}>Apply Filter</button>
                             </div>
                         </div>
                     </form>
