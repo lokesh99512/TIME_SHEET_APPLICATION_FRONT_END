@@ -94,3 +94,75 @@ export const PartiesCustomersData = [
     },
     
   ];
+export const PartiesVendorsData = [
+    {
+      id: 1,
+      VendorCode: "123908AB",
+      VendorName: "Online network",
+      VendorType: "Carrier",
+      ServiceType: "Ocean",
+      contactName:"Rajeev",
+      contactNo: "9800045678",
+      email: "r1@gmail.com",
+      city: "Chennai",
+      lastTransaction: "4",
+      createdOn: "Jul 17, 2023",
+      is_active: true,
+
+      // customerDetails:"test details 123",
+      // contacts:"12341234",
+      // documents:"pancard",
+      // rates:"1000",
+      // discounts:"10%",
+      // invoiceSettings:"test",
+      // invoices:"test invoice",
+      // communications:"test"
+    },
+    {
+      id: 2,
+      VendorCode: "123908AB",
+      VendorName: "OOCL",
+      VendorType: "Carrier",
+      ServiceType: "Ocean",
+      contactName:"Nair",
+      contactNo: "9800055678",
+      email: "n@gmail.com",
+      city: "Chennai",
+      lastTransaction: "5",
+      createdOn: "Jul 17, 2023",
+      is_active: true,
+
+      // customerDetails:"test details 123",
+      // contacts:"12341234",
+      // documents:"pancard",
+      // rates:"2000",
+      // discounts:"10%",
+      // invoiceSettings:"test",
+      // invoices:"test invoice",
+      // communications:"test"
+    },
+    {
+      id: 3,
+      VendorCode: "423908AB",
+      VendorName: "ZIM",
+      VendorType: "Carrier",
+      ServiceType: "Ocean",
+      contactName:"Usha",
+      contactNo: "9800065678",
+      email: "u@gmail.com",
+      city: "Chennai",
+      lastTransaction: "6",
+      createdOn: "Jul 17, 2023",
+      is_active: false,
+
+      // customerDetails:"test details 123",
+      // contacts:"12341234",
+      // documents:"pancard",
+      // rates:"3000",
+      // discounts:"10%",
+      // invoiceSettings:"test",
+      // invoices:"test invoice",
+      // communications:"test"
+    },
+    
+  ];

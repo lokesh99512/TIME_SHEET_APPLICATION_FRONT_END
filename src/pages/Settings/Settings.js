@@ -108,14 +108,14 @@ const Settings = () => {
   );
 
   const companyDetailsData = useSelector(
-    (state) => state.settings.settings_companydetails_data
+    (state) => state?.settings?.settings_companydetails_data
   );
 
   console.log(companyDetailsData[0], "<--full data");
   // console.log(companyDetailsInitial, "<--comppany details");
   // console.log(taxDetailsInitial, "<--tax details");
   // console.log(bussinessTypeInitial, "<--bussiness type");
-
+  
   useEffect(() => {
     setCompanyDetailsInitial(companyDetailsData[0]);
     setTaxDetailsInitial(companyDetailsData[0]);
@@ -123,7 +123,7 @@ const Settings = () => {
   }, [companyDetailsData]);
 
   const dispatch = useDispatch();
-
+  
   const companyDetailsFormik = useFormik({
     initialValues: companyDetailsInitial,
     enableReinitialize: true,
@@ -278,7 +278,7 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="companyName"
-                            value={companyDetailsFormik.values.companyName}
+                            value={companyDetailsFormik?.values?.companyName}
                             onChange={companyDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
@@ -292,7 +292,7 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="contactNumber"
-                            value={companyDetailsFormik.values.contactNumber}
+                            value={companyDetailsFormik?.values?.contactNumber}
                             onChange={companyDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
@@ -304,7 +304,7 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="email"
-                            value={companyDetailsFormik.values.email}
+                            value={companyDetailsFormik?.values?.email}
                             onChange={companyDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
@@ -318,7 +318,7 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="companyAddress"
-                            value={companyDetailsFormik.values.companyAddress}
+                            value={companyDetailsFormik?.values?.companyAddress}
                             onChange={companyDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
@@ -332,7 +332,7 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="city"
-                            value={companyDetailsFormik.values.city}
+                            value={companyDetailsFormik?.values?.city}
                             onChange={companyDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
@@ -344,7 +344,7 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="state"
-                            value={companyDetailsFormik.values.state}
+                            value={companyDetailsFormik?.values?.state}
                             onChange={companyDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
@@ -358,7 +358,7 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="zipcode"
-                            value={companyDetailsFormik.values.zipcode}
+                            value={companyDetailsFormik?.values?.zipcode}
                             onChange={companyDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
@@ -370,7 +370,7 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="country"
-                            value={companyDetailsFormik.values.country}
+                            value={companyDetailsFormik?.values?.country}
                             onChange={companyDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
@@ -414,7 +414,7 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="panNumber"
-                            value={taxDetailsFormik.values.panNumber}
+                            value={taxDetailsFormik?.values?.panNumber}
                             onChange={taxDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
@@ -426,7 +426,7 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="cinNumber"
-                            value={taxDetailsFormik.values.cinNumber}
+                            value={taxDetailsFormik?.values?.cinNumber}
                             onChange={taxDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
@@ -440,7 +440,7 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="tranceporterId"
-                            value={taxDetailsFormik.values.tranceporterId}
+                            value={taxDetailsFormik?.values?.tranceporterId}
                             onChange={taxDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
@@ -455,7 +455,7 @@ const Settings = () => {
                             type="text"
                             name="gstNumber"
                             onChange={gstNumberHandler}
-                            value={taxDetailsFormik.values.gstNumber}
+                            value={taxDetailsFormik?.values?.gstNumber}
                             className="form-control"
                             placeholder="Enter GST Number"
                           />
@@ -469,7 +469,7 @@ const Settings = () => {
                                 ? placeOfSupply.find(
                                     (option) =>
                                       option.value ===
-                                      taxDetailsFormik.values.placeOfSupply
+                                      taxDetailsFormik?.values?.placeOfSupply
                                   )
                                 : ""
                             }
@@ -611,7 +611,7 @@ const Settings = () => {
                                 ? industryType.find(
                                     (option) =>
                                       option.value ===
-                                      bussinessTypeFormik.values.industryType
+                                      bussinessTypeFormik?.values?.industryType
                                   )
                                 : ""
                             }
@@ -636,7 +636,7 @@ const Settings = () => {
                                 ? entityType.find(
                                     (option) =>
                                       option.value ===
-                                      bussinessTypeFormik.values.entityType
+                                      bussinessTypeFormik?.values?.entityType
                                   )
                                 : ""
                             }
