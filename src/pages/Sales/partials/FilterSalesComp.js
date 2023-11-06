@@ -3,7 +3,7 @@ import "nouislider/distribute/nouislider.css";
 import React, { useCallback, useState } from 'react';
 import Select from "react-select";
 import { Offcanvas, OffcanvasBody, OffcanvasHeader } from 'reactstrap';
-import { optionDestQuote, optionModeQuote, optionOriginQuote, optionQuoteValueQuote, optionStatusQuote } from '../../../common/data/sales';
+import { optionDestQuote, optionModeQuote, optionOriginQuote, optionStatusQuote } from '../../../common/data/sales';
 
 export default function FilterSalesComp({ isRight, toggleRightCanvas, filterDetails, setfilterDetails, applyFilterHandler, clearValueHandler }) {
     const [rangeValues, setRangeValues] = useState([45, 2500]); // Initial values for the range slider
@@ -18,7 +18,7 @@ export default function FilterSalesComp({ isRight, toggleRightCanvas, filterDeta
     const handleRangeChange = (values, handle) => {
         let newObj = {
             ...filterDetails,
-            priceRange: values
+            quote_value: values
         }
         setRangeValues(values);
         setfilterDetails(newObj);
@@ -55,7 +55,7 @@ export default function FilterSalesComp({ isRight, toggleRightCanvas, filterDeta
                     <form className='h-100'>
                         <div className="fcl_filter_sidebar_wrap sales_filter_wrap d-flex flex-column h-100">
                             <div className="row">
-                                <div className="col-lg-12">
+                                {/* <div className="col-lg-12">
                                     <p className="form-label">Quotation Date</p>
                                     <Nouislider
                                         range={{
@@ -80,7 +80,7 @@ export default function FilterSalesComp({ isRight, toggleRightCanvas, filterDeta
                                     <div className='range_label'>
                                         {formatDate(dateRange[0])} - {formatDate(dateRange[1])}
                                     </div>
-                                </div>
+                                </div> */}
                                 {/* <div className="col-lg-12">
                                     <p className="form-label">Price</p>
                                     <Nouislider
@@ -95,16 +95,25 @@ export default function FilterSalesComp({ isRight, toggleRightCanvas, filterDeta
                                     </div>
                                 </div> */}
                                 <div className="col-lg-12">
-                                    <span className="divider"></span>
+                                    <div className="mb-3">
+                                        <label htmlFor='quotation_from' className="form-label">Quotation From</label>
+                                        <input type="date" name="quotation_from" id="quotation_from" className='form-control' value={filterDetails.quotation_from} onChange={(e) => handleSelectGroup('quotation_from', e.target.value)} />
+                                    </div>
                                 </div>
+                                <div className="col-lg-12">
+                                    <div className="mb-3">
+                                        <label htmlFor='quotation_to' className="form-label">Quotation To</label>
+                                        <input type="date" name="quotation_to" id="quotation_to" className='form-control' value={filterDetails.quotation_to} onChange={(e) => handleSelectGroup('quotation_to', e.target.value)} />
+                                    </div>
+                                </div>                            
                                 <div className="col-lg-12">
                                     <div className="mb-3">
                                         <label className="form-label">Origin</label>
                                         <Select
-                                            value={filterDetails.origin_name}
-                                            name='origin_name'
+                                            value={filterDetails.org_port}
+                                            name='org_port'
                                             onChange={(opt) => {
-                                                handleSelectGroup('origin_name', opt);
+                                                handleSelectGroup('org_port', opt);
                                             }}
                                             options={optionOriginQuote}
                                             placeholder={'Select Origin'}
@@ -116,10 +125,10 @@ export default function FilterSalesComp({ isRight, toggleRightCanvas, filterDeta
                                     <div className="mb-3">
                                         <label className="form-label">Destination</label>
                                         <Select
-                                            value={filterDetails.destination_name}
-                                            name='destination_name'
+                                            value={filterDetails.dest_port}
+                                            name='dest_port'
                                             onChange={(opt) => {
-                                                handleSelectGroup('destination_name', opt);
+                                                handleSelectGroup('dest_port', opt);
                                             }}
                                             options={optionDestQuote}
                                             placeholder={'Select Destination'}
@@ -143,21 +152,35 @@ export default function FilterSalesComp({ isRight, toggleRightCanvas, filterDeta
                                     </div>
                                 </div>
                                 <div className="col-lg-12">
-                                    <div className="mb-3">
-                                        <label className="form-label">Status</label>
-                                        <Select
-                                            value={filterDetails.quote_status}
-                                            name='quote_status'
-                                            onChange={(opt) => {
-                                                handleSelectGroup('quote_status', opt);
-                                            }}
-                                            options={optionStatusQuote}
-                                            placeholder={'Select Destination'}
-                                            classNamePrefix="select2-selection form-select"
-                                        />
-                                    </div>
+                                    <label className="form-label">Status</label>
+                                    <Select
+                                        value={filterDetails.quote_status}
+                                        name='quote_status'
+                                        onChange={(opt) => {
+                                            handleSelectGroup('quote_status', opt);
+                                        }}
+                                        options={optionStatusQuote}
+                                        placeholder={'Select Destination'}
+                                        classNamePrefix="select2-selection form-select"
+                                    />
                                 </div>
                                 <div className="col-lg-12">
+                                    <span className="divider"></span>
+                                </div>
+                                <div className="col-lg-12">
+                                    <p className="form-label">Quotation Value</p>
+                                    <Nouislider
+                                        range={{ min: 45, max: 3000 }}
+                                        step={5}
+                                        start={rangeValues}
+                                        onSlide={handleRangeChange}
+                                        connect
+                                    />
+                                    <div className='range_label'>
+                                        ${rangeValues[0]} - ${rangeValues[1]}
+                                    </div>
+                                </div>
+                                {/* <div className="col-lg-12">
                                     <div className="mb-3">
                                         <label className="form-label">Quotation Value</label>
                                         <Select
@@ -171,7 +194,7 @@ export default function FilterSalesComp({ isRight, toggleRightCanvas, filterDeta
                                             classNamePrefix="select2-selection form-select"
                                         />
                                     </div>
-                                </div>
+                                </div> */}
                                 {/* <div className="col-lg-12">
                                     <p className="form-label">Type of Containers</p>
                                     <div className="radio_wrap d-flex flex-wrap">

@@ -7,7 +7,8 @@ export default function TopBreadcrumbs({ breadcrumbs, data }) {
         <>
             <div className="tf_top_breadcrumb_rate_wrap">
                 <TfBreadcrumbs breadcrumb={breadcrumbs} />
-                <div className="tf_box_wrap d-flex">
+                {data !== undefined ? (
+                    <div className="tf_box_wrap d-flex">
                     {(data || []).map((item) => (
                         <div className="sh_box flex-grow-1" key={item?.id}>
                             <p className="box_title">{item?.title}</p>
@@ -17,6 +18,7 @@ export default function TopBreadcrumbs({ breadcrumbs, data }) {
                         </div>
                     ))}
                 </div>
+                ) : null}
             </div>
         </>
     )

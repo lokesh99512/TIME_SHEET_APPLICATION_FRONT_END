@@ -9,39 +9,38 @@ import { getSalesQuotationData } from '../../../store/Sales/actions'
 import { edit_icon, eye_icon, status_update } from '../../../assets/images'
 import { CommonValue } from '../partials/SalesCol'
 import FilterSalesComp from '../partials/FilterSalesComp'
+import { QUOTATION_RESULT_SELECTED } from '../../../store/Sales/actiontype'
+import QuotationModalComp from './partials/QuotationModalComp'
 
 export default function Quotations() {
-    document.title="Sales || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
+    document.title = "Sales || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
 
     const quotationData = useSelector((state) => state?.sales?.quotation_data);
     const [modal, setModal] = useState(false);
-    const [viewData, setViewData] = useState(false);
+    const [modalType, setModalType] = useState(false);
     const [isRight, setIsRight] = useState(false);
     const inputArr = {
-        // priceRange: [],
-        expiration_date: [],
-        origin_name: '',
-        destination_name: '',
+        quote_value: [],
+        // expiration_date: [],
+        quotation_from: '',
+        quotation_to: '',
+        org_port: '',
+        dest_port: '',
         quote_mode: '',
         quote_status: '',
-        quote_value: '',
-        // containerradio: '',
-        // destport: '',
-        // vendorradio: '',
-        // pickup: false,
-        // port_origin: false,
-        // ocean_freight: false,
-        // port_discharge: false,
-        // delivery: false,
-        // shipping_cma: false,
-        // shipping_msc: false,
+        // quote_value: '',
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
     const dispatch = useDispatch();
 
-    const viewPopupHandler = (data) => {
+    const viewPopupHandler = (data,type) => {
         setModal(true);
-        setViewData(data);
+        setModalType(type);
+        dispatch({type: QUOTATION_RESULT_SELECTED, payload: [data]})
+    }
+    
+    function QuoteModalHandler() {
+        setModal(!modal);
     }
 
     const onCloseClick = () => {
@@ -55,16 +54,30 @@ export default function Quotations() {
 
     const applyFilterHandler = () => {
         setIsRight(false);
-        console.log(filterDetails,"filterDetails lcl-----------------------");
+        let newArr = [...quotationData];
+        const filteredDataArr = newArr.filter(item => {
+            const originNameMatch = filterDetails?.org_port?.value === '' ||
+                item?.org_port?.toLowerCase().includes(filterDetails?.org_port?.value?.toLowerCase());
+
+            const isDestPortMatch = filterDetails?.dest_port?.value === '' ||
+                item?.dest_port?.toLowerCase().includes(filterDetails?.dest_port?.value?.toLowerCase());
+
+            const statusMatch = filterDetails?.quote_status?.value === '' ||
+                item?.quote_status?.toLowerCase().includes(filterDetails?.quote_status?.value?.toLowerCase());
+
+            return originNameMatch && isDestPortMatch && statusMatch;
+        });
+        console.log(filteredDataArr, "filterDetails lcl-----------------------");
     }
 
     const clearValueHandler = () => {
         setfilterDetails(inputArr)
+        dispatch(getSalesQuotationData());
     }
 
     useEffect(() => {
         dispatch(getSalesQuotationData());
-    },[dispatch]);
+    }, [dispatch]);
 
     const columns = useMemo(() => [
         {
@@ -129,7 +142,7 @@ export default function Quotations() {
             Cell: (cellProps) => {
                 return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
-        },        
+        },
         {
             Header: 'Weight/Container Type',
             accessor: 'weight_type',
@@ -138,7 +151,7 @@ export default function Quotations() {
             Cell: (cellProps) => {
                 return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
-        },    
+        },
         {
             Header: 'Quotation Value',
             accessor: 'quote_val',
@@ -147,7 +160,7 @@ export default function Quotations() {
             Cell: (cellProps) => {
                 return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
-        },    
+        },
         {
             Header: 'Status',
             accessor: 'quote_status',
@@ -156,7 +169,7 @@ export default function Quotations() {
             Cell: (cellProps) => {
                 return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
-        },                
+        },
         {
             Header: 'Sales Person',
             accessor: 'sales_person',
@@ -165,7 +178,7 @@ export default function Quotations() {
             Cell: (cellProps) => {
                 return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
-        },                            
+        },
         {
             Header: 'Action',
             Cell: (cellProps) => {
@@ -175,16 +188,52 @@ export default function Quotations() {
                             <i className='bx bx-dots-vertical-rounded'></i>
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-end">
-                            <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View Quotation <img src={eye_icon} alt="Eye" /></DropdownItem>
-                            <DropdownItem onClick={(e) => e.stopPropagation()}>
+                            <DropdownItem onClick={(e) => { e.stopPropagation(); viewPopupHandler(cellProps.row.original,'view') }}>View <img src={eye_icon} alt="Eye" /></DropdownItem>
+                            {cellProps?.row?.original?.quote_status.toLowerCase() === 'in progress' && <DropdownItem onClick={(e) => { e.stopPropagation(); viewPopupHandler(cellProps.row.original,'edit') }}>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>}
+                            {/* <DropdownItem onClick={(e) => e.stopPropagation()}>
                                 Status Update <img src={status_update} alt="Status" />
-                            </DropdownItem>
+                            </DropdownItem> */}
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 )
             }
         },
     ]);
+
+    let wonCount = quotationData?.filter((obj) => obj?.quote_status?.toLowerCase() === 'won');
+    let lotCount = quotationData?.filter((obj) => obj?.quote_status?.toLowerCase() === 'lost');
+    let progressCount = quotationData?.filter((obj) => obj?.quote_status?.toLowerCase() === 'in progress');
+
+    const quotationRateData = [
+        {
+            id: 1,
+            title: 'Quotation Sent',
+            rate: (quotationData?.length || 0),
+            compare_rate: '50',
+            rate_type: 'up'
+        },
+        {
+            id: 2,
+            title: 'Quotation Won',
+            rate: (wonCount?.length || 0),
+            compare_rate: '33',
+            rate_type: 'up'
+        },
+        {
+            id: 3,
+            title: 'Quotation Lost',
+            rate: (lotCount?.length || 0),
+            compare_rate: (lotCount?.length * 100 / quotationData?.length),
+            rate_type: (wonCount?.length > lotCount?.length ? 'down' : 'up')
+        },
+        {
+            id: 4,
+            title: 'Quotation In Progress',
+            rate: (progressCount?.length || 0),
+            compare_rate: '',
+            rate_type: ''
+        },
+    ]
 
     return (
         <>
@@ -199,7 +248,9 @@ export default function Quotations() {
                                     <div className="sh_box flex-grow-1" key={item?.id}>
                                         <p className="box_title">{item?.title}</p>
                                         <p className="sh_inquiry_rate">{item?.rate}
-                                            <span className={`${item?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{item?.compare_rate}%</span>
+                                            {item?.compare_rate !== '' ? (
+                                                <span className={`${item?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{item?.compare_rate}%</span>
+                                            ) : null}
                                         </p>
                                     </div>
                                 ))}
@@ -207,7 +258,7 @@ export default function Quotations() {
                         </div>
 
                         {/* sales table && filter */}
-                        <SalesCommonTable 
+                        <SalesCommonTable
                             columns={columns}
                             data={quotationData}
                             isGlobalFilter={true}
@@ -219,8 +270,12 @@ export default function Quotations() {
                     </div>
                 </Container>
             </div>
+
             {/* filter right sidebar */}
             <FilterSalesComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} />
+
+            {/* Quotation Modal */}
+            <QuotationModalComp quoteModal={modal} setQuoteModal={setModal} QuoteModalHandler={QuoteModalHandler} viewData={modalType === 'view' && true} />
         </>
     )
 }

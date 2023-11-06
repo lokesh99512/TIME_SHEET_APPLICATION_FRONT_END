@@ -178,7 +178,7 @@ export default function PortLocalFreight() {
                     <div className="main_freight_wrapper">
 
                         {/* breadcrumbs && rate */}
-                        <TopBreadcrumbs breadcrumbs={portLocalBreadcrumb} data={fclRateData} />
+                        <TopBreadcrumbs breadcrumbs={portLocalBreadcrumb} />
 
                         {/* React Table */}
                         <TableReact
