@@ -39,6 +39,7 @@ import exchangeRateData from "../../assets/extra/inr.json";
 import { companyDetailsData, settingsUsersData } from "../../common/data/settings"
 import { PartiesCustomersData } from "../../common/data/parties"
 import { searchQuotationResult1, searchQuotationResult2, searchQuotationResult3 } from "../../common/data/sales"
+import { PartiesCustomersData, PartiesVendorsData } from "../../common/data/parties"
 
 let users = [
   {
@@ -1048,6 +1049,21 @@ const fakeBackend = () => {
           resolve([200, PartiesCustomersData])
         } else {
           reject([400, "Cannot get Customers"])
+        }
+      })
+    })
+  })
+
+  // parties / vendors
+  
+  mock.onGet(url.GET_PARTIES_VENDORS).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (PartiesVendorsData) {
+          // Passing fake JSON data as response
+          resolve([200, PartiesVendorsData])
+        } else {
+          reject([400, "Cannot get Vendors"])
         }
       })
     })

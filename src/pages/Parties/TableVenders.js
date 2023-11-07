@@ -80,7 +80,7 @@ const TableVenders = ({columns,data,isGlobalFilter,customPageSize,toggleRightCan
                         </button>
                     </div> */}
                     <div className="add_btn">
-                        <button className='border-0' onClick={() => {}}>
+                    <button className='border-0' onClick={() => {navidate(`/parties/vendor/add-vendor`);}}>
                             <i className='bx bx-plus align-middle'></i> Add
                         </button>
                     </div>

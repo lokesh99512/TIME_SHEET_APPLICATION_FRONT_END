@@ -315,6 +315,7 @@ export const getCompanyDetails = () => get(url.GET_SETTINGS_COMPANYDETAILS);
 
 // ------------ Parties -------------
 export const getPartiesCustomers = () => get(url.GET_PARTIES_CUSTOMERS);
+export const getPartiesVendors = () => get(url.GET_PARTIES_VENDORS);
 
 // ---------------- sales ----------------------------------------
 export const getSalesQuotTableData = () => get(url.GET_QUOTATION);

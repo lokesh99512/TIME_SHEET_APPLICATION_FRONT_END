@@ -140,6 +140,7 @@ export const GET_SETTINGS_COMPANYDETAILS = "/get-settings-companydetails"
 
 // --------------------- Parties --------------------------------
 export const GET_PARTIES_CUSTOMERS = "/get-parties-customers"
+export const GET_PARTIES_VENDORS = "/get-parties-vendors"
 
 
 
