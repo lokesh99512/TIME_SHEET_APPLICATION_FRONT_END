@@ -8,6 +8,7 @@ import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { getCompanyDetailsData } from "../../store/Settings/actions";
+import FileUpload from "./FileUpload";
 
 const industryType = [{ label: "Supply Chain", value: "Supply Chain" }];
 const entityType = [
@@ -164,6 +165,11 @@ const Settings = () => {
     );
   };
 
+  const onUploadChange = (file) => {
+    console.log(file,"file")
+    // setSelectedFiles(file);
+  };
+
   useEffect(() => {
     dispatch(getCompanyDetailsData());
   }, [dispatch]);
@@ -256,9 +262,9 @@ const Settings = () => {
                       </div>
 
                       <div className="row mt-4">
-                        <div className="col-12 col-md-5 mb-4">
+                        <div className="col-12 col-md-4 mb-4">
                           <label className="form-label">Image</label>
-                          <Input
+                          {/* <Input
                             type="file"
                             name="image"
                             onChange={(e) => {
@@ -270,10 +276,15 @@ const Settings = () => {
                             }}
                             className="form-control"
                             placeholder=""
+                          /> */}
+                          <FileUpload
+                            iconName="img"
+                            onUpload={onUploadChange}
+                            // src={addRoutePartnerForm.values.logoUrl}
                           />
                         </div>
 
-                        <div className="col-12 col-md-7 mb-4">
+                        <div className="col-12 col-md-8 mb-4">
                           <label className="form-label">Company Name</label>
                           <Input
                             type="text"

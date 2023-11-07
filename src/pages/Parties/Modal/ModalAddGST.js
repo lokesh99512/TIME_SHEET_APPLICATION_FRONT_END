@@ -56,7 +56,7 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
             <div className="charge_details">
               {/* //// */}
               <div className="row mt-4 mb-2">
-                <div className="col-6 mb-4">
+                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
                   <label className="form-label">Address</label>
                   <Input
                     type="text"
@@ -67,7 +67,7 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
                     placeholder="Enter Comapany Address"
                   />
                 </div>
-                <div className="col-6 mb-4">
+                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
                   <label className="form-label">City</label>
                   <Input
                     type="text"
@@ -79,7 +79,7 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
                   />
                 </div>
 
-                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
+                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
                   <label className="form-label">State</label>
                   <Input
                     type="text"
@@ -91,7 +91,7 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
                   />
                 </div>
 
-                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
+                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
                   <label className="form-label">Country</label>
                   <Input
                     type="text"
@@ -103,7 +103,7 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
                   />
                 </div>
 
-                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
+                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
                   <label className="form-label">Zipcode</label>
                   <Input
                     type="text"
@@ -115,7 +115,7 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
                   />
                 </div>
 
-                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
+                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
                   <label className="form-label">GST Number</label>
                   <Input
                     type="text"
@@ -127,7 +127,7 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
                   />
                 </div>
 
-                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
+                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
                   <label className="form-label">Contact Name</label>
                   <div className="row">
                     <div className="col-3">
@@ -155,7 +155,7 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
                   </div>
                 </div>
 
-                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
+                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
                   <label className="form-label">Phone Number</label>
                   <div className="row">
                     <div className="col-3">
@@ -183,7 +183,7 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
                   </div>
                 </div>
 
-                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
+                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
                   <div className="mb-3">
                     <label className="form-label">Address Type</label>
                     <Select

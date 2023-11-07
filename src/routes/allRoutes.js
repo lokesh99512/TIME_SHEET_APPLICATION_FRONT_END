@@ -143,6 +143,7 @@ import EditUserData from "../pages/Settings/EdtUserData";
 import Customers from "../pages/Parties/Customers";
 import Vendors from "../pages/Parties/Vendors";
 import UploadCustomerData from "../pages/Parties/UploadCustomerData";
+import UploadVendorData from "../pages/Parties/UploadVendorData";
 
 const userRoutes = [
   //dashboard
@@ -184,6 +185,7 @@ const userRoutes = [
   { path: "/parties/customers", component: <Customers /> }, 
   { path: "/parties/customers/add-customer", component: <UploadCustomerData /> }, 
   { path: "/parties/vendors", component: <Vendors /> }, 
+  { path: "/parties/vendor/add-vendor", component: <UploadVendorData /> }, 
 
   // Express
   { path: "/express", component: <ExpressComp /> },

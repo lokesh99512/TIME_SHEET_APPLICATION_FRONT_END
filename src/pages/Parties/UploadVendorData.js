@@ -19,15 +19,7 @@ const gen = [
     { label: "Ms", value: "Ms" },
     { label: "Mrs", value: "Mrs" },
 ]
-const title = [
-    { label: "Mr", value: "Mr" },
-    { label: "Ms", value: "Ms" },
-    { label: "Mrs", value: "Mrs" },
-]
 const phone = [
-    { label: "+91", value: "+91" },
-]
-const opCode = [
     { label: "+91", value: "+91" },
 ]
 const department = [
@@ -42,17 +34,19 @@ const entityType = [
 const industryType = [
     { label: "test", value: "test" },
 ]
-const salesEmployee = [
-    { label: "test", value: "test" },
+const vendorType = [
+    { label: "Carrier", value: "Carrier" },
 ]
-const keyAccountManager = [
-    { label: "test", value: "test" },
+const serviceType = [
+    { label: "Ocean", value: "Ocean" },
+    { label: "Air", value: "Air" },
 ]
 
-export default function UploadCustomerData() {
+
+export default function UploadVendorData() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
     const [openSaveModal, setOpenSaveModal] = useState(false);
-    const [progressValue, setProgressValue] = useState(14);
+    const [progressValue, setProgressValue] = useState(25);
     const [selectedFiles, setselectedFiles] = useState([]);
     const [gstModal, setGstModal] = useState(false);
     const navigate = useNavigate();
@@ -70,7 +64,7 @@ export default function UploadCustomerData() {
     const finalSaveButton = () => {
         setSurcharges([]);
         setActiveTabProgress(1);
-        setProgressValue(14);
+        setProgressValue(25);
         setselectedFiles([]);
         dispatch({type: BLANK_CARRIER_DATA});
         setOpenSaveModal(false);
@@ -78,19 +72,16 @@ export default function UploadCustomerData() {
 
     const toggleTabProgress = (tab) => {
         if (activeTabProgress !== tab) {
-            if (tab >= 1 && tab <= 7) {
+            if (tab >= 1 && tab <= 4) {
                 setActiveTabProgress(tab)
 
-                if (tab === 1) { setProgressValue(14) }
-                if (tab === 2) { setProgressValue(28) }
-                if (tab === 3) { setProgressValue(42); }
-                if (tab === 4) { setProgressValue(56); }
-                if (tab === 5) { setProgressValue(70); }
-                if (tab === 6) { setProgressValue(85); }
-                if (tab === 7) { setProgressValue(100); }
+                if (tab === 1) { setProgressValue(25) }
+                if (tab === 2) { setProgressValue(50) }
+                if (tab === 3) { setProgressValue(75); }
+                if (tab === 4) { setProgressValue(100); }
             }
         }
-        if (tab === 8) {
+        if (tab === 5) {
             // console.log(carrierData, "carrierData step1");
             // console.log(selectedFiles, "selectedFiles step2");
             // console.log(surcharges, "surcharges step3");
@@ -121,38 +112,11 @@ export default function UploadCustomerData() {
     }
 
     // ----------forimik ----------
-    const companyDetailsFormik = useFormik({
-        initialValues: {
-            companyDetails:"",
-            address:"",
-            city:"",
-            state:"",
-            country:"",
-            zipcode:"",
-            website:"",
-
-            title:"",
-            contactName:"",
-            opCode:"",
-            phoneNumber:"",
-            email:"",
-            department:"",
-            designation:"",
-            salesEmployee:"",
-            keyAccountManager:"",
-
-            CINnumber:"",
-            GSTnumber:"",
-            PANnumber:"",
-            entityType:"",
-            industryType:""
-        }
-    })
     const contactsFormik = useFormik({
         initialValues: {
           contacts: [
             {
-              title:"",
+              contractions:"",
               name: '',
               opCode:"",
               phoneNumber: '',
@@ -286,7 +250,7 @@ export default function UploadCustomerData() {
                                                         </div>
                                                     </NavLink>
                                                 </NavItem>
-                                                <NavItem>
+                                                {/* <NavItem>
                                                     <NavLink className={classnames({ active: activeTabProgress === 4 })} onClick={() => { toggleTabProgress(4); }} >
                                                         <div className="step-icon" data-bs-toggle="tooltip" id="Rates">
                                                             <i className="bx bx-dollar-circle"></i>
@@ -315,9 +279,9 @@ export default function UploadCustomerData() {
                                                             </UncontrolledTooltip>
                                                         </div>
                                                     </NavLink>
-                                                </NavItem>
+                                                </NavItem> */}
                                                 <NavItem>
-                                                    <NavLink className={classnames({ active: activeTabProgress === 7 })} onClick={() => { toggleTabProgress(7); }} >
+                                                    <NavLink className={classnames({ active: activeTabProgress === 4 })} onClick={() => { toggleTabProgress(4); }} >
                                                         <div className="step-icon" data-bs-toggle="tooltip" id="Communications">
                                                             <i className="bx bx-chat"></i>
                                                             <UncontrolledTooltip placement="top" target="Communications">
@@ -331,38 +295,42 @@ export default function UploadCustomerData() {
                                             <div id="bar" className="mt-4">
                                                 <Progress color="primary" striped animated value={progressValue} />
                                             </div>
-                                            {/* {console.log(contactsFormik?.values?.contacts,"<<<<<<<<")} */}
+                                            {console.log(contactsFormik?.values?.contacts,"<<<<<<<<")}
                                             <TabContent activeTab={activeTabProgress} className="twitter-bs-wizard-tab-content">
                                                 <TabPane tabId={1}>
                                                     <div className="text-center mb-4">
                                                         <h5>Company Details</h5>
                                                     </div>
-                                                    {/* {console.log(companyDetailsFormik.values,"<----tab-1")} */}
+                                                    
                                                     <Card>
                                                         <CardBody>
                                                         <form>
                                                         <div className="row">
                                                             <div className="col-12">
                                                                 <div className="mb-3">
-                                                                    <label className="form-label">Company name</label>
+                                                                    <label className="form-label">Company details</label>
                                                                     <Input
                                                                         type="text"
-                                                                        name="companyDetails"
-                                                                          value={companyDetailsFormik.values.companyDetails}
-                                                                          onChange={companyDetailsFormik.handleChange}
+                                                                        // name=""
+                                                                        //   value={}
+                                                                        //   onChange={}
                                                                         className="form-control"
                                                                         placeholder=""
                                                                         />
                                                                 </div>
                                                             </div>
+                                                            
+                                                        </div>
+
+                                                        <div className="row">
                                                             <div className="col-12 col-md-6">
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Address</label>
                                                                     <Input
                                                                         type="text"
-                                                                        name="address"
-                                                                          value={companyDetailsFormik.values.address}
-                                                                          onChange={companyDetailsFormik.handleChange}
+                                                                        // name=""
+                                                                        //   value={}
+                                                                        //   onChange={}
                                                                         className="form-control"
                                                                         placeholder=""
                                                                         />
@@ -373,9 +341,9 @@ export default function UploadCustomerData() {
                                                                     <label className="form-label">City</label>
                                                                     <Input
                                                                         type="text"
-                                                                        name="city"
-                                                                          value={companyDetailsFormik.values.city}
-                                                                          onChange={companyDetailsFormik.handleChange}
+                                                                        // name=""
+                                                                        //   value={}
+                                                                        //   onChange={}
                                                                         className="form-control"
                                                                         placeholder=""
                                                                         />
@@ -386,9 +354,9 @@ export default function UploadCustomerData() {
                                                                     <label className="form-label">State</label>
                                                                     <Input
                                                                         type="text"
-                                                                        name="state"
-                                                                          value={companyDetailsFormik.values.state}
-                                                                          onChange={companyDetailsFormik.handleChange}
+                                                                        // name=""
+                                                                        //   value={}
+                                                                        //   onChange={}
                                                                         className="form-control"
                                                                         placeholder=""
                                                                         />
@@ -399,9 +367,9 @@ export default function UploadCustomerData() {
                                                                     <label className="form-label">Country</label>
                                                                     <Input
                                                                         type="text"
-                                                                        name="country"
-                                                                          value={companyDetailsFormik.values.country}
-                                                                          onChange={companyDetailsFormik.handleChange}
+                                                                        // name=""
+                                                                        //   value={}
+                                                                        //   onChange={}
                                                                         className="form-control"
                                                                         placeholder=""
                                                                         />
@@ -412,9 +380,9 @@ export default function UploadCustomerData() {
                                                                     <label className="form-label">Zipcode</label>
                                                                     <Input
                                                                         type="text"
-                                                                        name="zipcode"
-                                                                          value={companyDetailsFormik.values.zipcode}
-                                                                          onChange={companyDetailsFormik.handleChange}
+                                                                        // name=""
+                                                                        //   value={}
+                                                                        //   onChange={}
                                                                         className="form-control"
                                                                         placeholder=""
                                                                         />
@@ -425,9 +393,9 @@ export default function UploadCustomerData() {
                                                                     <label className="form-label">Website</label>
                                                                     <Input
                                                                         type="text"
-                                                                        name="website"
-                                                                          value={companyDetailsFormik.values.website}
-                                                                          onChange={companyDetailsFormik.handleChange}
+                                                                        // name=""
+                                                                        //   value={}
+                                                                        //   onChange={}
                                                                         className="form-control"
                                                                         placeholder=""
                                                                         />
@@ -451,33 +419,22 @@ export default function UploadCustomerData() {
                                                                         <div className='row'>
                                                                             <div className='col-4 col-md-2'>
                                                                             <Select
-                                                                            name='title'
-                                                                            value={
-                                                                                title
-                                                                                  ? title.find(
-                                                                                      (option) =>
-                                                                                        option.value ===
-                                                                                        companyDetailsFormik?.values?.title
-                                                                                    )
-                                                                                  : ""
-                                                                              }
-                                                                            onChange={(e) => {
-                                                                                companyDetailsFormik.setFieldValue(
-                                                                                  `title`,
-                                                                                  e.value
-                                                                                );
-                                                                              }}
+                                                                            // value={carrierData.rate_type}
+                                                                            // name='rate_type'
+                                                                            // onChange={(opt) => {
+                                                                            //     handleSelectGroup('rate_type', opt);
+                                                                            // }}
                                                                             placeholder="Mr"
-                                                                            options={title}
+                                                                            options={gen}
                                                                             classNamePrefix="select2-selection form-select"
                                                                         />
                                                                             </div>
                                                                             <div className='col-6'>
                                                                                 <Input
                                                                                     type="text"
-                                                                                    name="contactName"
-                                                                                    value={companyDetailsFormik.values.contactName}
-                                                                                    onChange={companyDetailsFormik.handleChange}
+                                                                                    // name=""
+                                                                                    //   value={}
+                                                                                    //   onChange={}
                                                                                     className="form-control"
                                                                                     placeholder=""
                                                                                     />
@@ -495,33 +452,22 @@ export default function UploadCustomerData() {
                                                                         <div className='row'>
                                                                             <div className='col-4 col-md-3'>
                                                                             <Select
-                                                                            name='opCode'
-                                                                            value={
-                                                                                opCode
-                                                                                  ? opCode.find(
-                                                                                      (option) =>
-                                                                                        option.value ===
-                                                                                        companyDetailsFormik?.values?.opCode
-                                                                                    )
-                                                                                  : ""
-                                                                              }
-                                                                            onChange={(e) => {
-                                                                                companyDetailsFormik.setFieldValue(
-                                                                                  `opCode`,
-                                                                                  e.value
-                                                                                );
-                                                                              }}
+                                                                            // value={carrierData.rate_type}
+                                                                            // name='rate_type'
+                                                                            // onChange={(opt) => {
+                                                                            //     handleSelectGroup('rate_type', opt);
+                                                                            // }}
                                                                             placeholder="+91"
-                                                                            options={opCode}
+                                                                            options={phone}
                                                                             classNamePrefix="select2-selection form-select"
                                                                         />
                                                                             </div>
                                                                             <div className='col-8 col-md-9'>
                                                                                 <Input
                                                                                     type="text"
-                                                                                    name="phoneNumber"
-                                                                                    value={companyDetailsFormik.values.phoneNumber}
-                                                                                    onChange={companyDetailsFormik.handleChange}
+                                                                                    // name=""
+                                                                                    //   value={}
+                                                                                    //   onChange={}
                                                                                     className="form-control"
                                                                                     placeholder=""
                                                                                     />
@@ -536,9 +482,9 @@ export default function UploadCustomerData() {
                                                                     </div>
                                                                             <Input
                                                                                 type="text"
-                                                                                name="email"
-                                                                                value={companyDetailsFormik.values.email}
-                                                                                onChange={companyDetailsFormik.handleChange}
+                                                                                // name=""
+                                                                                //   value={}
+                                                                                //   onChange={}
                                                                                 className="form-control"
                                                                                 placeholder=""
                                                                                 />
@@ -553,22 +499,11 @@ export default function UploadCustomerData() {
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Department</label>
                                                                     <Select
-                                                                        name='department'
-                                                                        value={
-                                                                            department
-                                                                              ? department.find(
-                                                                                  (option) =>
-                                                                                    option.value ===
-                                                                                    companyDetailsFormik?.values?.department
-                                                                                )
-                                                                              : ""
-                                                                          }
-                                                                        onChange={(e) => {
-                                                                            companyDetailsFormik.setFieldValue(
-                                                                              `department`,
-                                                                              e.value
-                                                                            );
-                                                                          }}
+                                                                        // value={carrierData.vendor_name}
+                                                                        // name='vendor_name'
+                                                                        // onChange={(opt) => {
+                                                                        //     handleSelectGroup('vendor_name', opt)
+                                                                        // }}
                                                                         options={department}
                                                                         classNamePrefix="select2-selection form-select"
                                                                     // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
@@ -579,81 +514,51 @@ export default function UploadCustomerData() {
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Designation</label>
                                                                     <Select
-                                                                        name='designation'
-                                                                        value={
-                                                                            designation
-                                                                              ? designation.find(
-                                                                                  (option) =>
-                                                                                    option.value ===
-                                                                                    companyDetailsFormik?.values?.designation
-                                                                                )
-                                                                              : ""
-                                                                          }
-                                                                        onChange={(e) => {
-                                                                            companyDetailsFormik.setFieldValue(
-                                                                              `designation`,
-                                                                              e.value
-                                                                            );
-                                                                          }}
+                                                                        // value={carrierData.carrier_name}
+                                                                        // name='carrier_name'
+                                                                        // onChange={(opt) => {
+                                                                        //     handleSelectGroup('carrier_name', opt)
+                                                                        // }}
                                                                         options={designation}
                                                                         // isDisabled={carrierData?.vendor_type?.value === 'agent'}
                                                                         classNamePrefix="select2-selection form-select"
                                                                     />
                                                                 </div>
                                                             </div>
-                                                            <div className="col-12 col-md-6">
+                                                        </div>
+
+                                                        {/* <div className="row">
+                                                            <div className="col-6">
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Sales Employee</label>
                                                                     <Select
-                                                                        name='salesEmployee'
-                                                                        value={
-                                                                            salesEmployee
-                                                                              ? salesEmployee.find(
-                                                                                  (option) =>
-                                                                                    option.value ===
-                                                                                    companyDetailsFormik?.values?.salesEmployee
-                                                                                )
-                                                                              : ""
-                                                                          }
-                                                                        onChange={(e) => {
-                                                                            companyDetailsFormik.setFieldValue(
-                                                                              `salesEmployee`,
-                                                                              e.value
-                                                                            );
-                                                                          }}
-                                                                        options={salesEmployee}
+                                                                        // value={carrierData.vendor_name}
+                                                                        // name='vendor_name'
+                                                                        // onChange={(opt) => {
+                                                                        //     handleSelectGroup('vendor_name', opt)
+                                                                        // }}
+                                                                        options={department}
                                                                         classNamePrefix="select2-selection form-select"
                                                                     // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
                                                                     />
                                                                 </div>
                                                             </div>
-                                                            <div className="col-12 col-md-6">
+                                                            <div className="col-6">
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Key Account Manager</label>
                                                                     <Select
-                                                                        name='keyAccountManager'
-                                                                        value={
-                                                                            keyAccountManager
-                                                                              ? keyAccountManager.find(
-                                                                                  (option) =>
-                                                                                    option.value ===
-                                                                                    companyDetailsFormik?.values?.keyAccountManager
-                                                                                )
-                                                                              : ""
-                                                                          }
-                                                                        onChange={(e) => {
-                                                                            companyDetailsFormik.setFieldValue(
-                                                                              `keyAccountManager`,
-                                                                              e.value
-                                                                            );
-                                                                          }}
-                                                                        options={keyAccountManager}
+                                                                        // value={carrierData.carrier_name}
+                                                                        // name='carrier_name'
+                                                                        // onChange={(opt) => {
+                                                                        //     handleSelectGroup('carrier_name', opt)
+                                                                        // }}
+                                                                        options={designation}
                                                                         // isDisabled={carrierData?.vendor_type?.value === 'agent'}
                                                                         classNamePrefix="select2-selection form-select"
                                                                     />
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div> */}
                                                     </form>
                                                     </CardBody>
                                                     </Card>
@@ -665,16 +570,48 @@ export default function UploadCustomerData() {
                                                     <Card>
                                                         <CardBody>
                                                         <>
+                                                        <div className="row">
+                                                            <div className="col-12 col-md-6">
+                                                                <div className="mb-3">
+                                                                    <label className="form-label">Vendor Type</label>
+                                                                    <Select
+                                                                        // value={carrierData.vendor_name}
+                                                                        // name='vendor_name'
+                                                                        // onChange={(opt) => {
+                                                                        //     handleSelectGroup('vendor_name', opt)
+                                                                        // }}
+                                                                        options={vendorType}
+                                                                        classNamePrefix="select2-selection form-select"
+                                                                    // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-12 col-md-6">
+                                                                <div className="mb-3">
+                                                                    <label className="form-label">Service Type</label>
+                                                                    <Select
+                                                                        // value={carrierData.carrier_name}
+                                                                        // name='carrier_name'
+                                                                        // onChange={(opt) => {
+                                                                        //     handleSelectGroup('carrier_name', opt)
+                                                                        // }}
+                                                                        options={serviceType}
+                                                                        // isDisabled={carrierData?.vendor_type?.value === 'agent'}
+                                                                        classNamePrefix="select2-selection form-select"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         
                                                         <div className="row">
-                                                            <div className="col-12 col-md-8">
+                                                            <div className="col-12">
                                                                 <div className="mb-3">
                                                                     <label className="form-label">CIN Number</label>
                                                                     <Input
                                                                         type="text"
-                                                                        name="CINnumber"
-                                                                        value={companyDetailsFormik.values.CINnumber}
-                                                                        onChange={companyDetailsFormik.handleChange}
+                                                                        // name=""
+                                                                        //   value={}
+                                                                        //   onChange={}
                                                                         className="form-control"
                                                                         placeholder=""
                                                                         />
@@ -682,35 +619,35 @@ export default function UploadCustomerData() {
                                                             </div>
                                                         </div>
                                                         <div className="row">
-                                                            <div className="col-10 col-md-5">
+                                                            <div className="col-12 col-md-6">
                                                                 <div className="mb-3">
                                                                     <label className="form-label">GST Number</label>
                                                                     <Input
                                                                         type="text"
-                                                                        name="GSTnumber"
-                                                                        value={companyDetailsFormik.values.GSTnumber}
-                                                                        onChange={companyDetailsFormik.handleChange}
+                                                                        // name=""
+                                                                        //   value={}
+                                                                        //   onChange={}
                                                                         className="form-control"
                                                                         placeholder=""
                                                                         />
                                                                 </div>
                                                             </div>
-                                                            <div className="col-2 col-md-1">
+                                                            {/* <div className="col-1">
                                                                 <button
                                                                     className="btn btn-primary mt-4"
                                                                     onClick={() => setGstModal(true)}
                                                                 >
                                                                     <i className="bx bx-plus"></i>
                                                                 </button>
-                                                                </div>
+                                                                </div> */}
                                                             <div className="col-12 col-md-6">
                                                                 <div className="mb-3">
                                                                     <label className="form-label">PAN Number</label>
                                                                     <Input
                                                                         type="text"
-                                                                        name="PANnumber"
-                                                                        value={companyDetailsFormik.values.PANnumber}
-                                                                        onChange={companyDetailsFormik.handleChange}
+                                                                        // name=""
+                                                                        //   value={}
+                                                                        //   onChange={}
                                                                         className="form-control"
                                                                         placeholder=""
                                                                         />
@@ -722,22 +659,11 @@ export default function UploadCustomerData() {
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Entity Type</label>
                                                                     <Select
-                                                                        name='entityType'
-                                                                        value={
-                                                                            entityType
-                                                                              ? entityType.find(
-                                                                                  (option) =>
-                                                                                    option.value ===
-                                                                                    companyDetailsFormik?.values?.entityType
-                                                                                )
-                                                                              : ""
-                                                                          }
-                                                                        onChange={(e) => {
-                                                                            companyDetailsFormik.setFieldValue(
-                                                                              `entityType`,
-                                                                              e.value
-                                                                            );
-                                                                          }}
+                                                                        // value={carrierData.vendor_name}
+                                                                        // name='vendor_name'
+                                                                        // onChange={(opt) => {
+                                                                        //     handleSelectGroup('vendor_name', opt)
+                                                                        // }}
                                                                         options={entityType}
                                                                         classNamePrefix="select2-selection form-select"
                                                                     // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
@@ -748,22 +674,11 @@ export default function UploadCustomerData() {
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Industry Type</label>
                                                                     <Select
-                                                                        name='industryType'
-                                                                        value={
-                                                                            industryType
-                                                                              ? industryType.find(
-                                                                                  (option) =>
-                                                                                    option.value ===
-                                                                                    companyDetailsFormik?.values?.industryType
-                                                                                )
-                                                                              : ""
-                                                                          }
-                                                                        onChange={(e) => {
-                                                                            companyDetailsFormik.setFieldValue(
-                                                                              `industryType`,
-                                                                              e.value
-                                                                            );
-                                                                          }}
+                                                                        // value={carrierData.carrier_name}
+                                                                        // name='carrier_name'
+                                                                        // onChange={(opt) => {
+                                                                        //     handleSelectGroup('carrier_name', opt)
+                                                                        // }}
                                                                         options={industryType}
                                                                         // isDisabled={carrierData?.vendor_type?.value === 'agent'}
                                                                         classNamePrefix="select2-selection form-select"
@@ -774,17 +689,19 @@ export default function UploadCustomerData() {
                                                     </>
                                                     </CardBody>
                                                     </Card>
-                                                    <ModalAddGST modal={gstModal} onCloseClick={onCloseClick} />
+                                                    {/* <ModalAddGST modal={gstModal} onCloseClick={onCloseClick} /> */}
 
 
                                                 </TabPane>
                                                 <TabPane tabId={2}>
                                                     <div>
-                                                    {console.log(contactsFormik.values,"<----tab-2")}
+                                                    
                                                     <FormikProvider value={contactsFormik}>
                                                     <FieldArray name="contacts" validateOnChange={false}>
                                                         {(arrayHelpers)=>(
                                                             <>
+                                                            {/* {console.log(push,"push method")} */}
+                                                            
                                                             {contactsFormik?.values?.contacts?.map((contact, index) =>(
                                                                 <>
                                                                 <Card key={index}>
@@ -796,24 +713,24 @@ export default function UploadCustomerData() {
                                                                         <div className='row'>
                                                                             <div className='col-4 col-md-2'>
                                                                             <Select
-                                                                            name={`contacts[${index}].title`}
-                                                                            // value={
-                                                                            //     title
-                                                                            //     ? title.find(
-                                                                            //         (option) =>
-                                                                            //         option.value ===
-                                                                            //         contactsFormik?.values?.title
-                                                                            //         )
-                                                                            //         : ""
-                                                                            //     }
-                                                                            //     onChange={(e) => {
-                                                                            //     contactsFormik.setFieldValue(
-                                                                            //         `title`,
-                                                                            //         e.value
-                                                                            //         );
-                                                                            //     }}
-                                                                                options={title}
-                                                                                placeholder="Mr"
+                                                                            value={
+                                                                                gen
+                                                                                  ? gen.find(
+                                                                                      (option) =>
+                                                                                        option.value ===
+                                                                                        contactsFormik?.values?.contractions
+                                                                                    )
+                                                                                  : ""
+                                                                              }
+                                                                            name={`contacts[${index}].contractions`}
+                                                                            placeholder="Mr"
+                                                                            onChange={(e) => {
+                                                                                contactsFormik.setFieldValue(
+                                                                                  `contractions`,
+                                                                                  e.value
+                                                                                );
+                                                                              }}
+                                                                            options={gen}
                                                                             classNamePrefix="select2-selection form-select"
                                                                         />
                                                                             </div>
@@ -821,8 +738,8 @@ export default function UploadCustomerData() {
                                                                                 <Input
                                                                                     type="text"
                                                                                     name={`contacts[${index}].name`}
-                                                                                    //   value={contact.name}
-                                                                                    //   onChange={contactsFormik.handleChange}
+                                                                                      value={contact.name}
+                                                                                      onChange={contactsFormik.handleChange}
                                                                                     className="form-control"
                                                                                     placeholder=""
                                                                                     />
@@ -853,22 +770,10 @@ export default function UploadCustomerData() {
                                                                             <Select
                                                                             // value={carrierData.rate_type}
                                                                             name={`contacts[${index}].opCode`}
-                                                                            // value={
-                                                                            //     opCode
-                                                                            //       ? opCode.find(
-                                                                            //           (option) =>
-                                                                            //             option.value ===
-                                                                            //             companyDetailsFormik?.values?.opCode
-                                                                            //         )
-                                                                            //       : ""
-                                                                            //   }
-                                                                            // onChange={(e) => {
-                                                                            //     companyDetailsFormik.setFieldValue(
-                                                                            //       `opCode`,
-                                                                            //       e.value
-                                                                            //     );
-                                                                            //   }}
-                                                                            options={opCode}
+                                                                            // onChange={(opt) => {
+                                                                            //     handleSelectGroup('rate_type', opt);
+                                                                            // }}
+                                                                            options={phone}
                                                                             placeholder="+91"
                                                                             classNamePrefix="select2-selection form-select"
                                                                         />
@@ -962,41 +867,6 @@ export default function UploadCustomerData() {
                                                 </TabPane>
                                                 <TabPane tabId={3}>
                                                     <div>
-                                                    {/* <Card>
-                                                        <CardBody>
-                                                        <form>
-                                                        <div className='row'>
-                                                            <div className="col-6">
-                                                                    <div className="mb-3">
-                                                                        <label className="form-label">Document Type</label>
-                                                                            <Input
-                                                                                type="text"
-                                                                                // name=""
-                                                                                //   value={}
-                                                                                //   onChange={}
-                                                                                className="form-control"
-                                                                                placeholder=""
-                                                                                />
-                                                                    </div>
-                                                                </div>
-                                                            <div className="col-6">
-                                                                    <div className="mb-3">
-                                                                        <label className="form-label">Upload Documents</label>
-                                                                            <Input
-                                                                                type="file"
-                                                                                // name=""
-                                                                                //   value={}
-                                                                                //   onChange={}
-                                                                                className="form-control"
-                                                                                placeholder=""
-                                                                                />
-                                                                    </div>
-                                                                </div>
-                                                        </div>
-
-                                                    </form>
-                                                    </CardBody>
-                                                    </Card> */}
 
                                                     <FormikProvider value={documentsFormik}>
                                                     <FieldArray name="document" validateOnChange={false}>
@@ -1015,7 +885,7 @@ export default function UploadCustomerData() {
                                                                         <label className="form-label">Document Type</label>
                                                                             <Input
                                                                                 type="text"
-                                                                                // name=""
+                                                                                name={`document[${index}].documentType`}
                                                                                 //   value={}
                                                                                 //   onChange={}
                                                                                 className="form-control"
@@ -1028,7 +898,7 @@ export default function UploadCustomerData() {
                                                                         <label className="form-label">Upload Documents</label>
                                                                             <Input
                                                                                 type="file"
-                                                                                // name=""
+                                                                                name={`document[${index}].uploadDocument`}
                                                                                 //   value={}
                                                                                 //   onChange={}
                                                                                 className="form-control"
@@ -1036,7 +906,7 @@ export default function UploadCustomerData() {
                                                                                 />
                                                                     </div>
                                                                 </div>
-                                                                <div className='col-12 col-md-1 d-flex justify-content-end'>
+                                                                <div className='col-12 col-md-1 text-end'>
                                                                     {documentsFormik.values.document.length >
                                                                     1 && (
                                                                         <button
@@ -1062,7 +932,7 @@ export default function UploadCustomerData() {
                                                                         })}>
                                                                     Add
                                                                 </button>
-                                                                {/* {console.log(contactsFormik.values.contacts,"contacts")} */}
+                                                                {console.log(documentsFormik.values.document,"Document")}
                                                             </>
                                                         )}
                                                     
@@ -1070,7 +940,7 @@ export default function UploadCustomerData() {
                                                     </FormikProvider>
                                                     </div>
                                                 </TabPane>
-                                                <TabPane tabId={4}>
+                                                {/* <TabPane tabId={4}>
                                                     <div>
                                                         <div className="text-center mb-4">
                                                             <h5>Rates</h5>
@@ -1228,8 +1098,8 @@ export default function UploadCustomerData() {
                                                             </div>
                                                         </form>
                                                     </div>
-                                                </TabPane>
-                                                <TabPane tabId={7}>
+                                                </TabPane> */}
+                                                <TabPane tabId={4}>
                                                     <div>
                                                         <div className="text-center mb-4">
                                                             <h5>Communications</h5>
