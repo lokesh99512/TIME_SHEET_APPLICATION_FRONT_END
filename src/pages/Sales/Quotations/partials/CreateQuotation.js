@@ -5,7 +5,7 @@ import CreateQuoteTop from './CreateQuoteTop';
 import { useSelector } from 'react-redux';
 import { isAnyValueEmpty } from '../../../../components/Common/CommonLogic';
 import { useDispatch } from 'react-redux';
-import { getSalesQuotationResultData } from '../../../../store/Sales/actions';
+import { getSalesQuotationResultData, getSalesQuotationResultData1, getSalesQuotationResultData2, getSalesQuotationResultData3 } from '../../../../store/Sales/actions';
 import SearchResultComp from './SearchResultComp';
 import QuotationModalComp from './QuotationModalComp';
 import { SEARCH_QUOTATION_BLANK } from '../../../../store/Sales/actiontype';
@@ -35,13 +35,26 @@ export default function CreateQuotation() {
     }
 
     const searchQuoteHandler = () => {
+        // console.log(searchData,"searchData");
+        
         if(searchResult){
             QuoteModalHandler();
         } else {
             if(!isAnyValueEmpty(searchData)){
                 setSearchResult(true);
                 setSearchView(false);
-                dispatch(getSalesQuotationResultData());
+                if(searchData.location_from.address.value === "INMAA" && searchData.location_to.address.value === "BDDAC"){
+                    console.log("search1")
+                    dispatch(getSalesQuotationResultData1());
+                } else if (searchData.location_from.address.value === "BLRICD" && searchData.location_to.address.value === "DHAKAICD"){
+                    console.log("search2")
+                    dispatch(getSalesQuotationResultData2());
+                } else if (searchData.location_from.address.value === "BLRICD" && searchData.location_to.address.value === "JAKARTAICD"){
+                    console.log("search3")
+                    dispatch(getSalesQuotationResultData3());
+                } else {
+                    dispatch(getSalesQuotationResultData());
+                }
             }
         }
     }

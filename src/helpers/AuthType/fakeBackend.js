@@ -38,6 +38,7 @@ import { fclSurchargeTableData } from "../../common/data/rate"
 import exchangeRateData from "../../assets/extra/inr.json";
 import { companyDetailsData, settingsUsersData } from "../../common/data/settings"
 import { PartiesCustomersData } from "../../common/data/parties"
+import { searchQuotationResult1, searchQuotationResult2, searchQuotationResult3 } from "../../common/data/sales"
 
 let users = [
   {
@@ -931,6 +932,39 @@ const fakeBackend = () => {
       setTimeout(() => {
         if(searchQuotationResult) {
           resolve([200, searchQuotationResult]);
+        } else {
+          reject([400, 'Cannot get Quotation Result Data']);
+        }
+      });
+    })
+  })
+  mock.onGet(url.GET_QUOTATION_SEARCH_RESULT1).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if(searchQuotationResult1) {
+          resolve([200, searchQuotationResult1]);
+        } else {
+          reject([400, 'Cannot get Quotation Result Data']);
+        }
+      });
+    })
+  })
+  mock.onGet(url.GET_QUOTATION_SEARCH_RESULT2).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if(searchQuotationResult2) {
+          resolve([200, searchQuotationResult2]);
+        } else {
+          reject([400, 'Cannot get Quotation Result Data']);
+        }
+      });
+    })
+  })
+  mock.onGet(url.GET_QUOTATION_SEARCH_RESULT3).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if(searchQuotationResult3) {
+          resolve([200, searchQuotationResult3]);
         } else {
           reject([400, 'Cannot get Quotation Result Data']);
         }

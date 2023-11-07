@@ -1,12 +1,12 @@
 import React from 'react'
 
 export default function PreviewCommonTable({data,newData}) {
-    const Subtotal = (data?.pickup_quote_charge !== undefined && data?.pickup_quote_charge.reduce((total, charge) => total + Number(charge.total_sale_cost), 0)) + (data?.originport_quote_charge !== undefined && data?.originport_quote_charge.reduce((total, charge) => total + Number(charge.total_sale_cost), 0)) + (data?.ocean_quote_charge !== undefined && data?.ocean_quote_charge.reduce((total, charge) => total + Number(charge.total_sale_cost), 0)) + (newData?.pickup_quote_charge !== undefined && newData?.pickup_quote_charge.reduce((total, charge) => total + Number(charge.total_sale_cost), 0)) + (newData?.originport_quote_charge !== undefined && newData?.originport_quote_charge.reduce((total, charge) => total + Number(charge.total_sale_cost), 0)) + (newData?.ocean_quote_charge !== undefined && newData?.ocean_quote_charge.reduce((total, charge) => total + Number(charge.total_sale_cost), 0));
+    const Subtotal = (data?.pickup_quote_charge !== undefined && data?.pickup_quote_charge.reduce((total, charge) => total + Number(charge.total_sale_cost), 0)) + (data?.originport_quote_charge !== undefined && data?.originport_quote_charge.reduce((total, charge) => total + Number(charge.total_sale_cost), 0)) + (data?.ocean_quote_charge !== undefined && data?.ocean_quote_charge.reduce((total, charge) => total + Number(charge.total_sale_cost), 0)) + (data?.port_discharge_charges !== undefined && data?.port_discharge_charges.reduce((total, charge) => total + Number(charge.total_sale_cost), 0)) + (newData?.pickup_quote_charge !== undefined && newData?.pickup_quote_charge.reduce((total, charge) => total + Number(charge.total_sale_cost), 0)) + (newData?.originport_quote_charge !== undefined && newData?.originport_quote_charge.reduce((total, charge) => total + Number(charge.total_sale_cost), 0)) + (newData?.ocean_quote_charge !== undefined && newData?.ocean_quote_charge.reduce((total, charge) => total + Number(charge.total_sale_cost), 0)) + (newData?.port_discharge_charges !== undefined && newData?.port_discharge_charges.reduce((total, charge) => total + Number(charge.total_sale_cost), 0));
 
     const subtotalCount = () => {
-        let buyValue = (data?.pickup_quote_charge !== undefined && data?.pickup_quote_charge.reduce((total, charge) => total + Number(charge.buy_cost || 0), 0)) + (data?.originport_quote_charge !== undefined && data?.originport_quote_charge.reduce((total, charge) => total + Number(charge.buy_cost || 0), 0)) + (data?.ocean_quote_charge !== undefined && data?.ocean_quote_charge.reduce((total, charge) => total + Number(charge.buy_cost || 0), 0)) + (newData?.pickup_quote_charge !== undefined && newData?.pickup_quote_charge.reduce((total, charge) => total + Number(charge.buy_cost || 0), 0)) + (newData?.originport_quote_charge !== undefined && newData?.originport_quote_charge.reduce((total, charge) => total + Number(charge.buy_cost || 0), 0)) + (newData?.ocean_quote_charge !== undefined && newData?.ocean_quote_charge.reduce((total, charge) => total + Number(charge.buy_cost || 0), 0));
+        let buyValue = (data?.pickup_quote_charge !== undefined && data?.pickup_quote_charge.reduce((total, charge) => total + Number(charge.buy_cost || 0), 0)) + (data?.originport_quote_charge !== undefined && data?.originport_quote_charge.reduce((total, charge) => total + Number(charge.buy_cost || 0), 0)) + (data?.ocean_quote_charge !== undefined && data?.ocean_quote_charge.reduce((total, charge) => total + Number(charge.buy_cost || 0), 0)) + (data?.port_discharge_charges !== undefined && data?.port_discharge_charges.reduce((total, charge) => total + Number(charge.buy_cost || 0), 0)) + (newData?.pickup_quote_charge !== undefined && newData?.pickup_quote_charge.reduce((total, charge) => total + Number(charge.buy_cost || 0), 0)) + (newData?.originport_quote_charge !== undefined && newData?.originport_quote_charge.reduce((total, charge) => total + Number(charge.buy_cost || 0), 0)) + (newData?.ocean_quote_charge !== undefined && newData?.ocean_quote_charge.reduce((total, charge) => total + Number(charge.buy_cost || 0), 0)) + (newData?.port_discharge_charges !== undefined && newData?.port_discharge_charges.reduce((total, charge) => total + Number(charge.buy_cost || 0), 0));
 
-        let marginValue = (data?.pickup_quote_charge !== undefined && data?.pickup_quote_charge.reduce((total, charge) => total + Number(charge.margin_value || 0), 0)) + (data?.originport_quote_charge !== undefined && data?.originport_quote_charge.reduce((total, charge) => total + Number(charge.margin_value || 0), 0)) + (data?.ocean_quote_charge !== undefined && data?.ocean_quote_charge.reduce((total, charge) => total + Number(charge.margin_value || 0), 0)) + (newData?.pickup_quote_charge !== undefined && newData?.pickup_quote_charge.reduce((total, charge) => total + Number(charge.margin_value || 0), 0)) + (newData?.originport_quote_charge !== undefined && newData?.originport_quote_charge.reduce((total, charge) => total + Number(charge.margin_value || 0), 0)) + (newData?.ocean_quote_charge !== undefined && newData?.ocean_quote_charge.reduce((total, charge) => total + Number(charge.margin_value || 0), 0));
+        let marginValue = (data?.pickup_quote_charge !== undefined && data?.pickup_quote_charge.reduce((total, charge) => total + Number(charge.margin_value || 0), 0)) + (data?.originport_quote_charge !== undefined && data?.originport_quote_charge.reduce((total, charge) => total + Number(charge.margin_value || 0), 0)) + (data?.ocean_quote_charge !== undefined && data?.ocean_quote_charge.reduce((total, charge) => total + Number(charge.margin_value || 0), 0)) + (data?.port_discharge_charges !== undefined && data?.port_discharge_charges.reduce((total, charge) => total + Number(charge.margin_value || 0), 0)) + (newData?.pickup_quote_charge !== undefined && newData?.pickup_quote_charge.reduce((total, charge) => total + Number(charge.margin_value || 0), 0)) + (newData?.originport_quote_charge !== undefined && newData?.originport_quote_charge.reduce((total, charge) => total + Number(charge.margin_value || 0), 0)) + (newData?.ocean_quote_charge !== undefined && newData?.ocean_quote_charge.reduce((total, charge) => total + Number(charge.margin_value || 0), 0)) + (newData?.port_discharge_charges !== undefined && newData?.port_discharge_charges.reduce((total, charge) => total + Number(charge.margin_value || 0), 0));
         return buyValue + marginValue;
     }
     return (
@@ -26,9 +26,18 @@ export default function PreviewCommonTable({data,newData}) {
                         </thead>
                         <tbody>
                             {/* pickup */}
-                            {data?.pickup_quote_charge?.length !== 0 && <tr>
+                            {(data?.pickup_quote_charge?.length !== 0 || (data?.truck || data?.rail)) && <tr>
                                 <td colSpan={5} className='title_row'>Pickup</td>
                             </tr>}
+                            {data?.truck || data?.rail && (
+                                <tr>
+                                    <td>{data?.truck ? 'truck' : 'rail'}</td>
+                                    <td>{`-`}</td>
+                                    <td>{`-`}</td>
+                                    <td>{`-`}</td>
+                                    <td>{data?.truck ? data?.truck_charge : data?.rail_charge}</td>
+                                </tr>
+                            )}
                             {data?.pickup_quote_charge?.map((data,index) => (
                                 <tr key={`pickup_${data.id}_${index}`}>
                                     <td>{data?.charges_name}</td>
@@ -50,7 +59,7 @@ export default function PreviewCommonTable({data,newData}) {
 
                             {/* Port of Origin(shekou)  */}
                             {data?.originport_quote_charge?.length !== 0 && <tr>
-                                <td colSpan={5} className='title_row'>Port of Origin(shekou)</td>
+                                <td colSpan={5} className='title_row'>Port of Origin</td>
                             </tr>}
                             {data?.originport_quote_charge?.map((data,index) => (
                                 <tr key={`origin_${data.id}_${index}`}>
@@ -72,9 +81,18 @@ export default function PreviewCommonTable({data,newData}) {
                             ))} 
 
                             {/* Ocean Freight(FIFO)  */}
-                            {data?.ocean_quote_charge?.length !== 0 && <tr>
+                            <tr>
                                 <td colSpan={5} className='title_row'>Ocean Freight(FIFO)</td>
-                            </tr>}
+                            </tr>
+                            {data?.ocean_freight_charge && (
+                                <tr>
+                                    <td>Ocean</td>
+                                    <td>{`-`}</td>
+                                    <td>{`-`}</td>
+                                    <td>{`-`}</td>
+                                    <td>{data?.ocean_freight_charge || 0}</td>
+                                </tr>
+                            )}
                             {data?.ocean_quote_charge?.map((data,index) => (
                                 <tr key={`ocean_${data.id}_${index}`}>
                                     <td>{data?.charges_name}</td>
@@ -95,28 +113,41 @@ export default function PreviewCommonTable({data,newData}) {
                             ))}    
 
                             {/* Port of Discharge(Winningpeg)  */}
-                            {/* <tr>
-                                <td colSpan={5} className='title_row'>Port of Discharge(Winningpeg)</td>
-                            </tr>
-                            <tr>
-                                <td>Port of discharge</td>
-                                <td>20GP</td>
-                                <td>2</td>
-                                <td>18</td>
-                                <td>2200</td>
-                            </tr> */}
+                            {data?.port_discharge_charges?.length !== 0 && <tr>
+                                <td colSpan={5} className='title_row'>Port of Discharge</td>
+                            </tr>}
+                            {data?.port_discharge_charges?.map((data,index) => (
+                                <tr key={`ocean_${data.id}_${index}`}>
+                                    <td>{data?.charges_name}</td>
+                                    <td>{data?.uom}</td>
+                                    <td>{data?.quantity}</td>
+                                    <td>{data?.tax}</td>
+                                    <td>{data?.total_sale_cost}</td>
+                                </tr>
+                            ))}  
+                            {newData?.port_discharge_charges?.map((data,index) => (
+                                <tr key={`pickupnew_${data.id}_${index}`}>
+                                    <td>{data?.charges_name}</td>
+                                    <td>{data?.uom}</td>
+                                    <td>{data?.quantity}</td>
+                                    <td>{data?.tax}</td>
+                                    <td>{data?.total_sale_cost}</td>
+                                </tr>
+                            ))} 
                             
                             {/* Delivery  */}
-                            {/* <tr>
+                            <tr>
                                 <td colSpan={5} className='title_row'>Delivery</td>
                             </tr>
-                            <tr>
-                                <td>Delivery</td>
-                                <td>20GP</td>
-                                <td>2</td>
-                                <td>18</td>
-                                <td>2200</td>
-                            </tr> */}
+                            {data?.delivery_charge && (
+                                <tr>
+                                    <td>Delivery</td>
+                                    <td>{`-`}</td>
+                                    <td>{`-`}</td>
+                                    <td>{`-`}</td>
+                                    <td>{data?.delivery_charge || 0}</td>
+                                </tr>
+                            )}
                         </tbody>
                         <tfoot>
                             <tr>

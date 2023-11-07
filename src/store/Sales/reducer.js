@@ -17,9 +17,6 @@ const INIT_STATE = {
         location_to: '',
     },
     quotation_result_data: [],
-    quotation_result_prefData: [],
-    quotation_result_cheapData: [],
-    quotation_result_fasterData: [],
     quotation_result_error: [],
     quote_selected_data: [],
 }
