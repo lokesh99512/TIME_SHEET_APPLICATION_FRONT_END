@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 
 //import Breadcrumbs
@@ -17,6 +17,7 @@ import ContainerTrackChart from './Partials/ContainerTrackChart';
 import MainDnd from './Partials/MainDnd';
 import RevenueChart from './Partials/RevenueChart';
 import { customSort } from '../../components/Common/CommonLogic';
+import AnimatedCounter from './Partials/AnimatedCounter';
 
 const Dashboard = () => {
     const [tableData, setTableData] = useState(exportSumData);
@@ -25,9 +26,9 @@ const Dashboard = () => {
     const [tableData4, setTableData4] = useState(salesPerformData);
 
     //meta title
-    document.title="Dashboard || Navigating Freight Costs with Precision||Ultimate Rate Management platform";
+    document.title = "Dashboard || Navigating Freight Costs with Precision||Ultimate Rate Management platform";
 
-    const handleSorting = (sortField, sortOrder,type) => {
+    const handleSorting = (sortField, sortOrder, type) => {
         const tables = {
             export_sum: tableData,
             import_sum: tableData2,
@@ -51,7 +52,8 @@ const Dashboard = () => {
             default:
                 setTableData4(sorted);
         }
-    };  
+    };
+
     return (
         <React.Fragment>
             <div className="page-content">
@@ -69,7 +71,8 @@ const Dashboard = () => {
                                         {(salesEnquiryData || [])?.map(item => (
                                             <div className="sh_box" key={item?.id}>
                                                 <p className="box_title">{item?.title}</p>
-                                                <p className="sh_inquiry_rate">{item?.rate}
+                                                <p className="sh_inquiry_rate">
+                                                    <AnimatedCounter rate={Number(item?.rate)} />
                                                     <span className={`${item?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{item?.compare_rate}%</span>
                                                 </p>
                                             </div>
@@ -84,7 +87,8 @@ const Dashboard = () => {
                                         {(quotSumData || [])?.map(item => (
                                             <div className="sh_box" key={item?.id}>
                                                 <p className="box_title">{item?.title}</p>
-                                                <p className="sh_inquiry_rate">{item?.rate}
+                                                <p className="sh_inquiry_rate">
+                                                    <AnimatedCounter rate={Number(item?.rate)} />
                                                     <span className={`${item?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{item?.compare_rate}%</span>
                                                 </p>
                                             </div>
@@ -98,7 +102,7 @@ const Dashboard = () => {
                                 {/* Revenue Run Rate charts */}
                                 <RevenueChart />
                             </Col>
-                        
+
                             {/* Right draggble Summary */}
                             <Col xl={3} lg={4} className="sh_right_summary_wrap">
                                 <MainDnd />
@@ -138,7 +142,7 @@ const Dashboard = () => {
                                     <CommonTable column={salesColumnData} data={tableData4} handleSorting={handleSorting} type={'salesPerformance'} />
                                 </div>
                             </Col>
-                        </Row>                  
+                        </Row>
                     </div>
 
                     {/* <Row>

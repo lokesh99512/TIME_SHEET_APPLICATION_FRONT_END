@@ -1,19 +1,20 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { getCustomersData, updateCustomerSwitchData } from '../../store/Parties/actions';
+import { getCustomersData, getVendorsData, updateCustomerSwitchData, updateVendorSwitchData } from '../../store/Parties/actions';
 import { useSelector } from 'react-redux';
 import TableVenders from './TableVenders';
 import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap';
-import { CityV, ConatctNoV, CreatedOnV, EmailIdV, LastTransactionV, ServiceType, VendorCode, VendorName, VendorType } from './PartiesCol';
+import { CityV, ConatctName, ConatctNoV, CreatedOnV, EmailIdV, LastTransactionV, ServiceType, VendorCode, VendorName, VendorType } from './PartiesCol';
 import { edit_icon } from '../../assets/images';
+import ModalVendorValue from './Modal/ModalVendorValue';
 
 const Vendors = () => {
   const [modal, setModal] = useState(false);
   const [viewData, setViewData] = useState(false);
 const dispatch = useDispatch();
 
-const partiesCustomersData = useSelector(
-  (state) => state.parties.parties_customers_data
+const partiesVendorsData = useSelector(
+  (state) => state.parties.parties_vendors_data
 );
 
 //   console.log(partiesCustomersData,"<---data");
@@ -28,11 +29,11 @@ const onCloseClick = () => {
 }
 
 const switchHandler = (data) => {
-  dispatch(updateCustomerSwitchData(data.id,data.is_active));
+  dispatch(updateVendorSwitchData(data.id,data.is_active));
 }
 
 useEffect(() => {
-  dispatch(getCustomersData());
+  dispatch(getVendorsData());
 }, [dispatch]);
 
 const columns = useMemo(
@@ -53,7 +54,7 @@ const columns = useMemo(
     },
     {
       Header: "Vendor Name",
-      accessor: "vendorName",
+      accessor: "VendorName",
       filterable: true,
       disableFilters: true,
       Cell: (cellProps) => {
@@ -67,7 +68,7 @@ const columns = useMemo(
     },
     {
       Header: "Vendor Type",
-      accessor: "vendorType",
+      accessor: "VendorType",
       filterable: true,
       disableFilters: true,
       Cell: (cellProps) => {
@@ -81,12 +82,26 @@ const columns = useMemo(
     },
     {
       Header: "Service Type",
-      accessor: "serviceType",
+      accessor: "ServiceType",
       filterable: true,
       disableFilters: true,
       Cell: (cellProps) => {
         return (
           <ServiceType
+            cellProps={cellProps}
+            viewPopupHandler={viewPopupHandler}
+          />
+        );
+      },
+    },
+    {
+      Header: "Contact Name",
+      accessor: "contactName",
+      filterable: true,
+      disableFilters: true,
+      Cell: (cellProps) => {
+        return (
+          <ConatctName
             cellProps={cellProps}
             viewPopupHandler={viewPopupHandler}
           />
@@ -228,7 +243,7 @@ const columns = useMemo(
             {/* React Table */}
             <TableVenders
               columns={columns}
-              data={partiesCustomersData}
+              data={partiesVendorsData}
               isGlobalFilter={true}
               isAddInvoiceList={true}
               customPageSize={10}
@@ -237,7 +252,7 @@ const columns = useMemo(
             />
 
             {/* modal */}
-            {/* <ModalCustomerValue modal={modal} onCloseClick={onCloseClick} viewData={viewData} modalType={'customer'} /> */}
+            <ModalVendorValue modal={modal} onCloseClick={onCloseClick} viewData={viewData} modalType={'vendor'} />
           </div>
         </Container>
       </div>

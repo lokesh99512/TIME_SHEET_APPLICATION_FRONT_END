@@ -213,7 +213,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
             <div className="create_sales_search_forms">
                 {searchView && (
                     <div className="row">
-                        <div className="col-lg-4">
+                        <div className="col-lg-6">
                             <div className="common_dropdwon_btn_wrap dropdown_smart_filter mb-3">
                                 <div
                                     id='more_menu'
@@ -256,7 +256,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                 }
                             </div>
                         </div>
-                        <div className="col-lg-4">
+                        <div className="col-lg-6">
                             <div className="common_dropdwon_btn_wrap mb-3">
                                 <div
                                     id='more_menu'
@@ -293,7 +293,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                 }
                             </div>
                         </div>
-                        <div className="col-lg-4">
+                        {/* <div className="col-lg-4">
                             <div className="common_dropdwon_btn_wrap mb-3">
                                 <div
                                     id='more_menu'
@@ -321,7 +321,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                     </ul> : null
                                 }
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 )}
 

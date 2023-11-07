@@ -1,6 +1,6 @@
-import { GET_CUSTOMERS_TABLE_DATA, GET_CUSTOMERS_TABLE_DATA_FAIL, GET_CUSTOMERS_TABLE_DATA_SUCCESS, UPDATE_CUSTOMER_SWITCH } from "./actiontype"
+import { GET_CUSTOMERS_TABLE_DATA, GET_CUSTOMERS_TABLE_DATA_FAIL, GET_CUSTOMERS_TABLE_DATA_SUCCESS, GET_VENDORS_TABLE_DATA, GET_VENDORS_TABLE_DATA_FAIL, GET_VENDORS_TABLE_DATA_SUCCESS, UPDATE_CUSTOMER_SWITCH, UPDATE_VENDOR_SWITCH } from "./actiontype"
 
-// --------------------------- User Master
+// --------------------------- Customers
 
 
 export const getCustomersData = (data) => {
@@ -28,21 +28,30 @@ export const updateCustomerSwitchData = (user_id, user_is_active) => ({
     }
 })
 
-// -------------------------------- company details
+// -------------------------------- vendor
 
-// export const getCompanyDetailsData = (data) => {
-//     return {
-//     type: GET_COMPANYDETAILS_DATA,
-//     payload: data,
-// }
-// }
+export const getVendorsData = (data) => {
+    return {
+    type: GET_VENDORS_TABLE_DATA,
+    payload: data,
+}
+}
 
-// export const getCompanyDetailsDataSuccess = (data) => ({
-//     type: GET_COMPANYDETAILS_DATA_SUCCESS,
-//     payload: data,
-// })
+export const getVendorsDataSuccess = (data) => ({
+    type: GET_VENDORS_TABLE_DATA_SUCCESS,
+    payload: data,
+})
 
-// export const getCompanyDetailsDataFail = (error) => ({
-//     type: GET_COMPANYDETAILS_DATA_FAIL,
-//     payload: error,
-// })
+export const getVendorsDataFail = (error) => ({
+    type: GET_VENDORS_TABLE_DATA_FAIL,
+    payload: error,
+})
+
+export const updateVendorSwitchData = (user_id, user_is_active) => ({
+    type: UPDATE_VENDOR_SWITCH,
+    payload: {
+        user_id,
+        user_is_active
+    }
+})
+

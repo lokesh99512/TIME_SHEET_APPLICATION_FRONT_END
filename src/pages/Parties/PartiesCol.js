@@ -58,6 +58,9 @@ export const VendorType = ({cellProps,viewPopupHandler}) => {
 export const ServiceType = ({cellProps,viewPopupHandler}) => {
     return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }
+export const ConatctName = ({cellProps,viewPopupHandler}) => {
+    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
+}
 export const ConatctNoV = ({cellProps,viewPopupHandler}) => {
     return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }

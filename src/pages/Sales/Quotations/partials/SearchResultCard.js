@@ -17,17 +17,17 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
         }
     };
 
-    const showDetailsHandler = (index,id) => {
+    const showDetailsHandler = (index, id) => {
         let newArr = [...showDetails];
         if (newArr?.length !== 0) {
-            if(newArr.some(obj => obj.id === id)){
+            if (newArr.some(obj => obj.id === id)) {
                 newArr.find(obj => obj.id === id).details = !newArr.find(obj => obj.id === id).details
             } else {
-                let newObj = { details: true,id }
+                let newObj = { details: true, id }
                 newArr.push(newObj);
             }
         } else {
-            let newObj = { details: true,id }
+            let newObj = { details: true, id }
             newArr.push(newObj);
         }
         setShowDetails(newArr);
@@ -36,7 +36,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
     const handleChange = (val, name, index, id) => {
         dispatch({ type: UPDATE_QUOTATION_RESULT_DETAILS, payload: { name, value: val, id } })
         let newArry = [];
-        dispatch({type: QUOTATION_RESULT_SELECTED, payload: newArry})
+        dispatch({ type: QUOTATION_RESULT_SELECTED, payload: newArry })
     }
 
     const countPickup = (item) => {
@@ -60,26 +60,23 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
             amount += pickupCharge
         }
         if (item.origin_port) {
-            originPortCharge = Number(item.origin_pch_charge || 0) + Number(item.origin_pcsd_charge || 0)
-                + Number(item.origin_sbcio_charge || 0) + Number(item.origin_dfo_charge || 0)
-                + Number(item.origin_dtc_charge || 0) + Number(item.origin_eds_charge || 0)
-                + Number(item.origin_ips_charge || 0) + Number(item.origin_por_charge || 0)
-                + Number(item.origin_sse_charge || 0) + Number(item.origin_war_charge || 0) + Number(item.origin_othc_charge || 0)
+            originPortCharge = item?.originport_quote_charge?.reduce((total, charge) => total + Number(charge.buy_cost), 0)
             amount += originPortCharge
         }
         if (item.ocean_freight) {
-            amount += Number(item.fifo_standard || 0);
+            amount += Number(item.ocean_freight_charge || 0);
         }
         if (item.pickport_discharge) {
-            amount += Number(item.pickport_discharge_charge || 0);
+            amount += item?.port_discharge_charges?.reduce((total, charge) => total + Number(charge.buy_cost), 0);
         }
         if (item.delivery) {
             amount += Number(item.delivery_charge || 0);
         }
+        console.log(amount, "amount")
         return amount;
     }
 
-    const quotationCheckHandler = (item) => { 
+    const quotationCheckHandler = (item) => {
         const maxSelection = 3;
 
         if (quote_Selected.length < maxSelection) {
@@ -103,8 +100,14 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
     }
     const singleQuoteModal = (item) => {
         let newArry = [item]
-        dispatch({type: QUOTATION_RESULT_SELECTED, payload: newArry})
+        dispatch({ type: QUOTATION_RESULT_SELECTED, payload: newArry })
     }
+
+    // Total------------------
+    const innerTotalHandler = (array) => {
+        return array !== undefined ? array?.reduce((total, charge) => total + Number(charge.buy_cost), 0) : 0;
+    }
+
     return (
         <div>
             <div className="result_tab_content_wrap">
@@ -129,9 +132,21 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                 <div className="middle_content">
                                     <span className="duration text-center d-block">Duration <b>{item.duration} days</b></span>
                                     <div className="from_to_wrap mt-2 mb-3 d-flex justify-content-between">
-                                        <span className="from_loc">{item.location_from}</span>
-                                        <span className="icon d-flex align-items-center justify-content-center"><img src={ship_filled} alt="Shipping" /></span>
-                                        <span className="to_loc">{item.location_to}</span>
+                                        {item.location_route.length === 4 ? (
+                                            <>
+                                                <span className="from_loc">{item?.location_route[0]}</span>
+                                                <span className="from_loc text-center">{item?.location_route[1]}</span>
+                                                <span className="icon d-flex align-items-center justify-content-center"><img src={ship_filled} alt="Shipping" /></span>
+                                                <span className="to_loc text-center">{item?.location_route[2]}</span>
+                                                <span className="to_loc">{item?.location_route[3]}</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span className="from_loc">{item?.location_route[0]}</span>
+                                                <span className="icon d-flex align-items-center justify-content-center"><img src={ship_filled} alt="Shipping" /></span>
+                                                <span className="to_loc">{item?.location_route[1]}</span>
+                                            </>
+                                        )}
                                     </div>
                                     <div className="row">
                                         <div className="col-lg-4 text-left"><span>Valid: <b>{item.valid_from || '-'}</b></span></div>
@@ -140,11 +155,12 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                     </div>
                                 </div>
                                 <div className="total_wrap">
-                                    <p className="total_price text-center"><b>${TotalQuotationCount(item)}</b></p>
+                                    <p className="total_price text-center"><b>${item?.total_cost}</b></p>
+                                    {/* <p className="total_price text-center"><b>${TotalQuotationCount(item)}</b></p> */}
                                     <div className="btn_wrap d-flex">
-                                        <button type='button' className='btn text-primary view_detail_btn' onClick={() => { showDetailsHandler(index,item.id); }}>
+                                        <button type='button' className='btn text-primary view_detail_btn' onClick={() => { showDetailsHandler(index, item.id); }}>
                                             View{showDetails?.find(obj => obj.id === item.id)?.details ? 'Less' : 'Detail'}</button>
-                                        <button type='button' className='btn btn-primary' onClick={() => { QuoteModalHandler(); singleQuoteModal(item)}} disabled={quote_Selected.some(obj => obj.id === item.id) || quote_Selected?.length >= 2}>Quote Now</button>
+                                        <button type='button' className='btn btn-primary' onClick={() => { QuoteModalHandler(); singleQuoteModal(item) }} disabled={quote_Selected.some(obj => obj.id === item.id) || quote_Selected?.length >= 2}>Quote Now</button>
                                     </div>
                                 </div>
                             </div>
@@ -169,59 +185,65 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                     Pick up
                                                 </div>
                                                 <div className="right_con d-flex ms-auto">
-                                                    <span>CO2: <b>{item.pickup_co}</b></span>
+                                                    {item.pickup_co !== '' && <span>CO2: <b>{item.pickup_co}</b></span>}
                                                     <span className='text-primary'>${countPickup(item)}</span>
                                                 </div>
                                             </AccordionHeader>
                                             <AccordionBody accordionId={`pickup_${index}`}>
-                                                <div className="radio_wrap">
-                                                    <div className="radio_con d-flex ps-5">
-                                                        <div className={`form-check d-flex align-items-center`} onClick={(e) => handleChange('truck', 'pickup_val', index, item.id)}>
-                                                            <input
-                                                                className="form-check-input me-2"
-                                                                type="radio"
-                                                                name={'pickup_val'}
-                                                                id={'pickup_truck'}
-                                                                value={'truck'}
-                                                                checked={item.pickup_val === 'truck'}
-                                                                readOnly
-                                                            />
-                                                            <label className="form-check-label" htmlFor={'pickup_truck'}>
-                                                                Truck
-                                                            </label>
-                                                        </div>
-                                                        <div className="pickup_details ms-auto d-flex justify-content-end">
-                                                            <span>{item.truck_day ? `${item.truck_day} day` : ''}</span>
-                                                            <span>{item.truck_km} km</span>
-                                                            <span className='text-primary'>${item.truck_charge || '0'}</span>
-                                                        </div>
+                                                {item?.pickup && (
+                                                    <div className="radio_wrap">
+                                                        {item?.truck && (
+                                                            <div className="radio_con d-flex ps-5">
+                                                                <div className={`form-check d-flex align-items-center`} onClick={(e) => handleChange('truck', 'pickup_val', index, item.id)}>
+                                                                    <input
+                                                                        className="form-check-input me-2"
+                                                                        type="radio"
+                                                                        name={'pickup_val'}
+                                                                        id={'pickup_truck'}
+                                                                        value={'truck'}
+                                                                        checked={item.pickup_val === 'truck'}
+                                                                        readOnly
+                                                                    />
+                                                                    <label className="form-check-label" htmlFor={'pickup_truck'}>
+                                                                        Truck
+                                                                    </label>
+                                                                </div>
+                                                                <div className="pickup_details ms-auto d-flex justify-content-end">
+                                                                    <span>{item.truck_day ? `${item.truck_day} day` : ''}</span>
+                                                                    <span>{item.truck_km} km</span>
+                                                                    <span className='text-primary'>${item.truck_charge || '0'}</span>
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                        {item?.rail && (
+                                                            <div className="radio_con d-flex ps-5 mt-3">
+                                                                <div className={`form-check d-flex align-items-center`} onClick={(e) => handleChange('rail', 'pickup_val', index, item.id)}>
+                                                                    <input
+                                                                        className="form-check-input me-2"
+                                                                        type="radio"
+                                                                        name={'pickup_val'}
+                                                                        id={'pickup_rail'}
+                                                                        value={'rail'}
+                                                                        checked={item.pickup_val === 'rail'}
+                                                                        readOnly
+                                                                    />
+                                                                    <label className="form-check-label" htmlFor={'pickup_rail'}>
+                                                                        Rail
+                                                                    </label>
+                                                                </div>
+                                                                <div className="pickup_details ms-auto d-flex justify-content-end">
+                                                                    <span className='text-primary'>${item.rail_charge || '0'}</span>
+                                                                </div>
+                                                            </div>
+                                                        )}
                                                     </div>
-                                                    <div className="radio_con d-flex ps-5 mt-3">
-                                                        <div className={`form-check d-flex align-items-center`} onClick={(e) => handleChange('rail', 'pickup_val', index, item.id)}>
-                                                            <input
-                                                                className="form-check-input me-2"
-                                                                type="radio"
-                                                                name={'pickup_val'}
-                                                                id={'pickup_rail'}
-                                                                value={'rail'}
-                                                                checked={item.pickup_val === 'rail'}
-                                                                readOnly
-                                                            />
-                                                            <label className="form-check-label" htmlFor={'pickup_rail'}>
-                                                                Rail
-                                                            </label>
-                                                        </div>
-                                                        <div className="pickup_details ms-auto d-flex justify-content-end">
-                                                            <span className='text-primary'>${item.rail_charge || '0'}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                )}
                                             </AccordionBody>
                                         </AccordionItem>
                                         <AccordionItem>
                                             <AccordionHeader targetId={`origin_port_${index}`}>
                                                 <div className="left_lable d-flex align-items-center">
-                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.origin_port, 'origin_port', index,item.id); }}>
+                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.origin_port, 'origin_port', index, item.id); }}>
                                                         <input
                                                             className="form-check-input"
                                                             type="checkbox"
@@ -236,63 +258,25 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                     Port of origin(Shekou)
                                                 </div>
                                                 <div className="right_con d-flex ms-auto">
-                                                    <span>CO2: <b>{item.origin_port_co}</b></span>
-                                                    <span className='text-primary'>$207</span>
+                                                    {item.pickup_co !== '' && <span>CO2: <b>{item.origin_port_co}</b></span>}
+                                                    <span className='text-primary'>{item?.origin_port_currency || '₹'} {innerTotalHandler(item?.originport_quote_charge)}</span>
                                                 </div>
                                             </AccordionHeader>
                                             <AccordionBody accordionId={`origin_port_${index}`}>
                                                 <div className="price_details_wrap ps-5">
-                                                    <div className="details d-flex justify-content-between">
-                                                        <p className='me-2'><b>CMA-PCH</b> - Pre carriage haulage</p>
-                                                        <span className='text-primary'>${item.origin_pch_charge || '0'}</span>
-                                                    </div>
-                                                    <div className="details d-flex justify-content-between">
-                                                        <p className='me-2'><b>CMA-PCSD</b> - Pre carriage haulage</p>
-                                                        <span className='text-primary'>${item.origin_pcsd_charge || '0'}</span>
-                                                    </div>
-                                                    <div className="details d-flex justify-content-between">
-                                                        <p className='me-2'><b>CMA-SBCIO</b> - Scanning by customs, incl other</p>
-                                                        <span className='text-primary'>${item.origin_sbcio_charge || '0'}</span>
-                                                    </div>
-                                                    <div className="details d-flex justify-content-between">
-                                                        <p className='me-2'><b>DFO</b> - DOC FEE ORIGIN</p>
-                                                        <span className='text-primary'>${item.origin_dfo_charge || '0'}/per lot</span>
-                                                    </div>
-                                                    <div className="details d-flex justify-content-between">
-                                                        <p className='me-2'><b>DTC</b> - Import Serenity Container Guar</p>
-                                                        <span className='text-primary'>${item.origin_dtc_charge || '0'}</span>
-                                                    </div>
-                                                    <div className="details d-flex justify-content-between">
-                                                        <p className='me-2'><b>EDS</b> - Export Declaration Surcharge</p>
-                                                        <span className='text-primary'>${item.origin_eds_charge || '0'}/per lot</span>
-                                                    </div>
-                                                    <div className="details d-flex justify-content-between">
-                                                        <p className='me-2'><b>IPS</b> - Destinat.Terminal-Intl Ship&Po</p>
-                                                        <span className='text-primary'>${item.origin_ips_charge || '0'}</span>
-                                                    </div>
-                                                    <div className="details d-flex justify-content-between">
-                                                        <p className='me-2'><b>POR</b> - Port and/or Terminal wharfage</p>
-                                                        <span className='text-primary'>${item.origin_por_charge || '0'}</span>
-                                                    </div>
-                                                    <div className="details d-flex justify-content-between">
-                                                        <p className='me-2'><b>SSE</b> - Sealing service export</p>
-                                                        <span className='text-primary'>${item.origin_sse_charge || '0'}</span>
-                                                    </div>
-                                                    <div className="details d-flex justify-content-between">
-                                                        <p className='me-2'><b>WAR</b> - Extra risk coverage surcharge</p>
-                                                        <span className='text-primary'>${item.origin_war_charge || '0'}</span>
-                                                    </div>
-                                                    <div className="details d-flex justify-content-between">
-                                                        <p className='me-2'><b>OTHC</b> - Original Terminal Handling Charge</p>
-                                                        <span className='text-primary'>${item.origin_othc_charge || '0'}</span>
-                                                    </div>
+                                                    {item?.originport_quote_charge?.length !== 0 && item?.originport_quote_charge?.map((data) => (
+                                                        <div className="details d-flex justify-content-between" key={`key_${data?.charges_name}`}>
+                                                            <p className='me-2'>{data?.charges_name}</p>
+                                                            <span className='text-primary'>{item?.origin_port_currency || '₹'} {data.buy_cost || '0'}</span>
+                                                        </div>
+                                                    ))}
                                                 </div>
                                             </AccordionBody>
                                         </AccordionItem>
                                         <AccordionItem>
                                             <AccordionHeader targetId={`ocean_freight_${index}`}>
                                                 <div className="left_lable d-flex align-items-center">
-                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.ocean_freight, 'ocean_freight', index,item.id); }}>
+                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.ocean_freight, 'ocean_freight', index, item.id); }}>
                                                         <input
                                                             className="form-check-input"
                                                             type="checkbox"
@@ -307,23 +291,23 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                     Ocean Freight(FIFO)
                                                 </div>
                                                 <div className="right_con d-flex ms-auto">
-                                                    <span>CO2: <b>{item.ocean_freight_co}</b></span>
-                                                    <span className='text-primary'>${item.fifo_standard || '0'}</span>
+                                                    {item.ocean_freight_co !== '' && <span>CO2: <b>{item.ocean_freight_co}</b></span>}
+                                                    <span className='text-primary'>{item.ocean_freight_charge_currency || '₹'} {item.ocean_freight_charge || '0'}</span>
                                                 </div>
                                             </AccordionHeader>
                                             <AccordionBody accordionId={`ocean_freight_${index}`}>
-                                                <div className="price_details_wrap ps-5">
+                                                {/* <div className="price_details_wrap ps-5">
                                                     <div className="details d-flex justify-content-between">
                                                         <p className='me-2'>20 Standard</p>
                                                         <span className='text-primary'>${item.fifo_standard || '0'}</span>
                                                     </div>
-                                                </div>
+                                                </div> */}
                                             </AccordionBody>
                                         </AccordionItem>
                                         <AccordionItem>
                                             <AccordionHeader targetId={`pickport_discharge_${index}`}>
                                                 <div className="left_lable d-flex align-items-center">
-                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.pickport_discharge, 'pickport_discharge', index,item.id); }}>
+                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.pickport_discharge, 'pickport_discharge', index, item.id); }}>
                                                         <input
                                                             className="form-check-input"
                                                             type="checkbox"
@@ -338,16 +322,18 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                     Port of discharge(Winnipeg)
                                                 </div>
                                                 <div className="right_con d-flex ms-auto">
-                                                    <span>CO2: <b>{item.pickport_discharge_co}</b></span>
-                                                    <span className='text-primary'>${item.pickport_discharge_charge || '0'}</span>
+                                                    {item?.port_discharge_co !== '' && <span>CO2: <b>{item.port_discharge_co}</b></span>}
+                                                    <span className='text-primary'>{item.port_discharge_currency || '₹'} {innerTotalHandler(item?.port_discharge_charges)}</span>
                                                 </div>
                                             </AccordionHeader>
                                             <AccordionBody accordionId={`pickport_discharge_${index}`}>
                                                 <div className="price_details_wrap ps-5">
-                                                    <div className="details d-flex justify-content-between">
-                                                        <p className='me-2'>PickPort of discharge(Winnipeg)</p>
-                                                        <span className='text-primary'>${item.pickport_discharge_charge || '0'}</span>
-                                                    </div>
+                                                    {item?.port_discharge_charges?.length !== 0 && item?.port_discharge_charges?.map((data) => (
+                                                        <div className="details d-flex justify-content-between" key={`key_${data?.charges_name}`}>
+                                                            <p className='me-2'>{data?.charges_name}</p>
+                                                            <span className='text-primary'>{data?.currency || '₹'}  {data.buy_cost || '0'}</span>
+                                                        </div>
+                                                    ))}
                                                 </div>
                                             </AccordionBody>
                                         </AccordionItem>
@@ -369,16 +355,33 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                     Delivery
                                                 </div>
                                                 <div className="right_con d-flex ms-auto">
-                                                    <span>CO2: <b>{item.delivery_co}</b></span>
-                                                    <span className='text-primary'>${item.delivery_charge || '0'}</span>
+                                                    {item.delivery_co !== '' && <span>CO2: <b>{item.delivery_co}</b></span>}
+                                                    <span className='text-primary'>{item?.delivery_currency || '₹'} {item.delivery_charge || '0'}</span>
                                                 </div>
                                             </AccordionHeader>
                                             <AccordionBody accordionId={`delivery_charge_${index}`}>
-                                                <div className="price_details_wrap ps-5">
-                                                    <div className="details d-flex justify-content-between">
-                                                        <p className='m-0 me-2'>Delivery</p>
-                                                        <span className='text-primary'>${item.delivery_charge || '0'}</span>
-                                                    </div>
+                                                <div className="radio_wrap">
+                                                    {item?.road && (
+                                                        <div className="radio_con d-flex ps-5">
+                                                            <div className={`form-check d-flex align-items-center`} onClick={(e) => handleChange('road', 'delivery_val', index, item.id)}>
+                                                                <input
+                                                                    className="form-check-input me-2"
+                                                                    type="radio"
+                                                                    name={'delivery_val'}
+                                                                    id={'delivery_road'}
+                                                                    value={'road'}
+                                                                    checked={item.delivery_val === 'road'}
+                                                                    readOnly
+                                                                />
+                                                                <label className="form-check-label" htmlFor={'delivery_road'}>
+                                                                    Road
+                                                                </label>
+                                                            </div>
+                                                            <div className="pickup_details ms-auto d-flex justify-content-end">
+                                                                <span className='text-primary'>{item?.delivery_currency || '₹'} {item.road_charge || '0'}</span>
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </AccordionBody>
                                         </AccordionItem>

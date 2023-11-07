@@ -1500,6 +1500,10 @@ input[type="number"]{
                         border-left: 1px solid $primary_7;
                         box-shadow: 0px 0px 0px 4px #F1F1FE;
                     }
+                    &.disable {
+                        pointer-events: none;
+                        opacity: 0.8;
+                    }
                     i{
                         pointer-events: none;
                     }
