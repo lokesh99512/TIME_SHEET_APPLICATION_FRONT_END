@@ -320,6 +320,9 @@ export const getPartiesVendors = () => get(url.GET_PARTIES_VENDORS);
 // ---------------- sales ----------------------------------------
 export const getSalesQuotTableData = () => get(url.GET_QUOTATION);
 export const getSearchResultData = () => get(url.GET_QUOTATION_SEARCH_RESULT);
+export const getSearchResultData1 = () => get(url.GET_QUOTATION_SEARCH_RESULT1);
+export const getSearchResultData2 = () => get(url.GET_QUOTATION_SEARCH_RESULT2);
+export const getSearchResultData3 = () => get(url.GET_QUOTATION_SEARCH_RESULT3);
 export const getExchangeRate = () => get(url.GET_quote_exchange_rate);
 
 export {

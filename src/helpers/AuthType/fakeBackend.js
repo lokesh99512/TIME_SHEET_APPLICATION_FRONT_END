@@ -1,43 +1,59 @@
 import axios from "axios"
 import MockAdapter from "axios-mock-adapter"
-import * as url from "../url_helper"
-import accessToken from "../jwt-token-access/accessToken"
+import exchangeRateData from "../../assets/extra/inr.json"
 import {
+  InvestedOverviewApril,
+  InvestedOverviewDec,
+  InvestedOverviewFeb, InvestedOverviewJan,
+  InvestedOverviewMarch,
+  MarketOver1MData,
+  MarketOver1YData,
+  MarketOver6MData,
+  MarketOverViewAllData,
+  PieChart1MData,
+  PieChart1YData, PieChart6MData,
+  PieChartAllData,
   calenderDefaultCategories,
   chats,
+  consoleTableData,
   contacts,
   cryptoOrders,
-  events,
-  groups,
-  invoiceList,
-  messages,
-  projects,
-  inboxmails,
-  starredmails,
-  importantmails,
-  draftmails,
-  sentmails,
-  trashmails,
-  tasks,
-  userProfile,
-  users as members,
-  wallet,
-  janTopSellingData,
-  decTopSellingData,
-  novTopSellingData,
-  octTopSellingData,
-  janEarningData,
   decEarningData,
+  decTopSellingData,
+  draftmails,
+  events,
+  fclTableData,
+  groups,
+  importantmails,
+  inLandTableData,
+  inboxmails,
+  invoiceList,
+  janEarningData,
+  janTopSellingData,
+  lclTableData,
+  users as members,
+  messages,
   novEarningData,
+  novTopSellingData,
   octEarningData,
-  MarketOverViewAllData, MarketOver1MData, MarketOver6MData, MarketOver1YData,
-  PieChart1YData, PieChart6MData, PieChart1MData, PieChartAllData, InvestedOverviewMay, InvestedOverviewApril, InvestedOverviewMarch,
-  InvestedOverviewFeb, InvestedOverviewJan, InvestedOverviewDec, fclTableData, lclTableData, waybillTableData, consoleTableData, inLandTableData, quotationTableData, searchQuotationResult, plChargesTableData
+  octTopSellingData,
+  plChargesTableData,
+  projects,
+  quotationTableData, searchQuotationResult,
+  sentmails,
+  starredmails,
+  tasks,
+  trashmails,
+  userProfile,
+  wallet,
+  waybillTableData
 } from "../../common/data"
-import { fclSurchargeTableData } from "../../common/data/rate"
-import exchangeRateData from "../../assets/extra/inr.json";
-import { companyDetailsData, settingsUsersData } from "../../common/data/settings"
 import { PartiesCustomersData, PartiesVendorsData } from "../../common/data/parties"
+import { fclSurchargeTableData } from "../../common/data/rate"
+import { searchQuotationResult1, searchQuotationResult2, searchQuotationResult3 } from "../../common/data/sales"
+import { companyDetailsData, settingsUsersData } from "../../common/data/settings"
+import accessToken from "../jwt-token-access/accessToken"
+import * as url from "../url_helper"
 
 let users = [
   {
@@ -931,6 +947,39 @@ const fakeBackend = () => {
       setTimeout(() => {
         if(searchQuotationResult) {
           resolve([200, searchQuotationResult]);
+        } else {
+          reject([400, 'Cannot get Quotation Result Data']);
+        }
+      });
+    })
+  })
+  mock.onGet(url.GET_QUOTATION_SEARCH_RESULT1).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if(searchQuotationResult1) {
+          resolve([200, searchQuotationResult1]);
+        } else {
+          reject([400, 'Cannot get Quotation Result Data']);
+        }
+      });
+    })
+  })
+  mock.onGet(url.GET_QUOTATION_SEARCH_RESULT2).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if(searchQuotationResult2) {
+          resolve([200, searchQuotationResult2]);
+        } else {
+          reject([400, 'Cannot get Quotation Result Data']);
+        }
+      });
+    })
+  })
+  mock.onGet(url.GET_QUOTATION_SEARCH_RESULT3).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if(searchQuotationResult3) {
+          resolve([200, searchQuotationResult3]);
         } else {
           reject([400, 'Cannot get Quotation Result Data']);
         }
