@@ -1095,7 +1095,8 @@ const searchQuotationResult1 = [
         location_from: 'INMAA',
         location_to: 'BDDAC',
         duration: '28',
-        valid_from: '01 Jan 2024',
+        valid_from: '16 Sep 2023',
+        valid_to: '30 Dec 2023',
         co_two: '7213.27 kg CO2',
         total_cost: '4025.74',
         pickup_co: '',
@@ -1132,8 +1133,8 @@ const searchQuotationResult1 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 13600,
-                tax: '10',
-                total_sale_cost: '14960'
+                tax: '18',
+                total_sale_cost: '16048'
             },
             {
                 charges_name: 'BL FEE',
@@ -1141,8 +1142,8 @@ const searchQuotationResult1 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 5700,
-                tax: '10',
-                total_sale_cost: '6270'
+                tax: '18',
+                total_sale_cost: '6726'
             },
             {
                 charges_name: 'CERTIFICATE FEE',
@@ -1150,8 +1151,8 @@ const searchQuotationResult1 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 650,
-                tax: '10',
-                total_sale_cost: '715'
+                tax: '18',
+                total_sale_cost: '767'
             },
             {
                 charges_name: 'EMPTY CONTAINER LIFT FEE',
@@ -1159,8 +1160,8 @@ const searchQuotationResult1 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 680,
-                tax: '10',
-                total_sale_cost: '748'
+                tax: '18',
+                total_sale_cost: '802.4'
             },
         ],
         ocean_quote_charge: [],    
@@ -1171,8 +1172,8 @@ const searchQuotationResult1 = [
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 1500,
-                tax: '10',
-                total_sale_cost: '1650'
+                tax: '0',
+                total_sale_cost: '1500'
             },
             {
                 charges_name: 'Cleaning Charges',
@@ -1180,8 +1181,8 @@ const searchQuotationResult1 = [
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 500,
-                tax: '10',
-                total_sale_cost: '550'
+                tax: '0',
+                total_sale_cost: '500'
             },
         ],    
     },
@@ -1194,7 +1195,8 @@ const searchQuotationResult1 = [
         location_from: 'INMAA',
         location_to: 'BDDAC',
         duration: '20',
-        valid_from: '01 Jan 2024',
+        valid_from: '16 Sep 2023',
+        valid_to: '30 Dec 2023',
         co_two: '7213.27 kg CO2',
         total_cost: '6045.98',
         pickup_co: '',
@@ -1231,8 +1233,8 @@ const searchQuotationResult1 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 11150,
-                tax: '10',
-                total_sale_cost: '12265'
+                tax: '18',
+                total_sale_cost: '13157'
             },            
         ],
         ocean_quote_charge: [],    
@@ -1243,8 +1245,8 @@ const searchQuotationResult1 = [
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 1500,
-                tax: '10',
-                total_sale_cost: '1650'
+                tax: '0',
+                total_sale_cost: '1500'
             },
             {
                 charges_name: 'Cleaning Charges',
@@ -1252,8 +1254,8 @@ const searchQuotationResult1 = [
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 500,
-                tax: '10',
-                total_sale_cost: '550'
+                tax: '0',
+                total_sale_cost: '500'
             },
         ],    
     },
@@ -1266,7 +1268,8 @@ const searchQuotationResult1 = [
         location_from: 'INMAA',
         location_to: 'BDDAC',
         duration: '40',
-        valid_from: '01 Jan 2024',
+        valid_from: '16 Sep 2023',
+        valid_to: '30 Dec 2023',
         co_two: '7213.27 kg CO2',
         total_cost: '2044.48',
         pickup_co: '',
@@ -1303,8 +1306,8 @@ const searchQuotationResult1 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 12000,
-                tax: '10',
-                total_sale_cost: '13200'
+                tax: '18',
+                total_sale_cost: '14160'
             },   
             {
                 charges_name: 'BL FEE',
@@ -1312,8 +1315,8 @@ const searchQuotationResult1 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 3500,
-                tax: '10',
-                total_sale_cost: '3850'
+                tax: '18',
+                total_sale_cost: '4130'
             },
             {
                 charges_name: 'CERTIFICATE FEE',
@@ -1321,8 +1324,8 @@ const searchQuotationResult1 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 750,
-                tax: '10',
-                total_sale_cost: '825'
+                tax: '18',
+                total_sale_cost: '885'
             },
             {
                 charges_name: 'SEAL FEE',
@@ -1330,8 +1333,8 @@ const searchQuotationResult1 = [
                 quantity: '2',
                 currency: '$',
                 buy_cost: 5,
-                tax: '0',
-                total_sale_cost: '5'
+                tax: '18',
+                total_sale_cost: '5.90'
             },
             {
                 charges_name: 'GATE IN FEE',
@@ -1339,8 +1342,8 @@ const searchQuotationResult1 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 170,
-                tax: '0',
-                total_sale_cost: '170'
+                tax: '18',
+                total_sale_cost: '200.6'
             },
             {
                 charges_name: 'EMPTY CONTAINER LIFT FEE',
@@ -1348,8 +1351,8 @@ const searchQuotationResult1 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 2000,
-                tax: '10',
-                total_sale_cost: '2200'
+                tax: '18',
+                total_sale_cost: '2360'
             },         
         ],
         ocean_quote_charge: [],    
@@ -1360,8 +1363,8 @@ const searchQuotationResult1 = [
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 1500,
-                tax: '10',
-                total_sale_cost: '1650'
+                tax: '0',
+                total_sale_cost: '1500'
             },
             {
                 charges_name: 'Cleaning Charges',
@@ -1369,8 +1372,8 @@ const searchQuotationResult1 = [
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 500,
-                tax: '10',
-                total_sale_cost: '550'
+                tax: '0',
+                total_sale_cost: '500'
             },
         ],    
     },
@@ -1385,7 +1388,8 @@ const searchQuotationResult2 = [
         location_from: 'INMAA',
         location_to: 'BDDAC',
         duration: '28',
-        valid_from: '01 Jan 2024',
+        valid_from: '16 Sep 2023',
+        valid_to: '30 Dec 2023',
         co_two: '7213.27 kg CO2',
         total_cost: '4025.74',
         pickup_co: '',
@@ -1426,8 +1430,8 @@ const searchQuotationResult2 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 13600,
-                tax: '10',
-                total_sale_cost: '14960'
+                tax: '18',
+                total_sale_cost: '16048'
             },
             {
                 charges_name: 'BL FEE',
@@ -1435,8 +1439,8 @@ const searchQuotationResult2 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 5700,
-                tax: '10',
-                total_sale_cost: '6270'
+                tax: '18',
+                total_sale_cost: '6726'
             },
             {
                 charges_name: 'CERTIFICATE FEE',
@@ -1444,8 +1448,8 @@ const searchQuotationResult2 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 650,
-                tax: '10',
-                total_sale_cost: '715'
+                tax: '18',
+                total_sale_cost: '767'
             },
             {
                 charges_name: 'EMPTY CONTAINER LIFT FEE',
@@ -1453,8 +1457,8 @@ const searchQuotationResult2 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 680,
-                tax: '10',
-                total_sale_cost: '748'
+                tax: '18',
+                total_sale_cost: '802.4'
             },
         ],
         ocean_quote_charge: [],    
@@ -1465,8 +1469,8 @@ const searchQuotationResult2 = [
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 1500,
-                tax: '10',
-                total_sale_cost: '1650'
+                tax: '0',
+                total_sale_cost: '1500'
             },
             {
                 charges_name: 'Cleaning Charges',
@@ -1474,8 +1478,8 @@ const searchQuotationResult2 = [
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 500,
-                tax: '10',
-                total_sale_cost: '550'
+                tax: '0',
+                total_sale_cost: '500'
             },
         ],    
     },
@@ -1488,7 +1492,8 @@ const searchQuotationResult2 = [
         location_from: 'INMAA',
         location_to: 'BDDAC',
         duration: '20',
-        valid_from: '01 Jan 2024',
+        valid_from: '16 Sep 2023',
+        valid_to: '30 Dec 2023',
         co_two: '7213.27 kg CO2',
         total_cost: '6045.98',
         pickup_co: '',
@@ -1529,8 +1534,8 @@ const searchQuotationResult2 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 11150,
-                tax: '10',
-                total_sale_cost: '12265'
+                tax: '18',
+                total_sale_cost: '13157'
             },            
         ],
         ocean_quote_charge: [],    
@@ -1541,8 +1546,8 @@ const searchQuotationResult2 = [
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 1500,
-                tax: '10',
-                total_sale_cost: '1650'
+                tax: '0',
+                total_sale_cost: '1500'
             },
             {
                 charges_name: 'Cleaning Charges',
@@ -1550,8 +1555,8 @@ const searchQuotationResult2 = [
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 500,
-                tax: '10',
-                total_sale_cost: '550'
+                tax: '0',
+                total_sale_cost: '500'
             },
         ],    
     },
@@ -1564,7 +1569,8 @@ const searchQuotationResult2 = [
         location_from: 'INMAA',
         location_to: 'BDDAC',
         duration: '40',
-        valid_from: '01 Jan 2024',
+        valid_from: '16 Sep 2023',
+        valid_to: '30 Dec 2023',
         co_two: '7213.27 kg CO2',
         total_cost: '2044.48',
         pickup_co: '',
@@ -1605,8 +1611,8 @@ const searchQuotationResult2 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 12000,
-                tax: '10',
-                total_sale_cost: '13200'
+                tax: '18',
+                total_sale_cost: '14160'
             },   
             {
                 charges_name: 'BL FEE',
@@ -1614,8 +1620,8 @@ const searchQuotationResult2 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 3500,
-                tax: '10',
-                total_sale_cost: '3850'
+                tax: '18',
+                total_sale_cost: '4130'
             },
             {
                 charges_name: 'CERTIFICATE FEE',
@@ -1623,8 +1629,8 @@ const searchQuotationResult2 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 750,
-                tax: '10',
-                total_sale_cost: '825'
+                tax: '18',
+                total_sale_cost: '885'
             },
             {
                 charges_name: 'SEAL FEE',
@@ -1632,8 +1638,8 @@ const searchQuotationResult2 = [
                 quantity: '2',
                 currency: '$',
                 buy_cost: 5,
-                tax: '0',
-                total_sale_cost: '5'
+                tax: '18',
+                total_sale_cost: '5.90'
             },
             {
                 charges_name: 'GATE IN FEE',
@@ -1641,8 +1647,8 @@ const searchQuotationResult2 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 170,
-                tax: '0',
-                total_sale_cost: '170'
+                tax: '18',
+                total_sale_cost: '200.6'
             },
             {
                 charges_name: 'EMPTY CONTAINER LIFT FEE',
@@ -1650,8 +1656,8 @@ const searchQuotationResult2 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 2000,
-                tax: '10',
-                total_sale_cost: '2200'
+                tax: '18',
+                total_sale_cost: '2360'
             },         
         ],
         ocean_quote_charge: [],    
@@ -1662,8 +1668,8 @@ const searchQuotationResult2 = [
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 1500,
-                tax: '10',
-                total_sale_cost: '1650'
+                tax: '0',
+                total_sale_cost: '1500'
             },
             {
                 charges_name: 'Cleaning Charges',
@@ -1671,8 +1677,8 @@ const searchQuotationResult2 = [
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 500,
-                tax: '10',
-                total_sale_cost: '550'
+                tax: '0',
+                total_sale_cost: '500'
             },
         ],    
     },
@@ -1687,7 +1693,8 @@ const searchQuotationResult3 = [
         location_from: 'INMAA',
         location_to: 'BDDAC',
         duration: '28',
-        valid_from: '01 Jan 2024',
+        valid_from: '16 Sep 2023',
+        valid_to: '30 Dec 2023',
         co_two: '7213.27 kg CO2',
         total_cost: '4025.74',
         pickup_co: '',
@@ -1728,8 +1735,8 @@ const searchQuotationResult3 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 13600,
-                tax: '10',
-                total_sale_cost: '14960'
+                tax: '18',
+                total_sale_cost: '16048'
             },
             {
                 charges_name: 'BL FEE',
@@ -1737,8 +1744,8 @@ const searchQuotationResult3 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 5700,
-                tax: '10',
-                total_sale_cost: '6270'
+                tax: '18',
+                total_sale_cost: '6726'
             },
             {
                 charges_name: 'CERTIFICATE FEE',
@@ -1746,8 +1753,8 @@ const searchQuotationResult3 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 650,
-                tax: '10',
-                total_sale_cost: '715'
+                tax: '18',
+                total_sale_cost: '767'
             },
             {
                 charges_name: 'EMPTY CONTAINER LIFT FEE',
@@ -1755,8 +1762,8 @@ const searchQuotationResult3 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 680,
-                tax: '10',
-                total_sale_cost: '748'
+                tax: '18',
+                total_sale_cost: '802.4'
             },
         ],
         ocean_quote_charge: [],    
@@ -1808,7 +1815,8 @@ const searchQuotationResult3 = [
         location_from: 'INMAA',
         location_to: 'BDDAC',
         duration: '20',
-        valid_from: '01 Jan 2024',
+        valid_from: '16 Sep 2023',
+        valid_to: '30 Dec 2023',
         co_two: '7213.27 kg CO2',
         total_cost: '6045.98',
         pickup_co: '',
@@ -1849,8 +1857,8 @@ const searchQuotationResult3 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 11150,
-                tax: '10',
-                total_sale_cost: '12265'
+                tax: '18',
+                total_sale_cost: '13157'
             },            
         ],
         ocean_quote_charge: [],    
@@ -1902,7 +1910,8 @@ const searchQuotationResult3 = [
         location_from: 'INMAA',
         location_to: 'BDDAC',
         duration: '40',
-        valid_from: '01 Jan 2024',
+        valid_from: '16 Sep 2023',
+        valid_to: '30 Dec 2023',
         co_two: '7213.27 kg CO2',
         total_cost: '2044.48',
         pickup_co: '',
@@ -1943,8 +1952,8 @@ const searchQuotationResult3 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 12000,
-                tax: '10',
-                total_sale_cost: '13200'
+                tax: '18',
+                total_sale_cost: '14160'
             },   
             {
                 charges_name: 'BL FEE',
@@ -1952,8 +1961,8 @@ const searchQuotationResult3 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 3500,
-                tax: '10',
-                total_sale_cost: '3850'
+                tax: '18',
+                total_sale_cost: '4130'
             },
             {
                 charges_name: 'CERTIFICATE FEE',
@@ -1961,8 +1970,8 @@ const searchQuotationResult3 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 750,
-                tax: '10',
-                total_sale_cost: '825'
+                tax: '18',
+                total_sale_cost: '885'
             },
             {
                 charges_name: 'SEAL FEE',
@@ -1970,8 +1979,8 @@ const searchQuotationResult3 = [
                 quantity: '2',
                 currency: '$',
                 buy_cost: 5,
-                tax: '0',
-                total_sale_cost: '5'
+                tax: '18',
+                total_sale_cost: '5.90'
             },
             {
                 charges_name: 'GATE IN FEE',
@@ -1979,8 +1988,8 @@ const searchQuotationResult3 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 170,
-                tax: '0',
-                total_sale_cost: '170'
+                tax: '18',
+                total_sale_cost: '200.6'
             },
             {
                 charges_name: 'EMPTY CONTAINER LIFT FEE',
@@ -1988,8 +1997,8 @@ const searchQuotationResult3 = [
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 2000,
-                tax: '10',
-                total_sale_cost: '2200'
+                tax: '18',
+                total_sale_cost: '2360'
             },         
         ],
         ocean_quote_charge: [],    
@@ -2129,10 +2138,29 @@ const weightUnitOption= [
     {value: 'kg', name: 'KG'},
     {value: 'lbs', name: 'Lbs'},
 ]
-const optionPickupCharge = [
-    {value: "fuel_charge", label: "Fuel Surcharge"},
-    {value: "fuel_charge2", label: "Fuel Surcharge"},
+const cargoWeightUnitOption= [
+    {value: 'kg', label: 'KG'},
+    {value: 'tonne', label: 'MT'},
 ]
+const optionPickupCharge = [
+    { label: "OTHC", value: "OTHC" },
+    { label: "DTHC", value: "DTHC" },
+    { label: "FSC", value: "FSC" },
+    { label: "OBS", value: "OBS" },
+    { label: "EIS", value: "EIS" },
+    { label: "WRC", value: "WRC" },
+    { label: "OCR", value: "OCR" },
+    { label: "ADDON", value: "ADDON" },
+    { label: "LSF", value: "LSF" },
+    { label: "ARD", value: "ARD" },
+    { label: "DOC", value: "DOC" },
+    { label: "MPC", value: "MPC" },
+    { label: "CIC", value: "CIC" },
+    { label: "BL FEE", value: "bl_fee" },
+    { label: "CERTIFICATE FEE", value: "certificate_fee" },
+    { label: "EMPTY CONTAINER LIFT FEE", value: "empty_container_lift_fee" },
+    { label: "Add New", value: "Add New" },
+  ];
 const optionMarkupType = [
     {value: "percentage", label: "Percentage"},
     {value: "flat", label: "Flat"},
@@ -2167,5 +2195,6 @@ const optionQuoteValueQuote = []
 export {
     quotationBreadcrumb,quotationTableData,optionCustomerName,optionServiceType,optionTransportBy,optionContainerType,optionIncoterm,optionCargoType,optionCurrency,
     optionlocationType,countryList,optionPortList,optionLandTransportBy,searchQuotationResult,weightUnitOption,optionContainerTypeWithoutRefri,optionContainerTypeRefrigerated,
-    optionPickupCharge,optionMarkupType,optionCurrencyCharges,optionOriginQuote,optionModeQuote,optionDestQuote,optionStatusQuote,optionQuoteValueQuote,searchQuotationResult1,searchQuotationResult2,searchQuotationResult3
+    optionPickupCharge,optionMarkupType,optionCurrencyCharges,optionOriginQuote,optionModeQuote,optionDestQuote,optionStatusQuote,optionQuoteValueQuote,searchQuotationResult1,searchQuotationResult2,searchQuotationResult3,
+    cargoWeightUnitOption
 }

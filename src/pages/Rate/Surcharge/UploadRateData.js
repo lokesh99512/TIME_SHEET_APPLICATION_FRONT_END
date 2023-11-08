@@ -24,8 +24,8 @@ const surchargeCategory = [
   // { label: "Add New", value: "Add New" },
 ];
 const surchargeAliasCode = [
-  { label: "THL", value: "THL" },
-  { label: "THD", value: "THD" },
+  { label: "OTHC", value: "OTHC" },
+  { label: "DTHC", value: "DTHC" },
   { label: "FSC", value: "FSC" },
   { label: "OBS", value: "OBS" },
   { label: "EIS", value: "EIS" },
@@ -41,8 +41,8 @@ const surchargeAliasCode = [
   { label: "Add New", value: "Add New" },
 ];
 const surchargeAliasDesc = [
-  { label: "Original Terminal Handling Charge	", value: "THL" },
-  { label: "Original Terminal Handling Charge", value: "THD" },
+  { label: "Original Terminal Handling Charge	", value: "OTHC" },
+  { label: "Original Terminal Handling Charge", value: "DTHC" },
   { label: "One Bunker Surchage", value: "OBS" },
   { label: "Equipment Imbalance Surcharge", value: "EIS" },
   { label: "War Risk Surcharge", value: "WRC" },

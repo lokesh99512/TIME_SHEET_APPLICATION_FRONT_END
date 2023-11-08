@@ -1,5 +1,28 @@
 import { useEffect } from "react";
 
+
+// -------------- Currency wise total
+export const convertToINR = (amount, currency) => {
+    // Define your conversion rate from USD to INR here
+    const usdToINRConversionRate = 83; // Replace with the actual conversion rate      
+    const BDTToINRConversionRate = 1.33;      
+    const IDRToINRConversionRate = 0.0053;      
+    if (currency === '$') {
+      return amount * usdToINRConversionRate;
+    } 
+    if (currency === 'BDT'){
+        let newAmt = amount / BDTToINRConversionRate;
+        return Math.round(newAmt);            
+    }
+    if (currency === 'IDR'){
+        let newAmt = amount * IDRToINRConversionRate;
+        return Math.round(newAmt);            
+    }
+    return amount;
+}; 
+
+
+
 /** * Formats the size */
 export function formatBytes(bytes, decimals = 2) {
     if (bytes === 0) return "0 Bytes";
