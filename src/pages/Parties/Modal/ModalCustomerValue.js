@@ -23,6 +23,9 @@ import {
 } from "reactstrap";
 import SimpleBar from "simplebar-react";
 import { avatar1, avatar2, avatar3 } from "../../../assets/images";
+import TabOneCustomerDetails from "./viewData/customers/TabOneCustomerDetails";
+import TabTwoContacts from "./viewData/customers/TabTwoContacts";
+import TabThreeDocuments from "./viewData/customers/TabThreeDocuments";
 
 const ModalCustomerValue = ({ viewData, modal, onCloseClick, modalType }) => {
   const [open, setOpen] = useState("");
@@ -51,99 +54,6 @@ const ModalCustomerValue = ({ viewData, modal, onCloseClick, modalType }) => {
           <span className="close" onClick={onCloseClick}></span>
         </ModalHeader>
         <ModalBody>
-          {/* <SimpleBar>
-            <div
-              className="table_view_data_wrap port_local_view_wrap"
-              style={{ minWidth: "1000px", overflow: "auto" }}
-            >
-              <div className="view_details_wrap">
-                <Card style={{ borderRadius: "12px" }}>
-                  <CardHeader>
-                    <div
-                      style={{ fontWeight: "500" }}
-                      className="row text-center"
-                    >
-                      <div className="col">
-                        <span className="">Customer Details</span>
-                      </div>
-                      <div className="col">
-                        <span className="">Contacts</span>
-                      </div>
-                      <div className="col">
-                        <span className="">Documents</span>
-                      </div>
-                      <div className="col">
-                        <span className="">Rates</span>
-                      </div>
-                      <div className="col">
-                        <span className="">Discounts</span>
-                      </div>
-                      <div className="col">
-                        <span className="">Invoice Settings</span>
-                      </div>
-                      <div className="col">
-                        <span className="">Invoices</span>
-                      </div>
-                      <div className="col">
-                        <span className="">Communications</span>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardBody>
-                    <div className="row text-center">
-                      <div className="col mb-2">
-                        <div className="p-2">
-                          <span className="">
-                            {viewData?.customerDetails || "-"}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="col mb-2">
-                        <div className="p-2">
-                          <span className="">{viewData?.contacts || "-"}</span>
-                        </div>
-                      </div>
-                      <div className="col mb-2">
-                        <div className="p-2">
-                          <span className="">{viewData?.documents || "-"}</span>
-                        </div>
-                      </div>
-                      <div className="col mb-2">
-                        <div className="p-2">
-                          <span className="">{viewData?.rates || "-"}</span>
-                        </div>
-                      </div>
-                      <div className="col mb-2">
-                        <div className="p-2">
-                          <span className="">{viewData?.discounts || "-"}</span>
-                        </div>
-                      </div>
-                      <div className="col mb-2">
-                        <div className="p-2">
-                          <span className="">
-                            {viewData?.invoiceSettings || "-"}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="col mb-2">
-                        <div className="p-2">
-                          <span className="">{viewData?.invoices || "-"}</span>
-                        </div>
-                      </div>
-                      <div className="col mb-2">
-                        <div className="p-2">
-                          <span className="">
-                            {viewData?.communications || "-"}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </CardBody>
-                </Card>
-              </div>
-            </div>
-          </SimpleBar> */}
-          {/* <SimpleBar> */}
           <Row>
                 <div className="col">
                     <Card>
@@ -273,31 +183,13 @@ const ModalCustomerValue = ({ viewData, modal, onCloseClick, modalType }) => {
                     </Card>
                     <TabContent activeTab={activeTab}>
                         <TabPane tabId="1">
-                            <>
-                            <Card className="m-4">
-                                <CardBody>
-                                  tab 1 details
-                                </CardBody>
-                            </Card>
-                            </>
+                            <TabOneCustomerDetails/>
                         </TabPane>
                         <TabPane tabId="2">
-                        <>
-                            <Card className="m-4">
-                                <CardBody>
-                                  tab 2 details
-                                </CardBody>
-                            </Card>
-                            </>
+                                  <TabTwoContacts/>
                         </TabPane>
                         <TabPane tabId="3">
-                        <>
-                            <Card className="m-4">
-                                <CardBody>
-                                  tab 3 details
-                                </CardBody>
-                            </Card>
-                            </>
+                                  <TabThreeDocuments/>
                         </TabPane>
                         <TabPane tabId="4">
                         <>
