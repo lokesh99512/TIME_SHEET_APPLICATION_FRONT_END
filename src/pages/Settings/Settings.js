@@ -112,7 +112,7 @@ const Settings = () => {
     (state) => state?.settings?.settings_companydetails_data
   );
 
-  console.log(companyDetailsData[0], "<--full data");
+  // console.log(companyDetailsData[0], "<--full data");
   // console.log(companyDetailsInitial, "<--comppany details");
   // console.log(taxDetailsInitial, "<--tax details");
   // console.log(bussinessTypeInitial, "<--bussiness type");
@@ -166,8 +166,9 @@ const Settings = () => {
   };
 
   const onUploadChange = (file) => {
-    console.log(file,"file")
+    console.log(file.name,"file")
     // setSelectedFiles(file);
+    // setFieldValue("image",file.name)
   };
 
   useEffect(() => {
@@ -260,7 +261,7 @@ const Settings = () => {
                       <div>
                         <h5>Company Details</h5>
                       </div>
-
+                              {console.log(companyDetailsFormik.values,"company detail")}
                       <div className="row mt-4">
                         <div className="col-12 col-md-4 mb-4">
                           <label className="form-label">Image</label>
@@ -280,7 +281,7 @@ const Settings = () => {
                           <FileUpload
                             iconName="img"
                             onUpload={onUploadChange}
-                            // src={addRoutePartnerForm.values.logoUrl}
+                            // src={companyDetailsFormik.values.image}
                           />
                         </div>
 
