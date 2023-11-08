@@ -3,9 +3,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from "react-select";
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem, Modal } from 'reactstrap';
-import { cma_logo, delete_icon } from '../../../../assets/images';
+import { cma_logo, cube_filled, delete_icon, oocl_logo, zim_logo } from '../../../../assets/images';
 import { optionCurrency, optionCurrencyCharges, optionMarkupType, optionPickupCharge } from '../../../../common/data/sales';
-import { useOutsideClick } from '../../../../components/Common/CommonLogic';
+import { convertToINR, useOutsideClick } from '../../../../components/Common/CommonLogic';
 import { ADD_QUOTE_MODAL_CHARGES, BLANK_MODAL_CHARGE, REMOVE_QUOTE_MODAL_CHARGES, UPDATE_QUOTE_MODAL_CHARGES } from '../../../../store/Sales/Quotation/actiontype';
 import { getCurrencyExchangeRate } from '../../../../store/Sales/actions';
 import { QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_UPDATE } from '../../../../store/Sales/actiontype';
@@ -131,23 +131,23 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
 
     // ---------------- SubTotal / Total and Tax ------------------------------
     const innerTotalHandler = (array, newArray) => {
-        return array?.reduce((total, charge) => total + Number(charge.total_sale_cost), 0) + (newArray !== undefined ? newArray?.reduce((total, charge) => total + Number(charge.total_sale_cost), 0) : 0);
+        return array?.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost), charge.currency), 0) + (newArray !== undefined ? newArray?.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost), charge.currency), 0) : 0);
     }
     const subTotalHandler = (quoteObject) => {
         let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.id);
-        let pickupbuyVal = quoteObject?.pickup_quote_charge.reduce((total, charge) => total + Number(charge.buy_cost || 0), 0) + (mainChargeCurr?.pickup_quote_charge !== undefined && mainChargeCurr?.pickup_quote_charge.reduce((total, charge) => total + Number(charge.buy_cost || 0), 0));
+        let pickupbuyVal = quoteObject?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.pickup_quote_charge !== undefined && mainChargeCurr?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
         let pickupmarginVal = quoteObject?.pickup_quote_charge.reduce((total, charge) => total + Number(charge?.margin_value || 0), 0) + (mainChargeCurr?.pickup_quote_charge !== undefined && mainChargeCurr?.pickup_quote_charge.reduce((total, charge) => total + Number(charge?.margin_value || 0), 0));
         let pickupSubTotal = pickupbuyVal + pickupmarginVal
 
-        let originbuyVal = quoteObject?.originport_quote_charge?.reduce((total, charge) => total + Number(charge?.buy_cost || 0), 0) + (mainChargeCurr?.originport_quote_charge !== undefined && mainChargeCurr?.originport_quote_charge?.reduce((total, charge) => total + Number(charge?.buy_cost || 0), 0));
+        let originbuyVal = quoteObject?.originport_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.originport_quote_charge !== undefined && mainChargeCurr?.originport_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
         let originmarginVal = quoteObject?.originport_quote_charge?.reduce((total, charge) => total + Number(charge?.margin_value || 0), 0) + (mainChargeCurr?.originport_quote_charge !== undefined && mainChargeCurr?.originport_quote_charge?.reduce((total, charge) => total + Number(charge?.margin_value || 0), 0));
         let originSubTotal = originbuyVal + originmarginVal
 
-        let oceanbuyVal = quoteObject?.ocean_quote_charge?.reduce((total, charge) => total + Number(charge?.buy_cost || 0), 0) + (mainChargeCurr?.ocean_quote_charge !== undefined && mainChargeCurr?.ocean_quote_charge?.reduce((total, charge) => total + Number(charge?.buy_cost || 0), 0));
+        let oceanbuyVal = quoteObject?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.ocean_quote_charge !== undefined && mainChargeCurr?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
         let oceanmarginVal = quoteObject?.ocean_quote_charge?.reduce((total, charge) => total + Number(charge?.margin_value || 0), 0) + (mainChargeCurr?.ocean_quote_charge !== undefined && mainChargeCurr?.ocean_quote_charge?.reduce((total, charge) => total + Number(charge?.margin_value || 0), 0));
         let oceanSubTotal = oceanbuyVal + oceanmarginVal
 
-        let portdischargebuyVal = quoteObject?.port_discharge_charges?.reduce((total, charge) => total + Number(charge?.buy_cost || 0), 0) + (mainChargeCurr?.port_discharge_charges !== undefined && mainChargeCurr?.port_discharge_charges?.reduce((total, charge) => total + Number(charge?.buy_cost || 0), 0));
+        let portdischargebuyVal = quoteObject?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.port_discharge_charges !== undefined && mainChargeCurr?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
         let portdischargemarginVal = quoteObject?.port_discharge_charges?.reduce((total, charge) => total + Number(charge?.margin_value || 0), 0) + (mainChargeCurr?.port_discharge_charges !== undefined && mainChargeCurr?.port_discharge_charges?.reduce((total, charge) => total + Number(charge?.margin_value || 0), 0));
         let portdischargeSubTotal = portdischargebuyVal + portdischargemarginVal
 
@@ -156,10 +156,10 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
 
     const totalTaxHandler = (quoteObject) => {
         let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.id);
-        let pickuptaxVal = quoteObject?.pickup_quote_charge.reduce((total, charge) => total + (Number(charge?.buy_cost || 0) * Number(charge?.tax || 0) / 100), 0) + (mainChargeCurr?.pickup_quote_charge !== undefined && mainChargeCurr?.pickup_quote_charge.reduce((total, charge) => total + Number(charge?.tax_amount || 0), 0));
-        let origintaxVal = quoteObject?.originport_quote_charge.reduce((total, charge) => total + (Number(charge?.buy_cost || 0) * Number(charge?.tax || 0) / 100), 0) + (mainChargeCurr?.originport_quote_charge !== undefined && mainChargeCurr?.originport_quote_charge.reduce((total, charge) => total + Number(charge?.tax_amount || 0), 0));
-        let oceantaxVal = quoteObject?.ocean_quote_charge.reduce((total, charge) => total + (Number(charge?.buy_cost || 0) * Number(charge?.tax || 0) / 100), 0) + (mainChargeCurr?.ocean_quote_charge !== undefined && mainChargeCurr?.ocean_quote_charge.reduce((total, charge) => total + Number(charge?.tax_amount || 0), 0));
-        let portDischargetaxVal = quoteObject?.port_discharge_charges.reduce((total, charge) => total + (Number(charge?.buy_cost || 0) * Number(charge?.tax || 0) / 100), 0) + (mainChargeCurr?.port_discharge_charges !== undefined && mainChargeCurr?.port_discharge_charges.reduce((total, charge) => total + Number(charge?.tax_amount || 0), 0));
+        let pickuptaxVal = quoteObject?.pickup_quote_charge.reduce((total, charge) => total + (convertToINR(Number(charge?.buy_cost), charge.currency) * Number(charge?.tax || 0) / 100), 0) + (mainChargeCurr?.pickup_quote_charge !== undefined && mainChargeCurr?.pickup_quote_charge.reduce((total, charge) => total + Number(charge?.tax_amount || 0), 0));
+        let origintaxVal = quoteObject?.originport_quote_charge.reduce((total, charge) => total + (convertToINR(Number(charge?.buy_cost), charge.currency) * Number(charge?.tax || 0) / 100), 0) + (mainChargeCurr?.originport_quote_charge !== undefined && mainChargeCurr?.originport_quote_charge.reduce((total, charge) => total + Number(charge?.tax_amount || 0), 0));
+        let oceantaxVal = quoteObject?.ocean_quote_charge.reduce((total, charge) => total + (convertToINR(Number(charge?.buy_cost), charge.currency) * Number(charge?.tax || 0) / 100), 0) + (mainChargeCurr?.ocean_quote_charge !== undefined && mainChargeCurr?.ocean_quote_charge.reduce((total, charge) => total + Number(charge?.tax_amount || 0), 0));
+        let portDischargetaxVal = quoteObject?.port_discharge_charges.reduce((total, charge) => total + (convertToINR(Number(charge?.buy_cost), charge.currency) * Number(charge?.tax || 0) / 100), 0) + (mainChargeCurr?.port_discharge_charges !== undefined && mainChargeCurr?.port_discharge_charges.reduce((total, charge) => total + Number(charge?.tax_amount || 0), 0));
 
         return pickuptaxVal + origintaxVal + oceantaxVal + portDischargetaxVal;
     }
@@ -250,9 +250,11 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                 <AccordionItem key={item.id}>
                                     <AccordionHeader targetId={`main_${mainindex}`}>
                                         <div className="card_img d-flex align-items-center">
-                                            <span className='d-flex align-items-center justify-content-center img me-2'><img src={item.logo || cma_logo} alt="Logo" /></span>
+                                            <span className='d-flex align-items-center justify-content-center img me-2'>
+                                                <img src={item?.carrier_name.toLowerCase() === 'oocl' ? oocl_logo : item?.carrier_name.toLowerCase() === 'zim' ? zim_logo : cube_filled} alt="Logo" />
+                                            </span>
                                             <div className="con d-flex align-items-center">
-                                                <span className="title d-block text-center me-2">{item.name || '-'}</span>
+                                                <span className="title d-block text-center me-2">{item.carrier_name || '-'}</span>
                                                 <span className={`tag ${item.quote_type || 'preferred'}`}>{item.quote_type || '-'}</span>
                                             </div>
                                         </div>
@@ -464,7 +466,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                             {item.origin_port && (
                                                 <AccordionItem>
                                                     <AccordionHeader targetId={`origin_port_${item.id}`}>
-                                                        Port of origin(Shekou)
+                                                        Port of origin
                                                         <div className="right_con ms-auto">
                                                             <span className="price text-primary">₹{innerTotalHandler(item?.originport_quote_charge, mainChargeObj?.find(obj => obj.id === item.id)?.originport_quote_charge)}</span>
                                                         </div>
@@ -655,7 +657,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                             {item.ocean_freight && (
                                                 <AccordionItem>
                                                     <AccordionHeader targetId={`ocean_freight_${item.id}`}>
-                                                        Ocean Freight(FIFO)
+                                                        Ocean Freight
                                                         {item?.ocean_freight_charge !== undefined && (
                                                             <div className="right_con ms-auto">
                                                                 <span className="price text-primary">{item?.ocean_freight_charge_currency || '₹'} {item?.ocean_freight_charge || 0 }</span>
@@ -849,7 +851,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                             {item.pickport_discharge && (
                                                 <AccordionItem>
                                                     <AccordionHeader targetId={`pickport_discharge_${item.id}`}>
-                                                        Port of Discharge(Winningpeg)
+                                                        Port of Discharge
                                                         <div className="right_con ms-auto">
                                                             <span className="price text-primary">₹{innerTotalHandler(item?.port_discharge_charges, mainChargeObj?.find(obj => obj.id === item.id)?.port_discharge_charges)}</span>
                                                         </div>

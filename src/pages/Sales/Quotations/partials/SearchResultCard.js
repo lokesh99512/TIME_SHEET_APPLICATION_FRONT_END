@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from 'reactstrap';
-import { ship_filled, truck_outline } from '../../../../assets/images';
+import { cube_filled, oocl_logo, ship_filled, truck_outline, zim_logo } from '../../../../assets/images';
 import { QUOTATION_RESULT_SELECTED, UPDATE_QUOTATION_RESULT_DETAILS } from '../../../../store/Sales/actiontype';
+import { convertToINR } from '../../../../components/Common/CommonLogic';
 const SearchResultCard = ({ data, QuoteModalHandler }) => {
     const [showDetails, setShowDetails] = useState([]);
     const dispatch = useDispatch();
@@ -45,36 +46,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
         } else {
             return item.rail_charge
         }
-    }
-
-    const TotalQuotationCount = (item) => {
-        let amount = 0;
-        let pickupCharge = 0;
-        let originPortCharge = 0;
-        if (item.pickup) {
-            if (item.pickup_val === 'truck') {
-                pickupCharge = Number(item.truck_charge || 0)
-            } else {
-                pickupCharge = Number(item.rail_charge || 0)
-            }
-            amount += pickupCharge
-        }
-        if (item.origin_port) {
-            originPortCharge = item?.originport_quote_charge?.reduce((total, charge) => total + Number(charge.buy_cost), 0)
-            amount += originPortCharge
-        }
-        if (item.ocean_freight) {
-            amount += Number(item.ocean_freight_charge || 0);
-        }
-        if (item.pickport_discharge) {
-            amount += item?.port_discharge_charges?.reduce((total, charge) => total + Number(charge.buy_cost), 0);
-        }
-        if (item.delivery) {
-            amount += Number(item.delivery_charge || 0);
-        }
-        console.log(amount, "amount")
-        return amount;
-    }
+    }    
 
     const quotationCheckHandler = (item) => {
         const maxSelection = 3;
@@ -103,14 +75,43 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
         dispatch({ type: QUOTATION_RESULT_SELECTED, payload: newArry })
     }
 
-    // Total------------------
+    // Total------------------     
+
     const innerTotalHandler = (array) => {
-        return array !== undefined ? array?.reduce((total, charge) => total + Number(charge.buy_cost), 0) : 0;
+        return array !== undefined ? array?.reduce((total, charge) => total + convertToINR(Number(charge.buy_cost), charge.currency), 0) : 0;
+    }
+
+    const TotalQuotationCount = (item) => {
+        let amount = 0;
+        let pickupCharge = 0;
+        let originPortCharge = 0;
+        if (item.pickup) {
+            if (item.pickup_val === 'truck') {
+                pickupCharge = Number(item.truck_charge || 0)
+            } else {
+                pickupCharge = Number(item.rail_charge || 0)
+            }
+            amount += pickupCharge
+        }
+        if (item.origin_port) {
+            originPortCharge = item?.originport_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge.buy_cost), charge.currency), 0)
+            amount += originPortCharge
+        }
+        if (item.ocean_freight) {
+            amount += convertToINR((Number(item.ocean_freight_charge) || 0), item.ocean_freight_charge_currency);
+        }
+        if (item.pickport_discharge) {
+            amount += item?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge.buy_cost), charge.currency), 0);
+        }
+        if (item.delivery) {
+            amount += convertToINR((Number(item.delivery_charge) || 0), item.delivery_currency);
+        }
+        return amount;
     }
 
     return (
         <div>
-            <div className="result_tab_content_wrap">
+            <div className="result_tab_content_wrap">                
                 {data?.length !== 0 ? data.map((item, index) => (
                     <div className="search_result_card_check_wrap d-flex align-items-center" key={item.id}>
                         <div className={`form-check me-2`} onClick={(e) => quotationCheckHandler(item)}>
@@ -126,8 +127,10 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                         <div className="search_result_card">
                             <div className="search_result_card_header d-flex align-items-center">
                                 <div className="card_img">
-                                    <span className='d-flex align-items-center justify-content-center img mx-auto'><img src={item?.logo} alt="Logo" /></span>
-                                    <span className="title d-block text-center mt-2">{item?.name}</span>
+                                    <span className='d-flex align-items-center justify-content-center img mx-auto'>
+                                        <img src={item?.carrier_name.toLowerCase() === 'oocl' ? oocl_logo : item?.carrier_name.toLowerCase() === 'zim' ? zim_logo : cube_filled} alt="Logo" />
+                                    </span>
+                                    <span className="title d-block text-center mt-2">{item?.carrier_name}</span>
                                 </div>
                                 <div className="middle_content">
                                     <span className="duration text-center d-block">Duration <b>{item.duration} days</b></span>
@@ -149,14 +152,14 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                         )}
                                     </div>
                                     <div className="row">
-                                        <div className="col-lg-4 text-left"><span>Valid: <b>{item.valid_from || '-'}</b></span></div>
-                                        <div className="col-lg-4 text-center"><span>Id: <b>{item.id || '-'}</b></span></div>
-                                        <div className="col-lg-4 text-end"><span>CO2: <b>{item.co_two || '-'}</b></span></div>
+                                        <div className="col-lg-6 text-left"><span>Valid: <b>{item.valid_to || '-'}</b></span></div>
+                                        {/* <div className="col-lg-4 text-center"><span>Id: <b>{item.id || '-'}</b></span></div> */}
+                                        <div className="col-lg-6 text-end"><span>CO2: <b>{item.co_two || '-'}</b></span></div>
                                     </div>
                                 </div>
                                 <div className="total_wrap">
-                                    <p className="total_price text-center"><b>${item?.total_cost}</b></p>
-                                    {/* <p className="total_price text-center"><b>${TotalQuotationCount(item)}</b></p> */}
+                                    {/* <p className="total_price text-center"><b>${item?.total_cost}</b></p> */}
+                                    <p className="total_price text-center"><b>₹ {TotalQuotationCount(item)}</b></p>
                                     <div className="btn_wrap d-flex">
                                         <button type='button' className='btn text-primary view_detail_btn' onClick={() => { showDetailsHandler(index, item.id); }}>
                                             View{showDetails?.find(obj => obj.id === item.id)?.details ? 'Less' : 'Detail'}</button>
@@ -186,7 +189,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                 </div>
                                                 <div className="right_con d-flex ms-auto">
                                                     {item.pickup_co !== '' && <span>CO2: <b>{item.pickup_co}</b></span>}
-                                                    <span className='text-primary'>${countPickup(item)}</span>
+                                                    <span className='text-primary'>₹ {countPickup(item)}</span>
                                                 </div>
                                             </AccordionHeader>
                                             <AccordionBody accordionId={`pickup_${index}`}>
@@ -255,7 +258,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                         <label className="form-check-label" htmlFor={`origin_port${index}`}></label>
                                                     </div>
                                                     <img src={truck_outline} alt="Truck" className='me-2' />
-                                                    Port of origin(Shekou)
+                                                    Port of origin
                                                 </div>
                                                 <div className="right_con d-flex ms-auto">
                                                     {item.pickup_co !== '' && <span>CO2: <b>{item.origin_port_co}</b></span>}
@@ -288,7 +291,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                         <label className="form-check-label" htmlFor={`ocean_freight${index}`}></label>
                                                     </div>
                                                     <img src={truck_outline} alt="Truck" className='me-2' />
-                                                    Ocean Freight(FIFO)
+                                                    Ocean Freight
                                                 </div>
                                                 <div className="right_con d-flex ms-auto">
                                                     {item.ocean_freight_co !== '' && <span>CO2: <b>{item.ocean_freight_co}</b></span>}
@@ -319,11 +322,11 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                         <label className="form-check-label" htmlFor={`pickport_discharge${index}`}></label>
                                                     </div>
                                                     <img src={truck_outline} alt="Truck" className='me-2' />
-                                                    Port of discharge(Winnipeg)
+                                                    Port of discharge
                                                 </div>
                                                 <div className="right_con d-flex ms-auto">
                                                     {item?.port_discharge_co !== '' && <span>CO2: <b>{item.port_discharge_co}</b></span>}
-                                                    <span className='text-primary'>{item.port_discharge_currency || '₹'} {innerTotalHandler(item?.port_discharge_charges)}</span>
+                                                    <span className='text-primary'>{'₹'} {innerTotalHandler(item?.port_discharge_charges)}</span>
                                                 </div>
                                             </AccordionHeader>
                                             <AccordionBody accordionId={`pickport_discharge_${index}`}>
