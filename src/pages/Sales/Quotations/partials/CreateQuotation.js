@@ -34,30 +34,33 @@ export default function CreateQuotation() {
         setPreviewModal(!previewModal);
     }
 
-    const searchQuoteHandler = () => {
-        // console.log(searchData,"searchData");
-        
-        if(searchResult){
-            QuoteModalHandler();
-        } else {
-            if(!isAnyValueEmpty(searchData)){
-                setSearchResult(true);
-                setSearchView(false);
-                if(searchData.location_from.address.value === "INMAA" && searchData.location_to.address.value === "BDDAC"){
-                    console.log("search1")
-                    dispatch(getSalesQuotationResultData1());
-                } else if (searchData.location_from.address.value === "BLRICD" && searchData.location_to.address.value === "DHAKAICD"){
-                    console.log("search2")
-                    dispatch(getSalesQuotationResultData2());
-                } else if (searchData.location_from.address.value === "BLRICD" && searchData.location_to.address.value === "JAKARTAICD"){
-                    console.log("search3")
-                    dispatch(getSalesQuotationResultData3());
-                } else {
-                    dispatch(getSalesQuotationResultData());
-                }
+    const showSearchResultHandler = () => {
+        if(!isAnyValueEmpty(searchData)){
+            setSearchResult(true);
+            setSearchView(false);
+            if(searchData.location_from.address.value === "INMAA" && searchData.location_to.address.value === "BDDAC"){
+                console.log("search1")
+                dispatch(getSalesQuotationResultData1());
+            } else if (searchData.location_from.address.value === "BLRICD" && searchData.location_to.address.value === "DHAKAICD"){
+                console.log("search2")
+                dispatch(getSalesQuotationResultData2());
+            } else if (searchData.location_from.address.value === "BLRICD" && searchData.location_to.address.value === "JAKARTAICD"){
+                console.log("search3")
+                dispatch(getSalesQuotationResultData3());
+            } else {
+                dispatch(getSalesQuotationResultData());
             }
         }
     }
+
+    const searchQuoteHandler = () => {
+        if(searchResult){
+            QuoteModalHandler();
+        } else {
+            showSearchResultHandler();
+        }
+    }
+
     const backHandler = () => {
         if(searchResult){
             setSearchView(true);
@@ -84,7 +87,7 @@ export default function CreateQuotation() {
                         </div>
 
                         {/* Create Quote Search fields */}
-                        <CreateQuoteTop searchView={searchView} setSearchView={setSearchView} searchResult={searchResult} />
+                        <CreateQuoteTop searchView={searchView} setSearchView={setSearchView} searchResult={searchResult} searchQuoteHandler={showSearchResultHandler} />
 
                         {/* Search Result */}
                         {searchResult && (

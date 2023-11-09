@@ -1,4 +1,4 @@
-import { CONFIRM_PREVIEW_DATA, GET_QUOTATION_DATA_FAIL, GET_QUOTATION_DATA_SUCCESS, GET_QUOTATION_RESULT_FAIL, GET_QUOTATION_RESULT_SUCCESS, QUOTATION_RESULT_SELECTED, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_UPDATE, SEARCH_QUOTATION_BLANK, UPDATE_CONTAINERTYPE_CONFIRM, UPDATE_CONTAINER_CHANGE, UPDATE_QUOTATION_RESULT_DETAILS, UPDATE_QUOTATION_RESULT_DETAILS_CHEAPER, UPDATE_QUOTATION_RESULT_DETAILS_FASTER, UPDATE_SEARCH_QUOTATION_CURRENCY, UPDATE_SEARCH_QUOTATION_DATA, UPDATE_SEARCH_QUOTATION_DATE, UPDATE_SEARCH_QUOTATION_LOCATION, UPDATE_SEARCH_QUOTATION_LOCATION_FROM, UPDATE_SEARCH_QUOTATION_LOCATION_TO, UPDATE_SEARCH_QUOTATION_SWAP, UPDATE_VALUE_BLANK } from "./actiontype"
+import { CONFIRM_PREVIEW_DATA, GET_QUOTATION_DATA_FAIL, GET_QUOTATION_DATA_SUCCESS, GET_QUOTATION_RESULT_FAIL, GET_QUOTATION_RESULT_SUCCESS, QUOTATION_RESULT_SELECTED, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_UPDATE, SEARCH_QUOTATION_BLANK, UPDATE_CONTAINERTYPE_CONFIRM, UPDATE_CONTAINER_CHANGE, UPDATE_QUOTATION_RESULT_DETAILS, UPDATE_SEARCH_QUOTATION_DATA, UPDATE_SEARCH_QUOTATION_DATE, UPDATE_SEARCH_QUOTATION_SWAP, UPDATE_VALUE_BLANK } from "./actiontype"
 
 
 const INIT_STATE = {
@@ -6,10 +6,11 @@ const INIT_STATE = {
     quotation_error: {},
     createFields: {
         // customer_name: '',
-        shipping_by: '',
         // service_type: '',
-        container_type: '',
         // incoterm: '',
+        shipping_by: '',
+        container_type: '',
+        cargo_weight: '',
         cargo_type: '',
         cargo_value: { currency: { name: 'Rupee', value: 'rupee', code: '₹' }, value: '' },
         cargo_date: '',
@@ -34,7 +35,6 @@ const sales = (state = INIT_STATE, action) => {
                 ...state,
                 quotation_result_data: action.payload
             };
-
         case GET_QUOTATION_RESULT_FAIL:
             return { ...state, quotation_result_error: action.payload }
 
@@ -47,42 +47,7 @@ const sales = (state = INIT_STATE, action) => {
                     [name]: item
                 }
             }
-        case UPDATE_SEARCH_QUOTATION_CURRENCY:
-            const { currency_item, currency_name } = action.payload
-            return {
-                ...state,
-                createFields: {
-                    ...state.createFields,
-                    cargo_value: {
-                        ...state.createFields.cargo_value,
-                        [currency_name]: currency_item
-                    }
-                }
-            }
-        case UPDATE_SEARCH_QUOTATION_LOCATION_FROM:
-            const { location_item, location_name } = action.payload
-            return {
-                ...state,
-                createFields: {
-                    ...state.createFields,
-                    location_from: {
-                        ...state.createFields.location_from,
-                        [location_name]: location_item
-                    }
-                }
-            }
-        case UPDATE_SEARCH_QUOTATION_LOCATION_TO:
-            const { location_item2, location_name2 } = action.payload
-            return {
-                ...state,
-                createFields: {
-                    ...state.createFields,
-                    location_to: {
-                        ...state.createFields.location_to,
-                        [location_name2]: location_item2
-                    }
-                }
-            }
+
         case UPDATE_SEARCH_QUOTATION_DATE:
             const { arrItem } = action.payload
             let newObj = {
@@ -93,6 +58,7 @@ const sales = (state = INIT_STATE, action) => {
                 }
             }
             return state = newObj
+        
         case UPDATE_SEARCH_QUOTATION_SWAP:
             return {
                 ...state,
@@ -102,6 +68,7 @@ const sales = (state = INIT_STATE, action) => {
                     location_from: state.createFields.location_to
                 }
             }
+
         case UPDATE_CONTAINERTYPE_CONFIRM:
             return state = {
                 ...state,
@@ -153,6 +120,7 @@ const sales = (state = INIT_STATE, action) => {
                 createFields: {
                     shipping_by: '',
                     cargo_type: '',
+                    cargo_weight: '',
                     container_type: '',
                     cargo_value: { currency: { name: 'Rupee', value: 'rupee', code: '₹' }, value: '' },
                     cargo_date: '',

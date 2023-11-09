@@ -776,6 +776,7 @@ input[type="number"]{
                 .icon{
                     width: 52px;
                     height: 52px;
+                    flex: 0 0 52px;
                     border-radius: 100%;
                     background: $primary_1;
                 }
@@ -896,6 +897,34 @@ input[type="number"]{
                     }
                 }
             }
+
+            // new -- 08-11-2023
+            .location_wrap {
+                .con {
+                    width: 100%;
+                    .form-select__control {
+                        border: 0;
+                        padding: 0;
+                        min-height: auto;
+                        box-shadow: none;
+                        cursor: pointer;
+                        .form-select__value-container{
+                            padding: 0;
+                            .form-select__placeholder,.form-select__single-value{
+                                @include font($font-weight-semibold,20px,normal,$neutral_4);
+                                margin: 0;
+                            }
+                            .form-select__single-value{
+                                color: $neutral_8;
+                            }
+                        }
+                        .form-select__indicators {
+                            display: none;
+                        }
+                    }
+                }
+            }
+
             @media only screen and (max-width: 767px) {
                 flex-direction: column;
                 .quotation_from_wrap{
@@ -917,6 +946,7 @@ input[type="number"]{
                     .icon{
                         width: 40px;
                         height: 40px;
+                        flex: 0 0 40px;
                         img{
                             width: 28px;
                         }
@@ -930,6 +960,17 @@ input[type="number"]{
                         img{
                             width: 15px;
                             height: 15px;
+                        }
+                    }
+                    // new 08-11-2023
+                    .con{                        
+                        .form-select__control {
+                            .form-select__value-container{
+                                padding: 0;
+                                .form-select__placeholder,.form-select__single-value{
+                                    font-size: 14px;
+                                }
+                            }
                         }
                     }
                 }
@@ -1093,6 +1134,7 @@ input[type="number"]{
             padding: 0 !important;
             min-height: auto !important;
             box-shadow: none !important;
+            margin: 4px 0 0 !important;
             .form-select__value-container{
                 padding: 0 !important;
             }
@@ -1341,7 +1383,7 @@ input[type="number"]{
         }     
         .card_img {
             min-width: 120px;
-            padding-right: 40px;
+            padding-right: 20px;
             margin-right: 40px;
             border-right: 1px solid $neutral_2;
             .img{
@@ -1350,6 +1392,11 @@ input[type="number"]{
                 border-radius: 99px;
                 border: 1px solid $neutral_2;
                 background: #F9FAFB;                
+                img {
+                    max-width: 100%;
+                    border-radius: 10px;
+                    padding: 6px;
+                }
             }
             .title{
                 color: $neutral_8;
@@ -1565,6 +1612,11 @@ input[type="number"]{
                         border-radius: 99px;
                         border: 1px solid $neutral_2;
                         background: #F9FAFB;
+                        img{
+                            max-width: 100%;
+                            border-radius: 10px;
+                            padding: 5px;
+                        }
                     }
                     .tag {
                         padding: 4px 12px;

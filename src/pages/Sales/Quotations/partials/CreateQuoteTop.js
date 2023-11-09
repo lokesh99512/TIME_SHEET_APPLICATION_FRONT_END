@@ -1,18 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import "react-datepicker/dist/react-datepicker.css";
 import Select from 'react-select';
 import SimpleBar from "simplebar-react";
-import { airplane_filled, avtar_filled, calendar_filled, cube_filled, delete_icon, location_filled, pickup_icon, ship_filled, swap_arrow, truk_filled } from '../../../../assets/images';
-import { countryList, optionCargoType, optionContainerType, optionContainerTypeRefrigerated, optionContainerTypeWithoutRefri, optionCurrency, optionCustomerName, optionIncoterm, optionLandTransportBy, optionPortList, optionServiceType, optionTransportBy, optionlocationType, weightUnitOption } from '../../../../common/data/sales';
+import { airplane_filled, avtar_filled, calendar_filled, cube_filled, delete_icon, location_filled, ship_filled, swap_arrow, truk_filled } from '../../../../assets/images';
+import { cargoWeightUnitOption, optionCargoType, optionContainerType, optionContainerTypeRefrigerated, optionContainerTypeWithoutRefri, optionCurrency, optionCustomerName, optionIncoterm, optionLandTransportBy, optionPortList, optionTransportBy, weightUnitOption } from '../../../../common/data/sales';
 import { useOutsideClick } from '../../../../components/Common/CommonLogic';
 //Import Flatepicker
 import "flatpickr/dist/themes/material_blue.css";
 import Flatpickr from "react-flatpickr";
 import { useDispatch, useSelector } from 'react-redux';
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
-import { UPDATE_CONTAINERTYPE_CONFIRM, UPDATE_CONTAINER_CHANGE, UPDATE_SEARCH_QUOTATION_CURRENCY, UPDATE_SEARCH_QUOTATION_DATA, UPDATE_SEARCH_QUOTATION_DATE, UPDATE_SEARCH_QUOTATION_LOCATION_FROM, UPDATE_SEARCH_QUOTATION_LOCATION_TO, UPDATE_SEARCH_QUOTATION_SWAP, UPDATE_VALUE_BLANK } from '../../../../store/Sales/actiontype';
+import { UPDATE_CONTAINERTYPE_CONFIRM, UPDATE_CONTAINER_CHANGE, UPDATE_SEARCH_QUOTATION_DATA, UPDATE_SEARCH_QUOTATION_DATE, UPDATE_SEARCH_QUOTATION_SWAP, UPDATE_VALUE_BLANK } from '../../../../store/Sales/actiontype';
 
-export default function CreateQuoteTop({ searchView, setSearchView, searchResult }) {
+export default function CreateQuoteTop({ searchView, setSearchView, searchResult, searchQuoteHandler }) {
     const [isOpen, setIsOpen] = useState(false);
     const [dropId, setDropId] = useState(false);
     const dropdownRef = useRef(null);
@@ -52,11 +52,11 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
     ])
 
     const handleChangeHandler = (item, name, blank, blank_name) => {
-        console.log(createFields,"createFields")
         if (blank) {
             dispatch({ type: UPDATE_VALUE_BLANK, payload: blank_name })
         }
-        dispatch({ type: UPDATE_SEARCH_QUOTATION_DATA, payload: { item, name } })
+        dispatch({ type: UPDATE_SEARCH_QUOTATION_DATA, payload: { item, name } });
+        console.log(createFields,"createFields")
     }
 
     const handleContainerChangeHandler = (item, name) => {
@@ -69,19 +69,6 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
             let updatedArray = [...newArray];
             setcontainerArray(updatedArray);
             dispatch({ type: UPDATE_CONTAINER_CHANGE, payload: updatedArray })
-        }
-    }
-
-    const handleCurrencyChangeHandler = (item, name) => {
-        dispatch({ type: UPDATE_SEARCH_QUOTATION_CURRENCY, payload: { currency_item: item, currency_name: name } })
-    }
-
-    // -------------- location from / to 
-    const locationChangeHandler = (item, name, type) => {
-        if (type === 'from') {
-            dispatch({ type: UPDATE_SEARCH_QUOTATION_LOCATION_FROM, payload: { location_item: item, location_name: name } })
-        } else {
-            dispatch({ type: UPDATE_SEARCH_QUOTATION_LOCATION_TO, payload: { location_item2: item, location_name2: name } })
         }
     }
 
@@ -205,9 +192,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
         setDropId(id);
     };
     useOutsideClick(dropdownRef, setIsOpen);
-    // ------------ custom dropdown -------------------    
-    // console.log(createFields, "createFields")
-
+    // ------------ custom dropdown ------------------- 
     return (
         <>
             <div className="create_sales_search_forms">
@@ -332,39 +317,41 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                             <div
                                 id='more_menu'
                                 className={`location_wrap d-flex`}
-                                onClick={() => { toggleDropdown(9) }}
+                                // onClick={() => { toggleDropdown(9) }}
                             >
                                 <div className="icon me-3 d-flex align-items-center justify-content-center">
                                     <img src={location_filled} alt="Location" />
                                 </div>
                                 <div className="con">
                                     <label className="form-label">From</label>
-                                    <span className={`value ${createFields?.location_from?.address ? 'value_focus' : ''}`}>
+                                    {/* <span className={`value ${createFields?.location_from?.address ? 'value_focus' : ''}`}>
                                         {(createFields?.location_from?.address !== undefined && createFields?.location_from?.address) ? (
                                             <>
                                                 <img src={createFields?.location_from?.country?.flag} alt="Flag" />
                                                 {createFields?.location_from?.address?.label}
                                             </>
                                         ) : 'Select Location'}
-                                    </span>
-                                    {/* <Select
-                                        value={createFields?.location_from?.country}
-                                        name='country'
+                                    </span> */}
+                                    <Select
+                                        value={createFields?.location_from?.address}
+                                        name='address'
                                         onChange={(opt) => {
-                                            locationChangeHandler(opt, 'country', 'from')
+                                            // locationChangeHandler(opt, 'address', 'from')
+                                            handleChangeHandler({ ...createFields?.location_from,address: opt }, 'location_from');
                                         }}
-                                        options={countryList}
-                                        // isOptionDisabled={(option) => option.value === createFields?.location_to?.country?.value}
+                                        options={optionPortList}
+                                        isOptionDisabled={(option) => option.value === createFields?.location_to?.address?.value}
+                                        placeholder='Select Location'
                                         menuPlacement="auto"
                                         classNamePrefix="select2-selection form-select"
-                                    /> */}
+                                    />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {isOpen && dropId === 9 ?
+                    {/* {isOpen && dropId === 9 ?
                         <div className="location_dropdown_wrap " ref={dropdownRef}>
-                            {/* <div className="field_input_wrap">
+                            <div className="field_input_wrap">
                                 <label htmlFor="" className='form-label'>Type</label>
                                 <UncontrolledDropdown>
                                     <DropdownToggle className="btn btn-link shadow-none" tag="a">
@@ -388,7 +375,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                         ))}
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
-                            </div> */}
+                            </div>
                             <div className="field_input_wrap">
                                 <label htmlFor="" className='form-label'>Select Country</label>
                                 <Select
@@ -418,35 +405,48 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                 />
                             </div>
                         </div> : null
-                    }
+                    } */}
                     <button type="button" className='swap_btn_wrap' onClick={swapHandler}><img src={swap_arrow} alt="Swap Arrow" /></button>
                     <div className={`quotation_to_wrap ${isOpen && dropId === 10 ? 'openmenu' : ''}`}>
                         <div className="common_dropdwon_btn_wrap">
                             <div
                                 id='more_menu'
                                 className={`location_wrap d-flex`}
-                                onClick={() => { toggleDropdown(10) }}
+                                // onClick={() => { toggleDropdown(10) }}
                             >
                                 <div className="icon me-3 d-flex align-items-center justify-content-center">
                                     <img src={location_filled} alt="Location" />
                                 </div>
                                 <div className="con">
                                     <label className="form-label">To</label>
-                                    <span className={`value ${createFields?.location_to?.address ? 'value_focus' : ''}`}>
+                                    {/* <span className={`value ${createFields?.location_to?.address ? 'value_focus' : ''}`}>
                                         {(createFields?.location_to?.address !== undefined && createFields?.location_to?.address) ? (
                                             <>
                                                 <img src={createFields?.location_to?.country?.flag} alt="Flag" />
                                                 {createFields?.location_to?.address?.label}
                                             </>
                                         ) : 'Select Location'}
-                                    </span>
+                                    </span> */}
+                                    <Select
+                                        value={createFields?.location_to?.address}
+                                        name='address'
+                                        onChange={(opt) => {
+                                            handleChangeHandler({ ...createFields?.location_from,address: opt }, 'location_to');
+                                        }}
+                                        options={optionPortList}
+                                        placeholder='Select Location'
+                                        isOptionDisabled={(option) => option.value === createFields?.location_from?.address?.value}
+                                        classNamePrefix="select2-selection form-select"
+                                        menuPlacement="auto"
+                                    // defaultMenuIsOpen
+                                    />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {isOpen && dropId === 10 ?
+                    {/* {isOpen && dropId === 10 ?
                         <div className="location_dropdown_wrap " ref={dropdownRef}>
-                            {/* <div className="field_input_wrap">
+                            <div className="field_input_wrap">
                                 <label htmlFor="" className='form-label'>Type</label>
                                 <UncontrolledDropdown>
                                     <DropdownToggle className="btn btn-link shadow-none" tag="a">
@@ -470,7 +470,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                         ))}
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
-                            </div> */}
+                            </div>
                             <div className="field_input_wrap">
                                 <label htmlFor="" className='form-label'>Select Country</label>
                                 <Select
@@ -501,7 +501,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                 />
                             </div>
                         </div> : null
-                    }
+                    } */}
                 </div>
                 {/* Port From && To */}
 
@@ -561,7 +561,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                             </>
                         )}
                         <div className="col-lg-4">
-                            <div className="common_dropdwon_btn_wrap mb-3">
+                            <div className="common_dropdwon_btn_wrap bottom_drop_field mb-3">
                                 <div
                                     id='more_menu'
                                     className={`prof_wrap d-flex ${isOpen && dropId === 7 ? 'openmenu' : ''}`}
@@ -654,7 +654,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
 
                         {(createFields?.transport_by?.value === 'lcl' || createFields?.shipping_by?.value === 'air' || createFields?.transport_by?.value === 'ltl') && (
                             <div className="col-lg-4">
-                                <div className="common_dropdwon_btn_wrap mb-3">
+                                <div className="common_dropdwon_btn_wrap bottom_drop_field mb-3">
                                     <div
                                         id='more_menu'
                                         className={`prof_wrap d-flex ${isOpen && dropId === 11 ? 'openmenu' : ''}`}
@@ -748,6 +748,65 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                 </div>
                             </div>
                         )}
+                        {createFields?.transport_by?.value === 'fcl' && (
+                            <div className="col-lg-4">
+                                {/* <div className="prof_wrap number_field_wrap d-flex mb-3">
+                                    <div className="icon d-flex align-items-center justify-content-center">
+                                        <img src={createFields?.shipping_by?.img || cube_filled} alt="Avatar" />
+                                    </div>
+                                    <div className="con d-flex align-items-center">
+                                        <div className="left_field">
+                                            <label htmlFor='cargo_value' className="form-label">Cargo Weight</label>
+                                            <input type="number" value={createFields?.cargo_weight?.value || ''} name="cargo_weight" id="cargo_weight" placeholder='Enter amount' onChange={(e) => { handleChangeHandler({ ...createFields?.cargo_weight,value: e.target.value }, 'cargo_weight') }} />
+                                        </div>
+                                        <div className="common_dropdwon_btn_wrap bottom_drop_field">
+                                            <div
+                                                id='more_menu'
+                                                className={`d-flex align-items-center ${isOpen && dropId === 8 ? 'openmenu' : ''}`}
+                                                onClick={() => { toggleDropdown(12) }}
+                                            >
+                                                <span>{createFields?.cargo_weight?.weight} </span>
+                                                <i className="mdi mdi-chevron-down" />
+                                            </div>
+                                            {isOpen && dropId === 12 ?
+                                                <ul className="common_dropdown_wrap quantity_drop_wrap" ref={dropdownRef}>
+                                                    {(cargoWeightUnitOption || '')?.map((item, index) => (
+                                                        <li key={index} className={`${createFields?.cargo_weight?.weight === item?.value ? 'active' : ''}`} onClick={() => { handleChangeHandler({ ...createFields?.cargo_weight,weight: item?.value }, 'cargo_weight'); setIsOpen(false); }}>
+                                                            {item?.name}
+                                                        </li>
+                                                    ))}
+                                                </ul> : null
+                                            }
+                                        </div>
+                                    </div>
+                                </div> */}
+                                <div className="common_dropdwon_btn_wrap mb-3 bottom_drop_field incoterm_field_wrap">
+                                    <div
+                                        id='more_menu'
+                                        className={`prof_wrap d-flex`}
+                                    >
+                                        <div className="icon d-flex align-items-center justify-content-center">
+                                            <img src={createFields?.shipping_by?.img || cube_filled} alt="Avatar" />
+                                        </div>
+                                        <div className="con">
+                                            <label className="form-label">Cargo Weight</label>
+                                            <Select
+                                                value={cargoWeightUnitOption ? cargoWeightUnitOption.find(obj => obj.value === createFields?.cargo_weight) : ''}
+                                                name='cargo_weight'
+                                                onChange={(opt) => {
+                                                    handleChangeHandler(opt.value, 'cargo_weight');
+                                                }}
+                                                options={cargoWeightUnitOption}
+                                                placeholder="Select weight"
+                                                classNamePrefix="select2-selection form-select"
+                                                menuPlacement="auto"
+                                            />
+                                        </div>
+                                        <i className="mdi mdi-chevron-down" />
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                         <div className="col-lg-4">
                             <div className="common_dropdwon_btn_wrap mb-3 bottom_drop_field incoterm_field_wrap">
                                 <div
@@ -785,7 +844,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                 <div className="con d-flex align-items-center">
                                     <div className="left_field">
                                         <label htmlFor='cargo_value' className="form-label">Cargo Value</label>
-                                        <input type="number" value={createFields?.cargo_value?.value?.value || ''} name="cargo_value" id="cargo_value" placeholder='Enter amount' onChange={(e) => { handleCurrencyChangeHandler({ value: e.target.value }, 'value') }} />
+                                        <input type="number" value={createFields?.cargo_value?.value || ''} name="cargo_value" id="cargo_value" placeholder='Enter amount' onChange={(e) => { handleChangeHandler({ ...createFields?.cargo_value,value: e.target.value }, 'cargo_value') }} />
                                     </div>
                                     <div className="common_dropdwon_btn_wrap bottom_drop_field">
                                         <div
@@ -799,7 +858,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                         {isOpen && dropId === 8 ?
                                             <ul className="common_dropdown_wrap quantity_drop_wrap" ref={dropdownRef}>
                                                 {(optionCurrency || '')?.map((item, index) => (
-                                                    <li key={index} className={`${createFields?.cargo_value?.currency?.value === item?.value ? 'active' : ''}`} onClick={() => { handleCurrencyChangeHandler(item, 'currency'); setIsOpen(false); }}>
+                                                    <li key={index} className={`${createFields?.cargo_value?.currency?.value === item?.value ? 'active' : ''}`} onClick={() => { handleChangeHandler({ ...createFields?.cargo_value,currency: item }, 'cargo_value'); setIsOpen(false); }}>
                                                         <span>{item?.code}</span>{item?.name}
                                                     </li>
                                                 ))}
@@ -809,8 +868,12 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                 </div>
                             </div>
                         </div>
+                        <div className="col-lg-4">
+                            {searchResult ? <button type="button" className='btn btn-primary mt-3' onClick={() => {searchQuoteHandler();}}>Update Search</button> : null}
+                        </div>
                     </div>
-                )}
+                )}                
+
                 {searchResult ? <button className='btn d-table ms-auto p-0 search_view_btn' onClick={() => { setSearchView(!searchView) }}>{!searchView ? 'Expand' : 'Less'} Search View </button> : null}
             </div>
         </>
