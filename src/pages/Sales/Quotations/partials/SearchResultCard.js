@@ -214,7 +214,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                                 <div className="pickup_details ms-auto d-flex justify-content-end">
                                                                     <span>{item.truck_day ? `${item.truck_day} day` : ''}</span>
                                                                     <span>{item.truck_km} km</span>
-                                                                    <span className='text-primary'>${item.truck_charge || '0'}</span>
+                                                                    <span className='text-primary'>₹ {item.truck_charge || '0'}</span>
                                                                 </div>
                                                             </div>
                                                         )}
@@ -235,7 +235,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                                     </label>
                                                                 </div>
                                                                 <div className="pickup_details ms-auto d-flex justify-content-end">
-                                                                    <span className='text-primary'>${item.rail_charge || '0'}</span>
+                                                                    <span className='text-primary'>₹ {item.rail_charge || '0'}</span>
                                                                 </div>
                                                             </div>
                                                         )}
@@ -299,12 +299,12 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                 </div>
                                             </AccordionHeader>
                                             <AccordionBody accordionId={`ocean_freight_${index}`}>
-                                                {/* <div className="price_details_wrap ps-5">
+                                                <div className="price_details_wrap ps-5">
                                                     <div className="details d-flex justify-content-between">
-                                                        <p className='me-2'>20 Standard</p>
-                                                        <span className='text-primary'>${item.fifo_standard || '0'}</span>
+                                                        <p className='me-2'>Ocean Freight</p>
+                                                        <span className='text-primary'>{item?.ocean_freight_charge_currency || '₹'}{item?.ocean_freight_charge || 0}</span>
                                                     </div>
-                                                </div> */}
+                                                </div>
                                             </AccordionBody>
                                         </AccordionItem>
                                         <AccordionItem>

@@ -2,13 +2,14 @@ import { useFormik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from "react-select";
-import { Accordion, AccordionBody, AccordionHeader, AccordionItem, Modal } from 'reactstrap';
+import { Accordion, AccordionBody, AccordionHeader, AccordionItem, Card, CardBody, Input, Modal } from 'reactstrap';
 import { cma_logo, cube_filled, delete_icon, oocl_logo, zim_logo } from '../../../../assets/images';
-import { optionCurrency, optionCurrencyCharges, optionMarkupType, optionPickupCharge } from '../../../../common/data/sales';
+import { optionCurrency, optionCurrencyCharges, optionCustomerName, optionMarkupType, optionOceanCharge, optionOriginPortCharge, optionPickupCharge, optionPortDischargeCharge, optionQuoteContactCode, optionQuoteContacttitle } from '../../../../common/data/sales';
 import { convertToINR, useOutsideClick } from '../../../../components/Common/CommonLogic';
 import { ADD_QUOTE_MODAL_CHARGES, BLANK_MODAL_CHARGE, REMOVE_QUOTE_MODAL_CHARGES, UPDATE_QUOTE_MODAL_CHARGES } from '../../../../store/Sales/Quotation/actiontype';
 import { getCurrencyExchangeRate } from '../../../../store/Sales/actions';
 import { QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_UPDATE } from '../../../../store/Sales/actiontype';
+import ShipmentForm from './ShipmentForm';
 
 
 const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setPreviewModal, viewData }) => {
@@ -58,6 +59,23 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         dispatch({ type: QUOTATION_RESULT_SELECTED_BLANK, payload: {} });
     }
 
+    const companyDetailsFormik = useFormik({
+        initialValues: {
+            companyName: "",
+            address: "",
+            city: "",
+            state: "",
+            country: "",
+            zipcode: "",
+
+            title: "",
+            contactName: "",
+            opCode: "",
+            phoneNumber: "",
+            email: "",
+        }
+    })
+    
     // ------------- dynamic field ------------------------
     let inputObj = {
         charges_name: '',
@@ -137,7 +155,8 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.id);
         let pickupbuyVal = quoteObject?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.pickup_quote_charge !== undefined && mainChargeCurr?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
         let pickupmarginVal = quoteObject?.pickup_quote_charge.reduce((total, charge) => total + Number(charge?.margin_value || 0), 0) + (mainChargeCurr?.pickup_quote_charge !== undefined && mainChargeCurr?.pickup_quote_charge.reduce((total, charge) => total + Number(charge?.margin_value || 0), 0));
-        let pickupSubTotal = pickupbuyVal + pickupmarginVal
+        let pickupTotalVal = convertToINR(Number(quoteObject?.truck ? quoteObject?.truck_charge : quoteObject?.rail ? quoteObject?.rail_charge : 0), null)
+        let pickupSubTotal = pickupbuyVal + pickupmarginVal + pickupTotalVal
 
         let originbuyVal = quoteObject?.originport_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.originport_quote_charge !== undefined && mainChargeCurr?.originport_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
         let originmarginVal = quoteObject?.originport_quote_charge?.reduce((total, charge) => total + Number(charge?.margin_value || 0), 0) + (mainChargeCurr?.originport_quote_charge !== undefined && mainChargeCurr?.originport_quote_charge?.reduce((total, charge) => total + Number(charge?.margin_value || 0), 0));
@@ -145,13 +164,16 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
 
         let oceanbuyVal = quoteObject?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.ocean_quote_charge !== undefined && mainChargeCurr?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
         let oceanmarginVal = quoteObject?.ocean_quote_charge?.reduce((total, charge) => total + Number(charge?.margin_value || 0), 0) + (mainChargeCurr?.ocean_quote_charge !== undefined && mainChargeCurr?.ocean_quote_charge?.reduce((total, charge) => total + Number(charge?.margin_value || 0), 0));
-        let oceanSubTotal = oceanbuyVal + oceanmarginVal
+        let oceanTotalVal = convertToINR(Number(quoteObject?.ocean_freight_charge || 0), quoteObject?.ocean_freight_charge_currency)
+        let oceanSubTotal = oceanbuyVal + oceanmarginVal + oceanTotalVal
 
         let portdischargebuyVal = quoteObject?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.port_discharge_charges !== undefined && mainChargeCurr?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
         let portdischargemarginVal = quoteObject?.port_discharge_charges?.reduce((total, charge) => total + Number(charge?.margin_value || 0), 0) + (mainChargeCurr?.port_discharge_charges !== undefined && mainChargeCurr?.port_discharge_charges?.reduce((total, charge) => total + Number(charge?.margin_value || 0), 0));
         let portdischargeSubTotal = portdischargebuyVal + portdischargemarginVal
 
-        return pickupSubTotal + originSubTotal + oceanSubTotal + portdischargeSubTotal;
+        let deliveryVal = convertToINR(Number(quoteObject?.road ? quoteObject?.road_charge : 0), quoteObject?.delivery_currency);
+
+        return pickupSubTotal + originSubTotal + oceanSubTotal + portdischargeSubTotal + deliveryVal;
     }
 
     const totalTaxHandler = (quoteObject) => {
@@ -246,6 +268,188 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                 <div className="modal-body">
                     {quoteData?.length !== 0 ? (
                         <Accordion flush open={open} toggle={toggle} className='main_accordion'>
+                            <AccordionItem>
+                                <AccordionHeader targetId={`customerdetails_${quoteData.id}`}>
+                                    Company Details
+                                </AccordionHeader>
+                                <AccordionBody accordionId={`customerdetails_${quoteData.id}`}>
+                                    <div className="customer_form_details">
+                                        <Card>
+                                            <CardBody>
+                                                <form>
+                                                    <div className="row">
+                                                        <div className="col-12 col-md-6">
+                                                            <div className="mb-3">
+                                                                <label className="form-label">Company name</label>
+                                                                <Input
+                                                                    type="text"
+                                                                    name="companyName"
+                                                                    value={companyDetailsFormik.values.companyName}
+                                                                    onChange={companyDetailsFormik.handleChange}
+                                                                    className="form-control"
+                                                                    placeholder=""
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-12 col-md-6">
+                                                            <div className="mb-3">
+                                                                <label className="form-label">Address</label>
+                                                                <Input
+                                                                    type="text"
+                                                                    name="address"
+                                                                    value={companyDetailsFormik.values.address}
+                                                                    onChange={companyDetailsFormik.handleChange}
+                                                                    className="form-control"
+                                                                    placeholder=""
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-12 col-md-6">
+                                                            <div className="mb-3">
+                                                                <label className="form-label">City</label>
+                                                                <Input
+                                                                    type="text"
+                                                                    name="city"
+                                                                    value={companyDetailsFormik.values.city}
+                                                                    onChange={companyDetailsFormik.handleChange}
+                                                                    className="form-control"
+                                                                    placeholder=""
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-12 col-md-6">
+                                                            <div className="mb-3">
+                                                                <label className="form-label">State</label>
+                                                                <Input
+                                                                    type="text"
+                                                                    name="state"
+                                                                    value={companyDetailsFormik.values.state}
+                                                                    onChange={companyDetailsFormik.handleChange}
+                                                                    className="form-control"
+                                                                    placeholder=""
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-12 col-md-6">
+                                                            <div className="mb-3">
+                                                                <label className="form-label">Country</label>
+                                                                <Input
+                                                                    type="text"
+                                                                    name="country"
+                                                                    value={companyDetailsFormik.values.country}
+                                                                    onChange={companyDetailsFormik.handleChange}
+                                                                    className="form-control"
+                                                                    placeholder=""
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-12 col-md-6">
+                                                            <div className="mb-3">
+                                                                <label className="form-label">Zipcode</label>
+                                                                <Input
+                                                                    type="text"
+                                                                    name="zipcode"
+                                                                    value={companyDetailsFormik.values.zipcode}
+                                                                    onChange={companyDetailsFormik.handleChange}
+                                                                    className="form-control"
+                                                                    placeholder=""
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className='row'>
+                                                        <div className="col">
+                                                            <div className="mb-3">
+                                                                <label className="form-label">Contact Name</label>
+                                                                <div className='row'>
+                                                                    <div className='col-4 col-md-2'>
+                                                                        <Select
+                                                                            name='title'
+                                                                            value={
+                                                                                optionQuoteContacttitle ? optionQuoteContacttitle.find((option) => option.value === companyDetailsFormik?.values?.title) : ""
+                                                                            }
+                                                                            onChange={(e) => {
+                                                                                companyDetailsFormik.setFieldValue(`title`, e.value);
+                                                                            }}
+                                                                            placeholder="Mr"
+                                                                            options={optionQuoteContacttitle}
+                                                                            classNamePrefix="select2-selection form-select"
+                                                                        />
+                                                                    </div>
+                                                                    <div className='col-6'>
+                                                                        <Input
+                                                                            type="text"
+                                                                            name="contactName"
+                                                                            value={companyDetailsFormik.values.contactName}
+                                                                            onChange={companyDetailsFormik.handleChange}
+                                                                            className="form-control"
+                                                                            placeholder=""
+                                                                        />
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className='row'>
+                                                        <div className="col-12 col-md-6">
+                                                            <div className="mb-3">
+                                                                <label className="form-label">Phone Number</label>
+                                                                <div className='row'>
+                                                                    <div className='col-4 col-md-3'>
+                                                                        <Select
+                                                                            name='opCode'
+                                                                            value={optionQuoteContactCode ? optionQuoteContactCode.find((option) => option.value === companyDetailsFormik?.values?.opCode) : ""}
+                                                                            onChange={(e) => {
+                                                                                companyDetailsFormik.setFieldValue(`opCode`, e.value);
+                                                                            }}
+                                                                            placeholder="+91"
+                                                                            options={optionQuoteContactCode}
+                                                                            classNamePrefix="select2-selection form-select"
+                                                                        />
+                                                                    </div>
+                                                                    <div className='col-8 col-md-9'>
+                                                                        <Input
+                                                                            type="text"
+                                                                            name="phoneNumber"
+                                                                            value={companyDetailsFormik.values.phoneNumber}
+                                                                            onChange={companyDetailsFormik.handleChange}
+                                                                            className="form-control"
+                                                                            placeholder=""
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-12 col-md-6">
+                                                            <div className="mb-3">
+                                                                <label className="form-label">Email Id</label>
+                                                                <Input
+                                                                    type="text"
+                                                                    name="email"
+                                                                    value={companyDetailsFormik.values.email}
+                                                                    onChange={companyDetailsFormik.handleChange}
+                                                                    className="form-control"
+                                                                    placeholder=""
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </CardBody>
+                                        </Card>
+                                    </div>
+                                </AccordionBody>
+                            </AccordionItem>
+                            <AccordionItem>
+                                <AccordionHeader targetId={`shipmentdetails_${quoteData.id}`}>
+                                    Shipment Details
+                                </AccordionHeader>
+                                <AccordionBody accordionId={`shipmentdetails_${quoteData.id}`}>
+                                    <ShipmentForm /> 
+                                </AccordionBody>
+                            </AccordionItem>
                             {quoteData.map((item, mainindex) => (
                                 <AccordionItem key={item.id}>
                                     <AccordionHeader targetId={`main_${mainindex}`}>
@@ -274,14 +478,29 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                         Pickup
                                                         {item?.delivery_charge !== undefined && (
                                                             <div className="right_con ms-auto">
-                                                                <span className="price text-primary">{'₹'} {item?.truck ? item?.truck_charge : item?.rail ? item?.rail_charge : 0 }</span>
+                                                                <span className="price text-primary">{'₹'} {item?.truck ? Number(item?.truck_charge) + innerTotalHandler((item?.pickup_quote_charge || []), (mainChargeObj?.find(obj => obj.id === item.id)?.pickup_quote_charge || [])) : item?.rail ? Number(item?.rail_charge) + innerTotalHandler((item?.pickup_quote_charge || []), (mainChargeObj?.find(obj => obj.id === item.id)?.pickup_quote_charge || [])) : innerTotalHandler((item?.pickup_quote_charge || []), (mainChargeObj?.find(obj => obj.id === item.id)?.pickup_quote_charge || []))}</span>
                                                             </div>
                                                         )}
-                                                        {/* <div className="right_con ms-auto">
-                                                            <span className="price text-primary">₹{innerTotalHandler(item?.pickup_quote_charge, mainChargeObj?.find(obj => obj.id === item.id)?.pickup_quote_charge)}</span>
-                                                        </div> */}
                                                     </AccordionHeader>
                                                     <AccordionBody accordionId={`pickup_${item.id}`}>
+                                                        {(item?.truck || item?.rail) && (
+                                                            <div className="charges_wrap pickup_charge mb-3">
+                                                                <div className="row">
+                                                                    <div className="col-2">
+                                                                        <div className="field_wrap">
+                                                                            <b>{item?.truck ? 'Truck' : 'Rail'}</b>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-8">
+                                                                    </div>
+                                                                    <div className="col-2">
+                                                                        <div className="field_wrap text-end ">
+                                                                            <span className='text-primary'>₹ {item?.truck ? item?.truck_charge : item?.rail_charge}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        )}
                                                         {item?.pickup_quote_charge?.length !== 0 && item?.pickup_quote_charge?.map((data, index) => (
                                                             <div className="charges_wrap mb-3" key={index}>
                                                                 <div className="row">
@@ -291,12 +510,12 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                             <input type="text" value={data?.charges_name || ''} name="charges_name" id="charges_name" placeholder='Freight' readOnly disabled={viewData} />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-1">
+                                                                    {/* <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="uom">UoM</label>}
                                                                             <input type="text" value={data?.uom || ''} name="uom" id="uom" placeholder='20GP' readOnly disabled={viewData} />
                                                                         </div>
-                                                                    </div>
+                                                                    </div> */}
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="quantity">Quantity</label>}
@@ -309,7 +528,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                             <input type="text" value={data?.currency || ''} name="buy_currency" id="buy_currency" placeholder='USD' readOnly disabled={viewData} />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-1">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="buy_cost">Total Buy Cost</label>}
                                                                             <input type="text" value={data?.buy_cost || ''} name="buy_cost" id="buy_cost" placeholder='2000' readOnly disabled={viewData} />
@@ -381,11 +600,11 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-1">
+                                                                    {/* <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="uom" id="uom" value={data?.uom || ''} onChange={(e) => handleChange(e.target.value, 'uom', i, 'pickup_quote_charge', item.id)} placeholder='Enter uom' />
                                                                         </div>
-                                                                    </div>
+                                                                    </div> */}
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="quantity" id="quantity" value={data?.quantity || ''} onChange={(e) => handleChange(e.target.value, 'quantity', i, 'pickup_quote_charge', item.id)} placeholder='Enter quantity' />
@@ -405,7 +624,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-1">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="buy_cost" id="buy_cost" value={data?.buy_cost || ''} onChange={(e) => handleChange(e.target.value, 'buy_cost', i, 'pickup_quote_charge', item.id)} placeholder='Enter cost' />
                                                                         </div>
@@ -481,12 +700,12 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                             <input type="text" value={data?.charges_name || ''} name="charges_name" id="charges_name" placeholder='Freight' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-1">
+                                                                    {/* <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="uom">UoM</label>}
                                                                             <input type="text" value={data?.uom || ''} name="uom" id="uom" placeholder='20GP' readOnly disabled />
                                                                         </div>
-                                                                    </div>
+                                                                    </div> */}
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="quantity">Quantity</label>}
@@ -499,7 +718,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                             <input type="text" value={data?.currency || ''} name="buy_currency" id="buy_currency" placeholder='USD' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-1">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="buy_cost">Total Buy Cost</label>}
                                                                             <input type="text" value={data?.buy_cost || ''} name="buy_cost" id="buy_cost" placeholder='2000' readOnly disabled />
@@ -559,23 +778,23 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                     <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             <Select
-                                                                                value={optionPickupCharge ? optionPickupCharge.find(obj => obj.value === data?.charges_name) : ''}
+                                                                                value={optionOriginPortCharge ? optionOriginPortCharge.find(obj => obj.value === data?.charges_name) : ''}
                                                                                 name='charges_name'
                                                                                 onChange={(opt) => {
                                                                                     handleChange(opt?.value, 'charges_name', i, 'originport_quote_charge', item.id);
                                                                                 }}
-                                                                                options={optionPickupCharge}
+                                                                                options={optionOriginPortCharge}
                                                                                 classNamePrefix="select2-selection form-select"
                                                                                 menuPlacement="auto"
                                                                             // defaultMenuIsOpen
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-1">
+                                                                    {/* <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="uom" id="uom" value={data?.uom} onChange={(e) => handleChange(e.target.value, 'uom', i, 'originport_quote_charge', item.id)} placeholder='Enter uom' />
                                                                         </div>
-                                                                    </div>
+                                                                    </div> */}
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="quantity" id="quantity" value={data?.quantity} onChange={(e) => handleChange(e.target.value, 'quantity', i, 'originport_quote_charge', item.id)} placeholder='Enter quantity' />
@@ -595,7 +814,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-1">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="buy_cost" id="buy_cost" value={data?.buy_cost} onChange={(e) => handleChange(e.target.value, 'buy_cost', i, 'originport_quote_charge', item.id)} placeholder='Enter cost' />
                                                                         </div>
@@ -660,7 +879,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                         Ocean Freight
                                                         {item?.ocean_freight_charge !== undefined && (
                                                             <div className="right_con ms-auto">
-                                                                <span className="price text-primary">{item?.ocean_freight_charge_currency || '₹'} {item?.ocean_freight_charge || 0 }</span>
+                                                                <span className="price text-primary">{item?.ocean_freight_charge_currency || '₹'} {item?.ocean_freight_charge || 0}</span>
                                                             </div>
                                                         )}
                                                         {/* <div className="right_con ms-auto">
@@ -668,6 +887,24 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                         </div> */}
                                                     </AccordionHeader>
                                                     <AccordionBody accordionId={`ocean_freight_${item.id}`}>
+                                                        {(item?.ocean_freight_charge !== '' && item?.ocean_freight_charge !== undefined) && (
+                                                            <div className="charges_wrap pickup_charge mb-3">
+                                                                <div className="row">
+                                                                    <div className="col-2">
+                                                                        <div className="field_wrap">
+                                                                            <b>Ocean Fright</b>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-8">
+                                                                    </div>
+                                                                    <div className="col-2">
+                                                                        <div className="field_wrap text-end ">
+                                                                            <span className='text-primary'>{item?.ocean_freight_charge_currency || '₹'}{item?.ocean_freight_charge}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        )}
                                                         {item?.ocean_quote_charge?.length !== 0 && item?.ocean_quote_charge?.map((data, index) => (
                                                             <div className="charges_wrap mb-3" key={index}>
                                                                 <div className="row">
@@ -677,12 +914,12 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                             <input type="text" value={data?.charges_name || ''} name="charges_name" id="charges_name" placeholder='Freight' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-1">
+                                                                    {/* <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="uom">UoM</label>}
                                                                             <input type="text" value={data?.uom || ''} name="uom" id="uom" placeholder='20GP' readOnly disabled />
                                                                         </div>
-                                                                    </div>
+                                                                    </div> */}
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="quantity">Quantity</label>}
@@ -695,7 +932,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                             <input type="text" value={data?.currency || ''} name="buy_currency" id="buy_currency" placeholder='USD' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-1">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="buy_cost">Total Buy Cost</label>}
                                                                             <input type="text" value={data?.buy_cost || ''} name="buy_cost" id="buy_cost" placeholder='2000' readOnly disabled />
@@ -754,23 +991,23 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                     <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             <Select
-                                                                                value={optionPickupCharge ? optionPickupCharge.find(obj => obj.value === data?.charges_name) : ''}
+                                                                                value={optionOceanCharge ? optionOceanCharge.find(obj => obj.value === data?.charges_name) : ''}
                                                                                 name='charges_name'
                                                                                 onChange={(opt) => {
                                                                                     handleChange(opt?.value, 'charges_name', i, 'ocean_quote_charge', item.id);
                                                                                 }}
-                                                                                options={optionPickupCharge}
+                                                                                options={optionOceanCharge}
                                                                                 classNamePrefix="select2-selection form-select"
                                                                                 menuPlacement="auto"
                                                                             // defaultMenuIsOpen
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-1">
+                                                                    {/* <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="uom" id="uom" value={data?.uom || ''} onChange={(e) => handleChange(e.target.value, 'uom', i, 'ocean_quote_charge', item.id)} placeholder='Enter uom' />
                                                                         </div>
-                                                                    </div>
+                                                                    </div> */}
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="quantity" id="quantity" value={data?.quantity || ''} onChange={(e) => handleChange(e.target.value, 'quantity', i, 'ocean_quote_charge', item.id)} placeholder='Enter quantity' />
@@ -790,7 +1027,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-1">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="buy_cost" id="buy_cost" value={data?.buy_cost || ''} onChange={(e) => handleChange(e.target.value, 'buy_cost', i, 'ocean_quote_charge', item.id)} placeholder='Enter cost' />
                                                                         </div>
@@ -866,12 +1103,12 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                             <input type="text" value={data?.charges_name || ''} name="charges_name" id="charges_name" placeholder='Freight' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-1">
+                                                                    {/* <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="uom">UoM</label>}
                                                                             <input type="text" value={data?.uom || ''} name="uom" id="uom" placeholder='20GP' readOnly disabled />
                                                                         </div>
-                                                                    </div>
+                                                                    </div> */}
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="quantity">Quantity</label>}
@@ -884,7 +1121,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                             <input type="text" value={data?.currency || ''} name="buy_currency" id="buy_currency" placeholder='USD' readOnly disabled />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-1">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="buy_cost">Total Buy Cost</label>}
                                                                             <input type="text" value={data?.buy_cost || ''} name="buy_cost" id="buy_cost" placeholder='2000' readOnly disabled />
@@ -943,23 +1180,23 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                     <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             <Select
-                                                                                value={optionPickupCharge ? optionPickupCharge.find(obj => obj.value === data?.charges_name) : ''}
+                                                                                value={optionPortDischargeCharge ? optionPortDischargeCharge.find(obj => obj.value === data?.charges_name) : ''}
                                                                                 name='charges_name'
                                                                                 onChange={(opt) => {
                                                                                     handleChange(opt?.value, 'charges_name', i, 'port_discharge_charges', item.id);
                                                                                 }}
-                                                                                options={optionPickupCharge}
+                                                                                options={optionPortDischargeCharge}
                                                                                 classNamePrefix="select2-selection form-select"
                                                                                 menuPlacement="auto"
                                                                             // defaultMenuIsOpen
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-1">
+                                                                    {/* <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="uom" id="uom" value={data?.uom || ''} onChange={(e) => handleChange(e.target.value, 'uom', i, 'port_discharge_charges', item.id)} placeholder='Enter uom' />
                                                                         </div>
-                                                                    </div>
+                                                                    </div> */}
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="quantity" id="quantity" value={data?.quantity || ''} onChange={(e) => handleChange(e.target.value, 'quantity', i, 'port_discharge_charges', item.id)} placeholder='Enter quantity' />
@@ -979,7 +1216,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-1">
+                                                                    <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="buy_cost" id="buy_cost" value={data?.buy_cost || ''} onChange={(e) => handleChange(e.target.value, 'buy_cost', i, 'port_discharge_charges', item.id)} placeholder='Enter cost' />
                                                                         </div>
@@ -1048,6 +1285,24 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                         )}
                                                     </AccordionHeader>
                                                     <AccordionBody accordionId={`delivery_${item.id}`}>
+                                                        {(item?.delivery_charge !== '' && item?.delivery_charge !== undefined) && (
+                                                            <div className="charges_wrap pickup_charge mb-3">
+                                                                <div className="row">
+                                                                    <div className="col-2">
+                                                                        <div className="field_wrap">
+                                                                            <b>Road</b>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-8">
+                                                                    </div>
+                                                                    <div className="col-2">
+                                                                        <div className="field_wrap text-end ">
+                                                                            <span className='text-primary'>{item?.delivery_currency || '₹'}{item?.delivery_charge}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        )}
                                                     </AccordionBody>
                                                 </AccordionItem>
                                             )}

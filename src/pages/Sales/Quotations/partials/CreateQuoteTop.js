@@ -750,7 +750,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                         )}
                         {createFields?.transport_by?.value === 'fcl' && (
                             <div className="col-lg-4">
-                                {/* <div className="prof_wrap number_field_wrap d-flex mb-3">
+                                <div className="prof_wrap number_field_wrap d-flex mb-3">
                                     <div className="icon d-flex align-items-center justify-content-center">
                                         <img src={createFields?.shipping_by?.img || cube_filled} alt="Avatar" />
                                     </div>
@@ -779,8 +779,8 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                             }
                                         </div>
                                     </div>
-                                </div> */}
-                                <div className="common_dropdwon_btn_wrap mb-3 bottom_drop_field incoterm_field_wrap">
+                                </div>
+                                {/* <div className="common_dropdwon_btn_wrap mb-3 bottom_drop_field incoterm_field_wrap">
                                     <div
                                         id='more_menu'
                                         className={`prof_wrap d-flex`}
@@ -804,7 +804,8 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                         </div>
                                         <i className="mdi mdi-chevron-down" />
                                     </div>
-                                </div>
+                                        
+                                </div> */}
                             </div>
                         )}
                         <div className="col-lg-4">
@@ -819,7 +820,6 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                     </div>
                                     <div className="con">
                                         <label className="form-label">Incoterm</label>
-                                        {console.log(createFields,"createFields")}
                                         <Select
                                             value={optionIncoterm ? optionIncoterm.find(obj => obj.value === createFields?.incoterm) : ''}
                                             name='address'

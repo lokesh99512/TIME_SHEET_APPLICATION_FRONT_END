@@ -2045,12 +2045,10 @@ const searchQuotationResult3 = [
 
 // --------------- options ---------------
 const optionCustomerName = [
-    {value: "1", name: 'Jimmy Camacho',img: memoji},
-    {value: "2", name: 'Hermione Walker',img: memoji},
-    {value: "3", name: 'Andreas Benjamin',img: memoji },
-    {value: "4", name: 'Mackenzie Dale',img: memoji },
-    {value: "5", name: 'Andreas Benjamin',img: memoji },
-    {value: "6", name: 'Harri Roberson',img: memoji}
+    {value: "apex_export", name: 'Apex Export Pvt Ltd',img: memoji},
+    {value: "balaji_enterprice", name: 'Balaji Enterprice',img: memoji},
+    {value: "house_tea_exports", name: 'House of Tea Exports',img: memoji },
+    {value: "raj_fruits", name: 'Raj Fruits Exports',img: memoji },
 ]
 const optionServiceType = [
     {value: "door_to_door", name: 'Door to Door'},
@@ -2139,8 +2137,8 @@ const weightUnitOption= [
     {value: 'lbs', name: 'Lbs'},
 ]
 const cargoWeightUnitOption= [
-    {value: 'kg', label: 'KG'},
-    {value: 'tonne', label: 'MT'},
+    {value: 'KG', name: 'KG'},
+    {value: 'MT', name: 'MT'},
 ]
 const optionPickupCharge = [
     { label: "OTHC", value: "OTHC" },
@@ -2158,9 +2156,31 @@ const optionPickupCharge = [
     { label: "CIC", value: "CIC" },
     { label: "BL FEE", value: "bl_fee" },
     { label: "CERTIFICATE FEE", value: "certificate_fee" },
+    { label: "EMPTY CONTAINER LIFT FEE", value: "empty_container_lift_fee" }
+];
+const optionOriginPortCharge = [
+    { label: "OTHC", value: "OTHC" },
+    { label: "DTHC", value: "DTHC" },
+    { label: "BL FEE", value: "bl_fee" },
+    { label: "CERTIFICATE FEE", value: "certificate_fee" },
     { label: "EMPTY CONTAINER LIFT FEE", value: "empty_container_lift_fee" },
-    { label: "Add New", value: "Add New" },
-  ];
+];
+const optionOceanCharge = [
+    { label: "OBS", value: "OBS" },
+    { label: "EIS", value: "EIS" },
+    { label: "WRC", value: "WRC" },
+    { label: "OCR", value: "OCR" },
+    { label: "ADDON", value: "ADDON" },
+    { label: "LSF", value: "LSF" },
+    { label: "ARD", value: "ARD" },    
+];
+const optionPortDischargeCharge = [
+    { label: "DTHC", value: "DTHC" },
+    { label: "DOC", value: "DOC" },
+    { label: "MPC", value: "MPC" },
+    { label: "CIC", value: "CIC" }
+];
+
 const optionMarkupType = [
     {value: "percentage", label: "Percentage"},
     {value: "flat", label: "Flat"},
@@ -2192,9 +2212,18 @@ const optionStatusQuote = [
 ]
 const optionQuoteValueQuote = []
 
+const optionQuoteContacttitle = [
+    { label: "Mr", value: "Mr" },
+    { label: "Ms", value: "Ms" },
+    { label: "Mrs", value: "Mrs" },
+]
+const optionQuoteContactCode = [
+    { label: "+91", value: "+91" },
+]
+
 export {
     quotationBreadcrumb,quotationTableData,optionCustomerName,optionServiceType,optionTransportBy,optionContainerType,optionIncoterm,optionCargoType,optionCurrency,
     optionlocationType,countryList,optionPortList,optionLandTransportBy,searchQuotationResult,weightUnitOption,optionContainerTypeWithoutRefri,optionContainerTypeRefrigerated,
     optionPickupCharge,optionMarkupType,optionCurrencyCharges,optionOriginQuote,optionModeQuote,optionDestQuote,optionStatusQuote,optionQuoteValueQuote,searchQuotationResult1,searchQuotationResult2,searchQuotationResult3,
-    cargoWeightUnitOption
+    cargoWeightUnitOption,optionOriginPortCharge,optionOceanCharge,optionPortDischargeCharge,optionQuoteContacttitle,optionQuoteContactCode
 }
