@@ -5,15 +5,12 @@ import {
   AccordionHeader,
   AccordionItem,
 } from "reactstrap";
+import doc from "../../../../../assets/images/bg-2.jpg"
 
-const TabThreeDocuments = () => {
+const TabThreeDocuments = ({viewData3}) => {
   const viewData = [
     {
       documentType:"Pan card",
-      uploadDocument: '',
-    },
-    {
-      documentType:"Pan Card",
       uploadDocument: '',
     },
   ]
@@ -36,23 +33,24 @@ const TabThreeDocuments = () => {
             </AccordionHeader>
             <AccordionBody accordionId={"1"}>
 
-              {viewData?.map((viewData,key)=>{
-                return(
-                    <div key={key} className="view_data_wrap d-flex align-items-start">
+              {/* {viewData?.map((viewData,key)=>{
+                return( */}
+                    <div className="view_data_wrap d-flex align-items-start">
                 <div className="left_freight_details">
                   
                   <div className="details">
                     <span className="title">Document Type:</span>
-                    <span className="data">{viewData?.documentType || "-"}</span>
+                    <span className="data">{viewData3?.documentType || "-"}</span>
                   </div>
                   <div className="details">
                     <span className="title">Uploaded Document:</span>
-                    <span className="data">{viewData?.uploadDocument || "-"}</span>
+                    {/* <span className="data">{viewData?.uploadDocument || "-"}</span> */}
+                    <img src={doc} alt={viewData?.uploadDocument} width={150} height={120} />
                   </div>
                 </div>
               </div>
-                )
-              })}
+                {/* )
+              })} */}
             </AccordionBody>
           </AccordionItem>
 

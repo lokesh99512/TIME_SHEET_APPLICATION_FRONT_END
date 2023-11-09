@@ -13,6 +13,7 @@ import { updateCarrierData } from '../../store/Procurement/actions';
 import { BLANK_CARRIER_DATA } from '../../store/Procurement/actiontype';
 import ModalAddGST from './Modal/ModalAddGST';
 import { FieldArray, FormikProvider, useFormik } from 'formik';
+import FileUpload from './FileUpload';
 
 const gen = [
     { label: "Mr", value: "Mr" },
@@ -243,6 +244,17 @@ export default function UploadCustomerData() {
         setGstModal(false);
       };
 
+      const onUploadChange = (file) => {
+        console.log("enter");
+        // console.log(file.name,"file")
+        // setSelectedFiles(file);
+        // const formData = new FormData();
+        // formData.append('file', file)
+        // setFieldValue("image",formData)
+        // console.log(formData,"<---formData");
+        // console.log(formData,"<---formData");
+      };
+
     
 
     return (
@@ -299,7 +311,7 @@ export default function UploadCustomerData() {
                                                 </NavItem>
                                                 <NavItem>
                                                     <NavLink className={classnames({ active: activeTabProgress === 5 })} onClick={() => { toggleTabProgress(5); }} >
-                                                        <div className="step-icon" data-bs-toggle="tooltip" id="Discounts">
+                                                        <div className="step-icon opacity-25" data-bs-toggle="tooltip" id="Discounts">
                                                             <i className="bx bx-purchase-tag-alt"></i>
                                                             <UncontrolledTooltip placement="top" target="Discounts">
                                                                 Discounts
@@ -309,7 +321,7 @@ export default function UploadCustomerData() {
                                                 </NavItem>
                                                 <NavItem>
                                                     <NavLink className={classnames({ active: activeTabProgress === 6 })} onClick={() => { toggleTabProgress(6); }} >
-                                                        <div className="step-icon" data-bs-toggle="tooltip" id="InvoiceSettings">
+                                                        <div className="step-icon opacity-25" data-bs-toggle="tooltip" id="InvoiceSettings">
                                                             <i className="bx bx-cog"></i>
                                                             <UncontrolledTooltip placement="top" target="InvoiceSettings">
                                                                 Invoice Settings
@@ -338,7 +350,7 @@ export default function UploadCustomerData() {
                                                     <div className="text-center mb-4">
                                                         <h5>Company Details</h5>
                                                     </div>
-                                                    {/* {console.log(companyDetailsFormik.values,"<----tab-1")} */}
+                                                    {console.log(companyDetailsFormik.values,"<----tab-1")}
                                                     <Card>
                                                         <CardBody>
                                                         <form>
@@ -359,13 +371,18 @@ export default function UploadCustomerData() {
                                                             <div className="col-12 col-md-6">
                                                                     <div className="mb-3">
                                                                         <label className="form-label">Logo</label>
-                                                                            <Input
+                                                                            {/* <Input
                                                                                 type="file"
                                                                                 name="logo"
-                                                                                //   value={}
+                                                                                  value={companyDetailsFormik.values.logo}
                                                                                 onChange={companyDetailsFormik.handleChange}
                                                                                 className="form-control"
                                                                                 placeholder=""
+                                                                                /> */}
+                                                                                <FileUpload
+                                                                                    iconName="img"
+                                                                                    onUpload={onUploadChange}
+                                                                                    // src={companyDetailsFormik.values.image}
                                                                                 />
                                                                     </div>
                                                                 </div>

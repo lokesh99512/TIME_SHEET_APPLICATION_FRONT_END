@@ -28,7 +28,7 @@ import TabTwoContacts from "./viewData/customers/TabTwoContacts";
 import TabThreeDocuments from "./viewData/customers/TabThreeDocuments";
 
 const ModalCustomerValue = ({ viewData, modal, onCloseClick, modalType }) => {
-  const [open, setOpen] = useState("");
+//   const [open, setOpen] = useState("");
   const [activeTab, toggleTab] = useState("1");
 
 //   console.log(viewData, "<---viewData");
@@ -183,13 +183,13 @@ const ModalCustomerValue = ({ viewData, modal, onCloseClick, modalType }) => {
                     </Card>
                     <TabContent activeTab={activeTab}>
                         <TabPane tabId="1">
-                            <TabOneCustomerDetails/>
+                            <TabOneCustomerDetails viewData1={viewData}/>
                         </TabPane>
                         <TabPane tabId="2">
-                                  <TabTwoContacts/>
+                                  <TabTwoContacts viewData2={viewData}/>
                         </TabPane>
                         <TabPane tabId="3">
-                                  <TabThreeDocuments/>
+                                  <TabThreeDocuments viewData3={viewData}/>
                         </TabPane>
                         <TabPane tabId="4">
                         <>

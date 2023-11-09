@@ -13,6 +13,7 @@ import { updateCarrierData } from '../../store/Procurement/actions';
 import { BLANK_CARRIER_DATA } from '../../store/Procurement/actiontype';
 import ModalAddGST from './Modal/ModalAddGST';
 import { FieldArray, FormikProvider, useFormik } from 'formik';
+import FileUpload from './FileUpload';
 
 const gen = [
     { label: "Mr", value: "Mr" },
@@ -123,6 +124,7 @@ export default function UploadVendorData() {
     const companyDetailsFormik = useFormik({
         initialValues: {
             companyDetails:"",
+            logo:"",
             address:"",
             city:"",
             state:"",
@@ -242,6 +244,12 @@ export default function UploadVendorData() {
         setGstModal(false);
       };
 
+      const onUploadChange = (file) => {
+        console.log(file.name,"file")
+        // setSelectedFiles(file);
+        // setFieldValue("image",file.name)
+      };
+
     
 
     return (
@@ -332,7 +340,7 @@ export default function UploadVendorData() {
                                                 <Progress color="primary" striped animated value={progressValue} />
                                             </div>
                                             {/* {console.log(contactsFormik?.values?.contacts,"<<<<<<<<")} */}
-                                            {/* {console.log(companyDetailsFormik.values,"<----tab-1")} */}
+                                            {console.log(companyDetailsFormik.values,"<----tab-1")}
                                             <TabContent activeTab={activeTabProgress} className="twitter-bs-wizard-tab-content">
                                                 <TabPane tabId={1}>
                                                     <div className="text-center mb-4">
@@ -343,9 +351,9 @@ export default function UploadVendorData() {
                                                         <CardBody>
                                                         <form>
                                                         <div className="row">
-                                                            <div className="col-12">
+                                                            <div className="col-12 col-md-6">
                                                                 <div className="mb-3">
-                                                                    <label className="form-label">Company details</label>
+                                                                    <label className="form-label">Company name</label>
                                                                     <Input
                                                                         type="text"
                                                                         name="companyDetails"
@@ -356,7 +364,24 @@ export default function UploadVendorData() {
                                                                         />
                                                                 </div>
                                                             </div>
-                                                            
+                                                            <div className="col-12 col-md-6">
+                                                                    <div className="mb-3">
+                                                                        <label className="form-label">Logo</label>
+                                                                            {/* <Input
+                                                                                type="file"
+                                                                                name="logo"
+                                                                                  value={companyDetailsFormik.values.logo}
+                                                                                onChange={companyDetailsFormik.handleChange}
+                                                                                className="form-control"
+                                                                                placeholder=""
+                                                                                /> */}
+                                                                                <FileUpload
+                                                                                    iconName="img"
+                                                                                    onUpload={onUploadChange}
+                                                                                    // src={companyDetailsFormik.values.image}
+                                                                                />
+                                                                    </div>
+                                                                </div>
                                                         </div>
 
                                                         <div className="row">
@@ -1024,7 +1049,7 @@ export default function UploadVendorData() {
                                                     
                                                     </div>
                                                 </TabPane>
-                                                {console.log(documentsFormik.values,"<----tab-3")}
+                                                {/* {console.log(documentsFormik.values,"<----tab-3")} */}
                                                 <TabPane tabId={3}>
                                                     <div>
 
