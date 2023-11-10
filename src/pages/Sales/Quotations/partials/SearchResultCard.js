@@ -86,11 +86,12 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
         let pickupCharge = 0;
         let originPortCharge = 0;
         if (item.pickup) {
-            if (item.pickup_val === 'truck') {
-                pickupCharge = Number(item.truck_charge || 0)
-            } else {
-                pickupCharge = Number(item.rail_charge || 0)
-            }
+            // if (item.pickup_val === 'truck') {
+            //     pickupCharge = Number(item.truck_charge || 0)
+            // } else {
+            //     pickupCharge = Number(item.rail_charge || 0)
+            // }
+            pickupCharge = item?.pickup_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge.buy_cost), charge.currency), 0)
             amount += pickupCharge
         }
         if (item.origin_port) {
@@ -98,13 +99,15 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
             amount += originPortCharge
         }
         if (item.ocean_freight) {
-            amount += convertToINR((Number(item.ocean_freight_charge) || 0), item.ocean_freight_charge_currency);
+            // amount += convertToINR((Number(item.ocean_freight_charge) || 0), item.ocean_freight_charge_currency);
+            amount += item?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge.buy_cost), charge.currency), 0)
         }
         if (item.pickport_discharge) {
             amount += item?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge.buy_cost), charge.currency), 0);
         }
         if (item.delivery) {
-            amount += convertToINR((Number(item.delivery_charge) || 0), item.delivery_currency);
+            // amount += convertToINR((Number(item.delivery_charge) || 0), item.delivery_currency);
+            amount += item?.delivery_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge.buy_cost), charge.currency), 0);
         }
         return amount;
     }
@@ -187,13 +190,25 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                     <img src={truck_outline} alt="Truck" className='me-2' />
                                                     Pick up
                                                 </div>
-                                                <div className="right_con d-flex ms-auto">
+                                                {/* <div className="right_con d-flex ms-auto">
                                                     {item.pickup_co !== '' && <span>CO2: <b>{item.pickup_co}</b></span>}
                                                     <span className='text-primary'>₹ {countPickup(item)}</span>
+                                                </div> */}
+                                                <div className="right_con d-flex ms-auto">
+                                                    {item.pickup_co !== '' && <span>CO2: <b>{item.pickup_co}</b></span>}
+                                                    <span className='text-primary'>{'₹'} {innerTotalHandler(item?.pickup_quote_charge)}</span>
                                                 </div>
                                             </AccordionHeader>
                                             <AccordionBody accordionId={`pickup_${index}`}>
-                                                {item?.pickup && (
+                                                <div className="price_details_wrap ps-5">
+                                                    {item?.pickup_quote_charge?.length !== 0 && item?.pickup_quote_charge?.map((data,index) => (
+                                                        <div className="details d-flex justify-content-between" key={`key_${index}`}>
+                                                            <p className='me-2'>{data?.charges_name || 'Pickup'}</p>
+                                                            <span className='text-primary'>{data?.currency || '₹'} {data.buy_cost || '0'}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                {/* {item?.pickup && (
                                                     <div className="radio_wrap">
                                                         {item?.truck && (
                                                             <div className="radio_con d-flex ps-5">
@@ -240,7 +255,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                             </div>
                                                         )}
                                                     </div>
-                                                )}
+                                                )} */}
                                             </AccordionBody>
                                         </AccordionItem>
                                         <AccordionItem>
@@ -262,7 +277,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                 </div>
                                                 <div className="right_con d-flex ms-auto">
                                                     {item.pickup_co !== '' && <span>CO2: <b>{item.origin_port_co}</b></span>}
-                                                    <span className='text-primary'>{item?.origin_port_currency || '₹'} {innerTotalHandler(item?.originport_quote_charge)}</span>
+                                                    <span className='text-primary'>{'₹'} {innerTotalHandler(item?.originport_quote_charge)}</span>
                                                 </div>
                                             </AccordionHeader>
                                             <AccordionBody accordionId={`origin_port_${index}`}>
@@ -270,7 +285,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                     {item?.originport_quote_charge?.length !== 0 && item?.originport_quote_charge?.map((data) => (
                                                         <div className="details d-flex justify-content-between" key={`key_${data?.charges_name}`}>
                                                             <p className='me-2'>{data?.charges_name}</p>
-                                                            <span className='text-primary'>{item?.origin_port_currency || '₹'} {data.buy_cost || '0'}</span>
+                                                            <span className='text-primary'>{data?.currency || '₹'} {data.buy_cost || '0'}</span>
                                                         </div>
                                                     ))}
                                                 </div>
@@ -293,17 +308,27 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                     <img src={truck_outline} alt="Truck" className='me-2' />
                                                     Ocean Freight
                                                 </div>
-                                                <div className="right_con d-flex ms-auto">
+                                                {/* <div className="right_con d-flex ms-auto">
                                                     {item.ocean_freight_co !== '' && <span>CO2: <b>{item.ocean_freight_co}</b></span>}
                                                     <span className='text-primary'>{item.ocean_freight_charge_currency || '₹'} {item.ocean_freight_charge || '0'}</span>
+                                                </div> */}
+                                                <div className="right_con d-flex ms-auto">
+                                                    {item.ocean_freight_co !== '' && <span>CO2: <b>{item.ocean_freight_co}</b></span>}
+                                                    <span className='text-primary'>{'₹'} {innerTotalHandler(item?.ocean_quote_charge)}</span>
                                                 </div>
                                             </AccordionHeader>
                                             <AccordionBody accordionId={`ocean_freight_${index}`}>
                                                 <div className="price_details_wrap ps-5">
-                                                    <div className="details d-flex justify-content-between">
+                                                    {item?.ocean_quote_charge?.length !== 0 && item?.ocean_quote_charge?.map((data,index) => (
+                                                        <div className="details d-flex justify-content-between" key={`key_${index}`}>
+                                                            <p className='me-2'>{data?.charges_name || 'Ocean Freight'}</p>
+                                                            <span className='text-primary'>{data?.currency || '₹'} {data.buy_cost || '0'}</span>
+                                                        </div>
+                                                    ))}
+                                                    {/* <div className="details d-flex justify-content-between">
                                                         <p className='me-2'>Ocean Freight</p>
                                                         <span className='text-primary'>{item?.ocean_freight_charge_currency || '₹'}{item?.ocean_freight_charge || 0}</span>
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                             </AccordionBody>
                                         </AccordionItem>
@@ -358,12 +383,24 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                     Delivery
                                                 </div>
                                                 <div className="right_con d-flex ms-auto">
+                                                    {item?.port_discharge_co !== '' && <span>CO2: <b>{item.port_discharge_co}</b></span>}
+                                                    <span className='text-primary'>{'₹'} {innerTotalHandler(item?.delivery_quote_charge)}</span>
+                                                </div>
+                                                {/* <div className="right_con d-flex ms-auto">
                                                     {item.delivery_co !== '' && <span>CO2: <b>{item.delivery_co}</b></span>}
                                                     <span className='text-primary'>{item?.delivery_currency || '₹'} {item.delivery_charge || '0'}</span>
-                                                </div>
+                                                </div> */}
                                             </AccordionHeader>
                                             <AccordionBody accordionId={`delivery_charge_${index}`}>
-                                                <div className="radio_wrap">
+                                                <div className="price_details_wrap ps-5">
+                                                    {item?.delivery_quote_charge?.length !== 0 && item?.delivery_quote_charge?.map((data,index) => (
+                                                        <div className="details d-flex justify-content-between" key={`key_${index}`}>
+                                                            <p className='me-2'>{data?.charges_name || 'Delivery'}</p>
+                                                            <span className='text-primary'>{data?.currency || '₹'} {data.buy_cost || '0'}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                {/* <div className="radio_wrap">
                                                     {item?.road && (
                                                         <div className="radio_con d-flex ps-5">
                                                             <div className={`form-check d-flex align-items-center`} onClick={(e) => handleChange('road', 'delivery_val', index, item.id)}>
@@ -385,7 +422,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                             </div>
                                                         </div>
                                                     )}
-                                                </div>
+                                                </div> */}
                                             </AccordionBody>
                                         </AccordionItem>
                                     </Accordion>

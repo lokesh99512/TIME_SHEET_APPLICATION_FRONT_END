@@ -11,6 +11,7 @@ import { CommonValue } from '../partials/SalesCol'
 import FilterSalesComp from '../partials/FilterSalesComp'
 import { QUOTATION_RESULT_SELECTED } from '../../../store/Sales/actiontype'
 import QuotationModalComp from './partials/QuotationModalComp'
+import PreviewQuotationModal from './partials/PreviewQuotationModal'
 
 export default function Quotations() {
     document.title = "Sales || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
@@ -19,6 +20,8 @@ export default function Quotations() {
     const [modal, setModal] = useState(false);
     const [modalType, setModalType] = useState(false);
     const [isRight, setIsRight] = useState(false);
+    const [previewModal, setPreviewModal] = useState(false);
+
     const inputArr = {
         quote_value: [],
         // expiration_date: [],
@@ -35,6 +38,7 @@ export default function Quotations() {
 
     const viewPopupHandler = (data,type) => {
         setModal(true);
+        console.log(type,"type");
         setModalType(type);
         dispatch({type: QUOTATION_RESULT_SELECTED, payload: [data]})
     }
@@ -204,6 +208,12 @@ export default function Quotations() {
     let lotCount = quotationData?.filter((obj) => obj?.quote_status?.toLowerCase() === 'lost');
     let progressCount = quotationData?.filter((obj) => obj?.quote_status?.toLowerCase() === 'in progress');
 
+    // preview Modal
+    const previewModalHand = () => {
+        setPreviewModal(!previewModal);
+    }
+    // preview Modal
+
     const quotationRateData = [
         {
             id: 1,
@@ -275,7 +285,10 @@ export default function Quotations() {
             <FilterSalesComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} />
 
             {/* Quotation Modal */}
-            <QuotationModalComp quoteModal={modal} setQuoteModal={setModal} QuoteModalHandler={QuoteModalHandler} viewData={modalType === 'view' && true} />
+            <QuotationModalComp quoteModal={modal} setQuoteModal={setModal} QuoteModalHandler={QuoteModalHandler} viewData={modalType !== 'edit' && true} setPreviewModal={setPreviewModal} />
+
+            {/* Preview Quotation Modal */}
+            <PreviewQuotationModal previewModal={previewModal} previewModalHand={previewModalHand} setPreviewModal={setPreviewModal} QuoteModalHandler={QuoteModalHandler} />
         </>
     )
 }
