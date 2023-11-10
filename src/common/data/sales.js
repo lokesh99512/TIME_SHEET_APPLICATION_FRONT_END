@@ -21,7 +21,7 @@ const quotationTableData = [
         id: 'quote_1',
         logo: cma_logo,
         name: 'CMA CGM',
-        quotation_date: 'Oct 29th 2023',
+        quotation_date: '6th Nov 2023',
         quotation_id: 'BLRFC2923001',
         customer_name: 'Apex Exports Pvt Ltd',
         org_port: 'INMAA',
@@ -33,90 +33,97 @@ const quotationTableData = [
         quote_status: 'In Progress',
         sales_person: 'Darshita',
         quote_type: 'preffered',
-        overall_margin: '9.00',
-        pickup: true,
+        pickup: false,
+        pickup_val: '',
+        truck: false,
+        rail: false,
         pickup: true,
         origin_port: true,
         ocean_freight: true,
         pickport_discharge: true,
         delivery: true,
-        pickup_quote_charge: [
-            {
-                charges_name: 'Freight',
-                uom: '20GP',
-                quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
-                tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
-            },
-            {
-                charges_name: 'Freight',
-                uom: '20GP',
-                quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "flat",
-                markup_val: '100',
-                margin_value: '100',
-                tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2460'
-            }
-        ],
+        origin_port_currency: '₹',
+        ocean_freight_charge: '3756',
+        ocean_freight_charge_currency: '$',
+        port_discharge_currency: 'BDT',
+        delivery_charge: '0',
+        pickup_quote_charge: [],
         originport_quote_charge: [
             {
                 charges_name: 'OTHC',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
+                currency: '₹',
+                buy_cost: 13600,
                 tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
+                total_sale_cost: '16048'
             },
             {
-                charges_name: 'DFO',
-                uom: '20GP',
+                charges_name: 'BL FEE',
+                uom: 'per BL',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
+                currency: '₹',
+                buy_cost: 5700,
                 tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
+                total_sale_cost: '6726'
+            },
+            {
+                charges_name: 'CERTIFICATE FEE',
+                uom: 'per BL',
+                quantity: '2',
+                currency: '₹',
+                buy_cost: 650,
+                tax: '18',
+                total_sale_cost: '767'
+            },
+            {
+                charges_name: 'EMPTY CONTAINER LIFT FEE',
+                uom: 'per container',
+                quantity: '2',
+                currency: '₹',
+                buy_cost: 680,
+                tax: '18',
+                total_sale_cost: '802.4'
             },
         ],
         ocean_quote_charge: [
             {
-                charges_name: 'Freight',
-                uom: '20GP',
+                charges_name: '',
+                uom: 'per container',
+                quantity: '',
+                currency: '$',
+                buy_cost: 3756,
+                tax: '0',
+                total_sale_cost: '3756'
+            },
+        ],    
+        port_discharge_charges: [
+            {
+                charges_name: 'DOC',
+                uom: 'per BL',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
-                tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
-            }
-        ]
+                currency: 'BDT',
+                buy_cost: 1500,
+                tax: '0',
+                total_sale_cost: '1500'
+            },
+            {
+                charges_name: 'Cleaning Charges',
+                uom: 'per container',
+                quantity: '2',
+                currency: 'BDT',
+                buy_cost: 500,
+                tax: '0',
+                total_sale_cost: '500'
+            },
+        ],    
+        delivery_quote_charge:[]
     },
     {
         id: 'quote_2',
         logo: cma_logo,
         name: 'CMA CGM',
-        quotation_date: 'Oct 29th 2023',
+        quotation_date: '6th Nov 2023',
         quotation_id: 'BLRFC2923002',
         customer_name: 'Balaji Enterprise',
         org_port: 'INKTP',
@@ -128,89 +135,97 @@ const quotationTableData = [
         quote_status: 'In Progress',
         sales_person: 'Darshita',
         quote_type: 'preffered',
-        pickup: true,
+        pickup: false,
+        pickup_val: '',
+        truck: false,
+        rail: false,
         pickup: true,
         origin_port: true,
         ocean_freight: true,
         pickport_discharge: true,
         delivery: true,
-        pickup_quote_charge: [
-            {
-                charges_name: 'Freight',
-                uom: '20GP',
-                quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
-                tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
-            },
-            {
-                charges_name: 'Freight',
-                uom: '20GP',
-                quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "flat",
-                markup_val: '100',
-                margin_value: '100',
-                tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2460'
-            }
-        ],
+        origin_port_currency: '₹',
+        ocean_freight_charge: '3756',
+        ocean_freight_charge_currency: '$',
+        port_discharge_currency: 'IDR',
+        delivery_charge: '0',
+        pickup_quote_charge: [],
         originport_quote_charge: [
             {
                 charges_name: 'OTHC',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
+                currency: '₹',
+                buy_cost: 13600,
                 tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
+                total_sale_cost: '16048'
             },
             {
-                charges_name: 'DFO',
-                uom: '20GP',
+                charges_name: 'BL FEE',
+                uom: 'per BL',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
+                currency: '₹',
+                buy_cost: 5700,
                 tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
+                total_sale_cost: '6726'
+            },
+            {
+                charges_name: 'CERTIFICATE FEE',
+                uom: 'per BL',
+                quantity: '2',
+                currency: '₹',
+                buy_cost: 650,
+                tax: '18',
+                total_sale_cost: '767'
+            },
+            {
+                charges_name: 'EMPTY CONTAINER LIFT FEE',
+                uom: 'per container',
+                quantity: '2',
+                currency: '₹',
+                buy_cost: 680,
+                tax: '18',
+                total_sale_cost: '802.4'
             },
         ],
         ocean_quote_charge: [
             {
-                charges_name: 'Freight',
-                uom: '20GP',
+                charges_name: '',
+                uom: 'per container',
+                quantity: '',
+                currency: '$',
+                buy_cost: 3756,
+                tax: '0',
+                total_sale_cost: '3756'
+            },
+        ],    
+        port_discharge_charges: [
+            {
+                charges_name: 'DOC',
+                uom: 'per BL',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
-                tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
-            }
-        ]
+                currency: 'BDT',
+                buy_cost: 1500,
+                tax: '0',
+                total_sale_cost: '1500'
+            },
+            {
+                charges_name: 'Cleaning Charges',
+                uom: 'per container',
+                quantity: '2',
+                currency: 'BDT',
+                buy_cost: 500,
+                tax: '0',
+                total_sale_cost: '500'
+            },
+        ],    
+        delivery_quote_charge:[]
     },
     {
         id: 'quote_3',
         logo: cma_logo,
         name: 'CMA CGM',
-        quotation_date: 'Oct 29th 2023',
+        quotation_date: '6th Nov 2023',
         quotation_id: 'BLRFC2923003',
         customer_name: 'House of Tea Exports',
         org_port: 'INKTP',
@@ -222,89 +237,97 @@ const quotationTableData = [
         quote_status: 'In Progress',
         sales_person: 'Vijay',
         quote_type: 'cheaper',
-        pickup: true,
+        pickup: false,
+        pickup_val: '',
+        truck: false,
+        rail: false,
         pickup: true,
         origin_port: true,
         ocean_freight: true,
         pickport_discharge: true,
         delivery: true,
-        pickup_quote_charge: [
-            {
-                charges_name: 'Freight',
-                uom: '20GP',
-                quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
-                tax: '10',
-                tax_amount: '200',
-                total_sale_cost: '2400'
-            },
-            {
-                charges_name: 'Freight',
-                uom: '20GP',
-                quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "flat",
-                markup_val: '100',
-                margin_value: '100',
-                tax: '10',
-                tax_amount: '200',
-                total_sale_cost: '2300'
-            }
-        ],
+        origin_port_currency: '₹',
+        ocean_freight_charge: '3756',
+        ocean_freight_charge_currency: '$',
+        port_discharge_currency: 'IDR',
+        delivery_charge: '0',
+        pickup_quote_charge: [],
         originport_quote_charge: [
             {
                 charges_name: 'OTHC',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
+                currency: '₹',
+                buy_cost: 13600,
                 tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
+                total_sale_cost: '16048'
             },
             {
-                charges_name: 'DFO',
-                uom: '20GP',
+                charges_name: 'BL FEE',
+                uom: 'per BL',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
+                currency: '₹',
+                buy_cost: 5700,
                 tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
+                total_sale_cost: '6726'
+            },
+            {
+                charges_name: 'CERTIFICATE FEE',
+                uom: 'per BL',
+                quantity: '2',
+                currency: '₹',
+                buy_cost: 650,
+                tax: '18',
+                total_sale_cost: '767'
+            },
+            {
+                charges_name: 'EMPTY CONTAINER LIFT FEE',
+                uom: 'per container',
+                quantity: '2',
+                currency: '₹',
+                buy_cost: 680,
+                tax: '18',
+                total_sale_cost: '802.4'
             },
         ],
         ocean_quote_charge: [
             {
-                charges_name: 'Freight',
-                uom: '20GP',
+                charges_name: '',
+                uom: 'per container',
+                quantity: '',
+                currency: '$',
+                buy_cost: 3756,
+                tax: '0',
+                total_sale_cost: '3756'
+            },
+        ],    
+        port_discharge_charges: [
+            {
+                charges_name: 'DOC',
+                uom: 'per BL',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
-                tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
-            }
-        ]
+                currency: 'BDT',
+                buy_cost: 1500,
+                tax: '0',
+                total_sale_cost: '1500'
+            },
+            {
+                charges_name: 'Cleaning Charges',
+                uom: 'per container',
+                quantity: '2',
+                currency: 'BDT',
+                buy_cost: 500,
+                tax: '0',
+                total_sale_cost: '500'
+            },
+        ],    
+        delivery_quote_charge:[]
     },
     {
         id: 'quote_4',
         logo: cma_logo,
         name: 'CMA CGM',
-        quotation_date: 'Oct 25th 2023',
+        quotation_date: '6th Nov 2023',
         quotation_id: 'BLRFC2523001',
         customer_name: 'Raj Fruits Exports',
         org_port: 'INKTP',
@@ -316,89 +339,97 @@ const quotationTableData = [
         quote_status: 'Lost',
         sales_person: 'Vijay',
         quote_type: 'cheaper',
-        pickup: true,
+        pickup: false,
+        pickup_val: '',
+        truck: false,
+        rail: false,
         pickup: true,
         origin_port: true,
         ocean_freight: true,
         pickport_discharge: true,
         delivery: true,
-        pickup_quote_charge: [
-            {
-                charges_name: 'Freight',
-                uom: '20GP',
-                quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
-                tax: '10',
-                tax_amount: '200',
-                total_sale_cost: '2400'
-            },
-            {
-                charges_name: 'Freight',
-                uom: '20GP',
-                quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "flat",
-                markup_val: '100',
-                margin_value: '100',
-                tax: '10',
-                tax_amount: '200',
-                total_sale_cost: '2300'
-            }
-        ],
+        origin_port_currency: '₹',
+        ocean_freight_charge: '3756',
+        ocean_freight_charge_currency: '$',
+        port_discharge_currency: 'IDR',
+        delivery_charge: '0',
+        pickup_quote_charge: [],
         originport_quote_charge: [
             {
                 charges_name: 'OTHC',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
+                currency: '₹',
+                buy_cost: 13600,
                 tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
+                total_sale_cost: '16048'
             },
             {
-                charges_name: 'DFO',
-                uom: '20GP',
+                charges_name: 'BL FEE',
+                uom: 'per BL',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
+                currency: '₹',
+                buy_cost: 5700,
                 tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
+                total_sale_cost: '6726'
+            },
+            {
+                charges_name: 'CERTIFICATE FEE',
+                uom: 'per BL',
+                quantity: '2',
+                currency: '₹',
+                buy_cost: 650,
+                tax: '18',
+                total_sale_cost: '767'
+            },
+            {
+                charges_name: 'EMPTY CONTAINER LIFT FEE',
+                uom: 'per container',
+                quantity: '2',
+                currency: '₹',
+                buy_cost: 680,
+                tax: '18',
+                total_sale_cost: '802.4'
             },
         ],
         ocean_quote_charge: [
             {
-                charges_name: 'Freight',
-                uom: '20GP',
+                charges_name: '',
+                uom: 'per container',
+                quantity: '',
+                currency: '$',
+                buy_cost: 3756,
+                tax: '0',
+                total_sale_cost: '3756'
+            },
+        ],    
+        port_discharge_charges: [
+            {
+                charges_name: 'DOC',
+                uom: 'per BL',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
-                tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
-            }
-        ]
+                currency: 'BDT',
+                buy_cost: 1500,
+                tax: '0',
+                total_sale_cost: '1500'
+            },
+            {
+                charges_name: 'Cleaning Charges',
+                uom: 'per container',
+                quantity: '2',
+                currency: 'BDT',
+                buy_cost: 500,
+                tax: '0',
+                total_sale_cost: '500'
+            },
+        ],    
+        delivery_quote_charge:[]
     },
     {
         id: 'quote_5',
         logo: cma_logo,
         name: 'CMA CGM',
-        quotation_date: 'Oct 25th 2023',
+        quotation_date: '6th Nov 2023',
         quotation_id: 'BLRFC2923002',
         customer_name: 'Raj Fruits Exports',
         org_port: 'INKTP',
@@ -410,89 +441,97 @@ const quotationTableData = [
         quote_status: 'Won',
         sales_person: 'Vijay',
         quote_type: 'cheaper',
-        pickup: true,
+        pickup: false,
+        pickup_val: '',
+        truck: false,
+        rail: false,
         pickup: true,
         origin_port: true,
         ocean_freight: true,
         pickport_discharge: true,
         delivery: true,
-        pickup_quote_charge: [
-            {
-                charges_name: 'Freight',
-                uom: '20GP',
-                quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
-                tax: '10',
-                tax_amount: '200',
-                total_sale_cost: '2400'
-            },
-            {
-                charges_name: 'Freight',
-                uom: '20GP',
-                quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "flat",
-                markup_val: '100',
-                margin_value: '100',
-                tax: '10',
-                tax_amount: '200',
-                total_sale_cost: '2300'
-            }
-        ],
+        origin_port_currency: '₹',
+        // ocean_freight_charge: '3756',
+        ocean_freight_charge_currency: '$',
+        port_discharge_currency: 'IDR',
+        delivery_charge: '0',
+        pickup_quote_charge: [],
         originport_quote_charge: [
             {
                 charges_name: 'OTHC',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
+                currency: '₹',
+                buy_cost: 13600,
                 tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
+                total_sale_cost: '16048'
             },
             {
-                charges_name: 'DFO',
-                uom: '20GP',
+                charges_name: 'BL FEE',
+                uom: 'per BL',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
+                currency: '₹',
+                buy_cost: 5700,
                 tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
+                total_sale_cost: '6726'
+            },
+            {
+                charges_name: 'CERTIFICATE FEE',
+                uom: 'per BL',
+                quantity: '2',
+                currency: '₹',
+                buy_cost: 650,
+                tax: '18',
+                total_sale_cost: '767'
+            },
+            {
+                charges_name: 'EMPTY CONTAINER LIFT FEE',
+                uom: 'per container',
+                quantity: '2',
+                currency: '₹',
+                buy_cost: 680,
+                tax: '18',
+                total_sale_cost: '802.4'
             },
         ],
         ocean_quote_charge: [
             {
-                charges_name: 'Freight',
-                uom: '20GP',
+                charges_name: '',
+                uom: 'per container',
+                quantity: '',
+                currency: '$',
+                buy_cost: 3756,
+                tax: '0',
+                total_sale_cost: '3756'
+            },
+        ],    
+        port_discharge_charges: [
+            {
+                charges_name: 'DOC',
+                uom: 'per BL',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
-                tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
-            }
-        ]
+                currency: 'BDT',
+                buy_cost: 1500,
+                tax: '0',
+                total_sale_cost: '1500'
+            },
+            {
+                charges_name: 'Cleaning Charges',
+                uom: 'per container',
+                quantity: '2',
+                currency: 'BDT',
+                buy_cost: 500,
+                tax: '0',
+                total_sale_cost: '500'
+            },
+        ],    
+        delivery_quote_charge:[]
     },
     {
         id: 'quote_6',
         logo: cma_logo,
         name: 'CMA CGM',
-        quotation_date: 'Oct 25th 2023',
+        quotation_date: '6th Nov 2023',
         quotation_id: 'BLRFC2523003',
         customer_name: 'Apex Exports Pvt Ltd',
         org_port: 'INKTP',
@@ -504,89 +543,97 @@ const quotationTableData = [
         quote_status: 'Lost',
         sales_person: 'Sumit',
         quote_type: 'faster',
-        pickup: true,
+        pickup: false,
+        pickup_val: '',
+        truck: false,
+        rail: false,
         pickup: true,
         origin_port: true,
         ocean_freight: true,
         pickport_discharge: true,
         delivery: true,
-        pickup_quote_charge: [
-            {
-                charges_name: 'Freight',
-                uom: '20GP',
-                quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '20',
-                margin_value: '400',
-                tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2760'
-            },
-            {
-                charges_name: 'Freight',
-                uom: '20GP',
-                quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "flat",
-                markup_val: '100',
-                margin_value: '100',
-                tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2460'
-            }
-        ],
+        origin_port_currency: '₹',
+        ocean_freight_charge: '3756',
+        ocean_freight_charge_currency: '$',
+        port_discharge_currency: 'IDR',
+        delivery_charge: '0',
+        pickup_quote_charge: [],
         originport_quote_charge: [
             {
                 charges_name: 'OTHC',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
+                currency: '₹',
+                buy_cost: 13600,
                 tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
+                total_sale_cost: '16048'
             },
             {
-                charges_name: 'DFO',
-                uom: '20GP',
+                charges_name: 'BL FEE',
+                uom: 'per BL',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
+                currency: '₹',
+                buy_cost: 5700,
                 tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
+                total_sale_cost: '6726'
+            },
+            {
+                charges_name: 'CERTIFICATE FEE',
+                uom: 'per BL',
+                quantity: '2',
+                currency: '₹',
+                buy_cost: 650,
+                tax: '18',
+                total_sale_cost: '767'
+            },
+            {
+                charges_name: 'EMPTY CONTAINER LIFT FEE',
+                uom: 'per container',
+                quantity: '2',
+                currency: '₹',
+                buy_cost: 680,
+                tax: '18',
+                total_sale_cost: '802.4'
             },
         ],
         ocean_quote_charge: [
             {
-                charges_name: 'Freight',
-                uom: '20GP',
+                charges_name: '',
+                uom: 'per container',
+                quantity: '',
+                currency: '$',
+                buy_cost: 3756,
+                tax: '0',
+                total_sale_cost: '3756'
+            },
+        ],    
+        port_discharge_charges: [
+            {
+                charges_name: 'DOC',
+                uom: 'per BL',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
-                tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
-            }
-        ]
+                currency: 'BDT',
+                buy_cost: 1500,
+                tax: '0',
+                total_sale_cost: '1500'
+            },
+            {
+                charges_name: 'Cleaning Charges',
+                uom: 'per container',
+                quantity: '2',
+                currency: 'BDT',
+                buy_cost: 500,
+                tax: '0',
+                total_sale_cost: '500'
+            },
+        ],    
+        delivery_quote_charge:[]
     },
     {
         id: 'quote_7',
         logo: cma_logo,
         name: 'CMA CGM',
-        quotation_date: 'Oct 29th 2023',
+        quotation_date: '6th Nov 2023',
         quotation_id: 'BLRFC2923004',
         customer_name: 'Apex Exports Pvt Ltd',
         org_port: 'INKTP',
@@ -598,89 +645,97 @@ const quotationTableData = [
         quote_status: 'Won',
         sales_person: 'Sumit',
         quote_type: 'faster',
-        pickup: true,
+        pickup: false,
+        pickup_val: '',
+        truck: false,
+        rail: false,
         pickup: true,
         origin_port: true,
         ocean_freight: true,
         pickport_discharge: true,
         delivery: true,
-        pickup_quote_charge: [
-            {
-                charges_name: 'Freight',
-                uom: '20GP',
-                quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '20',
-                margin_value: '400',
-                tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2760'
-            },
-            {
-                charges_name: 'Freight',
-                uom: '20GP',
-                quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "flat",
-                markup_val: '100',
-                margin_value: '100',
-                tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2460'
-            }
-        ],
+        origin_port_currency: '₹',
+        ocean_freight_charge: '3756',
+        ocean_freight_charge_currency: '$',
+        port_discharge_currency: 'IDR',
+        delivery_charge: '0',
+        pickup_quote_charge: [],
         originport_quote_charge: [
             {
                 charges_name: 'OTHC',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
+                currency: '₹',
+                buy_cost: 13600,
                 tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
+                total_sale_cost: '16048'
             },
             {
-                charges_name: 'DFO',
-                uom: '20GP',
+                charges_name: 'BL FEE',
+                uom: 'per BL',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
+                currency: '₹',
+                buy_cost: 5700,
                 tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
+                total_sale_cost: '6726'
+            },
+            {
+                charges_name: 'CERTIFICATE FEE',
+                uom: 'per BL',
+                quantity: '2',
+                currency: '₹',
+                buy_cost: 650,
+                tax: '18',
+                total_sale_cost: '767'
+            },
+            {
+                charges_name: 'EMPTY CONTAINER LIFT FEE',
+                uom: 'per container',
+                quantity: '2',
+                currency: '₹',
+                buy_cost: 680,
+                tax: '18',
+                total_sale_cost: '802.4'
             },
         ],
         ocean_quote_charge: [
             {
-                charges_name: 'Freight',
-                uom: '20GP',
+                charges_name: '',
+                uom: 'per container',
+                quantity: '',
+                currency: '$',
+                buy_cost: 3756,
+                tax: '0',
+                total_sale_cost: '3756'
+            },
+        ],    
+        port_discharge_charges: [
+            {
+                charges_name: 'DOC',
+                uom: 'per BL',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
-                tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
-            }
-        ]
+                currency: 'BDT',
+                buy_cost: 1500,
+                tax: '0',
+                total_sale_cost: '1500'
+            },
+            {
+                charges_name: 'Cleaning Charges',
+                uom: 'per container',
+                quantity: '2',
+                currency: 'BDT',
+                buy_cost: 500,
+                tax: '0',
+                total_sale_cost: '500'
+            },
+        ],    
+        delivery_quote_charge:[]
     },
     {
         id: 'quote_8',
         logo: cma_logo,
         name: 'CMA CGM',
-        quotation_date: 'Oct 29th 2023',
+        quotation_date: '6th Nov 2023',
         quotation_id: 'BLRFC2923005',
         customer_name: 'Balaji Enterprise',
         org_port: 'INMAA',
@@ -692,83 +747,91 @@ const quotationTableData = [
         quote_status: 'Won',
         sales_person: 'Darshita',
         quote_type: 'preffered',
-        pickup: true,
+        pickup: false,
+        pickup_val: '',
+        truck: false,
+        rail: false,
         pickup: true,
         origin_port: true,
         ocean_freight: true,
         pickport_discharge: true,
         delivery: true,
-        pickup_quote_charge: [
-            {
-                charges_name: 'Freight',
-                uom: '20GP',
-                quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
-                tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
-            },
-            {
-                charges_name: 'Freight',
-                uom: '20GP',
-                quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "flat",
-                markup_val: '100',
-                margin_value: '100',
-                tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2460'
-            }
-        ],
+        origin_port_currency: '₹',
+        ocean_freight_charge: '3756',
+        ocean_freight_charge_currency: '$',
+        port_discharge_currency: 'BDT',
+        delivery_charge: '0',
+        pickup_quote_charge: [],
         originport_quote_charge: [
             {
                 charges_name: 'OTHC',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
+                currency: '₹',
+                buy_cost: 13600,
                 tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
+                total_sale_cost: '16048'
             },
             {
-                charges_name: 'DFO',
-                uom: '20GP',
+                charges_name: 'BL FEE',
+                uom: 'per BL',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
+                currency: '₹',
+                buy_cost: 5700,
                 tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
+                total_sale_cost: '6726'
+            },
+            {
+                charges_name: 'CERTIFICATE FEE',
+                uom: 'per BL',
+                quantity: '2',
+                currency: '₹',
+                buy_cost: 650,
+                tax: '18',
+                total_sale_cost: '767'
+            },
+            {
+                charges_name: 'EMPTY CONTAINER LIFT FEE',
+                uom: 'per container',
+                quantity: '2',
+                currency: '₹',
+                buy_cost: 680,
+                tax: '18',
+                total_sale_cost: '802.4'
             },
         ],
         ocean_quote_charge: [
             {
-                charges_name: 'Freight',
-                uom: '20GP',
+                charges_name: '',
+                uom: 'per container',
+                quantity: '',
+                currency: '$',
+                buy_cost: 3756,
+                tax: '0',
+                total_sale_cost: '3756'
+            },
+        ],    
+        port_discharge_charges: [
+            {
+                charges_name: 'DOC',
+                uom: 'per BL',
                 quantity: '2',
-                currency: 'USD',
-                buy_cost: 2000,
-                markup_type: "percentage",
-                markup_val: '10',
-                margin_value: '200',
-                tax: '18',
-                tax_amount: '360',
-                total_sale_cost: '2560'
-            }
-        ]
+                currency: 'BDT',
+                buy_cost: 1500,
+                tax: '0',
+                total_sale_cost: '1500'
+            },
+            {
+                charges_name: 'Cleaning Charges',
+                uom: 'per container',
+                quantity: '2',
+                currency: 'BDT',
+                buy_cost: 500,
+                tax: '0',
+                total_sale_cost: '500'
+            },
+        ],    
+        delivery_quote_charge:[]
     },
 ]
 
@@ -818,7 +881,7 @@ const quotationTableData = [
 //         pickup_quote_charge: [
 //             {
 //                 charges_name: 'Freight',
-//                 uom: '20GP',
+//                 uom: '',
 //                 quantity: '2',
 //                 currency: 'USD',
 //                 buy_cost: 2000,
@@ -827,7 +890,7 @@ const quotationTableData = [
 //             },
 //             {
 //                 charges_name: 'Freight',
-//                 uom: '20GP',
+//                 uom: '',
 //                 quantity: '2',
 //                 currency: 'USD',
 //                 buy_cost: 2000,
@@ -838,7 +901,7 @@ const quotationTableData = [
 //         originport_quote_charge: [
 //             {
 //                 charges_name: 'OTHC',
-//                 uom: '20GP',
+//                 uom: '',
 //                 quantity: '2',
 //                 currency: 'USD',
 //                 buy_cost: 2000,
@@ -847,7 +910,7 @@ const quotationTableData = [
 //             },
 //             {
 //                 charges_name: 'DFO',
-//                 uom: '20GP',
+//                 uom: '',
 //                 quantity: '2',
 //                 currency: 'USD',
 //                 buy_cost: 2000,
@@ -858,7 +921,7 @@ const quotationTableData = [
 //         ocean_quote_charge: [
 //             {
 //                 charges_name: 'Freight',
-//                 uom: '20GP',
+//                 uom: '',
 //                 quantity: '2',
 //                 currency: 'USD',
 //                 buy_cost: 2000,
@@ -912,7 +975,7 @@ const quotationTableData = [
 //         pickup_quote_charge: [
 //             {
 //                 charges_name: 'Freight',
-//                 uom: '20GP',
+//                 uom: '',
 //                 quantity: '2',
 //                 currency: 'USD',
 //                 buy_cost: 2000,
@@ -921,7 +984,7 @@ const quotationTableData = [
 //             },
 //             {
 //                 charges_name: 'Freight',
-//                 uom: '20GP',
+//                 uom: '',
 //                 quantity: '2',
 //                 currency: 'USD',
 //                 buy_cost: 2000,
@@ -932,7 +995,7 @@ const quotationTableData = [
 //         originport_quote_charge: [
 //             {
 //                 charges_name: 'OTHC',
-//                 uom: '20GP',
+//                 uom: '',
 //                 quantity: '2',
 //                 currency: 'USD',
 //                 buy_cost: 2000,
@@ -941,7 +1004,7 @@ const quotationTableData = [
 //             },
 //             {
 //                 charges_name: 'DFO',
-//                 uom: '20GP',
+//                 uom: '',
 //                 quantity: '2',
 //                 currency: 'USD',
 //                 buy_cost: 2000,
@@ -996,7 +1059,7 @@ const quotationTableData = [
 //         pickup_quote_charge: [
 //             {
 //                 charges_name: 'Freight',
-//                 uom: '20GP',
+//                 uom: '',
 //                 quantity: '2',
 //                 currency: 'USD',
 //                 buy_cost: 2000,
@@ -1007,7 +1070,7 @@ const quotationTableData = [
 //         originport_quote_charge: [
 //             {
 //                 charges_name: 'OTHC',
-//                 uom: '20GP',
+//                 uom: '',
 //                 quantity: '2',
 //                 currency: 'USD',
 //                 buy_cost: 2000,
@@ -1062,7 +1125,7 @@ const quotationTableData = [
 //         pickup_quote_charge: [
 //             {
 //                 charges_name: 'Freight',
-//                 uom: '20GP',
+//                 uom: '',
 //                 quantity: '2',
 //                 currency: 'USD',
 //                 buy_cost: 2000,
@@ -1073,7 +1136,7 @@ const quotationTableData = [
 //         originport_quote_charge: [
 //             {
 //                 charges_name: 'OTHC',
-//                 uom: '20GP',
+//                 uom: '',
 //                 quantity: '2',
 //                 currency: 'USD',
 //                 buy_cost: 2000,
@@ -1109,27 +1172,27 @@ const searchQuotationResult1 = [
         ocean_freight: true,
         pickport_discharge: true,
         delivery: true,
-        truck_day: '1',
-        truck_km: '4.68',
-        truck_charge: '0',
-        rail_charge: '0',
+        // truck_day: '1',
+        // truck_km: '4.68',
+        // truck_charge: '0',
+        // rail_charge: '0',
         origin_port_co: '',
-        origin_port_total: '20630',
+        // origin_port_total: '20630',
         origin_port_currency: '₹',
         ocean_freight_co: '',
-        ocean_freight_charge: '3756',
+        // ocean_freight_charge: '',
         ocean_freight_charge_currency: '$',
         port_discharge_co: '',
         port_discharge_currency: 'BDT',
-        port_discharge_charge_total: '2000',        
+        // port_discharge_charge_total: '2000',        
         delivery_co: '',
-        delivery_charge: '0',
+        // delivery_charge: '0',
         quote_type: 'preffered',
         pickup_quote_charge: [],
         originport_quote_charge: [
             {
                 charges_name: 'OTHC',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 13600,
@@ -1138,7 +1201,7 @@ const searchQuotationResult1 = [
             },
             {
                 charges_name: 'BL FEE',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 5700,
@@ -1147,7 +1210,7 @@ const searchQuotationResult1 = [
             },
             {
                 charges_name: 'CERTIFICATE FEE',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 650,
@@ -1156,7 +1219,7 @@ const searchQuotationResult1 = [
             },
             {
                 charges_name: 'EMPTY CONTAINER LIFT FEE',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 680,
@@ -1164,11 +1227,21 @@ const searchQuotationResult1 = [
                 total_sale_cost: '802.4'
             },
         ],
-        ocean_quote_charge: [],    
+        ocean_quote_charge: [
+            {
+                charges_name: '',
+                uom: 'per container',
+                quantity: '',
+                currency: '$',
+                buy_cost: 3756,
+                tax: '0',
+                total_sale_cost: '3756'
+            },
+        ],    
         port_discharge_charges: [
             {
                 charges_name: 'DOC',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 1500,
@@ -1177,7 +1250,7 @@ const searchQuotationResult1 = [
             },
             {
                 charges_name: 'Cleaning Charges',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 500,
@@ -1185,6 +1258,7 @@ const searchQuotationResult1 = [
                 total_sale_cost: '500'
             },
         ],    
+        delivery_quote_charge:[]
     },
     {
         id: '1234567891',
@@ -1209,27 +1283,27 @@ const searchQuotationResult1 = [
         ocean_freight: true,
         pickport_discharge: true,
         delivery: true,
-        truck_day: '1',
-        truck_km: '4.68',
-        truck_charge: '0',
-        rail_charge: '0',
+        // truck_day: '1',
+        // truck_km: '4.68',
+        // truck_charge: '0',
+        // rail_charge: '0',
         origin_port_co: '',
-        origin_port_total: '11150',
+        // origin_port_total: '11150',
         origin_port_currency: '₹',
         ocean_freight_co: '',
-        ocean_freight_charge: '5912',
+        // ocean_freight_charge: '5912',
         ocean_freight_charge_currency: '$',
         port_discharge_co: '',
         port_discharge_currency: 'BDT',
-        port_discharge_charge_total: '2000',        
+        // port_discharge_charge_total: '2000',        
         delivery_co: '',
-        delivery_charge: '0',
+        // delivery_charge: '0',
         quote_type: 'faster',
         pickup_quote_charge: [],
         originport_quote_charge: [
             {
                 charges_name: 'OTHC',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 11150,
@@ -1237,11 +1311,21 @@ const searchQuotationResult1 = [
                 total_sale_cost: '13157'
             },            
         ],
-        ocean_quote_charge: [],    
+        ocean_quote_charge: [
+            {
+                charges_name: '',
+                uom: 'per container',
+                quantity: '',
+                currency: '$',
+                buy_cost: 5912,
+                tax: '0',
+                total_sale_cost: '5912'
+            },
+        ],    
         port_discharge_charges: [
             {
                 charges_name: 'DOC',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 1500,
@@ -1250,14 +1334,15 @@ const searchQuotationResult1 = [
             },
             {
                 charges_name: 'Cleaning Charges',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 500,
                 tax: '0',
                 total_sale_cost: '500'
             },
-        ],    
+        ],   
+        delivery_quote_charge:[] 
     },
     {
         id: '1234567892',
@@ -1282,27 +1367,27 @@ const searchQuotationResult1 = [
         ocean_freight: true,
         pickport_discharge: true,
         delivery: true,
-        truck_day: '1',
-        truck_km: '4.68',
-        truck_charge: '0',
-        rail_charge: '0',
+        // truck_day: '1',
+        // truck_km: '4.68',
+        // truck_charge: '0',
+        // rail_charge: '0',
         origin_port_co: '',
-        origin_port_total: '229.63',
+        // origin_port_total: '229.63',
         origin_port_currency: '$',
         ocean_freight_co: '',
-        ocean_freight_charge: '1800',
+        // ocean_freight_charge: '1800',
         ocean_freight_charge_currency: '$',
         port_discharge_co: '',
         port_discharge_currency: 'BDT',
-        port_discharge_charge_total: '2000',        
+        // port_discharge_charge_total: '2000',        
         delivery_co: '',
-        delivery_charge: '0',
+        // delivery_charge: '0',
         quote_type: 'cheaper',
         pickup_quote_charge: [],
         originport_quote_charge: [
             {
                 charges_name: 'OTHC',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 12000,
@@ -1311,7 +1396,7 @@ const searchQuotationResult1 = [
             },   
             {
                 charges_name: 'BL FEE',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 3500,
@@ -1320,7 +1405,7 @@ const searchQuotationResult1 = [
             },
             {
                 charges_name: 'CERTIFICATE FEE',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 750,
@@ -1329,7 +1414,7 @@ const searchQuotationResult1 = [
             },
             {
                 charges_name: 'SEAL FEE',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: '$',
                 buy_cost: 5,
@@ -1338,7 +1423,7 @@ const searchQuotationResult1 = [
             },
             {
                 charges_name: 'GATE IN FEE',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 170,
@@ -1347,7 +1432,7 @@ const searchQuotationResult1 = [
             },
             {
                 charges_name: 'EMPTY CONTAINER LIFT FEE',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 2000,
@@ -1355,11 +1440,21 @@ const searchQuotationResult1 = [
                 total_sale_cost: '2360'
             },         
         ],
-        ocean_quote_charge: [],    
+        ocean_quote_charge: [
+            {
+                charges_name: '',
+                uom: 'per container',
+                quantity: '',
+                currency: '$',
+                buy_cost: 1800,
+                tax: '0',
+                total_sale_cost: '1800'
+            },
+        ],    
         port_discharge_charges: [
             {
                 charges_name: 'DOC',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 1500,
@@ -1368,14 +1463,15 @@ const searchQuotationResult1 = [
             },
             {
                 charges_name: 'Cleaning Charges',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 500,
                 tax: '0',
                 total_sale_cost: '500'
             },
-        ],    
+        ], 
+        delivery_quote_charge:[]   
     },
 ]
 const searchQuotationResult2 = [
@@ -1402,31 +1498,41 @@ const searchQuotationResult2 = [
         ocean_freight: true,
         pickport_discharge: true,
         delivery: true,
-        truck_day: '1',
-        truck_km: '4.68',
-        truck_charge: '0',
-        rail_charge: '41860',
+        // truck_day: '1',
+        // truck_km: '4.68',
+        // truck_charge: '0',
+        // rail_charge: '41860',
         origin_port_co: '',
-        origin_port_total: '20630',
+        // origin_port_total: '20630',
         origin_port_currency: '₹',
         ocean_freight_co: '',
-        ocean_freight_charge: '3756',
+        // ocean_freight_charge: '',
         ocean_freight_charge_currency: '$',
         port_discharge_co: '',
         port_discharge_currency: 'BDT',
-        port_discharge_charge_total: '2000',        
+        // port_discharge_charge_total: '2000',        
         delivery_co: '',
-        delivery_charge: '25000',
-        delivery_currency: 'BDT',
-        delivery_val: 'road',
-        road: true,
-        road_charge: '25000',
+        // delivery_charge: '25000',
+        // delivery_currency: 'BDT',
+        // delivery_val: 'road',
+        // road: true,
+        // road_charge: '25000',
         quote_type: 'preffered',
-        pickup_quote_charge: [],
+        pickup_quote_charge: [
+            {
+                charges_name: 'Rail',
+                uom: 'per container',
+                quantity: '',
+                currency: '₹',
+                buy_cost: 41860,
+                tax: '',
+                total_sale_cost: '41860'
+            }
+        ],
         originport_quote_charge: [
             {
                 charges_name: 'OTHC',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 13600,
@@ -1435,7 +1541,7 @@ const searchQuotationResult2 = [
             },
             {
                 charges_name: 'BL FEE',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 5700,
@@ -1444,7 +1550,7 @@ const searchQuotationResult2 = [
             },
             {
                 charges_name: 'CERTIFICATE FEE',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 650,
@@ -1453,7 +1559,7 @@ const searchQuotationResult2 = [
             },
             {
                 charges_name: 'EMPTY CONTAINER LIFT FEE',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 680,
@@ -1461,11 +1567,21 @@ const searchQuotationResult2 = [
                 total_sale_cost: '802.4'
             },
         ],
-        ocean_quote_charge: [],    
+        ocean_quote_charge: [
+            {
+                charges_name: '',
+                uom: 'per container',
+                quantity: '',
+                currency: '$',
+                buy_cost: 3756,
+                tax: '0',
+                total_sale_cost: '3756'
+            },
+        ],  
         port_discharge_charges: [
             {
                 charges_name: 'DOC',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 1500,
@@ -1474,14 +1590,25 @@ const searchQuotationResult2 = [
             },
             {
                 charges_name: 'Cleaning Charges',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 500,
                 tax: '0',
                 total_sale_cost: '500'
             },
-        ],    
+        ],  
+        delivery_quote_charge:[
+            {
+                charges_name: 'Road',
+                uom: 'per container',
+                quantity: '',
+                currency: 'BDT',
+                buy_cost: 25000,
+                tax: '',
+                total_sale_cost: '25000'
+            }
+        ]  
     },
     {
         id: '1234567891',
@@ -1506,31 +1633,41 @@ const searchQuotationResult2 = [
         ocean_freight: true,
         pickport_discharge: true,
         delivery: true,
-        truck_day: '1',
-        truck_km: '4.68',
-        truck_charge: '0',
-        rail_charge: '48860',
+        // truck_day: '1',
+        // truck_km: '4.68',
+        // truck_charge: '0',
+        // rail_charge: '48860',
         origin_port_co: '',
-        origin_port_total: '11150',
+        // origin_port_total: '11150',
         origin_port_currency: '₹',
         ocean_freight_co: '',
-        ocean_freight_charge: '5912',
+        // ocean_freight_charge: '5912',
         ocean_freight_charge_currency: '$',
         port_discharge_co: '',
         port_discharge_currency: 'BDT',
-        port_discharge_charge_total: '2000',        
+        // port_discharge_charge_total: '2000',        
         delivery_co: '',
-        delivery_charge: '27000',
-        delivery_currency: 'BDT',
-        delivery_val: 'road',
-        road: true,
-        road_charge: '27000',
+        // delivery_charge: '27000',
+        // delivery_currency: 'BDT',
+        // delivery_val: 'road',
+        // road: true,
+        // road_charge: '27000',
         quote_type: 'faster',
-        pickup_quote_charge: [],
+        pickup_quote_charge: [
+            {
+                charges_name: 'Rail',
+                uom: 'per container',
+                quantity: '',
+                currency: '₹',
+                buy_cost: 48860,
+                tax: '',
+                total_sale_cost: '48860'
+            }
+        ],
         originport_quote_charge: [
             {
                 charges_name: 'OTHC',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 11150,
@@ -1538,11 +1675,21 @@ const searchQuotationResult2 = [
                 total_sale_cost: '13157'
             },            
         ],
-        ocean_quote_charge: [],    
+        ocean_quote_charge: [
+            {
+                charges_name: '',
+                uom: 'per container',
+                quantity: '',
+                currency: '$',
+                buy_cost: 5912,
+                tax: '0',
+                total_sale_cost: '5912'
+            },
+        ],   
         port_discharge_charges: [
             {
                 charges_name: 'DOC',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 1500,
@@ -1551,14 +1698,25 @@ const searchQuotationResult2 = [
             },
             {
                 charges_name: 'Cleaning Charges',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 500,
                 tax: '0',
                 total_sale_cost: '500'
             },
-        ],    
+        ], 
+        delivery_quote_charge:[
+            {
+                charges_name: 'Road',
+                uom: 'per container',
+                quantity: '',
+                currency: 'BDT',
+                buy_cost: 27000,
+                tax: '',
+                total_sale_cost: '27000'
+            }
+        ]   
     },
     {
         id: '1234567892',
@@ -1583,31 +1741,41 @@ const searchQuotationResult2 = [
         ocean_freight: true,
         pickport_discharge: true,
         delivery: true,
-        truck_day: '1',
-        truck_km: '4.68',
-        truck_charge: '0',
-        rail_charge: '35860',
+        // truck_day: '1',
+        // truck_km: '4.68',
+        // truck_charge: '0',
+        // rail_charge: '35860',
         origin_port_co: '',
-        origin_port_total: '18830',
+        // origin_port_total: '18830',
         origin_port_currency: '₹',
         ocean_freight_co: '',
-        ocean_freight_charge: '1800',
+        // ocean_freight_charge: '1800',
         ocean_freight_charge_currency: '$',
         port_discharge_co: '',
         port_discharge_currency: 'BDT',
-        port_discharge_charge_total: '2000',        
+        // port_discharge_charge_total: '2000',        
         delivery_co: '',
-        delivery_charge: '20000',
-        delivery_currency: 'BDT',
-        delivery_val: 'road',
-        road: true,
-        road_charge: '20000',
+        // delivery_charge: '20000',
+        // delivery_currency: 'BDT',
+        // delivery_val: 'road',
+        // road: true,
+        // road_charge: '20000',
         quote_type: 'cheaper',
-        pickup_quote_charge: [],
+        pickup_quote_charge: [
+            {
+                charges_name: 'Rail',
+                uom: 'per container',
+                quantity: '',
+                currency: '₹',
+                buy_cost: 35860,
+                tax: '',
+                total_sale_cost: '35860'
+            }
+        ],
         originport_quote_charge: [
             {
                 charges_name: 'OTHC',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 12000,
@@ -1616,7 +1784,7 @@ const searchQuotationResult2 = [
             },   
             {
                 charges_name: 'BL FEE',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 3500,
@@ -1625,7 +1793,7 @@ const searchQuotationResult2 = [
             },
             {
                 charges_name: 'CERTIFICATE FEE',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 750,
@@ -1634,7 +1802,7 @@ const searchQuotationResult2 = [
             },
             {
                 charges_name: 'SEAL FEE',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: '$',
                 buy_cost: 5,
@@ -1643,7 +1811,7 @@ const searchQuotationResult2 = [
             },
             {
                 charges_name: 'GATE IN FEE',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 170,
@@ -1652,7 +1820,7 @@ const searchQuotationResult2 = [
             },
             {
                 charges_name: 'EMPTY CONTAINER LIFT FEE',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 2000,
@@ -1660,11 +1828,21 @@ const searchQuotationResult2 = [
                 total_sale_cost: '2360'
             },         
         ],
-        ocean_quote_charge: [],    
+        ocean_quote_charge: [
+            {
+                charges_name: '',
+                uom: 'per container',
+                quantity: '',
+                currency: '$',
+                buy_cost: 1800,
+                tax: '0',
+                total_sale_cost: '1800'
+            },
+        ],   
         port_discharge_charges: [
             {
                 charges_name: 'DOC',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 1500,
@@ -1673,7 +1851,7 @@ const searchQuotationResult2 = [
             },
             {
                 charges_name: 'Cleaning Charges',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: 'BDT',
                 buy_cost: 500,
@@ -1681,6 +1859,17 @@ const searchQuotationResult2 = [
                 total_sale_cost: '500'
             },
         ],    
+        delivery_quote_charge:[
+            {
+                charges_name: 'Road',
+                uom: 'per container',
+                quantity: '',
+                currency: 'BDT',
+                buy_cost: 20000,
+                tax: '',
+                total_sale_cost: '20000'
+            }
+        ]
     },
 ]
 const searchQuotationResult3 = [
@@ -1707,31 +1896,41 @@ const searchQuotationResult3 = [
         ocean_freight: true,
         pickport_discharge: true,
         delivery: true,
-        truck_day: '1',
-        truck_km: '4.68',
-        truck_charge: '0',
-        rail_charge: '41860',
+        // truck_day: '1',
+        // truck_km: '4.68',
+        // truck_charge: '0',
+        // rail_charge: '41860',
         origin_port_co: '',
-        origin_port_total: '20630',
+        // origin_port_total: '20630',
         origin_port_currency: '₹',
         ocean_freight_co: '',
-        ocean_freight_charge: '240',
+        // ocean_freight_charge: '240',
         ocean_freight_charge_currency: '$',
         port_discharge_co: '',
         port_discharge_currency: '$',
-        port_discharge_charge_total: '222.21',        
+        // port_discharge_charge_total: '222.21',        
         delivery_co: '',
-        delivery_charge: '4663359.44',
-        delivery_currency: 'IDR',
-        delivery_val: 'road',
-        road: true,
-        road_charge: '4663359.44',
+        // delivery_charge: '4663359.44',
+        // delivery_currency: 'IDR',
+        // delivery_val: 'road',
+        // road: true,
+        // road_charge: '4663359.44',
         quote_type: 'preffered',
-        pickup_quote_charge: [],
+        pickup_quote_charge: [
+            {
+                charges_name: 'Rail',
+                uom: 'per container',
+                quantity: '',
+                currency: '₹',
+                buy_cost: 41860,
+                tax: '',
+                total_sale_cost: '41860'
+            }
+        ],
         originport_quote_charge: [
             {
                 charges_name: 'OTHC',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 13600,
@@ -1740,7 +1939,7 @@ const searchQuotationResult3 = [
             },
             {
                 charges_name: 'BL FEE',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 5700,
@@ -1749,7 +1948,7 @@ const searchQuotationResult3 = [
             },
             {
                 charges_name: 'CERTIFICATE FEE',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 650,
@@ -1758,7 +1957,7 @@ const searchQuotationResult3 = [
             },
             {
                 charges_name: 'EMPTY CONTAINER LIFT FEE',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 680,
@@ -1766,11 +1965,21 @@ const searchQuotationResult3 = [
                 total_sale_cost: '802.4'
             },
         ],
-        ocean_quote_charge: [],    
+        ocean_quote_charge: [
+            {
+                charges_name: '',
+                uom: 'per container',
+                quantity: '',
+                currency: '$',
+                buy_cost: 240,
+                tax: '0',
+                total_sale_cost: '240'
+            },
+        ],     
         port_discharge_charges: [
             {
                 charges_name: 'DTHC',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: '$',
                 buy_cost: 190,
@@ -1779,7 +1988,7 @@ const searchQuotationResult3 = [
             },
             {
                 charges_name: 'DOC',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: 'IDR',
                 buy_cost: 100000,
@@ -1788,7 +1997,7 @@ const searchQuotationResult3 = [
             },
             {
                 charges_name: 'MPC',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: 'IDR',
                 buy_cost: 300000,
@@ -1797,7 +2006,7 @@ const searchQuotationResult3 = [
             },
             {
                 charges_name: 'CIC',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: 'IDR',
                 buy_cost: 100000,
@@ -1805,6 +2014,17 @@ const searchQuotationResult3 = [
                 total_sale_cost: '100000'
             },
         ],    
+        delivery_quote_charge:[
+            {
+                charges_name: 'Road',
+                uom: 'per container',
+                quantity: '',
+                currency: 'IDR',
+                buy_cost: 4663359.44,
+                tax: '',
+                total_sale_cost: '4663359.44'
+            }
+        ]
     },
     {
         id: '1234567891',
@@ -1829,31 +2049,41 @@ const searchQuotationResult3 = [
         ocean_freight: true,
         pickport_discharge: true,
         delivery: true,
-        truck_day: '1',
-        truck_km: '4.68',
-        truck_charge: '0',
-        rail_charge: '48860',
+        // truck_day: '1',
+        // truck_km: '4.68',
+        // truck_charge: '0',
+        // rail_charge: '48860',
         origin_port_co: '',
-        origin_port_total: '11150',
+        // origin_port_total: '11150',
         origin_port_currency: '₹',
         ocean_freight_co: '',
-        ocean_freight_charge: '440',
+        // ocean_freight_charge: '440',
         ocean_freight_charge_currency: '$',
         port_discharge_co: '',
         port_discharge_currency: '$',
-        port_discharge_charge_total: '237.50',        
+        // port_discharge_charge_total: '237.50',        
         delivery_co: '',
-        delivery_charge: '4663359.44',
-        delivery_currency: 'IDR',
-        delivery_val: 'road',
-        road: true,
-        road_charge: '4663359.44',
+        // delivery_charge: '4663359.44',
+        // delivery_currency: 'IDR',
+        // delivery_val: 'road',
+        // road: true,
+        // road_charge: '4663359.44',
         quote_type: 'faster',
-        pickup_quote_charge: [],
+        pickup_quote_charge: [
+            {
+                charges_name: 'Rail',
+                uom: 'per container',
+                quantity: '',
+                currency: '₹',
+                buy_cost: 48860,
+                tax: '',
+                total_sale_cost: '48860'
+            }
+        ],
         originport_quote_charge: [
             {
                 charges_name: 'OTHC',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 11150,
@@ -1861,11 +2091,21 @@ const searchQuotationResult3 = [
                 total_sale_cost: '13157'
             },            
         ],
-        ocean_quote_charge: [],    
+        ocean_quote_charge: [
+            {
+                charges_name: '',
+                uom: 'per container',
+                quantity: '',
+                currency: '$',
+                buy_cost: 440,
+                tax: '0',
+                total_sale_cost: '440'
+            },
+        ],   
         port_discharge_charges: [
             {
                 charges_name: 'DTHC',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: '$',
                 buy_cost: 240,
@@ -1874,7 +2114,7 @@ const searchQuotationResult3 = [
             },
             {
                 charges_name: 'DOC',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: 'IDR',
                 buy_cost: 110000,
@@ -1883,7 +2123,7 @@ const searchQuotationResult3 = [
             },
             {
                 charges_name: 'MPC',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: 'IDR',
                 buy_cost: 300000,
@@ -1892,14 +2132,25 @@ const searchQuotationResult3 = [
             },
             {
                 charges_name: 'CIC',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: 'IDR',
                 buy_cost: 110000,
                 tax: '0',
                 total_sale_cost: '110000'
             },
-        ],     
+        ],
+        delivery_quote_charge:[
+            {
+                charges_name: 'Road',
+                uom: '-',
+                quantity: '',
+                currency: 'IDR',
+                buy_cost: 4663359.44,
+                tax: '',
+                total_sale_cost: '4663359.44'
+            }
+        ]     
     },
     {
         id: '1234567892',
@@ -1924,31 +2175,41 @@ const searchQuotationResult3 = [
         ocean_freight: true,
         pickport_discharge: true,
         delivery: true,
-        truck_day: '1',
-        truck_km: '4.68',
-        truck_charge: '0',
-        rail_charge: '35860',
+        // truck_day: '1',
+        // truck_km: '4.68',
+        // truck_charge: '0',
+        // rail_charge: '35860',
         origin_port_co: '',
-        origin_port_total: '18830',
+        // origin_port_total: '18830',
         origin_port_currency: '₹',
         ocean_freight_co: '',
-        ocean_freight_charge: '200',
+        // ocean_freight_charge: '200',
         ocean_freight_charge_currency: '$',
         port_discharge_co: '',
         port_discharge_currency: '$',
-        port_discharge_charge_total: '238.70',        
+        // port_discharge_charge_total: '238.70',        
         delivery_co: '',
-        delivery_charge: '4663359.44',
-        delivery_currency: 'IDR',
-        delivery_val: 'road',
-        road: true,
-        road_charge: '4663359.44',
+        // delivery_charge: '4663359.44',
+        // delivery_currency: 'IDR',
+        // delivery_val: 'road',
+        // road: true,
+        // road_charge: '4663359.44',
         quote_type: 'cheaper',
-        pickup_quote_charge: [],
+        pickup_quote_charge: [
+            {
+                charges_name: 'Rail',
+                uom: 'per container',
+                quantity: '',
+                currency: '₹',
+                buy_cost: 35860,
+                tax: '',
+                total_sale_cost: '35860'
+            }
+        ],
         originport_quote_charge: [
             {
                 charges_name: 'OTHC',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 12000,
@@ -1957,7 +2218,7 @@ const searchQuotationResult3 = [
             },   
             {
                 charges_name: 'BL FEE',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 3500,
@@ -1966,7 +2227,7 @@ const searchQuotationResult3 = [
             },
             {
                 charges_name: 'CERTIFICATE FEE',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 750,
@@ -1975,7 +2236,7 @@ const searchQuotationResult3 = [
             },
             {
                 charges_name: 'SEAL FEE',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: '$',
                 buy_cost: 5,
@@ -1984,7 +2245,7 @@ const searchQuotationResult3 = [
             },
             {
                 charges_name: 'GATE IN FEE',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 170,
@@ -1993,7 +2254,7 @@ const searchQuotationResult3 = [
             },
             {
                 charges_name: 'EMPTY CONTAINER LIFT FEE',
-                uom: '20GP',
+                uom: 'per container',
                 quantity: '2',
                 currency: '₹',
                 buy_cost: 2000,
@@ -2001,11 +2262,21 @@ const searchQuotationResult3 = [
                 total_sale_cost: '2360'
             },         
         ],
-        ocean_quote_charge: [],    
+        ocean_quote_charge: [
+            {
+                charges_name: '',
+                uom: 'per container',
+                quantity: '',
+                currency: '$',
+                buy_cost: 200,
+                tax: '0',
+                total_sale_cost: '200'
+            },
+        ],    
         port_discharge_charges: [
             {
                 charges_name: 'DTHC',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: '$',
                 buy_cost: 200,
@@ -2014,7 +2285,7 @@ const searchQuotationResult3 = [
             },
             {
                 charges_name: 'DOC',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: 'IDR',
                 buy_cost: 120000,
@@ -2023,7 +2294,7 @@ const searchQuotationResult3 = [
             },
             {
                 charges_name: 'MPC',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: 'IDR',
                 buy_cost: 300000,
@@ -2032,25 +2303,34 @@ const searchQuotationResult3 = [
             },
             {
                 charges_name: 'CIC',
-                uom: '20GP',
+                uom: 'per BL',
                 quantity: '2',
                 currency: 'IDR',
                 buy_cost: 120000,
                 tax: '0',
                 total_sale_cost: '120000'
             },
-        ],     
+        ],    
+        delivery_quote_charge:[
+            {
+                charges_name: 'Road',
+                uom: 'per container',
+                quantity: '',
+                currency: 'IDR',
+                buy_cost: 4663359.44,
+                tax: '',
+                total_sale_cost: '4663359.44'
+            }
+        ] 
     },
 ]
 
 // --------------- options ---------------
 const optionCustomerName = [
-    {value: "1", name: 'Jimmy Camacho',img: memoji},
-    {value: "2", name: 'Hermione Walker',img: memoji},
-    {value: "3", name: 'Andreas Benjamin',img: memoji },
-    {value: "4", name: 'Mackenzie Dale',img: memoji },
-    {value: "5", name: 'Andreas Benjamin',img: memoji },
-    {value: "6", name: 'Harri Roberson',img: memoji}
+    {value: "apex_export", name: 'Apex Export Pvt Ltd',img: memoji},
+    {value: "balaji_enterprice", name: 'Balaji Enterprice',img: memoji},
+    {value: "house_tea_exports", name: 'House of Tea Exports',img: memoji },
+    {value: "raj_fruits", name: 'Raj Fruits Exports',img: memoji },
 ]
 const optionServiceType = [
     {value: "door_to_door", name: 'Door to Door'},
@@ -2139,8 +2419,8 @@ const weightUnitOption= [
     {value: 'lbs', name: 'Lbs'},
 ]
 const cargoWeightUnitOption= [
-    {value: 'kg', label: 'KG'},
-    {value: 'tonne', label: 'MT'},
+    {value: 'KG', name: 'KG'},
+    {value: 'MT', name: 'MT'},
 ]
 const optionPickupCharge = [
     { label: "OTHC", value: "OTHC" },
@@ -2158,18 +2438,40 @@ const optionPickupCharge = [
     { label: "CIC", value: "CIC" },
     { label: "BL FEE", value: "bl_fee" },
     { label: "CERTIFICATE FEE", value: "certificate_fee" },
+    { label: "EMPTY CONTAINER LIFT FEE", value: "empty_container_lift_fee" }
+];
+const optionOriginPortCharge = [
+    { label: "OTHC", value: "OTHC" },
+    { label: "DTHC", value: "DTHC" },
+    { label: "BL FEE", value: "bl_fee" },
+    { label: "CERTIFICATE FEE", value: "certificate_fee" },
     { label: "EMPTY CONTAINER LIFT FEE", value: "empty_container_lift_fee" },
-    { label: "Add New", value: "Add New" },
-  ];
+];
+const optionOceanCharge = [
+    { label: "OBS", value: "OBS" },
+    { label: "EIS", value: "EIS" },
+    { label: "WRC", value: "WRC" },
+    { label: "OCR", value: "OCR" },
+    { label: "ADDON", value: "ADDON" },
+    { label: "LSF", value: "LSF" },
+    { label: "ARD", value: "ARD" },    
+];
+const optionPortDischargeCharge = [
+    { label: "DTHC", value: "DTHC" },
+    { label: "DOC", value: "DOC" },
+    { label: "MPC", value: "MPC" },
+    { label: "CIC", value: "CIC" }
+];
+
 const optionMarkupType = [
     {value: "percentage", label: "Percentage"},
     {value: "flat", label: "Flat"},
 ]
 const optionCurrencyCharges = [
     {value: "gbp", label: "Pound", code: '£'},
-    {value: "usd", label: "USD", code: '$'},
+    {value: "$", label: "USD", code: '$'},
     {value: "eur", label: "Euro", code: '€'},
-    {value: "rupee", label: "Rupee", code: '₹'},
+    {value: "₹", label: "Rupee", code: '₹'},
     {value: "jpy", label: "Yen", code: '¥'},
     {value: "BDT", label: "BDT", code: 'BDT'},
     {value: "IDR", label: "IDR", code: 'IDR'},
@@ -2192,9 +2494,18 @@ const optionStatusQuote = [
 ]
 const optionQuoteValueQuote = []
 
+const optionQuoteContacttitle = [
+    { label: "Mr", value: "Mr" },
+    { label: "Ms", value: "Ms" },
+    { label: "Mrs", value: "Mrs" },
+]
+const optionQuoteContactCode = [
+    { label: "+91", value: "+91" },
+]
+
 export {
     quotationBreadcrumb,quotationTableData,optionCustomerName,optionServiceType,optionTransportBy,optionContainerType,optionIncoterm,optionCargoType,optionCurrency,
     optionlocationType,countryList,optionPortList,optionLandTransportBy,searchQuotationResult,weightUnitOption,optionContainerTypeWithoutRefri,optionContainerTypeRefrigerated,
     optionPickupCharge,optionMarkupType,optionCurrencyCharges,optionOriginQuote,optionModeQuote,optionDestQuote,optionStatusQuote,optionQuoteValueQuote,searchQuotationResult1,searchQuotationResult2,searchQuotationResult3,
-    cargoWeightUnitOption
+    cargoWeightUnitOption,optionOriginPortCharge,optionOceanCharge,optionPortDischargeCharge,optionQuoteContacttitle,optionQuoteContactCode
 }

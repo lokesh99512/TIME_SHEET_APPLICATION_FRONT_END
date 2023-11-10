@@ -7,7 +7,7 @@ export const convertToINR = (amount, currency) => {
     const usdToINRConversionRate = 83; // Replace with the actual conversion rate      
     const BDTToINRConversionRate = 1.33;      
     const IDRToINRConversionRate = 0.0053;      
-    if (currency === '$') {
+    if (currency === '$' || currency?.toLowerCase() === 'usd') {
       return amount * usdToINRConversionRate;
     } 
     if (currency === 'BDT'){

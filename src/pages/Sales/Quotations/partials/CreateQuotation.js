@@ -101,6 +101,7 @@ export default function CreateQuotation() {
 
             {/* Preview Quotation Modal */}
             <PreviewQuotationModal previewModal={previewModal} previewModalHand={previewModalHand} setPreviewModal={setPreviewModal} QuoteModalHandler={QuoteModalHandler} />
+            
         </>
     )
 }

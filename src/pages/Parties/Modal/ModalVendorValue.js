@@ -15,9 +15,9 @@ import {
   TabPane,
 } from "reactstrap";
 import SimpleBar from "simplebar-react";
-import TabOneCustomerDetails from "./viewData/vendors/TabOneCustomerDetails";
 import TabTwoContacts from "./viewData/vendors/TabTwoContacts"
 import TabThreeDocuments from "./viewData/vendors/TabThreeDocuments"
+import TabOneVendorDetails from "./viewData/vendors/TabOneVendorDetails";
 
 const ModalVendorValue = ({ viewData, modal, onCloseClick, modalType }) => {  
   const [open, setOpen] = useState("");
@@ -141,15 +141,15 @@ const ModalVendorValue = ({ viewData, modal, onCloseClick, modalType }) => {
                     </Card>
                     <TabContent activeTab={activeTab}>
                         <TabPane tabId="1">
-                            <TabOneCustomerDetails/>
+                            <TabOneVendorDetails viewData1={viewData}/>
                             
                         </TabPane>
                         <TabPane tabId="2">
-                                  <TabTwoContacts/>
+                                  <TabTwoContacts viewData2={viewData}/>
                                   
                         </TabPane>
                         <TabPane tabId="3">
-                                  <TabThreeDocuments/>
+                                  <TabThreeDocuments viewData3={viewData}/>
                         </TabPane>
                         <TabPane tabId="4">
                         <>

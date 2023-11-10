@@ -6,7 +6,8 @@ import {
   AccordionItem,
 } from "reactstrap";
 
-const TabTwoContacts = () => {
+const TabTwoContacts = ({viewData2}) => {
+  console.log(viewData2,"viewData2");
   const viewData = [
     {
       title:"Mr",
@@ -46,38 +47,38 @@ const TabTwoContacts = () => {
             </AccordionHeader>
             <AccordionBody accordionId={"1"}>
 
-              {viewData?.map((viewData,key)=>{
-                return(
-                    <div key={key} className="view_data_wrap d-flex align-items-start">
+              {/* {viewData?.map((viewData,key)=>{
+                return( */}
+                    <div className="view_data_wrap d-flex align-items-start">
                 <div className="left_freight_details">
                   <div className="details">
                     <span className="title">Contact Name:</span>
                     <span className="data">
-                      {viewData?.title + " " + viewData?.name || "-"}
+                      {viewData2?.title + " " + viewData2?.contactName || "-"}
                     </span>
                   </div>
                   <div className="details">
                     <span className="title">Phone Number:</span>
                     <span className="data">
-                      {viewData?.opCode + " " + viewData?.phoneNumber || "-"}
+                      {viewData2?.opCode + " " + viewData2?.contactNo || "-"}
                     </span>
                   </div>
                   <div className="details">
                     <span className="title">Email Id:</span>
-                    <span className="data">{viewData?.emailId || "-"}</span>
+                    <span className="data">{viewData2?.email || "-"}</span>
                   </div>
                   <div className="details">
                     <span className="title">Department:</span>
-                    <span className="data">{viewData?.department || "-"}</span>
+                    <span className="data">{viewData2?.department || "-"}</span>
                   </div>
                   <div className="details">
                     <span className="title">Designation:</span>
-                    <span className="data">{viewData?.designation || "-"}</span>
+                    <span className="data">{viewData2?.designation || "-"}</span>
                   </div>
                 </div>
               </div>
-                )
-              })}
+                {/* )
+              })} */}
             </AccordionBody>
           </AccordionItem>
 

@@ -10,7 +10,7 @@ const INIT_STATE = {
         // incoterm: '',
         shipping_by: '',
         container_type: '',
-        cargo_weight: '',
+        cargo_weight: { weight: "MT",value: ''},
         cargo_type: '',
         cargo_value: { currency: { name: 'Rupee', value: 'rupee', code: '₹' }, value: '' },
         cargo_date: '',
@@ -58,7 +58,7 @@ const sales = (state = INIT_STATE, action) => {
                 }
             }
             return state = newObj
-        
+
         case UPDATE_SEARCH_QUOTATION_SWAP:
             return {
                 ...state,
@@ -120,7 +120,7 @@ const sales = (state = INIT_STATE, action) => {
                 createFields: {
                     shipping_by: '',
                     cargo_type: '',
-                    cargo_weight: '',
+                    cargo_weight: { weight: "MT",value: ''},
                     container_type: '',
                     cargo_value: { currency: { name: 'Rupee', value: 'rupee', code: '₹' }, value: '' },
                     cargo_date: '',
@@ -136,7 +136,7 @@ const sales = (state = INIT_STATE, action) => {
                 ...newArray[existingIndex],
                 [action.payload.charge_name]: newArray[existingIndex][action.payload.charge_name].map((item, index) => {
                     if (index === action.payload.index) {
-                        if(action.payload.name === 'markup_val'){
+                        if (action.payload.name === 'markup_val') {
                             return {
                                 ...item,
                                 [action.payload.name]: action.payload.value,
@@ -148,7 +148,7 @@ const sales = (state = INIT_STATE, action) => {
                                 ...item,
                                 [action.payload.name]: action.payload.value
                             };
-                        }                        
+                        }
                     }
                     return item;
                 })
@@ -160,12 +160,12 @@ const sales = (state = INIT_STATE, action) => {
                 quote_selected_data: newArray
             };
 
-        case CONFIRM_PREVIEW_DATA: 
+        case CONFIRM_PREVIEW_DATA:
             return {
                 ...state,
                 quote_selected_data: action.payload
             }
-        case QUOTATION_RESULT_SELECTED_BLANK: 
+        case QUOTATION_RESULT_SELECTED_BLANK:
             return {
                 ...state,
                 quote_selected_data: []
