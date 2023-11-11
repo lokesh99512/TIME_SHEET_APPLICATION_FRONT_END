@@ -53,9 +53,9 @@ const CommonTable = ({ column, data, type,handleSorting }) => {
                                         if(accessor === 'employee'){
                                             return <td key={accessor}>
                                                     <div className="prof_wrap">
-                                                        <div className="img">
+                                                        {/* <div className="img">
                                                             <img src={profImg} alt="Profile" />
-                                                        </div>
+                                                        </div> */}
                                                         <span>{tData}</span>
                                                     </div>
                                                 </td>

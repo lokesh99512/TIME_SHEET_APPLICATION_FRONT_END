@@ -3,24 +3,24 @@ import React from 'react'
 import { Card, CardBody, Input } from 'reactstrap'
 import Select from "react-select";
 
-const ShipmentForm = () => {
+const ShipmentForm = ({shipmentDetails}) => {
     const shipmentDetailsFormik = useFormik({
         initialValues: {
-            origin_city: "",
-            destination_city: "",
-            origin_port: "",
-            destination_port: "",
-            cargo_type: "",
+            origin_city: shipmentDetails.location_from.address.label,
+            destination_city: shipmentDetails.location_to.address.label,
+            origin_port: shipmentDetails.location_from.address.value,
+            destination_port: shipmentDetails.location_to.address.value,
+            cargo_type: shipmentDetails.cargo_type.name,
             commodity: "",
-            cargo_value: "",
+            cargo_value: shipmentDetails.cargo_value.value,
             incoterms: "",
 
-            container_type: "",
+            container_type: shipmentDetails.container_type[0].name,
             quantity: "",
             length: "",
             width: "",
             height: "",
-            gross_weight: "",
+            gross_weight: shipmentDetails.cargo_weight.value +" "+ shipmentDetails.cargo_weight.weight,
             volumentric_wt: "",
         },
         onSubmit: (values) => {
@@ -41,6 +41,7 @@ const ShipmentForm = () => {
                                         <Input
                                             type="text"
                                             name="origin_city"
+                                            // value={shipmentDetails.location_from.address.value}
                                             value={shipmentDetailsFormik.values.origin_city}
                                             onChange={shipmentDetailsFormik.handleChange}
                                             className="form-control"

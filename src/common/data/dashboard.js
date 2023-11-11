@@ -135,28 +135,28 @@ const salesEnquiryData = [
     {
         id: 1,
         title: 'Total Enquires',
-        rate: '50',
+        rate: '30',
         compare_rate: '21',
         rate_type: 'down'
     },
     {
         id: 2,
         title: 'Pending Enquires',
-        rate: '21',
+        rate: '15',
         compare_rate: '4',
         rate_type: 'up'
     },
     {
         id: 3,
         title: 'Enquires Actioned',
-        rate: '16',
+        rate: '15',
         compare_rate: '3',
         rate_type: 'up'
     },
     {
         id: 4,
         title: 'SLA Branched',
-        rate: '13',
+        rate: '2',
         compare_rate: '6',
         rate_type: 'up'
     },
@@ -166,28 +166,28 @@ const quotSumData = [
     {
         id: 1,
         title: 'Quotation Sent',
-        rate: '50',
+        rate: '8',
         compare_rate: '21',
         rate_type: 'down'
     },
     {
         id: 2,
         title: 'Quotation Won',
-        rate: '21',
+        rate: '3',
         compare_rate: '04',
         rate_type: 'up'
     },
     {
         id: 3,
         title: 'Quotation Lost',
-        rate: '16',
+        rate: '2',
         compare_rate: '3',
         rate_type: 'up'
     },
     {
         id: 4,
         title: 'Quotation In progress',
-        rate: '13',
+        rate: '3',
         compare_rate: '6',
         rate_type: 'up'
     },
@@ -198,153 +198,204 @@ const impExColumnData = [
     { label: "Port",accessor: "port" },
     { label: "Total Enquires",accessor: "total_equiry" },
     { label: "Conversion Ratio", accessor: "ratio" },
-    { label: "Trend", accessor: "trend" },
+    // { label: "Trend", accessor: "trend" },
+]
+
+const impColumnData = [
+    { label: "Port",accessor: "port" },
+    { label: "Total Enquires",accessor: "total_equiry" },
+    { label: "Conversion Ratio", accessor: "ratio" },
+    // { label: "Trend", accessor: "trend" },
 ]
 const inquiryColumnData = [
     { label: "Customer",accessor: "customer" },
     { label: "Total Enquires", accessor: "total_equiry" },
     { label: "Conversion Ratio", accessor: "ratio" },
-    { label: "Trend",accessor: "trend" },
+    // { label: "Trend",accessor: "trend" },
 ]
 const salesColumnData = [
     { label: "Employee",accessor: "employee" },
     { label: "Total Enquires",accessor: "total_equiry" },
     { label: "Conversion Ratio", accessor: "ratio" },
-    { label: "Trend", accessor: "trend" },
+    // { label: "Trend", accessor: "trend" },
 ]
 
 const exportSumData = [
     {
         id: 1,
-        port: 'Port of Houston',
-        total_equiry: '279',
-        ratio: '21',
+        port: 'BDDAC',
+        total_equiry: '8',
+        ratio: '25',
         trend: '12'
     },
     {
         id: 2,
-        port: 'Port of South Louisiana',
-        total_equiry: '456',
-        ratio: '21',
+        port: 'IDSUB',
+        total_equiry: '7',
+        ratio: '50',
+        trend: '12'
+    },
+    // {
+    //     id: 3,
+    //     port: 'Port of Corpus Christi',
+    //     total_equiry: '279',
+    //     ratio: '21',
+    //     trend: '12'
+    // },
+    // {
+    //     id: 4,
+    //     port: 'Port of New Orleans',
+    //     total_equiry: '279',
+    //     ratio: '21',
+    //     trend: '12'
+    // },
+    // {
+    //     id: 5,
+    //     port: 'Port of Long Beach',
+    //     total_equiry: '279',
+    //     ratio: '21',
+    //     trend: '12'
+    // },
+    // {
+    //     id: 6,
+    //     port: 'Plaquemines Port',
+    //     total_equiry: '279',
+    //     ratio: '21',
+    //     trend: '12'
+    // },
+]
+const importSumData = [
+    {
+        id: 1,
+        port: 'INMAA',
+        total_equiry: '10',
+        ratio: '0',
         trend: '12'
     },
     {
-        id: 3,
-        port: 'Port of Corpus Christi',
-        total_equiry: '279',
-        ratio: '21',
+        id: 2,
+        port: 'INKTP',
+        total_equiry: '5',
+        ratio: '0',
         trend: '12'
     },
-    {
-        id: 4,
-        port: 'Port of New Orleans',
-        total_equiry: '279',
-        ratio: '21',
-        trend: '12'
-    },
-    {
-        id: 5,
-        port: 'Port of Long Beach',
-        total_equiry: '279',
-        ratio: '21',
-        trend: '12'
-    },
-    {
-        id: 6,
-        port: 'Plaquemines Port',
-        total_equiry: '279',
-        ratio: '21',
-        trend: '12'
-    },
+    // {
+    //     id: 3,
+    //     port: 'Port of Corpus Christi',
+    //     total_equiry: '279',
+    //     ratio: '21',
+    //     trend: '12'
+    // },
+    // {
+    //     id: 4,
+    //     port: 'Port of New Orleans',
+    //     total_equiry: '279',
+    //     ratio: '21',
+    //     trend: '12'
+    // },
+    // {
+    //     id: 5,
+    //     port: 'Port of Long Beach',
+    //     total_equiry: '279',
+    //     ratio: '21',
+    //     trend: '12'
+    // },
+    // {
+    //     id: 6,
+    //     port: 'Plaquemines Port',
+    //     total_equiry: '279',
+    //     ratio: '21',
+    //     trend: '12'
+    // },
 ]
 const inquirySumData = [
     {
         id: 1,
-        customer: 'Bessie Cooper',
-        total_equiry: '59',
-        ratio: '02',
+        customer: 'Apex Exports Pvt Ltd',
+        total_equiry: '8',
+        ratio: '30',
         trend: '42'
     },
     {
         id: 2,
-        customer: 'Bessie Cooper',
-        total_equiry: '59',
-        ratio: '02',
+        customer: 'Raj Fruits Exports',
+        total_equiry: '7',
+        ratio: '50',
         trend: '42'
     },
     {
         id: 3,
-        customer: 'Bessie Cooper',
-        total_equiry: '59',
-        ratio: '02',
+        customer: 'Balaji Enterprise',
+        total_equiry: '10',
+        ratio: '50',
         trend: '42'
     },
     {
         id: 4,
-        customer: 'Bessie Cooper',
-        total_equiry: '59',
-        ratio: '02',
+        customer: 'House of Tea Exports',
+        total_equiry: '0',
+        ratio: '0',
         trend: '42'
     },
-    {
-        id: 5,
-        customer: 'Bessie Cooper',
-        total_equiry: '59',
-        ratio: '02',
-        trend: '42'
-    },
-    {
-        id: 6,
-        customer: 'Bessie Cooper',
-        total_equiry: '59',
-        ratio: '02',
-        trend: '42'
-    },
+    // {
+    //     id: 5,
+    //     customer: 'Bessie Cooper',
+    //     total_equiry: '59',
+    //     ratio: '02',
+    //     trend: '42'
+    // },
+    // {
+    //     id: 6,
+    //     customer: 'Bessie Cooper',
+    //     total_equiry: '59',
+    //     ratio: '02',
+    //     trend: '42'
+    // },
     
 ]
 const salesPerformData = [
     {
         id: 1,
-        employee: 'Leslie Alexander',
-        total_equiry: '279',
-        ratio: '21',
+        employee: 'Vijay',
+        total_equiry: '9',
+        ratio: '0.3',
         trend: '12'
     },
     {
         id: 2,
-        employee: 'Leslie Alexander',
-        total_equiry: '456',
-        ratio: '21',
+        employee: 'Sumit',
+        total_equiry: '11',
+        ratio: '0.25',
         trend: '12'
     },
     {
         id: 3,
-        employee: 'Leslie Alexander',
-        total_equiry: '279',
-        ratio: '21',
+        employee: 'Darshita',
+        total_equiry: '8',
+        ratio: '0.35',
         trend: '12'
     },
-    {
-        id: 4,
-        employee: 'Leslie Alexander',
-        total_equiry: '279',
-        ratio: '21',
-        trend: '12'
-    },
-    {
-        id: 5,
-        employee: 'Leslie Alexander',
-        total_equiry: '279',
-        ratio: '21',
-        trend: '12'
-    },
-    {
-        id: 6,
-        employee: 'Leslie Alexander',
-        total_equiry: '279',
-        ratio: '21',
-        trend: '12'
-    },
+    // {
+    //     id: 4,
+    //     employee: 'Leslie Alexander',
+    //     total_equiry: '279',
+    //     ratio: '21',
+    //     trend: '12'
+    // },
+    // {
+    //     id: 5,
+    //     employee: 'Leslie Alexander',
+    //     total_equiry: '279',
+    //     ratio: '21',
+    //     trend: '12'
+    // },
+    // {
+    //     id: 6,
+    //     employee: 'Leslie Alexander',
+    //     total_equiry: '279',
+    //     ratio: '21',
+    //     trend: '12'
+    // },
 ]
 
 // ---------------------------- map charts --------------------
@@ -537,6 +588,6 @@ const chartCountryCode = {
 export {
     WidgetsData, MarketOver1YData, MarketOver6MData, MarketOver1MData, MarketOverViewAllData, PieChart1YData, PieChart6MData,
     PieChart1MData, PieChartAllData, InvestedOverviewMay, InvestedOverviewApril, InvestedOverviewMarch, InvestedOverviewFeb,
-    InvestedOverviewJan, InvestedOverviewDec,salesEnquiryData,quotSumData,impExColumnData,inquiryColumnData,salesColumnData,exportSumData,inquirySumData,
+    InvestedOverviewJan, InvestedOverviewDec,salesEnquiryData,quotSumData,impExColumnData,impColumnData,inquiryColumnData,salesColumnData,exportSumData,inquirySumData,importSumData,
     salesPerformData,chartCountryCode
 };

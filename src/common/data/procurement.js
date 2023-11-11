@@ -38,7 +38,8 @@ const lclBreadcrumb = [
         active: false
     },
     {
-        label: 'LCL(Less than Container Load)',
+        // label: 'LCL(Less than Container Load)',
+        label: 'Ocean Surcharges',
         link: '/#',
         active: true
     },
@@ -144,7 +145,8 @@ const fclSurchargeBreadcrumb = [
     //     active: false
     // },
     {
-        label: 'FCL Surcharge master',
+        // label: 'FCL Surcharge master',
+        label: 'Inland Surcharges',
         link: '/#',
         active: true
     },

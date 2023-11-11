@@ -245,14 +245,8 @@ export default function UploadCustomerData() {
       };
 
       const onUploadChange = (file) => {
-        console.log("enter");
-        // console.log(file.name,"file")
-        // setSelectedFiles(file);
-        // const formData = new FormData();
-        // formData.append('file', file)
-        // setFieldValue("image",formData)
-        // console.log(formData,"<---formData");
-        // console.log(formData,"<---formData");
+        // console.log(file,"file")
+        companyDetailsFormik.setFieldValue("logo",file)
       };
 
     
@@ -814,7 +808,7 @@ export default function UploadCustomerData() {
                                                         <h5>Contacts</h5>
                                                     </div>
                                                     <div>
-                                                    {console.log(contactsFormik.values,"<----tab-2")}
+                                                    {/* {console.log(contactsFormik.values,"<----tab-2")} */}
                                                     <FormikProvider value={contactsFormik}>
                                                     <FieldArray name="contacts" validateOnChange={false}>
                                                         {(arrayHelpers)=>(
@@ -1057,7 +1051,7 @@ export default function UploadCustomerData() {
                                                     </form>
                                                     </CardBody>
                                                     </Card> */}
-                                                            {console.log(documentsFormik.values,"<----tab-3")}
+                                                            {/* {console.log(documentsFormik.values,"<----tab-3")} */}
                                                     <FormikProvider value={documentsFormik}>
                                                     <FieldArray name="document" validateOnChange={false}>
                                                         {(arrayHelpers)=>(

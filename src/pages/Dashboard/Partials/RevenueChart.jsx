@@ -75,7 +75,7 @@ const RevenueChart = () => {
     }]
     return (
         <>
-            <div className="sh_revenue_chart_wrap">
+            <div className="sh_revenue_chart_wrap" style={{filter:"blur(3px)"}}>
 
                 <div className="title_select_wrap">
                     <h3 className="sub_title">Revenue Run Rate</h3>
