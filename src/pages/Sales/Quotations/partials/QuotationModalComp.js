@@ -222,6 +222,8 @@ console.log(shipmentDetails,"<----shipmentDetails");
 
         return pickuptaxVal + origintaxVal + oceantaxVal + portDischargetaxVal;
     }
+    
+    // console.log(mainChargeObj,"<--mainChargeObj");
 
     const overAllMarginHandler = (quoteObject, subtotalvalue) => {
         let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.id);
@@ -320,7 +322,7 @@ console.log(shipmentDetails,"<----shipmentDetails");
                                                         <form>
                                                             <div className="row">
                                                                 <div className="col-12 col-md-6">
-                                                                    {console.log(companyDetailsFormik?.values,"testing")}
+                                                                    {/* {console.log(companyDetailsFormik?.values,"testing")} */}
                                                                     <div className="mb-3">
                                                                         <label className="form-label">Company name</label>
                                                                         <Input
@@ -508,6 +510,7 @@ console.log(shipmentDetails,"<----shipmentDetails");
                                             </div>
                                         </div>
                                         <div className="right_con d-flex ms-auto">
+                                            {/* {console.log(item,"<--item")} */}
                                             <div className="margin_wrap">Margin Value: <b>{overAllMarginHandler(item, subTotalHandler(item))}%</b></div>
                                             <span className='text-primary'>
                                                 {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '}

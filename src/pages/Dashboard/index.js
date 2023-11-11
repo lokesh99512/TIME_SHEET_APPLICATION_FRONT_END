@@ -93,7 +93,7 @@ const Dashboard = () => {
                                         {(quotSumData || [])?.map(item => (
                                             <div className="sh_box" key={item?.id}>
                                                 <p className="box_title">{item?.title}</p>
-                                                <p className="sh_inquiry_rate">
+                                                <p className="sh_inquiry_rate justify-content-between">
                                                     <AnimatedCounter rate={Number(item?.rate)} />
                                                     {/* <span className={`${item?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{item?.compare_rate}%</span> */}
                                                     <div className="text-nowrap">

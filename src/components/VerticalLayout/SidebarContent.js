@@ -230,7 +230,7 @@ const SidebarContent = props => {
                     </li>
                     <li>
                       <Link to="/freight/ocean/portlocal">
-                        <span>Port/Local Charges</span>
+                        <span>FCL Port/Local Charges</span>
                       </Link>
                     </li>
                     <li>

@@ -198,26 +198,26 @@ const impExColumnData = [
     { label: "Port",accessor: "port" },
     { label: "Total Enquires",accessor: "total_equiry" },
     { label: "Conversion Ratio", accessor: "ratio" },
-    // { label: "Trend", accessor: "trend" },
+    { label: "Trend", accessor: "trend" },
 ]
 
 const impColumnData = [
     { label: "Port",accessor: "port" },
     { label: "Total Enquires",accessor: "total_equiry" },
     { label: "Conversion Ratio", accessor: "ratio" },
-    // { label: "Trend", accessor: "trend" },
+    { label: "Trend", accessor: "trend" },
 ]
 const inquiryColumnData = [
     { label: "Customer",accessor: "customer" },
     { label: "Total Enquires", accessor: "total_equiry" },
     { label: "Conversion Ratio", accessor: "ratio" },
-    // { label: "Trend",accessor: "trend" },
+    { label: "Trend",accessor: "trend" },
 ]
 const salesColumnData = [
     { label: "Employee",accessor: "employee" },
     { label: "Total Enquires",accessor: "total_equiry" },
     { label: "Conversion Ratio", accessor: "ratio" },
-    // { label: "Trend", accessor: "trend" },
+    { label: "Trend", accessor: "trend" },
 ]
 
 const exportSumData = [

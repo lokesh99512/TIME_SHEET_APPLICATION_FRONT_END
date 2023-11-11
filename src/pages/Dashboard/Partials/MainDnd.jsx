@@ -74,8 +74,10 @@ export default function MainDnd() {
                                                             </span>
                                                         )} 
                                                         </p>
-                                                        <p className='sh_sum_rate'>
+                                                        <p className='sh_sum_rate justify-content-between'>
+                                                            <span>
                                                             {item.id === 'revenue_sum' && '$'}<AnimatedCounter rate={Number(data?.revenue)} />
+                                                            </span>
                                                             {/* <span className={`${data?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{data?.rate}%</span> */}
                                                             <div className="text-nowrap">
                                                                 <span className={"badge badge-soft-" + `${data?.rate_type === 'down' ? "danger" : "success"}` + " text-" + `${data?.rate_type === 'down' ? "danger" : "success"}`}>
