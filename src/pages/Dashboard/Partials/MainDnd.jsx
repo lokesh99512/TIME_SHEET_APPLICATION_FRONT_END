@@ -76,14 +76,14 @@ export default function MainDnd() {
                                                         </p>
                                                         <p className='sh_sum_rate justify-content-between'>
                                                             <span>
-                                                            {item.id === 'revenue_sum' && '$'}<AnimatedCounter rate={Number(data?.revenue)} />
+                                                            {item.id === 'revenue_sum' && '₹'}<AnimatedCounter rate={Number(data?.revenue)} />
                                                             </span>
                                                             {/* <span className={`${data?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{data?.rate}%</span> */}
                                                             <div className="text-nowrap">
                                                                 <span className={"badge badge-soft-" + `${data?.rate_type === 'down' ? "danger" : "success"}` + " text-" + `${data?.rate_type === 'down' ? "danger" : "success"}`}>
                                                                 {data?.rate}%
                                                                 </span>
-                                                                <span className="ms-1 box_title">Since last month</span>
+                                                                <span className="ms-1 box_bottom_text">Since last month</span>
                                                             </div>
                                                         </p>
                                                     </div> 

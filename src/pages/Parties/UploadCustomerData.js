@@ -14,6 +14,13 @@ import { BLANK_CARRIER_DATA } from '../../store/Procurement/actiontype';
 import ModalAddGST from './Modal/ModalAddGST';
 import { FieldArray, FormikProvider, useFormik } from 'formik';
 import FileUpload from './FileUpload';
+import ModalAddNewDepartment from './Modal/ModalAddNewDepartment';
+import ModalAddNewDesignation from "./Modal/ModalAddNewDesignation"
+import ModalAddNewSalesEmployee from './Modal/ModalAddNewSalesEmployee';
+import ModalAddNewKeyAccountManager from './Modal/ModalAddNewKeyAccountManager';
+import ModalAddNewEntityType from "./Modal/ModalAddNewEntityType"
+import ModalAddNewIndustryType from "./Modal/ModalAddNewIndustryType"
+import ModalAddNewCustomerType from "./Modal/ModalAddNewCustomerType"
 
 const gen = [
     { label: "Mr", value: "Mr" },
@@ -32,22 +39,66 @@ const opCode = [
     { label: "+91", value: "+91" },
 ]
 const department = [
-    { label: "test", value: "test" },
+    { label: "Accounts", value: "Accounts" },
+    { label: "Sales", value: "Sales" },
+    { label: "Finance", value: "Finance" },
+    { label: "Management", value: "Management" },
+    { label: "Primary", value: "Primary" },
+    { label: "Add New", value: "Add New" },
 ]
 const designation = [
-    { label: "test", value: "test" },
+    { label: "Executive", value: "Executive" },
+    { label: "Asst. Manager", value: "Asst. Manager" },
+    { label: "Manager", value: "Manager" },
+    { label: "Sr. Manager", value: "Sr. Manager" },
+    { label: "AVP", value: "AVP" },
+    { label: "VP", value: "VP" },
+    { label: "President", value: "President" },
+    { label: "Director", value: "Director" },
+    { label: "CEO", value: "CEO" },
+    { label: "COO", value: "COO" },
+    { label: "MD", value: "MD" },
+    { label: "Sales", value: "Sales" },
+    { label: "Finance", value: "Finance" },
+    { label: "Management", value: "Management" },
+    { label: "Primary", value: "Primary" },
+    { label: "Add New", value: "Add New" },
 ]
 const entityType = [
-    { label: "test", value: "test" },
+    { label: "Proprietorship", value: "Proprietorship" },
+    { label: "Single Director", value: "Single Director" },
+    { label: "LLP", value: "LLP" },
+    { label: "Private Limited", value: "Private Limited" },
+    { label: "Public Limited", value: "Public Limited" },
+    { label: "Add New", value: "Add New" },
 ]
 const industryType = [
-    { label: "test", value: "test" },
+    { label: "Supply Chain", value: "Supply Chain" },
+    { label: "Software services", value: "Software services" },
+    { label: "Agriculture", value: "Agriculture" },
+    { label: "Manufacturing", value: "Manufacturing" },
+    { label: "Transportation", value: "Transportation" },
+    { label: "Add New", value: "Add New" },
+]
+const customerType = [
+    { label: "Customer", value: "Customer" },
+    { label: "Agent", value: "Agent" },
+    { label: "Franchisee", value: "Franchisee" },
+    { label: "Add New", value: "Add New" },
 ]
 const salesEmployee = [
-    { label: "test", value: "test" },
+    { label: "Ajay", value: "Ajay" },
+    { label: "Hitesh", value: "Hitesh" },
+    { label: "Mahendra", value: "Mahendra" },
+    { label: "Mahes", value: "Mahes" },
+    { label: "Add New", value: "Add New" },
 ]
 const keyAccountManager = [
-    { label: "test", value: "test" },
+    { label: "Ajay", value: "Ajay" },
+    { label: "Hitesh", value: "Hitesh" },
+    { label: "Mahendra", value: "Mahendra" },
+    { label: "Mahes", value: "Mahes" },
+    { label: "Add New", value: "Add New" },
 ]
 
 export default function UploadCustomerData() {
@@ -56,6 +107,13 @@ export default function UploadCustomerData() {
     const [progressValue, setProgressValue] = useState(14);
     const [selectedFiles, setselectedFiles] = useState([]);
     const [gstModal, setGstModal] = useState(false);
+    const [departmentModal, setDepartmentModal] = useState(false);
+    const [designationModal, setDesignationModal] = useState(false);
+    const [salesEmployeeModal, setSalesEmployeeModal] = useState(false);
+    const [keyAccountManagerModal, setKeyAccountManagerModal] = useState(false);
+    const [entityTypeModal, setEntityTypeModal] = useState(false);
+    const [industryTypeModal, setIndustryTypeModal] = useState(false);
+    const [customerTypeModal, setCustomerTypeModal] = useState(false);
     const navigate = useNavigate();
     const [surcharges, setSurcharges] = useState([]);
     const [fileError, setfileError] = useState('');
@@ -98,6 +156,20 @@ export default function UploadCustomerData() {
             openSaveConfirmModal();
         }
     }
+
+
+    // const handleSelectGroup = useCallback(
+    //     (name, opt) => {
+    //       console.log(opt, "opt");
+    //       if (name === "department" && opt.value === "Add New") {
+    //         setCategoryModal(true);
+    //       } else if (name === "designation" && opt.value === "Add New") {
+    //         setAliasModal(true);
+    //       }
+    //       setAddDetails((prev) => ({ ...prev, [name]: opt }));
+    //     },
+    //     [addDetails]
+    //   );
 
     function handleAcceptedFiles(files) {
         if (files && files.length) {
@@ -147,7 +219,8 @@ export default function UploadCustomerData() {
             GSTnumber:"",
             PANnumber:"",
             entityType:"",
-            industryType:""
+            industryType:"",
+            customerType:"",
         }
     })
     const contactsFormik = useFormik({
@@ -242,6 +315,13 @@ export default function UploadCustomerData() {
 
     const onCloseClick = () => {
         setGstModal(false);
+        setDepartmentModal(false)
+        setDesignationModal(false)
+        setSalesEmployeeModal(false)
+        setKeyAccountManagerModal(false)
+        setEntityTypeModal(false)
+        setIndustryTypeModal(false)
+        setCustomerTypeModal(false)
       };
 
       const onUploadChange = (file) => {
@@ -589,6 +669,9 @@ export default function UploadCustomerData() {
                                                                               : ""
                                                                           }
                                                                         onChange={(e) => {
+                                                                            if (e.label == "Add New") {
+                                                                                setDepartmentModal(true)
+                                                                            }
                                                                             companyDetailsFormik.setFieldValue(
                                                                               `department`,
                                                                               e.value
@@ -615,6 +698,9 @@ export default function UploadCustomerData() {
                                                                               : ""
                                                                           }
                                                                         onChange={(e) => {
+                                                                            if (e.label == "Add New") {
+                                                                                setDesignationModal(true)
+                                                                            }
                                                                             companyDetailsFormik.setFieldValue(
                                                                               `designation`,
                                                                               e.value
@@ -641,6 +727,9 @@ export default function UploadCustomerData() {
                                                                               : ""
                                                                           }
                                                                         onChange={(e) => {
+                                                                            if (e.label == "Add New") {
+                                                                                setSalesEmployeeModal(true)
+                                                                            }
                                                                             companyDetailsFormik.setFieldValue(
                                                                               `salesEmployee`,
                                                                               e.value
@@ -667,6 +756,9 @@ export default function UploadCustomerData() {
                                                                               : ""
                                                                           }
                                                                         onChange={(e) => {
+                                                                            if (e.label == "Add New") {
+                                                                                setKeyAccountManagerModal(true)
+                                                                            }
                                                                             companyDetailsFormik.setFieldValue(
                                                                               `keyAccountManager`,
                                                                               e.value
@@ -758,6 +850,9 @@ export default function UploadCustomerData() {
                                                                               : ""
                                                                           }
                                                                         onChange={(e) => {
+                                                                            if (e.label == "Add New") {
+                                                                                setEntityTypeModal(true)
+                                                                            }
                                                                             companyDetailsFormik.setFieldValue(
                                                                               `entityType`,
                                                                               e.value
@@ -784,6 +879,9 @@ export default function UploadCustomerData() {
                                                                               : ""
                                                                           }
                                                                         onChange={(e) => {
+                                                                            if (e.label == "Add New") {
+                                                                                setIndustryTypeModal(true)
+                                                                            }
                                                                             companyDetailsFormik.setFieldValue(
                                                                               `industryType`,
                                                                               e.value
@@ -795,11 +893,48 @@ export default function UploadCustomerData() {
                                                                     />
                                                                 </div>
                                                             </div>
+                                                            <div className="col-12 col-md-6">
+                                                                <div className="mb-3">
+                                                                    <label className="form-label">Customer Type</label>
+                                                                    <Select
+                                                                        name='customerType'
+                                                                        value={
+                                                                            customerType
+                                                                              ? customerType.find(
+                                                                                  (option) =>
+                                                                                    option.value ===
+                                                                                    companyDetailsFormik?.values?.customerType
+                                                                                )
+                                                                              : ""
+                                                                          }
+                                                                        onChange={(e) => {
+                                                                            if (e.label == "Add New") {
+                                                                                setCustomerTypeModal(true)
+                                                                            }
+                                                                            companyDetailsFormik.setFieldValue(
+                                                                              `customerType`,
+                                                                              e.value
+                                                                            );
+                                                                          }}
+                                                                        options={customerType}
+                                                                        placeholder="Customer"
+                                                                        // isDisabled={carrierData?.vendor_type?.value === 'agent'}
+                                                                        classNamePrefix="select2-selection form-select"
+                                                                    />
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </>
                                                     </CardBody>
                                                     </Card>
                                                     <ModalAddGST modal={gstModal} onCloseClick={onCloseClick} />
+                                                    <ModalAddNewDepartment modal={departmentModal} onCloseClick={onCloseClick}/>
+                                                    <ModalAddNewDesignation modal={designationModal} onCloseClick={onCloseClick}/>
+                                                    <ModalAddNewSalesEmployee modal={salesEmployeeModal} onCloseClick={onCloseClick}/>
+                                                    <ModalAddNewKeyAccountManager modal={keyAccountManagerModal} onCloseClick={onCloseClick}/>
+                                                    <ModalAddNewCustomerType modal={customerTypeModal} onCloseClick={onCloseClick}/>
+                                                    <ModalAddNewEntityType modal={entityTypeModal} onCloseClick={onCloseClick}/>
+                                                    <ModalAddNewIndustryType modal={industryTypeModal} onCloseClick={onCloseClick}/>
 
 
                                                 </TabPane>

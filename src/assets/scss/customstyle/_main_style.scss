@@ -183,6 +183,10 @@
         @include font($font-weight-normal,14px,normal,$neutral_5);
         margin-bottom: 14px;
     }
+    .box_bottom_text{
+        @include font($font-weight-normal,12px,normal,$neutral_5);
+        margin-bottom: 14px;
+    }
 
     .title_select_wrap{
         @extend .flex-center;
