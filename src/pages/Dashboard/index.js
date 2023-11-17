@@ -66,19 +66,19 @@ const Dashboard = () => {
                             <Col xl={9} lg={8} className="left_summary_wrap">
                                 {/* Sales Enquiry */}
                                 <div className="sh_inquiry_wrap">
-                                    <h3 className="sub_title">Sales Enquires</h3>
+                                    <h3 className="sub_title">Sales Inquires</h3>
                                     <div className="sh_box_wrap">
                                         {(salesEnquiryData || [])?.map(item => (
                                             <div className="sh_box" key={item?.id}>
                                                 <p className="box_title">{item?.title}</p>
-                                                <p className="sh_inquiry_rate justify-content-between">
+                                                <p className="sh_inquiry_rate justify-content-between align-items-center">
                                                     <AnimatedCounter rate={Number(item?.rate)} />
                                                     {/* <span className={`${item?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{item?.compare_rate}%</span> */}
-                                                    <div className="text-nowrap">
+                                                    <div className="text-nowrap fs-5">
                                                         <span className={"badge badge-soft-" + `${item?.rate_type === 'down' ? "danger" : "success"}` + " text-" + `${item?.rate_type === 'down' ? "danger" : "success"}`}>
                                                         {item?.compare_rate}%
                                                         </span>
-                                                        <span className="ms-1 box_title">Since last month</span>
+                                                        <span className="ms-1 box_bottom_text">Since last month</span>
                                                     </div>
                                                 </p>
                                             </div>
@@ -93,14 +93,14 @@ const Dashboard = () => {
                                         {(quotSumData || [])?.map(item => (
                                             <div className="sh_box" key={item?.id}>
                                                 <p className="box_title">{item?.title}</p>
-                                                <p className="sh_inquiry_rate justify-content-between">
+                                                <p className="sh_inquiry_rate justify-content-between align-items-center">
                                                     <AnimatedCounter rate={Number(item?.rate)} />
                                                     {/* <span className={`${item?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{item?.compare_rate}%</span> */}
-                                                    <div className="text-nowrap">
+                                                    <div className="text-nowrap fs-5">
                                                         <span className={"badge badge-soft-" + `${item?.rate_type === 'down' ? "danger" : "success"}` + " text-" + `${item?.rate_type === 'down' ? "danger" : "success"}`}>
                                                         {item?.compare_rate}%
                                                         </span>
-                                                        <span className="ms-1 box_title">Since last month</span>
+                                                        <span className="ms-1 box_bottom_text">Since last month</span>
                                                     </div>
                                                 </p>
                                             </div>

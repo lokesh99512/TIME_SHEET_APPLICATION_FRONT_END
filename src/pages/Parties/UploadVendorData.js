@@ -14,6 +14,12 @@ import { BLANK_CARRIER_DATA } from '../../store/Procurement/actiontype';
 import ModalAddGST from './Modal/ModalAddGST';
 import { FieldArray, FormikProvider, useFormik } from 'formik';
 import FileUpload from './FileUpload';
+import ModalAddNewDepartment from './Modal/ModalAddNewDepartment';
+import ModalAddNewDesignation from './Modal/ModalAddNewDesignation';
+import ModalAddNewEntityType from "./Modal/ModalAddNewEntityType"
+import ModalAddNewIndustryType from "./Modal/ModalAddNewIndustryType"
+import ModalAddNewVendorType from './Modal/ModalAddNewVendorType';
+import ModalAddNewServiceType from './Modal/ModalAddNewServiceType';
 
 const gen = [
     { label: "Mr", value: "Mr" },
@@ -32,23 +38,62 @@ const opCode = [
     { label: "+91", value: "+91" },
 ]
 const department = [
-    { label: "test", value: "test" },
+    { label: "Accounts", value: "Accounts" },
+    { label: "Sales", value: "Sales" },
+    { label: "Finance", value: "Finance" },
+    { label: "Management", value: "Management" },
+    { label: "Primary", value: "Primary" },
+    { label: "Add New", value: "Add New" },
 ]
 const designation = [
-    { label: "test", value: "test" },
+    { label: "Executive", value: "Executive" },
+    { label: "Asst. Manager", value: "Asst. Manager" },
+    { label: "Manager", value: "Manager" },
+    { label: "Sr. Manager", value: "Sr. Manager" },
+    { label: "AVP", value: "AVP" },
+    { label: "VP", value: "VP" },
+    { label: "President", value: "President" },
+    { label: "Director", value: "Director" },
+    { label: "CEO", value: "CEO" },
+    { label: "COO", value: "COO" },
+    { label: "MD", value: "MD" },
+    { label: "Sales", value: "Sales" },
+    { label: "Finance", value: "Finance" },
+    { label: "Management", value: "Management" },
+    { label: "Primary", value: "Primary" },
+    { label: "Add New", value: "Add New" },
 ]
 const entityType = [
-    { label: "test", value: "test" },
+    { label: "Proprietorship", value: "Proprietorship" },
+    { label: "Single Director", value: "Single Director" },
+    { label: "LLP", value: "LLP" },
+    { label: "Private Limited", value: "Private Limited" },
+    { label: "Public Limited", value: "Public Limited" },
+    { label: "Add New", value: "Add New" },
 ]
 const industryType = [
-    { label: "test", value: "test" },
+    { label: "Supply Chain", value: "Supply Chain" },
+    { label: "Software services", value: "Software services" },
+    { label: "Agriculture", value: "Agriculture" },
+    { label: "Manufacturing", value: "Manufacturing" },
+    { label: "Transportation", value: "Transportation" },
+    { label: "Add New", value: "Add New" },
 ]
 const vendorType = [
     { label: "Carrier", value: "Carrier" },
+    { label: "NVOCC", value: "NVOCC" },
+    { label: "Overseas Agent", value: "Overseas Agent" },
+    { label: "CHA", value: "CHA" },
+    { label: "Transporter", value: "Transporter" },
+    { label: "Co-Loader", value: "Co-Loader" },
+    { label: "Local Agent", value: "Local Agent" },
+    { label: "Manpower Agent", value: "Manpower Agent" },
+    { label: "Add New", value: "Add New" },
 ]
 const serviceType = [
     { label: "Ocean", value: "Ocean" },
     { label: "Air", value: "Air" },
+    { label: "Add New", value: "Add New" },
 ]
 
 
@@ -57,7 +102,12 @@ export default function UploadVendorData() {
     const [openSaveModal, setOpenSaveModal] = useState(false);
     const [progressValue, setProgressValue] = useState(25);
     const [selectedFiles, setselectedFiles] = useState([]);
-    const [gstModal, setGstModal] = useState(false);
+    const [departmentModal, setDepartmentModal] = useState(false);
+    const [designationModal, setDesignationModal] = useState(false);
+    const [entityTypeModal, setEntityTypeModal] = useState(false);
+    const [industryTypeModal, setIndustryTypeModal] = useState(false);
+    const [vendorTypeModal, setVendorTypeModal] = useState(false);
+    const [serviceTypeModal, setServiceTypeModal] = useState(false);
     const navigate = useNavigate();
     const [surcharges, setSurcharges] = useState([]);
     const [fileError, setfileError] = useState('');
@@ -241,7 +291,12 @@ export default function UploadVendorData() {
     }, [surcharges]);
 
     const onCloseClick = () => {
-        setGstModal(false);
+        setDesignationModal(false);
+        setDepartmentModal(false);
+        setIndustryTypeModal(false);
+        setEntityTypeModal(false);
+        setVendorTypeModal(false);
+        setServiceTypeModal(false);
       };
 
       const onUploadChange = (file) => {
@@ -594,6 +649,9 @@ export default function UploadVendorData() {
                                                                               : ""
                                                                           }
                                                                         onChange={(e) => {
+                                                                            if (e.label == "Add New") {
+                                                                                setDepartmentModal(true)
+                                                                            }
                                                                             companyDetailsFormik.setFieldValue(
                                                                               `department`,
                                                                               e.value
@@ -620,6 +678,9 @@ export default function UploadVendorData() {
                                                                               : ""
                                                                           }
                                                                         onChange={(e) => {
+                                                                            if (e.label == "Add New") {
+                                                                                setDesignationModal(true)
+                                                                            }
                                                                             companyDetailsFormik.setFieldValue(
                                                                               `designation`,
                                                                               e.value
@@ -682,6 +743,7 @@ export default function UploadVendorData() {
                                                                     <label className="form-label">Vendor Type</label>
                                                                     <Select
                                                                         name='vendorType'
+                                                                        isMulti
                                                                         value={
                                                                             vendorType
                                                                               ? vendorType.find(
@@ -692,6 +754,9 @@ export default function UploadVendorData() {
                                                                               : ""
                                                                           }
                                                                         onChange={(e) => {
+                                                                            if (e.label == "Add New") {
+                                                                                setVendorTypeModal(true)
+                                                                            }
                                                                             companyDetailsFormik.setFieldValue(
                                                                               `vendorType`,
                                                                               e.value
@@ -708,6 +773,7 @@ export default function UploadVendorData() {
                                                                     <label className="form-label">Service Type</label>
                                                                     <Select
                                                                         name='serviceType'
+                                                                        isMulti
                                                                         value={
                                                                             serviceType
                                                                               ? serviceType.find(
@@ -718,6 +784,9 @@ export default function UploadVendorData() {
                                                                               : ""
                                                                           }
                                                                         onChange={(e) => {
+                                                                            if (e.label == "Add New") {
+                                                                                setServiceTypeModal(true)
+                                                                            }
                                                                             companyDetailsFormik.setFieldValue(
                                                                               `serviceType`,
                                                                               e.value
@@ -798,6 +867,9 @@ export default function UploadVendorData() {
                                                                               : ""
                                                                           }
                                                                         onChange={(e) => {
+                                                                            if (e.label == "Add New") {
+                                                                                setEntityTypeModal(true)
+                                                                            }
                                                                             companyDetailsFormik.setFieldValue(
                                                                               `entityType`,
                                                                               e.value
@@ -824,6 +896,9 @@ export default function UploadVendorData() {
                                                                               : ""
                                                                           }
                                                                         onChange={(e) => {
+                                                                            if (e.label == "Add New") {
+                                                                                setIndustryTypeModal(true)
+                                                                            }
                                                                             companyDetailsFormik.setFieldValue(
                                                                               `industryType`,
                                                                               e.value
@@ -840,7 +915,12 @@ export default function UploadVendorData() {
                                                     </CardBody>
                                                     </Card>
                                                     {/* <ModalAddGST modal={gstModal} onCloseClick={onCloseClick} /> */}
-
+                                                    <ModalAddNewDepartment modal={departmentModal} onCloseClick={onCloseClick}/>
+                                                    <ModalAddNewDesignation modal={designationModal} onCloseClick={onCloseClick}/>
+                                                    <ModalAddNewEntityType modal={entityTypeModal} onCloseClick={onCloseClick}/>
+                                                    <ModalAddNewIndustryType modal={industryTypeModal} onCloseClick={onCloseClick}/>
+                                                    <ModalAddNewVendorType modal={vendorTypeModal} onCloseClick={onCloseClick}/>
+                                                    <ModalAddNewServiceType modal={serviceTypeModal} onCloseClick={onCloseClick}/>
 
                                                 </TabPane>
                                                 {/* {console.log(contactsFormik.values,"<----tab-2")} */}

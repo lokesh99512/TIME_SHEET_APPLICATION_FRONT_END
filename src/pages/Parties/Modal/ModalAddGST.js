@@ -1,14 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { Input, Label, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Select from "react-select";
 import { useFormik } from "formik";
+import ModalAddNewAddressType from "./ModalAddNewAddressType";
 
 const gen = [
   { label: "Mr", value: "Mr" },
   { label: "Ms", value: "Ms" },
   { label: "Mrs", value: "Mrs" },
 ];
-const addressType = [{ label: "Head Office", value: "Head Office" }];
+const addressType = [
+  { label: "Office", value: "Office" },
+  { label: "Branch", value: "Branch" },
+  { label: "Regional Office", value: "Regional Office" },
+  { label: "Head Office", value: "Head Office" },
+  { label: "City Office", value: "City Office" },
+  { label: "Warehouse", value: "Warehouse" },
+  { label: "Fulfilment Center", value: "Fulfilment Center" },
+  { label: "Add New", value: "Add New" },
+];
 
 const phone = [{ label: "+91", value: "+91" }];
 
@@ -28,6 +38,12 @@ const addGstInitialValue = {
 // };
 
 const ModalAddGST = ({ modal, onCloseClick }) => {
+
+  const [addressTypeModal, setAddressTypeModal] = useState(false)
+
+  const onCloseClickModal = () => {
+    setAddressTypeModal(false);
+  };
   // const formik = useFormik({
   //   initialValues: addGstInitialValue,
   //   onSubmit: (value) => {
@@ -187,11 +203,25 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
                   <div className="mb-3">
                     <label className="form-label">Address Type</label>
                     <Select
-                      // value={carrierData.vendor_name}
-                      // name='vendor_name'
-                      // onChange={(opt) => {
-                      //     handleSelectGroup('vendor_name', opt)
-                      // }}
+                      // name='designation'
+                      // value={
+                      //   addressType
+                      //       ? addressType.find(
+                      //           (option) =>
+                      //             option.value ===
+                      //             companyDetailsFormik?.values?.addressType
+                      //         )
+                      //       : ""
+                      //   }
+                      onChange={(e) => {
+                          if (e.label == "Add New") {
+                            setAddressTypeModal(true)
+                          }
+                          // companyDetailsFormik.setFieldValue(
+                          //   `designation`,
+                          //   e.value
+                          // );
+                        }}
                       options={addressType}
                       classNamePrefix="select2-selection form-select"
                       // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
@@ -222,6 +252,7 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
               {/* </div> */}
             </div>
           </div>
+          <ModalAddNewAddressType modal={addressTypeModal} onCloseClick={onCloseClickModal}/>
         </ModalBody>
       </Modal>
     </>

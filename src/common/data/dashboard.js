@@ -134,7 +134,7 @@ const InvestedOverviewDec = [45];
 const salesEnquiryData = [
     {
         id: 1,
-        title: 'Total Enquires',
+        title: 'Total Inquires',
         rate: '30',
         compare_rate: '21',
         rate_type: 'down'
@@ -196,26 +196,26 @@ const quotSumData = [
 // -------------------------- Table Data --------------------------------------------------
 const impExColumnData = [
     { label: "Port",accessor: "port" },
-    { label: "Total Enquires",accessor: "total_equiry" },
+    { label: "Total Inquires",accessor: "total_equiry" },
     { label: "Conversion Ratio", accessor: "ratio" },
     { label: "Trend", accessor: "trend" },
 ]
 
 const impColumnData = [
     { label: "Port",accessor: "port" },
-    { label: "Total Enquires",accessor: "total_equiry" },
+    { label: "Total Inquires",accessor: "total_equiry" },
     { label: "Conversion Ratio", accessor: "ratio" },
     { label: "Trend", accessor: "trend" },
 ]
 const inquiryColumnData = [
     { label: "Customer",accessor: "customer" },
-    { label: "Total Enquires", accessor: "total_equiry" },
+    { label: "Total Inquires", accessor: "total_equiry" },
     { label: "Conversion Ratio", accessor: "ratio" },
     { label: "Trend",accessor: "trend" },
 ]
 const salesColumnData = [
     { label: "Employee",accessor: "employee" },
-    { label: "Total Enquires",accessor: "total_equiry" },
+    { label: "Total Inquires",accessor: "total_equiry" },
     { label: "Conversion Ratio", accessor: "ratio" },
     { label: "Trend", accessor: "trend" },
 ]
