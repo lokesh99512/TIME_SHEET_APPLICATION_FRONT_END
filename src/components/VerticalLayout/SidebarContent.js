@@ -230,7 +230,12 @@ const SidebarContent = props => {
                     </li>
                     <li>
                       <Link to="/freight/ocean/portlocal">
-                        <span>Port/Local Charges</span>
+                        <span>FCL Port/Local Charges</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/freight/inland">
+                        <span>FCL Inland Charges </span>
                       </Link>
                     </li>
                   </ul>
@@ -257,11 +262,11 @@ const SidebarContent = props => {
                     </li>
                   </ul>
                 </li>
-                <li>
+                {/* <li>
                   <Link to="/freight/inland">
                     <span>Inland Charges</span>
                   </Link>
-                </li>
+                </li> */}
                 {/* <li>
                   <Link to="/express">
                     <span className="menu_circle"></span>
@@ -285,17 +290,20 @@ const SidebarContent = props => {
                   <ul className="sub-menu">
                     <li>
                       <Link to="/rate/surcharge/fcl">
-                        <span>FCL Surcharge Master</span>
+                        {/* <span>FCL Surcharge Master</span> */}
+                        <span>Inland Surcharges</span>
                       </Link>
                     </li>
                     <li>
                       <Link to="/freight/ocean/lcl">
-                        <span>LCL Surcharge Master</span>
+                        {/* <span>LCL Surcharge Master</span> */}
+                        <span>Ocean Surcharges</span>
                       </Link>
                     </li>
                     <li>
                       <Link to="/freight/ocean/portlocal">
-                        <span>Air Surcharge Master</span>
+                        {/* <span>Air Surcharge Master</span> */}
+                        <span>Air Surcharges</span>
                       </Link>
                     </li>
                   </ul>

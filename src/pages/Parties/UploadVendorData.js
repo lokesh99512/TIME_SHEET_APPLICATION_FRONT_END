@@ -247,7 +247,7 @@ export default function UploadVendorData() {
       const onUploadChange = (file) => {
         console.log(file.name,"file")
         // setSelectedFiles(file);
-        // setFieldValue("image",file.name)
+        companyDetailsFormik.setFieldValue("logo",file)
       };
 
     

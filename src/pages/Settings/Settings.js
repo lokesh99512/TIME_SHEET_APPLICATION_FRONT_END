@@ -168,12 +168,15 @@ const Settings = () => {
   const onUploadChange = (file) => {
     console.log(file.name,"file")
     // setSelectedFiles(file);
-    // setFieldValue("image",file.name)
+    companyDetailsFormik.setFieldValue("image",file)
   };
 
   useEffect(() => {
     dispatch(getCompanyDetailsData());
   }, [dispatch]);
+
+  
+
 
   return (
     <>
@@ -189,7 +192,10 @@ const Settings = () => {
                         <span>
                           <a
                             href="#comapanyDetails"
-                            onClick={() => setActive("comapanyDetails")}
+                            onClick={() => {
+                              setActive("comapanyDetails")
+                              // scrollToSection("comapanyDetails")
+                            }}
                             className={
                               active === "comapanyDetails" ? "active" : ""
                             }
@@ -202,7 +208,10 @@ const Settings = () => {
                         <span>
                           <a
                             href="#taxDetails"
-                            onClick={() => setActive("taxDetails")}
+                            onClick={() => {
+                              setActive("taxDetails")
+                              // scrollToSection("taxDetails")
+                            }}
                             className={active === "taxDetails" ? "active" : ""}
                           >
                             Tax Details
@@ -213,7 +222,10 @@ const Settings = () => {
                         <span>
                           <a
                             href="#bussinessType"
-                            onClick={() => setActive("bussinessType")}
+                            onClick={() => {
+                              setActive("bussinessType")
+                              // scrollToSection("bussinessType")
+                            }}
                             className={
                               active === "bussinessType" ? "active" : ""
                             }
@@ -254,14 +266,14 @@ const Settings = () => {
             {/* ------------------- */}
             <div className="col-12 col-md-10">
               <Card className="">
-                <PerfectScrollbar className="p-4" style={{ height: "900px" }}>
+                <PerfectScrollbar className="p-4" style={{ height: "802px" }}>
                   {/* Comapany details  */}
                   <Card id="comapanyDetails" className="mb-4">
                     <CardBody>
                       <div>
                         <h5>Company Details</h5>
                       </div>
-                              {console.log(companyDetailsFormik.values,"company detail")}
+                              {/* {console.log(companyDetailsFormik.values,"company detail")} */}
                       <div className="row mt-4">
                         <div className="col-12 col-md-4 mb-4">
                           <label className="form-label">Image</label>
@@ -688,6 +700,7 @@ const Settings = () => {
                       </div>
                     </CardBody>
                   </Card>
+                  <div style={{height:"525px"}}></div>
                 </PerfectScrollbar>
               </Card>
             </div>

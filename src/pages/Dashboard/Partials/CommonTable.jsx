@@ -53,9 +53,9 @@ const CommonTable = ({ column, data, type,handleSorting }) => {
                                         if(accessor === 'employee'){
                                             return <td key={accessor}>
                                                     <div className="prof_wrap">
-                                                        <div className="img">
+                                                        {/* <div className="img">
                                                             <img src={profImg} alt="Profile" />
-                                                        </div>
+                                                        </div> */}
                                                         <span>{tData}</span>
                                                     </div>
                                                 </td>
@@ -63,7 +63,12 @@ const CommonTable = ({ column, data, type,handleSorting }) => {
                                             return (
                                                 <td key={accessor}>
                                                     {accessor === 'trend' ? (
-                                                        <span className="green_text">{tData}%</span>
+                                                        // <span className="green_text">{tData}%</span>
+                                                        <div className="text-nowrap">
+                                                        <span className={"badge badge-soft-" + "success" + " text-" + "success"}>
+                                                        {tData}%
+                                                        </span>
+                                                    </div>
                                                     ) : accessor === 'ratio' ? tData + '%' : tData
                                                     }
                                                 </td>

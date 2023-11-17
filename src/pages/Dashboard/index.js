@@ -11,7 +11,7 @@ import {
 
 
 /** import Mini Widget data */
-import { exportSumData, impExColumnData, inquiryColumnData, inquirySumData, quotSumData, salesColumnData, salesEnquiryData, salesPerformData } from "../../common/data/dashboard";
+import { exportSumData, impColumnData, impExColumnData, importSumData, inquiryColumnData, inquirySumData, quotSumData, salesColumnData, salesEnquiryData, salesPerformData } from "../../common/data/dashboard";
 import CommonTable from './Partials/CommonTable';
 import ContainerTrackChart from './Partials/ContainerTrackChart';
 import MainDnd from './Partials/MainDnd';
@@ -21,7 +21,7 @@ import AnimatedCounter from './Partials/AnimatedCounter';
 
 const Dashboard = () => {
     const [tableData, setTableData] = useState(exportSumData);
-    const [tableData2, setTableData2] = useState(exportSumData);
+    const [tableData2, setTableData2] = useState(importSumData);
     const [tableData3, setTableData3] = useState(inquirySumData);
     const [tableData4, setTableData4] = useState(salesPerformData);
 
@@ -71,9 +71,15 @@ const Dashboard = () => {
                                         {(salesEnquiryData || [])?.map(item => (
                                             <div className="sh_box" key={item?.id}>
                                                 <p className="box_title">{item?.title}</p>
-                                                <p className="sh_inquiry_rate">
+                                                <p className="sh_inquiry_rate justify-content-between">
                                                     <AnimatedCounter rate={Number(item?.rate)} />
-                                                    <span className={`${item?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{item?.compare_rate}%</span>
+                                                    {/* <span className={`${item?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{item?.compare_rate}%</span> */}
+                                                    <div className="text-nowrap">
+                                                        <span className={"badge badge-soft-" + `${item?.rate_type === 'down' ? "danger" : "success"}` + " text-" + `${item?.rate_type === 'down' ? "danger" : "success"}`}>
+                                                        {item?.compare_rate}%
+                                                        </span>
+                                                        <span className="ms-1 box_title">Since last month</span>
+                                                    </div>
                                                 </p>
                                             </div>
                                         ))}
@@ -87,9 +93,15 @@ const Dashboard = () => {
                                         {(quotSumData || [])?.map(item => (
                                             <div className="sh_box" key={item?.id}>
                                                 <p className="box_title">{item?.title}</p>
-                                                <p className="sh_inquiry_rate">
+                                                <p className="sh_inquiry_rate justify-content-between">
                                                     <AnimatedCounter rate={Number(item?.rate)} />
-                                                    <span className={`${item?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{item?.compare_rate}%</span>
+                                                    {/* <span className={`${item?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{item?.compare_rate}%</span> */}
+                                                    <div className="text-nowrap">
+                                                        <span className={"badge badge-soft-" + `${item?.rate_type === 'down' ? "danger" : "success"}` + " text-" + `${item?.rate_type === 'down' ? "danger" : "success"}`}>
+                                                        {item?.compare_rate}%
+                                                        </span>
+                                                        <span className="ms-1 box_title">Since last month</span>
+                                                    </div>
                                                 </p>
                                             </div>
                                         ))}
@@ -123,14 +135,14 @@ const Dashboard = () => {
                             <Col lg={6}>
                                 <div className="sh_summary_table_wrap">
                                     <h3 className="sub_title">Import Summary</h3>
-                                    <CommonTable column={impExColumnData} data={tableData2} handleSorting={handleSorting} type={'import_sum'} />
+                                    <CommonTable column={impColumnData} data={tableData2} handleSorting={handleSorting} type={'import_sum'} />
                                 </div>
                             </Col>
 
                             {/* Enquiry Summary table */}
                             <Col lg={6}>
                                 <div className="sh_summary_table_wrap">
-                                    <h3 className="sub_title">Enquiry Summary</h3>
+                                    <h3 className="sub_title">Inquiry Summary</h3>
                                     <CommonTable column={inquiryColumnData} data={tableData3} handleSorting={handleSorting} type={'equiry_sum'} />
                                 </div>
                             </Col>

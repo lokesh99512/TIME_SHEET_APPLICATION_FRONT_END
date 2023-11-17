@@ -13,7 +13,7 @@ const ContainerTrackChart = () => {
     };
     return (
         <>
-            <div className="sh_container_tracking_wrap">
+            <div className="sh_container_tracking_wrap" style={{filter:"blur(3px)"}}>
                 <div className="title_select_wrap">
                     <h3 className="sub_title">Container Tracking</h3>
                     <div className="common_dropdown">

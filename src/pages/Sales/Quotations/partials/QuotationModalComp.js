@@ -12,6 +12,37 @@ import { QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_UPDATE } from '../../
 import ShipmentForm from './ShipmentForm';
 
 
+const companyDetails = {
+    id: 1,
+    customerName: "Apex Export Pvt Ltd",
+    address:"12, Golden plazza",
+    city: "Banglore",
+    state:"Kolkata",
+    country: "India",
+    zipcode:"123456",
+    title:"Mr",
+    contactName: "Ajay",
+    opCode: "+91",
+    phoneNumber: "9800012345",
+    email: "a@gmail.com",
+  }
+
+  const companyDetailsInitialValue = {
+    companyName: "",
+    address: "",
+    city: "",
+    state: "",
+    country: "",
+    zipcode: "",
+
+    title: "",
+    contactName: "",
+    opCode: "",
+    phoneNumber: "",
+    email: "",
+}
+
+
 const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setPreviewModal, viewData }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [dropId, setDropId] = useState(false);
@@ -19,9 +50,17 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
     const [open, setOpen] = useState('');
     const [openInner, setOpenInner] = useState('');
     const quoteData = useSelector((state) => state.sales.quote_selected_data);
+    const shipmentDetails = useSelector((state) => state.sales.createFields);
     const exchangedata = useSelector((state) => state?.quotation?.currency_ExchangeRate);
     const mainChargeObj = useSelector((state) => state?.quotation?.mainChargeObj);
+    const [companyDetailsInitial, setCompanyDetailsInitial] = useState(companyDetails)
     const dispatch = useDispatch();
+
+console.log(shipmentDetails,"<----shipmentDetails");
+
+    useEffect(()=>{
+        setCompanyDetailsInitial(companyDetails)
+    },[])
 
 
     const toggle = (id) => {
@@ -60,20 +99,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
     }
 
     const companyDetailsFormik = useFormik({
-        initialValues: {
-            companyName: "",
-            address: "",
-            city: "",
-            state: "",
-            country: "",
-            zipcode: "",
-
-            title: "",
-            contactName: "",
-            opCode: "",
-            phoneNumber: "",
-            email: "",
-        }
+        initialValues: companyDetailsInitial
     })
 
     // ------------- dynamic field ------------------------
@@ -196,6 +222,8 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
 
         return pickuptaxVal + origintaxVal + oceantaxVal + portDischargetaxVal;
     }
+    
+    // console.log(mainChargeObj,"<--mainChargeObj");
 
     const overAllMarginHandler = (quoteObject, subtotalvalue) => {
         let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.id);
@@ -294,12 +322,13 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                         <form>
                                                             <div className="row">
                                                                 <div className="col-12 col-md-6">
+                                                                    {/* {console.log(companyDetailsFormik?.values,"testing")} */}
                                                                     <div className="mb-3">
                                                                         <label className="form-label">Company name</label>
                                                                         <Input
                                                                             type="text"
                                                                             name="companyName"
-                                                                            value={companyDetailsFormik.values.companyName}
+                                                                            value={companyDetailsFormik?.values?.customerName}
                                                                             onChange={companyDetailsFormik.handleChange}
                                                                             className="form-control"
                                                                             placeholder=""
@@ -462,7 +491,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                             Shipment Details
                                         </AccordionHeader>
                                         <AccordionBody accordionId={`shipmentdetails_${quoteData.id}`}>
-                                            <ShipmentForm />
+                                            <ShipmentForm shipmentDetails={shipmentDetails} />
                                         </AccordionBody>
                                     </AccordionItem>                                
                                 </>
@@ -481,6 +510,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                             </div>
                                         </div>
                                         <div className="right_con d-flex ms-auto">
+                                            {/* {console.log(item,"<--item")} */}
                                             <div className="margin_wrap">Margin Value: <b>{overAllMarginHandler(item, subTotalHandler(item))}%</b></div>
                                             <span className='text-primary'>
                                                 {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '}

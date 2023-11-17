@@ -1,7 +1,7 @@
 const revenuesum = [
-    { id: "first1", content: "First task",title: 'Month Revenue',revenue: '1250000',rate: '11',rate_type:'up', tooltip_content: '' },
-    { id: "sec2", content: "Second task",title: 'Revenue from sales',revenue: '250000',rate: '7',rate_type:'up', tooltip_content: '' },
-    { id: "third3", content: "Third task",title: 'Revenue from commission',revenue: '100000',rate: '6',rate_type:'up', tooltip_content: '' },
+    { id: "first1", content: "First task",title: 'MTD Revenue',revenue: '373638',rate: '11',rate_type:'up', tooltip_content: '' },
+    { id: "sec2", content: "Second task",title: 'Revenue from sales',revenue: '373638',rate: '7',rate_type:'up', tooltip_content: '' },
+    { id: "third3", content: "Third task",title: 'Revenue from commission',revenue: '0',rate: '6',rate_type:'up', tooltip_content: '' },
 ];
 const shipment = [
     { id: "deliver", content: "First task",title: 'Delivered',revenue: '135',rate: '11',rate_type:'up',tooltip_content: '' },
@@ -10,9 +10,9 @@ const shipment = [
 ];
 
 const ratecoverage = [
-    { id: "activePorts", content: "First task",title: 'Active Ports',revenue: '23',rate: '4',rate_type:'up', tooltip_content: '' },
-    { id: "rate", content: "Second task",title: 'Rate Density',revenue: '659',rate: '10',rate_type:'up', tooltip_content: 'Rate Density' },
-    { id: "coverratio", content: "Third task",title: 'Conversion Ratio',revenue: '54',rate: '6',rate_type:'up', tooltip_content: '' },
+    { id: "activePorts", content: "First task",title: 'Active Port Pair',revenue: '72',rate: '4',rate_type:'up', tooltip_content: '' },
+    { id: "rate", content: "Second task",title: 'Carrier per Port Pair',revenue: '3',rate: '10',rate_type:'up', tooltip_content: 'Rate Density' },
+    { id: "coverratio", content: "Third task",title: 'Conversion Ratio',revenue: '60',rate: '6',rate_type:'up', tooltip_content: '' },
 ];
 
 const test = [

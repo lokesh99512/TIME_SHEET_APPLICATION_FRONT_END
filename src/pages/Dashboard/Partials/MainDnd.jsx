@@ -48,8 +48,9 @@ export default function MainDnd() {
                                 ref={provided.innerRef}
                             >
                             {column.map((item, index) => {
+                                // {console.log(item?.id,"}}}")}
                                 return (
-                                    <Draggable key={item.id} draggableId={item.id} index={index} >                                       
+                                    <Draggable key={item.id} draggableId={item.id} index={index}>                                       
                                     
                                         {(provided, snapshot) => {
                                         return (
@@ -57,7 +58,8 @@ export default function MainDnd() {
                                             ref={provided.innerRef}
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}    
-                                            className='sh_revenue_summary_wrap'                                    
+                                            className='sh_revenue_summary_wrap'   
+                                            style={{filter:item?.id == "shipment" && "blur(3px)"}}                             
                                             >
                                                 <h3 className="sub_title" dangerouslySetInnerHTML={{__html:item?.name}} />
                                                 {item?.items.map((data) => (
@@ -72,9 +74,17 @@ export default function MainDnd() {
                                                             </span>
                                                         )} 
                                                         </p>
-                                                        <p className='sh_sum_rate'>
+                                                        <p className='sh_sum_rate justify-content-between'>
+                                                            <span>
                                                             {item.id === 'revenue_sum' && '$'}<AnimatedCounter rate={Number(data?.revenue)} />
-                                                            <span className={`${data?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{data?.rate}%</span>
+                                                            </span>
+                                                            {/* <span className={`${data?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{data?.rate}%</span> */}
+                                                            <div className="text-nowrap">
+                                                                <span className={"badge badge-soft-" + `${data?.rate_type === 'down' ? "danger" : "success"}` + " text-" + `${data?.rate_type === 'down' ? "danger" : "success"}`}>
+                                                                {data?.rate}%
+                                                                </span>
+                                                                <span className="ms-1 box_title">Since last month</span>
+                                                            </div>
                                                         </p>
                                                     </div> 
                                                 ))}
