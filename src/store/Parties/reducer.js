@@ -9,7 +9,6 @@ const INIT_STATE = {
 const parties = (state = INIT_STATE, action) => {
   switch (action.type) {
     case GET_CUSTOMERS_TABLE_DATA_SUCCESS:
-      // console.log(action,"action");
       return {
         ...state,
         parties_customers_data: action.payload,
@@ -30,7 +29,6 @@ const parties = (state = INIT_STATE, action) => {
 
       // ---------------------
       case GET_VENDORS_TABLE_DATA_SUCCESS:
-      // console.log(action,"action");
       return {
         ...state,
         parties_vendors_data: action.payload,

@@ -72,7 +72,7 @@ export default function UploadRateData() {
   };
   const [addDetails, setAddDetails] = useState(inputArr);
 
-  console.log(addDetails, "addDetails");
+  // console.log(addDetails, "addDetails");
 
   const onCloseClick = () => {
     setCategoryModal(false);
@@ -81,7 +81,7 @@ export default function UploadRateData() {
 
   const handleSelectGroup = useCallback(
     (name, opt) => {
-      console.log(opt, "opt");
+      // console.log(opt, "opt");
       if (name === "surchargeCategory" && opt.value === "Add New") {
         setCategoryModal(true);
       } else if (name === "surchargeAliasCode" && opt.value === "Add New") {

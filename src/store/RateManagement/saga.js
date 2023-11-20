@@ -6,7 +6,6 @@ import { getFCLSurcharge } from "../../helpers/fakebackend_helper"
 function* getFclSurchargeData(){
     try {
         const response = yield call(getFCLSurcharge)
-        // console.log(response,"<---surcharge response");
         yield put(getFclSurchargeDataSuccess(response))
     } catch (error) {
         yield put(getFclSurchargeDataFail(error))
@@ -16,7 +15,6 @@ function* getFclSurchargeData(){
 
 
 export function* watchGetRateManagementData(){
-    // console.log("here");
     yield takeLatest(GET_FCL_SURCHARGE_TABLE_DATA, getFclSurchargeData)
 }
 

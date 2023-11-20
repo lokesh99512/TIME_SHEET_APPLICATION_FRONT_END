@@ -15,7 +15,6 @@ const INIT_STATE = {
 const settings = (state = INIT_STATE, action) => {
   switch (action.type) {
     case GET_USERS_TABLE_DATA_SUCCESS:
-      // console.log(action,"action");
       return {
         ...state,
         settings_users_data: action.payload,

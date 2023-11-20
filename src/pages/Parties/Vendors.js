@@ -17,8 +17,6 @@ const partiesVendorsData = useSelector(
   (state) => state.parties.parties_vendors_data
 );
 
-//   console.log(partiesCustomersData,"<---data");
-
 const viewPopupHandler = (data) => {
   setModal(true);
   setViewData(data);
