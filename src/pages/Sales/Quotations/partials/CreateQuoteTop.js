@@ -56,20 +56,70 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
             dispatch({ type: UPDATE_VALUE_BLANK, payload: blank_name })
         }
         dispatch({ type: UPDATE_SEARCH_QUOTATION_DATA, payload: { item, name } });
-        console.log(createFields,"createFields")
+        console.log(createFields, "createFields")
     }
 
     const handleContainerChangeHandler = (item, name) => {
         let newArray = [...containerArray];
-
         if (containerArray.some((obj) => obj?.id === item.id)) {
-            console.log(containerArray, "else containerArray");
+            let index = newArray.findIndex((obj) => obj.id === item.id);
+            newArray[index] = item
         } else {
             newArray.push(item);
-            let updatedArray = [...newArray];
-            setcontainerArray(updatedArray);
-            dispatch({ type: UPDATE_CONTAINER_CHANGE, payload: updatedArray })
         }
+        let updatedArray = [...newArray];
+        setcontainerArray(updatedArray);
+        dispatch({ type: UPDATE_CONTAINER_CHANGE, payload: updatedArray })
+    }
+
+    // --------- increament / decreament
+    const countMinusHandler = (e, id, item, name) => {
+        e.stopPropagation();
+        let count = Number(unitValue[id]);
+        let newObj;
+        let newReduxObj;
+        if (count >= 1) {
+            newObj = {
+                ...unitValue,
+                [id]: count - 1
+            }
+            setUnitValue(newObj);
+            newReduxObj = {
+                ...item,
+                unit: newObj[id]
+            }
+            handleContainerChangeHandler(newReduxObj, name);
+        }
+    }
+    const countPlusHandler = (e, id, item, name) => {
+        e.stopPropagation();
+        let count = Number(unitValue[id]);
+        let newObj;
+        let newReduxObj;
+        if (count >= 0) {
+            newObj = {
+                ...unitValue,
+                [id]: count + 1
+            }
+            setUnitValue(newObj);
+            newReduxObj = {
+                ...item,
+                unit: newObj[id]
+            }
+            handleContainerChangeHandler(newReduxObj, name);
+        }
+    }
+    const handleQuantity = (e, id, item, name) => {        
+        let newObj = {
+            ...unitValue,
+            [id]: Math.abs(e.target.value)
+        }
+        setUnitValue(newObj);
+        let newReduxObj = {
+            ...item,
+            unit: newObj[id]
+        }
+        handleContainerChangeHandler(newReduxObj, name);
     }
 
     const handleDateChnage = (arr, value, target) => {
@@ -140,42 +190,10 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
         dispatch({ type: UPDATE_CONTAINERTYPE_CONFIRM, payload: containerType });
         setIsOpen(false);
     }
-    // --------- increament / decreament
-    const countMinusHandler = (e, id) => {
-        e.stopPropagation();
-        let count = Number(unitValue[id]);
-        let newObj;
-        if (count >= 1) {
-            newObj = {
-                ...unitValue,
-                [id]: count - 1
-            }
-            setUnitValue(newObj);
-        }
-    }
-    const countPlusHandler = (e, id) => {
-        e.stopPropagation();
-        let count = Number(unitValue[id]);
-        let newObj;
-        if (count >= 0) {
-            newObj = {
-                ...unitValue,
-                [id]: count + 1
-            }
-            setUnitValue(newObj);
-        }
-    }
-    const handleQuantity = (e, id) => {
-        let newObj = {
-            ...unitValue,
-            [id]: e.target.value
-        }
-        setUnitValue(newObj);
-    }
 
     const [searchTerm, setSearchTerm] = useState('');
 
-     // ------------ smart filter ------------------------------
+    // ------------ smart filter ------------------------------
     const handleChange = (event) => {
         const newValue = event.target.value;
         setSearchTerm(newValue);
@@ -185,7 +203,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
         option?.name?.toLowerCase().includes(searchTerm.toLowerCase())
     ) : null;
     // ------------ smart filter ------------------------------
-    
+
     // ------------ custom dropdown -------------------
     const toggleDropdown = (id) => {
         setIsOpen(!isOpen);
@@ -210,7 +228,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                     </div>
                                     <div className="con">
                                         <label className="form-label">Select Customer</label>
-                                        <span className={`value ${createFields?.customer_name?.name ? 'value_focus' : ''}`}>{(createFields?.customer_name?.name || 'Select customer')}</span>                                        
+                                        <span className={`value ${createFields?.customer_name?.name ? 'value_focus' : ''}`}>{(createFields?.customer_name?.name || 'Select customer')}</span>
                                     </div>
                                     <i className="mdi mdi-chevron-down" />
                                 </div>
@@ -229,7 +247,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                         </div>
                                         <SimpleBar style={{ maxHeight: "300px" }} ref={ref}>
                                             {(filteredOptions || '').map(({ value, name, img }, index) => (
-                                                <li key={index} onClick={() => { handleChangeHandler({ value, name, img }, 'customer_name');setSearchTerm(''); setIsOpen(false); }} className={createFields?.customer_name?.value === value ? 'active' : ''}>
+                                                <li key={index} onClick={() => { handleChangeHandler({ value, name, img }, 'customer_name'); setSearchTerm(''); setIsOpen(false); }} className={createFields?.customer_name?.value === value ? 'active' : ''}>
                                                     <div className="custom-option">
                                                         <img src={img} alt="Avatar" />
                                                         <p>{name}</p>
@@ -317,7 +335,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                             <div
                                 id='more_menu'
                                 className={`location_wrap d-flex`}
-                                // onClick={() => { toggleDropdown(9) }}
+                            // onClick={() => { toggleDropdown(9) }}
                             >
                                 <div className="icon me-3 d-flex align-items-center justify-content-center">
                                     <img src={location_filled} alt="Location" />
@@ -337,7 +355,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                         name='address'
                                         onChange={(opt) => {
                                             // locationChangeHandler(opt, 'address', 'from')
-                                            handleChangeHandler({ ...createFields?.location_from,address: opt }, 'location_from');
+                                            handleChangeHandler({ ...createFields?.location_from, address: opt }, 'location_from');
                                         }}
                                         options={optionPortList}
                                         isOptionDisabled={(option) => option.value === createFields?.location_to?.address?.value}
@@ -412,7 +430,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                             <div
                                 id='more_menu'
                                 className={`location_wrap d-flex`}
-                                // onClick={() => { toggleDropdown(10) }}
+                            // onClick={() => { toggleDropdown(10) }}
                             >
                                 <div className="icon me-3 d-flex align-items-center justify-content-center">
                                     <img src={location_filled} alt="Location" />
@@ -431,7 +449,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                         value={createFields?.location_to?.address}
                                         name='address'
                                         onChange={(opt) => {
-                                            handleChangeHandler({ ...createFields?.location_from,address: opt }, 'location_to');
+                                            handleChangeHandler({ ...createFields?.location_from, address: opt }, 'location_to');
                                         }}
                                         options={optionPortList}
                                         placeholder='Select Location'
@@ -639,9 +657,11 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                                         <div className="custom-option">
                                                             <p>{name}</p>
                                                             <div className="quantity_wrap">
-                                                                <button className="minus" onClick={(e) => { countMinusHandler(e, id);handleContainerChangeHandler({ id, value, name }, 'container_type'); }}> <i className='fas fa-minus'></i> </button>
-                                                                <input type="number" name={`${id}_unit`} id={`${id}_unit`} value={unitValue[id]} onChange={(e) => { handleQuantity(e, id) }} />
-                                                                <button className="plus" onClick={(e) => { countPlusHandler(e, id);handleContainerChangeHandler({ id, value, name }, 'container_type'); }}> <i className=' fas fa-plus'></i> </button>
+                                                                <button className="minus" onClick={(e) => { countMinusHandler(e, id, { id, value, name }, 'container_type'); }}> <i className='fas fa-minus'></i> </button>
+                                                                {/* <button className="minus" onClick={(e) => { countMinusHandler(e, id);handleContainerChangeHandler({ id, value, name }, 'container_type'); }}> <i className='fas fa-minus'></i> </button> */}
+                                                                <input type="number" name={`${id}_unit`} id={`${id}_unit`} value={unitValue[id]} onChange={(e) => { handleQuantity(e, id, { id, value, name }, 'container_type') }} />
+                                                                <button className="plus" onClick={(e) => { countPlusHandler(e, id, { id, value, name }, 'container_type'); }}> <i className=' fas fa-plus'></i> </button>
+                                                                {/* <button className="plus" onClick={(e) => { countPlusHandler(e, id,{ id, value, name },'container_type');handleContainerChangeHandler({ id, value, name}, 'container_type'); }}> <i className=' fas fa-plus'></i> </button> */}
                                                             </div>
                                                         </div>
                                                     </li>
@@ -737,7 +757,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                                             </AccordionBody>
                                                         </AccordionItem>
                                                     ))}
-                                                    </Accordion>
+                                                </Accordion>
                                             )}
                                             <div className="btn_wrap d-flex justify-content-end">
                                                 <button type="button" className='btn border_btn' onClick={AddLoadHandler}>Add Another Load</button>
@@ -757,7 +777,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                     <div className="con d-flex align-items-center">
                                         <div className="left_field">
                                             <label htmlFor='cargo_value' className="form-label">Cargo Weight</label>
-                                            <input type="number" value={createFields?.cargo_weight?.value || ''} name="cargo_weight" id="cargo_weight" placeholder='Enter amount' onChange={(e) => { handleChangeHandler({ ...createFields?.cargo_weight,value: e.target.value }, 'cargo_weight') }} />
+                                            <input type="number" value={createFields?.cargo_weight?.value || ''} name="cargo_weight" id="cargo_weight" placeholder='Enter amount' onChange={(e) => { handleChangeHandler({ ...createFields?.cargo_weight, value: e.target.value }, 'cargo_weight') }} />
                                         </div>
                                         <div className="common_dropdwon_btn_wrap bottom_drop_field">
                                             <div
@@ -771,7 +791,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                             {isOpen && dropId === 12 ?
                                                 <ul className="common_dropdown_wrap quantity_drop_wrap" ref={dropdownRef}>
                                                     {(cargoWeightUnitOption || '')?.map((item, index) => (
-                                                        <li key={index} className={`${createFields?.cargo_weight?.weight === item?.value ? 'active' : ''}`} onClick={() => { handleChangeHandler({ ...createFields?.cargo_weight,weight: item?.value }, 'cargo_weight'); setIsOpen(false); }}>
+                                                        <li key={index} className={`${createFields?.cargo_weight?.weight === item?.value ? 'active' : ''}`} onClick={() => { handleChangeHandler({ ...createFields?.cargo_weight, weight: item?.value }, 'cargo_weight'); setIsOpen(false); }}>
                                                             {item?.name}
                                                         </li>
                                                     ))}
@@ -844,7 +864,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                 <div className="con d-flex align-items-center">
                                     <div className="left_field">
                                         <label htmlFor='cargo_value' className="form-label">Cargo Value</label>
-                                        <input type="number" value={createFields?.cargo_value?.value || ''} name="cargo_value" id="cargo_value" placeholder='Enter amount' onChange={(e) => { handleChangeHandler({ ...createFields?.cargo_value,value: e.target.value }, 'cargo_value') }} />
+                                        <input type="number" value={createFields?.cargo_value?.value || ''} name="cargo_value" id="cargo_value" placeholder='Enter amount' onChange={(e) => { handleChangeHandler({ ...createFields?.cargo_value, value: e.target.value }, 'cargo_value') }} />
                                     </div>
                                     <div className="common_dropdwon_btn_wrap bottom_drop_field">
                                         <div
@@ -858,7 +878,7 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                                         {isOpen && dropId === 8 ?
                                             <ul className="common_dropdown_wrap quantity_drop_wrap" ref={dropdownRef}>
                                                 {(optionCurrency || '')?.map((item, index) => (
-                                                    <li key={index} className={`${createFields?.cargo_value?.currency?.value === item?.value ? 'active' : ''}`} onClick={() => { handleChangeHandler({ ...createFields?.cargo_value,currency: item }, 'cargo_value'); setIsOpen(false); }}>
+                                                    <li key={index} className={`${createFields?.cargo_value?.currency?.value === item?.value ? 'active' : ''}`} onClick={() => { handleChangeHandler({ ...createFields?.cargo_value, currency: item }, 'cargo_value'); setIsOpen(false); }}>
                                                         <span>{item?.code}</span>{item?.name}
                                                     </li>
                                                 ))}
@@ -869,10 +889,10 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
                             </div>
                         </div>
                         <div className="col-lg-4">
-                            {searchResult ? <button type="button" className='btn btn-primary mt-3' onClick={() => {searchQuoteHandler();}}>Update Search</button> : null}
+                            {searchResult ? <button type="button" className='btn btn-primary mt-3' onClick={() => { searchQuoteHandler(); }}>Update Search</button> : null}
                         </div>
                     </div>
-                )}                
+                )}
 
                 {searchResult ? <button className='btn d-table ms-auto p-0 search_view_btn' onClick={() => { setSearchView(!searchView) }}>{!searchView ? 'Expand' : 'Less'} Search View </button> : null}
             </div>
