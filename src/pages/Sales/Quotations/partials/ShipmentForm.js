@@ -16,7 +16,7 @@ const ShipmentForm = ({shipmentDetails}) => {
             incoterms: "",
 
             container_type: shipmentDetails.container_type[0].name,
-            quantity: "",
+            quantity: shipmentDetails.container_type[0].unit,
             length: "",
             width: "",
             height: "",
