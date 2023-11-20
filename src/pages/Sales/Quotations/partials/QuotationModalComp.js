@@ -135,7 +135,9 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         return array?.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost), charge.currency), 0) + (newArray !== undefined ? newArray?.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost), charge.currency), 0) : 0);
     }
     const subTotalHandler = (quoteObject) => {
+        console.log(quoteObject,"quoteObject");
         let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.id);
+        console.log(mainChargeCurr,"mainChargeCurr");
         let pickupbuyVal = quoteObject?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.pickup_quote_charge !== undefined && mainChargeCurr?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
         let pickupmarginVal = quoteObject?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0) + (mainChargeCurr?.pickup_quote_charge !== undefined && mainChargeCurr?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0));
         // let pickupTotalVal = convertToINR(Number(quoteObject?.truck ? quoteObject?.truck_charge : quoteObject?.rail ? quoteObject?.rail_charge : 0), null)
@@ -147,20 +149,21 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
 
         let oceanbuyVal = quoteObject?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.ocean_quote_charge !== undefined && mainChargeCurr?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
         let oceanmarginVal = quoteObject?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0) + (mainChargeCurr?.ocean_quote_charge !== undefined && mainChargeCurr?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0));
-        let oceanTotalVal = convertToINR(Number(quoteObject?.ocean_freight_charge || 0), quoteObject?.ocean_freight_charge_currency)
-        let oceanSubTotal = oceanbuyVal + oceanmarginVal + oceanTotalVal
+        // let oceanTotalVal = convertToINR(Number(quoteObject?.ocean_freight_charge || 0), quoteObject?.ocean_freight_charge_currency)
+        
+        let oceanSubTotal = oceanbuyVal + oceanmarginVal 
 
         let portdischargebuyVal = quoteObject?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.port_discharge_charges !== undefined && mainChargeCurr?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
         let portdischargemarginVal = quoteObject?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0) + (mainChargeCurr?.port_discharge_charges !== undefined && mainChargeCurr?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0));
+        console.log(portdischargebuyVal,"portdischargebuyVal");
         let portdischargeSubTotal = portdischargebuyVal + portdischargemarginVal
 
         let deliveryVal = quoteObject?.delivery_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.delivery_quote_charge !== undefined && mainChargeCurr?.delivery_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
         let deliverymarginVal = quoteObject?.delivery_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0) + (mainChargeCurr?.delivery_quote_charge !== undefined && mainChargeCurr?.delivery_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0));
         let deliverySubTotal = deliveryVal + deliverymarginVal
-
         // let deliveryVal = convertToINR(Number(quoteObject?.road ? quoteObject?.road_charge : 0), quoteObject?.delivery_currency);
 
-        // console.log(pickupSubTotal, originSubTotal, oceanSubTotal, portdischargeSubTotal, deliverySubTotal, "all charges")
+        console.log(pickupSubTotal, originSubTotal, oceanSubTotal, portdischargeSubTotal, deliverySubTotal, "all charges")
 
         return pickupSubTotal + originSubTotal + oceanSubTotal + portdischargeSubTotal + deliverySubTotal;
     }
