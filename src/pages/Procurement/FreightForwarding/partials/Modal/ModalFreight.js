@@ -204,10 +204,10 @@ const ModalFreight = ({ viewData, modal, onCloseClick, modalType }) => {
                                         </div>
                                         {modalType === 'lcl' ? (
                                             <>
-                                                <div className="details">
+                                                {/* <div className="details">
                                                     <span className="title">Currency</span>
                                                     <span className="data">{viewData?.charge_currency || '-'}</span>
-                                                </div>
+                                                </div> */}
                                                 <div className="details">
                                                     <span className="title">Charge Basis</span>
                                                     <span className="data">{viewData?.charge_basis || '-'}</span>

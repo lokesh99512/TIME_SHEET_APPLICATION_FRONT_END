@@ -146,7 +146,7 @@ export default function FilterSalesComp({ isRight, toggleRightCanvas, filterDeta
                                                 handleSelectGroup('quote_mode', opt);
                                             }}
                                             options={optionModeQuote}
-                                            placeholder={'Select Destination'}
+                                            placeholder={'Select Mode'}
                                             classNamePrefix="select2-selection form-select"
                                         />
                                     </div>
@@ -160,7 +160,7 @@ export default function FilterSalesComp({ isRight, toggleRightCanvas, filterDeta
                                             handleSelectGroup('quote_status', opt);
                                         }}
                                         options={optionStatusQuote}
-                                        placeholder={'Select Destination'}
+                                        placeholder={'Select Status'}
                                         classNamePrefix="select2-selection form-select"
                                     />
                                 </div>
