@@ -10,38 +10,7 @@ import { ADD_QUOTE_MODAL_CHARGES, BLANK_MODAL_CHARGE, REMOVE_QUOTE_MODAL_CHARGES
 import { getCurrencyExchangeRate } from '../../../../store/Sales/actions';
 import { QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_UPDATE } from '../../../../store/Sales/actiontype';
 import ShipmentForm from './ShipmentForm';
-
-
-const companyDetails = {
-    id: 1,
-    customerName: "Apex Export Pvt Ltd",
-    address:"12, Golden plazza",
-    city: "Banglore",
-    state:"Kolkata",
-    country: "India",
-    zipcode:"123456",
-    title:"Mr",
-    contactName: "Ajay",
-    opCode: "+91",
-    phoneNumber: "9800012345",
-    email: "a@gmail.com",
-  }
-
-  const companyDetailsInitialValue = {
-    companyName: "",
-    address: "",
-    city: "",
-    state: "",
-    country: "",
-    zipcode: "",
-
-    title: "",
-    contactName: "",
-    opCode: "",
-    phoneNumber: "",
-    email: "",
-}
-
+import CompanyForm from './CompanyForm';
 
 const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setPreviewModal, viewData }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -53,15 +22,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
     const shipmentDetails = useSelector((state) => state.sales.createFields);
     const exchangedata = useSelector((state) => state?.quotation?.currency_ExchangeRate);
     const mainChargeObj = useSelector((state) => state?.quotation?.mainChargeObj);
-    const [companyDetailsInitial, setCompanyDetailsInitial] = useState(companyDetails)
     const dispatch = useDispatch();
-
-console.log(shipmentDetails,"<----shipmentDetails");
-
-    useEffect(()=>{
-        setCompanyDetailsInitial(companyDetails)
-    },[])
-
 
     const toggle = (id) => {
         if (open === id) {
@@ -97,10 +58,6 @@ console.log(shipmentDetails,"<----shipmentDetails");
         dispatch({ type: BLANK_MODAL_CHARGE, payload: {} });
         dispatch({ type: QUOTATION_RESULT_SELECTED_BLANK, payload: {} });
     }
-
-    const companyDetailsFormik = useFormik({
-        initialValues: companyDetailsInitial
-    })
 
     // ------------- dynamic field ------------------------
     let inputObj = {
@@ -178,7 +135,9 @@ console.log(shipmentDetails,"<----shipmentDetails");
         return array?.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost), charge.currency), 0) + (newArray !== undefined ? newArray?.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost), charge.currency), 0) : 0);
     }
     const subTotalHandler = (quoteObject) => {
+        console.log(quoteObject,"quoteObject");
         let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.id);
+        console.log(mainChargeCurr,"mainChargeCurr");
         let pickupbuyVal = quoteObject?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.pickup_quote_charge !== undefined && mainChargeCurr?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
         let pickupmarginVal = quoteObject?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0) + (mainChargeCurr?.pickup_quote_charge !== undefined && mainChargeCurr?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0));
         // let pickupTotalVal = convertToINR(Number(quoteObject?.truck ? quoteObject?.truck_charge : quoteObject?.rail ? quoteObject?.rail_charge : 0), null)
@@ -190,17 +149,18 @@ console.log(shipmentDetails,"<----shipmentDetails");
 
         let oceanbuyVal = quoteObject?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.ocean_quote_charge !== undefined && mainChargeCurr?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
         let oceanmarginVal = quoteObject?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0) + (mainChargeCurr?.ocean_quote_charge !== undefined && mainChargeCurr?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0));
-        let oceanTotalVal = convertToINR(Number(quoteObject?.ocean_freight_charge || 0), quoteObject?.ocean_freight_charge_currency)
-        let oceanSubTotal = oceanbuyVal + oceanmarginVal + oceanTotalVal
+        // let oceanTotalVal = convertToINR(Number(quoteObject?.ocean_freight_charge || 0), quoteObject?.ocean_freight_charge_currency)
+        
+        let oceanSubTotal = oceanbuyVal + oceanmarginVal 
 
         let portdischargebuyVal = quoteObject?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.port_discharge_charges !== undefined && mainChargeCurr?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
         let portdischargemarginVal = quoteObject?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0) + (mainChargeCurr?.port_discharge_charges !== undefined && mainChargeCurr?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0));
+        console.log(portdischargebuyVal,"portdischargebuyVal");
         let portdischargeSubTotal = portdischargebuyVal + portdischargemarginVal
 
         let deliveryVal = quoteObject?.delivery_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.delivery_quote_charge !== undefined && mainChargeCurr?.delivery_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
         let deliverymarginVal = quoteObject?.delivery_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0) + (mainChargeCurr?.delivery_quote_charge !== undefined && mainChargeCurr?.delivery_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0));
         let deliverySubTotal = deliveryVal + deliverymarginVal
-
         // let deliveryVal = convertToINR(Number(quoteObject?.road ? quoteObject?.road_charge : 0), quoteObject?.delivery_currency);
 
         console.log(pickupSubTotal, originSubTotal, oceanSubTotal, portdischargeSubTotal, deliverySubTotal, "all charges")
@@ -218,24 +178,23 @@ console.log(shipmentDetails,"<----shipmentDetails");
 
         let portDischargetaxVal = quoteObject?.port_discharge_charges?.reduce((total, charge) => total + (convertToINR(Number(charge?.buy_cost || 0), charge.currency) * Number(charge?.tax || 0) / 100), 0) + (mainChargeCurr?.port_discharge_charges !== undefined && mainChargeCurr?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.tax_amount || 0), charge.currency), 0));
 
-        console.log(pickuptaxVal, origintaxVal, oceantaxVal, portDischargetaxVal)
+        // console.log(pickuptaxVal, origintaxVal, oceantaxVal, portDischargetaxVal)
 
         return pickuptaxVal + origintaxVal + oceantaxVal + portDischargetaxVal;
-    }
-    
-    // console.log(mainChargeObj,"<--mainChargeObj");
+    }    
 
-    const overAllMarginHandler = (quoteObject, subtotalvalue) => {
+    const overAllMarginHandler = (quoteObject, subtotalvalue) => {        
         let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.id);
-        let pickupmarginVal = quoteObject?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.tax_amount || 0), charge.currency), 0) + (mainChargeCurr?.pickup_quote_charge !== undefined && mainChargeCurr?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.tax_amount || 0), charge.currency), 0));
+        let pickupmarginVal = quoteObject?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0) + (mainChargeCurr?.pickup_quote_charge !== undefined && mainChargeCurr?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0));
 
-        let originmarginVal = quoteObject?.originport_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.tax_amount || 0), charge.currency), 0) + (mainChargeCurr?.originport_quote_charge !== undefined && mainChargeCurr?.originport_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.tax_amount || 0), charge.currency), 0));
+        let originmarginVal = quoteObject?.originport_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0) + (mainChargeCurr?.originport_quote_charge !== undefined && mainChargeCurr?.originport_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0));
 
-        let oceanmarginVal = quoteObject?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.tax_amount || 0), charge.currency), 0) + (mainChargeCurr?.ocean_quote_charge !== undefined && mainChargeCurr?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.tax_amount || 0), charge.currency), 0));
-        let portDischargemarginVal = quoteObject?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.tax_amount || 0), charge.currency), 0) + (mainChargeCurr?.port_discharge_charges !== undefined && mainChargeCurr?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.tax_amount || 0), charge.currency), 0));
+        let oceanmarginVal = quoteObject?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0) + (mainChargeCurr?.ocean_quote_charge !== undefined && mainChargeCurr?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0));
+        let portDischargemarginVal = quoteObject?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0) + (mainChargeCurr?.port_discharge_charges !== undefined && mainChargeCurr?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0));
 
         let totalMargin = pickupmarginVal + originmarginVal + oceanmarginVal + portDischargemarginVal;
         let buyvalue = subtotalvalue - totalMargin
+
         return (totalMargin * 100 / buyvalue).toFixed(2)
     }
 
@@ -316,174 +275,7 @@ console.log(shipmentDetails,"<----shipmentDetails");
                                             Company Details
                                         </AccordionHeader>
                                         <AccordionBody accordionId={`customerdetails_${quoteData.id}`}>
-                                            <div className="customer_form_details">
-                                                <Card>
-                                                    <CardBody>
-                                                        <form>
-                                                            <div className="row">
-                                                                <div className="col-12 col-md-6">
-                                                                    {/* {console.log(companyDetailsFormik?.values,"testing")} */}
-                                                                    <div className="mb-3">
-                                                                        <label className="form-label">Company name</label>
-                                                                        <Input
-                                                                            type="text"
-                                                                            name="companyName"
-                                                                            value={companyDetailsFormik?.values?.customerName}
-                                                                            onChange={companyDetailsFormik.handleChange}
-                                                                            className="form-control"
-                                                                            placeholder=""
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                                <div className="col-12 col-md-6">
-                                                                    <div className="mb-3">
-                                                                        <label className="form-label">Address</label>
-                                                                        <Input
-                                                                            type="text"
-                                                                            name="address"
-                                                                            value={companyDetailsFormik.values.address}
-                                                                            onChange={companyDetailsFormik.handleChange}
-                                                                            className="form-control"
-                                                                            placeholder=""
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                                <div className="col-12 col-md-6">
-                                                                    <div className="mb-3">
-                                                                        <label className="form-label">City</label>
-                                                                        <Input
-                                                                            type="text"
-                                                                            name="city"
-                                                                            value={companyDetailsFormik.values.city}
-                                                                            onChange={companyDetailsFormik.handleChange}
-                                                                            className="form-control"
-                                                                            placeholder=""
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                                <div className="col-12 col-md-6">
-                                                                    <div className="mb-3">
-                                                                        <label className="form-label">State</label>
-                                                                        <Input
-                                                                            type="text"
-                                                                            name="state"
-                                                                            value={companyDetailsFormik.values.state}
-                                                                            onChange={companyDetailsFormik.handleChange}
-                                                                            className="form-control"
-                                                                            placeholder=""
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                                <div className="col-12 col-md-6">
-                                                                    <div className="mb-3">
-                                                                        <label className="form-label">Country</label>
-                                                                        <Input
-                                                                            type="text"
-                                                                            name="country"
-                                                                            value={companyDetailsFormik.values.country}
-                                                                            onChange={companyDetailsFormik.handleChange}
-                                                                            className="form-control"
-                                                                            placeholder=""
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                                <div className="col-12 col-md-6">
-                                                                    <div className="mb-3">
-                                                                        <label className="form-label">Zipcode</label>
-                                                                        <Input
-                                                                            type="text"
-                                                                            name="zipcode"
-                                                                            value={companyDetailsFormik.values.zipcode}
-                                                                            onChange={companyDetailsFormik.handleChange}
-                                                                            className="form-control"
-                                                                            placeholder=""
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className='row'>
-                                                                <div className="col">
-                                                                    <div className="mb-3">
-                                                                        <label className="form-label">Contact Name</label>
-                                                                        <div className='row'>
-                                                                            <div className='col-4 col-md-2'>
-                                                                                <Select
-                                                                                    name='title'
-                                                                                    value={
-                                                                                        optionQuoteContacttitle ? optionQuoteContacttitle.find((option) => option.value === companyDetailsFormik?.values?.title) : ""
-                                                                                    }
-                                                                                    onChange={(e) => {
-                                                                                        companyDetailsFormik.setFieldValue(`title`, e.value);
-                                                                                    }}
-                                                                                    placeholder="Mr"
-                                                                                    options={optionQuoteContacttitle}
-                                                                                    classNamePrefix="select2-selection form-select"
-                                                                                />
-                                                                            </div>
-                                                                            <div className='col-6'>
-                                                                                <Input
-                                                                                    type="text"
-                                                                                    name="contactName"
-                                                                                    value={companyDetailsFormik.values.contactName}
-                                                                                    onChange={companyDetailsFormik.handleChange}
-                                                                                    className="form-control"
-                                                                                    placeholder=""
-                                                                                />
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div className='row'>
-                                                                <div className="col-12 col-md-6">
-                                                                    <div className="mb-3">
-                                                                        <label className="form-label">Phone Number</label>
-                                                                        <div className='row'>
-                                                                            <div className='col-4 col-md-3'>
-                                                                                <Select
-                                                                                    name='opCode'
-                                                                                    value={optionQuoteContactCode ? optionQuoteContactCode.find((option) => option.value === companyDetailsFormik?.values?.opCode) : ""}
-                                                                                    onChange={(e) => {
-                                                                                        companyDetailsFormik.setFieldValue(`opCode`, e.value);
-                                                                                    }}
-                                                                                    placeholder="+91"
-                                                                                    options={optionQuoteContactCode}
-                                                                                    classNamePrefix="select2-selection form-select"
-                                                                                />
-                                                                            </div>
-                                                                            <div className='col-8 col-md-9'>
-                                                                                <Input
-                                                                                    type="text"
-                                                                                    name="phoneNumber"
-                                                                                    value={companyDetailsFormik.values.phoneNumber}
-                                                                                    onChange={companyDetailsFormik.handleChange}
-                                                                                    className="form-control"
-                                                                                    placeholder=""
-                                                                                />
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="col-12 col-md-6">
-                                                                    <div className="mb-3">
-                                                                        <label className="form-label">Email Id</label>
-                                                                        <Input
-                                                                            type="text"
-                                                                            name="email"
-                                                                            value={companyDetailsFormik.values.email}
-                                                                            onChange={companyDetailsFormik.handleChange}
-                                                                            className="form-control"
-                                                                            placeholder=""
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </CardBody>
-                                                </Card>
-                                            </div>
+                                            <CompanyForm />
                                         </AccordionBody>
                                     </AccordionItem>
                                     <AccordionItem>
@@ -1053,11 +845,11 @@ console.log(shipmentDetails,"<----shipmentDetails");
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    {/* <div className="col-1">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            <input type="text" name="uom" id="uom" value={data?.uom || ''} onChange={(e) => handleChange(e.target.value, 'uom', i, 'ocean_quote_charge', item.id)} placeholder='Enter uom' />
+                                                                            <input type="text" name="uom" id="uom" value={data?.uom || ''} onChange={(e) => handleChange(e.target.value, 'uom', i, 'ocean_quote_charge', item.id)} />
                                                                         </div>
-                                                                    </div> */}
+                                                                    </div>
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="quantity" id="quantity" value={data?.quantity || ''} onChange={(e) => handleChange(e.target.value, 'quantity', i, 'ocean_quote_charge', item.id)} placeholder='Enter quantity' />
@@ -1077,7 +869,7 @@ console.log(shipmentDetails,"<----shipmentDetails");
                                                                             />
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-2">
+                                                                    <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name="buy_cost" id="buy_cost" value={data?.buy_cost || ''} onChange={(e) => handleChange(e.target.value, 'buy_cost', i, 'ocean_quote_charge', item.id)} placeholder='Enter cost' />
                                                                         </div>

@@ -982,6 +982,8 @@ input[type="number"]{
         }
         .search_view_btn{
             @include font(500,14px,normal,$primary_7);
+            box-shadow: none !important;
+            border: 0 !important;
         }
     }
     @media only screen and (max-width: 767px) {
