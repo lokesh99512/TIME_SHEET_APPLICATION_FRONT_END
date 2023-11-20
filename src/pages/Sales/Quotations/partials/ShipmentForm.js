@@ -6,21 +6,21 @@ import Select from "react-select";
 const ShipmentForm = ({shipmentDetails}) => {
     const shipmentDetailsFormik = useFormik({
         initialValues: {
-            origin_city: shipmentDetails.location_from.address.label,
-            destination_city: shipmentDetails.location_to.address.label,
-            origin_port: shipmentDetails.location_from.address.value,
-            destination_port: shipmentDetails.location_to.address.value,
-            cargo_type: shipmentDetails.cargo_type.name,
+            origin_city: shipmentDetails?.location_from?.address?.label || '',
+            destination_city: shipmentDetails?.location_to?.address?.label || '',
+            origin_port: shipmentDetails?.location_from?.address?.value || '',
+            destination_port: shipmentDetails?.location_to?.address?.value || '',
+            cargo_type: shipmentDetails?.cargo_type?.name || '',
             commodity: "",
-            cargo_value: shipmentDetails.cargo_value.value,
+            cargo_value: shipmentDetails?.cargo_value?.value || '',
             incoterms: "",
 
-            container_type: shipmentDetails.container_type[0].name,
-            quantity: shipmentDetails.container_type[0].unit,
+            container_type: shipmentDetails?.container_type[0]?.name || '',
+            quantity: shipmentDetails?.container_type[0]?.unit || '',
             length: "",
             width: "",
             height: "",
-            gross_weight: shipmentDetails.cargo_weight.value +" "+ shipmentDetails.cargo_weight.weight,
+            gross_weight: (shipmentDetails?.cargo_weight?.value || '') +" "+ (shipmentDetails?.cargo_weight?.weight || ''),
             volumentric_wt: "",
         },
         onSubmit: (values) => {
