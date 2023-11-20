@@ -1,7 +1,6 @@
 import {GET_FCL_SURCHARGE_TABLE_DATA, GET_FCL_SURCHARGE_TABLE_DATA_FAIL, GET_FCL_SURCHARGE_TABLE_DATA_SUCCESS} from "./actiontype"
 
 export const getFclSurchargeData = (data) => {
-    // console.log("SDss");
     return {
     type: GET_FCL_SURCHARGE_TABLE_DATA,
     payload: data,

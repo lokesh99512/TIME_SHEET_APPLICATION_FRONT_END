@@ -45,8 +45,6 @@ const Customers = () => {
     (state) => state.parties.parties_customers_data
   );
 
-  console.log(partiesCustomersData,"<---datas");
-
   const viewPopupHandler = (data) => {
     setModal(true);
     setViewData(data);

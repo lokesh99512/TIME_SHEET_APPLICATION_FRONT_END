@@ -150,26 +150,9 @@ export default function UploadCustomerData() {
             }
         }
         if (tab === 8) {
-            // console.log(carrierData, "carrierData step1");
-            // console.log(selectedFiles, "selectedFiles step2");
-            // console.log(surcharges, "surcharges step3");
             openSaveConfirmModal();
         }
     }
-
-
-    // const handleSelectGroup = useCallback(
-    //     (name, opt) => {
-    //       console.log(opt, "opt");
-    //       if (name === "department" && opt.value === "Add New") {
-    //         setCategoryModal(true);
-    //       } else if (name === "designation" && opt.value === "Add New") {
-    //         setAliasModal(true);
-    //       }
-    //       setAddDetails((prev) => ({ ...prev, [name]: opt }));
-    //     },
-    //     [addDetails]
-    //   );
 
     function handleAcceptedFiles(files) {
         if (files && files.length) {
@@ -418,13 +401,11 @@ export default function UploadCustomerData() {
                                             <div id="bar" className="mt-4">
                                                 <Progress color="primary" striped animated value={progressValue} />
                                             </div>
-                                            {/* {console.log(contactsFormik?.values?.contacts,"<<<<<<<<")} */}
                                             <TabContent activeTab={activeTabProgress} className="twitter-bs-wizard-tab-content">
                                                 <TabPane tabId={1}>
                                                     <div className="text-center mb-4">
                                                         <h5>Company Details</h5>
                                                     </div>
-                                                    {console.log(companyDetailsFormik.values,"<----tab-1")}
                                                     <Card>
                                                         <CardBody>
                                                         <form>
@@ -943,7 +924,6 @@ export default function UploadCustomerData() {
                                                         <h5>Contacts</h5>
                                                     </div>
                                                     <div>
-                                                    {/* {console.log(contactsFormik.values,"<----tab-2")} */}
                                                     <FormikProvider value={contactsFormik}>
                                                     <FieldArray name="contacts" validateOnChange={false}>
                                                         {(arrayHelpers)=>(
@@ -1137,7 +1117,6 @@ export default function UploadCustomerData() {
                                                                         })}>
                                                                     Add
                                                                 </button>
-                                                                {/* {console.log(contactsFormik.values.contacts,"contacts")} */}
                                                             </>
                                                         )}
                                                     
@@ -1186,13 +1165,10 @@ export default function UploadCustomerData() {
                                                     </form>
                                                     </CardBody>
                                                     </Card> */}
-                                                            {/* {console.log(documentsFormik.values,"<----tab-3")} */}
                                                     <FormikProvider value={documentsFormik}>
                                                     <FieldArray name="document" validateOnChange={false}>
                                                         {(arrayHelpers)=>(
                                                             <>
-                                                            {/* {console.log(push,"push method")} */}
-                                                            
                                                             {documentsFormik?.values?.document?.map((document, index) =>(
                                                                 <>
                                                                 <Card key={index}>
@@ -1251,7 +1227,6 @@ export default function UploadCustomerData() {
                                                                         })}>
                                                                     Add
                                                                 </button>
-                                                                {/* {console.log(contactsFormik.values.contacts,"contacts")} */}
                                                             </>
                                                         )}
                                                     

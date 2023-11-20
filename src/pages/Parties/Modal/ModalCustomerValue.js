@@ -31,8 +31,6 @@ const ModalCustomerValue = ({ viewData, modal, onCloseClick, modalType }) => {
 //   const [open, setOpen] = useState("");
   const [activeTab, toggleTab] = useState("1");
 
-//   console.log(viewData, "<---viewData");
-
   // const toggle = (id) => {
   //   if (open === id) {
   //     setOpen("");

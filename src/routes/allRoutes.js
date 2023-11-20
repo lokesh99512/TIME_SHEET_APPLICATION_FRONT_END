@@ -144,6 +144,7 @@ import Customers from "../pages/Parties/Customers";
 import Vendors from "../pages/Parties/Vendors";
 import UploadCustomerData from "../pages/Parties/UploadCustomerData";
 import UploadVendorData from "../pages/Parties/UploadVendorData";
+import InstantRate from "../pages/InstantRate/InstantRate";
 
 const userRoutes = [
   //dashboard
@@ -156,6 +157,9 @@ const userRoutes = [
   // Quotations
   { path: "/sales/quotation", component: <QuotationComp /> },
   { path: "/sales/create", component: <CreateQuotation /> },
+  
+  // Instant Rate
+  { path: "/instant-rate/search-rate", component: <InstantRate /> },
 
   // Procurement
   // Freight Forwarding
@@ -166,8 +170,10 @@ const userRoutes = [
   { path: "/freight/air/masterbill", component: <AirMasterBill /> },
   { path: "/freight/air/console", component: <AirConsoleComp /> },
   { path: "/freight/air/local", component: <AirLocalFreight /> },
-  { path: "/freight/upload/:tabName", component: <UploadFreightData /> },
+  { path: "/freight/upload/inland", component: <UploadFreightData /> },
   { path: "/freight/ocean/upload/:tabName", component: <UploadPortLocalChargesData /> },
+
+
 
   // Rate Management
   { path: "/rate/surcharge/fcl", component: <FclSurcharge/> },

@@ -7,7 +7,6 @@ import { getCompanyDetails, getSettingsUsers } from "../../helpers/fakebackend_h
 function* getUsersData(){
     try {
         const response = yield call(getSettingsUsers)
-        // console.log(response,"<---surcharge response");
         yield put(getUsersDataSuccess(response))
     } catch (error) {
         yield put(getUsersDataFail(error))
@@ -17,7 +16,6 @@ function* getUsersData(){
 function* getCompanyDetailsData(){
     try {
         const response = yield call(getCompanyDetails)
-        // console.log(response,"<---surcharge response");
         yield put(getCompanyDetailsDataSuccess(response))
     } catch (error) {
         yield put(getCompanyDetailsDataFail(error))
@@ -27,7 +25,6 @@ function* getCompanyDetailsData(){
 
 
 export function* watchGetSettingsUsersData(){
-    // console.log("here");
     yield takeLatest(GET_USERS_TABLE_DATA, getUsersData)
     yield takeLatest(GET_COMPANYDETAILS_DATA, getCompanyDetailsData)
 }

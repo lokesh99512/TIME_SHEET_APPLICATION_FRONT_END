@@ -80,7 +80,8 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanva
                         </button>
                     </div>
                     <div className="add_btn">
-                        <button className='border-0' onClick={() => {navidate(`/freight/upload/${component}`);}}>
+                        {/* <button className='border-0' onClick={() => {navidate(`/freight/upload/${component}`);}}> */}
+                        <button className='border-0' onClick={() => {navidate(`/freight/upload/inland`)}}>
                             <i className='bx bx-plus align-middle'></i> Add
                         </button>
                     </div>

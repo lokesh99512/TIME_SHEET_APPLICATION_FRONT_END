@@ -38,7 +38,7 @@ export default function Quotations() {
 
     const viewPopupHandler = (data,type) => {
         setModal(true);
-        console.log(type,"type");
+        // console.log(type,"type");
         setModalType(type);
         dispatch({type: QUOTATION_RESULT_SELECTED, payload: [data]})
     }

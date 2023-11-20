@@ -141,9 +141,6 @@ export default function UploadVendorData() {
             }
         }
         if (tab === 5) {
-            // console.log(carrierData, "carrierData step1");
-            // console.log(selectedFiles, "selectedFiles step2");
-            // console.log(surcharges, "surcharges step3");
             openSaveConfirmModal();
         }
     }
@@ -300,7 +297,7 @@ export default function UploadVendorData() {
       };
 
       const onUploadChange = (file) => {
-        console.log(file.name,"file")
+        // console.log(file.name,"file")
         // setSelectedFiles(file);
         companyDetailsFormik.setFieldValue("logo",file)
       };
@@ -394,8 +391,6 @@ export default function UploadVendorData() {
                                             <div id="bar" className="mt-4">
                                                 <Progress color="primary" striped animated value={progressValue} />
                                             </div>
-                                            {/* {console.log(contactsFormik?.values?.contacts,"<<<<<<<<")} */}
-                                            {console.log(companyDetailsFormik.values,"<----tab-1")}
                                             <TabContent activeTab={activeTabProgress} className="twitter-bs-wizard-tab-content">
                                                 <TabPane tabId={1}>
                                                     <div className="text-center mb-4">
@@ -923,7 +918,6 @@ export default function UploadVendorData() {
                                                     <ModalAddNewServiceType modal={serviceTypeModal} onCloseClick={onCloseClick}/>
 
                                                 </TabPane>
-                                                {/* {console.log(contactsFormik.values,"<----tab-2")} */}
                                                 <TabPane tabId={2}>
                                                     <div>
                                                     
@@ -931,8 +925,6 @@ export default function UploadVendorData() {
                                                     <FieldArray name="contacts" validateOnChange={false}>
                                                         {(arrayHelpers)=>(
                                                             <>
-                                                            {/* {console.log(push,"push method")} */}
-                                                            
                                                             {contactsFormik?.values?.contacts?.map((contact, index) =>(
                                                                 <>
                                                                 <Card key={index}>
@@ -1120,7 +1112,6 @@ export default function UploadVendorData() {
                                                                         })}>
                                                                     Add
                                                                 </button>
-                                                                {/* {console.log(contactsFormik.values.contacts,"contacts")} */}
                                                             </>
                                                         )}
                                                     
@@ -1129,7 +1120,6 @@ export default function UploadVendorData() {
                                                     
                                                     </div>
                                                 </TabPane>
-                                                {/* {console.log(documentsFormik.values,"<----tab-3")} */}
                                                 <TabPane tabId={3}>
                                                     <div>
 
@@ -1137,8 +1127,6 @@ export default function UploadVendorData() {
                                                     <FieldArray name="document" validateOnChange={false}>
                                                         {(arrayHelpers)=>(
                                                             <>
-                                                            {/* {console.log(push,"push method")} */}
-                                                            
                                                             {documentsFormik?.values?.document?.map((_, index) =>(
                                                                 <>
                                                                 <Card key={index}>
@@ -1200,7 +1188,6 @@ export default function UploadVendorData() {
                                                                         })}>
                                                                     Add
                                                                 </button>
-                                                                {/* {console.log(documentsFormik.values.document,"Document")} */}
                                                             </>
                                                         )}
                                                     

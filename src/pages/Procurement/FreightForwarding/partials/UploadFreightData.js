@@ -267,7 +267,7 @@ export default function UploadFreightData() {
                                                                     />
                                                                 </div>
                                                             </div>
-                                                            <div className="col-lg-4">
+                                                            {/* <div className="col-lg-4">
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Validity Application</label>
                                                                     <Select
@@ -280,7 +280,7 @@ export default function UploadFreightData() {
                                                                         classNamePrefix="select2-selection form-select"
                                                                     />
                                                                 </div>
-                                                            </div>
+                                                            </div> */}
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
                                                                     <label htmlFor='validity_from' className="form-label">Validity From</label>

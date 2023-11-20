@@ -13,7 +13,6 @@ function GlobalFilter({
     setGlobalFilter,
   }) {
     const count = preGlobalFilteredRows.length;
-    // console.log(count,"count");
     const [value, setValue] = React.useState(globalFilter);
     const onChange = useAsyncDebounce(value => {
       setGlobalFilter(value || undefined);

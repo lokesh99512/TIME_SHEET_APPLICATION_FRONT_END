@@ -7,27 +7,8 @@ import {
 } from "reactstrap";
 
 const TabTwoContacts = ({viewData2}) => {
-  console.log(viewData2,"viewData2");
-  const viewData = [
-    {
-      title:"Mr",
-      name: 'Thor',
-      opCode:"+91",
-      phoneNumber: '5678904321',
-      emailId: 'thor@gmail.com',
-      department: 'test',
-      designation: 'test',
-    },
-    {
-        title:"Mr",
-        name: 'Peter',
-        opCode:"+91",
-        phoneNumber: '1231231234',
-        emailId: 'peter@gmail.com',
-        department: 'test2',
-        designation: 'test2',
-      },
-  ]
+  // console.log(viewData2,"viewData2");
+ 
   const [open, setOpen] = useState("");
   const toggle = (id) => {
     if (open === id) {
