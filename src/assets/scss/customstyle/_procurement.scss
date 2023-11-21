@@ -1133,7 +1133,7 @@ input[type="number"]{
     }
     &.incoterm_field_wrap{
         .prof_wrap .con{
-            pointer-events: all;
+            pointer-events: all !important;
         }
         .form-select__control{
             padding: 0 !important;

@@ -186,9 +186,41 @@ const ModalFreight = ({ viewData, modal, onCloseClick, modalType }) => {
                             </AccordionItem>
                             <AccordionItem className='charge_details'>
                                 <AccordionHeader targetId={`charge_detail_${viewData?.charge_id}`}>
-                                    <h3 className="sub_modal_title">Charge Details</h3>
+                                    <h3 className="sub_modal_title">{modalType === 'inland' ? 'SurCharge' : 'Charge'} Details</h3>
                                 </AccordionHeader>
                                 <AccordionBody accordionId={`charge_detail_${viewData?.charge_id}`}>
+                                    {modalType === 'inland' ? (
+                                        <>
+                                            {viewData?.surcharges !== undefined && viewData?.surcharges?.map((item) => (
+                                            <div className="view_data_wrap" key={item?.id}>
+                                                <div className="details">
+                                                    <span className="title">Surcharge Name:</span>
+                                                    <span className="data">{item?.name || '-'}</span>
+                                                </div>
+                                                <div className="details">
+                                                    <span className="title">Charge Basis:</span>
+                                                    <span className="data">{item?.charge_basis || '-'}</span>
+                                                </div>
+                                                <div className="details">
+                                                    <span className="title">Calculation Type:</span>
+                                                    <span className="data">{item?.calculation_type || '-'}</span>
+                                                </div>
+                                                <div className="details">
+                                                    <span className="title">Rate:</span>
+                                                    <span className="data">{item?.rate || '-'}</span>
+                                                </div>
+                                                <div className="details">
+                                                    <span className="title">Tax:</span>
+                                                    <span className="data">{item?.tax || '-'}</span>
+                                                </div>
+                                                <div className="details">
+                                                    <span className="title">Currency:</span>
+                                                    <span className="data">{item?.currency || '-'}</span>
+                                                </div>
+                                            </div>
+                                            ))}
+                                        </>
+                                    ) : (
                                     <div className="view_data_wrap">
                                         <div className="details">
                                             <span className="title">Charge Name:</span>
@@ -242,6 +274,7 @@ const ModalFreight = ({ viewData, modal, onCloseClick, modalType }) => {
                                             </>
                                         )}
                                     </div>
+                                    )} 
                                 </AccordionBody>
                             </AccordionItem>
                         </Accordion>

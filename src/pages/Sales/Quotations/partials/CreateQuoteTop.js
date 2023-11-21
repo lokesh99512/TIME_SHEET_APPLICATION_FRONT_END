@@ -128,7 +128,6 @@ export default function CreateQuoteTop({ searchView, setSearchView, searchResult
     }
 
     // ------------- swap
-
     const swapHandler = () => {
         dispatch({ type: UPDATE_SEARCH_QUOTATION_SWAP })
     }

@@ -145,6 +145,7 @@ import Vendors from "../pages/Parties/Vendors";
 import UploadCustomerData from "../pages/Parties/UploadCustomerData";
 import UploadVendorData from "../pages/Parties/UploadVendorData";
 import InstantRate from "../pages/InstantRate/InstantRate";
+import FclInlandCharge from "../pages/Procurement/FreightForwarding/partials/FCL/FclInlandCharge";
 
 const userRoutes = [
   //dashboard
@@ -163,14 +164,14 @@ const userRoutes = [
 
   // Procurement
   // Freight Forwarding
-  { path: "/freight/inland", component: <FreightForward /> },
+  { path: "/freight/inland", component: <FclInlandCharge /> },
   { path: "/freight/ocean/fcl", component: <FclOceanFreight /> },
   { path: "/freight/ocean/lcl", component: <LclOceanFreight /> },
   { path: "/freight/ocean/portlocal", component: <PortLocalFreight /> },
   { path: "/freight/air/masterbill", component: <AirMasterBill /> },
   { path: "/freight/air/console", component: <AirConsoleComp /> },
   { path: "/freight/air/local", component: <AirLocalFreight /> },
-  { path: "/freight/upload/inland", component: <UploadFreightData /> },
+  { path: "/freight/upload/", component: <UploadFreightData /> },
   { path: "/freight/ocean/upload/:tabName", component: <UploadPortLocalChargesData /> },
 
 

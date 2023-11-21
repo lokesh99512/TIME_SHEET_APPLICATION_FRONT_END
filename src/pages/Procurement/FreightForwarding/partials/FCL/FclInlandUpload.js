@@ -11,9 +11,9 @@ import { delete_icon } from '../../../../assets/images';
 import { optcurrency, optionCarrierName, optionMultiDestination, optionPaymentType, optionRateSource, optionRateType, optionSurchargesName, optionValidityApp, optionVendorName, optionVendorType } from '../../../../common/data/procurement';
 import { formatBytes, isAnyValueEmpty, isExcelFile } from '../../../../components/Common/CommonLogic';
 import { updateCarrierData } from '../../../../store/Procurement/actions';
-import { BLANK_CARRIER_DATA } from '../../../../store/Procurement/actiontype';
+// import { BLANK_CARRIER_DATA } from '../../../../store/Procurement/actiontype';
 
-export default function UploadFreightData() {
+export default function FclInlandUpload() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
     const [openSaveModal, setOpenSaveModal] = useState(false);
     const [progressValue, setProgressValue] = useState(33);
