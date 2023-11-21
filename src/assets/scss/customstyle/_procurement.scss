@@ -561,6 +561,9 @@ input[type="number"]{
             }
         }
     }
+    .form-select__menu {
+        z-index: 99;
+    }
 }
 
 // ---------- create sales --------------------------------------
