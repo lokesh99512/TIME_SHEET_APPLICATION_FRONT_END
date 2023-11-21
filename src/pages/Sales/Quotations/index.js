@@ -9,7 +9,7 @@ import { getSalesQuotationData } from '../../../store/Sales/actions'
 import { edit_icon, eye_icon, status_update } from '../../../assets/images'
 import { CommonValue } from '../partials/SalesCol'
 import FilterSalesComp from '../partials/FilterSalesComp'
-import { QUOTATION_RESULT_SELECTED } from '../../../store/Sales/actiontype'
+import { FILTER_QUOTATION_DATA, QUOTATION_RESULT_SELECTED } from '../../../store/Sales/actiontype'
 import QuotationModalComp from './partials/QuotationModalComp'
 import PreviewQuotationModal from './partials/PreviewQuotationModal'
 
@@ -38,7 +38,7 @@ export default function Quotations() {
 
     const viewPopupHandler = (data,type) => {
         setModal(true);
-        console.log(type,"type");
+        // console.log(type,"type");
         setModalType(type);
         dispatch({type: QUOTATION_RESULT_SELECTED, payload: [data]})
     }
@@ -72,6 +72,7 @@ export default function Quotations() {
             return originNameMatch && isDestPortMatch && statusMatch;
         });
         console.log(filteredDataArr, "filterDetails lcl-----------------------");
+        dispatch({type: FILTER_QUOTATION_DATA, payload: filteredDataArr})
     }
 
     const clearValueHandler = () => {

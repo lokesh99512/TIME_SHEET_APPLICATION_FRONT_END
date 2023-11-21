@@ -29,10 +29,6 @@ const role = [
 export default function EditUserData() {
   const navigate = useNavigate();
 
-  console.log("edit user page");
-
-
-
   return (
     <>
       <div className="page-content">

@@ -135,9 +135,9 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         return array?.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost), charge.currency), 0) + (newArray !== undefined ? newArray?.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost), charge.currency), 0) : 0);
     }
     const subTotalHandler = (quoteObject) => {
-        console.log(quoteObject,"quoteObject");
+        
         let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.id);
-        console.log(mainChargeCurr,"mainChargeCurr");
+
         let pickupbuyVal = quoteObject?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.pickup_quote_charge !== undefined && mainChargeCurr?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
         let pickupmarginVal = quoteObject?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0) + (mainChargeCurr?.pickup_quote_charge !== undefined && mainChargeCurr?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0));
         // let pickupTotalVal = convertToINR(Number(quoteObject?.truck ? quoteObject?.truck_charge : quoteObject?.rail ? quoteObject?.rail_charge : 0), null)
@@ -155,7 +155,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
 
         let portdischargebuyVal = quoteObject?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.port_discharge_charges !== undefined && mainChargeCurr?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
         let portdischargemarginVal = quoteObject?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0) + (mainChargeCurr?.port_discharge_charges !== undefined && mainChargeCurr?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0));
-        console.log(portdischargebuyVal,"portdischargebuyVal");
+        // console.log(portdischargebuyVal,"portdischargebuyVal");
         let portdischargeSubTotal = portdischargebuyVal + portdischargemarginVal
 
         let deliveryVal = quoteObject?.delivery_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.delivery_quote_charge !== undefined && mainChargeCurr?.delivery_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
@@ -163,7 +163,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         let deliverySubTotal = deliveryVal + deliverymarginVal
         // let deliveryVal = convertToINR(Number(quoteObject?.road ? quoteObject?.road_charge : 0), quoteObject?.delivery_currency);
 
-        console.log(pickupSubTotal, originSubTotal, oceanSubTotal, portdischargeSubTotal, deliverySubTotal, "all charges")
+        // console.log(pickupSubTotal, originSubTotal, oceanSubTotal, portdischargeSubTotal, deliverySubTotal, "all charges")
 
         return pickupSubTotal + originSubTotal + oceanSubTotal + portdischargeSubTotal + deliverySubTotal;
     }
@@ -583,7 +583,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="markup_val">Markup Value</label>}
                                                                             <input type="text" name="markup_val" id="markup_val"
-                                                                                value={data?.markup_val}
+                                                                                value={data?.markup_val || ''}
                                                                                 onChange={(e) => {
                                                                                     existingHandleChangeMargin(data, e, 'markup_val', index, 'originport_quote_charge', item.id);
                                                                                 }}
@@ -675,7 +675,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             <input type="text" name={`markup_val`} id="markup_val"
-                                                                                value={data?.markup_val}
+                                                                                value={data?.markup_val || ''}
                                                                                 onChange={(e) => {
                                                                                     handleChangeAndCalculate(data, e, 'markup_val', i, 'originport_quote_charge', item.id);
                                                                                 }}
@@ -989,7 +989,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                         <div className="field_wrap">
                                                                             {index === 0 && <label className='form-label' htmlFor="markup_val">Markup Value</label>}
                                                                             <input type="text" name="markup_val" id="markup_val"
-                                                                                value={data?.markup_val}
+                                                                                value={data?.markup_val || ''}
                                                                                 onChange={(e) => {
                                                                                     existingHandleChangeMargin(data, e, 'markup_val', index, 'port_discharge_charges', item.id);
                                                                                 }} placeholder='Enter value' disabled={viewData} />
