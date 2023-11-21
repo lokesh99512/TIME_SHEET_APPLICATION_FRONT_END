@@ -31,7 +31,7 @@ const optionIncoterm = [
 ]
 
 const InstantRate = () => {
-    const [activeTab, toggleTab] = useState("1");
+    const [activeTab, toggleTab] = useState("FCL");
     const [searchView, setSearchView] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
     const [searchResult, setSearchResult] = useState(false);
@@ -59,7 +59,7 @@ const InstantRate = () => {
     <>
             <div className="page-content">
                 <Container fluid>
-                    <div className="create_sales_wrapper">
+                    <div className="create_sales_wrapper instant_rate_wrapper">
 
                         {/* --------------------------tabs------------------------------- */}
                         <Card>
@@ -69,10 +69,10 @@ const InstantRate = () => {
                                     <NavLink
                                         href="#"
                                         className={classnames({
-                                            active: activeTab === "1",
+                                            active: activeTab === "FCL",
                                         }, "px-3")}
                                         onClick={() => {
-                                            toggleTab("1")
+                                            toggleTab("FCL")
                                         }}>
                                             <i className='bx bx-cube mx-1'></i>
                                         FCL</NavLink>
@@ -81,10 +81,10 @@ const InstantRate = () => {
                                     <NavLink
                                         href="#"
                                         className={classnames({
-                                            active: activeTab === "2",
+                                            active: activeTab === "LCL",
                                         }, "px-3")}
                                         onClick={() => {
-                                            toggleTab("2")
+                                            toggleTab("LCL")
                                         }}
                                     ><i className='bx bx-package mx-1'></i>LCL</NavLink>
                                 </NavItem>
@@ -92,10 +92,10 @@ const InstantRate = () => {
                                     <NavLink
                                         href="#"
                                         className={classnames({
-                                            active: activeTab === "3",
+                                            active: activeTab === "Air",
                                         }, "px-3")}
                                         onClick={() => {
-                                            toggleTab("3")
+                                            toggleTab("Air")
                                         }}
                                     ><i className='bx bx-rocket mx-1'></i>Air</NavLink>
                                 </NavItem>
@@ -103,10 +103,10 @@ const InstantRate = () => {
                                     <NavLink
                                         href="#"
                                         className={classnames({
-                                            active: activeTab === "4",
+                                            active: activeTab === "Land",
                                         }, "px-3")}
                                         onClick={() => {
-                                            toggleTab("4")
+                                            toggleTab("Land")
                                         }}
                                     ><i className='bx bx-train mx-1'></i>Land</NavLink>
                                 </NavItem>
@@ -114,17 +114,21 @@ const InstantRate = () => {
                         </CardBody>
                     </Card>
                     <TabContent activeTab={activeTab}>
-                        <TabPane tabId="1">
-                            <SearchForm/>
+                        {/* <TabPane tabId="FCL">
+                            <SearchForm activeTab={activeTab}/>
                         </TabPane>
-                        <TabPane tabId="2">
-                            <SearchForm/>
+                        <TabPane tabId="LCL">
+                            <SearchForm activeTab={activeTab}/>
                         </TabPane>
-                            <TabPane tabId="3">
-                        <SearchForm/>
+                            <TabPane tabId="Air">
+                        <SearchForm activeTab={activeTab}/>
                         </TabPane>
-                            <TabPane tabId="4">
-                        <SearchForm/>
+                            <TabPane tabId="Land">
+                        <SearchForm activeTab={activeTab}/>
+                        </TabPane> */}
+
+                        <TabPane tabId={activeTab}>
+                            <SearchForm activeTab={activeTab}/>
                         </TabPane>
                     </TabContent>
                         {/* --------------------------tabs------------------------------- */}

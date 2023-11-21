@@ -42,6 +42,9 @@ import settings from "./Settings/reducer"
 //Parties
 import parties from "./Parties/reducer"
 
+//instantRate
+import instantRate from "./InstantRate/reducer"
+
 const rootReducer = combineReducers({
   // public
   Layout,
@@ -59,7 +62,8 @@ const rootReducer = combineReducers({
   rate,
   quotation,
   settings,
-  parties
+  parties,
+  instantRate
 })
 
 export default rootReducer
