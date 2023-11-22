@@ -11,9 +11,9 @@ export default function TopBreadcrumbs({ breadcrumbs, data }) {
                     {(data || []).map((item) => (
                         <div className="sh_box flex-grow-1" key={item?.id}>
                             <p className="box_title">{item?.title}</p>
-                            <p className="sh_inquiry_rate">{item?.rate}
+                            <div className="sh_inquiry_rate">{item?.rate}
                                 <span className={`${item?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{item?.compare_rate}%</span>
-                            </p>
+                            </div>
                         </div>
                     ))}
                 </div> */}
