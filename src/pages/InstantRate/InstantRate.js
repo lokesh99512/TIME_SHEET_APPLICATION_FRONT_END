@@ -62,15 +62,15 @@ const InstantRate = () => {
                     <div className="create_sales_wrapper instant_rate_wrapper">
 
                         {/* --------------------------tabs------------------------------- */}
-                        <Card>
-                        <CardBody>
-                            <Nav className="nav-tabs-custom card-header-tabs">
+                        {/* <Card className='mb-0'>
+                        <CardBody> */}
+                            <Nav className="nav-tabs-custom card-header-tabs border-bottom">
                                 <NavItem>
                                     <NavLink
                                         href="#"
                                         className={classnames({
                                             active: activeTab === "FCL",
-                                        }, "px-3")}
+                                        }, "px-3 py-3")}
                                         onClick={() => {
                                             toggleTab("FCL")
                                         }}>
@@ -82,7 +82,7 @@ const InstantRate = () => {
                                         href="#"
                                         className={classnames({
                                             active: activeTab === "LCL",
-                                        }, "px-3")}
+                                        }, "px-3 py-3")}
                                         onClick={() => {
                                             toggleTab("LCL")
                                         }}
@@ -93,7 +93,7 @@ const InstantRate = () => {
                                         href="#"
                                         className={classnames({
                                             active: activeTab === "Air",
-                                        }, "px-3")}
+                                        }, "px-3 py-3")}
                                         onClick={() => {
                                             toggleTab("Air")
                                         }}
@@ -104,15 +104,15 @@ const InstantRate = () => {
                                         href="#"
                                         className={classnames({
                                             active: activeTab === "Land",
-                                        }, "px-3")}
+                                        }, "px-3 py-3")}
                                         onClick={() => {
                                             toggleTab("Land")
                                         }}
                                     ><i className='bx bx-train mx-1'></i>Land</NavLink>
                                 </NavItem>
                             </Nav>
-                        </CardBody>
-                    </Card>
+                        {/* </CardBody>
+                    </Card> */}
                     <TabContent activeTab={activeTab}>
                         {/* <TabPane tabId="FCL">
                             <SearchForm activeTab={activeTab}/>
