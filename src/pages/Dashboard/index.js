@@ -71,7 +71,7 @@ const Dashboard = () => {
                                         {(salesEnquiryData || [])?.map(item => (
                                             <div className="sh_box" key={item?.id}>
                                                 <p className="box_title">{item?.title}</p>
-                                                <p className="sh_inquiry_rate justify-content-between align-items-center">
+                                                <div className="sh_inquiry_rate justify-content-between align-items-center">
                                                     <AnimatedCounter rate={Number(item?.rate)} />
                                                     {/* <span className={`${item?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{item?.compare_rate}%</span> */}
                                                     <div className="text-nowrap fs-5">
@@ -80,7 +80,7 @@ const Dashboard = () => {
                                                         </span>
                                                         <span className="ms-1 box_bottom_text">Since last month</span>
                                                     </div>
-                                                </p>
+                                                </div>
                                             </div>
                                         ))}
                                     </div>
@@ -93,7 +93,7 @@ const Dashboard = () => {
                                         {(quotSumData || [])?.map(item => (
                                             <div className="sh_box" key={item?.id}>
                                                 <p className="box_title">{item?.title}</p>
-                                                <p className="sh_inquiry_rate justify-content-between align-items-center">
+                                                <div className="sh_inquiry_rate justify-content-between align-items-center">
                                                     <AnimatedCounter rate={Number(item?.rate)} />
                                                     {/* <span className={`${item?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{item?.compare_rate}%</span> */}
                                                     <div className="text-nowrap fs-5">
@@ -102,7 +102,7 @@ const Dashboard = () => {
                                                         </span>
                                                         <span className="ms-1 box_bottom_text">Since last month</span>
                                                     </div>
-                                                </p>
+                                                </div>
                                             </div>
                                         ))}
                                     </div>

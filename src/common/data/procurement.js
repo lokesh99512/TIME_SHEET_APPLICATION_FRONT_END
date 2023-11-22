@@ -6308,18 +6308,186 @@ const inLandTableData = [
         freight_charge: [
             {
                 container_type: '20 GP',
-                cargo_type: 'DR -  General',
+                cargo_type: 'General',
                 cargo_wt_min: '1',
                 cargo_wt_max: '7.7',
                 rate: '24150'
             },
             {
                 container_type: '20 GP',
-                cargo_type: 'DR -  General',
+                cargo_type: 'General',
                 cargo_wt_min: '7.7',
                 cargo_wt_max: '17.7',
                 rate: '26000'
+            },  
+            {
+                container_type: '20 GP',
+                cargo_type: 'General',
+                cargo_wt_min: '17.7',
+                cargo_wt_max: '23.7',
+                rate: '29100'
+            },  
+            {
+                container_type: '20 GP',
+                cargo_type: 'General',
+                cargo_wt_min: '23.7',
+                cargo_wt_max: '27.7',
+                rate: '32200'
+            },  
+            {
+                container_type: '20 GP',
+                cargo_type: 'General',
+                cargo_wt_min: '27.7',
+                cargo_wt_max: '28.7',
+                rate: '32200'
+            },  
+            {
+                container_type: '20 GP',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '1',
+                cargo_wt_max: '7.7',
+                rate: '31395'
             },
+            {
+                container_type: '20 GP',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '7.7',
+                cargo_wt_max: '17.7',
+                rate: '33800'
+            },  
+            {
+                container_type: '20 GP',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '17.7',
+                cargo_wt_max: '23.7',
+                rate: '37830'
+            },  
+            {
+                container_type: '20 GP',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '23.7',
+                cargo_wt_max: '27.7',
+                rate: '41860'
+            },  
+            {
+                container_type: '20 GP',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '27.7',
+                cargo_wt_max: '28.7',
+                rate: '41860'
+            },  
+            {
+                container_type: '40 GP',
+                cargo_type: 'General',
+                cargo_wt_min: '1',
+                cargo_wt_max: '15.4',
+                rate: '39300'
+            },  
+            {
+                container_type: '40 GP',
+                cargo_type: 'General',
+                cargo_wt_min: '15.4',
+                cargo_wt_max: '22.4',
+                rate: '40900'
+            },  
+            {
+                container_type: '40 GP',
+                cargo_type: 'General',
+                cargo_wt_min: '22.4',
+                cargo_wt_max: '26.4',
+                rate: '41900'
+            },  
+            {
+                container_type: '40 GP',
+                cargo_type: 'General',
+                cargo_wt_min: '26.4',
+                cargo_wt_max: '27.4',
+                rate: '43900'
+            },  
+            {
+                container_type: '40 GP',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '1',
+                cargo_wt_max: '15.4',
+                rate: '51090'
+            },  
+            {
+                container_type: '40 GP',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '15.4',
+                cargo_wt_max: '22.4',
+                rate: '53170'
+            },  
+            {
+                container_type: '40 GP',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '22.4',
+                cargo_wt_max: '26.4',
+                rate: '54470'
+            },  
+            {
+                container_type: '40 GP',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '26.4',
+                cargo_wt_max: '27.4',
+                rate: '57070'
+            },  
+            {
+                container_type: '40 HQ',
+                cargo_type: 'General',
+                cargo_wt_min: '1',
+                cargo_wt_max: '15.4',
+                rate: '39300'
+            },  
+            {
+                container_type: '40 HQ',
+                cargo_type: 'General',
+                cargo_wt_min: '15.4',
+                cargo_wt_max: '22.4',
+                rate: '40900'
+            },  
+            {
+                container_type: '40 HQ',
+                cargo_type: 'General',
+                cargo_wt_min: '22.4',
+                cargo_wt_max: '26.4',
+                rate: '41900'
+            },  
+            {
+                container_type: '40 HQ',
+                cargo_type: 'General',
+                cargo_wt_min: '26.4',
+                cargo_wt_max: '27.4',
+                rate: '43900'
+            },  
+            {
+                container_type: '40 HQ',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '1',
+                cargo_wt_max: '15.4',
+                rate: '51090'
+            },  
+            {
+                container_type: '40 HQ',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '15.4',
+                cargo_wt_max: '22.4',
+                rate: '53170'
+            },  
+            {
+                container_type: '40 HQ',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '22.4',
+                cargo_wt_max: '26.4',
+                rate: '54470'
+            },  
+            {
+                container_type: '40 HQ',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '26.4',
+                cargo_wt_max: '27.4',
+                rate: '57070'
+            },  
         ],
         surcharges: [
             {
@@ -6363,6 +6531,162 @@ const inLandTableData = [
         last_update_by: 'Michelle Brewer',
         created_on: '01 Jan 2023',
         created_by: '01 Jan 2023',
+        freight_charge: [
+            {
+                container_type: '20 GP',
+                cargo_type: 'General',
+                cargo_wt_min: '1',
+                cargo_wt_max: '7.7',
+                rate: '24150'
+            },
+            {
+                container_type: '20 GP',
+                cargo_type: 'General',
+                cargo_wt_min: '7.7',
+                cargo_wt_max: '17.7',
+                rate: '26000'
+            },  
+            {
+                container_type: '20 GP',
+                cargo_type: 'General',
+                cargo_wt_min: '17.7',
+                cargo_wt_max: '23.7',
+                rate: '29100'
+            },  
+            {
+                container_type: '20 GP',
+                cargo_type: 'General',
+                cargo_wt_min: '23.7',
+                cargo_wt_max: '27.7',
+                rate: '32200'
+            },  
+            {
+                container_type: '20 GP',
+                cargo_type: 'General',
+                cargo_wt_min: '27.7',
+                cargo_wt_max: '28.7',
+                rate: '32200'
+            },  
+            {
+                container_type: '20 GP',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '1',
+                cargo_wt_max: '7.7',
+                rate: '31395'
+            },
+            {
+                container_type: '20 GP',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '7.7',
+                cargo_wt_max: '17.7',
+                rate: '33800'
+            },  
+            {
+                container_type: '20 GP',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '17.7',
+                cargo_wt_max: '23.7',
+                rate: '37830'
+            },  
+            {
+                container_type: '20 GP',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '23.7',
+                cargo_wt_max: '27.7',
+                rate: '41860'
+            },  
+            {
+                container_type: '20 GP',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '27.7',
+                cargo_wt_max: '28.7',
+                rate: '41860'
+            },  
+            {
+                container_type: '40 GP',
+                cargo_type: 'General',
+                cargo_wt_min: '1',
+                cargo_wt_max: '15.4',
+                rate: '39300'
+            },  
+            {
+                container_type: '40 GP',
+                cargo_type: 'General',
+                cargo_wt_min: '15.4',
+                cargo_wt_max: '22.4',
+                rate: '40900'
+            },  
+            {
+                container_type: '40 GP',
+                cargo_type: 'General',
+                cargo_wt_min: '22.4',
+                cargo_wt_max: '26.4',
+                rate: '41900'
+            }, 
+            {
+                container_type: '40 GP',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '1',
+                cargo_wt_max: '15.4',
+                rate: '51090'
+            },  
+            {
+                container_type: '40 GP',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '15.4',
+                cargo_wt_max: '22.4',
+                rate: '53170'
+            },  
+            {
+                container_type: '40 GP',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '22.4',
+                cargo_wt_max: '26.4',
+                rate: '54470'
+            }, 
+            {
+                container_type: '40 HQ',
+                cargo_type: 'General',
+                cargo_wt_min: '1',
+                cargo_wt_max: '15.4',
+                rate: '39300'
+            },  
+            {
+                container_type: '40 HQ',
+                cargo_type: 'General',
+                cargo_wt_min: '15.4',
+                cargo_wt_max: '22.4',
+                rate: '40900'
+            },  
+            {
+                container_type: '40 HQ',
+                cargo_type: 'General',
+                cargo_wt_min: '22.4',
+                cargo_wt_max: '26.4',
+                rate: '41900'
+            },    
+            {
+                container_type: '40 HQ',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '1',
+                cargo_wt_max: '15.4',
+                rate: '51090'
+            },  
+            {
+                container_type: '40 HQ',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '15.4',
+                cargo_wt_max: '22.4',
+                rate: '53170'
+            },  
+            {
+                container_type: '40 HQ',
+                cargo_type: 'Hazardous',
+                cargo_wt_min: '22.4',
+                cargo_wt_max: '26.4',
+                rate: '54470'
+            },
+        ],
         surcharges: [
             {
                 name: 'FSC',
@@ -6642,10 +6966,30 @@ const optcurrency = [
 const optionCargoType = [
     { label: "General", value: "general" },
 ]
+const optionChargeBasis = [
+    { label: "Cargo Weight (MT)", value: "cargo_weight_mt" },
+    { label: "Freight", value: "freight" },
+    { label: "Per Container", value: "per_container" },
+    { label: "Per BL", value: "per_bill" },
+    { label: "Per Shipment", value: "per_shipment" },
+    { label: "Per TEU", value: "per_teu" },
+    { label: "Per Day/Per Container", value: "per_day_container" },
+    { label: "Per House BL", value: "per_house" },
+    { label: "Per Day", value: "per_day" },
+    { label: "Per Ton", value: "per_ton" },
+    { label: "Per Ton/Per Container", value: "per_ton_container" },
+    { label: "Per CBM", value: "per_cbm" },
+  ];
+const optionCalculationType = [
+    { label: "Flat", value: "Flat" },
+    { label: "Slab", value: "Slab" },
+    { label: "Percentage", value: "Percentage" },
+];
 
 export {
     fclBreadcrumb,fclRateData,fclTableData,lclBreadcrumb,portLocalBreadcrumb,lclRateData,lclTableData,
     optionRateType,optionRateSource,optionVendorType,optionVendorName,optionCarrierName,optionValidityApp,optionSurchargesName,optionMultiDestination,optionPaymentType,
     waybillBreadcrumb,waybillRateData,waybillTableData,consoleBreadcrumb,consoleRateData,consoleTableData,inLandBreadcrumb,inLandRateData,inLandTableData,fclSurchargeBreadcrumb,fclSurchargeRateData,
-    optcurrency,optionOrgPort,optionDestPort,optionCargoType,optionMovementType,optionPortlocalOrgPort
+    optcurrency,optionOrgPort,optionDestPort,optionCargoType,optionMovementType,optionPortlocalOrgPort,
+    optionChargeBasis,optionCalculationType
 };
