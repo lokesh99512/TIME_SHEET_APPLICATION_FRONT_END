@@ -74,7 +74,7 @@ export default function MainDnd() {
                                                             </span>
                                                         )} 
                                                         </p>
-                                                        <p className='sh_sum_rate justify-content-between'>
+                                                        <div className='sh_sum_rate justify-content-between'>
                                                             <span>
                                                             {item.id === 'revenue_sum' && '₹'}<AnimatedCounter rate={Number(data?.revenue)} />
                                                             </span>
@@ -85,7 +85,7 @@ export default function MainDnd() {
                                                                 </span>
                                                                 <span className="ms-1 box_bottom_text">Since last month</span>
                                                             </div>
-                                                        </p>
+                                                        </div>
                                                     </div> 
                                                 ))}
                                             </div>

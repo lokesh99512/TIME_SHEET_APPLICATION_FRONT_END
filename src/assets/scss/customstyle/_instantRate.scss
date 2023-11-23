@@ -20,6 +20,19 @@
       .common_dropdwon_btn_wrap .location_img {
         width: 24px;
       }
+      .swap_btn_wrap {
+        position: absolute;
+        left: 0;
+        right: 0;
+        width: 30px;
+        height: 30px;
+        border-radius: 50px;
+        border: 1px solid #E5E7EB;
+        background: #fff;
+        margin: auto;
+        bottom: 0;
+        top: 0;
+    }
       // .quotation_to_wrap{
       //     padding: 6px 20px 6px 40px;
       //     .common_dropdwon_btn_wrap .location_img{
@@ -50,13 +63,13 @@
       }
     }
     .prof_wrap {
-      padding: 10px 16px;
+      padding: 2px 16px;
     }
 
     .calendar_field_wrap {
       position: relative;
       padding: 0;
-      min-height: 60px;
+      min-height: 38px;
       .con {
         .form-label {
           top: 11px;
@@ -64,7 +77,7 @@
         .flatpickr-input {
           //    padding: 20px 20px 16px 60px;
           //    padding: 32px 16px 16px 60px;
-          padding: 19px 0px 0px 60px;
+          padding: 0px 0px 0px 20px;
           margin: 0;
           border: 0;
           font-weight: 500;
@@ -74,10 +87,36 @@
         }
       }
     }
+  }.location_img {
+    width: 25px;
   }
 }
 
+@media only screen and (max-width: 767px) {
+  .instant_rate_wrapper.create_sales_wrapper
+    .create_sales_search_forms
+    .quotation_select_port_wrap
+    .quotation_to_wrap {
+    padding: 6px 20px;
+  }
+}
+
+
 // -------------------------
+
+.create_sales_wrapper .create_sales_search_forms .quotation_select_port_wrap .swap_btn_wrap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50px;
+    border: 1px solid #E5E7EB;
+    background: #fff;
+    margin: auto;
+    bottom: 0;
+    top: 0;
+}
 
 // .create_sales_wrapper .create_sales_search_forms .quotation_select_port_wrap .location_wrap .con .form-select__control .form-select__value-container .form-select__placeholder, .create_sales_wrapper .create_sales_search_forms .quotation_select_port_wrap .location_wrap .con .form-select__control .form-select__value-container .form-select__single-value {
 //     font-weight: 600;
@@ -89,6 +128,16 @@
 
 // .location_wrap {
 //   .con {
-//     width: 100%;
+    //     width: 100%;
+    //   }
+// }
+
+// .create_sales_wrapper .create_sales_search_forms .quotation_select_port_wrap .quotation_from_wrap, .create_sales_wrapper
+
+
+
+// @media only screen and (max-width: 767px) {
+//   .create_sales_wrapper .create_sales_search_forms .quotation_select_port_wrap {
+//     flex-direction: column;
 //   }
 // }

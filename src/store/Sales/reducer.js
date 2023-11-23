@@ -1,4 +1,4 @@
-import { CONFIRM_PREVIEW_DATA, FILTER_QUOTATION_DATA, GET_QUOTATION_DATA_FAIL, GET_QUOTATION_DATA_SUCCESS, GET_QUOTATION_RESULT_FAIL, GET_QUOTATION_RESULT_SUCCESS, QUOTATION_RESULT_SELECTED, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_UPDATE, SEARCH_QUOTATION_BLANK, UPDATE_CONTAINERTYPE_CONFIRM, UPDATE_CONTAINER_CHANGE, UPDATE_QUOTATION_RESULT_DETAILS, UPDATE_SEARCH_QUOTATION_DATA, UPDATE_SEARCH_QUOTATION_DATE, UPDATE_SEARCH_QUOTATION_SWAP, UPDATE_VALUE_BLANK } from "./actiontype"
+import { CONFIRM_PREVIEW_DATA, FILTER_INQUIRY_DATA, FILTER_QUOTATION_DATA, GET_INQUIRY_DATA_FAIL, GET_INQUIRY_DATA_SUCCESS, GET_QUOTATION_DATA_FAIL, GET_QUOTATION_DATA_SUCCESS, GET_QUOTATION_RESULT_FAIL, GET_QUOTATION_RESULT_SUCCESS, QUOTATION_RESULT_SELECTED, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_UPDATE, SEARCH_QUOTATION_BLANK, UPDATE_CONTAINERTYPE_CONFIRM, UPDATE_CONTAINER_CHANGE, UPDATE_QUOTATION_RESULT_DETAILS, UPDATE_SEARCH_QUOTATION_DATA, UPDATE_SEARCH_QUOTATION_DATE, UPDATE_SEARCH_QUOTATION_SWAP, UPDATE_VALUE_BLANK } from "./actiontype"
 
 
 const INIT_STATE = {
@@ -20,6 +20,9 @@ const INIT_STATE = {
     quotation_result_data: [],
     quotation_result_error: [],
     quote_selected_data: [],
+
+    inquiry_data: [],
+    inquiry_error: [],
 }
 
 const sales = (state = INIT_STATE, action) => {
@@ -168,10 +171,14 @@ const sales = (state = INIT_STATE, action) => {
                 quote_selected_data: action.payload
             }
         case QUOTATION_RESULT_SELECTED_BLANK:
-            return {
-                ...state,
-                quote_selected_data: []
-            }
+            return { ...state, quote_selected_data: [] }
+
+        // inquiry
+        case GET_INQUIRY_DATA_SUCCESS: 
+            return { ...state, inquiry_data: action.payload }
+
+        case GET_INQUIRY_DATA_FAIL: 
+            return { ...state, inquiry_data: action.payload }              
 
         default:
             return state;
