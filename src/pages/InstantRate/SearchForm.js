@@ -23,10 +23,26 @@ const customerName = [
 ]
 
 const containerClass = [
-    {value: "test", label: 'test'},
+    {value: "1", label: '1'},
+    {value: "2", label: '2'},
+    {value: "3", label: '3'},
+    {value: "4", label: '4'},
+    {value: "5", label: '5'},
+    {value: "6", label: '6'},
+    {value: "7", label: '7'},
+    {value: "8", label: '8'},
+    {value: "9", label: '9'},
 ]
 const shipmentClass = [
-    {value: "test", label: 'test'},
+    {value: "1", label: '1'},
+    {value: "2", label: '2'},
+    {value: "3", label: '3'},
+    {value: "4", label: '4'},
+    {value: "5", label: '5'},
+    {value: "6", label: '6'},
+    {value: "7", label: '7'},
+    {value: "8", label: '8'},
+    {value: "9", label: '9'},
 ]
 
 const optionIncoterm = [
@@ -71,10 +87,12 @@ const weightUnitOption= [
 const SearchForm = ({activeTab}) => {
     // const [searchView, setSearchView] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
+    const [isSubOpen, setIsSubOpen] = useState(false);
     const [dropId, setDropId] = useState(false);
+    const [subDropId, setSubDropId] = useState(false);
     const [searchResult, setSearchResult] = useState(false);
     const [classHazardous, setClassHazardous] = useState(0);
-    const [containerArray, setcontainerArray] = useState([]);
+    const [containerData, setContainerData] = useState({ containerArray: [] })
     const [shipmentDetailsBtnActive, setShipmentDetailsBtnActive] = useState("General")
     const [containerDetailsBtnActive, setContainerDetailsBtnActive] = useState("General")
     const [innerContainerType, setInnerContainerType] = useState(false)
@@ -91,8 +109,10 @@ const SearchForm = ({activeTab}) => {
     const [containerType, setContainerType] = useState({
         cargoType:"",
         containerClass:"",
-        weight:""
+        weight:{ currency: { name: 'Rupee', value: 'rupee', code: '₹' }, value: '' }
     })
+
+    console.log(containerType,"<--containerType");
 
     const [shipmentDetailsOtherVal,setShipmentDetailsOtherVal] = useState({
         cargoType:"",
@@ -130,9 +150,6 @@ const SearchForm = ({activeTab}) => {
     console.log(searchForm,"<---searchform");
     // const resultData = useSelector((state) => state?.sales?.quotation_result_data);
 
-    console.log(activeTab,"<--activeTab");
-
-
     const handleChangeHandler = (item, name, blank, blank_name) => {
         if (blank) {
             dispatch({ type: UPDATE_VALUE_BLANK, payload: blank_name })
@@ -150,6 +167,10 @@ const SearchForm = ({activeTab}) => {
     const toggleDropdown = (id) => {
         setIsOpen(!isOpen);
         setDropId(id);
+    };
+    const toggleSubDropdown = (id) => {
+        setIsSubOpen(!isSubOpen);
+        setSubDropId(id);
     };
 
     const AddLoadHandler = () => {
@@ -176,16 +197,16 @@ const SearchForm = ({activeTab}) => {
     }
 
     const handleContainerChangeHandler = (item, name) => {
-        let newArray = [...containerArray];
-        if (containerArray.some((obj) => obj?.id === item.id)) {
+        let newArray = [...containerData?.containerArray];
+        if (containerData?.containerArray?.some((obj) => obj?.id === item.id)) {
             let index = newArray.findIndex((obj) => obj.id === item.id);
             newArray[index] = item
         } else {
             newArray.push(item);
         }
         let updatedArray = [...newArray];
-        setcontainerArray(updatedArray);
-        dispatch({ type: UPDATE_CONTAINER_CHANGE, payload: updatedArray })
+        setContainerData(prev=>({...prev,containerArray:updatedArray}));
+        dispatch({ type: UPDATE_CONTAINER_CHANGE, payload: {...containerData,containerArray:updatedArray} })
     }
 
     const countPlusHandler = (e, id, item, name) => {
@@ -228,7 +249,8 @@ const SearchForm = ({activeTab}) => {
 
     const containerConfirmHandler = ()=>{
         console.log(containerType, "containerType-------------");
-        dispatch({ type: UPDATE_CONTAINER_TYPE_CONFIRM, payload: {containerArray,...containerType} });
+        console.log(containerData, "containerData-------------");
+        dispatch({ type: UPDATE_CONTAINER_TYPE_CONFIRM, payload: {...containerData,...containerType} });
         setIsOpen(false);
     }
 
@@ -284,8 +306,39 @@ const SearchForm = ({activeTab}) => {
 
         {/* Port From && To */}
         <div className="row">
-            <div className="col-12 col-md-6 col-lg-6 col-xl-6">
-        <div className="quotation_select_port_wrap d-flex my-3">
+            <div className="col-12 col-md-6 col-lg-6 col-xl-6 mt-2">
+        {/* <div className="quotation_select_port_wrap d-flex my-3"> */}
+
+           {/* <div className="d-flex flex-column quotation_select_port_wrap"> */}
+           <div className="d-flex flex-column">
+
+            <div className="d-flex py-1">
+            <div className="d-flex w-100">
+                <div className="d-flex align-items-center">
+                <div className="icon mx-3 d-flex align-items-center justify-content-center">
+                  <img className="location_img" src={location_filled} alt="Location" />
+                </div>
+                <label className="form-label">Origin</label>    
+                </div>
+
+            </div>
+            <div className="d-flex w-100">
+                <div className="d-flex align-items-center">
+                <div className="icon mx-3 d-flex align-items-center justify-content-center">
+                  <img className="location_img" src={location_filled} alt="Location" />
+                </div>
+                <label className="form-label">Destination</label>    
+                </div>
+            </div>
+            </div>
+
+            <div className="d-flex position-relative w-100 quotation_select_port_wrap">
+
+        {/* <label className="form-label">From</label> */}
+
+        {/* <div>  */}
+
+        {/* quotation_from_wrap */}
           <div
             // className={`quotation_from_wrap ${
             //   isOpen && dropId === 9 ? "openmenu" : ""
@@ -298,11 +351,12 @@ const SearchForm = ({activeTab}) => {
                 className={`location_wrap d-flex justify-content-center align-items-center`}
                 // onClick={() => { toggleDropdown(9) }}
               >
-                <div className="icon me-3 d-flex align-items-center justify-content-center">
+                {/* <div className="icon me-3 d-flex align-items-center justify-content-center">
                   <img className="location_img" src={location_filled} alt="Location" />
-                </div>
+                </div> */}
+
                 <div className="con">
-                  <label className="form-label">From</label>
+                  {/* <label className="form-label">From</label> */}
                   
                   <Select
                     value={searchForm?.location_from?.address}
@@ -327,9 +381,12 @@ const SearchForm = ({activeTab}) => {
             </div>
           </div>
 
+            {/* swap button */}
           <button type="button" className="swap_btn_wrap" onClick={swapHandler}>
             <img src={swap_arrow} alt="Swap Arrow" />
           </button>
+          
+          {/* quotation_to_wrap */}
           <div
             // className={`quotation_to_wrap ${
             //   isOpen && dropId === 10 ? "openmenu" : ""
@@ -342,11 +399,11 @@ const SearchForm = ({activeTab}) => {
                 className={`location_wrap d-flex justify-content-center align-items-center`}
                 // onClick={() => { toggleDropdown(10) }}
               >
-                <div className="icon me-3 d-flex align-items-center justify-content-center">
+                {/* <div className="icon me-3 d-flex align-items-center justify-content-center">
                   <img className="location_img" src={location_filled} alt="Location" />
-                </div>
+                </div> */}
                 <div className="con">
-                  <label className="form-label">To</label>
+                  {/* <label className="form-label">To</label> */}
 
                   <Select
                     value={searchForm?.location_to?.address}
@@ -371,17 +428,28 @@ const SearchForm = ({activeTab}) => {
               </div>
             </div>
           </div>
+
+          {/* </div> */}
+
+          </div>
+          {/* </div> */}
         </div>
         </div>
         {/* Port From && To */}
-        <div className="col-12 col-md-6 col-lg-6 col-xl-3">
+        <div className="col-12 col-md-6 col-lg-5 col-xl-2 mt-2">
+            <div className="d-flex py-1 align-items-center">
+                <div className="icon d-flex align-items-center justify-content-center mx-2">
+                    <img src={calendar_filled} alt="Avatar" />
+                </div>
+                <label className="form-label mb-0">Cargo Ready Date</label>
+            </div>
         {/* <div className="col-lg-4"> */}
-            <div className="prof_wrap calendar_field_wrap d-flex my-3">
-              <div className="icon d-flex align-items-center justify-content-center">
+            <div className="prof_wrap calendar_field_wrap d-flex">
+              {/* <div className="icon d-flex align-items-center justify-content-center">
                 <img src={calendar_filled} alt="Avatar" />
-              </div>
+              </div> */}
               <div className="con">
-                <label className="form-label">Cargo Ready Date</label>
+                {/* <label className="form-label">Cargo Ready Date</label> */}
                 <Flatpickr
                   value={searchForm?.cargo_date}
                   className="form-control d-block"
@@ -399,26 +467,35 @@ const SearchForm = ({activeTab}) => {
 
         {/* container details */}
         {activeTab == "FCL" && 
-        <div className="col-12 col-md-6 col-lg-6 col-xl-3">
-              <div className="common_dropdwon_btn_wrap bottom_drop_field my-3">
-                <div
-                  id="more_menu"
-                //   className={`prof_wrap d-flex ${
-                //     isOpen && dropId === 11 ? "openmenu" : ""
-                //   }`}
-                  className={`prof_wrap d-flex`}
-                  onClick={() => {
-                    toggleDropdown(11);
-                  }}
-                >
-                  <div className="icon d-flex align-items-center justify-content-center">
+        <div className="col-12 col-md-6 col-lg-7 col-xl-4 mt-2">
+            <div className="d-flex py-1 align-items-center">
+            <div className="icon d-flex align-items-center justify-content-center mx-2">
                     <img
                       src={createFields?.shipping_by?.img || cube_filled}
                       alt="Avatar"
                     />
                   </div>
+                  <label className="form-label mb-0">Container Type</label>
+            </div>
+              <div className="common_dropdwon_btn_wrap bottom_drop_field">
+                <div
+                  id="more_menu"
+                //   className={`prof_wrap d-flex ${
+                //     isOpen && dropId === 11 ? "openmenu" : ""
+                //   }`}
+                  className={`prof_wrap d-flex justify-content-between`}
+                  onClick={() => {
+                    toggleDropdown(11);
+                  }}
+                >
+                  {/* <div className="icon d-flex align-items-center justify-content-center">
+                    <img
+                      src={createFields?.shipping_by?.img || cube_filled}
+                      alt="Avatar"
+                    />
+                  </div> */}
                   <div className="con">
-                    <label className="form-label">Container Type</label>
+                    {/* <label className="form-label">Container Type</label> */}
                     <span
                       className={`value ${
                         searchForm?.container_type?.length !== 0
@@ -426,21 +503,22 @@ const SearchForm = ({activeTab}) => {
                           : ""
                       }`}
                     >
-                    {/* {searchForm?.container_type?.containerArray && searchForm?.container_type?.containerArray?.length !== 0 ? (
+                    {/* {searchForm?.container_type?.containerData && searchForm?.container_type?.containerData?.length !== 0 ? (
                         <>
-                          {searchForm?.container_type?.containerArray[0].no_unit} Units |{" "}
+                          {searchForm?.container_type?.containerData[0].no_unit} Units |{" "}
                           {calculateVal
                             ? `${calculateVal?.amount?.toFixed(4)} ${
                                 calculateVal?.mesure
                               } |`
                             : ""}{" "}
-                          {Number(searchForm?.container_type?.containerArray[0].no_unit) *
-                            Number(searchForm?.container_type?.containerArray[0].weight)}{" "}
-                          {searchForm?.container_type?.containerArray[0].weight_unit}
+                          {Number(searchForm?.container_type?.containerData[0].no_unit) *
+                            Number(searchForm?.container_type?.containerData[0].weight)}{" "}
+                          {searchForm?.container_type?.containerData[0].weight_unit}
                         </>
                       ) : (
                         "Select Container Type"
                       )} */}
+                      Cotainer Details
                     </span>
                   </div>
                   <i className="mdi mdi-chevron-down" />
@@ -511,13 +589,13 @@ const SearchForm = ({activeTab}) => {
                                     setContainerType({...containerType,containerClass:e.value})
                                     }}
                                 options={containerClass}
-                                placeholder="Class 1"
+                                placeholder="Select class"
                                 classNamePrefix="select2-selection form-select"
-                            isDisabled={containerDetailsBtnActive === 'Hazardous'}
+                            isDisabled={containerDetailsBtnActive !== 'Hazardous'}
                             />
                     </div>
                     {/* select unit   */}
-                    <label className="form-label">Container Type In</label>
+                    <label className="form-label">Container Type</label>
                     <div className="inner">
                         <div className="common_dropdwon_btn_wrap mb-3 bottom_drop_field">
                         <div
@@ -541,10 +619,10 @@ const SearchForm = ({activeTab}) => {
                                     : ""
                                 }`}
                             >
-                                {console.log(searchForm?.container_type,"<<<<<<")}
-                                {/* {searchForm?.container_type !== "" &&
-                                searchForm?.container_type !== undefined
-                                ? searchForm?.container_type?.map((item, index) => (
+                                {/* {console.log(searchForm?.container_type,"<<<<<<")} */}
+                                {searchForm?.container_type?.containerArray !== "" &&
+                                searchForm?.container_type?.containerArray !== undefined
+                                ? searchForm?.container_type?.containerArray?.map((item, index) => (
                                     <span key={item.id}>
                                         {unitValue[item.id] !== 0
                                         ? `${item.name}, unit: "${
@@ -554,7 +632,7 @@ const SearchForm = ({activeTab}) => {
                                         &nbsp;
                                     </span>
                                     ))
-                                : "Select Container Type"} */}
+                                : "Select Container Type"}
                             </span>
                             </div>
                             <i className="mdi mdi-chevron-down" />
@@ -632,51 +710,36 @@ const SearchForm = ({activeTab}) => {
                         <div className="mb-3">
                             <label className="form-label">Weight</label>
                         </div>
-                                <Input
-                                    type="text"
-                                    // name="email"
-                                    value={containerType.weight}
-                                    onChange={(e)=>{setContainerType({...containerType,weight:e.target.value})}}
-                                    className="form-control"
-                                    placeholder="Enter weight"
-                                    />
-                    </div>
-
-                        
-                            
-                                {/* <div className="prof_wrap number_field_wrap d-flex mb-3">
-                                    <div className="icon d-flex align-items-center justify-content-center">
-                                        <img src={createFields?.shipping_by?.img || cube_filled} alt="Avatar" />
-                                    </div>
-                                    <div className="con d-flex align-items-center">
-                                        <div className="left_field">
-                                            <label htmlFor='cargo_value' className="form-label">Cargo Weight</label>
-                                            <input type="number" value={createFields?.cargo_weight?.value || ''} name="cargo_weight" id="cargo_weight" placeholder='Enter amount' onChange={(e) => { handleChangeHandler({ ...createFields?.cargo_weight, value: e.target.value }, 'cargo_weight') }} />
-q                                        </div>
-                                        <div className="common_dropdwon_btn_wrap bottom_drop_field">
-                                            <div
-                                                id='more_menu'
-                                                className={`d-flex align-items-center ${isOpen && dropId === 8 ? 'openmenu' : ''}`}
-                                                onClick={() => { toggleDropdown(12) }}
-                                            >
-                                                <span>{createFields?.cargo_weight?.weight} </span>
-                                                <i className="mdi mdi-chevron-down" />
-                                            </div>
-                                            {isOpen && dropId === 12 ?
-                                                <ul className="common_dropdown_wrap quantity_drop_wrap" ref={dropdownRef}>
-                                                    {(cargoWeightUnitOption || '')?.map((item, index) => (
-                                                        <li key={index} className={`${createFields?.cargo_weight?.weight === item?.value ? 'active' : ''}`} onClick={() => { handleChangeHandler({ ...createFields?.cargo_weight, weight: item?.value }, 'cargo_weight'); setIsOpen(false); }}>
-                                                            {item?.name}
-                                                        </li>
-                                                    ))}
-                                                </ul> : null
-                                            }
-                                        </div>
-                                    </div>
-                                </div> */}
                                 
-                            
-                        
+                                <div className="prof_wrap number_field_wrap d-flex mb-3">
+                                
+                                <div className="con d-flex align-items-center w-100">
+                                    <div className="left_field">
+                                        <input type="number" value={searchForm?.cargo_weight?.value || ''} name="cargo_value" id="cargo_value" placeholder='Enter amount' onChange={(e) => { handleChangeHandler({ ...searchForm?.cargo_weight, value: e.target.value }, 'cargo_weight') }} />
+                                    </div>
+                                    <div className="common_dropdwon_btn_wrap bottom_drop_field">
+                                        <div
+                                            id='more_menu'
+                                            className={`d-flex align-items-center ${isSubOpen && subDropId === 8 ? 'openmenu' : ''}`}
+                                            onClick={() => { toggleSubDropdown(8) }}
+                                        >
+                                            <span>{searchForm?.cargo_weight?.currency?.code} </span>
+                                            <i className="mdi mdi-chevron-down" />
+                                        </div>
+                                        {isSubOpen && subDropId === 8 ?
+                                            <ul className="common_dropdown_wrap quantity_drop_wrap" ref={dropdownRef}>
+                                                {(optionCurrency || '')?.map((item, index) => (
+                                                    <li key={index} className={`${searchForm?.cargo_weight?.currency?.value === item?.value ? 'active' : ''}`} onClick={() => { handleChangeHandler({ ...searchForm?.cargo_weight, currency: item }, 'cargo_weight'); setIsSubOpen(false); }}>
+                                                        <span>{item?.code}</span>{item?.name}
+                                                    </li>
+                                                ))}
+                                            </ul> : null
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                    </div>
                     {/* select weight  */}
 
                     <div className="d-flex justify-content-center mt-3">
@@ -697,8 +760,17 @@ q                                        </div>
         
         {/* Shipment Details */}
         {["LCL", "Air", "Land"].includes(activeTab) && 
-        <div className="col-12 col-md-6 col-lg-6 col-xl-3">
-              <div className="common_dropdwon_btn_wrap bottom_drop_field my-3">
+        <div className="col-12 col-md-6 col-lg-7 col-xl-4 mt-2">
+            <div className="d-flex py-1 align-items-center">
+                <div className="icon d-flex align-items-center justify-content-center mx-2">
+                        <img
+                        src={createFields?.shipping_by?.img || cube_filled}
+                        alt="Avatar"
+                        />
+                    </div>
+                    <label className="form-label mb-0">Shipment Details</label>
+            </div>
+              <div className="common_dropdwon_btn_wrap bottom_drop_field">
                 <div
                   id="more_menu"
                 //   className={`prof_wrap d-flex ${
@@ -709,14 +781,14 @@ q                                        </div>
                     toggleDropdown(11);
                   }}
                 >
-                  <div className="icon d-flex align-items-center justify-content-center">
+                  {/* <div className="icon d-flex align-items-center justify-content-center">
                     <img
                       src={createFields?.shipping_by?.img || cube_filled}
                       alt="Avatar"
                     />
-                  </div>
+                  </div> */}
                   <div className="con">
-                    <label className="form-label">Shipment Details</label>
+                    {/* <label className="form-label">Shipment Details</label> */}
                     <span
                       className={`value ${
                         searchForm?.shipment_details?.shipmentDetails?.length !== 0
@@ -752,7 +824,7 @@ q                                        </div>
                         <button
                             type="button"
                             // className="btn btn-primary"
-                            className={`btn ${shipmentDetailsBtnActive == "General" ? "btn-primary" : "btn-light"}`}
+                            className={`btn mb-2 ${shipmentDetailsBtnActive == "General" ? "btn-primary" : "btn-light"}`}
                             onClick={()=>{
                                 setShipmentDetailsBtnActive("General")
                                 shipmentDetailsBtnHandler("General")
@@ -762,7 +834,7 @@ q                                        </div>
                         </button>
                         <button
                             type="button"
-                            className={`btn ${shipmentDetailsBtnActive == "Hazardous" ? "btn-primary" : "btn-light"}`}
+                            className={`btn mb-2 ${shipmentDetailsBtnActive == "Hazardous" ? "btn-primary" : "btn-light"}`}
                             onClick={()=>{
                                 setShipmentDetailsBtnActive("Hazardous")
                                 shipmentDetailsBtnHandler("Hazardous")
@@ -772,7 +844,7 @@ q                                        </div>
                         </button>
                         <button
                             type="button"
-                            className={`btn ${shipmentDetailsBtnActive == "Refrigerated" ? "btn-primary" : "btn-light"}`}
+                            className={`btn mb-2 ${shipmentDetailsBtnActive == "Refrigerated" ? "btn-primary" : "btn-light"}`}
                             onClick={()=>{
                                 setShipmentDetailsBtnActive("Refrigerated")
                                 shipmentDetailsBtnHandler("Refrigerated")
@@ -782,7 +854,7 @@ q                                        </div>
                         </button>
                         <button
                             type="button"
-                            className={`btn ${shipmentDetailsBtnActive == "Spl equ" ? "btn-primary" : "btn-light"}`}
+                            className={`btn mb-2 ${shipmentDetailsBtnActive == "Spl equ" ? "btn-primary" : "btn-light"}`}
                             onClick={()=>{
                                 setShipmentDetailsBtnActive("Spl equ")
                                 shipmentDetailsBtnHandler("Spl equipment")
@@ -808,9 +880,9 @@ q                                        </div>
                                     setShipmentDetailsOtherVal({...shipmentDetailsOtherVal,shipmentClass:e.value})
                                     }}
                                 options={shipmentClass}
-                                placeholder="Class 1"
+                                placeholder="Select class"
                                 classNamePrefix="select2-selection form-select"
-                            isDisabled={shipmentDetailsBtnActive === 'Hazardous'}
+                            isDisabled={shipmentDetailsBtnActive !== 'Hazardous'}
                             />
                     </div>
                     {shipmentDetails.length !== 0 && (
@@ -1052,25 +1124,34 @@ q                                        </div>
         {/* {searchView && ( */}
         {/* <div className="row"> */}
           
-          <div className="col-12 col-md-6 col-lg-6 col-xl-3">
-            <div className="common_dropdwon_btn_wrap mb-3 bottom_drop_field incoterm_field_wrap">
+          <div className="col-12 col-md-6 col-lg-6 col-xl-3 mt-2">
+            <div className="d-flex py-1 align-items-center">
+                <div className="icon d-flex align-items-center justify-content-center mx-2">
+                    <img
+                        src={createFields?.shipping_by?.img || cube_filled}
+                        alt="Avatar"
+                    />
+                    </div>
+                <label className="form-label mb-0">Customer Name</label>
+            </div>
+            <div className="common_dropdwon_btn_wrap bottom_drop_field incoterm_field_wrap">
               <div
                 id="more_menu"
-                className={`prof_wrap d-flex ${
+                className={`prof_wrap d-flex justify-content-between ${
                   isOpen && dropId === 6 ? "openmenu" : ""
                 }`}
                 onClick={() => {
                   toggleDropdown(6);
                 }}
               >
-                <div className="icon d-flex align-items-center justify-content-center">
+                {/* <div className="icon d-flex align-items-center justify-content-center">
                   <img
                     src={createFields?.shipping_by?.img || cube_filled}
                     alt="Avatar"
                   />
-                </div>
+                </div> */}
                 <div className="con">
-                  <label className="form-label">Customer Name</label>
+                  {/* <label className="form-label">Customer Name</label> */}
                   <Select
                     value={
                         customerName
@@ -1093,25 +1174,34 @@ q                                        </div>
               </div>
             </div>
           </div>
-          <div className="col-12 col-md-6 col-lg-6 col-xl-3">
-            <div className="common_dropdwon_btn_wrap mb-3 bottom_drop_field incoterm_field_wrap">
+          <div className="col-12 col-md-6 col-lg-6 col-xl-3 mt-2">
+            <div className="d-flex py-1 align-items-center">
+            <div className="icon d-flex align-items-center justify-content-center mx-2">
+                  <img
+                    src={createFields?.shipping_by?.img || cube_filled}
+                    alt="Avatar"
+                  />
+                </div>
+                <label className="form-label mb-0">Incoterm</label>
+            </div>
+            <div className="common_dropdwon_btn_wrap bottom_drop_field incoterm_field_wrap">
               <div
                 id="more_menu"
-                className={`prof_wrap d-flex ${
+                className={`prof_wrap d-flex justify-content-between ${
                   isOpen && dropId === 6 ? "openmenu" : ""
                 }`}
                 onClick={() => {
                   toggleDropdown(6);
                 }}
               >
-                <div className="icon d-flex align-items-center justify-content-center">
+                {/* <div className="icon d-flex align-items-center justify-content-center">
                   <img
                     src={createFields?.shipping_by?.img || cube_filled}
                     alt="Avatar"
                   />
-                </div>
+                </div> */}
                 <div className="con">
-                  <label className="form-label">Incoterm</label>
+                  {/* <label className="form-label">Incoterm</label> */}
                   <Select
                     value={
                       optionIncoterm
@@ -1134,19 +1224,30 @@ q                                        </div>
               </div>
             </div>
           </div>
-          <div className="col-12 col-md-6 col-lg-6 col-xl-3">
-            <div className="prof_wrap number_field_wrap d-flex mb-3">
-              <div className="icon d-flex align-items-center justify-content-center">
+          <div className="col-12 col-md-6 col-lg-5 col-xl-2 mt-2">
+            <div className="d-flex py-1 align-items-center">
+                <div className="icon d-flex align-items-center justify-content-center mx-2">
+                    <img
+                    src={createFields?.shipping_by?.img || cube_filled}
+                    alt="Avatar"
+                    />
+                </div>
+                <label htmlFor="cargo_value" className="form-label mb-0">
+                    Cargo Value
+                  </label>
+            </div>
+            <div className="prof_wrap number_field_wrap d-flex ">
+              {/* <div className="icon d-flex align-items-center justify-content-center">
                 <img
                   src={createFields?.shipping_by?.img || cube_filled}
                   alt="Avatar"
                 />
-              </div>
-              <div className="con d-flex align-items-center">
+              </div> */}
+              <div className="con d-flex align-items-center justify-content-between w-100">
                 <div className="left_field">
-                  <label htmlFor="cargo_value" className="form-label">
+                  {/* <label htmlFor="cargo_value" className="form-label">
                     Cargo Value
-                  </label>
+                  </label> */}
                   <input
                     type="number"
                     value={searchForm?.cargo_value?.value || ""}
@@ -1206,10 +1307,10 @@ q                                        </div>
               </div>
             </div>
           </div>
-          <div className="col-12 col-md-6 col-lg-6 col-xl-3">
+          <div className="col-12 col-md-6 col-lg-6 col-xl-3 mt-2 align-self-end">
           <button
                 type="button"
-                className="btn btn-primary mt-3"
+                className="btn btn-primary mt-4 w-25"
                 onClick={() => {
                 //   searchQuoteHandler();
                 }}
