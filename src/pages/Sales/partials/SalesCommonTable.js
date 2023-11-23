@@ -75,16 +75,20 @@ const SalesCommonTable = ({ columns, data, isGlobalFilter, customPageSize, toggl
                     <div className="filter_wrap">
                         <button className='bg-transparent' onClick={toggleRightCanvas}><img src={filter_icon} alt="filter" /></button>
                     </div>
-                    <div className="upload_wrap">
-                        <button className='bg-transparent'>
-                            <img src={upload_icon} alt="Upload" />Upload file
-                        </button>
-                    </div>
-                    <div className="add_btn">
-                        <button className='border-0' onClick={() => {navidate('/sales/create');dispatch({type: SEARCH_QUOTATION_BLANK});dispatch({type: QUOTATION_RESULT_SELECTED_BLANK});}}>
-                            <i className='bx bx-plus align-middle'></i> Create
-                        </button>
-                    </div>
+                    {component !== 'inquiry' && (
+                        <>                        
+                            <div className="upload_wrap">
+                                <button className='bg-transparent'>
+                                    <img src={upload_icon} alt="Upload" />Upload file
+                                </button>
+                            </div>
+                            <div className="add_btn">
+                                <button className='border-0' onClick={() => {navidate('/sales/create');dispatch({type: SEARCH_QUOTATION_BLANK});dispatch({type: QUOTATION_RESULT_SELECTED_BLANK});}}>
+                                    <i className='bx bx-plus align-middle'></i> Create
+                                </button>
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
             <div className="table_pagination_wrap">

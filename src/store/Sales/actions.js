@@ -1,5 +1,5 @@
 import { GET_CURRENCY_EXCHANGE_RATE } from "./Quotation/actiontype";
-import { GET_QUOTATION_DATA, GET_QUOTATION_DATA_FAIL, GET_QUOTATION_DATA_SUCCESS, GET_QUOTATION_RESULT_DATA, GET_QUOTATION_RESULT_DATA1, GET_QUOTATION_RESULT_DATA2, GET_QUOTATION_RESULT_DATA3 } from "./actiontype";
+import { GET_INQUIRY_DATA, GET_INQUIRY_DATA_SUCCESS, GET_QUOTATION_DATA, GET_QUOTATION_DATA_FAIL, GET_QUOTATION_DATA_SUCCESS, GET_QUOTATION_RESULT_DATA, GET_QUOTATION_RESULT_DATA1, GET_QUOTATION_RESULT_DATA2, GET_QUOTATION_RESULT_DATA3 } from "./actiontype";
 
 
 export const getSalesQuotationData = (data) => ({
@@ -35,4 +35,17 @@ export const getSalesQuotationResultData3 = (data) => ({
 export const getCurrencyExchangeRate = (data) => ({
     type: GET_CURRENCY_EXCHANGE_RATE,
     payload: data
+})
+
+export const getSalesInquiryData = (data) => ({
+    type: GET_INQUIRY_DATA,
+    payload: data
+})
+export const getSalesInquiryDataSuccess = (data) => ({
+    type: GET_INQUIRY_DATA_SUCCESS,
+    payload: data
+})
+export const getSalesInquiryDataFail = (error) => ({
+    type: GET_QUOTATION_DATA_FAIL,
+    payload: error
 })

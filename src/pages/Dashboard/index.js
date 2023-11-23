@@ -18,12 +18,14 @@ import MainDnd from './Partials/MainDnd';
 import RevenueChart from './Partials/RevenueChart';
 import { customSort } from '../../components/Common/CommonLogic';
 import AnimatedCounter from './Partials/AnimatedCounter';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
     const [tableData, setTableData] = useState(exportSumData);
     const [tableData2, setTableData2] = useState(importSumData);
     const [tableData3, setTableData3] = useState(inquirySumData);
     const [tableData4, setTableData4] = useState(salesPerformData);
+    const navigate = useNavigate();
 
     //meta title
     document.title = "Dashboard || Navigating Freight Costs with Precision||Ultimate Rate Management platform";
@@ -70,7 +72,7 @@ const Dashboard = () => {
                                     <div className="sh_box_wrap">
                                         {(salesEnquiryData || [])?.map(item => (
                                             <div className="sh_box" key={item?.id}>
-                                                <p className="box_title">{item?.title}</p>
+                                                <p className="box_title" onClick={() => navigate('/sales/inquiry', { state: { id: item?.title } })}>{item?.title}</p>
                                                 <div className="sh_inquiry_rate justify-content-between align-items-center">
                                                     <AnimatedCounter rate={Number(item?.rate)} />
                                                     {/* <span className={`${item?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{item?.compare_rate}%</span> */}
@@ -92,16 +94,18 @@ const Dashboard = () => {
                                     <div className="sh_box_wrap">
                                         {(quotSumData || [])?.map(item => (
                                             <div className="sh_box" key={item?.id}>
-                                                <p className="box_title">{item?.title}</p>
+                                                <p className="box_title" onClick={() => navigate('/sales/quotation', { state: { id: item?.title } })}>{item?.title}</p>
                                                 <div className="sh_inquiry_rate justify-content-between align-items-center">
                                                     <AnimatedCounter rate={Number(item?.rate)} />
                                                     {/* <span className={`${item?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{item?.compare_rate}%</span> */}
-                                                    <div className="text-nowrap fs-5">
-                                                        <span className={"badge badge-soft-" + `${item?.rate_type === 'down' ? "danger" : "success"}` + " text-" + `${item?.rate_type === 'down' ? "danger" : "success"}`}>
-                                                        {item?.compare_rate}%
-                                                        </span>
-                                                        <span className="ms-1 box_bottom_text">Since last month</span>
-                                                    </div>
+                                                    {item?.compare_rate !== '' && (
+                                                        <div className="text-nowrap fs-5">
+                                                            <span className={"badge badge-soft-" + `${item?.rate_type === 'down' ? "danger" : "success"}` + " text-" + `${item?.rate_type === 'down' ? "danger" : "success"}`}>
+                                                            {item?.compare_rate}%
+                                                            </span>
+                                                            <span className="ms-1 box_bottom_text">Since last month</span>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         ))}

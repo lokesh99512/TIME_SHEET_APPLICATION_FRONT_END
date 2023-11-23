@@ -42,9 +42,12 @@ const Login = props => {
 
         initialValues: {
             validateonmount: true,
-            email: "darshita.uidev@gmail.com" || '',
-            password: "123456" || '',
+            email: '',
+            password: '',
         },
+        // email: "darshita.uidev@gmail.com" || '',
+        // password: "123456" || '',
+
         // initialValues: {
         //     validateonmount: true,
         //     email: "admin@themesbrand.com" || '',

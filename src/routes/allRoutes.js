@@ -155,7 +155,7 @@ const userRoutes = [
 
   // Sales
   // Queries
-  { path: "/sales/queries", component: <QueriesComp /> },
+  { path: "/sales/inquiry", component: <QueriesComp /> },
   // Quotations
   { path: "/sales/quotation", component: <QuotationComp /> },
   { path: "/sales/create", component: <CreateQuotation /> },
