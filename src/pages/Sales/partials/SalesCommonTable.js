@@ -89,6 +89,13 @@ const SalesCommonTable = ({ columns, data, isGlobalFilter, customPageSize, toggl
                             </div>
                         </>
                     )}
+                    {component === 'inquiry' && (
+                        <div className="add_btn">
+                            <button className='border-0' onClick={() => {navidate('/instant-rate/search-rate');dispatch({type: SEARCH_QUOTATION_BLANK});dispatch({type: QUOTATION_RESULT_SELECTED_BLANK});}}>
+                                <i className='bx bx-plus align-middle'></i> Create
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className="table_pagination_wrap">
