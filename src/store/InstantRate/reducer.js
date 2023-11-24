@@ -11,7 +11,7 @@ const INIT_STATE = {
         cargo_value: { currency: { name: 'Rupee', value: 'rupee', code: '₹' }, value: '' },
         incoterm: '',
         customerName:'',
-        container_type: '',
+        container_type: {cargo_weight: { weight: "MT",value: ''}},
         shipment_details:"",
         cargo_date: '',
         location_from: '',
@@ -45,6 +45,7 @@ const instantRate = (state = INIT_STATE, action) => {
 
             case UPDATE_SEARCH_INSTANT_RATE_DATA:
             const { item, name } = action.payload
+            console.log(item,name,"avcb");
             return {
                 ...state,
                 searchForm: {
@@ -82,6 +83,7 @@ const instantRate = (state = INIT_STATE, action) => {
                 }
 
             case UPDATE_CONTAINER_CHANGE:
+                // console.log(action.payload,"pyld")
             return {
                 ...state,
                 searchForm: {
