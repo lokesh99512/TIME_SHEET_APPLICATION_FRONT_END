@@ -326,21 +326,23 @@ const SidebarContent = props => {
                   </Link>
                   <ul className="sub-menu">
                     <li>
-                      <Link to="/rate/surcharge/fcl">
-                        {/* <span>FCL Surcharge Master</span> */}
-                        <span>Inland Surcharges</span>
-                      </Link>
-                    </li>
-                    <li>
                       <Link to="/freight/ocean/lcl">
                         {/* <span>LCL Surcharge Master</span> */}
                         <span>Ocean Surcharges</span>
                       </Link>
                     </li>
-                    <li>
-                      <Link to="/freight/ocean/portlocal">
+                    <li className="opacity-25">
+                      {/* <Link to="/freight/ocean/portlocal"> */}
+                      <Link to="#">
                         {/* <span>Air Surcharge Master</span> */}
                         <span>Air Surcharges</span>
+                      </Link>
+                    </li>
+                    <li className="opacity-25">
+                      {/* <Link to="/rate/surcharge/fcl"> */}
+                      <Link to="#">
+                        {/* <span>FCL Surcharge Master</span> */}
+                        <span>Inland Surcharges</span>
                       </Link>
                     </li>
                   </ul>
@@ -409,23 +411,23 @@ const SidebarContent = props => {
                     <span>Users</span>
                   </Link>
                 </li>
-                <li>
-                  <Link to="/#">
+                <li className="opacity-25">
+                  <Link to="#">
                     <span>Products</span>
                   </Link>
                 </li>
-                <li>
-                  <Link to="/#">
+                <li className="opacity-25">
+                  <Link to="#">
                     <span>Network</span>
                   </Link>
                 </li>
-                <li>
-                  <Link to="/#">
+                <li className="opacity-25">
+                  <Link to="#">
                     <span>Integrations</span>
                   </Link>
                 </li>
-                <li>
-                  <Link to="/#">
+                <li className="opacity-25">
+                  <Link to="#">
                     <span>Subscription</span>
                   </Link>
                 </li>

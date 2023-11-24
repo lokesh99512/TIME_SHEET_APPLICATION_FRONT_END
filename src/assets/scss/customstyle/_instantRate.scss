@@ -90,6 +90,10 @@
   }.location_img {
     width: 25px;
   }
+  .searchform{
+    max-height: 250px;
+    overflow: scroll;
+  }
 }
 
 @media only screen and (max-width: 767px) {

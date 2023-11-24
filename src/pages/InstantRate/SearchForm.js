@@ -45,6 +45,11 @@ const shipmentClass = [
     {value: "9", label: '9'},
 ]
 
+const cargoWeightUnitOption= [
+    {value: 'KG', name: 'KG'},
+    {value: 'MT', name: 'MT'},
+]
+
 const optionIncoterm = [
     {value: "CPT", label: 'Carraige Paid To(CPT)'},
     {value: "CFR", label: 'Cost & Freight(CFR)'},
@@ -55,6 +60,11 @@ const optionIncoterm = [
     {value: "DDU", label: 'Delivery Duty Unpaid(DDU)'},
     {value: "DPU", label: 'Delivered At Place Unploaded(DPU)'},
     {value: "EXW", label: 'EX Works(EXW)'},
+]
+
+const optionContainerTypeRefrigerated = [
+    {id: '_refrigerated1',value: "40_refrigerated", name: "20' Refrigerated"},
+    {id: '_refrigerated2',value: "40_refrigerated", name: "40' Refrigerated"},
 ]
 
 const optionCargoType = [
@@ -70,6 +80,15 @@ const optionCurrency = [
     {value: "eur", name: "Euro", code: '€'},
     {value: "rupee", name: "Rupee", code: '₹'},
     {value: "jpy", name: "Yen", code: '¥'},
+]
+
+const optionContainerType = [
+    {id: '_standard1',value: "20_standard", name: "20' Standard"},
+    {id: '_standard2',value: "40_standard", name: "40' Standard"},
+    {id: '_high_cube1',value: "40_high_cube", name: "40' High Cube"},
+    {id: '_refrigerated1',value: "40_refrigerated", name: "20' Refrigerated"},
+    {id: '_refrigerated2',value: "40_refrigerated", name: "40' Refrigerated"},
+    {id: '_high_cube2',value: "45_high_cube", name: "45' High Cube"},
 ]
 
 const optionContainerTypeWithoutRefri = [
@@ -109,7 +128,7 @@ const SearchForm = ({activeTab}) => {
     const [containerType, setContainerType] = useState({
         cargoType:"",
         containerClass:"",
-        weight:{ currency: { name: 'Rupee', value: 'rupee', code: '₹' }, value: '' }
+        // cargo_weight: { weight: "MT",value: ''},
     })
 
     console.log(containerType,"<--containerType");
@@ -154,6 +173,8 @@ const SearchForm = ({activeTab}) => {
         if (blank) {
             dispatch({ type: UPDATE_VALUE_BLANK, payload: blank_name })
         }
+        console.log(item,"<--item");
+        console.log(name,"<--name");
         dispatch({ type: UPDATE_SEARCH_INSTANT_RATE_DATA, payload: { item, name } });
         console.log(searchForm, "searchForm")
     }
@@ -206,7 +227,8 @@ const SearchForm = ({activeTab}) => {
         }
         let updatedArray = [...newArray];
         setContainerData(prev=>({...prev,containerArray:updatedArray}));
-        dispatch({ type: UPDATE_CONTAINER_CHANGE, payload: {...containerData,containerArray:updatedArray} })
+        // console.log({...containerData,updatedArray},"???");
+        dispatch({ type: UPDATE_CONTAINER_CHANGE, payload: {...searchForm?.container_type,...containerType,...containerData,containerArray:updatedArray} })
     }
 
     const countPlusHandler = (e, id, item, name) => {
@@ -250,7 +272,7 @@ const SearchForm = ({activeTab}) => {
     const containerConfirmHandler = ()=>{
         console.log(containerType, "containerType-------------");
         console.log(containerData, "containerData-------------");
-        dispatch({ type: UPDATE_CONTAINER_TYPE_CONFIRM, payload: {...containerData,...containerType} });
+        dispatch({ type: UPDATE_CONTAINER_TYPE_CONFIRM, payload: {...searchForm?.container_type,...containerData,...containerType} });
         setIsOpen(false);
     }
 
@@ -525,7 +547,7 @@ const SearchForm = ({activeTab}) => {
                 </div>
                 {isOpen && dropId === 11 ? (
                   <div
-                    className="common_dropdown_wrap container_drop_wrap"
+                    className="searchform common_dropdown_wrap container_drop_wrap"
                     ref={dropdownRef}
                   >
                     <div className="mb-3 d-flex justify-content-evenly flex-wrap">
@@ -572,7 +594,7 @@ const SearchForm = ({activeTab}) => {
                             Spl equ
                         </button>
                     </div>
-                        <div className="mb-3">
+                        {containerDetailsBtnActive == "Hazardous" && <div className="mb-3">
                             <label className="form-label">Class</label>
                             <Select
                                 // name='department'
@@ -593,7 +615,7 @@ const SearchForm = ({activeTab}) => {
                                 classNamePrefix="select2-selection form-select"
                             isDisabled={containerDetailsBtnActive !== 'Hazardous'}
                             />
-                    </div>
+                    </div>}
                     {/* select unit   */}
                     <label className="form-label">Container Type</label>
                     <div className="inner">
@@ -643,16 +665,16 @@ const SearchForm = ({activeTab}) => {
                             className="common_dropdown_wrap quantity_drop_wrap"
                             ref={dropdownRef}
                             >
-                            {(createFields?.cargo_type?.value === "refrigerated"
+                            {(containerDetailsBtnActive === "Refrigerated"
                                 ? optionContainerTypeRefrigerated
-                                : createFields?.cargo_type?.value === "hazardous"
+                                : containerDetailsBtnActive === "Hazardous"
                                 ? optionContainerType
                                 : optionContainerTypeWithoutRefri || ""
                             ).map(({ id, value, name }, index) => (
                                 <li
                                 key={index}
                                 className={`${
-                                    createFields?.container_type?.value === value
+                                    searchForm?.container_type?.containerArray?.value === value
                                     ? "active"
                                     : ""
                                 }`}
@@ -663,11 +685,12 @@ const SearchForm = ({activeTab}) => {
                                     <button
                                         className="minus"
                                         onClick={(e) => {
-                                        countMinusHandler(e, id);
-                                        handleContainerChangeHandler(
-                                            { id, value, name },
-                                            "container_type"
-                                        );
+                                            countMinusHandler(e, id, { id, value, name }, 'container_type');
+                                        // countMinusHandler(e, id);
+                                        // handleContainerChangeHandler(
+                                        //     { id, value, name },
+                                        //     "container_type"
+                                        // );
                                         }}
                                     >
                                         {" "}
@@ -685,11 +708,15 @@ const SearchForm = ({activeTab}) => {
                                     <button
                                         className="plus"
                                         onClick={(e) => {
-                                        countPlusHandler(e, id);
-                                        handleContainerChangeHandler(
-                                            { id, value, name },
-                                            "container_type"
-                                        );
+                                            // console.log(e,"<-plus test e");
+                                            // console.log(id,"<-plus test id");
+                                            console.log(id,value,name,"idvalname");
+                                            countPlusHandler(e, id, { id, value, name }, 'container_type');
+                                        // countPlusHandler(e, id);
+                                        // handleContainerChangeHandler(
+                                        //     { id, value, name },
+                                        //     "container_type"
+                                        // );
                                         }}
                                     >
                                         {" "}
@@ -711,7 +738,7 @@ const SearchForm = ({activeTab}) => {
                             <label className="form-label">Weight</label>
                         </div>
                                 
-                                <div className="prof_wrap number_field_wrap d-flex mb-3">
+                                {/* <div className="prof_wrap number_field_wrap d-flex mb-3">
                                 
                                 <div className="con d-flex align-items-center w-100">
                                     <div className="left_field">
@@ -737,7 +764,69 @@ const SearchForm = ({activeTab}) => {
                                         }
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
+                            {console.log(searchForm?.container_type?.cargo_weight,"<--weight_test")}
+
+                                <div className="prof_wrap number_field_wrap d-flex mb-3">
+                                    <div className="con d-flex align-items-center w-100">
+                                        <div className="left_field">
+                                            <input type="number" value={searchForm?.container_type?.cargo_weight?.value || ''} name="cargo_weight" id="cargo_weight" placeholder='Enter amount' onChange={(e) => { handleChangeHandler({...searchForm?.container_type,cargo_weight:{ ...searchForm?.container_type?.cargo_weight, value: e.target.value }}, 'container_type') }} />
+                                        </div>
+                                        <div className="common_dropdwon_btn_wrap bottom_drop_field">
+                                            <div
+                                                id='more_menu'
+                                                className={`d-flex align-items-center ${isSubOpen && subDropId === 8 ? 'openmenu' : ''}`}
+                                                onClick={() => { toggleSubDropdown(8) }}
+                                            >
+                                                {/* <span>{createFields?.cargo_weight?.weight} </span> */}
+                                                <span>{searchForm?.container_type?.cargo_weight?.weight} </span>
+                                                <i className="mdi mdi-chevron-down" />
+                                            </div>
+                                            {isSubOpen && subDropId === 8 ?
+                                                <ul className="common_dropdown_wrap quantity_drop_wrap" ref={dropdownRef}>
+                                                    {(cargoWeightUnitOption || '')?.map((item, index) => (
+                                                
+                                                        // <li key={index} className={`${createFields?.cargo_weight?.weight === item?.value ? 'active' : ''}`} onClick={() => { handleChangeHandler({ ...createFields?.cargo_weight, weight: item?.value }, 'cargo_weight'); setIsSubOpen(false); }}>
+                                                        <li key={index} className={`${searchForm?.container_type?.cargo_weight?.weight === item?.value ? 'active' : ''}`} onClick={() => { handleChangeHandler({...searchForm?.container_type,cargo_weight:{ ...searchForm?.container_type?.cargo_weight, weight: item?.value }}, 'container_type'); setIsSubOpen(false); }}>
+                                                            {item?.name}
+                                                        </li>
+                                                    ))}
+                                                </ul> : null
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                            {/* <div className="prof_wrap number_field_wrap d-flex mb-3">
+                                    <div className="icon d-flex align-items-center justify-content-center">
+                                        <img src={createFields?.shipping_by?.img || cube_filled} alt="Avatar" />
+                                    </div>
+                                    <div className="con d-flex align-items-center">
+                                        <div className="left_field">
+                                            <label htmlFor='cargo_value' className="form-label">Cargo Weight</label>
+                                            <input type="number" value={createFields?.cargo_weight?.value || ''} name="cargo_weight" id="cargo_weight" placeholder='Enter amount' onChange={(e) => { handleChangeHandler({ ...createFields?.cargo_weight, value: e.target.value }, 'cargo_weight') }} />
+                                        </div>
+                                        <div className="common_dropdwon_btn_wrap bottom_drop_field">
+                                            <div
+                                                id='more_menu'
+                                                className={`d-flex align-items-center ${isOpen && dropId === 8 ? 'openmenu' : ''}`}
+                                                onClick={() => { toggleDropdown(12) }}
+                                            >
+                                                <span>{createFields?.cargo_weight?.weight} </span>
+                                                <i className="mdi mdi-chevron-down" />
+                                            </div>
+                                            {isOpen && dropId === 12 ?
+                                                <ul className="common_dropdown_wrap quantity_drop_wrap" ref={dropdownRef}>
+                                                    {(cargoWeightUnitOption || '')?.map((item, index) => (
+                                                        <li key={index} className={`${createFields?.cargo_weight?.weight === item?.value ? 'active' : ''}`} onClick={() => { handleChangeHandler({ ...createFields?.cargo_weight, weight: item?.value }, 'cargo_weight'); setIsOpen(false); }}>
+                                                            {item?.name}
+                                                        </li>
+                                                    ))}
+                                                </ul> : null
+                                            }
+                                        </div>
+                                    </div>
+                                </div> */}
 
                     </div>
                     {/* select weight  */}
@@ -817,7 +906,7 @@ const SearchForm = ({activeTab}) => {
                 </div>
                 {isOpen && dropId === 11 ? (
                   <div
-                    className="common_dropdown_wrap container_drop_wrap"
+                    className="searchform common_dropdown_wrap container_drop_wrap"
                     ref={dropdownRef}
                   >
                     <div className="mb-3 d-flex justify-content-evenly flex-wrap">
@@ -863,7 +952,7 @@ const SearchForm = ({activeTab}) => {
                             Spl equ
                         </button>
                     </div>
-                        <div className="mb-3">
+                        {shipmentDetailsBtnActive == "Hazardous" && <div className="mb-3">
                             <label className="form-label">Class</label>
                             <Select
                                 // name='department'
@@ -884,7 +973,7 @@ const SearchForm = ({activeTab}) => {
                                 classNamePrefix="select2-selection form-select"
                             isDisabled={shipmentDetailsBtnActive !== 'Hazardous'}
                             />
-                    </div>
+                    </div>}
                     {shipmentDetails.length !== 0 && (
                       <Accordion flush open={open} toggle={toggle}>
                         {(shipmentDetails || "")?.map((item, index) => (
