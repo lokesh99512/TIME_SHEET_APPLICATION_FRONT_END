@@ -12,6 +12,7 @@ import FilterSalesComp from '../partials/FilterSalesComp'
 import { FILTER_QUOTATION_DATA, QUOTATION_RESULT_SELECTED } from '../../../store/Sales/actiontype'
 import QuotationModalComp from './partials/QuotationModalComp'
 import PreviewQuotationModal from './partials/PreviewQuotationModal'
+import { useLocation } from 'react-router-dom'
 
 export default function Quotations() {
     document.title = "Sales || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
@@ -34,7 +35,9 @@ export default function Quotations() {
         // quote_value: '',
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
+    const navigateType = useLocation();
     const dispatch = useDispatch();
+    console.log(navigateType,"navigateType");
 
     const viewPopupHandler = (data,type) => {
         setModal(true);
@@ -205,15 +208,15 @@ export default function Quotations() {
         },
     ]);
 
-    let wonCount = quotationData?.filter((obj) => obj?.quote_status?.toLowerCase() === 'won');
-    let lotCount = quotationData?.filter((obj) => obj?.quote_status?.toLowerCase() === 'lost');
-    let progressCount = quotationData?.filter((obj) => obj?.quote_status?.toLowerCase() === 'in progress');
-
     // preview Modal
     const previewModalHand = () => {
         setPreviewModal(!previewModal);
     }
-    // preview Modal
+    
+    // ----------------- quotation rate
+    let wonCount = quotationData?.filter((obj) => obj?.quote_status?.toLowerCase() === 'won');
+    let lotCount = quotationData?.filter((obj) => obj?.quote_status?.toLowerCase() === 'lost');
+    let progressCount = quotationData?.filter((obj) => obj?.quote_status?.toLowerCase() === 'in progress');    
 
     const quotationRateData = [
         {
@@ -271,7 +274,11 @@ export default function Quotations() {
                         {/* sales table && filter */}
                         <SalesCommonTable
                             columns={columns}
-                            data={quotationData}
+                            // data={quotationData}
+                            data={navigateType?.state?.id === 'Quotation Won' ? quotationData?.filter((item) => item?.quote_status?.toLowerCase() === 'won') : 
+                                navigateType?.state?.id === 'Quotation Lost' ? quotationData?.filter((item) => item?.quote_status?.toLowerCase() === 'lost') :
+                                navigateType?.state?.id === 'Quotation In progress' ? quotationData?.filter((item) => item?.quote_status?.toLowerCase() === 'in progress')
+                                 : quotationData}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}

@@ -27,6 +27,7 @@ import {
   importantmails,
   inLandTableData,
   inboxmails,
+  inquiryTableData,
   invoiceList,
   janEarningData,
   janTopSellingData,
@@ -998,7 +999,18 @@ const fakeBackend = () => {
     })
   })
 
-
+// Inquiry Data ------------------------------------------------
+  mock.onGet(url.GET_INQUIRY_TABLE).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if(inquiryTableData) {
+          resolve([200, inquiryTableData]);
+        } else {
+          reject([400, 'Cannot get Inquiry Data']);
+        }
+      });
+    })
+  })
   
 
   // rate/surcharge/ fclsurcharge

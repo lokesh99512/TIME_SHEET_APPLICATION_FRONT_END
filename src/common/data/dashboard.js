@@ -135,30 +135,30 @@ const salesEnquiryData = [
     {
         id: 1,
         title: 'Total Inquires',
-        rate: '30',
+        rate: '8',
         compare_rate: '21',
-        rate_type: 'down'
+        rate_type: 'up'
     },
     {
         id: 2,
         title: 'Pending Enquires',
-        rate: '15',
+        rate: '2',
         compare_rate: '4',
         rate_type: 'up'
     },
     {
         id: 3,
         title: 'Enquires Actioned',
-        rate: '15',
+        rate: '5',
         compare_rate: '3',
         rate_type: 'up'
     },
     {
         id: 4,
-        title: 'SLA Branched',
-        rate: '2',
+        title: 'SLA breached',
+        rate: '1',
         compare_rate: '6',
-        rate_type: 'up'
+        rate_type: 'down'
     },
 ]
 
@@ -167,29 +167,29 @@ const quotSumData = [
         id: 1,
         title: 'Quotation Sent',
         rate: '8',
-        compare_rate: '21',
-        rate_type: 'down'
+        compare_rate: '50',
+        rate_type: 'up'
     },
     {
         id: 2,
         title: 'Quotation Won',
         rate: '3',
-        compare_rate: '04',
+        compare_rate: '33',
         rate_type: 'up'
     },
     {
         id: 3,
         title: 'Quotation Lost',
         rate: '2',
-        compare_rate: '3',
-        rate_type: 'up'
+        compare_rate: '25',
+        rate_type: 'down'
     },
     {
         id: 4,
         title: 'Quotation In progress',
         rate: '3',
-        compare_rate: '6',
-        rate_type: 'up'
+        compare_rate: '',
+        rate_type: ''
     },
 ]
 
