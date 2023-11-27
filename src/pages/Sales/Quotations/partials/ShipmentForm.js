@@ -1,9 +1,12 @@
-import { useFormik } from 'formik'
-import React from 'react'
-import { Card, CardBody, Input } from 'reactstrap'
+import { useFormik } from 'formik';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import Select from "react-select";
+import { Card, CardBody, Input } from 'reactstrap';
 
-const ShipmentForm = ({shipmentDetails}) => {
+const ShipmentForm = () => {
+    const shipmentDetailsOld = useSelector((state) => state.sales.createFields);
+    const shipmentDetails = useSelector((state) => state?.instantRate?.searchForm);
     const shipmentDetailsFormik = useFormik({
         initialValues: {
             origin_city: shipmentDetails?.location_from?.address?.label || '',
@@ -13,7 +16,7 @@ const ShipmentForm = ({shipmentDetails}) => {
             cargo_type: shipmentDetails?.cargo_type?.name || '',
             commodity: "",
             cargo_value: shipmentDetails?.cargo_value?.value || '',
-            incoterms: "",
+            incoterms: shipmentDetails?.incoterm || '',
 
             container_type: shipmentDetails?.container_type[0]?.name || '',
             quantity: shipmentDetails?.container_type[0]?.unit || '',

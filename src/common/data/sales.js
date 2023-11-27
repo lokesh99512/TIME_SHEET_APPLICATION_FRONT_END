@@ -2372,11 +2372,24 @@ const optionStatusInquiry = [
     { label: 'SLA', value: 'sla'},
 ]
 
+const optionChargeBasis = [
+    { label: "Per Container", value: "per_container" },
+    { label: "Per BL", value: "per_bill" },
+    { label: "Per Shipment", value: "per_shipment" },
+    { label: "Per TEU", value: "per_teu" },
+    { label: "Per Day/Per Container", value: "per_day_container" },
+    { label: "Per House BL", value: "per_house" },
+    { label: "Per Day", value: "per_day" },
+    { label: "Per Ton", value: "per_ton" },
+    { label: "Per Ton/Per Container", value: "per_ton_container" },
+    { label: "Per CBM", value: "per_cbm" },
+  ];
+
 export {
     quotationBreadcrumb,quotationTableData,optionCustomerName,optionServiceType,optionTransportBy,optionContainerType,optionIncoterm,optionCargoType,optionCurrency,
     optionlocationType,countryList,optionPortList,optionLandTransportBy,searchQuotationResult,weightUnitOption,optionContainerTypeWithoutRefri,optionContainerTypeRefrigerated,
     optionPickupCharge,optionMarkupType,optionCurrencyCharges,optionOriginQuote,optionModeQuote,optionDestQuote,optionStatusQuote,optionQuoteValueQuote,searchQuotationResult1,searchQuotationResult2,searchQuotationResult3,
     cargoWeightUnitOption,optionOriginPortCharge,optionOceanCharge,optionPortDischargeCharge,optionQuoteContacttitle,optionQuoteContactCode,inquiryBreadcrumb,
 
-    inquiryTableData,optionStatusInquiry
+    inquiryTableData,optionStatusInquiry,optionChargeBasis
 }
