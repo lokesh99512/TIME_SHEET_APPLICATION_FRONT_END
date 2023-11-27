@@ -50,6 +50,7 @@ import truck_outline from "./icons/truck-outline.svg";
 import status_update from "./icons/status_update.svg";
 import oocl_logo from "./icons/oocl.png";
 import zim_logo from "./icons/zim.png";
+import filter_img from "./icons/filter.png";
 
 // country------------------
 import azerbaijan from './icons/country/azerbaijan.svg'
@@ -72,7 +73,7 @@ export {
   microsoft_icon,auth_slider1,auth_slider2,auth_slider3,auth_slider4,noti_Icon,message_Icon,
   marker_Img,marker_active_Img,filter_icon,upload_icon,eye_icon,edit_icon,reset_icon,delete_icon,range_indicator,avtar_filled,cube_filled,calendar_filled,location_filled,memoji,
   ship_filled,ship_darkblue,airplane_darkblue,airplane_filled,truk_darkblue,truk_filled,swap_arrow,
-  pickup_icon,pickup_icon2,pickup_icon3,pickup_icon4,pickup_icon5,pickup_icon6,cma_logo,truck_outline,status_update,oocl_logo,zim_logo,
+  pickup_icon,pickup_icon2,pickup_icon3,pickup_icon4,pickup_icon5,pickup_icon6,cma_logo,truck_outline,status_update,oocl_logo,zim_logo,filter_img,
 
 
   

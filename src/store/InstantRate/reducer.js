@@ -1,4 +1,4 @@
-import { UPDATE_CONTAINER_CHANGE, UPDATE_CONTAINER_TYPE_CONFIRM, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_SHIPMENT_DETAILS_CONFIRM, UPDATE_VALUE_BLANK } from "./actionType"
+import { ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_CONTAINER_CHANGE, UPDATE_CONTAINER_TYPE_CONFIRM, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_SHIPMENT_DETAILS_CONFIRM, UPDATE_VALUE_BLANK } from "./actionType"
 
 
 const INIT_STATE = {
@@ -9,10 +9,10 @@ const INIT_STATE = {
         // cargo_weight: { weight: "MT",value: ''},
         // cargo_type: '',
         cargo_value: { currency: { name: 'Rupee', value: 'rupee', code: '₹' }, value: '' },
-        incoterm: '',
-        customerName:'',
-        container_type: {cargo_weight: { weight: "MT",value: ''}},
-        shipment_details:"",
+        // incoterm: '',
+        customerName: '',
+        container_type: { cargo_weight: { weight: "MT", value: '' } },
+        // shipment_details: "",
         cargo_date: '',
         location_from: '',
         location_to: '',
@@ -21,9 +21,6 @@ const INIT_STATE = {
 
 const instantRate = (state = INIT_STATE, action) => {
     switch (action.type) {
-        
-        
-
         case UPDATE_INSTANT_RATE_SWAP:
             return {
                 ...state,
@@ -33,8 +30,26 @@ const instantRate = (state = INIT_STATE, action) => {
                     location_from: state.searchForm.location_to
                 }
             }
+        
+        case ADD_OBJECT_INSTANT_SEARCH:
+            return {
+                ...state,
+                searchForm: {
+                    ...state.searchForm,
+                    [action.payload]: ''
+                }
+            }
+        case REMOVE_OBJECT_INSTANT_SEARCH:
+            const objectCopy = {...state.searchForm};
+            delete objectCopy[action.payload];
+            return {
+                ...state,
+                searchForm: {
+                    ...objectCopy
+                }
+            }
 
-            case UPDATE_VALUE_BLANK:
+        case UPDATE_VALUE_BLANK:
             return {
                 ...state,
                 searchForm: {
@@ -43,9 +58,8 @@ const instantRate = (state = INIT_STATE, action) => {
                 }
             }
 
-            case UPDATE_SEARCH_INSTANT_RATE_DATA:
+        case UPDATE_SEARCH_INSTANT_RATE_DATA:
             const { item, name } = action.payload
-            console.log(item,name,"avcb");
             return {
                 ...state,
                 searchForm: {
@@ -54,7 +68,7 @@ const instantRate = (state = INIT_STATE, action) => {
                 }
             }
 
-            case UPDATE_SEARCH_INSTANT_RATE_DATE:
+        case UPDATE_SEARCH_INSTANT_RATE_DATE:
             const { arrItem } = action.payload
             let newObj = {
                 ...state,
@@ -65,25 +79,24 @@ const instantRate = (state = INIT_STATE, action) => {
             }
             return state = newObj
 
-            case UPDATE_SHIPMENT_DETAILS_CONFIRM:
-                return state = {
-                    ...state,
-                    searchForm: {
-                        ...state.searchForm,
-                        shipment_details: action.payload,
-                    }
+        case UPDATE_SHIPMENT_DETAILS_CONFIRM:
+            return state = {
+                ...state,
+                searchForm: {
+                    ...state.searchForm,
+                    shipment_details: action.payload,
                 }
-            case UPDATE_CONTAINER_TYPE_CONFIRM:
-                return state = {
-                    ...state,
-                    searchForm: {
-                        ...state.searchForm,
-                        container_type: action.payload,
-                    }
+            }
+        case UPDATE_CONTAINER_TYPE_CONFIRM:
+            return state = {
+                ...state,
+                searchForm: {
+                    ...state.searchForm,
+                    container_type: action.payload,
                 }
+            }
 
-            case UPDATE_CONTAINER_CHANGE:
-                // console.log(action.payload,"pyld")
+        case UPDATE_CONTAINER_CHANGE:
             return {
                 ...state,
                 searchForm: {

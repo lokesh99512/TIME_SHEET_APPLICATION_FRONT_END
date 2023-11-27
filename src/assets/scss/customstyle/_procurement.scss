@@ -1376,6 +1376,11 @@ input[type="number"]{
             position: relative;
             margin: 0 auto;
         }
+        .quote_btn {
+            position: absolute;
+            right: 0;
+            top: -7px;
+        }
     }
     .result_tab_wrap {
         ul.nav {

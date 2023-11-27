@@ -6,7 +6,7 @@ import { filter_icon } from "../../../../assets/images";
 import FilterSalesComp from "../../partials/FilterSalesComp";
 import SearchResultCard from './SearchResultCard';
 
-const SearchResultComp = ({QuoteModalHandler}) => {
+const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
     const [activeTab, setactiveTab] = useState("all");
     const [isRight, setIsRight] = useState(false);
     const inputArr = {
@@ -25,6 +25,7 @@ const SearchResultComp = ({QuoteModalHandler}) => {
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
     const resultData = useSelector((state) => state?.sales?.quotation_result_data);
+    const quote_Selected = useSelector((state) => state.sales.quote_selected_data);
 
     const navToggle = (tab) => {
         if (activeTab !== tab) {
@@ -32,14 +33,14 @@ const SearchResultComp = ({QuoteModalHandler}) => {
         }
     };
 
-     // right filter sidebar 
-     const toggleRightCanvas = () => {
+    // right filter sidebar 
+    const toggleRightCanvas = () => {
         setIsRight(!isRight);
     };
 
     const applyFilterHandler = () => {
         setIsRight(false);
-        console.log(filterDetails,"filterDetails Quotation Result-----------------------");
+        console.log(filterDetails, "filterDetails Quotation Result-----------------------");
     }
 
     const clearValueHandler = () => {
@@ -50,10 +51,13 @@ const SearchResultComp = ({QuoteModalHandler}) => {
         <>
             <div className="search_result_wrap">
                 <div className="length_wrap">
-                    <span>{activeTab === 'all' ? resultData?.length : activeTab === 'preferred' ? 
-                    resultData?.filter(item => item?.quote_type === 'preffered')?.length : 
-                    activeTab === 'cheaper' ? resultData?.filter(item => item?.quote_type === 'cheaper')?.length :
-                    activeTab === 'faster' ? resultData?.filter(item => item?.quote_type === 'faster')?.length : 0} Search Results</span>
+                    <span>{activeTab === 'all' ? resultData?.length : activeTab === 'preferred' ?
+                        resultData?.filter(item => item?.quote_type === 'preffered')?.length :
+                        activeTab === 'cheaper' ? resultData?.filter(item => item?.quote_type === 'cheaper')?.length :
+                            activeTab === 'faster' ? resultData?.filter(item => item?.quote_type === 'faster')?.length : 0} Search Results</span>
+                    
+                    {searchResult && <button type="button" className='btn btn-primary ms-auto quote_btn' onClick={QuoteModalHandler} 
+                             disabled={quote_Selected?.length === 0}>Quote Now</button>}
                 </div>
                 <div className="result_tab_wrap">
                     <Nav pills className="navtab-bg nav-justified">

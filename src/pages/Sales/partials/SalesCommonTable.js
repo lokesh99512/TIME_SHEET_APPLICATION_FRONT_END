@@ -82,20 +82,20 @@ const SalesCommonTable = ({ columns, data, isGlobalFilter, customPageSize, toggl
                                     <img src={upload_icon} alt="Upload" />Upload file
                                 </button>
                             </div>
-                            <div className="add_btn">
+                            {/* <div className="add_btn">
                                 <button className='border-0' onClick={() => {navidate('/sales/create');dispatch({type: SEARCH_QUOTATION_BLANK});dispatch({type: QUOTATION_RESULT_SELECTED_BLANK});}}>
-                                    <i className='bx bx-plus align-middle'></i> Create
+                                    <i className='bx bx-plus align-middle'></i> Instant Rate
                                 </button>
-                            </div>
+                            </div> */}
                         </>
                     )}
-                    {component === 'inquiry' && (
+                    {/* {component === 'inquiry' && ( */}
                         <div className="add_btn">
                             <button className='border-0' onClick={() => {navidate('/instant-rate/search-rate');dispatch({type: SEARCH_QUOTATION_BLANK});dispatch({type: QUOTATION_RESULT_SELECTED_BLANK});}}>
-                                <i className='bx bx-plus align-middle'></i> Create
+                                <i className='bx bx-plus align-middle'></i> Instant Rate
                             </button>
                         </div>
-                    )}
+                    {/* )} */}
                 </div>
             </div>
             <div className="table_pagination_wrap">

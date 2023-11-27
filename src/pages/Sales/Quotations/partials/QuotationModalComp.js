@@ -2,9 +2,9 @@ import { useFormik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from "react-select";
-import { Accordion, AccordionBody, AccordionHeader, AccordionItem, Card, CardBody, Input, Modal } from 'reactstrap';
+import { Accordion, AccordionBody, AccordionHeader, AccordionItem, Modal } from 'reactstrap';
 import { cma_logo, cube_filled, delete_icon, oocl_logo, zim_logo } from '../../../../assets/images';
-import { optionCurrency, optionCurrencyCharges, optionCustomerName, optionMarkupType, optionOceanCharge, optionOriginPortCharge, optionPickupCharge, optionPortDischargeCharge, optionQuoteContactCode, optionQuoteContacttitle } from '../../../../common/data/sales';
+import { optionChargeBasis, optionCurrency, optionCurrencyCharges, optionCustomerName, optionMarkupType, optionOceanCharge, optionOriginPortCharge, optionPickupCharge, optionPortDischargeCharge, optionQuoteContactCode, optionQuoteContacttitle } from '../../../../common/data/sales';
 import { convertToINR, useOutsideClick } from '../../../../components/Common/CommonLogic';
 import { ADD_QUOTE_MODAL_CHARGES, BLANK_MODAL_CHARGE, REMOVE_QUOTE_MODAL_CHARGES, UPDATE_QUOTE_MODAL_CHARGES } from '../../../../store/Sales/Quotation/actiontype';
 import { getCurrencyExchangeRate } from '../../../../store/Sales/actions';
@@ -18,8 +18,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
     const dropdownRef = useRef(null);
     const [open, setOpen] = useState('');
     const [openInner, setOpenInner] = useState('');
-    const quoteData = useSelector((state) => state.sales.quote_selected_data);
-    const shipmentDetails = useSelector((state) => state.sales.createFields);
+    const quoteData = useSelector((state) => state.sales.quote_selected_data);  
     const exchangedata = useSelector((state) => state?.quotation?.currency_ExchangeRate);
     const mainChargeObj = useSelector((state) => state?.quotation?.mainChargeObj);
     const dispatch = useDispatch();
@@ -283,7 +282,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                             Shipment Details
                                         </AccordionHeader>
                                         <AccordionBody accordionId={`shipmentdetails_${quoteData.id}`}>
-                                            <ShipmentForm shipmentDetails={shipmentDetails} />
+                                            <ShipmentForm />
                                         </AccordionBody>
                                     </AccordionItem>                                
                                 </>
@@ -441,7 +440,18 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                     </div>
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            <input type="text" name="uom" id="uom" value={data?.uom || ''} onChange={(e) => handleChange(e.target.value, 'uom', i, 'pickup_quote_charge', item.id)} placeholder='Enter Charge basis' />
+                                                                            {/* <input type="text" name="uom" id="uom" value={data?.uom || ''} onChange={(e) => handleChange(e.target.value, 'uom', i, 'pickup_quote_charge', item.id)} placeholder='Enter Charge basis' /> */}
+                                                                            <Select
+                                                                                value={optionChargeBasis ? optionChargeBasis.find(obj => obj.label === data?.uom) : ''}
+                                                                                name='uom'
+                                                                                onChange={(opt) => {
+                                                                                    handleChange(opt?.label, 'uom', i, 'pickup_quote_charge', item.id);
+                                                                                }}
+                                                                                options={optionChargeBasis}
+                                                                                placeholder='Select'
+                                                                                classNamePrefix="select2-selection form-select"
+                                                                                menuPlacement="auto"
+                                                                            />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-1">
@@ -631,7 +641,18 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                     </div>
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            <input type="text" name="uom" id="uom" value={data?.uom} onChange={(e) => handleChange(e.target.value, 'uom', i, 'originport_quote_charge', item.id)}  />
+                                                                            {/* <input type="text" name="uom" id="uom" value={data?.uom} onChange={(e) => handleChange(e.target.value, 'uom', i, 'originport_quote_charge', item.id)}  /> */}
+                                                                            <Select
+                                                                                value={optionChargeBasis ? optionChargeBasis.find(obj => obj.label === data?.uom) : ''}
+                                                                                name='uom'
+                                                                                onChange={(opt) => {
+                                                                                    handleChange(opt?.label, 'uom', i, 'originport_quote_charge', item.id);
+                                                                                }}
+                                                                                options={optionChargeBasis}
+                                                                                placeholder='Select'
+                                                                                classNamePrefix="select2-selection form-select"
+                                                                                menuPlacement="auto"
+                                                                            />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-1">
@@ -847,7 +868,18 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                     </div>
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            <input type="text" name="uom" id="uom" value={data?.uom || ''} onChange={(e) => handleChange(e.target.value, 'uom', i, 'ocean_quote_charge', item.id)} />
+                                                                            {/* <input type="text" name="uom" id="uom" value={data?.uom || ''} onChange={(e) => handleChange(e.target.value, 'uom', i, 'ocean_quote_charge', item.id)} /> */}
+                                                                            <Select
+                                                                                value={optionChargeBasis ? optionChargeBasis.find(obj => obj.label === data?.uom) : ''}
+                                                                                name='uom'
+                                                                                onChange={(opt) => {
+                                                                                    handleChange(opt?.label, 'uom', i, 'ocean_quote_charge', item.id);
+                                                                                }}
+                                                                                options={optionChargeBasis}
+                                                                                placeholder='Select'
+                                                                                classNamePrefix="select2-selection form-select"
+                                                                                menuPlacement="auto"
+                                                                            />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-1">
@@ -1036,7 +1068,18 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                     </div>
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            <input type="text" name="uom" id="uom" value={data?.uom || ''} onChange={(e) => handleChange(e.target.value, 'uom', i, 'port_discharge_charges', item.id)} />
+                                                                            {/* <input type="text" name="uom" id="uom" value={data?.uom || ''} onChange={(e) => handleChange(e.target.value, 'uom', i, 'port_discharge_charges', item.id)} /> */}
+                                                                            <Select
+                                                                                value={optionChargeBasis ? optionChargeBasis.find(obj => obj.label === data?.uom) : ''}
+                                                                                name='uom'
+                                                                                onChange={(opt) => {
+                                                                                    handleChange(opt?.label, 'uom', i, 'port_discharge_charges', item.id);
+                                                                                }}
+                                                                                options={optionChargeBasis}
+                                                                                placeholder='Select'
+                                                                                classNamePrefix="select2-selection form-select"
+                                                                                menuPlacement="auto"
+                                                                            />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-1">
