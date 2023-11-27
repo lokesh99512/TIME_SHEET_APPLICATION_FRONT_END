@@ -617,7 +617,7 @@ export default function UploadCustomerData() {
                                                                     </div>
                                                                 </div>
                                                                 <div className="col-12 col-md-6">
-                                                                    <div className="mb-3">
+                                                                    <div className="">
                                                                         <label className="form-label">Email Id</label>
                                                                     </div>
                                                                             <Input
@@ -1032,7 +1032,7 @@ export default function UploadCustomerData() {
                                                                     </div>
                                                                 </div>
                                                                 <div className="col-12 col-md-6">
-                                                                    <div className="mb-3">
+                                                                    <div className="">
                                                                         <label className="form-label">Email Id</label>
                                                                     </div>
                                                                             <Input

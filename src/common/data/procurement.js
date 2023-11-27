@@ -139,17 +139,17 @@ const fclSurchargeBreadcrumb = [
         link: '/#',
         active: false
     },
-    // {
-    //     label: 'Ocean Freight',
-    //     link: '/#',
-    //     active: false
-    // },
     {
-        // label: 'FCL Surcharge master',
-        label: 'Inland Surcharges',
+        label: 'Ocean Freight',
         link: '/#',
-        active: true
+        active: false
     },
+    // {
+    //     // label: 'FCL Surcharge master',
+    //     label: 'Inland Surcharges',
+    //     link: '/#',
+    //     active: true
+    // },
 ]
 // ---------------------- breadcrumbs --------------------------------------
 
