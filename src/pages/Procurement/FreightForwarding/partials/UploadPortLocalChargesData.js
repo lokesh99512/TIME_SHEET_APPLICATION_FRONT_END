@@ -72,6 +72,7 @@ const chargeCode = [
   { label: "ADDON", value: "ADDON" },
   { label: "LSF", value: "LSF" },
   { label: "ARD", value: "ARD" },
+  { label: "Add New", value: "Add New" },
 ];
 const chargeBasis = [
   { label: "Per Container", value: "per_container" },
@@ -331,12 +332,15 @@ export default function UploadPortLocalChargesData() {
                                         <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
                                           <div className="mb-3">
                                             <label className="form-label">
-                                              Charge Code
+                                              Surcharge Code
                                             </label>
                                             <Select
                                               name={`mainBox[${index}].chargeCode`}
                                               value={chargeCode ? chargeCode.find((option) => option.value === formik.values.mainBox[index].chargeCode) : ""}
                                               onChange={(e) => {
+                                                if (e.label == "Add New") {
+                                                  navigate("/freight/ocean/upload/PortLocalCharges/add-new")
+                                              }
                                                 formik.setFieldValue(`mainBox[${index}].chargeCode`, e.value);
                                               }}
                                               options={chargeCode}
@@ -349,7 +353,7 @@ export default function UploadPortLocalChargesData() {
                                         <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
                                           <div className="mb-3">
                                             <label className="form-label">
-                                              Charge Basis
+                                            Surcharge Basis
                                             </label>
                                             <Select
                                               name={`mainBox[${index}].chargeBasis`}

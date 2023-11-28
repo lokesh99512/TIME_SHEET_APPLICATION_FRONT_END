@@ -1,4 +1,5 @@
 import classnames from "classnames";
+import { useFormik } from "formik";
 import React, { useCallback, useState } from "react";
 import Dropzone from "react-dropzone";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,10 +25,35 @@ import {
 const role = [
   { label: "Mode", value: "Mode" },
 ];
+const manager = [
+  { label: "manager", value: "manager" },
+];
+const location = [
+  { label: "mumbai", value: "mumbai" },
+  { label: "delhi", value: "delhi" },
+];
+
+const initialValue = {
+  firstName:"",
+  lastName:"",
+  email:"",
+  role:"",
+  password:"",
+  reEnterdPassword:"",
+  manager:"",
+  location:"",
+}
 
 
 export default function AddUserData() {
   const navigate = useNavigate();
+
+  const formik = useFormik({
+    initialValues:initialValue,
+    onSubmit : (values)=>{
+      console.log(values,"<---values");
+    }
+  })
 
 
 
@@ -58,8 +84,8 @@ export default function AddUserData() {
                               type="text"
                               name="firstName"
                               id="firstName"
-                            //   value={}
-                            //   onChange={}
+                              value={formik.values.firstName}
+                              onChange={formik.handleChange}
                               className="form-control"
                               placeholder="Enter First Name"
                             />
@@ -76,8 +102,8 @@ export default function AddUserData() {
                               type="text"
                               name="lastName"
                               id="lastName"
-                            //   value={}
-                            //   onChange={}
+                              value={formik.values.lastName}
+                              onChange={formik.handleChange}
                               className="form-control"
                               placeholder="Enter Last Name"
                             />
@@ -93,8 +119,8 @@ export default function AddUserData() {
                               type="text"
                               name="email"
                               id="email"
-                            //   value={}
-                            //   onChange={}
+                              value={formik.values.email}
+                              onChange={formik.handleChange}
                               className="form-control"
                               placeholder="Enter Email id"
                             />
@@ -111,20 +137,20 @@ export default function AddUserData() {
                           </label>
                           <div className="">
                             <Select
-                            // value={
-                            //     role
-                            //       ? role.find(
-                            //           (option) =>
-                            //             option.value ===
-                            //             formik.values.role
-                            //         )
-                            //       : ""
-                            //   }
+                            value={
+                                role
+                                  ? role.find(
+                                      (option) =>
+                                        option.value ===
+                                        formik.values.role
+                                    )
+                                  : ""
+                              }
+                              onChange={(e) => {
+                                formik.setFieldValue("role", e.value);
+                              }}
                               name="role"
                               id="role"
-                            //   onChange={(opt) => {
-                            //     handleSelectGroup("surchargeCategory", opt);
-                            //   }}
                               options={role}
                               placeholder={"Select Role"}
                               classNamePrefix="select2-selection form-select"
@@ -141,9 +167,9 @@ export default function AddUserData() {
                             <Input
                               type="password"
                               name="password"
-                              id="password1"
-                            //   value={}
-                            //   onChange={}
+                              // id="password1"
+                              value={formik.values.password}
+                              onChange={formik.handleChange}
                               className="form-control"
                               placeholder="Enter Password"
                               autoComplete="off"
@@ -159,13 +185,71 @@ export default function AddUserData() {
                           <div className="">
                             <Input
                               type="password"
-                              name="password2"
-                              id="password2"
-                            //   value={}
-                            //   onChange={}
+                              name="reEnterdPassword"
+                              // id="password2"
+                              value={formik.values.reEnterdPassword}
+                              onChange={formik.handleChange}
                               className="form-control"
                               placeholder="Re-Enter Password"
                               autoComplete="off"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* added 2 new fields */}
+                      <div className="col-md-6 col-lg-4 mb-4">
+                        <div className="row">
+                          <label className="form-label">
+                            Manager
+                          </label>
+                          <div className="">
+                            <Select
+                            value={
+                              manager
+                                  ? manager.find(
+                                      (option) =>
+                                        option.value ===
+                                        formik.values.manager
+                                    )
+                                  : ""
+                              }
+                              onChange={(e) => {
+                                formik.setFieldValue("manager", e.value);
+                              }}
+                              name="manager"
+                              id="manager"
+                              options={manager}
+                              placeholder={"Select Role"}
+                              classNamePrefix="select2-selection form-select"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-6 col-lg-4 mb-4">
+                        <div className="row">
+                          <label className="form-label">
+                            Location
+                          </label>
+                          <div className="">
+                            <Select
+                            value={
+                              location
+                                  ? location.find(
+                                      (option) =>
+                                        option.value ===
+                                        formik.values.location
+                                    )
+                                  : ""
+                              }
+                              onChange={(e) => {
+                                formik.setFieldValue("location", e.value);
+                              }}
+                              name="role"
+                              id="role"
+                              options={location}
+                              placeholder={"Select Role"}
+                              classNamePrefix="select2-selection form-select"
                             />
                           </div>
                         </div>
@@ -175,7 +259,7 @@ export default function AddUserData() {
                     <div className="row">
                       <div className="d-flex justify-content-center">
                         <div className="mb-3 mx-3 d-flex justify-content-end">
-                          <button className=" btn btn-primary">Save</button>
+                          <button className=" btn btn-primary" onClick={formik.handleSubmit}>Save</button>
                         </div>
                         <div className="mb-3 mx-3 d-flex justify-content-end">
                           <button className=" btn btn-primary">Cancel</button>

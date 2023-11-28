@@ -384,6 +384,9 @@ export default function UploadFreightData() {
                                                                                     value={optionSurchargesName ? optionSurchargesName.find(obj => obj.value === item.surcharges_name) : ''}
                                                                                     name='surcharges_name'
                                                                                     onChange={(opt) => {
+                                                                                        if (opt.label == "Add New") {
+                                                                                            navigate("/freight/upload/fcl/add-new")
+                                                                                        }
                                                                                         handleSelectGroup2(opt.value, 'surcharges_name', index);
                                                                                     }}
                                                                                     options={optionSurchargesName}

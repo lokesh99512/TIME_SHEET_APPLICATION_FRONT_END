@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { getCompanyDetailsData } from "../../store/Settings/actions";
 import FileUpload from "./FileUpload";
-import { entityType, industryType, placeOfSupply } from "../../common/data/settings";
+import { city_list, country_list, entityType, industryType, placeOfSupply, state_list, zipcode_list } from "../../common/data/settings";
 // import industryType from "../../common/data/settings"
 
 // const industryType = [{ label: "Supply Chain", value: "Supply Chain" }];
@@ -358,11 +358,15 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="city"
+                            list="cityList"
                             value={companyDetailsFormik?.values?.city}
                             onChange={companyDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
                           />
+                          <datalist id="cityList">
+                              {city_list && city_list.map((item,i)=><option key={i} value={item} />)}
+                            </datalist>
                         </div>
 
                         <div className="col-12 col-md-6 mb-4">
@@ -370,11 +374,15 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="state"
+                            list="stateList"
                             value={companyDetailsFormik?.values?.state}
                             onChange={companyDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
                           />
+                          <datalist id="stateList">
+                              {state_list && state_list.map((item,i)=><option key={i} value={item} />)}
+                            </datalist>
                         </div>
                       </div>
 
@@ -384,11 +392,15 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="zipcode"
+                            list="zipcodeList"
                             value={companyDetailsFormik?.values?.zipcode}
                             onChange={companyDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
                           />
+                          <datalist id="zipcodeList">
+                              {zipcode_list && zipcode_list.map((item,i)=><option key={i} value={item} />)}
+                            </datalist>
                         </div>
 
                         <div className="col-12 col-md-6 mb-4">
@@ -396,11 +408,15 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="country"
+                            list="countryList"
                             value={companyDetailsFormik?.values?.country}
                             onChange={companyDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
                           />
+                            <datalist id="countryList">
+                              {country_list && country_list.map((item,i)=><option key={i} value={item} />)}
+                            </datalist>
                         </div>
                       </div>
 
