@@ -341,7 +341,7 @@ const SidebarContent = props => {
                     </li>
                     <li className="opacity-25">
                       {/* <Link to="/rate/surcharge/fcl"> */}
-                      <Link to="/freight/ocean/lcl">
+                      <Link to="#">
                         {/* <span>FCL Surcharge Master</span> */}
                         <span>Inland Surcharges</span>
                       </Link>

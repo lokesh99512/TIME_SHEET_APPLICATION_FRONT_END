@@ -6911,6 +6911,7 @@ const optionSurchargesName = [
     { label: "ADDON - Additional Charge", value: "addon" },
     { label: "LSF - Low Sulphur Surcharge", value: "lsf" },
     { label: "ARD - Import Haulage Charge", value: "ard" },
+    { label: "Add New", value: "Add New" },
 ]
 const optionMultiDestination = [
     { value: 'selectAll', label: 'Select All' },

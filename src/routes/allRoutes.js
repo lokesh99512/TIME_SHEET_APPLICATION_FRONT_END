@@ -147,6 +147,9 @@ import UploadVendorData from "../pages/Parties/UploadVendorData";
 import InstantRate from "../pages/InstantRate/InstantRate";
 import FclInlandCharge from "../pages/Procurement/FreightForwarding/partials/FCL/FclInlandCharge";
 import FclInlandUpload from "../pages/Procurement/FreightForwarding/partials/FCL/FclInlandUpload";
+import OceanFCLSurchargeNameAddNew from "../pages/Procurement/FreightForwarding/partials/OceanFCLSurchargeNameAddNew";
+import PortLocalChargesSurchargeCodeAddNew from "../pages/Procurement/FreightForwarding/partials/PortLocalChargesSurchargeCodeAddNew";
+import OceanInlandSurchargeNameAddNew from "../pages/Procurement/FreightForwarding/partials/FCL/OceanInlandSurchargeNameAddNew";
 
 const userRoutes = [
   //dashboard
@@ -173,8 +176,11 @@ const userRoutes = [
   { path: "/freight/air/console", component: <AirConsoleComp /> },
   { path: "/freight/air/local", component: <AirLocalFreight /> },
   { path: "/freight/upload/:tabName", component: <UploadFreightData /> },
+  { path: "/freight/upload/fcl/add-new", component: <OceanFCLSurchargeNameAddNew /> },
   { path: "/freight/upload/inland", component: <FclInlandUpload /> },
+  { path: "/freight/upload/inland/add-new", component: <OceanInlandSurchargeNameAddNew /> },
   { path: "/freight/ocean/upload/:tabName", component: <UploadPortLocalChargesData /> },
+  { path: "/freight/ocean/upload/PortLocalCharges/add-new", component: <PortLocalChargesSurchargeCodeAddNew /> },
 
 
 
