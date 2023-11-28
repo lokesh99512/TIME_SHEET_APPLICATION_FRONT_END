@@ -139,17 +139,17 @@ const fclSurchargeBreadcrumb = [
         link: '/#',
         active: false
     },
-    // {
-    //     label: 'Ocean Freight',
-    //     link: '/#',
-    //     active: false
-    // },
     {
-        // label: 'FCL Surcharge master',
-        label: 'Inland Surcharges',
+        label: 'Ocean Freight',
         link: '/#',
-        active: true
+        active: false
     },
+    // {
+    //     // label: 'FCL Surcharge master',
+    //     label: 'Inland Surcharges',
+    //     link: '/#',
+    //     active: true
+    // },
 ]
 // ---------------------- breadcrumbs --------------------------------------
 
@@ -6911,6 +6911,7 @@ const optionSurchargesName = [
     { label: "ADDON - Additional Charge", value: "addon" },
     { label: "LSF - Low Sulphur Surcharge", value: "lsf" },
     { label: "ARD - Import Haulage Charge", value: "ard" },
+    { label: "Add New", value: "Add New" },
 ]
 const optionMultiDestination = [
     { value: 'selectAll', label: 'Select All' },

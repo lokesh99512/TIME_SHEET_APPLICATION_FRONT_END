@@ -799,11 +799,13 @@ input[type="number"]{
             .quotation_from_wrap{
                 padding: 16px 20px;
                 @include borderRadius(12px 0 0 12px);
-                border-right: 0 !important;
+                // border-right: 0 !important;
+                @include borderRadius(12px);
             }
             .quotation_to_wrap{
                 padding: 16px 20px 16px 40px;
-                @include borderRadius(0 12px 12px 0);
+                // @include borderRadius(0 12px 12px 0);
+                @include borderRadius(12px);
                 &.openmenu{
                     border-left-color: transparent;
                 }
