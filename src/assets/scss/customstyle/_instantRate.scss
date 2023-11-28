@@ -1,5 +1,6 @@
 .instant_rate_wrapper.create_sales_wrapper {
     border-radius: 6px;
+    min-height: 480px;
 
     .card-header-tabs {
         margin: 0;
@@ -37,36 +38,45 @@
             align-items: center;
             padding: 5px 16px;
             cursor: pointer;
+            justify-content: space-between;
             .con, i {
                 pointer-events: none;
             }
         }
+        .dropdown-menu {
+            padding: 0;
+            width: 100%;
+            border-radius: 12px;
+            background: $white;
+            box-shadow: 0px 7px 29px 0px rgba(100, 100, 111, 0.2);
+            .dropdown-item{
+                padding: 0;
+                .custom-option{
+                    display: flex;
+                    align-items: center;
+                    padding: 9px 16px;
+                    gap: 8px;
+                    border-bottom: 1px solid #E5E7EB;
+                    p{
+                        margin: 0;
+                    }
+                }
+            }
+        }
 
         .quotation_select_port_wrap {
-            .quotation_from_wrap {
-                padding: 6px 20px;
+            .quotation_from_wrap,.quotation_to_wrap {
+                padding: 6px 15px;
             }
-
-            .quotation_to_wrap {
-                padding: 6px 20px 6px 30px;                
+            .swap_btn_wrap{
+                margin: auto 5px;
+                width: 30px;
+                height: 30px;
+                position: static;
             }
 
             .common_dropdwon_btn_wrap .location_img {
                 width: 20px;
-            }
-
-            .swap_btn_wrap {
-                position: absolute;
-                left: 0;
-                right: 0;
-                width: 30px;
-                height: 30px;
-                border-radius: 50px;
-                border: 1px solid #E5E7EB;
-                background: #fff;
-                margin: auto;
-                bottom: 0;
-                top: 0;
             }
             .location_wrap .icon {
                 width: 28px;
@@ -99,25 +109,19 @@
                 }
             }
         }
-
         .prof_wrap {
-            // padding: 2px 16px;
-            padding: 9px 16px;
+            padding: 9px 15px;
         }
-
         .calendar_field_wrap {
             position: relative;
             padding: 0;
             min-height: 38px;
-
             .con {
                 .form-label {
                     top: 10px;
                     left: 50px;
                 }
-
                 .flatpickr-input {
-                    // padding: 0px 0px 0px 20px;
                     padding: 31px 7px 9px 50px;
                 }
             }
@@ -161,50 +165,7 @@
     }
     .location_img {
         width: 25px;
-    }
-    // .searchform {
-    //     max-height: 250px;
-    //     overflow: scroll;
-    // }    
+    }  
 }
-
 
 // -------------------------
-
-.create_sales_wrapper .create_sales_search_forms .quotation_select_port_wrap .swap_btn_wrap {
-    position: absolute;
-    left: 0;
-    right: 0;
-    width: 30px;
-    height: 30px;
-    border-radius: 50px;
-    border: 1px solid #E5E7EB;
-    background: #fff;
-    margin: auto;
-    bottom: 0;
-    top: 0;
-}
-
-// .create_sales_wrapper .create_sales_search_forms .quotation_select_port_wrap .location_wrap .con .form-select__control .form-select__value-container .form-select__placeholder, .create_sales_wrapper .create_sales_search_forms .quotation_select_port_wrap .location_wrap .con .form-select__control .form-select__value-container .form-select__single-value {
-//     font-weight: 600;
-//     font-size: 14px;
-//     line-height: normal;
-//     color: #9CA3AF;
-//     margin: 0;
-// }
-
-// .location_wrap {
-//   .con {
-//     width: 100%;
-//   }
-// }
-
-// .create_sales_wrapper .create_sales_search_forms .quotation_select_port_wrap .quotation_from_wrap, .create_sales_wrapper
-
-
-
-// @media only screen and (max-width: 767px) {
-//   .create_sales_wrapper .create_sales_search_forms .quotation_select_port_wrap {
-//     flex-direction: column;
-//   }
-// }

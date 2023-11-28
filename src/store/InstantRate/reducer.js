@@ -7,7 +7,7 @@ const INIT_STATE = {
         // service_type: '',
         // shipping_by: '',
         // cargo_weight: { weight: "MT",value: ''},
-        // cargo_type: '',
+        cargo_type: { value: "general", name: "General" },
         cargo_value: { currency: { name: 'Rupee', value: 'rupee', code: '₹' }, value: '' },
         // incoterm: '',
         customerName: '',
@@ -78,32 +78,6 @@ const instantRate = (state = INIT_STATE, action) => {
                 }
             }
             return state = newObj
-
-        case UPDATE_SHIPMENT_DETAILS_CONFIRM:
-            return state = {
-                ...state,
-                searchForm: {
-                    ...state.searchForm,
-                    shipment_details: action.payload,
-                }
-            }
-        case UPDATE_CONTAINER_TYPE_CONFIRM:
-            return state = {
-                ...state,
-                searchForm: {
-                    ...state.searchForm,
-                    container_type: action.payload,
-                }
-            }
-
-        case UPDATE_CONTAINER_CHANGE:
-            return {
-                ...state,
-                searchForm: {
-                    ...state.searchForm,
-                    container_type: action.payload
-                }
-            }
 
         default:
             return state;
