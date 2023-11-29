@@ -114,7 +114,7 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanva
                             <tr>
                                 {row.cells.map(cell => {
                                 return (
-                                    <td key={cell.id} {...cell.getCellProps()}>
+                                    <td key={cell.id} {...cell.getCellProps()} style={{backgroundColor : cell?.row?.original?.is_active === false ? "#D3D3D3" : "" }}>
                                     {cell.render("Cell")}
                                     </td>
                                 );
