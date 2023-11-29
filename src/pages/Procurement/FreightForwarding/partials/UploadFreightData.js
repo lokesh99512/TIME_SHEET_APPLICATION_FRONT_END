@@ -10,8 +10,9 @@ import inlandfileData from '../../../../assets/extra/Inlandcharge_Upload.xlsx';
 import { delete_icon } from '../../../../assets/images';
 import { optcurrency, optionCarrierName, optionMultiDestination, optionPaymentType, optionRateSource, optionRateType, optionSurchargesName, optionValidityApp, optionVendorName, optionVendorType } from '../../../../common/data/procurement';
 import { formatBytes, isAnyValueEmpty, isExcelFile } from '../../../../components/Common/CommonLogic';
-import { updateCarrierData } from '../../../../store/Procurement/actions';
+import { addFCLData, updateCarrierData, updateFCLActiveTab } from '../../../../store/Procurement/actions';
 import { BLANK_CARRIER_DATA } from '../../../../store/Procurement/actiontype';
+import { useEffect } from 'react';
 
 export default function UploadFreightData() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
@@ -23,11 +24,21 @@ export default function UploadFreightData() {
     const [fileError, setfileError] = useState('');
     const [removeValue, setRemoveValue] = useState('');
     const carrierData = useSelector((state) => state?.procurement?.carrierDetails);
+    const addFCL = useSelector((state) => state?.procurement?.addFCL);
+    const fclActiveTab = useSelector((state) => state?.procurement?.fclActiveTab);
     const dispatch = useDispatch();
     const { tabName } = useParams();
     const navigateState = useLocation();
 
-    console.log(navigateState,"navigateState");
+    
+
+    useEffect(()=>{
+        setActiveTabProgress(fclActiveTab)
+        if (fclActiveTab === 1) { setProgressValue(33) }
+        if (fclActiveTab === 2) { setProgressValue(66) }
+        if (fclActiveTab === 3) { setProgressValue(100); }
+        setSurcharges(addFCL?.surcharges)
+    },[])
 
     const openSaveConfirmModal = () => {
         setOpenSaveModal(!openSaveModal);
@@ -46,7 +57,7 @@ export default function UploadFreightData() {
         if (activeTabProgress !== tab) {
             if (tab >= 1 && tab <= 3) {
                 setActiveTabProgress(tab)
-
+                dispatch(updateFCLActiveTab(tab))
                 if (tab === 1) { setProgressValue(33) }
                 if (tab === 2) { setProgressValue(66) }
                 if (tab === 3) { setProgressValue(100); }
@@ -82,29 +93,29 @@ export default function UploadFreightData() {
         }
     }
     // ------------- dynamic field ------------------------
+
     const addHandler = () => {
-        setSurcharges(s => {
-            return [
-                ...s,
-                {
-                    surcharges_name: '',
-                    destination: [],
-                    payment_type: 'prepaid',
-                    gp1: '',
-                    gp2: '',
-                    hq1: '',
-                    hq2: '',
-                    rf1: '',
-                    rf2: ''
-                }
-            ]
-        })
+        const newSurcharge = {
+            surcharges_name: '',
+            destination: [],
+            payment_type: 'prepaid',
+            gp1: '',
+            gp2: '',
+            hq1: '',
+            hq2: '',
+            rf1: '',
+            rf2: ''
+        }
+        setSurcharges(s =>[...s, newSurcharge])
+        handleAddFCL("surcharges",[...surcharges,newSurcharge])
     }
+
 
     const removeInputFields = (index) => {
         const rows = [...surcharges];
         rows.splice(index, 1);
         setSurcharges(rows);
+        handleAddFCL("surcharges",rows)
     }
 
     const handleChange = (e, name, index) => {
@@ -112,6 +123,10 @@ export default function UploadFreightData() {
         list[index][name] = e.target.value;
         setSurcharges(list);
     }
+
+    const handleAddFCL = useCallback((name, opt)=>{
+        dispatch(addFCLData(name,opt));
+    },[addFCL])
 
     const handleSelectGroup = useCallback((name, opt) => {
         dispatch(updateCarrierData(name, opt));
@@ -204,6 +219,7 @@ export default function UploadFreightData() {
                                                                         name='rate_type'
                                                                         onChange={(opt) => {
                                                                             handleSelectGroup('rate_type', opt);
+                                                                            handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, rate_type: opt });
                                                                         }}
                                                                         options={optionRateType}
                                                                         classNamePrefix="select2-selection form-select"
@@ -218,6 +234,7 @@ export default function UploadFreightData() {
                                                                         name='rate_source'
                                                                         onChange={(opt) => {
                                                                             handleSelectGroup('rate_source', opt)
+                                                                            handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, rate_source: opt });
                                                                         }}
                                                                         options={optionRateSource}
                                                                         classNamePrefix="select2-selection form-select"
@@ -249,6 +266,7 @@ export default function UploadFreightData() {
                                                                         name='vendor_name'
                                                                         onChange={(opt) => {
                                                                             handleSelectGroup('vendor_name', opt)
+                                                                            handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, vendor_name: opt });
                                                                         }}
                                                                         options={optionVendorName}
                                                                         classNamePrefix="select2-selection form-select"
@@ -264,6 +282,7 @@ export default function UploadFreightData() {
                                                                         name='carrier_name'
                                                                         onChange={(opt) => {
                                                                             handleSelectGroup('carrier_name', opt)
+                                                                            handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, carrier_name: opt });
                                                                         }}
                                                                         options={optionCarrierName}
                                                                         // isDisabled={carrierData?.vendor_type?.value === 'agent'}
@@ -290,13 +309,20 @@ export default function UploadFreightData() {
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
                                                                     <label htmlFor='validity_from' className="form-label">Validity From</label>
-                                                                    <input type="date" name="validity_from" id="validity_from" className='form-control' value={carrierData.validity_from} onChange={(e) => handleSelectGroup('validity_from', e.target.value)} />
+                                                                    <input type="date" name="validity_from" id="validity_from" className='form-control' value={carrierData.validity_from} onChange={(e) => {
+                                                                        handleSelectGroup('validity_from', e.target.value)
+                                                                        handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, validity_from: e.target.value });
+                                                                        }} />
                                                                 </div>
                                                             </div>
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
                                                                     <label htmlFor='validity_to' className="form-label">Validity To</label>
-                                                                    <input type="date" name="validity_to" id="validity_to" className='form-control' value={carrierData.validity_to} onChange={(e) => handleSelectGroup('validity_to', e.target.value)} />
+                                                                    <input type="date" name="validity_to" id="validity_to" className='form-control' value={carrierData.validity_to} onChange={(e) => {
+                                                                        handleSelectGroup('validity_to', e.target.value)
+                                                                        handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, validity_to: e.target.value });
+                                                                        }} />
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -374,7 +400,7 @@ export default function UploadFreightData() {
                                                             <h5>Surcharges</h5>
                                                         </div>
                                                         <form>
-                                                            {surcharges?.map((item, index) => (
+                                                            {addFCL?.surcharges && addFCL?.surcharges?.map((item, index) => (
                                                                 <div key={index} className='upload_surcharges_row'>
                                                                     <div className="row">
                                                                         <div className="col-lg-3">

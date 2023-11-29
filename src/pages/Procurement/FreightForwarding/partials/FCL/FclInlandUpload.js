@@ -10,8 +10,9 @@ import inlandfileData from '../../../../../assets/extra/Inlandcharge_Upload.xlsx
 import { delete_icon } from '../../../../../assets/images';
 import { optcurrency, optionCalculationType, optionCarrierName, optionChargeBasis, optionRateSource, optionRateType, optionSurchargesName, optionVendorName } from '../../../../../common/data/procurement';
 import { formatBytes, isAnyValueEmpty, isExcelFile } from '../../../../../components/Common/CommonLogic';
-import { updateCarrierData } from '../../../../../store/Procurement/actions';
+import { addInlandData, updateCarrierData, updateInlandActiveTab } from '../../../../../store/Procurement/actions';
 import { BLANK_CARRIER_DATA } from '../../../../../store/Procurement/actiontype';
+import { useEffect } from 'react';
 
 export default function FclInlandUpload() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
@@ -23,11 +24,23 @@ export default function FclInlandUpload() {
     const [fileError, setfileError] = useState('');
     const [removeValue, setRemoveValue] = useState('');
     const carrierData = useSelector((state) => state?.procurement?.carrierDetails);
+    const inlandActiveTab = useSelector((state) => state?.procurement?.inlandActiveTab);
+    const addInland = useSelector((state) => state?.procurement?.addInland);
     const dispatch = useDispatch();
     const { tabName } = useParams();
     const navigateState = useLocation();
 
-    console.log(navigateState, "navigateState");
+    // console.log(navigateState, "navigateState");
+
+    // console.log(addInland?.surcharges,"addInland");
+
+    useEffect(()=>{
+        setActiveTabProgress(inlandActiveTab)
+        if (inlandActiveTab === 1) { setProgressValue(33) }
+        if (inlandActiveTab === 2) { setProgressValue(66) }
+        if (inlandActiveTab === 3) { setProgressValue(100); }
+        setSurcharges(addInland?.surcharges)
+    },[])
 
     const openSaveConfirmModal = () => {
         setOpenSaveModal(!openSaveModal);
@@ -46,6 +59,7 @@ export default function FclInlandUpload() {
         if (activeTabProgress !== tab) {
             if (tab >= 1 && tab <= 3) {
                 setActiveTabProgress(tab)
+                dispatch(updateInlandActiveTab(tab))
 
                 if (tab === 1) { setProgressValue(33) }
                 if (tab === 2) { setProgressValue(66) }
@@ -82,27 +96,30 @@ export default function FclInlandUpload() {
         }
     }
     // ------------- dynamic field ------------------------
+    
     const addHandler = () => {
-        setSurcharges(s => {
-            return [
-                ...s,
-                {
-                    surcharges_name: '',
-                    charge_basis: '',
-                    calculation_type: '',
-                    rate: '',
-                    tax: '',
-                    currency: ''
-                }
-            ]
-        })
+        const newSurcharge = {
+                            surcharges_name: '',
+                            charge_basis: '',
+                            calculation_type: '',
+                            rate: '',
+                            tax: '',
+                            currency: ''
+                        }
+        setSurcharges(s =>[...s, newSurcharge])
+        handleAddInland("surcharges",[...surcharges,newSurcharge])
     }
 
     const removeInputFields = (index) => {
         const rows = [...surcharges];
         rows.splice(index, 1);
         setSurcharges(rows);
+        handleAddInland("surcharges",rows)
     }
+
+    const handleAddInland = useCallback((name, opt)=>{
+        dispatch(addInlandData(name,opt));
+    },[addInland])
 
     const handleChange = (e, name, index) => {
         const list = [...surcharges];
@@ -367,7 +384,7 @@ export default function FclInlandUpload() {
                                                             <h5>Surcharges</h5>
                                                         </div>
                                                         <form>
-                                                            {surcharges?.map((item, index) => (
+                                                            {addInland?.surcharges && addInland?.surcharges?.map((item, index) => (
                                                                 <div key={index} className='upload_surcharges_row'>
                                                                     <div className="row">
                                                                         <div className="col-lg-3">
