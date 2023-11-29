@@ -48,7 +48,6 @@ export default function MainDnd() {
                                 ref={provided.innerRef}
                             >
                             {column.map((item, index) => {
-                                // {console.log(item?.id,"}}}")}
                                 return (
                                     <Draggable key={item.id} draggableId={item.id} index={index}>                                       
                                     

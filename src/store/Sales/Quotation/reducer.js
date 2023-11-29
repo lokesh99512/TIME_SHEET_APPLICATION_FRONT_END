@@ -1,7 +1,6 @@
 import { ADD_QUOTE_MODAL_CHARGES, BLANK_MODAL_CHARGE, GET_CURRENCY_EXCHANGE_RATE_SUCCESS, REMOVE_QUOTE_MODAL_CHARGES, UPDATE_QUOTE_MODAL_CHARGES } from "./actiontype";
 
 const INIT_STATE = {
-    quotation_modal_charge: [],
     currency_ExchangeRate: [],
     mainChargeObj: []
 }

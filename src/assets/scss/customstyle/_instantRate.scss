@@ -1,16 +1,13 @@
 .instant_rate_wrapper.create_sales_wrapper {
-    border-radius: 6px;
-    min-height: 480px;
-
+    @include borderRadius(6px);
     .card-header-tabs {
         margin: 0;
         .nav-item .nav-link{
-            display: flex;
-            align-items: center;
-            border-radius: 5px 5px 0 0;
+            @extend .flex-center;
+            @include borderRadius(5px 5px 0 0);
             &.active {
-                background: #4848F7;
-                color: #fff;
+                background: $primary_7;
+                color: $white;
             }
             @media only screen and (max-width: 767px) {
                 font-size: 12px;
@@ -32,8 +29,8 @@
         }
 
         .prof_wrap1 {
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
+            @include borderRadius(8px);
+            border: 1px solid $neutral_2;
             position: relative;
             align-items: center;
             padding: 5px 16px;
@@ -43,22 +40,55 @@
                 pointer-events: none;
             }
         }
-        .dropdown-menu {
+        .quantity_drop_wrap {
             padding: 0;
             width: 100%;
-            border-radius: 12px;
+            @include borderRadius(12px);
             background: $white;
             box-shadow: 0px 7px 29px 0px rgba(100, 100, 111, 0.2);
             .dropdown-item{
                 padding: 0;
                 .custom-option{
-                    display: flex;
-                    align-items: center;
+                    @extend .flex-center;
                     padding: 9px 16px;
                     gap: 8px;
-                    border-bottom: 1px solid #E5E7EB;
+                    border-bottom: 1px solid $neutral_2;
                     p{
                         margin: 0;
+                    }
+                }
+            }
+            .quantity_wrap {
+                max-width: 100px;
+                margin-left: auto;
+                display: flex;
+                input::-webkit-outer-spin-button,
+                input::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+                input {
+                    display: block;
+                    width: 100%;
+                    border: 0;
+                    text-align: center;
+                    background: transparent;
+                    @include appearance;
+                    @include font($font-weight-semibold,13px,normal,$neutral_8);
+                }
+                .minus,.plus {
+                    width: 20px;
+                    flex: 0 0 20px;
+                    height: 20px;
+                    background: $primary_7;
+                    @include borderRadius(100%);
+                    text-align: center;
+                    line-height: 18px;
+                    border: 0;
+                    padding: 0;
+                    i{
+                        color: $white;
+                        font-size: 11px;
                     }
                 }
             }
@@ -82,12 +112,17 @@
                 width: 28px;
                 height: 28px;
                 flex: 0 0 28px;
-                border-radius: 100%;
-                background: #f1f1fe;
+                @include borderRadius(100%);
+                background: $primary_1;
             }
             @media only screen and (max-width: 767px){
                 .quotation_to_wrap{
-                    padding: 6px 20px 6px 20px;
+                    border-top: 0;
+                }
+                .swap_btn_wrap{
+                    position: absolute;
+                    right: 0;
+                    left: auto;
                 }
             }
         }
@@ -138,27 +173,7 @@
             .inner_field_wrap {
                 .prof_wrap {
                     padding: 0 16px;
-                    border-radius: 8px;
-                }
-            }
-        }
-        .common_dropdwon_btn_wrap {
-            .common_dropdown_wrap {
-                li {
-                    .custom-option {
-                        padding: 9px 16px;
-                        p{
-                            font-size: 14px;
-                        }
-                    }
-                }
-            }
-            &.incoterm_field_wrap {
-                .form-select__menu-list {
-                    .form-select__option {
-                        padding: 8px 10px;
-                        font-size: 13px;
-                    }
+                    @include borderRadius(8px);
                 }
             }
         }

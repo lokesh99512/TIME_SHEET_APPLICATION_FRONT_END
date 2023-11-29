@@ -773,7 +773,7 @@ input[type="number"]{
                     right: 0;
                     left: auto;
                     li{
-                        padding: 13px 16px;
+                        padding: 9px 16px;
                         @include font($font-weight-medium,16px,normal,$neutral_8);
                         letter-spacing: 0.16px;      
                         border-bottom: 1px solid $neutral_2;          
@@ -1076,18 +1076,15 @@ input[type="number"]{
             .custom-option {
                 display: flex;
                 align-items: center;
-                padding: 13px 16px;
+                padding: 9px 16px;
                 gap: 8px;
                 border-bottom: 1px solid $neutral_2;            
                 p{
-                    @include font($font-weight-medium,16px,normal,$neutral_8);
+                    @include font($font-weight-medium,14px,normal,$neutral_8);
                     letter-spacing: 0.16px;
                 }
                 @media only screen and (max-width: 767px) {
-                    padding: 10px;
-                    p{
-                        font-size: 14px;
-                    }
+                    padding: 9px 10px;
                 }   
             }
         }
@@ -1184,9 +1181,9 @@ input[type="number"]{
         }
         .form-select__menu-list{
             .form-select__option{
-                padding: 13px 16px;
+                padding: 8px 10px;
                 border-bottom: 1px solid $neutral_2; 
-                @include font($font-weight-medium,16px,normal,$neutral_8);
+                @include font($font-weight-medium,13px,normal,$neutral_8);
                 letter-spacing: 0.16px;
                 &:hover,&.form-select__option--is-selected{
                     background-color: $primary_1;

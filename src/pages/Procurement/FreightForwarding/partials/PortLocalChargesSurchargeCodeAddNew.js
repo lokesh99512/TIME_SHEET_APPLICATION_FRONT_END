@@ -11,6 +11,7 @@ import {
 } from "reactstrap";
 // import ModalAddNewAlias from "./Modal/ModalAddNewAlias";
 // import ModalAddNewCategory from "./Modal/ModalAddNewCategory";
+import ModalPLChargesAddNewAlias from "./Modal/ModalPLChargesAddNewAlias"
 
 const surchargeCategory = [
 //   { label: "OCEAN SURCHARGE", value: "freight_surcharge" },
@@ -38,7 +39,7 @@ const surchargeAliasCode = [
   { label: "BL FEE", value: "bl_fee" },
   { label: "CERTIFICATE FEE", value: "certificate_fee" },
   { label: "EMPTY CONTAINER LIFT FEE", value: "empty_container_lift_fee" },
-//   { label: "Add New", value: "Add New" },
+  { label: "Add New", value: "Add New" },
 ];
 const surchargeAliasDesc = [
   { label: "Original Terminal Handling Charge	", value: "OTHC" },
@@ -91,6 +92,15 @@ export default function PortLocalChargesSurchargeCodeAddNew() {
     },
     [addDetails]
   );
+
+  const handleSubmit = () => {
+    console.log(addDetails, "value");
+  };
+
+  const handleCancel = ()=> {
+    setAddDetails(inputArr);
+  }
+
   return (
     <>
       <div className="page-content">
@@ -208,10 +218,10 @@ export default function PortLocalChargesSurchargeCodeAddNew() {
                     <div className="row">
                       <div className="d-flex justify-content-center">
                         <div className="mb-3 mx-3 d-flex justify-content-end">
-                          <button className=" btn btn-primary">Save</button>
+                          <button className=" btn btn-primary" onClick={handleSubmit}>Save</button>
                         </div>
                         <div className="mb-3 mx-3 d-flex justify-content-end">
-                          <button className=" btn btn-primary">Cancel</button>
+                          <button className=" btn btn-primary" onClick={handleCancel}>Cancel</button>
                         </div>
                       </div>
                     </div>
@@ -222,8 +232,8 @@ export default function PortLocalChargesSurchargeCodeAddNew() {
             {/* <ModalAddNewCategory
               modal={categoryModal}
               onCloseClick={onCloseClick}
-            />
-            <ModalAddNewAlias modal={aliasModal} onCloseClick={onCloseClick} /> */}
+            /> */}
+            <ModalPLChargesAddNewAlias modal={aliasModal} onCloseClick={onCloseClick} />
           </div>
         </Container>
       </div>

@@ -30,8 +30,12 @@ export default function AirConsoleComp() {
     const dispatch = useDispatch();
 
     const viewPopupHandler = (data) => {
-        setModal(true);
-        setViewData(data);
+        if (data.is_active) {
+            setModal(true);
+            setViewData(data);
+        } else {
+            console.log("Cannot view details for inactive data");
+        }
     }
 
     const onCloseClick = () => {
@@ -163,7 +167,7 @@ export default function AirConsoleComp() {
                             <DropdownItem>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
                             <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem>
                             <DropdownItem onClick={(e) => e.stopPropagation()}>
-                                Activate
+                                {cellProps.row.original?.is_active ? "Activate" : "Deactivate"} 
                                 <div className="switch_wrap">
                                     <FormGroup switch>
                                         <Input 

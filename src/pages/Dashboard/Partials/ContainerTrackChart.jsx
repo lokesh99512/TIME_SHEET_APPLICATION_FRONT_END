@@ -40,7 +40,6 @@ const ContainerTrackChart = () => {
                 {/* Charts Details */}
                 <div className="chart_info_wrap">
                     <div className="chart_wrap">
-                        {/* <img src={mapimage} alt="Charts" /> */}
                         <DashboardVector />
                     </div>
                     <div className="map_info_wrap">

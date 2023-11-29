@@ -301,7 +301,6 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                             </div>
                                         </div>
                                         <div className="right_con d-flex ms-auto">
-                                            {/* {console.log(item,"<--item")} */}
                                             <div className="margin_wrap">Margin Value: <b>{overAllMarginHandler(item, subTotalHandler(item))}%</b></div>
                                             <span className='text-primary'>
                                                 {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '}
