@@ -29,8 +29,12 @@ export default function AirMasterBill() {
     const dispatch = useDispatch();
 
     const viewPopupHandler = (data) => {
-        setModal(true);
-        setViewData(data);
+        if (data?.is_active) {
+            setModal(true);
+            setViewData(data);
+        } else {
+            console.log("Cannot view details for inactive data");
+        }
     }
 
     const onCloseClick = () => {
@@ -59,6 +63,8 @@ export default function AirMasterBill() {
         dispatch(getAirwaybillData());
     },[dispatch]);
 
+    console.log(waybillData, "-->waybillData")
+
     const columns = useMemo(() => [
         {
             Header: 'Charge ID',
@@ -66,7 +72,7 @@ export default function AirMasterBill() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <ChargeId cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <ChargeId cellProps={cellProps} viewPopupHandler={viewPopupHandler}  />
             }
         },
         {
@@ -162,7 +168,7 @@ export default function AirMasterBill() {
                             <DropdownItem>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
                             <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem>
                             <DropdownItem onClick={(e) => e.stopPropagation()}>
-                                Activate
+                                {cellProps.row.original?.is_active ? "Activate" : "Deactivate"} 
                                 <div className="switch_wrap">
                                     <FormGroup switch>
                                         <Input 
@@ -211,4 +217,4 @@ export default function AirMasterBill() {
             <FilterOffCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} />
         </>
     )
-};
+}
