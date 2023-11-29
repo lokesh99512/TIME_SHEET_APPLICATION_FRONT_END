@@ -1,4 +1,4 @@
-import { ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_CONTAINER_CHANGE, UPDATE_CONTAINER_TYPE_CONFIRM, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_SHIPMENT_DETAILS_CONFIRM, UPDATE_VALUE_BLANK } from "./actionType"
+import { ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK } from "./actionType"
 
 
 const INIT_STATE = {
@@ -30,7 +30,7 @@ const instantRate = (state = INIT_STATE, action) => {
                     location_from: state.searchForm.location_to
                 }
             }
-        
+
         case ADD_OBJECT_INSTANT_SEARCH:
             return {
                 ...state,
@@ -40,7 +40,7 @@ const instantRate = (state = INIT_STATE, action) => {
                 }
             }
         case REMOVE_OBJECT_INSTANT_SEARCH:
-            const objectCopy = {...state.searchForm};
+            const objectCopy = { ...state.searchForm };
             delete objectCopy[action.payload];
             return {
                 ...state,

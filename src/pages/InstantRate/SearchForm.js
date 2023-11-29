@@ -7,7 +7,7 @@ import { Accordion, AccordionBody, AccordionHeader, AccordionItem, DropdownItem,
 import { calendar_filled, cube_filled, delete_icon, filter_img, location_filled, swap_arrow } from '../../assets/images';
 import { cargoWeightUnitOption, optionCargoType, optionContainerType, optionContainerTypeRefrigerated, optionContainerTypeWithoutRefri, optionCurrency, optionIncoterm, optionPortList, weightUnitOption } from "../../common/data/sales";
 import { isAnyValueEmpty, useOutsideClick } from "../../components/Common/CommonLogic";
-import { UPDATE_CONTAINER_CHANGE, UPDATE_CONTAINER_TYPE_CONFIRM, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_SHIPMENT_DETAILS_CONFIRM, UPDATE_VALUE_BLANK } from "../../store/InstantRate/actionType";
+import { UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK } from "../../store/InstantRate/actionType";
 
 const customerName = [
   { value: "apex_export", label: 'Apex Export Pvt Ltd' },
@@ -36,8 +36,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
   const [open, setOpen] = useState('1');
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
-  const searchForm = useSelector((state) => state?.instantRate?.searchForm);
-  console.log(searchForm, "<---searchform");
+  const searchForm = useSelector((state) => state?.instantRate?.searchForm);  
 
   const [shipmentDetails, setShipmentDetails] = useState([
     {
@@ -77,7 +76,6 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
   }
 
   // container handle 
-
   const handleContainerChangeHandler = (item, name) => {
     let newArray = [...containerData?.containerArray];
     if (containerData?.containerArray?.some((obj) => obj?.id === item.id)) {
@@ -148,7 +146,6 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
       ]
     })
   }
-
   const shipmentDetailsValHandler = (val, name, index) => {
     const list = [...shipmentDetails];
     if (name === 'weight_unit') {
@@ -157,6 +154,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
     list[index][name] = val;
     setShipmentDetails(list);
   }
+
   const confirmHandler = () => {
     let lval = Number(shipmentDetails[0].dimensions_l);
     let wval = Number(shipmentDetails[0].dimensions_w);
@@ -177,19 +175,20 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
       let cftAmount = (lvalFeet * wvalFeet * hvalFeet)
       setCalculateVal({ amount: cftAmount, mesure: 'cft' });
     }
-
-    console.log(shipmentDetails, "shipmentDetails-------------");
     dispatch({ type: UPDATE_SEARCH_INSTANT_RATE_DATA, payload: { name: 'shipment_details', item: shipmentDetails } });
-    // dispatch({ type: UPDATE_SHIPMENT_DETAILS_CONFIRM, payload: { shipmentDetails, ...shipmentDetailsOtherVal } });
     setIsOpen(false);
   }
+
   const removeInputFields = (index) => {
     const rows = [...shipmentDetails];
     rows.splice(index, 1);
     setShipmentDetails(rows);
-    console.log(shipmentDetails, "shipmentDetails--------------");
+    dispatch({type: UPDATE_SEARCH_INSTANT_RATE_DATA, payload: { name: 'shipment_details', item: rows } })
+
     console.log(rows, "rows--------------------");
   }
+
+  console.log(searchForm, "<---searchform");
 
   // ------------ custom dropdown -------------------
   const toggleDropdown = (id) => {
@@ -208,7 +207,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
       <div className="create_sales_search_forms">
         {/* Port From && To */}
         <div className="row">
-          <div className="col-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 mt-2">
+          <div className="col-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6 mt-2">
             <div className="d-flex flex-column">
               <div className="d-flex position-relative w-100 quotation_select_port_wrap">
                 <div className={`quotation_from_wrap`} >
@@ -312,7 +311,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                           </div>
                           <i className="mdi mdi-chevron-down" />
                         </DropdownToggle>
-                        <DropdownMenu className="dropdown-menu-end common_dropdown_wrap quantity_drop_wrap">
+                        <DropdownMenu className="dropdown-menu-end quantity_drop_wrap">
                           {(searchForm?.cargo_type?.name === "Refrigerated" ? optionContainerTypeRefrigerated :
                             searchForm?.cargo_type?.name === "Hazardous" ? optionContainerType :
                               optionContainerTypeWithoutRefri || "").map(({ id, value, name }, index) => (
@@ -351,39 +350,6 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                               ))}
                         </DropdownMenu>
                       </UncontrolledDropdown>
-                      {/* <UncontrolledDropdown>
-                        <DropdownToggle className="btn btn-link prof_wrap1 w-100 d-flex justify-space-between" tag="div" >
-                        <div className="con">
-                            <span className={`value ${searchForm?.container_type.length !== 0 ? "value_focus" : ""}`} >
-                              {searchForm?.container_type?.containerArray !== "" &&
-                                searchForm?.container_type?.containerArray !== undefined
-                                ? searchForm?.container_type?.containerArray?.map((item, index) => (
-                                  <span key={item.id}>
-                                    {unitValue[item.id] !== 0
-                                      ? `${item.name}, unit: "${unitValue[item.id]
-                                      }",`
-                                      : null}{" "}
-                                    &nbsp;
-                                  </span>
-                                ))
-                                : "Select Container Type"}
-                            </span>
-                          </div>
-                          <i className="mdi mdi-chevron-down" />
-                        </DropdownToggle>
-                        <DropdownMenu className="dropdown-menu-end ">
-                          {(weightUnitOption || "").map((item) => (
-                            <DropdownItem
-                              key={item?.value}
-                              onClick={() => {
-                                shipmentDetailsValHandler(item?.name, "weight_unit", index);
-                              }}
-                            >
-                              {item?.name}
-                            </DropdownItem>
-                          ))}
-                        </DropdownMenu>
-                      </UncontrolledDropdown> */}
                     </div>
                     {/* select unit   */}
 
@@ -430,177 +396,171 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
 
           {/* Shipment Details */}
           {["LCL", "Air", "Land"].includes(activeTab) &&
-            <div className="col-12 col-md-6 col-lg-6 col-xl-6 col-xxl-3 mt-2">
-              <div className="common_dropdwon_btn_wrap container_combine_drop_wrap">
-                <div id="more_menu" className={`prof_wrap d-flex`} onClick={() => { toggleDropdown(11); }} >
-                  <div className="icon d-flex align-items-center justify-content-center">
-                    <img src={cube_filled} alt="Avatar" />
-                  </div>
-                  <div className="con">
-                    <label className="form-label">Shipment Details</label>
-                    <span className={`value ${searchForm?.shipment_details?.length !== 0 ? "value_focus" : ""}`} >
-                      {searchForm?.shipment_details && searchForm?.shipment_details?.length !== 0 ? (
-                        <>
-                          {searchForm?.shipment_details[0]?.no_unit} Units |{" "}
-                          {calculateVal ? `${calculateVal?.amount?.toFixed(4)} ${calculateVal?.mesure} |` : ""}
-                          {Number(searchForm?.shipment_details[0]?.no_unit) *
-                            Number(searchForm?.shipment_details[0]?.weight)}{" "}
-                          {searchForm?.shipment_details[0]?.weight_unit}
-                        </>
-                      ) : (
-                        "Select Container Type"
-                      )}
-                    </span>
-                  </div>
-                  <i className="mdi mdi-chevron-down" />
+          <div className="col-12 col-md-6 col-lg-6 col-xl-6 col-xxl-3 mt-2">
+            <div className="common_dropdwon_btn_wrap container_combine_drop_wrap">
+              <div id="more_menu" className={`prof_wrap d-flex`} onClick={() => { toggleDropdown(11); }} >
+                <div className="icon d-flex align-items-center justify-content-center">
+                  <img src={cube_filled} alt="Avatar" />
                 </div>
-                {isOpen && dropId === 11 ? (
-                  <div
-                    className="searchform common_dropdown_wrap container_drop_wrap"
-                    ref={dropdownRef}
-                  >
-                    {shipmentDetails.length !== 0 && (
-                      <Accordion flush open={open} toggle={toggle}>
-                        {(shipmentDetails || "")?.map((item, index) => (
-                          <AccordionItem key={index}>
-                            <AccordionHeader targetId={`${index + 1}`}>
-                              Load {index + 1}
-                              <span className="p-0 ms-auto" onClick={() => { removeInputFields(index); }} >
-                                <img src={delete_icon} alt="Delete" />
-                              </span>
-                            </AccordionHeader>
-                            <AccordionBody accordionId={`${index + 1}`}>
-                              <div className="field_wrap">
-                                <div className="input_field">
-                                  <label htmlFor={`no_unit_${index}`} className="form-label" > No. Of Units </label>
+                <div className="con">
+                  <label className="form-label">Shipment Details</label>
+                  <span className={`value ${searchForm?.shipment_details?.length !== 0 ? "value_focus" : ""}`} >
+                    {searchForm?.shipment_details && searchForm?.shipment_details?.length !== 0 ? (
+                      <>
+                        {searchForm?.shipment_details[0]?.no_unit} Units |{" "}
+                        {calculateVal ? `${calculateVal?.amount?.toFixed(4)} ${calculateVal?.mesure} |` : ""}
+                        {Number(searchForm?.shipment_details[0]?.no_unit) *
+                          Number(searchForm?.shipment_details[0]?.weight)}{" "}
+                        {searchForm?.shipment_details[0]?.weight_unit}
+                      </>
+                    ) : (
+                      "Select Container Type"
+                    )}
+                  </span>
+                </div>
+                <i className="mdi mdi-chevron-down" />
+              </div>
+              {isOpen && dropId === 11 ? (
+                <div
+                  className="searchform common_dropdown_wrap container_drop_wrap"
+                  ref={dropdownRef}
+                >
+                  {shipmentDetails.length !== 0 && (
+                    <Accordion flush open={open} toggle={toggle}>
+                      {(shipmentDetails || "")?.map((item, index) => (
+                        <AccordionItem key={index}>
+                          <AccordionHeader targetId={`${index + 1}`}>
+                            Load {index + 1}
+                            <span className="p-0 ms-auto" onClick={() => { removeInputFields(index); }} >
+                              <img src={delete_icon} alt="Delete" />
+                            </span>
+                          </AccordionHeader>
+                          <AccordionBody accordionId={`${index + 1}`}>
+                            <div className="field_wrap">
+                              <div className="input_field">
+                                <label htmlFor={`no_unit_${index}`} className="form-label" > No. Of Units </label>
+                                <input
+                                  type="number"
+                                  value={shipmentDetails[index].no_unit || ""}
+                                  className="form-control"
+                                  id={`no_unit_${index}`}
+                                  onChange={(e) => {
+                                    shipmentDetailsValHandler(e.target.value, "no_unit", index);
+                                  }}
+                                />
+                              </div>
+                              <div className="input_field field_dropdown">
+                                <label htmlFor={`weight_${index}`} className="form-label" > weight </label>
+                                <input
+                                  type="number"
+                                  value={shipmentDetails[index].weight || ""}
+                                  className="form-control"
+                                  id={`weight_${index}`}
+                                  onChange={(e) => {
+                                    shipmentDetailsValHandler(e.target.value, "weight", index);
+                                  }}
+                                />
+                                <UncontrolledDropdown>
+                                  <DropdownToggle className="btn btn-link" tag="a" >
+                                    {shipmentDetails[index].weight_unit}
+                                    <i className="mdi mdi-chevron-down" />
+                                  </DropdownToggle>
+                                  <DropdownMenu className="dropdown-menu-end">
+                                    {(weightUnitOption || "").map((item) => (
+                                      <DropdownItem
+                                        key={item?.value}
+                                        onClick={() => {
+                                          shipmentDetailsValHandler(item?.name, "weight_unit", index);
+                                        }}
+                                      >
+                                        {item?.name}
+                                      </DropdownItem>
+                                    ))}
+                                  </DropdownMenu>
+                                </UncontrolledDropdown>
+                              </div>
+                            </div>
+                            <div className="dimention_field mt-3">
+                              <p className="form-label">
+                                Dimensions (L×W×H per unit)
+                              </p>
+                              <div className="input_field_wrap d-flex">
+                                <div className="input_field dimention_l">
                                   <input
                                     type="number"
-                                    value={shipmentDetails[index].no_unit || ""}
+                                    value={shipmentDetails[index].dimensions_l || ""}
                                     className="form-control"
-                                    id={`no_unit_${index}`}
+                                    id={`dimensions_l_${index}`}
                                     onChange={(e) => {
-                                      shipmentDetailsValHandler(e.target.value, "no_unit", index);
+                                      shipmentDetailsValHandler(e.target.value, "dimensions_l", index);
                                     }}
                                   />
                                 </div>
-                                <div className="input_field field_dropdown">
-                                  <label htmlFor={`weight_${index}`} className="form-label" > weight </label>
+                                <div className="input_field dimention_w">
                                   <input
                                     type="number"
-                                    value={shipmentDetails[index].weight || ""}
+                                    value={shipmentDetails[index].dimensions_w || ""}
                                     className="form-control"
-                                    id={`weight_${index}`}
+                                    id={`dimensions_w_${index}`}
                                     onChange={(e) => {
-                                      shipmentDetailsValHandler(e.target.value, "weight", index);
+                                      shipmentDetailsValHandler(e.target.value, "dimensions_w", index);
                                     }}
                                   />
+                                </div>
+                                <div className="input_field dimention_h">
+                                  <input
+                                    type="number"
+                                    value={shipmentDetails[index].dimensions_h || ""}
+                                    className="form-control"
+                                    id={`dimensions_h_${index}`}
+                                    onChange={(e) => {
+                                      shipmentDetailsValHandler(e.target.value, "dimensions_h", index);
+                                    }}
+                                  />
+                                </div>
+                                <div className="input_field">
                                   <UncontrolledDropdown>
-                                    <DropdownToggle className="btn btn-link" tag="a" >
-                                      {shipmentDetails[index].weight_unit}
+                                    <DropdownToggle className="btn btn-link dimention_drop d-flex justify-content-between" tag="a" >
+                                      {shipmentDetails[index].dimensions_unit}
                                       <i className="mdi mdi-chevron-down" />
                                     </DropdownToggle>
                                     <DropdownMenu className="dropdown-menu-end">
-                                      {(weightUnitOption || "").map((item) => (
-                                        <DropdownItem
-                                          key={item?.value}
-                                          onClick={() => {
-                                            shipmentDetailsValHandler(item?.name, "weight_unit", index);
-                                          }}
-                                        >
-                                          {item?.name}
-                                        </DropdownItem>
-                                      ))}
+                                      <DropdownItem
+                                        className={`${shipmentDetails[index].weight_unit === "KG" ? "disabled" : ""}`}
+                                        onClick={() => {
+                                          shipmentDetailsValHandler("IN", "dimensions_unit", index);
+                                        }}
+                                      > IN </DropdownItem>
+                                      <DropdownItem
+                                        className={`${shipmentDetails[index].weight_unit === "Lbs" ? "disabled" : ""}`}
+                                        onClick={() => {
+                                          shipmentDetailsValHandler("CM", "dimensions_unit", index);
+                                        }}
+                                      > CM </DropdownItem>
+                                      <DropdownItem
+                                        className={`${shipmentDetails[index].weight_unit === "Lbs" ? "disabled" : ""}`}
+                                        onClick={() => {
+                                          shipmentDetailsValHandler("MM", "dimensions_unit", index);
+                                        }}
+                                      > MM </DropdownItem>
                                     </DropdownMenu>
                                   </UncontrolledDropdown>
                                 </div>
                               </div>
-                              <div className="dimention_field mt-3">
-                                <p className="form-label">
-                                  Dimensions (L×W×H per unit)
-                                </p>
-                                <div className="input_field_wrap d-flex">
-                                  <div className="input_field dimention_l">
-                                    <input
-                                      type="number"
-                                      value={shipmentDetails[index].dimensions_l || ""}
-                                      className="form-control"
-                                      id={`dimensions_l_${index}`}
-                                      onChange={(e) => {
-                                        shipmentDetailsValHandler(e.target.value, "dimensions_l", index);
-                                      }}
-                                    />
-                                  </div>
-                                  <div className="input_field dimention_w">
-                                    <input
-                                      type="number"
-                                      value={shipmentDetails[index].dimensions_w || ""}
-                                      className="form-control"
-                                      id={`dimensions_w_${index}`}
-                                      onChange={(e) => {
-                                        shipmentDetailsValHandler(e.target.value, "dimensions_w", index);
-                                      }}
-                                    />
-                                  </div>
-                                  <div className="input_field dimention_h">
-                                    <input
-                                      type="number"
-                                      value={shipmentDetails[index].dimensions_h || ""}
-                                      className="form-control"
-                                      id={`dimensions_h_${index}`}
-                                      onChange={(e) => {
-                                        shipmentDetailsValHandler(e.target.value, "dimensions_h", index);
-                                      }}
-                                    />
-                                  </div>
-                                  <div className="input_field">
-                                    <UncontrolledDropdown>
-                                      <DropdownToggle className="btn btn-link dimention_drop d-flex justify-content-between" tag="a" >
-                                        {shipmentDetails[index].dimensions_unit}
-                                        <i className="mdi mdi-chevron-down" />
-                                      </DropdownToggle>
-                                      <DropdownMenu className="dropdown-menu-end">
-                                        <DropdownItem
-                                          className={`${shipmentDetails[index].weight_unit === "KG" ? "disabled" : ""}`}
-                                          onClick={() => {
-                                            shipmentDetailsValHandler("IN", "dimensions_unit", index);
-                                          }}
-                                        >
-                                          IN
-                                        </DropdownItem>
-                                        <DropdownItem
-                                          className={`${shipmentDetails[index].weight_unit === "pound" ? "disabled" : ""}`}
-                                          onClick={() => {
-                                            shipmentDetailsValHandler("CM", "dimensions_unit", index);
-                                          }}
-                                        >
-                                          CM
-                                        </DropdownItem>
-                                        <DropdownItem
-                                          className={`${shipmentDetails[index].weight_unit === "pound" ? "disabled" : ""}`}
-                                          onClick={() => {
-                                            shipmentDetailsValHandler("MM", "dimensions_unit", index);
-                                          }}
-                                        >
-                                          MM
-                                        </DropdownItem>
-                                      </DropdownMenu>
-                                    </UncontrolledDropdown>
-                                  </div>
-                                </div>
-                              </div>
-                            </AccordionBody>
-                          </AccordionItem>
-                        ))}
-                      </Accordion>
-                    )}
-                    <div className="btn_wrap d-flex justify-content-end">
-                      <button type="button" className="btn border_btn" onClick={AddLoadHandler} > Add Another Load </button>
-                      <button type="button" className="btn btn-primary" onClick={confirmHandler} > Confirm </button>
-                    </div>
+                            </div>
+                          </AccordionBody>
+                        </AccordionItem>
+                      ))}
+                    </Accordion>
+                  )}
+                  <div className="btn_wrap d-flex justify-content-end">
+                    <button type="button" className="btn border_btn" onClick={AddLoadHandler} > Add Another Load </button>
+                    <button type="button" className="btn btn-primary" onClick={confirmHandler} > Confirm </button>
                   </div>
-                ) : null}
-              </div>
-            </div>}
+                </div>
+              ) : null}
+            </div>
+          </div>}
 
           {/* Cargo Ready Date */}
           <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
@@ -658,6 +618,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
           {/* Advanced Search */}
           {advanceSearch && (
             <>
+              {/* cargo type */}
               <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
                 <div className="common_dropdwon_btn_wrap bottom_drop_field">
                   <div id='more_menu' className={`prof_wrap d-flex ${isOpen && dropId === 7 ? 'openmenu' : ''}`} onClick={() => { toggleDropdown(7) }} >
@@ -702,6 +663,8 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                   }
                 </div>
               </div>
+
+              {/* Incoterm */}
               <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
                 <div className="common_dropdwon_btn_wrap bottom_drop_field incoterm_field_wrap">
                   <div
@@ -739,6 +702,8 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                   </div>
                 </div>
               </div>
+
+              {/* Cargo Value */}
               <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
                 <div className="prof_wrap number_field_wrap d-flex ">
                   <div className="icon d-flex align-items-center justify-content-center">
@@ -792,8 +757,9 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
               </div>
             </>
           )}
+          
           <div className="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mt-2 align-self-center">
-            {!advanceSearch && (<button className="btn p-0 me-3" onClick={() => { setAdvanceSearch(true) }}><img src={filter_img} alt="filter" width={'20px'} height={'20px'} /></button>)}
+            <button className="btn p-0 me-3 border-0" onClick={() => { setAdvanceSearch(!advanceSearch) }}><img src={filter_img} alt="filter" width={'20px'} height={'20px'} /></button>
             <button type="button" className='btn btn-primary mt-0 w-25' onClick={() => { searchQuoteHandler(); }}
               disabled={!(!isAnyValueEmpty(searchForm))}>Search</button>
           </div>

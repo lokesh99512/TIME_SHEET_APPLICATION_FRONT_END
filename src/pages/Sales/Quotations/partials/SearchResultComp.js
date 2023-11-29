@@ -47,14 +47,25 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
         setfilterDetails(inputArr)
     }
 
+    const getResultCount = () => {
+        let filteredResults = resultData;
+      
+        if (activeTab === 'preferred') {
+          filteredResults = resultData?.filter(item => item?.quote_type === 'preffered');
+        } else if (activeTab === 'cheaper') {
+          filteredResults = resultData?.filter(item => item?.quote_type === 'cheaper');
+        } else if (activeTab === 'faster') {
+          filteredResults = resultData?.filter(item => item?.quote_type === 'faster');
+        }
+      
+        return filteredResults?.length || 0;
+    };
+
     return (
         <>
             <div className="search_result_wrap">
                 <div className="length_wrap">
-                    <span>{activeTab === 'all' ? resultData?.length : activeTab === 'preferred' ?
-                        resultData?.filter(item => item?.quote_type === 'preffered')?.length :
-                        activeTab === 'cheaper' ? resultData?.filter(item => item?.quote_type === 'cheaper')?.length :
-                            activeTab === 'faster' ? resultData?.filter(item => item?.quote_type === 'faster')?.length : 0} Search Results</span>
+                    <span>{getResultCount()} Search Results</span>
                     
                     {searchResult && <button type="button" className='btn btn-primary ms-auto quote_btn' onClick={QuoteModalHandler} 
                              disabled={quote_Selected?.length === 0}>Quote Now</button>}

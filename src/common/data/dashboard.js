@@ -234,35 +234,7 @@ const exportSumData = [
         total_equiry: '7',
         ratio: '50',
         trend: '12'
-    },
-    // {
-    //     id: 3,
-    //     port: 'Port of Corpus Christi',
-    //     total_equiry: '279',
-    //     ratio: '21',
-    //     trend: '12'
-    // },
-    // {
-    //     id: 4,
-    //     port: 'Port of New Orleans',
-    //     total_equiry: '279',
-    //     ratio: '21',
-    //     trend: '12'
-    // },
-    // {
-    //     id: 5,
-    //     port: 'Port of Long Beach',
-    //     total_equiry: '279',
-    //     ratio: '21',
-    //     trend: '12'
-    // },
-    // {
-    //     id: 6,
-    //     port: 'Plaquemines Port',
-    //     total_equiry: '279',
-    //     ratio: '21',
-    //     trend: '12'
-    // },
+    }
 ]
 const importSumData = [
     {
@@ -278,35 +250,7 @@ const importSumData = [
         total_equiry: '5',
         ratio: '0',
         trend: '12'
-    },
-    // {
-    //     id: 3,
-    //     port: 'Port of Corpus Christi',
-    //     total_equiry: '279',
-    //     ratio: '21',
-    //     trend: '12'
-    // },
-    // {
-    //     id: 4,
-    //     port: 'Port of New Orleans',
-    //     total_equiry: '279',
-    //     ratio: '21',
-    //     trend: '12'
-    // },
-    // {
-    //     id: 5,
-    //     port: 'Port of Long Beach',
-    //     total_equiry: '279',
-    //     ratio: '21',
-    //     trend: '12'
-    // },
-    // {
-    //     id: 6,
-    //     port: 'Plaquemines Port',
-    //     total_equiry: '279',
-    //     ratio: '21',
-    //     trend: '12'
-    // },
+    }
 ]
 const inquirySumData = [
     {
@@ -336,22 +280,7 @@ const inquirySumData = [
         total_equiry: '0',
         ratio: '0',
         trend: '42'
-    },
-    // {
-    //     id: 5,
-    //     customer: 'Bessie Cooper',
-    //     total_equiry: '59',
-    //     ratio: '02',
-    //     trend: '42'
-    // },
-    // {
-    //     id: 6,
-    //     customer: 'Bessie Cooper',
-    //     total_equiry: '59',
-    //     ratio: '02',
-    //     trend: '42'
-    // },
-    
+    }
 ]
 const salesPerformData = [
     {
@@ -374,28 +303,7 @@ const salesPerformData = [
         total_equiry: '8',
         ratio: '0.35',
         trend: '12'
-    },
-    // {
-    //     id: 4,
-    //     employee: 'Leslie Alexander',
-    //     total_equiry: '279',
-    //     ratio: '21',
-    //     trend: '12'
-    // },
-    // {
-    //     id: 5,
-    //     employee: 'Leslie Alexander',
-    //     total_equiry: '279',
-    //     ratio: '21',
-    //     trend: '12'
-    // },
-    // {
-    //     id: 6,
-    //     employee: 'Leslie Alexander',
-    //     total_equiry: '279',
-    //     ratio: '21',
-    //     trend: '12'
-    // },
+    }
 ]
 
 // ---------------------------- map charts --------------------

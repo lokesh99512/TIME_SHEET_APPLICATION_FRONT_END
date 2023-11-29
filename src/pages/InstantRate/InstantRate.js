@@ -15,8 +15,6 @@ import { ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH } from "../../s
 const InstantRate = () => {
     const [activeTab, toggleTab] = useState("FCL");
     const [searchResult, setSearchResult] = useState(false);
-    const [searchView, setSearchView] = useState(true);
-    const searchFormCreate = useSelector((state) => state?.sales?.createFields);
     const searchData = useSelector((state) => state?.instantRate?.searchForm);
     const [quoteModal, setQuoteModal] = useState(false);
     const [previewModal, setPreviewModal] = useState(false);
@@ -32,11 +30,10 @@ const InstantRate = () => {
     }
 
     const showSearchResultHandler = () => {
-        console.log(searchFormCreate, "searchData------------------------------------")
         console.log(searchData, "searchForm------------------------------------")
-        // if(!isAnyValueEmpty(searchData)){
+        console.log(activeTab, "activeTab------------------------------------")
+
         setSearchResult(true);
-        setSearchView(false);
         if (searchData?.location_from?.address?.value === "INMAA" && searchData?.location_to?.address?.value === "BDDAC") {
             console.log("search1")
             dispatch(getSalesQuotationResultData1());
@@ -49,7 +46,6 @@ const InstantRate = () => {
         } else {
             dispatch(getSalesQuotationResultData());
         }
-        // }
     }
 
     // Preview Modal
@@ -100,7 +96,6 @@ const InstantRate = () => {
                             </TabPane>
                         </TabContent>
                         {/* --------------------------tabs------------------------------- */}
-
 
                         {/* Search Result */}
                         {searchResult && (

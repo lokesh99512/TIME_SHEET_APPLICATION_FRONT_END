@@ -30,32 +30,12 @@ const CommonTable = ({ column, data, type,handleSorting }) => {
                         </thead>
                         <tbody>
                             {data?.map((item) => (
-                                // <tr key={item?.id}>
-                                //     {type === 'salesPerformance' ? (
-                                //         <td>
-                                //             <div className="prof_wrap">
-                                //                 <div className="img">
-                                //                     <img src={profImg} alt="Profile" />
-                                //                 </div>
-                                //                 <span>{item?.employee}</span>
-                                //             </div>
-                                //         </td>
-                                //     ) : (
-                                //         <td>{item?.port}</td>
-                                //     )}
-                                //     <td>{item?.total_equiry}</td>
-                                //     <td>{item?.ratio}%</td>
-                                //     <td><span className="green_text">{item?.trend}%</span></td>
-                                // </tr>
                                 <tr key={item?.id}>
                                     {column.map(({ accessor }) => {
                                         const tData = item[accessor] ? item[accessor] : "__";
                                         if(accessor === 'employee'){
                                             return <td key={accessor}>
                                                     <div className="prof_wrap">
-                                                        {/* <div className="img">
-                                                            <img src={profImg} alt="Profile" />
-                                                        </div> */}
                                                         <span>{tData}</span>
                                                     </div>
                                                 </td>

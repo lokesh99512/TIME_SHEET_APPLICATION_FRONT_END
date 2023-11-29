@@ -20,6 +20,7 @@ import LightDark from "../CommonForBoth/Menus/LightDark";
 
 // import images
 import logo from "../../assets/images/logo-sm.png";
+import logoSvg from "../../assets/images/logo.png";
 import github from "../../assets/images/brands/github.png"
 import bitbucket from "../../assets/images/brands/bitbucket.png"
 import dribbble from "../../assets/images/brands/dribbble.png"
@@ -32,6 +33,7 @@ import { withTranslation } from "react-i18next";
 
 //redux
 import { useDispatch } from "react-redux";
+import { message_Icon } from "../../assets/images";
 
 const Header = props => {
   const dispatch = useDispatch();
@@ -47,21 +49,19 @@ const Header = props => {
             <div className="navbar-brand-box">
               <Link to="/dashboard" className="logo logo-dark">
                 <span className="logo-sm">
-                  <img src={logo} alt="" height="24" />
+                  <img src={logoSvg} alt="Logo" height="64" />
                 </span>
                 <span className="logo-lg">
-                  <img src={logo} alt="" height="24" />
-                  <span className="logo-txt">Minia</span>
+                  <img src={logoSvg} alt="Logo" height="64" />
                 </span>
               </Link>
 
               <Link to="/dashboard" className="logo logo-light">
                 <span className="logo-sm">
-                  <img src={logo} alt="" height="24" />
+                  <img src={logoSvg} alt="" height="64" />
                 </span>
                 <span className="logo-lg">
-                  <img src={logo} alt="" height="24" />
-                  <span className="logo-txt">Minia</span>
+                  <img src={logoSvg} alt="" height="64" />
                 </span>
               </Link>
             </div>
@@ -82,17 +82,17 @@ const Header = props => {
               <div className="position-relative">
                 <input type="text" className="form-control"
                   placeholder="Search..." />
-                <button className="btn btn-primary" type="button"><i
+                <button className="btn header-item noti-icon" type="button"><i
                   className="bx bx-search-alt align-middle"></i></button>
               </div>
             </form>
           </div>
 
-          <div className="d-flex">
-            <div className="dropdown d-inline-block d-lg-none ms-2">
+          <div className="d-flex align-items-center">
+            <div className="dropdown d-inline-block d-lg-none me-2">
               <button
                 type="button"
-                className="btn header-item noti-icon "
+                className="btn header-item noti-icon common_header_btn"
                 id="page-header-search-dropdown"
                 onClick={() => setSearch(!isSearch)}
               >
@@ -129,7 +129,7 @@ const Header = props => {
             <LanguageDropdown />
 
             {/* light / dark mode */}
-            <LightDark layoutMode={props['layoutMode']} onChangeLayoutMode={onChangeLayoutMode} />
+            {/* <LightDark layoutMode={props['layoutMode']} onChangeLayoutMode={onChangeLayoutMode} />
 
             <Dropdown
               className="d-none d-lg-inline-block ms-1"
@@ -189,7 +189,11 @@ const Header = props => {
                   </Row>
                 </div>
               </DropdownMenu>
-            </Dropdown>
+            </Dropdown> */}
+
+            <button className='btn common_header_btn'>
+              <img src={message_Icon} alt="Message" />
+            </button>
 
             <NotificationDropdown />
 
@@ -199,7 +203,7 @@ const Header = props => {
                   dispatch(showRightSidebarAction(!props.showRightSidebar));
                 }}
                 type="button"
-                className="btn header-item noti-icon right-bar-toggle "
+                className="btn header-item noti-icon right-bar-toggle common_header_btn"
               >
                 <FeatherIcon
                   icon="settings"

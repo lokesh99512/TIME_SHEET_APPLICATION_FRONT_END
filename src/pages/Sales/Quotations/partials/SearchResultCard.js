@@ -38,15 +38,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
         dispatch({ type: UPDATE_QUOTATION_RESULT_DETAILS, payload: { name, value: val, id } })
         let newArry = [];
         dispatch({ type: QUOTATION_RESULT_SELECTED, payload: newArry })
-    }
-
-    const countPickup = (item) => {
-        if (item.pickup_val === 'truck') {
-            return item.truck_charge
-        } else {
-            return item.rail_charge
-        }
-    }    
+    }   
 
     const quotationCheckHandler = (item) => {
         const maxSelection = 3;
@@ -86,11 +78,6 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
         let pickupCharge = 0;
         let originPortCharge = 0;
         if (item.pickup) {
-            // if (item.pickup_val === 'truck') {
-            //     pickupCharge = Number(item.truck_charge || 0)
-            // } else {
-            //     pickupCharge = Number(item.rail_charge || 0)
-            // }
             pickupCharge = item?.pickup_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge.buy_cost), charge.currency), 0)
             amount += pickupCharge
         }
@@ -99,14 +86,12 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
             amount += originPortCharge
         }
         if (item.ocean_freight) {
-            // amount += convertToINR((Number(item.ocean_freight_charge) || 0), item.ocean_freight_charge_currency);
             amount += item?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge.buy_cost), charge.currency), 0)
         }
         if (item.pickport_discharge) {
             amount += item?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge.buy_cost), charge.currency), 0);
         }
         if (item.delivery) {
-            // amount += convertToINR((Number(item.delivery_charge) || 0), item.delivery_currency);
             amount += item?.delivery_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge.buy_cost), charge.currency), 0);
         }
         return amount;
@@ -161,7 +146,6 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                     </div>
                                 </div>
                                 <div className="total_wrap">
-                                    {/* <p className="total_price text-center"><b>${item?.total_cost}</b></p> */}
                                     <p className="total_price text-center"><b>₹ {TotalQuotationCount(item)}</b></p>
                                     <div className="btn_wrap d-flex">
                                         <button type='button' className='btn text-primary view_detail_btn' onClick={() => { showDetailsHandler(index, item.id); }}>
@@ -190,10 +174,6 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                     <img src={truck_outline} alt="Truck" className='me-2' />
                                                     Pick up
                                                 </div>
-                                                {/* <div className="right_con d-flex ms-auto">
-                                                    {item.pickup_co !== '' && <span>CO2: <b>{item.pickup_co}</b></span>}
-                                                    <span className='text-primary'>₹ {countPickup(item)}</span>
-                                                </div> */}
                                                 <div className="right_con d-flex ms-auto">
                                                     {item.pickup_co !== '' && <span>CO2: <b>{item.pickup_co}</b></span>}
                                                     <span className='text-primary'>{'₹'} {innerTotalHandler(item?.pickup_quote_charge)}</span>
@@ -208,54 +188,6 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                         </div>
                                                     ))}
                                                 </div>
-                                                {/* {item?.pickup && (
-                                                    <div className="radio_wrap">
-                                                        {item?.truck && (
-                                                            <div className="radio_con d-flex ps-5">
-                                                                <div className={`form-check d-flex align-items-center`} onClick={(e) => handleChange('truck', 'pickup_val', index, item.id)}>
-                                                                    <input
-                                                                        className="form-check-input me-2"
-                                                                        type="radio"
-                                                                        name={'pickup_val'}
-                                                                        id={'pickup_truck'}
-                                                                        value={'truck'}
-                                                                        checked={item.pickup_val === 'truck'}
-                                                                        readOnly
-                                                                    />
-                                                                    <label className="form-check-label" htmlFor={'pickup_truck'}>
-                                                                        Truck
-                                                                    </label>
-                                                                </div>
-                                                                <div className="pickup_details ms-auto d-flex justify-content-end">
-                                                                    <span>{item.truck_day ? `${item.truck_day} day` : ''}</span>
-                                                                    <span>{item.truck_km} km</span>
-                                                                    <span className='text-primary'>₹ {item.truck_charge || '0'}</span>
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                        {item?.rail && (
-                                                            <div className="radio_con d-flex ps-5 mt-3">
-                                                                <div className={`form-check d-flex align-items-center`} onClick={(e) => handleChange('rail', 'pickup_val', index, item.id)}>
-                                                                    <input
-                                                                        className="form-check-input me-2"
-                                                                        type="radio"
-                                                                        name={'pickup_val'}
-                                                                        id={'pickup_rail'}
-                                                                        value={'rail'}
-                                                                        checked={item.pickup_val === 'rail'}
-                                                                        readOnly
-                                                                    />
-                                                                    <label className="form-check-label" htmlFor={'pickup_rail'}>
-                                                                        Rail
-                                                                    </label>
-                                                                </div>
-                                                                <div className="pickup_details ms-auto d-flex justify-content-end">
-                                                                    <span className='text-primary'>₹ {item.rail_charge || '0'}</span>
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                )} */}
                                             </AccordionBody>
                                         </AccordionItem>
                                         <AccordionItem>
@@ -308,10 +240,6 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                     <img src={truck_outline} alt="Truck" className='me-2' />
                                                     Ocean Freight
                                                 </div>
-                                                {/* <div className="right_con d-flex ms-auto">
-                                                    {item.ocean_freight_co !== '' && <span>CO2: <b>{item.ocean_freight_co}</b></span>}
-                                                    <span className='text-primary'>{item.ocean_freight_charge_currency || '₹'} {item.ocean_freight_charge || '0'}</span>
-                                                </div> */}
                                                 <div className="right_con d-flex ms-auto">
                                                     {item.ocean_freight_co !== '' && <span>CO2: <b>{item.ocean_freight_co}</b></span>}
                                                     <span className='text-primary'>{'₹'} {innerTotalHandler(item?.ocean_quote_charge)}</span>
@@ -325,10 +253,6 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                             <span className='text-primary'>{data?.currency || '₹'} {data.buy_cost || '0'}</span>
                                                         </div>
                                                     ))}
-                                                    {/* <div className="details d-flex justify-content-between">
-                                                        <p className='me-2'>Ocean Freight</p>
-                                                        <span className='text-primary'>{item?.ocean_freight_charge_currency || '₹'}{item?.ocean_freight_charge || 0}</span>
-                                                    </div> */}
                                                 </div>
                                             </AccordionBody>
                                         </AccordionItem>
@@ -386,10 +310,6 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                     {item?.port_discharge_co !== '' && <span>CO2: <b>{item.port_discharge_co}</b></span>}
                                                     <span className='text-primary'>{'₹'} {innerTotalHandler(item?.delivery_quote_charge)}</span>
                                                 </div>
-                                                {/* <div className="right_con d-flex ms-auto">
-                                                    {item.delivery_co !== '' && <span>CO2: <b>{item.delivery_co}</b></span>}
-                                                    <span className='text-primary'>{item?.delivery_currency || '₹'} {item.delivery_charge || '0'}</span>
-                                                </div> */}
                                             </AccordionHeader>
                                             <AccordionBody accordionId={`delivery_charge_${index}`}>
                                                 <div className="price_details_wrap ps-5">
@@ -400,29 +320,6 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                         </div>
                                                     ))}
                                                 </div>
-                                                {/* <div className="radio_wrap">
-                                                    {item?.road && (
-                                                        <div className="radio_con d-flex ps-5">
-                                                            <div className={`form-check d-flex align-items-center`} onClick={(e) => handleChange('road', 'delivery_val', index, item.id)}>
-                                                                <input
-                                                                    className="form-check-input me-2"
-                                                                    type="radio"
-                                                                    name={'delivery_val'}
-                                                                    id={'delivery_road'}
-                                                                    value={'road'}
-                                                                    checked={item.delivery_val === 'road'}
-                                                                    readOnly
-                                                                />
-                                                                <label className="form-check-label" htmlFor={'delivery_road'}>
-                                                                    Road
-                                                                </label>
-                                                            </div>
-                                                            <div className="pickup_details ms-auto d-flex justify-content-end">
-                                                                <span className='text-primary'>{item?.delivery_currency || '₹'} {item.road_charge || '0'}</span>
-                                                            </div>
-                                                        </div>
-                                                    )}
-                                                </div> */}
                                             </AccordionBody>
                                         </AccordionItem>
                                     </Accordion>

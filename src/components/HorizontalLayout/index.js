@@ -45,7 +45,7 @@ const Layout = (props) => {
     let currentage = title.charAt(1).toUpperCase() + title.slice(2);
 
     document.title =
-      currentage + " | Minia - React Admin & Dashboard Template";
+      currentage + " || Navigating Freight Costs with Precision||Ultimate Rate Management platform";
       
   }, [location.pathname]);
 

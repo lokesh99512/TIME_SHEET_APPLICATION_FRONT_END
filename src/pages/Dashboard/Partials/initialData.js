@@ -11,7 +11,7 @@ const shipment = [
 
 const ratecoverage = [
     { id: "activePorts", content: "First task",title: 'Active Port Pair',revenue: '72',rate: '4',rate_type:'up', tooltip_content: '' },
-    { id: "rate", content: "Second task",title: 'Carrier per Port Pair',revenue: '3',rate: '10',rate_type:'up', tooltip_content: 'Rate Density' },
+    { id: "rate", content: "Second task",title: 'Carrier per Port Pair',revenue: '3',rate: '10',rate_type:'up', tooltip_content: 'Carrier per Port Pair' },
     { id: "coverratio", content: "Third task",title: 'Conversion Ratio',revenue: '60',rate: '6',rate_type:'up', tooltip_content: '' },
 ];
 
