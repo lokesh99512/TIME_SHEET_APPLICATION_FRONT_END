@@ -5,6 +5,9 @@ import { useAsyncDebounce, useExpanded, useFilters, useGlobalFilter, usePaginati
 import { Row, Table } from 'reactstrap';
 import { filter_icon, upload_icon } from '../../../../assets/images';
 import { DefaultColumnFilter, Filter } from '../../../../components/Common/filters';
+import { useDispatch } from 'react-redux';
+import { updateFCLActiveTab } from '../../../../store/Procurement/actions';
+import { BLANK_CARRIER_DATA } from '../../../../store/Procurement/actiontype';
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -57,6 +60,7 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanva
         useExpanded,
         usePagination,);
     const navidate = useNavigate();
+    const dispatch = useDispatch()
     
     return (
         <>
@@ -81,7 +85,7 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanva
                     </div>
                     <div className="add_btn">
                         {/* <button className='border-0' onClick={() => {navidate(`/freight/upload/${component}`);}}> */}
-                        <button className='border-0' onClick={() => {navidate(`/freight/upload/${component}`, { state: { id: component } });}}>
+                        <button className='border-0' onClick={() => {navidate(`/freight/upload/${component}`, { state: { id: component } }); dispatch(updateFCLActiveTab(1)); dispatch({type:BLANK_CARRIER_DATA}) }}>
                             <i className='bx bx-plus align-middle'></i> Add
                         </button>
                     </div>

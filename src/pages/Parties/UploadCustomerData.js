@@ -7,7 +7,7 @@ import Select from "react-select";
 import { Card, CardBody, Col, Container, Input, Modal, NavItem, NavLink, Progress, Row, TabContent, TabPane, UncontrolledTooltip } from 'reactstrap';
 import { delete_icon } from '../../assets/images';
 import { optionMultiDestination, optionSurchargesName } from '../../common/data/procurement';
-import { formatBytes, isAnyValueEmpty, isExcelFile } from '../../components/Common/CommonLogic';
+import { formatBytes, isAnyValueEmpty, isAnyValueEmptyInArray, isAnyValueEmptyInObjOfArr, isExcelFile } from '../../components/Common/CommonLogic';
 import { updateCarrierData } from '../../store/Procurement/actions';
 import { BLANK_CARRIER_DATA } from '../../store/Procurement/actiontype';
 import FileUpload from './FileUpload';
@@ -20,22 +20,17 @@ import ModalAddNewIndustryType from "./Modal/ModalAddNewIndustryType";
 import ModalAddNewKeyAccountManager from './Modal/ModalAddNewKeyAccountManager';
 import ModalAddNewSalesEmployee from './Modal/ModalAddNewSalesEmployee';
 
-const gen = [
-    { label: "Mr", value: "Mr" },
-    { label: "Ms", value: "Ms" },
-    { label: "Mrs", value: "Mrs" },
-]
+
 const title = [
     { label: "Mr", value: "Mr" },
     { label: "Ms", value: "Ms" },
     { label: "Mrs", value: "Mrs" },
 ]
-const phone = [
-    { label: "+91", value: "+91" },
-]
+
 const opCode = [
     { label: "+91", value: "+91" },
 ]
+
 const department = [
     { label: "Accounts", value: "Accounts" },
     { label: "Sales", value: "Sales" },
@@ -44,6 +39,7 @@ const department = [
     { label: "Primary", value: "Primary" },
     { label: "Add New", value: "Add New" },
 ]
+
 const designation = [
     { label: "Executive", value: "Executive" },
     { label: "Asst. Manager", value: "Asst. Manager" },
@@ -62,6 +58,7 @@ const designation = [
     { label: "Primary", value: "Primary" },
     { label: "Add New", value: "Add New" },
 ]
+
 const entityType = [
     { label: "Proprietorship", value: "Proprietorship" },
     { label: "Single Director", value: "Single Director" },
@@ -70,6 +67,7 @@ const entityType = [
     { label: "Public Limited", value: "Public Limited" },
     { label: "Add New", value: "Add New" },
 ]
+
 const industryType = [
     { label: "Supply Chain", value: "Supply Chain" },
     { label: "Software services", value: "Software services" },
@@ -78,12 +76,14 @@ const industryType = [
     { label: "Transportation", value: "Transportation" },
     { label: "Add New", value: "Add New" },
 ]
+
 const customerType = [
     { label: "Customer", value: "Customer" },
     { label: "Agent", value: "Agent" },
     { label: "Franchisee", value: "Franchisee" },
     { label: "Add New", value: "Add New" },
 ]
+
 const salesEmployee = [
     { label: "Ajay", value: "Ajay" },
     { label: "Hitesh", value: "Hitesh" },
@@ -91,6 +91,7 @@ const salesEmployee = [
     { label: "Mahes", value: "Mahes" },
     { label: "Add New", value: "Add New" },
 ]
+
 const keyAccountManager = [
     { label: "Ajay", value: "Ajay" },
     { label: "Hitesh", value: "Hitesh" },
@@ -152,29 +153,30 @@ export default function UploadCustomerData() {
         }
     }
 
-    function handleAcceptedFiles(files) {
-        if (files && files.length) {
-            var file = files[0];
-            var fileName = file.name;
-            if (isExcelFile(fileName)) {
-                setfileError("");
-                files.map((file) =>
-                    Object.assign(file, {
-                        preview: URL.createObjectURL(file),
-                        formattedSize: formatBytes(file.size),
-                    })
-                );
-                setselectedFiles(files);
-            } else {
-                setfileError("The file type is not supported. Upload an Excel file.");
-                setselectedFiles();
-            }
-        } else {
-            setfileError("File is required");
-        }
-    }
+    // function handleAcceptedFiles(files) {
+    //     if (files && files.length) {
+    //         var file = files[0];
+    //         var fileName = file.name;
+    //         if (isExcelFile(fileName)) {
+    //             setfileError("");
+    //             files.map((file) =>
+    //                 Object.assign(file, {
+    //                     preview: URL.createObjectURL(file),
+    //                     formattedSize: formatBytes(file.size),
+    //                 })
+    //             );
+    //             setselectedFiles(files);
+    //         } else {
+    //             setfileError("The file type is not supported. Upload an Excel file.");
+    //             setselectedFiles();
+    //         }
+    //     } else {
+    //         setfileError("File is required");
+    //     }
+    // }
 
     // ----------forimik ----------
+    
     const companyDetailsFormik = useFormik({
         initialValues: {
             companyName: "",
@@ -261,20 +263,20 @@ export default function UploadCustomerData() {
         setSurcharges(rows);
     }
 
-    const handleChange = (e, name, index) => {
-        const list = [...surcharges];
-        list[index][name] = e.target.value;
-        setSurcharges(list);
-    }
+    // const handleChange = (e, name, index) => {
+    //     const list = [...surcharges];
+    //     list[index][name] = e.target.value;
+    //     setSurcharges(list);
+    // }
 
-    const handleSelectGroup = useCallback((name, opt) => {
-        dispatch(updateCarrierData(name, opt));
-        if (carrierData?.vendor_type?.value === 'agent') {
-            setRemoveValue('carrier_name');
-        } else {
-            setRemoveValue('vendor_name');
-        }
-    }, [carrierData]);
+    // const handleSelectGroup = useCallback((name, opt) => {
+    //     dispatch(updateCarrierData(name, opt));
+    //     if (carrierData?.vendor_type?.value === 'agent') {
+    //         setRemoveValue('carrier_name');
+    //     } else {
+    //         setRemoveValue('vendor_name');
+    //     }
+    // }, [carrierData]);
 
     const handleSelectGroup2 = useCallback((opt, name, index) => {
         const list = [...surcharges];
@@ -306,7 +308,6 @@ export default function UploadCustomerData() {
     };
 
     const onUploadChange = (file) => {
-        // console.log(file,"file")
         companyDetailsFormik.setFieldValue("logo", file)
     };
 
@@ -423,18 +424,9 @@ export default function UploadCustomerData() {
                                                                     <div className="col-12 col-md-6">
                                                                         <div className="mb-3">
                                                                             <label className="form-label">Logo</label>
-                                                                            {/* <Input
-                                                                                type="file"
-                                                                                name="logo"
-                                                                                  value={companyDetailsFormik.values.logo}
-                                                                                onChange={companyDetailsFormik.handleChange}
-                                                                                className="form-control"
-                                                                                placeholder=""
-                                                                                /> */}
                                                                             <FileUpload
                                                                                 iconName="img"
                                                                                 onUpload={onUploadChange}
-                                                                            // src={companyDetailsFormik.values.image}
                                                                             />
                                                                         </div>
                                                                     </div>
@@ -923,7 +915,6 @@ export default function UploadCustomerData() {
                                                                 {(arrayHelpers) => (
                                                                     <>
                                                                         {contactsFormik?.values?.contacts?.map((contact, index) => (
-                                                                            <>
                                                                                 <Card key={index}>
                                                                                     <CardBody>
                                                                                         <div className='row'>
@@ -1096,8 +1087,6 @@ export default function UploadCustomerData() {
                                                                                         </div>
                                                                                     </CardBody>
                                                                                 </Card>
-
-                                                                            </>
                                                                         ))}
                                                                         <button type="button" className='btn btn-primary'
                                                                             onClick={() => arrayHelpers.push({
@@ -1129,7 +1118,6 @@ export default function UploadCustomerData() {
                                                                 {(arrayHelpers) => (
                                                                     <>
                                                                         {documentsFormik?.values?.document?.map((document, index) => (
-                                                                            <>
                                                                                 <Card key={index}>
                                                                                     <CardBody>
                                                                                         {/* <form> */}
@@ -1176,8 +1164,6 @@ export default function UploadCustomerData() {
                                                                                         {/* </form> */}
                                                                                     </CardBody>
                                                                                 </Card>
-
-                                                                            </>
                                                                         ))}
                                                                         <button type="button" className='btn btn-primary'
                                                                             onClick={() => arrayHelpers.push({
@@ -1406,6 +1392,9 @@ export default function UploadCustomerData() {
                                                     </div>
                                                 </TabPane>
                                             </TabContent>
+
+                                            {console.log(contactsFormik.values,"<--------contactsFormik")}
+
                                             <ul className="pager wizard twitter-bs-wizard-pager-link d-flex align-items-center justify-content-between">
                                                 <li className={`previous ${activeTabProgress === 1 ? "disabled" : ""}`}>
                                                     <Link
@@ -1419,7 +1408,7 @@ export default function UploadCustomerData() {
                                                     </Link>
                                                 </li>
 
-                                                <li className={`${activeTabProgress === 1 ? isAnyValueEmpty(companyDetailsFormik.values) ? "disabled" : "" : activeTabProgress === 2 ? isAnyValueEmpty(contactsFormik.values) ? "disabled" : "" : ""}`}>
+                                                <li className={`${activeTabProgress === 1 ? isAnyValueEmpty(companyDetailsFormik.values) ? "disabled" : "" : activeTabProgress === 2 ? isAnyValueEmptyInArray(contactsFormik?.values?.contacts) ? "disabled" : "" : ""}`}>
                                                     <Link
                                                         to="#"
                                                         className={`btn btn-primary d-flex align-items-center ${activeTabProgress === 1 ? isAnyValueEmpty(companyDetailsFormik.values) ? "disabled" : "" : activeTabProgress === 2 ? isAnyValueEmpty(contactsFormik.values) ? "disabled" : "" : ""}`}
@@ -1427,7 +1416,7 @@ export default function UploadCustomerData() {
                                                             toggleTabProgress(activeTabProgress + 1);
                                                         }}
                                                     >
-                                                        {activeTabProgress === 3 ? 'Save' : (
+                                                        {activeTabProgress === 7 ? 'Save' : (
                                                             <>
                                                                 Next
                                                                 <i className="bx bx-chevron-right ms-1"></i>
