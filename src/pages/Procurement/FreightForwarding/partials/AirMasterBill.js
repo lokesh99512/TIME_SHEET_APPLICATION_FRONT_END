@@ -9,6 +9,7 @@ import ModalFreight from './Modal/ModalFreight'
 import { CargoType, CarrierName, ChargeId, DestPort, DetentionFree, OrgPort, TransitTime, ValidTill, VendorName, ViaPort } from './OceanCol'
 import TableReact from './TableReact'
 import TopBreadcrumbs from './TopBreadcrumbs'
+import TableAirwayBill from './TableAirwayBill'
 
 export default function AirMasterBill() {
     document.title="Air Master || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
@@ -198,14 +199,14 @@ export default function AirMasterBill() {
                         <TopBreadcrumbs breadcrumbs={waybillBreadcrumb} data={waybillRateData} />            
 
                         {/* React Table */}
-                        <TableReact
+                        <TableAirwayBill
                             columns={columns}
                             data={waybillData}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}
                             toggleRightCanvas={toggleRightCanvas}
-                            component={'air_waybill'}
+                            component={'air-waybill'}
                         />
 
                         {/* modal */}

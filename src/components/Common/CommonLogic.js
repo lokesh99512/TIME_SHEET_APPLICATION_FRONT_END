@@ -47,6 +47,24 @@ export const isAnyValueEmpty = (obj,removeKey) => {
     }
     return false;
 };
+
+export const isAnyValueEmptyInArray = (arr, removeKey) => {
+    for (const obj of arr) {
+        let updatedObj = { ...obj };
+        delete updatedObj?.[removeKey];
+        
+        for (const key in updatedObj) {
+            if (Object.prototype.hasOwnProperty.call(updatedObj, key)) {
+                const value = updatedObj[key];
+                if (value === '' || value === null || value === undefined) {
+                    return true; 
+                }
+            }
+        }
+    }
+    return false;
+};
+
 export const isAnyValueEmptyArray = (obj,removeKey) => {
     let updatedObj = {...obj};
     // delete updatedObj?.[removeKey];

@@ -346,36 +346,7 @@ export default function UploadVendorData() {
                                                         </div>
                                                     </NavLink>
                                                 </NavItem>
-                                                {/* <NavItem>
-                                                    <NavLink className={classnames({ active: activeTabProgress === 4 })} onClick={() => { toggleTabProgress(4); }} >
-                                                        <div className="step-icon" data-bs-toggle="tooltip" id="Rates">
-                                                            <i className="bx bx-dollar-circle"></i>
-                                                            <UncontrolledTooltip placement="top" target="Rates">
-                                                                Rates
-                                                            </UncontrolledTooltip>
-                                                        </div>
-                                                    </NavLink>
-                                                </NavItem>
-                                                <NavItem>
-                                                    <NavLink className={classnames({ active: activeTabProgress === 5 })} onClick={() => { toggleTabProgress(5); }} >
-                                                        <div className="step-icon" data-bs-toggle="tooltip" id="Discounts">
-                                                            <i className="bx bx-purchase-tag-alt"></i>
-                                                            <UncontrolledTooltip placement="top" target="Discounts">
-                                                                Discounts
-                                                            </UncontrolledTooltip>
-                                                        </div>
-                                                    </NavLink>
-                                                </NavItem>
-                                                <NavItem>
-                                                    <NavLink className={classnames({ active: activeTabProgress === 6 })} onClick={() => { toggleTabProgress(6); }} >
-                                                        <div className="step-icon" data-bs-toggle="tooltip" id="InvoiceSettings">
-                                                            <i className="bx bx-cog"></i>
-                                                            <UncontrolledTooltip placement="top" target="InvoiceSettings">
-                                                                Invoice Settings
-                                                            </UncontrolledTooltip>
-                                                        </div>
-                                                    </NavLink>
-                                                </NavItem> */}
+                                                
                                                 <NavItem>
                                                     <NavLink className={classnames({ active: activeTabProgress === 4 })} onClick={() => { toggleTabProgress(4); }} >
                                                         <div className="step-icon" data-bs-toggle="tooltip" id="Communications">
@@ -919,6 +890,9 @@ export default function UploadVendorData() {
 
                                                 </TabPane>
                                                 <TabPane tabId={2}>
+                                                <div className="text-center mb-4">
+                                                        <h5>Contacts</h5>
+                                                    </div>
                                                     <div>
                                                     
                                                     <FormikProvider value={contactsFormik}>
@@ -926,7 +900,6 @@ export default function UploadVendorData() {
                                                         {(arrayHelpers)=>(
                                                             <>
                                                             {contactsFormik?.values?.contacts?.map((contact, index) =>(
-                                                                <>
                                                                 <Card key={index}>
                                                         <CardBody>
                                                         <div className='row'>
@@ -1097,8 +1070,6 @@ export default function UploadVendorData() {
                                                         </div>
                                                     </CardBody>
                                                                 </Card>
-                                                                
-                                                                </>
                                                             ))}
                                                             <button type="button" className='btn btn-primary'
                                                                  onClick={() => arrayHelpers.push({
@@ -1121,6 +1092,9 @@ export default function UploadVendorData() {
                                                     </div>
                                                 </TabPane>
                                                 <TabPane tabId={3}>
+                                                <div className="text-center mb-4">
+                                                        <h5>Documents</h5>
+                                                    </div>
                                                     <div>
 
                                                     <FormikProvider value={documentsFormik}>
@@ -1128,7 +1102,6 @@ export default function UploadVendorData() {
                                                         {(arrayHelpers)=>(
                                                             <>
                                                             {documentsFormik?.values?.document?.map((_, index) =>(
-                                                                <>
                                                                 <Card key={index}>
                                                         <CardBody>
                                                         {/* <form> */}
@@ -1178,8 +1151,6 @@ export default function UploadVendorData() {
                                                     {/* </form> */}
                                                     </CardBody>
                                                     </Card>
-                                                                
-                                                                </>
                                                             ))}
                                                             <button type="button" className='btn btn-primary'
                                                                  onClick={() => arrayHelpers.push({

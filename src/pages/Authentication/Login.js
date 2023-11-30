@@ -28,6 +28,7 @@ import { facebook } from "../../config"
 import CarouselPage from "../AuthenticationInner/CarouselPage"
 import { google_icon, microsoft_icon } from "../../assets/images"
 import { isAnyValueEmpty } from "../../components/Common/CommonLogic"
+import * as schema from "../../api/global-schema"
 
 const Login = props => {
     const [passwordShow, setPasswordShow] = useState(false)
@@ -54,8 +55,8 @@ const Login = props => {
         //     password: "123456" || '',
         // },
         validationSchema: Yup.object({
-            email: Yup.string().required('Please enter an email address').matches(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/, 'Please enter a valid email address' ),
-            password: Yup.string().required('Please enter a password'),
+            email: schema.email,
+            password: schema.password,
         }),
         onSubmit: (values) => {
         dispatch(loginUser(values, props.router.navigate))
