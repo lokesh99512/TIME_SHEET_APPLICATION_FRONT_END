@@ -150,6 +150,7 @@ import FclInlandUpload from "../pages/Procurement/FreightForwarding/partials/FCL
 import OceanFCLSurchargeNameAddNew from "../pages/Procurement/FreightForwarding/partials/OceanFCLSurchargeNameAddNew";
 import PortLocalChargesSurchargeCodeAddNew from "../pages/Procurement/FreightForwarding/partials/PortLocalChargesSurchargeCodeAddNew";
 import OceanInlandSurchargeNameAddNew from "../pages/Procurement/FreightForwarding/partials/FCL/OceanInlandSurchargeNameAddNew";
+import UploadAirwayBillData from "../pages/Procurement/FreightForwarding/partials/UploadAirwayBillData";
 
 const userRoutes = [
   //dashboard
@@ -173,6 +174,7 @@ const userRoutes = [
   { path: "/freight/ocean/lcl", component: <LclOceanFreight /> },
   { path: "/freight/ocean/portlocal", component: <PortLocalFreight /> },
   { path: "/freight/air/masterbill", component: <AirMasterBill /> },
+  { path: "/freight/air/upload/air-waybill", component: <UploadAirwayBillData /> },
   { path: "/freight/air/console", component: <AirConsoleComp /> },
   { path: "/freight/air/local", component: <AirLocalFreight /> },
   { path: "/freight/upload/:tabName", component: <UploadFreightData /> },
