@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { Card, CardBody, Container, Input, Row } from "reactstrap";
-import PerfectScrollbar from "react-perfect-scrollbar";
-import Select from "react-select";
-import ModalAddGST from "./Modal/ModalAddGST";
-import SimpleBar from "simplebar-react";
 import { useFormik } from "formik";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import { useDispatch, useSelector } from "react-redux";
+import Select from "react-select";
+import { Card, CardBody, Container, FormFeedback, Input, Row } from "reactstrap";
+import SimpleBar from "simplebar-react";
+import * as Yup from "yup";
+import * as schema from "../../api/global-schema";
+import { city_list, country_list, entityType, industryType, placeOfSupply, state_list, zipcode_list } from "../../common/data/settings";
+import { isAnyValueEmpty } from "../../components/Common/CommonLogic";
 import { getCompanyDetailsData } from "../../store/Settings/actions";
 import FileUpload from "./FileUpload";
-import { city_list, country_list, entityType, industryType, placeOfSupply, state_list, zipcode_list } from "../../common/data/settings";
+import ModalAddGST from "./Modal/ModalAddGST";
 
 const companyDetailsInitialValue = {
   image: "",
@@ -41,7 +43,6 @@ const bussinessTypeInitialValue = {
 };
 
 const stateConverter = (num) => {
-  // console.log(num, "number");
   return placeOfSupply.find((place) => +place.Code === +num)?.value;
 };
 
@@ -62,7 +63,7 @@ const Settings = () => {
   const companyDetailsData = useSelector(
     (state) => state?.settings?.settings_companydetails_data
   );
-  
+
   useEffect(() => {
     setCompanyDetailsInitial(companyDetailsData[0]);
     setTaxDetailsInitial(companyDetailsData[0]);
@@ -70,10 +71,13 @@ const Settings = () => {
   }, [companyDetailsData]);
 
   const dispatch = useDispatch();
-  
+
   const companyDetailsFormik = useFormik({
     initialValues: companyDetailsInitial,
     enableReinitialize: true,
+    validationSchema: Yup.object({
+      email: schema.email
+    }),
     onSubmit: (value) => {
       console.log(value, "value");
       companyDetailsFormik.resetForm();
@@ -88,7 +92,6 @@ const Settings = () => {
       taxDetailsFormik.resetForm();
     },
   });
-  // console.log(taxDetailsFormik.values.moreGstNumbers.length,"<<<");
 
   const bussinessTypeFormik = useFormik({
     initialValues: bussinessTypeInitial,
@@ -112,17 +115,13 @@ const Settings = () => {
   };
 
   const onUploadChange = (file) => {
-    console.log(file.name,"file")
-    // setSelectedFiles(file);
-    companyDetailsFormik.setFieldValue("image",file)
+    console.log(file.name, "file");
+    companyDetailsFormik.setFieldValue("image", file)
   };
 
   useEffect(() => {
     dispatch(getCompanyDetailsData());
   }, [dispatch]);
-
-  
-
 
   return (
     <>
@@ -222,23 +221,9 @@ const Settings = () => {
                       <div className="row mt-4">
                         <div className="col-12 col-md-4 mb-4">
                           <label className="form-label">Image</label>
-                          {/* <Input
-                            type="file"
-                            name="image"
-                            onChange={(e) => {
-                              console.log(e, "eee");
-                              companyDetailsFormik.setFieldValue(
-                                "image",
-                                e.currentTarget.files[0]
-                              );
-                            }}
-                            className="form-control"
-                            placeholder=""
-                          /> */}
                           <FileUpload
                             iconName="img"
                             onUpload={onUploadChange}
-                            // src={companyDetailsFormik.values.image}
                           />
                         </div>
 
@@ -247,7 +232,7 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="companyName"
-                            value={companyDetailsFormik?.values?.companyName}
+                            value={companyDetailsFormik?.values?.companyName || ''}
                             onChange={companyDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
@@ -261,7 +246,7 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="contactNumber"
-                            value={companyDetailsFormik?.values?.contactNumber}
+                            value={companyDetailsFormik?.values?.contactNumber || ''}
                             onChange={companyDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
@@ -273,11 +258,18 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="email"
-                            value={companyDetailsFormik?.values?.email}
+                            value={companyDetailsFormik?.values?.email || ''}
                             onChange={companyDetailsFormik.handleChange}
+                            onBlur={companyDetailsFormik.handleBlur}
                             className="form-control"
+                            invalid={
+                              companyDetailsFormik.touched.email && companyDetailsFormik.errors.email ? true : false
+                            }
                             placeholder=""
                           />
+                          {companyDetailsFormik.touched.email && companyDetailsFormik.errors.email ? (
+                            <FormFeedback type="invalid">{companyDetailsFormik.errors.email}</FormFeedback>
+                          ) : null}
                         </div>
                       </div>
 
@@ -287,7 +279,7 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="companyAddress"
-                            value={companyDetailsFormik?.values?.companyAddress}
+                            value={companyDetailsFormik?.values?.companyAddress || ''}
                             onChange={companyDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
@@ -302,14 +294,14 @@ const Settings = () => {
                             type="text"
                             name="city"
                             list="cityList"
-                            value={companyDetailsFormik?.values?.city}
+                            value={companyDetailsFormik?.values?.city || ''}
                             onChange={companyDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
                           />
                           <datalist id="cityList">
-                              {city_list && city_list.map((item,i)=><option key={i} value={item} />)}
-                            </datalist>
+                            {city_list && city_list.map((item, i) => <option key={i} value={item} />)}
+                          </datalist>
                         </div>
 
                         <div className="col-12 col-md-6 mb-4">
@@ -318,14 +310,14 @@ const Settings = () => {
                             type="text"
                             name="state"
                             list="stateList"
-                            value={companyDetailsFormik?.values?.state}
+                            value={companyDetailsFormik?.values?.state || ''}
                             onChange={companyDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
                           />
                           <datalist id="stateList">
-                              {state_list && state_list.map((item,i)=><option key={i} value={item} />)}
-                            </datalist>
+                            {state_list && state_list.map((item, i) => <option key={i} value={item} />)}
+                          </datalist>
                         </div>
                       </div>
 
@@ -336,14 +328,14 @@ const Settings = () => {
                             type="text"
                             name="zipcode"
                             list="zipcodeList"
-                            value={companyDetailsFormik?.values?.zipcode}
+                            value={companyDetailsFormik?.values?.zipcode || ''}
                             onChange={companyDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
                           />
                           <datalist id="zipcodeList">
-                              {zipcode_list && zipcode_list.map((item,i)=><option key={i} value={item} />)}
-                            </datalist>
+                            {zipcode_list && zipcode_list.map((item, i) => <option key={i} value={item} />)}
+                          </datalist>
                         </div>
 
                         <div className="col-12 col-md-6 mb-4">
@@ -352,32 +344,26 @@ const Settings = () => {
                             type="text"
                             name="country"
                             list="countryList"
-                            value={companyDetailsFormik?.values?.country}
+                            value={companyDetailsFormik?.values?.country || ''}
                             onChange={companyDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
                           />
-                            <datalist id="countryList">
-                              {country_list && country_list.map((item,i)=><option key={i} value={item} />)}
-                            </datalist>
+                          <datalist id="countryList">
+                            {country_list && country_list.map((item, i) => <option key={i} value={item} />)}
+                          </datalist>
                         </div>
                       </div>
 
                       <div className="row">
                         <div className="d-flex justify-content-center">
                           <div className="mb-3 mx-3 d-flex justify-content-end">
-                            <button
-                              onClick={companyDetailsFormik.handleSubmit}
-                              className=" btn btn-primary"
-                            >
+                            <button onClick={companyDetailsFormik.handleSubmit} className=" btn btn-primary" disabled={isAnyValueEmpty(companyDetailsFormik.values)}>
                               Save
                             </button>
                           </div>
                           <div className="mb-3 mx-3 d-flex justify-content-end">
-                            <button
-                              onClick={() => companyDetailsFormik.resetForm()}
-                              className=" btn btn-primary"
-                            >
+                            <button onClick={() => companyDetailsFormik.resetForm()} className=" btn btn-primary">
                               Cancel
                             </button>
                           </div>
@@ -399,7 +385,7 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="panNumber"
-                            value={taxDetailsFormik?.values?.panNumber}
+                            value={taxDetailsFormik?.values?.panNumber || ''}
                             onChange={taxDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
@@ -411,7 +397,7 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="cinNumber"
-                            value={taxDetailsFormik?.values?.cinNumber}
+                            value={taxDetailsFormik?.values?.cinNumber || ''}
                             onChange={taxDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
@@ -425,7 +411,7 @@ const Settings = () => {
                           <Input
                             type="text"
                             name="tranceporterId"
-                            value={taxDetailsFormik?.values?.tranceporterId}
+                            value={taxDetailsFormik?.values?.tranceporterId || ''}
                             onChange={taxDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
@@ -440,7 +426,7 @@ const Settings = () => {
                             type="text"
                             name="gstNumber"
                             onChange={gstNumberHandler}
-                            value={taxDetailsFormik?.values?.gstNumber}
+                            value={taxDetailsFormik?.values?.gstNumber || ''}
                             className="form-control"
                             placeholder="Enter GST Number"
                           />
@@ -452,10 +438,10 @@ const Settings = () => {
                             value={
                               placeOfSupply
                                 ? placeOfSupply.find(
-                                    (option) =>
-                                      option.value ===
-                                      taxDetailsFormik?.values?.placeOfSupply
-                                  )
+                                  (option) =>
+                                    option.value ===
+                                    taxDetailsFormik?.values?.placeOfSupply
+                                )
                                 : ""
                             }
                             name="placeOfSupply"
@@ -499,7 +485,6 @@ const Settings = () => {
                       {viewGst &&
                         taxDetailsFormik?.values?.moreGstNumbers?.map(
                           (gst, key) => {
-                            // console.log(gst, "KKKKKKKKKK");
                             return (
                               <div className="row" key={key}>
                                 <div className="col-12 col-md-6 mb-4">
@@ -524,10 +509,10 @@ const Settings = () => {
                                     value={
                                       placeOfSupply
                                         ? placeOfSupply.find(
-                                            (option) =>
-                                              option.value ===
-                                              gst?.placeOfSupply
-                                          )
+                                          (option) =>
+                                            option.value ===
+                                            gst?.placeOfSupply
+                                        )
                                         : ""
                                     }
                                     name="moreGstNumbers.placeOfSupply"
@@ -543,10 +528,7 @@ const Settings = () => {
                                   />
                                 </div>
                                 <div className="col-2 col-md-1">
-                                  <button
-                                    className="btn border mt-4"
-                                    // onClick={() => setGstModal(true)}
-                                  >
+                                  <button className="btn border mt-4" >
                                     <i className="bx bx-trash fs-5 align-middle text-danger"></i>
                                   </button>
                                 </div>
@@ -563,6 +545,7 @@ const Settings = () => {
                             <button
                               onClick={taxDetailsFormik.handleSubmit}
                               className=" btn btn-primary"
+                              disabled={isAnyValueEmpty(taxDetailsFormik.values)}
                             >
                               Save
                             </button>
@@ -594,10 +577,10 @@ const Settings = () => {
                             value={
                               industryType
                                 ? industryType.find(
-                                    (option) =>
-                                      option.value ===
-                                      bussinessTypeFormik?.values?.industryType
-                                  )
+                                  (option) =>
+                                    option.value ===
+                                    bussinessTypeFormik?.values?.industryType
+                                )
                                 : ""
                             }
                             name="industryType"
@@ -619,10 +602,10 @@ const Settings = () => {
                             value={
                               entityType
                                 ? entityType.find(
-                                    (option) =>
-                                      option.value ===
-                                      bussinessTypeFormik?.values?.entityType
-                                  )
+                                  (option) =>
+                                    option.value ===
+                                    bussinessTypeFormik?.values?.entityType
+                                )
                                 : ""
                             }
                             name="entityType"
@@ -645,6 +628,7 @@ const Settings = () => {
                             <button
                               onClick={bussinessTypeFormik.handleSubmit}
                               className=" btn btn-primary"
+                              disabled={isAnyValueEmpty(bussinessTypeFormik.values)}
                             >
                               Save
                             </button>
@@ -661,7 +645,7 @@ const Settings = () => {
                       </div>
                     </CardBody>
                   </Card>
-                  <div style={{height:"525px"}}></div>
+                  <div style={{ height: "525px" }}></div>
                 </PerfectScrollbar>
               </Card>
             </div>
