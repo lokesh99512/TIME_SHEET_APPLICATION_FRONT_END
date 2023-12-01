@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import Select from "react-select";
 import { Offcanvas, OffcanvasBody, OffcanvasHeader } from 'reactstrap';
-import { optionCargoType, optionCarrierName, optionDestPort, optionOrgPort, optionVendorName } from '../../../../../common/data/procurement';
+import { optionCargoType, optionCarrierName, optionDestPort, optionOrgPort, optionVendorName } from '../../../../common/data/procurement';
 
 export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDetails,setfilterDetails,applyFilterHandler,filterType,clearValueHandler}) {
     const handleSelectGroup = useCallback((name, opt) => {

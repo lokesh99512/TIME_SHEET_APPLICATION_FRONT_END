@@ -1,18 +1,17 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap'
-import TopBreadcrumbs from './TopBreadcrumbs'
-import { consoleBreadcrumb, consoleRateData, waybillBreadcrumb, waybillRateData } from '../../../../common/data/procurement'
-import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
-import { getAirConsoleData, updateAirConsoleSwitchData } from '../../../../store/Procurement/actions'
-import { CargoType, CarrierName, ChargeId, DestPort, DetentionFree, OrgPort, TransitTime, ValidTill, VendorName, ViaPort } from './OceanCol'
 import { edit_icon, eye_icon } from '../../../../assets/images'
-import ModalFreight from './Modal/ModalFreight'
-import FilterOffCanvasComp from './Modal/FilterOffCanvasComp'
-import TableReact from './TableReact'
+import { waybillBreadcrumb, waybillRateData } from '../../../../common/data/procurement'
+import { getAirwaybillData, updateAirwaybillSwitchData } from '../../../../store/Procurement/actions'
+import FilterOffCanvasComp from '../Modal/FilterOffCanvasComp'
+import ModalFreight from '../Modal/ModalFreight'
+import { CargoType, CarrierName, ChargeId, DestPort, DetentionFree, OrgPort, TransitTime, ValidTill, VendorName, ViaPort } from '../partials/OceanCol'
+import TableAirwayBill from './TableAirwayBill'
+import TopBreadcrumbs from '../partials/TopBreadcrumbs'
 
-export default function AirConsoleComp() {
-    document.title="Air Console || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
+export default function AirMasterBill() {
+    document.title="Air Master || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
     const [isRight, setIsRight] = useState(false);
@@ -26,11 +25,11 @@ export default function AirConsoleComp() {
         cargo_type: '',
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
-    const consoleData = useSelector((state) => state?.procurement?.consoleData);
+    const waybillData = useSelector((state) => state?.procurement?.waybillData);
     const dispatch = useDispatch();
 
     const viewPopupHandler = (data) => {
-        if (data.is_active) {
+        if (data?.is_active) {
             setModal(true);
             setViewData(data);
         } else {
@@ -49,7 +48,7 @@ export default function AirConsoleComp() {
 
     const applyFilterHandler = () => {
         setIsRight(false);
-        console.log(filterDetails,"filterDetails Air Console -----------------------")
+        console.log(filterDetails,"filterDetails Air MaterBill-----------------------")
     }
     const clearValueHandler = () => {
         setfilterDetails(inputArr)
@@ -57,12 +56,14 @@ export default function AirConsoleComp() {
 
     // Activate deactivate table data
     const switchHandler = (data) => {
-        dispatch(updateAirConsoleSwitchData(data.id,data.is_active));
+        dispatch(updateAirwaybillSwitchData(data.id,data.is_active));
     }
 
     useEffect(() => {
-        dispatch(getAirConsoleData());
-    },[dispatch])
+        dispatch(getAirwaybillData());
+    },[dispatch]);
+
+    console.log(waybillData, "-->waybillData")
 
     const columns = useMemo(() => [
         {
@@ -71,7 +72,7 @@ export default function AirConsoleComp() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <ChargeId cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <ChargeId cellProps={cellProps} viewPopupHandler={viewPopupHandler}  />
             }
         },
         {
@@ -194,17 +195,17 @@ export default function AirConsoleComp() {
                 <Container fluid>
                     <div className="main_freight_wrapper">
                         {/* breadcrumbs && rate */}
-                        <TopBreadcrumbs breadcrumbs={consoleBreadcrumb} data={consoleRateData} />            
+                        <TopBreadcrumbs breadcrumbs={waybillBreadcrumb} data={waybillRateData} />            
 
                         {/* React Table */}
-                        <TableReact
+                        <TableAirwayBill
                             columns={columns}
-                            data={consoleData}
+                            data={waybillData}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}
                             toggleRightCanvas={toggleRightCanvas}
-                            component={'console'}
+                            component={'air-waybill'}
                         />
 
                         {/* modal */}

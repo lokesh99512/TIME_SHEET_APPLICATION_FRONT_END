@@ -11,7 +11,7 @@ import {
 } from "reactstrap";
 // import ModalAddNewAlias from "./Modal/ModalAddNewAlias";
 // import ModalAddNewCategory from "./Modal/ModalAddNewCategory";
-import ModalPLChargesAddNewAlias from "./Modal/ModalPLChargesAddNewAlias"
+import ModalPLChargesAddNewAlias from "../Modal/ModalPLChargesAddNewAlias"
 
 const surchargeCategory = [
 //   { label: "OCEAN SURCHARGE", value: "freight_surcharge" },

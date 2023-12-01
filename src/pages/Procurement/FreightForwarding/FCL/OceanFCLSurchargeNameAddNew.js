@@ -9,7 +9,7 @@ import {
   Input,
   Row
 } from "reactstrap";
-import ModalFCLAddNewAlias from "./Modal/ModalFCLAddNewAlias";
+import ModalFCLAddNewAlias from "../Modal/ModalFCLAddNewAlias";
 // import ModalAddNewAlias from "./Modal/ModalAddNewAlias";
 // import ModalAddNewCategory from "./Modal/ModalAddNewCategory";
 
