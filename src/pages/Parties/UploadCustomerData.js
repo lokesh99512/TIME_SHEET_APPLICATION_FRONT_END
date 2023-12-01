@@ -1393,8 +1393,6 @@ export default function UploadCustomerData() {
                                                 </TabPane>
                                             </TabContent>
 
-                                            {console.log(contactsFormik.values,"<--------contactsFormik")}
-
                                             <ul className="pager wizard twitter-bs-wizard-pager-link d-flex align-items-center justify-content-between">
                                                 <li className={`previous ${activeTabProgress === 1 ? "disabled" : ""}`}>
                                                     <Link
