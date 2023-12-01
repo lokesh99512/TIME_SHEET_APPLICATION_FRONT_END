@@ -1,18 +1,17 @@
 import classnames from 'classnames';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Dropzone from 'react-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import Select from "react-select";
 import { Card, CardBody, Col, Container, Form, Modal, NavItem, NavLink, Progress, Row, TabContent, TabPane, UncontrolledTooltip } from 'reactstrap';
-import fileData from '../../../../assets/extra/upload_Formats.xlsx';
 import inlandfileData from '../../../../assets/extra/Inlandcharge_Upload.xlsx';
+import fileData from '../../../../assets/extra/upload_Formats.xlsx';
 import { delete_icon } from '../../../../assets/images';
-import { optcurrency, optionCarrierName, optionMultiDestination, optionPaymentType, optionRateSource, optionRateType, optionSurchargesName, optionValidityApp, optionVendorName, optionVendorType } from '../../../../common/data/procurement';
+import { optcurrency, optionCarrierName, optionMultiDestination, optionPaymentType, optionRateSource, optionRateType, optionSurchargesName, optionVendorName } from '../../../../common/data/procurement';
 import { formatBytes, isAnyValueEmpty, isExcelFile } from '../../../../components/Common/CommonLogic';
-import { addAirwaybillData, addFCLData, updateCarrierData, updateFCLActiveTab } from '../../../../store/Procurement/actions';
+import { addAirwaybillData, updateCarrierData, updateFCLActiveTab } from '../../../../store/Procurement/actions';
 import { BLANK_CARRIER_DATA } from '../../../../store/Procurement/actiontype';
-import { useEffect } from 'react';
 
 export default function UploadAirwayBillData() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
@@ -24,15 +23,11 @@ export default function UploadAirwayBillData() {
     const [fileError, setfileError] = useState('');
     const [removeValue, setRemoveValue] = useState('');
     const carrierData = useSelector((state) => state?.procurement?.carrierDetails);
-    // const addFCL = useSelector((state) => state?.procurement?.addFCL);
     const addAirBill = useSelector((state)=> state?.procurement?.addAirWaybill);
     const fclActiveTab = useSelector((state) => state?.procurement?.fclActiveTab);
     const dispatch = useDispatch();
     const { tabName } = useParams();
     const navigateState = useLocation();
-
-    // console.log(carrierData, "--->carrierData");
-    // console.log(addFCL, "--->addFCL");
     console.log(addAirBill, "--->addAirBill");
 
     useEffect(()=>{
@@ -95,8 +90,8 @@ export default function UploadAirwayBillData() {
             setfileError("File is required");
         }
     }
-    // ------------- dynamic field ------------------------
 
+    // ------------- dynamic field ------------------------
     const addHandler = () => {
         const newSurcharge = {
             surcharges_name: '',
@@ -112,27 +107,17 @@ export default function UploadAirwayBillData() {
         setSurcharges(s =>[...s, newSurcharge])
         handleAddAirWayBill("surcharges",[...surcharges,newSurcharge])
     }
-
-
     const removeInputFields = (index) => {
         const rows = [...surcharges];
         rows.splice(index, 1);
         setSurcharges(rows);
         handleAddAirWayBill("surcharges",rows)
     }
-
     const handleChange = (e, name, index) => {
         const list = [...surcharges];
         list[index][name] = e.target.value;
         setSurcharges(list);
     }
-
-    // const handleAddFCL = useCallback((name, opt)=>{
-    //     console.log(name, "--->name");
-    //     console.log(opt, "--->opt");
-    //     dispatch(addFCLData(name,opt));
-    // },[addFCL])
-
     const handleAddAirWayBill = useCallback((name, opt)=>{
         dispatch(addAirwaybillData(name,opt));
     },[addAirBill])
@@ -145,7 +130,6 @@ export default function UploadAirwayBillData() {
             setRemoveValue('vendor_name');
         }
     }, [carrierData]);
-
     const handleSelectGroup2 = useCallback((opt, name, index) => {
         const list = [...surcharges];
         list[index][name] = opt;
@@ -162,9 +146,7 @@ export default function UploadAirwayBillData() {
         }
         list[index][name] = selected;
         setSurcharges(list);
-    }, [surcharges]);
-
-    
+    }, [surcharges]);    
 
     return (
         <>
@@ -183,7 +165,7 @@ export default function UploadAirwayBillData() {
                                                         <div className="step-icon" data-bs-toggle="tooltip" id="SellerDetails">
                                                             <i className="bx bx-list-ul"></i>
                                                             <UncontrolledTooltip placement="top" target="SellerDetails">
-                                                                Carrier Details helloo
+                                                                Carrier Details
                                                             </UncontrolledTooltip>
                                                         </div>
                                                     </NavLink>
@@ -253,20 +235,6 @@ export default function UploadAirwayBillData() {
                                                         </div>
 
                                                         <div className="row">
-                                                            {/* <div className="col-lg-4">
-                                                                <div className="mb-3">
-                                                                    <label className="form-label">Vendor Type</label>
-                                                                    <Select
-                                                                        value={carrierData.vendor_type}
-                                                                        name='vendor_type'
-                                                                        onChange={(opt) => {
-                                                                            handleSelectGroup('vendor_type', opt)
-                                                                        }}
-                                                                        options={optionVendorType}
-                                                                        classNamePrefix="select2-selection form-select"
-                                                                    />
-                                                                </div>
-                                                            </div> */}
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Vendor Name</label>
@@ -301,20 +269,6 @@ export default function UploadAirwayBillData() {
                                                                     />
                                                                 </div>
                                                             </div>
-                                                            {/* <div className="col-lg-4">
-                                                                <div className="mb-3">
-                                                                    <label className="form-label">Validity Application</label>
-                                                                    <Select
-                                                                        value={carrierData.validity_application}
-                                                                        name='validity_application'
-                                                                        onChange={(opt) => {
-                                                                            handleSelectGroup('validity_application', opt)
-                                                                        }}
-                                                                        options={optionValidityApp}
-                                                                        classNamePrefix="select2-selection form-select"
-                                                                    />
-                                                                </div>
-                                                            </div> */}
                                                         </div>
                                                         <div className="row">
                                                             <div className="col-lg-4">

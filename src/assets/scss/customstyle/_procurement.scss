@@ -73,7 +73,11 @@ input[type="number"]{
     .upload_freight_wrap{
         padding: 0 70px;
         max-width: 1240px;
-        margin: 0 auto;        
+        margin: 0 auto;     
+        .nav .nav-item .disabled.nav-link {
+            pointer-events: none;
+            opacity: 0.4;
+        }   
         .upload_surcharges_row{
             position: relative;
             &:not(:first-child){
