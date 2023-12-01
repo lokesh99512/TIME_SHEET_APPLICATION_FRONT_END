@@ -12,13 +12,9 @@ const ModalAddNewDepartment = ({ modal, onCloseClick }) => {
         <ModalBody>
           <div className="table_view_data_wrap">
             <div className="charge_details">
-              {/* <div className="view_data_wrap"> */}
-              {/* //// */}
               <div className="row mt-4 mb-2">
                 <div className="col-12 col-sm-12 col-md-12 col-lg-12 mb-4">
-                  {/* <div className="row"> */}
                     <label className="form-label">Department Name</label>
-                    {/* <div className="col-9"> */}
                       <Input
                         type="text"
                         //   name="surchargeCode"
@@ -30,13 +26,8 @@ const ModalAddNewDepartment = ({ modal, onCloseClick }) => {
                         className="form-control"
                         placeholder="Enter Department Name"
                       />
-                    {/* </div> */}
-                  {/* </div> */}
                 </div>
-
-                
               </div>
-
               <div className="row">
                 <div className="d-flex justify-content-center">
                   <div className="mb-3 mx-3 d-flex justify-content-end">
@@ -49,8 +40,6 @@ const ModalAddNewDepartment = ({ modal, onCloseClick }) => {
                   </div>
                 </div>
               </div>
-              {/* //// */}
-              {/* </div> */}
             </div>
           </div>
         </ModalBody>

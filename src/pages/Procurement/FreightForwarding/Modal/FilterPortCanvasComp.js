@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import Select from "react-select";
 import { Offcanvas, OffcanvasBody, OffcanvasHeader } from 'reactstrap';
-import { optionCarrierName, optionMovementType, optionPortlocalOrgPort } from '../../../../../common/data/procurement';
+import { optionCarrierName, optionMovementType, optionPortlocalOrgPort } from '../../../../common/data/procurement';
 
 const surchargeCategory = [
     { label: "OCEAN SURCHARGE", value: "freight_surcharge" },

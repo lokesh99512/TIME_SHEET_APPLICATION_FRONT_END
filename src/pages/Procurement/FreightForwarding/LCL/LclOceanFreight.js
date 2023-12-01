@@ -1,21 +1,19 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap'
 
-import { useDispatch } from 'react-redux'
 import { edit_icon, eye_icon } from '../../../../assets/images'
-import { fclBreadcrumb, fclRateData, fclTableData } from '../../../../common/data/procurement'
-import { getFclData, updatefclSwitchData } from '../../../../store/Procurement/actions'
-import FilterOffCanvasComp from './Modal/FilterOffCanvasComp'
-import ModalFreight from './Modal/ModalFreight'
-import { CargoType, CarrierName, ChargeId, DestPort, DetentionFree, OrgPort, TransitTime, ValidTill, VendorName, ViaPort } from './OceanCol'
-import TableReact from './TableReact'
-import TopBreadcrumbs from './TopBreadcrumbs'
-import { FILTER_FCL_DATA } from '../../../../store/Procurement/actiontype'
+import { lclBreadcrumb, lclRateData } from '../../../../common/data/procurement'
+import { getLclData, updatelclSwitchData } from '../../../../store/Procurement/actions'
+import FilterOffCanvasComp from '../Modal/FilterOffCanvasComp'
+import ModalFreight from '../Modal/ModalFreight'
+import { CargoType, CarrierName, ChargeId, DestPort, DetentionFree, OrgPort, TransitTime, ValidTill, VendorName, ViaPort } from '../partials/OceanCol'
+import TableReact from '../partials/TableReact'
+import TopBreadcrumbs from '../partials/TopBreadcrumbs'
 
-export default function FclOceanFreight() {
-    document.title="FCL || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
-    const fclData = useSelector((state) => state.procurement.fcl_data);
+export default function LclOceanFreight() {
+    document.title="LCL || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
+    const lclData = useSelector((state) => state.procurement.lclData);
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
     const [isRight, setIsRight] = useState(false);
@@ -29,14 +27,13 @@ export default function FclOceanFreight() {
         cargo_type: '',
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
-    const dispatch = useDispatch(); 
+    const dispatch = useDispatch();
 
     const viewPopupHandler = (data) => {
         setModal(true);
         setViewData(data);
     }
 
-    // modal
     const onCloseClick = () => {
         setModal(false);
     }
@@ -48,34 +45,19 @@ export default function FclOceanFreight() {
 
     const applyFilterHandler = () => {
         setIsRight(false);
-        let newArr = [...fclTableData];
-        const filteredDataArr = newArr.filter(item => {
-            const isCarrierNameMatch = filterDetails?.carrier_name?.value === '' ||
-              item?.carrier_name?.toLowerCase().includes(filterDetails?.carrier_name?.value?.toLowerCase());
-          
-            const isDestPortMatch = filterDetails?.dest_port?.value === '' ||
-              item?.dest_port?.toLowerCase().includes(filterDetails?.dest_port?.value?.toLowerCase());
-          
-            const isOrgPortMatch = filterDetails?.org_port?.value === '' ||
-              item?.org_port?.toLowerCase().includes(filterDetails?.org_port?.value?.toLowerCase());
-          
-            return isCarrierNameMatch && isDestPortMatch && isOrgPortMatch;
-        });
-        dispatch({type: FILTER_FCL_DATA, payload: filteredDataArr});
-
+        console.log(filterDetails,"filterDetails lcl-----------------------")
     }
     const clearValueHandler = () => {
-        dispatch(getFclData());
         setfilterDetails(inputArr)
     }
-    
+
     // Activate deactivate table data
     const switchHandler = (data) => {
-        dispatch(updatefclSwitchData(data.id,data.is_active));
+        dispatch(updatelclSwitchData(data.id,data.is_active));
     }
 
     useEffect(() => {
-        dispatch(getFclData());
+        dispatch(getLclData());
     }, [dispatch]);
 
     const columns = useMemo(() => [
@@ -135,7 +117,7 @@ export default function FclOceanFreight() {
         },
         {
             Header: 'Detention Free',
-            accessor: 'org_detention_free',
+            accessor: 'detention_free',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -201,35 +183,33 @@ export default function FclOceanFreight() {
             }
         },
     ]);
-  
+
     return (
         <>
             <div className="page-content">
                 <Container fluid>
                     <div className="main_freight_wrapper">
-
                         {/* breadcrumbs && rate */}
-                        <TopBreadcrumbs breadcrumbs={fclBreadcrumb} data={fclRateData} />
+                        <TopBreadcrumbs breadcrumbs={lclBreadcrumb} data={lclRateData} />            
 
                         {/* React Table */}
                         <TableReact
                             columns={columns}
-                            data={fclData}
+                            data={lclData}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}
                             toggleRightCanvas={toggleRightCanvas}
-                            component={'fcl'}
+                            component={'lcl'}
                         />
 
                         {/* modal */}
-                        <ModalFreight modal={modal} onCloseClick={onCloseClick} viewData={viewData} modalType={'fcl'} />
+                        <ModalFreight modal={modal} onCloseClick={onCloseClick} viewData={viewData} modalType={'lcl'} />
                     </div>
                 </Container>
-            </div>
-
+            </div>   
             {/* filter right sidebar */}
-            <FilterOffCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} />
+            <FilterOffCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} />         
         </>
     )
 }

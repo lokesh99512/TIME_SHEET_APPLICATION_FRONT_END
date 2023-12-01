@@ -1027,3 +1027,75 @@ export const city_list = [
   "Purulia",
   "Uttar Dinajpur",
 ];
+
+// --------------------- add customer form option
+export const optionCusttitle = [
+  { label: "Mr", value: "Mr" },
+  { label: "Ms", value: "Ms" },
+  { label: "Mrs", value: "Mrs" },
+]
+export const optionCustopCode = [
+  { label: "+91", value: "+91" },
+]
+export const optionCustdepartment = [
+  { label: "Accounts", value: "Accounts" },
+  { label: "Sales", value: "Sales" },
+  { label: "Finance", value: "Finance" },
+  { label: "Management", value: "Management" },
+  { label: "Primary", value: "Primary" },
+  { label: "Add New", value: "Add New" },
+]
+export const optionCustdesignation = [
+  { label: "Executive", value: "Executive" },
+  { label: "Asst. Manager", value: "Asst. Manager" },
+  { label: "Manager", value: "Manager" },
+  { label: "Sr. Manager", value: "Sr. Manager" },
+  { label: "AVP", value: "AVP" },
+  { label: "VP", value: "VP" },
+  { label: "President", value: "President" },
+  { label: "Director", value: "Director" },
+  { label: "CEO", value: "CEO" },
+  { label: "COO", value: "COO" },
+  { label: "MD", value: "MD" },
+  { label: "Sales", value: "Sales" },
+  { label: "Finance", value: "Finance" },
+  { label: "Management", value: "Management" },
+  { label: "Primary", value: "Primary" },
+  { label: "Add New", value: "Add New" },
+]
+export const optionCustentityType = [
+  { label: "Proprietorship", value: "Proprietorship" },
+  { label: "Single Director", value: "Single Director" },
+  { label: "LLP", value: "LLP" },
+  { label: "Private Limited", value: "Private Limited" },
+  { label: "Public Limited", value: "Public Limited" },
+  { label: "Add New", value: "Add New" },
+]
+export const optionCustindustryType = [
+  { label: "Supply Chain", value: "Supply Chain" },
+  { label: "Software services", value: "Software services" },
+  { label: "Agriculture", value: "Agriculture" },
+  { label: "Manufacturing", value: "Manufacturing" },
+  { label: "Transportation", value: "Transportation" },
+  { label: "Add New", value: "Add New" },
+]
+export const optionCustcustomerType = [
+  { label: "Customer", value: "Customer" },
+  { label: "Agent", value: "Agent" },
+  { label: "Franchisee", value: "Franchisee" },
+  { label: "Add New", value: "Add New" },
+]
+export const optionCustsalesEmployee = [
+  { label: "Ajay", value: "Ajay" },
+  { label: "Hitesh", value: "Hitesh" },
+  { label: "Mahendra", value: "Mahendra" },
+  { label: "Mahes", value: "Mahes" },
+  { label: "Add New", value: "Add New" },
+]
+export const optionCustkeyAccountManager = [
+  { label: "Ajay", value: "Ajay" },
+  { label: "Hitesh", value: "Hitesh" },
+  { label: "Mahendra", value: "Mahendra" },
+  { label: "Mahes", value: "Mahes" },
+  { label: "Add New", value: "Add New" },
+]

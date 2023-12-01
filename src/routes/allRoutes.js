@@ -2,15 +2,14 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 
 //Dashboard
-import Dashboard from "../pages/Dashboard/index";
 import AnalyticsComp from "../pages/Analytics/index";
+import Dashboard from "../pages/Dashboard/index";
 
 // Sales
 import QueriesComp from "../pages/Sales/Queries/index";
 import QuotationComp from "../pages/Sales/Quotations/index";
 
 //Procurement
-import FreightForward from "../pages/Procurement/FreightForwarding/index";
 import ExpressComp from "../pages/Procurement/Express/index";
 
 // Calendar
@@ -24,133 +23,133 @@ import EmailInbox from "../pages/Email/email-inbox";
 import EmailRead from "../pages/Email/email-read";
 
 //Invoice
-import InvoicesList from "../pages/Invoices/invoices-list";
 import InvoiceDetail from "../pages/Invoices/invoices-detail";
+import InvoicesList from "../pages/Invoices/invoices-list";
 
 //Contact
-import ContactsGrid from "../pages/Contacts/contacts-grid";
 import ContactsList from "../pages/Contacts/ContactList/contacts-list";
 import ContactsProfile from "../pages/Contacts/ContactsProfile/contacts-profile";
+import ContactsGrid from "../pages/Contacts/contacts-grid";
 
 //blog
-import BlogGrid from "../pages/Blog/blogGrid"
-import BlogList from "../pages/Blog/blogList"
-import BlogDetails from "../pages/Blog/blogDetails"
+import BlogDetails from "../pages/Blog/blogDetails";
+import BlogGrid from "../pages/Blog/blogGrid";
+import BlogList from "../pages/Blog/blogList";
 
 //Utility
-import PagesStarter from "../pages/Utility/StarterPage";
-import PageMaintenance from "../pages/Utility/PageMaintenance";
-import PagesComingsoon from "../pages/Utility/PageComingsoon";
-import PageTimeline from "../pages/Utility/PageTimeline";
-import PageFaqs from "../pages/Utility/PageFaqs";
-import PagePricing from "../pages/Utility/PagePricing/index";
 import Error404 from "../pages/Utility/Error404";
 import Error500 from "../pages/Utility/Error500";
+import PagesComingsoon from "../pages/Utility/PageComingsoon";
+import PageFaqs from "../pages/Utility/PageFaqs";
+import PageMaintenance from "../pages/Utility/PageMaintenance";
+import PagePricing from "../pages/Utility/PagePricing/index";
+import PageTimeline from "../pages/Utility/PageTimeline";
+import PagesStarter from "../pages/Utility/StarterPage";
 
 // Ui Components
 import UiAlert from "../pages/UiElements/UiAlert";
 import UiButton from "../pages/UiElements/UiButton";
 import UiCard from "../pages/UiElements/UiCard";
 import UiCarousel from "../pages/UiElements/UiCarousel";
+import UiColors from "../pages/UiElements/UiColors";
 import UiDropdowns from "../pages/UiElements/UiDropdowns";
+import UiGeneral from "../pages/UiElements/UiGeneral";
 import UiGrid from "../pages/UiElements/UiGrid";
 import UiImages from "../pages/UiElements/UiImages";
 import UiModal from "../pages/UiElements/UiModals";
 import UiOffCanvas from "../pages/UiElements/UiOffCanvas";
-import UiProgressbar from "../pages/UiElements/UiProgressbar";
 import UiPlaceholders from "../pages/UiElements/UiPlaceholders";
+import UiProgressbar from "../pages/UiElements/UiProgressbar";
 import UiTabsAccordions from "../pages/UiElements/UiTabsAccordions";
-import UiTypography from "../pages/UiElements/UiTypography";
 import UiToasts from "../pages/UiElements/UiToast";
-import UiVideo from "../pages/UiElements/UiVideo";
-import UiGeneral from "../pages/UiElements/UiGeneral";
-import UiColors from "../pages/UiElements/UiColors";
+import UiTypography from "../pages/UiElements/UiTypography";
 import UiUtilities from "../pages/UiElements/UiUtilities";
+import UiVideo from "../pages/UiElements/UiVideo";
 
 //Extended pages
 import Lightbox from "../pages/Extended/Lightbox";
+import Notifications from "../pages/Extended/Notifications";
 import Rangeslider from "../pages/Extended/Rangeslider";
 import SessionTimeout from "../pages/Extended/SessionTimeout";
 import UiRating from "../pages/Extended/UiRating";
-import Notifications from "../pages/Extended/Notifications";
 
 //Forms
-import FormElements from "../pages/Forms/FormElements/index";
-import FormValidation from "../pages/Forms/FormValidation/";
 import AdvancedPlugins from "../pages/Forms/AdvancedPlugins";
 import FormEditors from "../pages/Forms/FormEditors";
-import FormUpload from "../pages/Forms/FormUpload";
-import FormWizard from "../pages/Forms/FormWizard";
+import FormElements from "../pages/Forms/FormElements/index";
 import FormMask from "../pages/Forms/FormMask";
+import FormUpload from "../pages/Forms/FormUpload";
+import FormValidation from "../pages/Forms/FormValidation/";
+import FormWizard from "../pages/Forms/FormWizard";
 
 //Tables
 import BasicTable from "../pages/Tables/BasicTables";
 import DatatableTables from "../pages/Tables/DatatableTables";
-import ResponsiveTables from "../pages/Tables/ResponsiveTables";
 import EditableTables from "../pages/Tables/EditableTables";
+import ResponsiveTables from "../pages/Tables/ResponsiveTables";
 
 //Charts
 import Apexchart from "../pages/Charts/Apexcharts";
-import EChart from "../pages/Charts/EChart";
 import ChartjsChart from "../pages/Charts/ChartjsChart";
+import EChart from "../pages/Charts/EChart";
 import KnobCharts from "../pages/Charts/KnobCharts";
 import SparklineChart from "../pages/Charts/SparklineChart";
 
 //Icons
-import IconBoxicons from "../pages/Icons/IconBoxicons";
-import IconMaterialdesign from "../pages/Icons/IconMaterialdesign";
-import IconDripicons from "../pages/Icons/IconDripicons";
 import IconFontawesomes from "../pages/Icons/Fontawesomes";
+import IconBoxicons from "../pages/Icons/IconBoxicons";
+import IconDripicons from "../pages/Icons/IconDripicons";
+import IconMaterialdesign from "../pages/Icons/IconMaterialdesign";
 
 // Maps
 import MapsGoogle from "../pages/Maps/MapsGoogle";
-import MapsVector from "../pages/Maps/MapsVector";
 import MapsLeaflet from "../pages/Maps/MapsLeaflet";
+import MapsVector from "../pages/Maps/MapsVector";
 
 // Authentication related pages
+import ForgetPwd from "../pages/Authentication/ForgetPassword";
 import Login from "../pages/Authentication/Login";
 import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
-import ForgetPwd from "../pages/Authentication/ForgetPassword";
 
 //AuthenticationInner related pages
+import UserProfile from "../pages/Authentication/user-profile";
+import ConfirmMail from "../pages/AuthenticationInner/ConfirmMail";
+import EmailVerification from "../pages/AuthenticationInner/EmailVerification";
+import LockScreen from "../pages/AuthenticationInner/LockScreen";
+import AuthLogout from "../pages/AuthenticationInner/Logout";
 import PageLogin from "../pages/AuthenticationInner/PageLogin";
 import PageRegister from "../pages/AuthenticationInner/PageRegister";
 import RecoverPassword from "../pages/AuthenticationInner/RecoverPassword";
-import LockScreen from "../pages/AuthenticationInner/LockScreen";
-import ConfirmMail from "../pages/AuthenticationInner/ConfirmMail";
-import EmailVerification from "../pages/AuthenticationInner/EmailVerification";
 import TwoStepVerfication from "../pages/AuthenticationInner/TwoStepVerfication";
-import AuthLogout from "../pages/AuthenticationInner/Logout";
-import UserProfile from "../pages/Authentication/user-profile";
-import FclOceanFreight from "../pages/Procurement/FreightForwarding/partials/FclOceanFreight";
-import LclOceanFreight from "../pages/Procurement/FreightForwarding/partials/LclOceanFreight";
-import PortLocalFreight from "../pages/Procurement/FreightForwarding/partials/PortLocalFreight";
-import AirMasterBill from "../pages/Procurement/FreightForwarding/partials/AirMasterBill";
-import AirConsoleComp from "../pages/Procurement/FreightForwarding/partials/AirConsoleComp";
-import AirLocalFreight from "../pages/Procurement/FreightForwarding/partials/AirLocalFreight";
-import UploadFreightData from "../pages/Procurement/FreightForwarding/partials/UploadFreightData";
-import CreateQuotation from "../pages/Sales/Quotations/partials/CreateQuotation";
-import FclSurcharge from "../pages/Rate/Surcharge/FclSurcharge";
-import UploadRateData from "../pages/Rate/Surcharge/UploadRateData";
-import UploadFile from "../pages/Rate/Surcharge/UploadFile";
-import UploadPortLocalChargesData from "../pages/Procurement/FreightForwarding/partials/UploadPortLocalChargesData";
-import Settings from "../pages/Settings/Settings";
-import Users from "../pages/Settings/Users";
-import UploadUser from "../pages/Settings/UploadUser";
-import AddUserData from "../pages/Settings/AddUserData";
-import EditUserData from "../pages/Settings/EdtUserData";
+import InstantRate from "../pages/InstantRate/InstantRate";
 import Customers from "../pages/Parties/Customers";
-import Vendors from "../pages/Parties/Vendors";
 import UploadCustomerData from "../pages/Parties/UploadCustomerData";
 import UploadVendorData from "../pages/Parties/UploadVendorData";
-import InstantRate from "../pages/InstantRate/InstantRate";
-import FclInlandCharge from "../pages/Procurement/FreightForwarding/partials/FCL/FclInlandCharge";
-import FclInlandUpload from "../pages/Procurement/FreightForwarding/partials/FCL/FclInlandUpload";
-import OceanFCLSurchargeNameAddNew from "../pages/Procurement/FreightForwarding/partials/OceanFCLSurchargeNameAddNew";
-import PortLocalChargesSurchargeCodeAddNew from "../pages/Procurement/FreightForwarding/partials/PortLocalChargesSurchargeCodeAddNew";
-import OceanInlandSurchargeNameAddNew from "../pages/Procurement/FreightForwarding/partials/FCL/OceanInlandSurchargeNameAddNew";
-import UploadAirwayBillData from "../pages/Procurement/FreightForwarding/partials/UploadAirwayBillData";
+import Vendors from "../pages/Parties/Vendors";
+import AirConsoleComp from "../pages/Procurement/FreightForwarding/Air/AirConsoleComp";
+import AirLocalFreight from "../pages/Procurement/FreightForwarding/Air/AirLocalFreight";
+import AirMasterBill from "../pages/Procurement/FreightForwarding/Air/AirMasterBill";
+import FclInlandCharge from "../pages/Procurement/FreightForwarding/FCLInland/FclInlandCharge";
+import FclInlandUpload from "../pages/Procurement/FreightForwarding/FCLInland/FclInlandUpload";
+import OceanInlandSurchargeNameAddNew from "../pages/Procurement/FreightForwarding/FCLInland/OceanInlandSurchargeNameAddNew";
+import FclOceanFreight from "../pages/Procurement/FreightForwarding/FCL/FclOceanFreight";
+import LclOceanFreight from "../pages/Procurement/FreightForwarding/LCL/LclOceanFreight";
+import OceanFCLSurchargeNameAddNew from "../pages/Procurement/FreightForwarding/FCL/OceanFCLSurchargeNameAddNew";
+import PortLocalChargesSurchargeCodeAddNew from "../pages/Procurement/FreightForwarding/PortLocal/PortLocalChargesSurchargeCodeAddNew";
+import PortLocalFreight from "../pages/Procurement/FreightForwarding/PortLocal/PortLocalFreight";
+import UploadAirwayBillData from "../pages/Procurement/FreightForwarding/Air/UploadAirwayBillData";
+import UploadFreightData from "../pages/Procurement/FreightForwarding/partials/UploadFreightData";
+import UploadPortLocalChargesData from "../pages/Procurement/FreightForwarding/PortLocal/UploadPortLocalChargesData";
+import FclSurcharge from "../pages/Rate/Surcharge/FclSurcharge";
+import UploadFile from "../pages/Rate/Surcharge/UploadFile";
+import UploadRateData from "../pages/Rate/Surcharge/UploadRateData";
+import CreateQuotation from "../pages/Sales/Quotations/partials/CreateQuotation";
+import AddUserData from "../pages/Settings/AddUserData";
+import EditUserData from "../pages/Settings/EdtUserData";
+import Settings from "../pages/Settings/Settings";
+import UploadUser from "../pages/Settings/UploadUser";
+import Users from "../pages/Settings/Users";
 
 const userRoutes = [
   //dashboard
@@ -174,14 +173,14 @@ const userRoutes = [
   { path: "/freight/ocean/lcl", component: <LclOceanFreight /> },
   { path: "/freight/ocean/portlocal", component: <PortLocalFreight /> },
   { path: "/freight/air/masterbill", component: <AirMasterBill /> },
-  { path: "/freight/air/upload/air-waybill", component: <UploadAirwayBillData /> },
   { path: "/freight/air/console", component: <AirConsoleComp /> },
   { path: "/freight/air/local", component: <AirLocalFreight /> },
-  { path: "/freight/upload/:tabName", component: <UploadFreightData /> },
-  { path: "/freight/upload/fcl/add-new", component: <OceanFCLSurchargeNameAddNew /> },
+  { path: "/freight/air/upload/air-waybill", component: <UploadAirwayBillData /> },
   { path: "/freight/upload/inland", component: <FclInlandUpload /> },
-  { path: "/freight/upload/inland/add-new", component: <OceanInlandSurchargeNameAddNew /> },
+  { path: "/freight/upload/:tabName", component: <UploadFreightData /> },
   { path: "/freight/ocean/upload/:tabName", component: <UploadPortLocalChargesData /> },
+  { path: "/freight/upload/fcl/add-new", component: <OceanFCLSurchargeNameAddNew /> },
+  { path: "/freight/upload/inland/add-new", component: <OceanInlandSurchargeNameAddNew /> },
   { path: "/freight/ocean/upload/PortLocalCharges/add-new", component: <PortLocalChargesSurchargeCodeAddNew /> },
 
 
@@ -328,4 +327,5 @@ const authRoutes = [
   { path: "/pages-500", component: <Error500/> },
 ];
 
-export { userRoutes, authRoutes };
+export { authRoutes, userRoutes };
+

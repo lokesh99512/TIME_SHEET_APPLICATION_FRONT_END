@@ -1,19 +1,20 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap'
+import React, { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap';
 
-import { edit_icon, eye_icon } from '../../../../assets/images'
-import { lclBreadcrumb, lclRateData } from '../../../../common/data/procurement'
-import { getLclData, updatelclSwitchData } from '../../../../store/Procurement/actions'
-import FilterOffCanvasComp from './Modal/FilterOffCanvasComp'
-import ModalFreight from './Modal/ModalFreight'
-import { CargoType, CarrierName, ChargeId, DestPort, DetentionFree, OrgPort, TransitTime, ValidTill, VendorName, ViaPort } from './OceanCol'
-import TableReact from './TableReact'
-import TopBreadcrumbs from './TopBreadcrumbs'
+import { edit_icon, eye_icon } from '../../../../assets/images';
+import { inLandBreadcrumb, inLandRateData } from '../../../../common/data/procurement';
+import { getInLandData, updateInLandSwitchData } from '../../../../store/Procurement/actions';
+import FilterOffCanvasComp from '../Modal/FilterOffCanvasComp';
+import ModalFreight from '../Modal/ModalFreight';
+import { CargoType, CarrierName, ChargeId, CommonValue, DetentionFree, MinValue, TransitTime, ValidTill, VendorName } from '../partials/OceanCol';
+import TableReact from '../partials/TableReact';
+import TopBreadcrumbs from '../partials/TopBreadcrumbs';
+import ModalFclInlandCharge from '../Modal/ModalFclInlandCharge';
 
-export default function LclOceanFreight() {
-    document.title="LCL || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
-    const lclData = useSelector((state) => state.procurement.lclData);
+const FclInlandCharge = () => {
+    document.title = "Inland Charges || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
+    const inlandData = useSelector((state) => state?.procurement?.inlandData);
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
     const [isRight, setIsRight] = useState(false);
@@ -25,8 +26,11 @@ export default function LclOceanFreight() {
         org_port: '',
         dest_port: '',
         cargo_type: '',
-    }
+        container_type: '',
+        unit_type: '',
+    };
     const [filterDetails, setfilterDetails] = useState(inputArr);
+
     const dispatch = useDispatch();
 
     const viewPopupHandler = (data) => {
@@ -45,19 +49,20 @@ export default function LclOceanFreight() {
 
     const applyFilterHandler = () => {
         setIsRight(false);
-        console.log(filterDetails,"filterDetails lcl-----------------------")
+        console.log(filterDetails, "filterDetails lcl-----------------------");
     }
+
     const clearValueHandler = () => {
         setfilterDetails(inputArr)
     }
 
     // Activate deactivate table data
     const switchHandler = (data) => {
-        dispatch(updatelclSwitchData(data.id,data.is_active));
+        dispatch(updateInLandSwitchData(data.id, data.is_active));
     }
 
     useEffect(() => {
-        dispatch(getLclData());
+        dispatch(getInLandData());
     }, [dispatch]);
 
     const columns = useMemo(() => [
@@ -68,6 +73,15 @@ export default function LclOceanFreight() {
             disableFilters: true,
             Cell: (cellProps) => {
                 return <ChargeId cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Charge Type',
+            accessor: 'charge_type',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -89,39 +103,30 @@ export default function LclOceanFreight() {
             }
         },
         {
-            Header: 'Org Port',
-            accessor: 'org_port',
+            Header: 'Mode',
+            accessor: 'transport_mode',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <OrgPort cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
-            Header: 'Dest Port',
-            accessor: 'dest_port',
+            Header: 'Origin',
+            accessor: 'origin',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <DestPort cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
-            Header: 'Via Port',
-            accessor: 'via_port',
+            Header: 'Destination',
+            accessor: 'destination',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <ViaPort cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Detention Free',
-            accessor: 'detention_free',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <DetentionFree cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -141,16 +146,7 @@ export default function LclOceanFreight() {
             Cell: (cellProps) => {
                 return <TransitTime cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
-        },
-        {
-            Header: 'Cargo Type',
-            accessor: 'cargo_type',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <CargoType cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
+        },        
         {
             Header: 'Action',
             Cell: (cellProps) => {
@@ -161,18 +157,18 @@ export default function LclOceanFreight() {
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-end">
                             <DropdownItem>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
-                            <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem>
+                            <DropdownItem onClick={(e) => { e.stopPropagation(); viewPopupHandler(cellProps.row.original) }}>View <img src={eye_icon} alt="Eye" /></DropdownItem>
                             <DropdownItem onClick={(e) => e.stopPropagation()}>
                                 Activate
                                 <div className="switch_wrap">
                                     <FormGroup switch>
-                                        <Input 
-                                        type="switch"
-                                        checked={cellProps.row.original?.is_active || false}
-                                        onClick={() => {
-                                            switchHandler(cellProps.row.original);
-                                        }}
-                                        readOnly
+                                        <Input
+                                            type="switch"
+                                            checked={cellProps.row.original?.is_active || false}
+                                            onClick={() => {
+                                                switchHandler(cellProps.row.original);
+                                            }}
+                                            readOnly
                                         />
                                     </FormGroup>
                                 </div>
@@ -190,26 +186,28 @@ export default function LclOceanFreight() {
                 <Container fluid>
                     <div className="main_freight_wrapper">
                         {/* breadcrumbs && rate */}
-                        <TopBreadcrumbs breadcrumbs={lclBreadcrumb} data={lclRateData} />            
+                        <TopBreadcrumbs breadcrumbs={inLandBreadcrumb} data={inLandRateData} />
 
                         {/* React Table */}
                         <TableReact
                             columns={columns}
-                            data={lclData}
+                            data={inlandData}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}
                             toggleRightCanvas={toggleRightCanvas}
-                            component={'lcl'}
+                            component={'inland'}
                         />
 
                         {/* modal */}
-                        <ModalFreight modal={modal} onCloseClick={onCloseClick} viewData={viewData} modalType={'lcl'} />
+                        <ModalFclInlandCharge modal={modal} onCloseClick={onCloseClick} viewData={viewData} />
                     </div>
                 </Container>
-            </div>   
+            </div>
             {/* filter right sidebar */}
-            <FilterOffCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} />         
+            <FilterOffCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} filterType={'inland'} clearValueHandler={clearValueHandler} />
         </>
-    )
+    );
 }
+
+export default FclInlandCharge;

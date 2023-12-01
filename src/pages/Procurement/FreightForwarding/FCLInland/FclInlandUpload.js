@@ -4,17 +4,17 @@ import Dropzone from 'react-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import Select from "react-select";
-import { Card, CardBody, Col, Container, Form, Modal, NavItem, NavLink, Progress, Row, TabContent, TabPane, UncontrolledTooltip } from 'reactstrap';
-import fileData from '../../../../assets/extra/upload_Formats.xlsx';
+import { Card, CardBody, Col, Container, Form, Input, Modal, NavItem, NavLink, Progress, Row, TabContent, TabPane, UncontrolledTooltip } from 'reactstrap';
+
 import inlandfileData from '../../../../assets/extra/Inlandcharge_Upload.xlsx';
 import { delete_icon } from '../../../../assets/images';
-import { optcurrency, optionCarrierName, optionMultiDestination, optionPaymentType, optionRateSource, optionRateType, optionSurchargesName, optionValidityApp, optionVendorName, optionVendorType } from '../../../../common/data/procurement';
+import { optcurrency, optionCalculationType, optionCarrierName, optionChargeBasis, optionRateSource, optionRateType, optionSurchargesName, optionVendorName } from '../../../../common/data/procurement';
 import { formatBytes, isAnyValueEmpty, isExcelFile } from '../../../../components/Common/CommonLogic';
-import { addAirwaybillData, addFCLData, updateCarrierData, updateFCLActiveTab } from '../../../../store/Procurement/actions';
+import { addInlandData, updateCarrierData, updateInlandActiveTab } from '../../../../store/Procurement/actions';
 import { BLANK_CARRIER_DATA } from '../../../../store/Procurement/actiontype';
 import { useEffect } from 'react';
 
-export default function UploadAirwayBillData() {
+export default function FclInlandUpload() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
     const [openSaveModal, setOpenSaveModal] = useState(false);
     const [progressValue, setProgressValue] = useState(33);
@@ -24,35 +24,34 @@ export default function UploadAirwayBillData() {
     const [fileError, setfileError] = useState('');
     const [removeValue, setRemoveValue] = useState('');
     const carrierData = useSelector((state) => state?.procurement?.carrierDetails);
-    // const addFCL = useSelector((state) => state?.procurement?.addFCL);
-    const addAirBill = useSelector((state)=> state?.procurement?.addAirWaybill);
-    const fclActiveTab = useSelector((state) => state?.procurement?.fclActiveTab);
+    const inlandActiveTab = useSelector((state) => state?.procurement?.inlandActiveTab);
+    const addInland = useSelector((state) => state?.procurement?.addInland);
     const dispatch = useDispatch();
     const { tabName } = useParams();
     const navigateState = useLocation();
 
-    // console.log(carrierData, "--->carrierData");
-    // console.log(addFCL, "--->addFCL");
-    console.log(addAirBill, "--->addAirBill");
+    // console.log(navigateState, "navigateState");
+
+    // console.log(addInland?.surcharges,"addInland");
 
     useEffect(()=>{
-        setActiveTabProgress(fclActiveTab)
-        if (fclActiveTab === 1) { setProgressValue(33) }
-        if (fclActiveTab === 2) { setProgressValue(66) }
-        if (fclActiveTab === 3) { setProgressValue(100); }
-        setSurcharges(addAirBill?.surcharges)
+        setActiveTabProgress(inlandActiveTab)
+        if (inlandActiveTab === 1) { setProgressValue(33) }
+        if (inlandActiveTab === 2) { setProgressValue(66) }
+        if (inlandActiveTab === 3) { setProgressValue(100); }
+        setSurcharges(addInland?.surcharges)
     },[])
 
     const openSaveConfirmModal = () => {
         setOpenSaveModal(!openSaveModal);
     }
-    
+
     const finalSaveButton = () => {
         setSurcharges([]);
         setActiveTabProgress(1);
         setProgressValue(33);
         setselectedFiles([]);
-        dispatch({type: BLANK_CARRIER_DATA});
+        dispatch({ type: BLANK_CARRIER_DATA });
         setOpenSaveModal(false);
     }
 
@@ -60,7 +59,8 @@ export default function UploadAirwayBillData() {
         if (activeTabProgress !== tab) {
             if (tab >= 1 && tab <= 3) {
                 setActiveTabProgress(tab)
-                dispatch(updateFCLActiveTab(tab))
+                dispatch(updateInlandActiveTab(tab))
+
                 if (tab === 1) { setProgressValue(33) }
                 if (tab === 2) { setProgressValue(66) }
                 if (tab === 3) { setProgressValue(100); }
@@ -96,46 +96,36 @@ export default function UploadAirwayBillData() {
         }
     }
     // ------------- dynamic field ------------------------
-
+    
     const addHandler = () => {
         const newSurcharge = {
-            surcharges_name: '',
-            destination: [],
-            payment_type: 'prepaid',
-            gp1: '',
-            gp2: '',
-            hq1: '',
-            hq2: '',
-            rf1: '',
-            rf2: ''
-        }
+                            surcharges_name: '',
+                            charge_basis: '',
+                            calculation_type: '',
+                            rate: '',
+                            tax: '',
+                            currency: ''
+                        }
         setSurcharges(s =>[...s, newSurcharge])
-        handleAddAirWayBill("surcharges",[...surcharges,newSurcharge])
+        handleAddInland("surcharges",[...surcharges,newSurcharge])
     }
-
 
     const removeInputFields = (index) => {
         const rows = [...surcharges];
         rows.splice(index, 1);
         setSurcharges(rows);
-        handleAddAirWayBill("surcharges",rows)
+        handleAddInland("surcharges",rows)
     }
+
+    const handleAddInland = useCallback((name, opt)=>{
+        dispatch(addInlandData(name,opt));
+    },[addInland])
 
     const handleChange = (e, name, index) => {
         const list = [...surcharges];
         list[index][name] = e.target.value;
         setSurcharges(list);
     }
-
-    // const handleAddFCL = useCallback((name, opt)=>{
-    //     console.log(name, "--->name");
-    //     console.log(opt, "--->opt");
-    //     dispatch(addFCLData(name,opt));
-    // },[addFCL])
-
-    const handleAddAirWayBill = useCallback((name, opt)=>{
-        dispatch(addAirwaybillData(name,opt));
-    },[addAirBill])
 
     const handleSelectGroup = useCallback((name, opt) => {
         dispatch(updateCarrierData(name, opt));
@@ -164,7 +154,7 @@ export default function UploadAirwayBillData() {
         setSurcharges(list);
     }, [surcharges]);
 
-    
+
 
     return (
         <>
@@ -183,7 +173,7 @@ export default function UploadAirwayBillData() {
                                                         <div className="step-icon" data-bs-toggle="tooltip" id="SellerDetails">
                                                             <i className="bx bx-list-ul"></i>
                                                             <UncontrolledTooltip placement="top" target="SellerDetails">
-                                                                Carrier Details helloo
+                                                                Carrier Details
                                                             </UncontrolledTooltip>
                                                         </div>
                                                     </NavLink>
@@ -228,7 +218,6 @@ export default function UploadAirwayBillData() {
                                                                         name='rate_type'
                                                                         onChange={(opt) => {
                                                                             handleSelectGroup('rate_type', opt);
-                                                                            handleAddAirWayBill('carrierDetails', { ...addAirBill?.carrierDetails, rate_type: opt });
                                                                         }}
                                                                         options={optionRateType}
                                                                         classNamePrefix="select2-selection form-select"
@@ -243,7 +232,6 @@ export default function UploadAirwayBillData() {
                                                                         name='rate_source'
                                                                         onChange={(opt) => {
                                                                             handleSelectGroup('rate_source', opt)
-                                                                            handleAddAirWayBill('carrierDetails', { ...addAirBill?.carrierDetails, rate_source: opt });
                                                                         }}
                                                                         options={optionRateSource}
                                                                         classNamePrefix="select2-selection form-select"
@@ -275,8 +263,6 @@ export default function UploadAirwayBillData() {
                                                                         name='vendor_name'
                                                                         onChange={(opt) => {
                                                                             handleSelectGroup('vendor_name', opt)
-                                                                            handleAddAirWayBill('carrierDetails', { ...addAirBill?.carrierDetails, vendor_name: opt });
-
                                                                         }}
                                                                         options={optionVendorName}
                                                                         classNamePrefix="select2-selection form-select"
@@ -292,8 +278,6 @@ export default function UploadAirwayBillData() {
                                                                         name='carrier_name'
                                                                         onChange={(opt) => {
                                                                             handleSelectGroup('carrier_name', opt)
-                                                                            handleAddAirWayBill('carrierDetails', { ...addAirBill?.carrierDetails, carrier_name: opt });
-
                                                                         }}
                                                                         options={optionCarrierName}
                                                                         // isDisabled={carrierData?.vendor_type?.value === 'agent'}
@@ -320,20 +304,13 @@ export default function UploadAirwayBillData() {
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
                                                                     <label htmlFor='validity_from' className="form-label">Validity From</label>
-                                                                    <input type="date" name="validity_from" id="validity_from" className='form-control' value={carrierData.validity_from} onChange={(e) => {
-                                                                        handleSelectGroup('validity_from', e.target.value)
-                                                                        handleAddAirWayBill('carrierDetails', { ...addAirBill?.carrierDetails, validity_from: e.target.value });
-                                                                        }} />
+                                                                    <input type="date" name="validity_from" id="validity_from" className='form-control' value={carrierData.validity_from} onChange={(e) => handleSelectGroup('validity_from', e.target.value)} />
                                                                 </div>
                                                             </div>
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
                                                                     <label htmlFor='validity_to' className="form-label">Validity To</label>
-                                                                    <input type="date" name="validity_to" id="validity_to" className='form-control' value={carrierData.validity_to} onChange={(e) => {
-                                                                        handleSelectGroup('validity_to', e.target.value)
-                                                                        handleAddAirWayBill('carrierDetails', { ...addAirBill?.carrierDetails, validity_to: e.target.value });
-                                                                       }} />
-
+                                                                    <input type="date" name="validity_to" id="validity_to" className='form-control' value={carrierData.validity_to} onChange={(e) => handleSelectGroup('validity_to', e.target.value)} />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -345,11 +322,7 @@ export default function UploadAirwayBillData() {
                                                             <h5>Freight Upload</h5>
                                                         </div>
                                                         <div className='mb-3 d-flex justify-content-end'>
-                                                            {navigateState?.state?.id === "inland" ? (
-                                                                <a href={inlandfileData} className="download_formate btn btn-primary" download="Inland Upload Format">Download Format</a>
-                                                            ) : (
-                                                                <a href={fileData} className="download_formate btn btn-primary" download="Fcl Uplaod Format">Download Format</a>
-                                                            )}
+                                                            <a href={inlandfileData} className="download_formate btn btn-primary" download="Inland Upload Format">Download Format</a>                                                            
                                                         </div>
                                                         <Form>
                                                             <Dropzone
@@ -411,18 +384,18 @@ export default function UploadAirwayBillData() {
                                                             <h5>Surcharges</h5>
                                                         </div>
                                                         <form>
-                                                            {addAirBill?.surcharges && addAirBill?.surcharges?.map((item, index) => (
+                                                            {addInland?.surcharges && addInland?.surcharges?.map((item, index) => (
                                                                 <div key={index} className='upload_surcharges_row'>
                                                                     <div className="row">
                                                                         <div className="col-lg-3">
                                                                             <div className="mb-3">
-                                                                                <label htmlFor="surcharges_name" className="form-label">Select Surcharge Name</label>
+                                                                                <label htmlFor="surcharges_name" className="form-label">Surcharge Name</label>
                                                                                 <Select
                                                                                     value={optionSurchargesName ? optionSurchargesName.find(obj => obj.value === item.surcharges_name) : ''}
                                                                                     name='surcharges_name'
                                                                                     onChange={(opt) => {
                                                                                         if (opt.label == "Add New") {
-                                                                                            navigate("/freight/upload/fcl/add-new")
+                                                                                            navigate("/freight/upload/inland/add-new")
                                                                                         }
                                                                                         handleSelectGroup2(opt.value, 'surcharges_name', index);
                                                                                     }}
@@ -433,82 +406,78 @@ export default function UploadAirwayBillData() {
                                                                         </div>
                                                                         <div className="col-lg-3">
                                                                             <div className="mb-3">
-                                                                                <label htmlFor='destination' className="form-label">Surcharge Applicable on destination</label>
+                                                                                <label htmlFor="charge_basis" className="form-label">Charge Basis</label>
                                                                                 <Select
-                                                                                    value={item.destination}
-                                                                                    name='destination'
-                                                                                    isMulti
-                                                                                    options={optionMultiDestination}
-                                                                                    onChange={(opt) => { handleMultiSelectChange(opt, 'destination', optionMultiDestination, index) }}
-                                                                                    className="basic-multi-select"
+                                                                                    value={optionChargeBasis ? optionChargeBasis.find(obj => obj.value === item.charge_basis) : ''}
+                                                                                    name='charge_basis'
+                                                                                    onChange={(opt) => {
+                                                                                        handleSelectGroup2(opt.value, 'charge_basis', index);
+                                                                                    }}
+                                                                                    options={optionChargeBasis}
                                                                                     classNamePrefix="select2-selection form-select"
                                                                                 />
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-lg-3">
                                                                             <div className="mb-3">
-                                                                                <label htmlFor='charge_currency' className="form-label">Select Currency</label>
+                                                                                <label htmlFor="calculation_type" className="form-label">Calculation Type</label>
+                                                                                <Select
+                                                                                    value={optionCalculationType ? optionCalculationType.find(obj => obj.value === item.calculation_type) : ''}
+                                                                                    name='calculation_type'
+                                                                                    onChange={(opt) => {
+                                                                                        handleSelectGroup2(opt.value, 'calculation_type', index);
+                                                                                    }}
+                                                                                    options={optionCalculationType}
+                                                                                    classNamePrefix="select2-selection form-select"
+                                                                                />
+                                                                            </div>
+                                                                        </div>
+                                                                        {/* Rate Value */}
+                                                                        <div className="col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
+                                                                            <div className="mb-3">
+                                                                                <label className="form-label" htmlFor='rate'>
+                                                                                    Rate
+                                                                                </label>
+                                                                                <Input
+                                                                                    type="text"
+                                                                                    name={`rate`}
+                                                                                    placeholder="Enter Rate"
+                                                                                    value={item?.rate || ''}
+                                                                                    onChange={(e) => {
+                                                                                        handleSelectGroup2(e.target.value, 'rate', index);
+                                                                                    }}
+                                                                                />
+                                                                            </div>
+                                                                        </div>
+                                                                        {/* Tax Value */}
+                                                                        <div className="col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
+                                                                            <div className="mb-3">
+                                                                                <label className="form-label" htmlFor='tax'>
+                                                                                    Tax
+                                                                                </label>
+                                                                                <Input
+                                                                                    type="text"
+                                                                                    name={`tax`}
+                                                                                    placeholder="Enter tax"
+                                                                                    value={item.tax || ''}
+                                                                                    onChange={(e) => {
+                                                                                        handleSelectGroup2(e.target.value, 'tax', index);
+                                                                                    }}
+                                                                                />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="col-lg-3">
+                                                                            <div className="mb-3">
+                                                                                <label htmlFor='charge_currency' className="form-label">Currency</label>
                                                                                 <Select
                                                                                     value={optcurrency ? optcurrency.find(obj => obj.value === item.charge_currency) : ''}
-                                                                                    name='charge_currency'
+                                                                                    name='currency'
                                                                                     onChange={(opt) => {
-                                                                                        handleSelectGroup2(opt.value, 'charge_currency', index);
+                                                                                        handleSelectGroup2(opt.value, 'currency', index);
                                                                                     }}
                                                                                     options={optcurrency}
                                                                                     classNamePrefix="select2-selection form-select"
                                                                                 />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="col-lg-3">
-                                                                            <div className="mb-3">
-                                                                                <label htmlFor='payment_type' className="form-label">Select Payment Type For the surcharge</label>
-                                                                                <Select
-                                                                                    value={item.payment_type}
-                                                                                    name='payment_type'
-                                                                                    onChange={(opt) => {
-                                                                                        handleSelectGroup2(opt, 'payment_type', index);
-                                                                                    }}
-                                                                                    options={optionPaymentType}
-                                                                                    classNamePrefix="select2-selection form-select"
-                                                                                />
-                                                                            </div>
-                                                                        </div>                                                                        
-                                                                    </div>
-                                                                    <div className="row">
-                                                                        <div className="col-lg-2">
-                                                                            <div className="mb-3">
-                                                                                <label htmlFor="gp1" className="form-label">20 GP</label>
-                                                                                <input type="number" className="form-control" id="gp1" placeholder="Enter value" onChange={(e) => { handleChange(e, 'gp1', index) }} />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="col-lg-2">
-                                                                            <div className="mb-3">
-                                                                                <label htmlFor="gp2" className="form-label">40 GP</label>
-                                                                                <input type="number" className="form-control" id="gp2" placeholder="Enter value" onChange={(e) => { handleChange(e, 'gp2', index) }} />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="col-lg-2">
-                                                                            <div className="mb-3">
-                                                                                <label htmlFor="hq1" className="form-label">40 HQ</label>
-                                                                                <input type="number" className="form-control" id="hq1" placeholder="Enter value" onChange={(e) => { handleChange(e, 'hq1', index) }} />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="col-lg-2">
-                                                                            <div className="mb-3">
-                                                                                <label htmlFor="hq2" className="form-label">45 HQ</label>
-                                                                                <input type="number" className="form-control" id="hq2" placeholder="Enter value" onChange={(e) => { handleChange(e, 'hq2', index) }} />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="col-lg-2">
-                                                                            <div className="mb-3">
-                                                                                <label htmlFor="rf1" className="form-label">20 RF</label>
-                                                                                <input type="number" className="form-control" id="rf1" placeholder="Enter value" onChange={(e) => { handleChange(e, 'rf1', index) }} />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="col-lg-2">
-                                                                            <div className="mb-3">
-                                                                                <label htmlFor="rf2" className="form-label">40 RF</label>
-                                                                                <input type="number" className="form-control" id="rf2" placeholder="Enter value" onChange={(e) => { handleChange(e, 'rf2', index) }} />
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -538,9 +507,9 @@ export default function UploadAirwayBillData() {
                                                     </button>
                                                 </li>
 
-                                                <li className={`${activeTabProgress === 1 ? isAnyValueEmpty(addAirBill, removeValue) ? "disabled" : "" : activeTabProgress === 2 ? selectedFiles?.length === 0 ? "disabled" : "" : ""}`}>
+                                                <li className={`${activeTabProgress === 1 ? isAnyValueEmpty(carrierData, removeValue) ? "disabled" : "" : activeTabProgress === 2 ? selectedFiles?.length === 0 ? "disabled" : "" : ""}`}>
                                                     <button
-                                                        className={`btn btn-primary d-flex align-items-center ${activeTabProgress === 1 ? !(addAirBill?.carrierDetails?.carrier_name !== '' && addAirBill?.carrierDetails?.validity_from !== '' && addAirBill?.carrierDetails?.validity_to !== '') ? "disabled" : "" : activeTabProgress === 2 ? selectedFiles?.length === 0 ? "disabled" : "" : ""}`}
+                                                        className={`btn btn-primary d-flex align-items-center ${activeTabProgress === 1 ? !(carrierData?.carrier_name !== '' && carrierData?.validity_from !== '' && carrierData?.validity_to !== '') ? "disabled" : "" : activeTabProgress === 2 ? selectedFiles?.length === 0 ? "disabled" : "" : ""}`}
                                                         onClick={() => {
                                                             toggleTabProgress(activeTabProgress + 1);
                                                         }}

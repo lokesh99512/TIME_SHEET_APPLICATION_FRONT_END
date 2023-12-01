@@ -4,11 +4,11 @@ import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input
 import { edit_icon } from '../../../../assets/images'
 import { fclRateData, portLocalBreadcrumb } from '../../../../common/data/procurement'
 import { getPortLocalChargesData } from '../../../../store/Procurement/actions'
-import ModalSurchargeValue from './Modal/ModalSurchargeValue'
-import { Carriername, MovementType, PortName, SurchargeCategory, SurchargeId, Terminals, Validtill, Vendorname } from './OceanCol'
+import ModalSurchargeValue from '../Modal/ModalSurchargeValue'
+import { Carriername, MovementType, PortName, SurchargeCategory, SurchargeId, Terminals, Validtill, Vendorname } from '../partials/OceanCol'
 import TableReact from './TableReactPortLocalCharges'
-import TopBreadcrumbs from './TopBreadcrumbs'
-import FilterPortCanvasComp from './Modal/FilterPortCanvasComp'
+import TopBreadcrumbs from '../partials/TopBreadcrumbs'
+import FilterPortCanvasComp from '../Modal/FilterPortCanvasComp'
 import { FILTER_PORTLOCALCHARGES_DATA } from '../../../../store/Procurement/actiontype'
 
 export default function PortLocalFreight() {

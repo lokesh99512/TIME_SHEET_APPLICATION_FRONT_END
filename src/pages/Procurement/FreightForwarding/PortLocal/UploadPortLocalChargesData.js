@@ -21,7 +21,7 @@ import {
   TabPane,
   UncontrolledTooltip,
 } from "reactstrap";
-import ModalAddTerm from "./Modal/ModalAddTerm";
+import ModalAddTerm from "../Modal/ModalAddTerm";
 import { optionCarrierName } from "../../../../common/data/procurement";
 import { isAnyValueEmpty } from "../../../../components/Common/CommonLogic";
 
