@@ -337,7 +337,7 @@ export default function UploadFreightData() {
                                                             {navigateState?.state?.id === "inland" ? (
                                                                 <a href={inlandfileData} className="download_formate btn btn-primary" download="Inland Upload Format">Download Format</a>
                                                             ) : (
-                                                                <a href={fileData} className="download_formate btn btn-primary" download="Fcl Uplaod Format">Download Format</a>
+                                                                <a href={fileData} className="download_formate btn btn-primary w-sm-100" download="Fcl Uplaod Format">Download Format</a>
                                                             )}
                                                         </div>
                                                         <Form>

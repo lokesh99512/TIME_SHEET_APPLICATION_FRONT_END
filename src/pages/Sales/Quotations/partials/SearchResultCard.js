@@ -150,7 +150,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                     <div className="btn_wrap d-flex">
                                         <button type='button' className='btn text-primary view_detail_btn' onClick={() => { showDetailsHandler(index, item.id); }}>
                                             View{showDetails?.find(obj => obj.id === item.id)?.details ? 'Less' : 'Detail'}</button>
-                                        <button type='button' className='btn btn-primary' onClick={() => { QuoteModalHandler(); singleQuoteModal(item) }} disabled={quote_Selected.some(obj => obj.id === item.id) || quote_Selected?.length >= 2}>Quote Now</button>
+                                        <button type='button' className='btn btn-primary quote_now_btn' onClick={() => { QuoteModalHandler(); singleQuoteModal(item) }} disabled={quote_Selected.some(obj => obj.id === item.id) || quote_Selected?.length >= 2}>Quote Now</button>
                                     </div>
                                 </div>
                             </div>
@@ -329,7 +329,10 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                     </div>
                 )) : (
                     <div className='no_data_found p-5 border rounded mt-4'>
-                        <p className='text-center'><b>No Data Found</b></p>
+                        <p className='text-center'>
+                            <b>No Data Found</b>
+                            <button type='button' className='btn btn-primary d-table mx-auto mt-3'>Request For Quote</button>
+                        </p>
                     </div>
                 )}
             </div>

@@ -250,7 +250,8 @@ const SidebarContent = props => {
                       </Link>
                     </li>
                     <li>
-                      <Link to="/freight/ocean/lcl">
+                      {/* <Link to="/freight/ocean/lcl" className="opacity-25"> */}
+                      <Link to="/#" className="opacity-25" style={{ pointerEvents: 'none' }}>
                         <span>LCL</span>
                       </Link>
                     </li>

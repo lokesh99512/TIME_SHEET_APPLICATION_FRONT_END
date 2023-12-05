@@ -29,6 +29,7 @@ import CarouselPage from "../AuthenticationInner/CarouselPage"
 import { google_icon, microsoft_icon } from "../../assets/images"
 import { isAnyValueEmpty } from "../../components/Common/CommonLogic"
 import * as schema from "../../api/global-schema"
+import axios from "axios"
 
 const Login = props => {
     const [passwordShow, setPasswordShow] = useState(false)
@@ -58,7 +59,24 @@ const Login = props => {
             email: schema.email,
             password: schema.password,
         }),
-        onSubmit: (values) => {
+        onSubmit: async(values) => {
+            // let dataObj = {
+            //     "user-name": values?.email,
+            //     'password': values?.password,
+            //     'remember-me': false
+            // }
+            
+            // await axios({
+            //     method: 'POST',
+            //     url: 'http://65.0.98.102:7005/api/v1/user/sign-in',                
+            //     headers: {
+            //         ...dataObj
+            //     }
+            // }).then((response) => {
+            //     console.log("response", response);
+            // }).catch((error) => {
+            //     console.log(error, "error");
+            // })
         dispatch(loginUser(values, props.router.navigate))
         }
     })

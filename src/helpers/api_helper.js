@@ -11,7 +11,23 @@ const axiosApi = axios.create({
   baseURL: API_URL,
 })
 
+// axios.defaults.baseURL = "http://65.0.98.102:7005";
+
 axiosApi.defaults.headers.common["Authorization"] = token
+
+// const axiosInstance = axios.create();
+// axiosInstance.interceptors.request.use(
+//   (config) => {
+//     const token = localStorage.getItem("token");
+//     if (token) {
+//       config.headers["Authorization"] = `Bearer ${token}`;
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
 
 axiosApi.interceptors.response.use(
   response => response,

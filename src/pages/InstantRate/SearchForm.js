@@ -207,7 +207,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
       <div className="create_sales_search_forms">
         {/* Port From && To */}
         <div className="row">
-          <div className="col-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6 mt-2">
+          <div className="col-12 col-md-12 col-lg-12 col-xl-8 col-xxl-6 mt-2">
             <div className="d-flex flex-column">
               <div className="d-flex position-relative w-100 quotation_select_port_wrap">
                 <div className={`quotation_from_wrap`} >
@@ -272,7 +272,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
 
           {/* container details */}
           {activeTab == "FCL" &&
-            <div className="col-12 col-md-6 col-lg-6 col-xl-6 col-xxl-3 mt-2">
+            <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
               <div className="common_dropdwon_btn_wrap">
                 <div id="more_menu" className={`prof_wrap d-flex justify-content-between`} onClick={() => { toggleDropdown(11); }} >
                   <div className="icon d-flex align-items-center justify-content-center">
@@ -760,7 +760,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
           
           <div className="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mt-2 align-self-center">
             <button className="btn p-0 me-3 border-0" onClick={() => { setAdvanceSearch(!advanceSearch) }}><img src={filter_img} alt="filter" width={'20px'} height={'20px'} /></button>
-            <button type="button" className='btn btn-primary mt-0 w-25' onClick={() => { searchQuoteHandler(); }}
+            <button type="button" className='btn btn-primary mt-0' onClick={() => { searchQuoteHandler(); }}
               disabled={!(!isAnyValueEmpty(searchForm))}>Search</button>
           </div>
         </div>
