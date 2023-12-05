@@ -8,7 +8,7 @@ import TableReact from "./TableReact"
 import { fclSurchargeBreadcrumb, fclSurchargeRateData } from '../../../common/data/procurement'
 import { useSelector } from 'react-redux'
 import { getFclData } from '../../../store/Procurement/actions'
-import { getFclSurchargeData } from '../../../store/RateManagement/actions'
+import { getFclSurchargeData } from '../../../store/Settings/actions'
 import { useDispatch } from 'react-redux'
 import { CarrierName, ChargeAliasCode, ChargeCategory, ChargeCode, ChargeDesc, ChargeId } from './SurchargeCol'
 import { edit_icon, eye_icon } from '../../../assets/images'
@@ -16,7 +16,7 @@ import ModalAddNew from './Modal/ModalAddNewCategory'
 
 
 export default function FclSurcharge() {
-    const fclSurchargeData = useSelector((state) => state.rate.fcl_surcharge_data);
+    const fclSurchargeData = useSelector((state) => state?.settings?.fcl_surcharge_data);
 
     // console.log(fclSurchargeData,"<<<<");
     const [isRight, setIsRight] = useState(false);

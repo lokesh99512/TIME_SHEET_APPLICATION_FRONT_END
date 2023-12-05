@@ -33,7 +33,7 @@ export default function* rootSaga() {
     fork(dashBoardSaga),
     fork(procurementSaga),
     fork(salesSaga),
-    fork(rateManagementSaga),
+    // fork(rateManagementSaga),
     fork(settingsSaga),
     fork(partiesSaga)
   ])

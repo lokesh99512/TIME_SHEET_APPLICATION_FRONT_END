@@ -5,11 +5,14 @@ import {
   UPDATE_USER_SWITCH,
   GET_COMPANYDETAILS_DATA_SUCCESS,
   GET_COMPANYDETAILS_DATA_FAIL,
+  GET_FCL_SURCHARGE_TABLE_DATA_SUCCESS,
+  GET_FCL_SURCHARGE_TABLE_DATA_FAIL,
 } from "./actiontype";
 
 const INIT_STATE = {
   settings_users_data: [],
   settings_companydetails_data: [],
+  fcl_surcharge_data: [],
 };
 
 const settings = (state = INIT_STATE, action) => {
@@ -52,9 +55,21 @@ const settings = (state = INIT_STATE, action) => {
           error: action.payload,
         }; 
 
+      case GET_FCL_SURCHARGE_TABLE_DATA_SUCCESS:
+        return {
+          ...state,
+          fcl_surcharge_data: action.payload,
+        };
+      case GET_FCL_SURCHARGE_TABLE_DATA_FAIL:
+        return {
+          ...state,
+          error: action.payload,
+          };
+
     default:
       return state;
   }
 };
 
 export default settings;
+

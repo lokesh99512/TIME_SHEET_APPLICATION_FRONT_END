@@ -13,7 +13,6 @@ function* getFclSurchargeData(){
 }
 
 
-
 export function* watchGetRateManagementData(){
     yield takeLatest(GET_FCL_SURCHARGE_TABLE_DATA, getFclSurchargeData)
 }
