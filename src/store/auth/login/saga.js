@@ -20,14 +20,14 @@ function* loginUser({ payload: { user, history } }) {
   console.log(process.env.REACT_APP_DEFAULTAUTH );
   try {
     if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-      const response = yield call(
+            const response = yield call(
         fireBaseBackend.loginUser,
         user.email,
         user.password
       );
       yield put(loginSuccess(response));
     } else if (process.env.REACT_APP_DEFAULTAUTH === "jwt") {
-      const response = yield call(postJwtLogin, {
+            const response = yield call(postJwtLogin, {
         email: user.email,
         password: user.password,
       });

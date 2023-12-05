@@ -141,15 +141,18 @@ import PortLocalFreight from "../pages/Procurement/FreightForwarding/PortLocal/P
 import UploadAirwayBillData from "../pages/Procurement/FreightForwarding/Air/UploadAirwayBillData";
 import UploadFreightData from "../pages/Procurement/FreightForwarding/partials/UploadFreightData";
 import UploadPortLocalChargesData from "../pages/Procurement/FreightForwarding/PortLocal/UploadPortLocalChargesData";
-import FclSurcharge from "../pages/Rate/Surcharge/FclSurcharge";
-import UploadFile from "../pages/Rate/Surcharge/UploadFile";
-import UploadRateData from "../pages/Rate/Surcharge/UploadRateData";
+// import FclSurcharge from "../pages/Rate/Surcharge/FclSurcharge";
+// import UploadFile from "../pages/Rate/Surcharge/UploadFile";
+// import UploadRateData from "../pages/Rate/Surcharge/UploadRateData";
 import CreateQuotation from "../pages/Sales/Quotations/partials/CreateQuotation";
 import AddUserData from "../pages/Settings/AddUserData";
-import EditUserData from "../pages/Settings/EdtUserData";
+import EditUserData from "../pages/Settings/EditUserData";
 import Settings from "../pages/Settings/Settings";
 import UploadUser from "../pages/Settings/UploadUser";
 import Users from "../pages/Settings/Users";
+import FclSurcharge from "../pages/Settings/Surcharge/FclSurcharge";
+import UploadRateData from "../pages/Settings/Surcharge/UploadRateData";
+import UploadFile from "../pages/Settings/Surcharge/UploadFile";
 
 const userRoutes = [
   //dashboard
@@ -186,16 +189,19 @@ const userRoutes = [
 
 
   // Rate Management
-  { path: "/rate/surcharge/fcl", component: <FclSurcharge/> },
-  { path: "/rate/upload/:tabName", component: <UploadRateData /> },
-  { path: "/rate/upload/uploadFile", component: <UploadFile /> },
+  // { path: "/rate/surcharge/fcl", component: <FclSurcharge/> },
+  // { path: "/rate/upload/:tabName", component: <UploadRateData /> },
+  // { path: "/rate/upload/uploadFile", component: <UploadFile /> },
   
   // Settings
   { path: "/settings/company-settings", component: <Settings /> },
   { path: "/settings/users", component: <Users /> },
+  { path: "/settings/surcharge/fcl", component: <FclSurcharge /> },
   { path: "/settings/users/uploadFile", component: <UploadUser /> },
   { path: "/settings/users/addUser", component: <AddUserData /> }, 
   { path: "/settings/users/editUser", component: <EditUserData /> }, 
+  { path: "/settings/upload/:tabName", component: <UploadRateData /> },
+  { path: "/settings/upload/uploadFile", component: <UploadFile /> },
 
   // Parties
   { path: "/parties/customers", component: <Customers /> }, 
