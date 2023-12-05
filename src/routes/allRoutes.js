@@ -146,7 +146,7 @@ import UploadPortLocalChargesData from "../pages/Procurement/FreightForwarding/P
 // import UploadRateData from "../pages/Rate/Surcharge/UploadRateData";
 import CreateQuotation from "../pages/Sales/Quotations/partials/CreateQuotation";
 import AddUserData from "../pages/Settings/AddUserData";
-import EditUserData from "../pages/Settings/EdtUserData";
+import EditUserData from "../pages/Settings/EditUserData";
 import Settings from "../pages/Settings/Settings";
 import UploadUser from "../pages/Settings/UploadUser";
 import Users from "../pages/Settings/Users";
