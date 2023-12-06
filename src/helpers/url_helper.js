@@ -158,3 +158,4 @@ export const GET_INQUIRY_TABLE = "GET_INQUIRY_TABLE"
 
 // -------------------- original Url Helper
 export const LOGIN_API = "/api/v1/user/sign-in"
+export const Get_FCL_Data= "api/v1/tenant-ocean-fcl-rp/"

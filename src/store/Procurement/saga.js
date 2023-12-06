@@ -1,7 +1,8 @@
 import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects";
-import { getAirConsoleTableData, getAirwaybillTableData, getFCLTableData, getInlandTableData, getLCLTableData, getPortLocalChargesTableData } from "../../helpers/fakebackend_helper";
+import { getAirConsoleTableData, getAirwaybillTableData, getInlandTableData, getLCLTableData, getPortLocalChargesTableData } from "../../helpers/fakebackend_helper";
 import { getAirConsoleDataFail, getAirConsoleDataSuccess, getAirwaybillDataFail, getAirwaybillDataSuccess, getFclDataFail, getFclDataSuccess, getInLandDataFail, getInLandDataSuccess, getLclDataFail, getLclDataSuccess, getPortLocalChargesDataFail, getPortLocalChargesDataSuccess } from "./actions";
 import { GET_CONSOLE_TABLE_DATA, GET_FCL_TABLE_DATA, GET_INLAND_TABLE_DATA, GET_LCL_TABLE_DATA, GET_PORTLOCALCHARGES_TABLE_DATA, GET_WAYBILL_TABLE_DATA } from "./actiontype";
+import { getFCLTableData } from "../../helpers/services/FCLService";
 
 function* fetchFclData(){
     try {
