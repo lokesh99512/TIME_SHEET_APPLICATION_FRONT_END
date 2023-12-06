@@ -9,6 +9,7 @@ import {
 const initialState = {
   error: "",
   loading: false,
+  login_user_data: {},
 };
 
 const login = (state = initialState, action) => {
@@ -21,12 +22,12 @@ const login = (state = initialState, action) => {
       };
       console.log('========= Hello World')
       break;
-
     }
     case LOGIN_SUCCESS:
       state = {
         ...state,
         loading: false,
+        login_user_data: action.payload
       };
       break;
     case LOGOUT_USER:

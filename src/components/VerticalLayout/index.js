@@ -2,22 +2,22 @@ import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import {
   changeLayout,
+  changeLayoutWidth,
   changeSidebarTheme,
   changeSidebarType,
   changeTopbarTheme,
-  changeLayoutWidth,
   changelayoutMode,
   showRightSidebarAction
 } from "../../store/actions";
 
 // Layout Related Components
+import RightSidebar from "../CommonForBoth/RightSidebar";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
-import Footer from "./Footer";
-import RightSidebar from "../CommonForBoth/RightSidebar";
 
 //redux
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { ToastWrapper } from "../Common/CustomToast";
 const Layout = props => {
   const dispatch = useDispatch();
 
@@ -154,6 +154,7 @@ const Layout = props => {
         </div>
       </div>
       {showRightSidebar ? <RightSidebar onChangeLayoutMode={onChangeLayoutMode} /> : ''}
+      <ToastWrapper />
     </React.Fragment>
   );
 };

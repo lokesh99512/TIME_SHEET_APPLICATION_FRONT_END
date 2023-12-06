@@ -30,9 +30,10 @@ import { google_icon, microsoft_icon } from "../../assets/images"
 import { isAnyValueEmpty } from "../../components/Common/CommonLogic"
 import * as schema from "../../api/global-schema"
 import axios from "axios"
+import { ToastWrapper } from "../../components/Common/CustomToast"
 
 const Login = props => {
-    const [passwordShow, setPasswordShow] = useState(false)
+    const [passwordShow, setPasswordShow] = useState(false)    
     const dispatch = useDispatch()
     const { error } = useSelector(state => ({
         error: state.Login.error,
@@ -47,37 +48,17 @@ const Login = props => {
             email: '',
             password: '',
         },
-        // email: "darshita.uidev@gmail.com" || '',
-        // password: "123456" || '',
-
-        // initialValues: {
-        //     validateonmount: true,
-        //     email: "admin@themesbrand.com" || '',
-        //     password: "123456" || '',
-        // },
         validationSchema: Yup.object({
             email: schema.email,
             password: schema.password,
         }),
         onSubmit: async(values) => {
-            // let dataObj = {
-            //     "user-name": values?.email,
-            //     'password': values?.password,
-            //     'remember-me': false
-            // }
-            
-            // await axios({
-            //     method: 'POST',
-            //     url: 'http://65.0.98.102:7005/api/v1/user/sign-in',                
-            //     headers: {
-            //         ...dataObj
-            //     }
-            // }).then((response) => {
-            //     console.log("response", response);
-            // }).catch((error) => {
-            //     console.log(error, "error");
-            // })
-        dispatch(loginUser(values, props.router.navigate))
+            let dataObj = {
+                "user-name": values?.email,
+                'password': values?.password,
+                "remember-me": "false"            
+            }   
+            dispatch(loginUser(dataObj, props.router.navigate));
         }
     })
 
@@ -240,6 +221,7 @@ const Login = props => {
             </Row>
             </Container>
         </div>
+        <ToastWrapper />
         </React.Fragment>
     )
 }

@@ -1,24 +1,24 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 
 //import Breadcrumbs
-import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 import {
     Col,
-    Container, Row, Table
+    Container, Row
 } from "reactstrap";
 
 
 /** import Mini Widget data */
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { exportSumData, impColumnData, impExColumnData, importSumData, inquiryColumnData, inquirySumData, quotSumData, salesColumnData, salesEnquiryData, salesPerformData } from "../../common/data/dashboard";
+import { customSort } from '../../components/Common/CommonLogic';
+import AnimatedCounter from './Partials/AnimatedCounter';
 import CommonTable from './Partials/CommonTable';
 import ContainerTrackChart from './Partials/ContainerTrackChart';
 import MainDnd from './Partials/MainDnd';
 import RevenueChart from './Partials/RevenueChart';
-import { customSort } from '../../components/Common/CommonLogic';
-import AnimatedCounter from './Partials/AnimatedCounter';
-import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
     const [tableData, setTableData] = useState(exportSumData);
@@ -26,6 +26,8 @@ const Dashboard = () => {
     const [tableData3, setTableData3] = useState(inquirySumData);
     const [tableData4, setTableData4] = useState(salesPerformData);
     const navigate = useNavigate();
+    const loginData = useSelector(state => state?.Login?.login_user_data);
+    console.log(loginData,"loginData------------");
 
     //meta title
     document.title = "Dashboard || Navigating Freight Costs with Precision||Ultimate Rate Management platform";
