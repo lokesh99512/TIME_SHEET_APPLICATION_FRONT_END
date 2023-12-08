@@ -6878,16 +6878,25 @@ const inLandTableData = [
 
 // --------------------------- upload form options ---------------------------------
 const optionRateType = [
-    { label: "SPOT", value: "spot" },
-    { label: "CONTRACT", value: "contract" }
+    { label: "SPOT", value: "SPOT" },
+    { label: "CONTRACT", value: "CONTRACT" },
+    { label: "TARIFF", value: "TARIFF" }
 ]
 const optionRateSource = [
-    { label: "WEBSITE", value: "website" },
-    { label: "EMAIL", value: "email" }
+    { label: "EMAIL", value: "EMAIL" },
+    { label: "WEBSITE", value: "WEBSITE" },
+    { label: "SALES TEAM", value: "SALES TEAM" }
 ]
 const optionVendorType = [
-    { label: "Agent", value: "agent" },
-    { label: "Carrier", value: "carrier" },
+    { label: "ALL", value: "ALL" },
+    { label: "CARRIER", value: "CARRIER" },
+    { label: "NVOCC", value: "NVOCC" },
+    { label: "AGENT", value: "OVERSEAS_AGENT" },
+    { label: "CHA", value: "CHA" },
+    { label: "TRANSPORTER", value: "TRANSPORTER" },
+    { label: "CO LOADER", value: "CO_LOADER" },
+    { label: "LOCAL AGENT", value: "LOCAL_AGENT" },
+    { label: "MANPOWER AGENT", value: "MANPOWER_AGENT" },
 ]
 const optionVendorName = []
 const optionCarrierName = [
@@ -6900,8 +6909,8 @@ const optionMovementType = [
     { label: "Import", value: "import" },
 ]
 const optionValidityApp = [
-    { label: "Vessel Sailing Date", value: "vessel_sailing" },
-    { label: "Cargo Handover Date", value: "validityapp2" }
+    { label: "SAILING DATE", value: "SAILING_DATE" },
+    { label: "CARGO HANDOVER DATE", value: "CARGO_HANDOVER_DATE" }
 ]
 const optionSurchargesName = [
     { label: "OBS - One Bunker Surchage", value: "obs" },

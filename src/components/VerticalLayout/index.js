@@ -18,6 +18,7 @@ import Sidebar from "./Sidebar";
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { ToastWrapper } from "../Common/CustomToast";
+import { GET_CURRENCY_DETAIL, GET_VENDOR_DETAILS } from "../../store/Global/actiontype";
 const Layout = props => {
   const dispatch = useDispatch();
 
@@ -131,6 +132,12 @@ const Layout = props => {
       dispatch(changelayoutMode(value, layoutType));
     }
   };
+
+  // ---------- call global api-----------
+  useEffect(() => {
+    dispatch({type: GET_VENDOR_DETAILS});
+    dispatch({type: GET_CURRENCY_DETAIL});
+  },[]);
 
   return (
     <React.Fragment>

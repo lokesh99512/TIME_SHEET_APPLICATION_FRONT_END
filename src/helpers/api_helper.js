@@ -11,7 +11,8 @@ import accessToken from "./jwt-token-access/accessToken"
 //   baseURL: API_URL,
 // })
 
-axios.defaults.baseURL = "http://65.0.98.102:7005";
+// axios.defaults.baseURL = "http://65.0.98.102:7005";
+axios.defaults.baseURL = "http://demo-api.tarifftales.com:7005";
 
 // const token = localStorage.getItem("token");
 // const removequote = JSON.parse(token)
@@ -50,6 +51,11 @@ export async function get(url, config = {}) {
 export async function post(url, data, config = {}) {
   return axiosInstance
     .post(url, { ...data }, { ...config })
+    .then(response => response.data)
+}
+export async function postFormData(url, data, config = {}) {
+  return axiosInstance
+    .post(url, data, { ...config })
     .then(response => response.data)
 }
 

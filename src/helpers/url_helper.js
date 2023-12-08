@@ -157,5 +157,16 @@ export const GET_INQUIRY_TABLE = "GET_INQUIRY_TABLE"
 
 
 // -------------------- original Url Helper
+
+// Auth
 export const LOGIN_API = "/api/v1/user/sign-in"
-export const Get_FCL_Data= "api/v1/tenant-ocean-fcl-rp/"
+
+// Global
+export const Get_Vendor_Data= "/api/v1/tenant/vendor/"
+export const Get_Currency_Data= "/api/v1/currency/"
+
+// FCL
+export const Get_FCL_Data= "/api/v1/tenant-ocean-fcl-rp/"
+export const Upload_FCL_Carrier_Data= "/api/v1/tenant-ocean-fcl-rp/"
+export const Upload_FCL_freight_Data= "/api/v1/tenant-ocean-fcl-rp/upload/freight/1"
+export const Upload_FCL_surcharge_Data= "/api/v1/tenant-ocean-fcl-rp/update/surcharge/1"

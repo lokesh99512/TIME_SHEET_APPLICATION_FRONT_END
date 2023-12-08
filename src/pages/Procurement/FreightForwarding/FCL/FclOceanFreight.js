@@ -15,12 +15,12 @@ import { FILTER_FCL_DATA } from '../../../../store/Procurement/actiontype'
 
 export default function FclOceanFreight() {
     document.title="FCL || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
-    const fclData2 = useSelector((state) => state.procurement.fcl_data);
+    // const fclData = useSelector((state) => state.procurement.fcl_data);
     const fclData = [];
+    // console.log(fclData,"fclData--------------");
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
     const [isRight, setIsRight] = useState(false);
-    console.log(fclData2,"fclData--------------");
     const inputArr = {
         vendor_name: '',
         carrier_name: '',
