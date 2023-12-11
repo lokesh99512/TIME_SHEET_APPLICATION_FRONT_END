@@ -1,20 +1,35 @@
-import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects";
-import { getAirConsoleTableData, getAirwaybillTableData, getInlandTableData, getLCLTableData, getPortLocalChargesTableData } from "../../helpers/fakebackend_helper";
-import { getAirConsoleDataFail, getAirConsoleDataSuccess, getAirwaybillDataFail, getAirwaybillDataSuccess, getFclDataFail, getFclDataSuccess, getInLandDataFail, getInLandDataSuccess, getLclDataFail, getLclDataSuccess, getPortLocalChargesDataFail, getPortLocalChargesDataSuccess } from "./actions";
-import { GET_CONSOLE_TABLE_DATA, GET_FCL_TABLE_DATA, GET_INLAND_TABLE_DATA, GET_LCL_TABLE_DATA, GET_PORTLOCALCHARGES_TABLE_DATA, GET_WAYBILL_TABLE_DATA, UPLOAD_FCL_CARRIER_DATA, UPLOAD_FCL_FREIGHT, UPLOAD_FCL_SURCHARGE } from "./actiontype";
-import { getFCLTableData, postFclFreightUploadSer, postFclSurchargeUploadSer, postFclUploadSer } from "../../helpers/services/FCLService";
+import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 import { showErrorToast, showSuccessToast } from "../../components/Common/CustomToast";
+import { getAirConsoleTableData, getAirwaybillTableData, getInlandTableData, getLCLTableData, getPortLocalChargesTableData } from "../../helpers/fakebackend_helper";
+import { getFCLFreightViewData, getFCLTableData, postFclFreightUploadSer, postFclSurchargeUploadSer, postFclUploadSer } from "../../helpers/services/FCLService";
+import { getAirConsoleDataFail, getAirConsoleDataSuccess, getAirwaybillDataFail, getAirwaybillDataSuccess, getFclDataFail, getFclDataSuccess, getInLandDataFail, getInLandDataSuccess, getLclDataFail, getLclDataSuccess, getPortLocalChargesDataFail, getPortLocalChargesDataSuccess } from "./actions";
+import { GET_CONSOLE_TABLE_DATA, GET_FCL_FREIGHT_VIEW_DATA, GET_FCL_FREIGHT_VIEW_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_LOADER, GET_FCL_LOADER, GET_FCL_TABLE_DATA, GET_INLAND_TABLE_DATA, GET_LCL_TABLE_DATA, GET_PORTLOCALCHARGES_TABLE_DATA, GET_WAYBILL_TABLE_DATA, UPLOAD_FCL_CARRIER_DATA, UPLOAD_FCL_FREIGHT, UPLOAD_FCL_SURCHARGE } from "./actiontype";
 
 function* fetchFclData() {
+    yield put({type: GET_FCL_LOADER, payload: true});
     try {
-        const response = yield call(getFCLTableData)
+        const response = yield call(getFCLTableData); 
+        yield put({type: GET_FCL_LOADER, payload: false});
         yield put(getFclDataSuccess(response))
     } catch (error) {
+        yield put({type: GET_FCL_LOADER, payload: false});
         yield put(getFclDataFail(error))
     }
 }
+function* fetchFclFreightViewData({ payload }) {
+    console.log(payload,"saga id")
+    yield put({type: GET_FCL_FREIGHT_VIEW_LOADER, payload: true});
+    try {
+        const response = yield call(getFCLFreightViewData, payload); 
+        console.log("response freight view", response);
+        yield put({type: GET_FCL_FREIGHT_VIEW_LOADER, payload: false});
+        yield put({type: GET_FCL_FREIGHT_VIEW_DATA_SUCCESS, payload: response})
+    } catch (error) {
+        yield put({type: GET_FCL_FREIGHT_VIEW_LOADER, payload: false});
+        console.log("error", error);
+    }
+}
 function* postFclUploadSaga({ payload: { dataObj } }) {
-    console.log(dataObj, "dataObj saga............")
     try {
         const response = yield call(postFclUploadSer, dataObj);
         console.log(response, "response");
@@ -24,7 +39,6 @@ function* postFclUploadSaga({ payload: { dataObj } }) {
     }
 }
 function* postFclFreightUploadSaga({ payload: { formData } }) {
-    console.log(formData.get('file'),"success")
     try {
         const response = yield call(postFclFreightUploadSer, formData);
         console.log(response, "response surcharge");
@@ -92,6 +106,7 @@ function* fetchInLandData() {
 
 export function* watchGetProcureData() {
     yield takeEvery(GET_FCL_TABLE_DATA, fetchFclData);
+    yield takeEvery(GET_FCL_FREIGHT_VIEW_DATA, fetchFclFreightViewData);
     yield takeEvery(UPLOAD_FCL_CARRIER_DATA, postFclUploadSaga);
     yield takeEvery(UPLOAD_FCL_FREIGHT, postFclFreightUploadSaga);
     yield takeEvery(UPLOAD_FCL_SURCHARGE, postFclSurchargeUploadSaga);

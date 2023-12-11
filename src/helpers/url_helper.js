@@ -167,6 +167,7 @@ export const Get_Currency_Data= "/api/v1/currency/"
 
 // FCL
 export const Get_FCL_Data= "/api/v1/tenant-ocean-fcl-rp/"
+export const Get_FCL_View_Freight_Data= "/api/v1/tenant-ocean-fcl-rp/freight-details/"
 export const Upload_FCL_Carrier_Data= "/api/v1/tenant-ocean-fcl-rp/"
 export const Upload_FCL_freight_Data= "/api/v1/tenant-ocean-fcl-rp/upload/freight/1"
 export const Upload_FCL_surcharge_Data= "/api/v1/tenant-ocean-fcl-rp/update/surcharge/1"

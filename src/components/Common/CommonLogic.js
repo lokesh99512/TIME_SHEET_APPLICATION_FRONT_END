@@ -1,3 +1,4 @@
+import moment from "moment/moment";
 import { useEffect } from "react";
 
 
@@ -21,6 +22,18 @@ export const convertToINR = (amount, currency) => {
     return amount;
 }; 
 
+// ------------ Formats the Date
+export const formatDate = (date) => {
+    const d = new Date(date);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    const year = d.getFullYear();
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    // return [year, month, day].join('-');
+    console.log(moment(d).format('ll'),"date");
+    return moment(d).format('ll');
+}
 
 
 /** * Formats the size */

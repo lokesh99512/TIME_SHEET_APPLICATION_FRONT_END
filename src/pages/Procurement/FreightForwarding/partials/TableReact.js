@@ -47,7 +47,7 @@ function GlobalFilter({
     );
   }
 
-const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanvas,component}) => {    
+const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanvas,component,loader}) => {    
     const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow, canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize, state, preGlobalFilteredRows, setGlobalFilter, state: { pageIndex, pageSize }, } = useTable({
           columns,
           data,
@@ -128,16 +128,26 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanva
                         );
                         })}
                         {page?.length === 0 && (
-                            <>
-                                {headerGroups.map(headerGroup => (
-                                    <tr key={`nodata_${headerGroup.id}`}>
-                                        <td colSpan={headerGroup.headers.length}>
+                            <>   
+                                {loader ? (
+                                    <tr>
+                                        <td colSpan={headerGroups[0].headers.length} className="text-center py-5">
+                                            <div className='py-5'>
+                                                <div className="spinner-border text-primary" role="status">
+                                                    <span className="visually-hidden">Loading...</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ) : 
+                                    <tr>
+                                        <td colSpan={headerGroups[0].headers.length}>
                                             <div className='no_table_data_found'>
                                                 <p>No Data Found. Please Adjust Your Filter. </p>
                                             </div>
                                         </td>
                                     </tr>
-                                ))}
+                                }                                   
                             </>
                         )}
                     </tbody>

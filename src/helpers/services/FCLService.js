@@ -9,3 +9,4 @@ export const postFclFreightUploadSer = (formData) => postFormData(url.Upload_FCL
     }
 });
 export const postFclSurchargeUploadSer = (data) => put(url.Upload_FCL_surcharge_Data, data);
+export const getFCLFreightViewData = (id) => get(url.Get_FCL_View_Freight_Data + id);

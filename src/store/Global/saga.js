@@ -5,7 +5,7 @@ import { getCurrencyData, getVendorData } from "../../helpers/services/GlobalSer
 function* fetchVendorData(){
     try{
         const response = yield call(getVendorData);
-        console.log(response,"response");
+        // console.log(response,"response");
         yield put({type: GET_VENDOR_DETAILS_SUCCESS, payload: response});
     } catch (error) {
         console.log(error,"vendor error-----------");
@@ -15,7 +15,7 @@ function* fetchVendorData(){
 function* fetchCurrencyData(){
     try{
         const response = yield call(getCurrencyData);
-        console.log(response,"response ===============");
+        // console.log(response,"response ===============");
         yield put({type: GET_CURRENCY_DETAIL_SUCCESS, payload: response});
     } catch(error){
         console.log(error,"currency error-----------");
