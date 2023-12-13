@@ -5,7 +5,7 @@ import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input
 import { useDispatch } from 'react-redux'
 import { edit_icon, eye_icon } from '../../../../assets/images'
 import { fclBreadcrumb, fclRateData, fclTableData } from '../../../../common/data/procurement'
-import { getFclData, getFclFreightViewAction, updatefclSwitchData } from '../../../../store/Procurement/actions'
+import { getFclData, getFclDestinationAction, getFclFreightViewAction, getFclSurchargeViewAction, updatefclSwitchData } from '../../../../store/Procurement/actions'
 import FilterOffCanvasComp from '../Modal/FilterOffCanvasComp'
 import ModalFreight from '../Modal/ModalFreight'
 import { CargoType, CarrierName, ChargeId, DestPort, DetentionFree, OrgPort, TransitTime, ValidTill, VendorName, ViaPort } from '../partials/OceanCol'
@@ -13,9 +13,11 @@ import TableReact from '../partials/TableReact'
 import TopBreadcrumbs from '../partials/TopBreadcrumbs'
 import { FILTER_FCL_DATA } from '../../../../store/Procurement/actiontype'
 import ModalFCLFreight from './ModalFCLFreight'
+import { useNavigate } from 'react-router-dom'
 
 export default function FclOceanFreight() {
     document.title="FCL || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
+    // const navigate = useNavigate();
     const fclData = useSelector((state) => state.procurement.fcl_data);
     const fcl_loader = useSelector((state) => state.procurement.fcl_get_loader);
     const [modal, setModal] = useState(false);
@@ -31,16 +33,22 @@ export default function FclOceanFreight() {
         cargo_type: '',
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
-    const dispatch = useDispatch(); 
+    const dispatch = useDispatch();     
 
     const viewPopupHandler = (data) => {
         if (data?.status === "ACTIVE") {
             setModal(true);
             setViewData(data);
             dispatch(getFclFreightViewAction(data?.id));
+            dispatch(getFclSurchargeViewAction(data?.id));            
         } else {
             console.log("Cannot view details for inactive data");
         }
+    }
+
+    const editPopupHandler = (data) => {
+        console.log(data,"data");
+        // navigate('/freight/ocean/fcl', { state: { data: data?.id } });
     }
 
     // modal
@@ -82,7 +90,7 @@ export default function FclOceanFreight() {
     }
 
     useEffect(() => {
-        dispatch(getFclData());
+        dispatch(getFclData());        
     }, [dispatch]);
 
     const columns = useMemo(() => [
@@ -95,15 +103,6 @@ export default function FclOceanFreight() {
                 return <ChargeId cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
-        // {
-        //     Header: 'Carrier Name',
-        //     accessor: 'tenantCarrierVendor.name',
-        //     filterable: true,
-        //     disableFilters: true,
-        //     Cell: (cellProps) => {
-        //         return <CarrierName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-        //     }
-        // },
         {
             Header: 'Vendor Name',
             accessor: 'tenantVendor.name',
@@ -113,42 +112,6 @@ export default function FclOceanFreight() {
                 return <VendorName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
-        // {
-        //     Header: 'Org Port',
-        //     accessor: 'org_port',
-        //     filterable: true,
-        //     disableFilters: true,
-        //     Cell: (cellProps) => {
-        //         return <OrgPort cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-        //     }
-        // },
-        // {
-        //     Header: 'Dest Port',
-        //     accessor: 'dest_port',
-        //     filterable: true,
-        //     disableFilters: true,
-        //     Cell: (cellProps) => {
-        //         return <DestPort cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-        //     }
-        // },
-        // {
-        //     Header: 'Via Port',
-        //     accessor: 'via_port',
-        //     filterable: true,
-        //     disableFilters: true,
-        //     Cell: (cellProps) => {
-        //         return <ViaPort cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-        //     }
-        // },
-        // {
-        //     Header: 'Detention Free',
-        //     accessor: 'org_detention_free',
-        //     filterable: true,
-        //     disableFilters: true,
-        //     Cell: (cellProps) => {
-        //         return <DetentionFree cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-        //     }
-        // },
         {
             Header: 'Rate Type',
             accessor: 'rateType',
@@ -193,25 +156,7 @@ export default function FclOceanFreight() {
             Cell: (cellProps) => {
                 return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
-        },
-        // {
-        //     Header: 'Transit Time',
-        //     accessor: 'transit_time',
-        //     filterable: true,
-        //     disableFilters: true,
-        //     Cell: (cellProps) => {
-        //         return <TransitTime cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-        //     }
-        // },
-        // {
-        //     Header: 'Cargo Type',
-        //     accessor: 'cargo_type',
-        //     filterable: true,
-        //     disableFilters: true,
-        //     Cell: (cellProps) => {
-        //         return <CargoType cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-        //     }
-        // },
+        },   
         {
             Header: 'Action',
             Cell: (cellProps) => {
@@ -221,7 +166,7 @@ export default function FclOceanFreight() {
                             <i className='bx bx-dots-vertical-rounded'></i>
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-end">
-                            <DropdownItem>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
+                            <DropdownItem onClick={(e) => {e.stopPropagation(); editPopupHandler(cellProps.row.original)}}>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
                             <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem>
                             <DropdownItem onClick={(e) => e.stopPropagation()}>
                                 {cellProps.row.original?.status === "ACTIVE" ? "Activate" : "Deactive"}

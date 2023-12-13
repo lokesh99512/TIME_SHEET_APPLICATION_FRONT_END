@@ -18,7 +18,7 @@ import Sidebar from "./Sidebar";
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { ToastWrapper } from "../Common/CustomToast";
-import { GET_CURRENCY_DETAIL, GET_VENDOR_DETAILS } from "../../store/Global/actiontype";
+import { GET_CURRENCY_DETAIL, GET_OCEAEN_PORT_DATA, GET_SURCHARGE_CATEGORY_DATA, GET_SURCHARGE_CODE_DATA, GET_UOM_DATA, GET_VENDOR_DETAILS } from "../../store/Global/actiontype";
 const Layout = props => {
   const dispatch = useDispatch();
 
@@ -137,6 +137,10 @@ const Layout = props => {
   useEffect(() => {
     dispatch({type: GET_VENDOR_DETAILS});
     dispatch({type: GET_CURRENCY_DETAIL});
+    dispatch({type: GET_UOM_DATA});
+    dispatch({type: GET_SURCHARGE_CODE_DATA});
+    dispatch({type: GET_SURCHARGE_CATEGORY_DATA});
+    dispatch({type: GET_OCEAEN_PORT_DATA});
   },[]);
 
   return (

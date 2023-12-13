@@ -1,10 +1,14 @@
-import { ADD_AIRWAYBILL_DATA, ADD_FCL_DATA, ADD_INLAND_DATA, BLANK_CARRIER_DATA, FILTER_FCL_DATA, FILTER_PORTLOCALCHARGES_DATA, GET_CONSOLE_TABLE_DATA_FAIL, GET_CONSOLE_TABLE_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_LOADER, GET_FCL_LOADER, GET_FCL_TABLE_DATA_FAIL, GET_FCL_TABLE_DATA_SUCCESS, GET_INLAND_TABLE_DATA_FAIL, GET_INLAND_TABLE_DATA_SUCCESS, GET_LCL_TABLE_DATA_FAIL, GET_LCL_TABLE_DATA_SUCCESS, GET_PORTLOCALCHARGES_TABLE_DATA_FAIL, GET_PORTLOCALCHARGES_TABLE_DATA_SUCCESS, GET_WAYBILL_TABLE_DATA_FAIL, GET_WAYBILL_TABLE_DATA_SUCCESS, UPDATE_AIRCONSOLE_SWITCH, UPDATE_AIRWAYBILL_SWITCH, UPDATE_CARRIER_DATA, UPDATE_FCL_ACTIVE_TAB, UPDATE_FCL_SWITCH, UPDATE_FCL_TABLE_DATA, UPDATE_INLAND_ACTIVE_TAB, UPDATE_INLAND_SWITCH, UPDATE_LCL_SWITCH } from "./actiontype";
+import { ADD_AIRWAYBILL_DATA, ADD_FCL_DATA, ADD_INLAND_DATA, BLANK_CARRIER_DATA, FILTER_FCL_DATA, FILTER_PORTLOCALCHARGES_DATA, GET_CONSOLE_TABLE_DATA_FAIL, GET_CONSOLE_TABLE_DATA_SUCCESS, GET_FCL_CHARGE_ID, GET_FCL_DESTINATION_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_LOADER, GET_FCL_LOADER, GET_FCL_SURCHARGE_VIEW_DATA_SUCCESS, GET_FCL_SURCHARGE_VIEW_LOADER, GET_FCL_TABLE_DATA_FAIL, GET_FCL_TABLE_DATA_SUCCESS, GET_INLAND_TABLE_DATA_FAIL, GET_INLAND_TABLE_DATA_SUCCESS, GET_LCL_TABLE_DATA_FAIL, GET_LCL_TABLE_DATA_SUCCESS, GET_PORTLOCALCHARGES_TABLE_DATA_FAIL, GET_PORTLOCALCHARGES_TABLE_DATA_SUCCESS, GET_WAYBILL_TABLE_DATA_FAIL, GET_WAYBILL_TABLE_DATA_SUCCESS, UPDATE_AIRCONSOLE_SWITCH, UPDATE_AIRWAYBILL_SWITCH, UPDATE_CARRIER_DATA, UPDATE_FCL_ACTIVE_TAB, UPDATE_FCL_SWITCH, UPDATE_FCL_TABLE_DATA, UPDATE_INLAND_ACTIVE_TAB, UPDATE_INLAND_SWITCH, UPDATE_LCL_SWITCH } from "./actiontype";
 
 const INIT_STATE = {
     fcl_data: [],
     fcl_get_loader: false,
-    fcl_freight_view: false,
+    fcl_freight_view: [],
     fcl_get_freight_view_loader: false,
+    fcl_surcharge_view: [],
+    fcl_get_surcharge_view_loader: false,
+    fcl_destinationData: [],
+    fcl_charge_id: '',
     addFCL: {
         carrierDetails: {
             rate_type:"",
@@ -89,6 +93,12 @@ const procurement = (state = INIT_STATE, action) => {
                 ...state,
                 fcl_get_loader: action.payload,
             }
+        case GET_FCL_CHARGE_ID: 
+            return{
+                ...state,
+                fcl_charge_id: action.payload,
+            }
+
         case GET_FCL_FREIGHT_VIEW_DATA_SUCCESS: 
             return{
                 ...state,
@@ -98,6 +108,16 @@ const procurement = (state = INIT_STATE, action) => {
             return{
                 ...state,
                 fcl_get_freight_view_loader: action.payload,
+            }
+        case GET_FCL_SURCHARGE_VIEW_DATA_SUCCESS: 
+            return{
+                ...state,
+                fcl_surcharge_view: action.payload,
+            }
+        case GET_FCL_SURCHARGE_VIEW_LOADER: 
+            return{
+                ...state,
+                fcl_get_surcharge_view_loader: action.payload,
             }
     
         case UPDATE_FCL_TABLE_DATA:
@@ -110,6 +130,21 @@ const procurement = (state = INIT_STATE, action) => {
                 ...state,
                 fcl_data: action.payload,
             }
+        case GET_FCL_DESTINATION_DATA_SUCCESS: 
+            return{
+                ...state,
+                fcl_destinationData: action.payload.map(item => {
+                    return {
+                        label: `${item?.code} - ${item?.geoTag}`,
+                        value: `${item?.code}`,
+                        id: `${item?.id}`,
+                        version: `${item?.version}`,
+                    }
+                }),
+            }            
+
+
+
         // lcl
         case GET_LCL_TABLE_DATA_SUCCESS:
             return{

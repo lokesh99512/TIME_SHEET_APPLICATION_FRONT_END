@@ -23,7 +23,8 @@ export default function PortLocalFreight() {
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
     const dispatch = useDispatch();
-    const portLocalData = useSelector((state) => state.procurement.portLocalChargesData);
+    // const portLocalData = useSelector((state) => state.procurement.portLocalChargesData);
+    const portLocalData = [];
 
     const viewPopupHandler = (data) => {
         setModal(true);

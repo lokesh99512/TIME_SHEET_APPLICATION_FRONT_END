@@ -1,67 +1,24 @@
-import classnames from "classnames";
 import { FieldArray, FormikProvider, useFormik } from "formik";
-import React, { useCallback, useRef, useState } from "react";
-import Dropzone from "react-dropzone";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import {
   Card,
   CardBody,
   Col,
   Container,
-  Form,
   Input,
-  Label,
-  NavItem,
-  NavLink,
-  Progress,
-  Row,
-  TabContent,
-  TabPane,
-  UncontrolledTooltip,
+  Row
 } from "reactstrap";
+import { optionCalculationType, optionCargoType, optionCarrierName, optionContainerType, optionMovementType } from "../../../../common/data/procurement";
 import ModalAddTerm from "../Modal/ModalAddTerm";
-import { optionCarrierName } from "../../../../common/data/procurement";
-import { isAnyValueEmpty } from "../../../../components/Common/CommonLogic";
-
-const chargeCategory = [
-  { label: "OCEAN SURCHARGE", value: "freight_surcharge" },
-  { label: "PORT SURCHARGE", value: "port_surcharge" },
-  { label: "LOCAL SURCHARGE", value: "local_surcharge" },
-  { label: "ORIGIN TRANSPORTATION", value: "origin_transportation" },
-  { label: "DESTINATION TRANSPORTATION", value: "destination_transportation" },
-  { label: "ANCILLARY CHARGES", value: "ancillary_charges" },
-  { label: "VAS CHARGES", value: "vas_charges" },
-  { label: "CUSTOMS", value: "custom" },
-];
-
-const portName = [
-  { label: "BDDAC - DHAKA", value: "BDDAC" },
-  { label: "INMAA - CHENNAI", value: "INMAA" },
-  { label: "INKTP - CHENNAI", value: "INKTP" },
-  { label: "CNNGB - NINGBO", value: "CNNGB" },
-  { label: "CNSHA - SHANGHAI", value: "CNSHA" },
-  { label: "KHPNH - PHNOM PENH", value: "KHPNH" },
-  { label: "KHKOS - SIHANOUKVILLE", value: "KHKOS" },
-  { label: "HKHKG - HONG KONG", value: "HKHKG" },
-  { label: "IDBLW - BELAWAN", value: "IDBLW" },
-  { label: "IDJKT - JAKARTA", value: "IDJKT" },
-  { label: "IDPLM - PALEMBANG", value: "IDPLM" },
-  { label: "IDPNK - PONTIANAK", value: "IDPNK" },
-  { label: "IDSRG - SEMARANG", value: "IDSRG" },
-  { label: "IDSUB - SURABAYA", value: "IDSUB" },
-];
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { postPortLocalChargesData } from "../../../../store/Procurement/actions";
 
 const terminalName = [];
-
-const movementType = [
-  { label: "Import", value: "Import" },
-  { label: "Export", value: "Export" },
-];
-
 const vendorName = [];
-
 const chargeCode = [
   { label: "OTHC", value: "OTHC" },
   { label: "DTHC", value: "DTHC" },
@@ -74,6 +31,7 @@ const chargeCode = [
   { label: "ARD", value: "ARD" },
   { label: "Add New", value: "Add New" },
 ];
+
 const chargeBasis = [
   { label: "Per Container", value: "per_container" },
   { label: "Per BL", value: "per_bill" },
@@ -86,11 +44,11 @@ const chargeBasis = [
   { label: "Per Ton/Per Container", value: "per_ton_container" },
   { label: "Per CBM", value: "per_cbm" },
 ];
-const calculationType = [
-  { label: "Flat", value: "Flat" },
-  { label: "Slab", value: "Slab" },
-  { label: "Percentage", value: "Percentage" },
-];
+// const calculationType = [
+//   { label: "Flat", value: "Flat" },
+//   { label: "Slab", value: "Slab" },
+//   { label: "Percentage", value: "Percentage" },
+// ];
 const slabBasis = [
   { label: "Weight", value: "weight" },
   { label: "Day Count", value: "day_count" },
@@ -107,19 +65,8 @@ const currency = [
   { label: "BDT", value: "BDT" },
   { label: "HKD", value: "HKD" },
 ];
-const cargoType = [
-  { label: "General", value: "General" },
-  { label: "Refer", value: "Refer" },
-  { label: "Haz", value: "Haz" },
-];
-const containerType = [
-  { label: "20 GP", value: "20_gp" },
-  { label: "40 GP", value: "40_gp" },
-  { label: "40 HQ", value: "40_hq" },
-  { label: "45 HQ", value: "45_hq" },
-  { label: "20 RF", value: "20_rf" },
-  { label: "40 RF", value: "40_rf" },
-];
+
+
 const fromSlab = [
   { label: "0", value: "0" },
   { label: "10", value: "10" },
@@ -159,8 +106,23 @@ const initialValue = {
 };
 
 export default function UploadPortLocalChargesData() {
+  const surchargeCategory_data = useSelector((state) => state?.globalReducer?.surchargeCategory_data);
+  const oceanPort_data = useSelector((state) => state?.globalReducer?.oceanPort_data);
+  const vendor_data = useSelector((state) => state?.globalReducer?.vendor_data);
+  const surchargeCode_data = useSelector((state) => state?.globalReducer?.surchargeCode_data);
+  const UOM_data = useSelector((state) => state?.globalReducer?.UOM_data);
+  const currency_data = useSelector((state) => state?.globalReducer?.currency_data);
+  const [optionVendorName, setOptionVendorName] = useState([]);
   const [addTermsModal, setAddTermsModal] = useState({ isOpen: false, id: "" });
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    let vendorlist = vendor_data?.content?.map((item) => {
+      return { label: item?.name, value: item?.name, version: item?.version, id: item?.id }
+    })
+    setOptionVendorName(vendorlist);
+  }, [vendor_data]);
 
   const onCloseClick = () => {
     setAddTermsModal((prev) => ({ ...prev, isOpen: false, id: "" }));
@@ -173,7 +135,106 @@ export default function UploadPortLocalChargesData() {
   const formik = useFormik({
     initialValues: initialValue,
     onSubmit: (value) => {
-      console.log(value, "value");
+      console.log(value, "main value ");
+      let data = {
+        "id": null,
+        "surchargeCategory": {
+          "id": value?.chargeCategory?.id || 1,
+          "version": value?.chargeCategory?.version || 1
+        },
+        "oceanPort": {
+          "id": value?.portName?.id || 1,
+          "version": value?.portName?.version || 1
+        },
+        "oceanPortTerminal": {
+          "id": 1,
+          "version": 0
+        },
+        "movementType": value?.movementType?.value || "IMPORT",
+        "tenantCarrier": {
+          "id": 1,
+          "version": 7
+        },
+        "tenantVendor": {
+          "id": value?.vendorName?.id || 1,
+          "version": value?.vendorName?.version || 7
+        },
+        "validFrom": value?.validityFrom || null,
+        "validTo": value?.validityTo || null,
+        "status": "ACTIVE",
+        "tenantVendorFCLSurchargeCategoryTerminals": [
+          {
+            "id": null,
+            "oceanPortTerminal": {
+              "id": 1,
+              "version": 0,
+              "status": "ACTIVE"
+            }
+          }
+        ],        
+        "tenantVendorFCLSurchargeDetails": value?.mainBox?.map((item) => {
+          return {
+            "id": null,
+            "status": "ACTIVE",
+            "surchargeCode": {
+              "id": item?.chargeCode?.id || 1,
+              "version": item?.chargeCode?.version || 4
+            },
+            "unitOfMeasurement": {
+              "id": item?.chargeBasis?.id || 1,
+              "version": item?.chargeBasis?.version || 2
+            },
+            "paymentTerm": item?.addTerms?.paymentTerm || "PREPAID",
+            "standard": item?.addTerms?.isStandard === 'incidental' ? false : true,
+            "calculationType": item?.calculationType || "FLAT",
+            "minimumValue": item?.minValue || 0,
+            "applicableTax": item?.tax || 0,
+            "tenantVendorFCLSurchargeValues": item?.subBox?.map((subItem) => {
+              return {
+                "id": null,
+                "status": "ACTIVE",
+                "cargoType": {
+                  "id": subItem?.cargoType?.id || 1,
+                  "version": subItem?.cargoType?.version || 0
+                },
+                "oceanContainer": {
+                  "id": subItem?.containerType?.id || 1,
+                  "version": subItem?.containerType?.version || 0
+                },
+                "currency": {
+                  "id": item?.currency?.id || 2,
+                  "version": item?.currency?.version || 0
+                },
+                "fromSlab": subItem?.fromSlab || null,
+                "toSlab": subItem?.toSlab || null,
+                "value": subItem?.rate || 0
+              }
+            }),
+            "tenantVendorFCLSurchargeDetailIncoterms": item?.addTerms?.incoTerm?.map((incoterm) => {
+              return {
+                "id": null,
+                "status": "ACTIVE",
+                "incoterm": {
+                  "id": incoterm?.id || 1,
+                  "version": incoterm?.version || 0
+                }
+              }
+            }),
+            "tenantVendorFCLSurchargeDetailCommodities": item?.addTerms?.commodity?.map((commodity) => {
+              return {
+                "id": null,
+                "status": "ACTIVE",
+                "commodity": {
+                  "id": commodity?.id || 1,
+                  "version": commodity?.version || 0
+                }
+              }
+            })
+          }
+        })
+      }
+      
+      dispatch(postPortLocalChargesData(data));
     },
   });
 
@@ -200,12 +261,12 @@ export default function UploadPortLocalChargesData() {
                       <div className="col-md-6 col-lg-4 mb-4">
                         <label className="form-label">Charge Category</label>
                         <Select
-                          value={chargeCategory ? chargeCategory.find((option) => option.value === formik.values.chargeCategory) : ""}
+                          value={formik.values.chargeCategory || ""}
                           onChange={(e) => {
-                            formik.setFieldValue(`chargeCategory`, e.value);
+                            formik.setFieldValue(`chargeCategory`, e);
                           }}
                           name="chargeCategory"
-                          options={chargeCategory}
+                          options={surchargeCategory_data}
                           placeholder={"Select Charge Category"}
                           classNamePrefix="select2-selection form-select"
                         />
@@ -216,11 +277,11 @@ export default function UploadPortLocalChargesData() {
                         <label className="form-label">Port Name</label>
                         <Select
                           name="portName"
-                          value={portName ? portName.find((option) => option.value === formik.values.portName) : ""}
+                          value={formik.values.portName || ""}
                           onChange={(e) => {
-                            formik.setFieldValue(`portName`, e.value);
+                            formik.setFieldValue(`portName`, e);
                           }}
-                          options={portName}
+                          options={oceanPort_data}
                           placeholder={"Select Port Name"}
                           classNamePrefix="select2-selection form-select"
                         />
@@ -247,11 +308,11 @@ export default function UploadPortLocalChargesData() {
                         <label className="form-label">Movement Type</label>
                         <Select
                           name="movementType"
-                          value={movementType ? movementType.find((option) => option.value === formik.values.movementType) : ""}
+                          value={formik.values.movementType || ""}
                           onChange={(e) => {
-                            formik.setFieldValue(`movementType`, e.value);
+                            formik.setFieldValue(`movementType`, e);
                           }}
-                          options={movementType}
+                          options={optionMovementType}
                           placeholder={"Select Movement Type"}
                           classNamePrefix="select2-selection form-select"
                         />
@@ -277,11 +338,11 @@ export default function UploadPortLocalChargesData() {
                         <label className="form-label">Vendor Name</label>
                         <Select
                           name="vendorName"
-                          value={vendorName ? vendorName.find((option) => option.value === formik.values.vendorName) : ""}
+                          value={formik.values.vendorName || ""}
                           onChange={(e) => {
-                            formik.setFieldValue(`vendorName`, e.value);
+                            formik.setFieldValue(`vendorName`, e);
                           }}
-                          options={vendorName}
+                          options={optionVendorName}
                           placeholder={"Select Vendor Name"}
                           classNamePrefix="select2-selection form-select"
                         />
@@ -336,14 +397,14 @@ export default function UploadPortLocalChargesData() {
                                             </label>
                                             <Select
                                               name={`mainBox[${index}].chargeCode`}
-                                              value={chargeCode ? chargeCode.find((option) => option.value === formik.values.mainBox[index].chargeCode) : ""}
+                                              value={formik.values.mainBox[index].chargeCode || ""}
                                               onChange={(e) => {
                                                 if (e.label == "Add New") {
                                                   navigate("/freight/ocean/upload/PortLocalCharges/add-new")
-                                              }
-                                                formik.setFieldValue(`mainBox[${index}].chargeCode`, e.value);
+                                                }
+                                                formik.setFieldValue(`mainBox[${index}].chargeCode`, e);
                                               }}
-                                              options={chargeCode}
+                                              options={[...surchargeCode_data, { label: "Add New", value: "Add New" }]}
                                               classNamePrefix="select2-selection form-select"
                                             />
                                           </div>
@@ -353,23 +414,15 @@ export default function UploadPortLocalChargesData() {
                                         <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
                                           <div className="mb-3">
                                             <label className="form-label">
-                                            Surcharge Basis
+                                              Surcharge Basis
                                             </label>
                                             <Select
                                               name={`mainBox[${index}].chargeBasis`}
-                                              value={
-                                                chargeBasis
-                                                  ? chargeBasis.find(
-                                                    (option) => option.value === formik.values.mainBox[index].chargeBasis)
-                                                  : ""
-                                              }
+                                              value={formik.values.mainBox[index].chargeBasis || ""}
                                               onChange={(e) => {
-                                                formik.setFieldValue(
-                                                  `mainBox[${index}].chargeBasis`,
-                                                  e.value
-                                                );
+                                                formik.setFieldValue(`mainBox[${index}].chargeBasis`, e);
                                               }}
-                                              options={chargeBasis}
+                                              options={UOM_data}
                                               classNamePrefix="select2-selection form-select"
                                             />
                                           </div>
@@ -383,18 +436,18 @@ export default function UploadPortLocalChargesData() {
                                             </label>
                                             <Select
                                               name={`mainBox[${index}].calculationType`}
-                                              value={calculationType ? calculationType.find((option) => option.value === formik.values.mainBox[index].calculationType) : ""}
+                                              value={optionCalculationType ? optionCalculationType.find((option) => option.value === formik.values.mainBox[index].calculationType) : ""}
                                               onChange={(e) => {
                                                 formik.setFieldValue(`mainBox[${index}].calculationType`, e.value);
                                               }}
-                                              options={calculationType}
+                                              options={optionCalculationType}
                                               classNamePrefix="select2-selection form-select"
                                             />
                                           </div>
                                         </div>
 
                                         {/* Slab Basis */}
-                                        {formik.values.mainBox[index]
+                                        {/* {formik.values.mainBox[index]
                                           .calculationType === "Slab" && (
                                             <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
                                               <div className="mb-3">
@@ -412,7 +465,7 @@ export default function UploadPortLocalChargesData() {
                                                 />
                                               </div>
                                             </div>
-                                          )}
+                                          )} */}
 
                                         {/* Currency */}
                                         <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
@@ -422,11 +475,11 @@ export default function UploadPortLocalChargesData() {
                                             </label>
                                             <Select
                                               name={`mainBox[${index}].currency`}
-                                              value={slabBasis ? slabBasis.find((option) => option.value === formik.values.mainBox[index].currency) : ""}
+                                              value={formik.values.mainBox[index].currency || ""}
                                               onChange={(e) => {
-                                                formik.setFieldValue(`mainBox[${index}].currency`, e.value);
+                                                formik.setFieldValue(`mainBox[${index}].currency`, e);
                                               }}
-                                              options={currency}
+                                              options={currency_data}
                                               classNamePrefix="select2-selection form-select"
                                             />
                                           </div>
@@ -442,10 +495,7 @@ export default function UploadPortLocalChargesData() {
                                               type="text"
                                               name={`mainBox[${index}].minValue`}
                                               placeholder="Enter minvalue"
-                                              value={
-                                                formik.values.mainBox[index]
-                                                  .minValue
-                                              }
+                                              value={formik.values.mainBox[index].minValue}
                                               onChange={formik.handleChange}
                                             />
                                           </div>
@@ -513,21 +563,16 @@ export default function UploadPortLocalChargesData() {
                                                             {formik.values.mainBox[index].calculationType && (
                                                               <div className="row mb-3">
                                                                 {/* Cargo Type */}
-                                                                {(formik.values.mainBox[index].calculationType === "Flat" || formik.values.mainBox[index].calculationType === "Percentage") && (
+                                                                {(formik.values.mainBox[index].calculationType === "FLAT" || formik.values.mainBox[index].calculationType === "PERCENTAGE") && (
                                                                   <div className="col-md-3 mb-2">
                                                                     <label className="form-label"> Cargo Type </label>
                                                                     <Select
                                                                       name={`mainBox[${index}].subBox[${subIndex}].cargoType`}
-                                                                      value={
-                                                                        cargoType
-                                                                          ? cargoType.find((option) => option.value === formik.values.mainBox[index].subBox[subIndex].cargoType) : ""
-                                                                      }
+                                                                      value={formik.values.mainBox[index].subBox[subIndex].cargoType || ""}
                                                                       onChange={(e) => {
-                                                                        formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].cargoType`, e.value);
+                                                                        formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].cargoType`, e);
                                                                       }}
-                                                                      options={
-                                                                        cargoType
-                                                                      }
+                                                                      options={optionCargoType}
                                                                       classNamePrefix="select2-selection form-select"
                                                                     />
                                                                   </div>
@@ -538,53 +583,39 @@ export default function UploadPortLocalChargesData() {
                                                                   <label className="form-label"> Container Type </label>
                                                                   <Select
                                                                     name={`mainBox[${index}].subBox[${subIndex}].containerType`}
-                                                                    value={
-                                                                      containerType
-                                                                        ? containerType.find((option) => option.value === formik.values.mainBox[index].subBox[subIndex].containerType) : ""
-                                                                    }
+                                                                    value={formik.values.mainBox[index].subBox[subIndex].containerType || ""}
                                                                     onChange={(e) => {
-                                                                      formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].containerType`, e.value);
+                                                                      formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].containerType`, e);
                                                                     }}
-                                                                    options={
-                                                                      containerType
-                                                                    }
+                                                                    options={optionContainerType}
                                                                     classNamePrefix="select2-selection form-select"
                                                                   />
                                                                 </div>
                                                                 {/* </div> */}
 
                                                                 {/* From Slab */}
-                                                                {formik.values.mainBox[index].calculationType === "Slab" && (
+                                                                {formik.values.mainBox[index].calculationType === "SLAB" && (
                                                                   <div className="col-md-2 mb-2">
                                                                     <label className="form-label"> From Slab </label>
-                                                                    <Select
+                                                                    <Input
+                                                                      type="text"
                                                                       name={`mainBox[${index}].subBox[${subIndex}].fromSlab`}
-                                                                      value={
-                                                                        fromSlab
-                                                                          ? fromSlab.find((option) => option.value === formik.values.mainBox[index].subBox[subIndex].fromSlab) : ""
+                                                                      value={formik.values.mainBox[index].subBox[subIndex].fromSlab || ''}
+                                                                      onChange={
+                                                                        formik.handleChange
                                                                       }
-                                                                      onChange={(e) => {
-                                                                        formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].fromSlab`, e.value);
-                                                                      }}
-                                                                      options={
-                                                                        fromSlab
-                                                                      }
-                                                                      classNamePrefix="select2-selection form-select"
                                                                     />
                                                                   </div>
                                                                 )}
 
                                                                 {/* To Slab */}
-                                                                {formik.values.mainBox[index].calculationType === "Slab" && (
+                                                                {formik.values.mainBox[index].calculationType === "SLAB" && (
                                                                   <div className="col-md-2 mb-2">
-                                                                    <label className="form-label">
-                                                                      To
-                                                                      Slab
-                                                                    </label>
+                                                                    <label className="form-label"> To Slab </label>
                                                                     <Input
                                                                       type="text"
                                                                       name={`mainBox[${index}].subBox[${subIndex}].toSlab`}
-                                                                      value={formik.values.mainBox[index].subBox[subIndex].toSlab}
+                                                                      value={formik.values.mainBox[index].subBox[subIndex].toSlab || ''}
                                                                       onChange={
                                                                         formik.handleChange
                                                                       }
@@ -594,13 +625,11 @@ export default function UploadPortLocalChargesData() {
 
                                                                 {/* Rate */}
                                                                 <div className="col-md-2 mb-2">
-                                                                  <label className="form-label">
-                                                                    Rate
-                                                                  </label>
+                                                                  <label className="form-label"> Rate </label>
                                                                   <Input
                                                                     type="text"
                                                                     name={`mainBox[${index}].subBox[${subIndex}].rate`}
-                                                                    value={formik.values.mainBox[index].subBox[subIndex].rate}
+                                                                    value={formik.values.mainBox[index].subBox[subIndex].rate || ''}
                                                                     onChange={
                                                                       formik.handleChange
                                                                     }
@@ -688,8 +717,7 @@ export default function UploadPortLocalChargesData() {
                                     });
                                   }}
                                 >
-                                  <i className="bx bx-plus align-middle me-1"></i>
-                                  Add
+                                  <i className="bx bx-plus align-middle me-1"></i> Add
                                 </button>
                               </div>
                             </>
@@ -706,19 +734,12 @@ export default function UploadPortLocalChargesData() {
                     <div className="row">
                       <div className="d-flex justify-content-center">
                         <div className="mt-3 mx-3 d-flex justify-content-end">
-                          <button
-                            className=" btn btn-primary"
-                            onClick={formik.handleSubmit}
-                          >
-                            Save
-                          </button>
+                          <button className=" btn btn-primary" onClick={formik.handleSubmit} > Save </button>
                         </div>
                         <div className="mt-3 mx-3 d-flex justify-content-end">
                           <button
                             className=" btn btn-primary"
-                            onClick={() => {
-                              navigate(-1);
-                            }}
+                            onClick={() => { navigate(-1); }}
                           >
                             Cancel
                           </button>

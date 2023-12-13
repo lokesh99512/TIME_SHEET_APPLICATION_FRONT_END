@@ -164,10 +164,20 @@ export const LOGIN_API = "/api/v1/user/sign-in"
 // Global
 export const Get_Vendor_Data= "/api/v1/tenant/vendor/"
 export const Get_Currency_Data= "/api/v1/currency/"
+export const Get_Uom_Data= "/api/v1/unit-of-measurement/"
+export const Get_surcharge_code_Data= "/api/v1/surcharge-code/"
+export const Get_surcharge_category_Data= "/api/v1/surcharge-category/"
+export const Get_Ocean_Port_Data= "/api/v1/ocean-port/"
 
 // FCL
 export const Get_FCL_Data= "/api/v1/tenant-ocean-fcl-rp/"
 export const Get_FCL_View_Freight_Data= "/api/v1/tenant-ocean-fcl-rp/freight-details/"
+export const Get_FCL_View_Surcharge_Data= "/api/v1/tenant-ocean-fcl-rp/freight-surcharge-details/"
+export const Get_FCL_destination_Data= "/api/v1/tenant-ocean-fcl-rp/od-details/"
 export const Upload_FCL_Carrier_Data= "/api/v1/tenant-ocean-fcl-rp/"
-export const Upload_FCL_freight_Data= "/api/v1/tenant-ocean-fcl-rp/upload/freight/1"
-export const Upload_FCL_surcharge_Data= "/api/v1/tenant-ocean-fcl-rp/update/surcharge/1"
+export const Upload_FCL_freight_Data= "/api/v1/tenant-ocean-fcl-rp/upload/freight/"
+export const Upload_FCL_surcharge_Data= "/api/v1/tenant-ocean-fcl-rp/update/surcharge/"
+
+
+// FCL Port & Local Charges
+export const Upload_FCL_PL_Data= "/api/v1/tenant-ocean-fcl-rp/port-and-local-charges"

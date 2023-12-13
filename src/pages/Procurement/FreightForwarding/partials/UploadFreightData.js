@@ -5,12 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import Select from "react-select";
 import { Card, CardBody, Col, Container, Form, Modal, NavItem, NavLink, Progress, Row, TabContent, TabPane, UncontrolledTooltip } from 'reactstrap';
-import inlandfileData from '../../../../assets/extra/Inlandcharge_Upload.xlsx';
 import fileData from '../../../../assets/extra/upload_Formats.xlsx';
 import { delete_icon } from '../../../../assets/images';
-import { optionCarrierName, optionMultiDestination, optionPaymentType, optionRateSource, optionRateType, optionSurchargesName, optionValidityApp, optionVendorType } from '../../../../common/data/procurement';
+import { optionCarrierName, optionRateSource, optionRateType, optionValidityApp, optionVendorType } from '../../../../common/data/procurement';
 import { formatBytes, isAnyValueEmpty, isExcelFile } from '../../../../components/Common/CommonLogic';
-import { addFCLData, updateFCLActiveTab, uploadFclCarrierData, uploadFclFrightData, uploadFclSurchargeData } from '../../../../store/Procurement/actions';
+import { addFCLData, getFclDestinationAction, updateFCLActiveTab, uploadFclCarrierData, uploadFclFrightData, uploadFclSurchargeData } from '../../../../store/Procurement/actions';
 import { BLANK_CARRIER_DATA } from '../../../../store/Procurement/actiontype';
 
 export default function UploadFreightData() {
@@ -24,33 +23,44 @@ export default function UploadFreightData() {
     const [vendorName, setVendorName] = useState([]);
     const addFCL = useSelector((state) => state?.procurement?.addFCL);
     const fclActiveTab = useSelector((state) => state?.procurement?.fclActiveTab);
+    const fclChargeId = useSelector((state) => state?.procurement?.fcl_charge_id);
+    const fcl_destinationData = useSelector((state) => state?.procurement?.fcl_destinationData);
     const vendor_data = useSelector((state) => state?.globalReducer?.vendor_data);
     const currency_data = useSelector((state) => state?.globalReducer?.currency_data);
+    const UOM_data = useSelector((state) => state?.globalReducer?.UOM_data);
+    const surchargeCode_data = useSelector((state) => state?.globalReducer?.surchargeCode_data);
     const dispatch = useDispatch();
     const { tabName } = useParams();
-    const navigateState = useLocation();  
+    const navigateState = useLocation();
+    console.log(navigateState,"navigateState");
 
     useEffect(() => {
-        let vendorlist =  vendor_data?.content?.map((item) => {
-            return {label: item?.name, value: item?.name, version: item?.version, id: item?.id }
+        let vendorlist = vendor_data?.content?.map((item) => {
+            return { label: item?.name, value: item?.name, version: item?.version, id: item?.id }
         })
         setVendorName(vendorlist);
     }, [vendor_data]);
 
-    useEffect(()=>{
+    useEffect(() => {
         setActiveTabProgress(fclActiveTab)
         if (fclActiveTab === 1) { setProgressValue(33) }
         if (fclActiveTab === 2) { setProgressValue(66) }
         if (fclActiveTab === 3) { setProgressValue(100); }
         setSurcharges(addFCL?.surcharges)
-    },[])
+    }, []);
+
+    useEffect(() => {
+        if (fclChargeId !== '') {
+            dispatch(getFclDestinationAction(fclChargeId));
+        }
+    }, [fclChargeId]);
 
     const openSaveConfirmModal = () => {
         setOpenSaveModal(!openSaveModal);
     }
-    
+
     const finalSaveButton = () => {
-        if(activeTabProgress === 1){
+        if (activeTabProgress === 1) {
             let data = {
                 // "id": null,
                 "rateSource": addFCL?.carrierDetails?.rate_source?.label || '',
@@ -69,34 +79,34 @@ export default function UploadFreightData() {
                 // "status": "ACTIVE",
                 // "version": null
             }
-            dispatch(uploadFclCarrierData({...data}));
-            dispatch({type: BLANK_CARRIER_DATA});
-        } else if(activeTabProgress === 2){
+            dispatch(uploadFclCarrierData({ ...data }));
+            dispatch({ type: BLANK_CARRIER_DATA });
+        } else if (activeTabProgress === 2) {
             let xlxsfile = selectedFiles[0]
             const formData = new FormData();
             formData.append('file', xlxsfile);
-            dispatch(uploadFclFrightData(formData));
+            dispatch(uploadFclFrightData(formData, fclChargeId));
             setselectedFiles([]);
             // formData.append('tenantVendor', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
-        } 
-        if(activeTabProgress === 3){
-            let data = surcharges?.map((item) => {
+        }
+        if (activeTabProgress === 3) {
+            let data = addFCL?.surcharges?.map((item) => {
                 return {
-                    "surchargeCodeId": 1,
-                    "uomId": 1,
-                    "destinationIds": item?.destination,
+                    "surchargeCodeId": item?.surcharges_name?.id,
+                    "uomId": item?.uom?.id,
+                    "destinationIds": item?.destination?.length !== 0 ? item?.destination?.map((item) => item?.id) : [],
                     "currencyId": item?.charge_currency?.id,
                     "containerWiseValues": {
                         "40GP": item?.gp2,
                         "40HQ": item?.hq1,
                         "45HQ": item?.hq2,
                         "20RF": item?.rf1,
-                        "40RF": item?.rf2,  
+                        "40RF": item?.rf2,
                         "20GP": item?.gp1
                     }
                 }
-            });            
-            dispatch(uploadFclSurchargeData(data));
+            });
+            dispatch(uploadFclSurchargeData(data, fclChargeId));
             setSurcharges([]);
         }
         setOpenSaveModal(false);
@@ -141,7 +151,7 @@ export default function UploadFreightData() {
         const newSurcharge = {
             surcharges_name: '',
             destination: [],
-            payment_type: 'prepaid',
+            uom: '',
             gp1: '',
             gp2: '',
             hq1: '',
@@ -149,14 +159,13 @@ export default function UploadFreightData() {
             rf1: '',
             rf2: ''
         }
-        setSurcharges(s =>[...s, newSurcharge])
-        handleAddFCL("surcharges",[...surcharges,newSurcharge])
+        handleAddFCL("surcharges", [...surcharges, newSurcharge])
     }
     const removeInputFields = (index) => {
         const rows = [...surcharges];
         rows.splice(index, 1);
         setSurcharges(rows);
-        handleAddFCL("surcharges",rows)
+        handleAddFCL("surcharges", rows)
     }
 
     const handleChange = (e, name, index) => {
@@ -165,9 +174,9 @@ export default function UploadFreightData() {
         setSurcharges(list);
     }
 
-    const handleAddFCL = useCallback((name, opt)=>{
-        dispatch(addFCLData(name,opt));
-    },[addFCL]);
+    const handleAddFCL = useCallback((name, opt) => {
+        dispatch(addFCLData(name, opt));
+    }, [addFCL]);
 
     const handleSelectGroup2 = useCallback((opt, name, index) => {
         const list = [...surcharges];
@@ -190,7 +199,7 @@ export default function UploadFreightData() {
     // ------------------ integration
     const uploadSaveHandler = () => {
         openSaveConfirmModal();
-    }    
+    }
 
     return (
         <>
@@ -302,7 +311,7 @@ export default function UploadFreightData() {
                                                                         }}
                                                                         options={vendorName}
                                                                         classNamePrefix="select2-selection form-select"
-                                                                        // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
+                                                                    // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
                                                                     />
                                                                 </div>
                                                             </div>
@@ -320,7 +329,7 @@ export default function UploadFreightData() {
                                                                         classNamePrefix="select2-selection form-select"
                                                                     />
                                                                 </div>
-                                                            </div>                                                            
+                                                            </div>
                                                         </div>
                                                         <div className="row">
                                                             <div className="col-lg-4">
@@ -340,7 +349,7 @@ export default function UploadFreightData() {
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
                                                                     <label htmlFor='validity_from' className="form-label">Validity From</label>
-                                                                    <input type="date" name="validity_from" id="validity_from" className='form-control' value={addFCL?.carrierDetails?.validity_from} onChange={(e) => {                                                                       
+                                                                    <input type="date" name="validity_from" id="validity_from" className='form-control' value={addFCL?.carrierDetails?.validity_from} onChange={(e) => {
                                                                         handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, validity_from: e.target.value });
                                                                     }} />
                                                                 </div>
@@ -363,11 +372,7 @@ export default function UploadFreightData() {
                                                             <h5>Freight Upload</h5>
                                                         </div>
                                                         <div className='mb-3 d-flex justify-content-end'>
-                                                            {navigateState?.state?.id === "inland" ? (
-                                                                <a href={inlandfileData} className="download_formate btn btn-primary" download="Inland Upload Format">Download Format</a>
-                                                            ) : (
-                                                                <a href={fileData} className="download_formate btn btn-primary w-sm-100" download="Fcl Uplaod Format">Download Format</a>
-                                                            )}
+                                                            <a href={fileData} className="download_formate btn btn-primary w-sm-100" download="Fcl Uplaod Format">Download Format</a>
                                                         </div>
                                                         <Form>
                                                             <Dropzone
@@ -423,43 +428,42 @@ export default function UploadFreightData() {
                                                         </Form>
                                                     </div>
                                                 </TabPane>
-                                                {console.log(addFCL,"addFCL===================")}
-                                                {console.log(surcharges,"surcharges===================")}
                                                 <TabPane tabId={3}>
                                                     <div>
                                                         <div className="text-center mb-4">
                                                             <h5>Surcharges</h5>
                                                         </div>
+                                                        {console.log(addFCL?.surcharges, "addFCL?.surcharges")}
                                                         <form>
                                                             {addFCL?.surcharges && addFCL?.surcharges?.map((item, index) => (
                                                                 <div key={index} className='upload_surcharges_row'>
                                                                     <div className="row">
                                                                         <div className="col-lg-3">
                                                                             <div className="mb-3">
-                                                                                <label htmlFor="surcharges_name" className="form-label">Select Surcharge Name</label>
+                                                                                <label htmlFor="surcharges_name" className="form-label">Surcharge Name</label>
                                                                                 <Select
-                                                                                    value={optionSurchargesName ? optionSurchargesName.find(obj => obj.value === item.surcharges_name) : ''}
+                                                                                    value={item.surcharges_name}
                                                                                     name='surcharges_name'
                                                                                     onChange={(opt) => {
                                                                                         if (opt.label == "Add New") {
                                                                                             navigate("/freight/upload/fcl/add-new")
                                                                                         }
-                                                                                        handleSelectGroup2(opt.value, 'surcharges_name', index);
+                                                                                        handleSelectGroup2(opt, 'surcharges_name', index);
                                                                                     }}
-                                                                                    options={optionSurchargesName}
+                                                                                    options={[...surchargeCode_data,{ label: "Add New", value: "Add New" }]}
                                                                                     classNamePrefix="select2-selection form-select"
                                                                                 />
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-lg-3">
                                                                             <div className="mb-3">
-                                                                                <label htmlFor='destination' className="form-label">Surcharge Applicable on destination</label>
+                                                                                <label htmlFor='destination' className="form-label">Surcharge Applicable on dest..</label>
                                                                                 <Select
                                                                                     value={item.destination}
                                                                                     name='destination'
                                                                                     isMulti
-                                                                                    options={optionMultiDestination}
-                                                                                    onChange={(opt) => { handleMultiSelectChange(opt, 'destination', optionMultiDestination, index) }}
+                                                                                    options={(fcl_destinationData?.length !== 0 && fcl_destinationData !== undefined) ? [{ value: 'selectAll', label: 'Select All' }, ...fcl_destinationData] : []}
+                                                                                    onChange={(opt) => { handleMultiSelectChange(opt, 'destination', (fcl_destinationData?.length !== 0 && fcl_destinationData !== undefined) ? [{ value: 'selectAll', label: 'Select All' }, ...fcl_destinationData] : [], index) }}
                                                                                     className="basic-multi-select"
                                                                                     classNamePrefix="select2-selection form-select"
                                                                                 />
@@ -481,6 +485,20 @@ export default function UploadFreightData() {
                                                                         </div>
                                                                         <div className="col-lg-3">
                                                                             <div className="mb-3">
+                                                                                <label htmlFor='uom' className="form-label">UOM</label>
+                                                                                <Select
+                                                                                    value={item.uom}
+                                                                                    name='uom'
+                                                                                    onChange={(opt) => {
+                                                                                        handleSelectGroup2(opt, 'uom', index);
+                                                                                    }}
+                                                                                    options={UOM_data}
+                                                                                    classNamePrefix="select2-selection form-select"
+                                                                                />
+                                                                            </div>
+                                                                        </div>
+                                                                        {/* <div className="col-lg-3">
+                                                                            <div className="mb-3">
                                                                                 <label htmlFor='payment_type' className="form-label">Select Payment Type For the surcharge</label>
                                                                                 <Select
                                                                                     value={item.payment_type}
@@ -492,7 +510,7 @@ export default function UploadFreightData() {
                                                                                     classNamePrefix="select2-selection form-select"
                                                                                 />
                                                                             </div>
-                                                                        </div>                                                                        
+                                                                        </div> */}
                                                                     </div>
                                                                     <div className="row">
                                                                         <div className="col-lg-2">
@@ -559,18 +577,18 @@ export default function UploadFreightData() {
                                                 </li>
 
                                                 <li className={`d-flex`}>
-                                                    <button 
+                                                    <button
                                                         className={`btn btn-primary ${activeTabProgress === 1 ? isAnyValueEmpty(addFCL?.carrierDetails) ? "disabled" : "" : activeTabProgress === 2 ? selectedFiles?.length === 0 ? "disabled" : "" : ""}`}
-                                                        onClick={() => {uploadSaveHandler()}}
+                                                        onClick={() => { uploadSaveHandler() }}
                                                     >Save</button>
 
                                                     {activeTabProgress !== 3 && (
                                                         <button
-                                                        className={`btn btn-primary d-flex align-items-center ms-2`}
-                                                        onClick={() => {
-                                                            toggleTabProgress(activeTabProgress + 1);
-                                                        }}
-                                                    >Next <i className="bx bx-chevron-right ms-1"></i> </button>
+                                                            className={`btn btn-primary d-flex align-items-center ms-2`}
+                                                            onClick={() => {
+                                                                toggleTabProgress(activeTabProgress + 1);
+                                                            }}
+                                                        >Next <i className="bx bx-chevron-right ms-1"></i> </button>
                                                     )}
                                                 </li>
                                             </ul>
