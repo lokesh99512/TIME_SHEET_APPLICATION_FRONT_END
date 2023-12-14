@@ -21,6 +21,7 @@ import {
   TabPane,
   UncontrolledTooltip,
 } from "reactstrap";
+import { addUsersData } from "../../store/Settings/actions";
 
 const role = [
   { label: "Mode", value: "Mode" },
@@ -34,24 +35,26 @@ const location = [
 ];
 
 const initialValue = {
-  firstName:"",
-  lastName:"",
-  email:"",
-  role:"",
-  password:"",
-  reEnterdPassword:"",
-  manager:"",
-  location:"",
+  firstName: "",
+  lastName: "",
+  email: "",
+  roles: [1],
+  password: "",
+  reEnterdPassword: "",
+  roleNames: "",
+  location: "",
 }
 
 
 export default function AddUserData() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const formik = useFormik({
-    initialValues:initialValue,
-    onSubmit : (values)=>{
-      console.log(values,"<---values");
+    initialValues: initialValue,
+    onSubmit: (values) => {
+      console.log(values, "<---values");
+      dispatch(addUsersData(values))
     }
   })
 
@@ -136,7 +139,7 @@ export default function AddUserData() {
                             Select Role
                           </label>
                           <div className="">
-                            <Select
+                            {/* <Select
                             value={
                                 role
                                   ? role.find(
@@ -153,6 +156,23 @@ export default function AddUserData() {
                               id="role"
                               options={role}
                               placeholder={"Select Role"}
+                              classNamePrefix="select2-selection form-select"
+                            /> */}
+                            <Select
+                              value={formik.values.roles.map((selectedRole) =>
+                                role.find((option) => option.value === selectedRole)
+                              )}
+                              onChange={(selectedOptions) => {
+                                const selectedValues = selectedOptions.map(
+                                  (option) => option.value
+                                );
+                                formik.setFieldValue("roles", selectedValues);
+                              }}
+                              name="roles"
+                              id="roles"
+                              options={role}
+                              isMulti
+                              placeholder="Select Role"
                               classNamePrefix="select2-selection form-select"
                             />
                           </div>
@@ -205,20 +225,20 @@ export default function AddUserData() {
                           </label>
                           <div className="">
                             <Select
-                            value={
-                              manager
+                              value={
+                                manager
                                   ? manager.find(
-                                      (option) =>
-                                        option.value ===
-                                        formik.values.manager
-                                    )
+                                    (option) =>
+                                      option.value ===
+                                      formik.values.roleNames
+                                  )
                                   : ""
                               }
                               onChange={(e) => {
-                                formik.setFieldValue("manager", e.value);
+                                formik.setFieldValue("roleNames", e.value);
                               }}
                               name="manager"
-                              id="manager"
+                              id="roleNames"
                               options={manager}
                               placeholder={"Select Role"}
                               classNamePrefix="select2-selection form-select"
@@ -233,20 +253,20 @@ export default function AddUserData() {
                           </label>
                           <div className="">
                             <Select
-                            value={
-                              location
+                              value={
+                                location
                                   ? location.find(
-                                      (option) =>
-                                        option.value ===
-                                        formik.values.location
-                                    )
+                                    (option) =>
+                                      option.value ===
+                                      formik.values.location
+                                  )
                                   : ""
                               }
                               onChange={(e) => {
                                 formik.setFieldValue("location", e.value);
                               }}
-                              name="role"
-                              id="role"
+                              name="location"
+                              id="location"
                               options={location}
                               placeholder={"Select Role"}
                               classNamePrefix="select2-selection form-select"
@@ -259,7 +279,7 @@ export default function AddUserData() {
                     <div className="row">
                       <div className="d-flex justify-content-center">
                         <div className="mb-3 mx-3 d-flex justify-content-end">
-                          <button className=" btn btn-primary" onClick={formik.handleSubmit}>Save</button>
+                          <button className=" btn btn-primary" type="button" onClick={formik.handleSubmit}>Save</button>
                         </div>
                         <div className="mb-3 mx-3 d-flex justify-content-end">
                           <button className=" btn btn-primary">Cancel</button>

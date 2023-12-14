@@ -154,8 +154,6 @@ export const GET_quote_exchange_rate = "get-exchangerate"
 
 export const GET_INQUIRY_TABLE = "GET_INQUIRY_TABLE"
 
-
-
 // -------------------- original Url Helper
 
 // Auth
@@ -186,3 +184,58 @@ export const Upload_FCL_PL_Data= "/api/v1/tenant-ocean-fcl-rp/port-and-local-cha
 
 // FCL Inland Charges
 export const GET_FCL_INLAND = "/api/v1/inland-vendor-charge/"
+
+
+// --------------------------------------------------------- Kunal ---------------------------------------------------------
+
+export const COMPANY_BASIC_DETAILS = "/api/v1/tenant/update-basic-details"
+export const COMPANY_USER_DETAILS = "/api/v1/user/"
+export const COMPANY_USER_ADD_DETAILS = "/api/v1/user/"
+// export const COMPANY_CITY_DETAILS = "/api/v1/pin-code/"
+export const COMPANY_CITY_DETAILS = "/api/v1/city/"
+export const COMPANY_STATE_DETAILS = "/api/v1/state/"
+export const COMPANY_COUNTRY_DETAILS = "/api/v1/country/"
+export const COMPANY_PINCODE_DETAILS = "/api/v1/pin-code/"
+export const COMPANY_TAX_DETAILS = "/api/v1/tenant/update-tax-details"
+export const COMPANY_BUSINESS_DETAILS = "/api/v1/tenant/update-business-details"
+
+
+// get api in settings of Companysettings
+export const COMPANY_GET_ALL_DETAILS = "/api/v1/tenant/" 
+
+
+// tenant customers 
+export const PARTIES_CUSTOMERS_BASIC_DETAILS = "/api/v1/tenant/customer/update-basic-details"
+
+
+
+// get all parties customer details
+export const GET_ALL_PARTIES_CUSTOMERS = "/api/v1/tenant/customer/"
+
+
+// get all table in parties
+export const GET_ALL_PARTIES_TABLE = "/api/v1/tenant/customer"
+
+// All table vendor listing
+export const GET_ALL_PARTIES_VENDOR_TABLE = "/api/v1/tenant/vendor/"
+
+// Parties into Basic companyDetails 
+// export const PARTIES_VENDOR_BASIC_DETAILS = "/api/v1/tenant/vendor/update-basic-details"
+
+// get all table in surcharge fcl 
+export const GET_ALL_SETTINGS_SURCHARGE_FCL = "/api/v1/surcharge-code/"
+
+// get all table in surcharge fcl only alias code 
+export const GET_ALL_SETTINGS_SURCHARGE_FCL_ALIAS_CODE = "/api/v1/surcharge-alias/"
+
+// get to particular id to target
+export const GET_SURCHARGE_DATA_ID = "/api/v1/surcharge-code/"
+
+// post api call save data
+export const GET_SURCHARGE_ADD_DATA = "/api/v1/surcharge-code/"
+
+// surcharge Category data
+export const GET_SURCHARGE_CATEGORY = "/api/v1/surcharge-category/"
+
+// customers details of key manager and sales employee
+export const GET_PARTIES_CUSTOMERS_EMPLOYEE_DETAILS = "/api/v1/user/" 

@@ -38,9 +38,17 @@ const Users = () => {
     // setViewData(data);
 }
 
-  const settingsUsersData = useSelector(
-    (state) => state.settings.settings_users_data
+  const {settings_users_data} = useSelector(
+    (state) => state.settings
   );
+
+  // const {settings_users_data} = useSelector(
+  //   (state) => state?.settings
+  // );
+
+  // const usersData = settingsUsersData?.content
+
+  console.log(settings_users_data, "--->settingsUsersData");
 
   const toggleRightCanvas = () => {
     setIsRight(!isRight);
@@ -68,12 +76,12 @@ const Users = () => {
 
   useEffect(() => {
     dispatch(getUsersData());
-  }, [dispatch]);
+  }, []);
 
   const columns = useMemo(() => ([
     {
       Header: "User Name",
-      accessor: "user_name",
+      accessor: "email",
       filterable: true,
       disableFilters: true,
       Cell: (cellProps) => {
@@ -84,7 +92,7 @@ const Users = () => {
     },
     {
       Header: "First Name",
-      accessor: "first_name",
+      accessor: "firstName",
       filterable: true,
       disableFilters: true,
       Cell: (cellProps) => {
@@ -98,7 +106,7 @@ const Users = () => {
     },
     {
       Header: "Last Name",
-      accessor: "last_name",
+      accessor: "lastName",
       filterable: true,
       disableFilters: true,
       Cell: (cellProps) => {
@@ -109,7 +117,7 @@ const Users = () => {
     },
     {
       Header: "Role",
-      accessor: "role",
+      accessor: "roles",
       filterable: true,
       disableFilters: true,
       Cell: (cellProps) => {
@@ -120,7 +128,7 @@ const Users = () => {
     },
     {
       Header: "Last Active",
-      accessor: "last_active",
+      accessor: "lastLoggedIn",
       filterable: true,
       disableFilters: true,
       Cell: (cellProps) => {
@@ -132,20 +140,20 @@ const Users = () => {
         );
       },
     },
-    {
-      Header: "Reset Password",
-      accessor: "reset_password",
-      filterable: true,
-      disableFilters: true,
-      Cell: (cellProps) => {
-        return (
-          <ResetPassword
-            cellProps={cellProps}
-            viewPopupHandler={resetHandler}
-          />
-        );
-      },
-    },
+    // {
+    //   Header: "Reset Password",
+    //   accessor: "reset_password",
+    //   filterable: true,
+    //   disableFilters: true,
+    //   Cell: (cellProps) => {
+    //     return (
+    //       <ResetPassword
+    //         cellProps={cellProps}
+    //         viewPopupHandler={resetHandler}
+    //       />
+    //     );
+    //   },
+    // },
     {
       Header: "Status",
       accessor: "status",
@@ -183,18 +191,18 @@ const Users = () => {
         );
       },
     },
-    {
-      Header: "Edit",
-      accessor: "edit",
-      filterable: true,
-      disableFilters: true,
-      Cell: (cellProps) => {
-        return <Edit cellProps={cellProps} viewPopupHandler={editHandler} />
-        // return <Edit />
-        // console.log(cellProps);
-        // return (<button onClick={()=>console.log("hello")}><img src={edit_icon} alt="Edit" /></button>);
-      },
-    },
+    // {
+    //   Header: "Edit",
+    //   accessor: "edit",
+    //   filterable: true,
+    //   disableFilters: true,
+    //   Cell: (cellProps) => {
+    //     return <Edit cellProps={cellProps} viewPopupHandler={editHandler} />
+    //     // return <Edit />
+    //     // console.log(cellProps);
+    //     // return (<button onClick={()=>console.log("hello")}><img src={edit_icon} alt="Edit" /></button>);
+    //   },
+    // },
   ]),[]);
 
   return (
@@ -208,7 +216,9 @@ const Users = () => {
             {/* React Table */}
             <TableUsers
               columns={columns}
-              data={settingsUsersData}
+              // data={usersData}
+              data={settings_users_data?.content || []}
+              isFilterable={true}
               isGlobalFilter={true}
               isAddInvoiceList={true}
               customPageSize={10}

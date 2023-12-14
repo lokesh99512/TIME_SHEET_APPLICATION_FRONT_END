@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input, Label, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Select from "react-select";
 import { useFormik } from "formik";
 import ModalAddNewAddressType from "./ModalAddNewAddressType";
+import { useSelector } from "react-redux";
+import { getCustomersCountryData, getCustomersPincodeData, getCustomersStateData } from "../../../store/Parties/actions";
+import { useDispatch } from "react-redux";
 
 const gen = [
   { label: "Mr", value: "Mr" },
@@ -10,25 +13,26 @@ const gen = [
   { label: "Mrs", value: "Mrs" },
 ];
 const addressType = [
-  { label: "Office", value: "Office" },
-  { label: "Branch", value: "Branch" },
-  { label: "Regional Office", value: "Regional Office" },
-  { label: "Head Office", value: "Head Office" },
-  { label: "City Office", value: "City Office" },
-  { label: "Warehouse", value: "Warehouse" },
-  { label: "Fulfilment Center", value: "Fulfilment Center" },
+  { label: "Office", value: "OFFICE" },
+  { label: "Branch", value: "BRANCH" },
+  { label: "Regional Office", value: "REGIONAL_OFFICE" },
+  { label: "Head Office", value: "HEAD_OFFICE" },
+  { label: "City Office", value: "CITY_OFFICE" },
+  { label: "Warehouse", value: "WAREHOUSE" },
+  { label: "Fulfilment Center", value: "FULFILMENT_CENTER" },
   { label: "Add New", value: "Add New" },
 ];
 
 const phone = [{ label: "+91", value: "+91" }];
 
 const addGstInitialValue = {
-  companyAddress: "",
+  address: "",
   city: "",
   state: "",
   zipcode: "",
   country: "",
-  gstNumber: "",
+  no: "",
+  contactName : "",
   placeOfSupply: "",
 };
 
@@ -37,20 +41,66 @@ const addGstInitialValue = {
 //   return placeOfSupply.find((place) => +place.Code === +num)?.value;
 // };
 
-const ModalAddGST = ({ modal, onCloseClick }) => {
-
+const ModalAddGST = ({ modal, onCloseClick ,}) => {
+  const dispatch = useDispatch();
+  // onSubmitHandler
   const [addressTypeModal, setAddressTypeModal] = useState(false)
 
   const onCloseClickModal = () => {
     setAddressTypeModal(false);
   };
-  // const formik = useFormik({
-  //   initialValues: addGstInitialValue,
-  //   onSubmit: (value) => {
-  //     console.log(value, "value");
-  //     formik.resetForm();
-  //   },
-  // });
+  const formik = useFormik({
+    initialValues: addGstInitialValue,
+    onSubmit: (value) => {
+      console.log(value, "value");
+      const payload = {
+        ...value,
+        id:2,
+        pinCode: {
+          "version": 0,
+          "id": 1,
+          pin: value.zipcode
+        },
+        city: {
+          "version": 0,
+          "id": 1,
+          cityName: value.city
+        },
+        state: {
+          "version": 4,
+          "id": 1,
+          stateName: value.state
+        },
+        country: {
+          "version": 0,
+          "id": 5,
+          countryName: value.country
+        },
+        status: "ACTIVE"
+      }
+      // onSubmitHandler(payload);
+      formik.resetForm();
+    },
+  });
+
+  const { parties_country_details, parties_pincode_details, parties_city_details, parties_state_details } = useSelector(
+    (state) => state.parties
+  );
+
+console.log(parties_city_details,"parties_city_details");
+
+
+
+
+useEffect(() => {
+  if (parties_state_details && parties_state_details?.content?.length > 0) {
+    formik.setFieldValue("state", parties_state_details?.content[0]?.stateName)
+  }
+  if (parties_country_details && parties_country_details?.content?.length > 0) {
+    formik.setFieldValue("country", parties_country_details?.content[0]?.countryName)
+  }
+  
+}, [parties_state_details, parties_country_details, parties_pincode_details,parties_city_details])
 
   // const gstNumberHandler = (e) => {
   //   formik.handleChange(e);
@@ -76,9 +126,9 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
                   <label className="form-label">Address</label>
                   <Input
                     type="text"
-                    // name="companyAddress"
-                    // value={formik.values.companyAddress}
-                    // onChange={formik.handleChange}
+                    name="address"
+                    value={formik.values.address}
+                    onChange={formik.handleChange}
                     className="form-control"
                     placeholder="Enter Comapany Address"
                   />
@@ -87,57 +137,82 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
                   <label className="form-label">City</label>
                   <Input
                     type="text"
-                    // name="companyAddress"
-                    // value={formik.values.companyAddress}
-                    // onChange={formik.handleChange}
+                    list="cityList"
+                    name="city"
+                    value={formik.values.city}
+                    onChange={(e) => {
+                      // formik.handleChange
+                      formik.handleChange(e);
+                      const cityData = parties_city_details?.content?.find((city) => city.cityName === e.target.value)
+                      if (cityData) {
+                        dispatch(getCustomersStateData({ cityId: cityData.id }));
+                        dispatch(getCustomersCountryData({ cityId: cityData.id }));
+                        dispatch(getCustomersPincodeData({ cityId: cityData.id }));
+                      }
+                    }}
                     className="form-control"
                     placeholder="Enter Comapany City"
                   />
+                  <datalist id="cityList">
+                    {parties_city_details && parties_city_details?.content?.map((item, i) => <option key={i} value={item.cityName} />)}
+                  </datalist>
                 </div>
 
                 <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
                   <label className="form-label">State</label>
                   <Input
                     type="text"
-                    // name="state"
-                    // value={formik.values.state}
-                    // onChange={formik.handleChange}
+                    name="state"
+                    list="stateList"
+                    value={formik.values.state}
+                    onChange={formik.handleChange}
                     className="form-control"
                     placeholder="Enter State"
                   />
+                    <datalist id="stateList">
+                    {parties_state_details && parties_state_details?.content?.map((item, i) => <option key={i} value={item.stateName} />)}
+                  </datalist>
                 </div>
 
                 <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
                   <label className="form-label">Country</label>
                   <Input
                     type="text"
-                    // name="city"
-                    // value={formik.values.city}
-                    // onChange={formik.handleChange}
+                    name="country"
+                    list="countryList"
+                    value={formik.values.country}
+                    onChange={formik.handleChange}
                     className="form-control"
                     placeholder="Enter Country"
                   />
+                  <datalist id="countryList">
+                    {parties_country_details && parties_country_details?.content?.map((item, i) => <option key={i} value={item.countryName} />)}
+                  </datalist>
                 </div>
 
                 <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
                   <label className="form-label">Zipcode</label>
                   <Input
                     type="text"
-                    // name="zipcode"
-                    // value={formik.values.zipcode}
-                    // onChange={formik.handleChange}
+                    name="zipcode"
+                    list="zipcodeList"
+                    value={formik.values.zipcode}
+                    onChange={formik.handleChange}
                     className="form-control"
                     placeholder="Enter Zipcode"
                   />
+                  <datalist id="zipcodeList">
+                    {parties_pincode_details && parties_pincode_details?.content?.map((item, i) => <option key={i} value={item.pin} />)}
+                  </datalist>
                 </div>
 
                 <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
                   <label className="form-label">GST Number</label>
                   <Input
-                    type="text"
-                    // name="country"
-                    // value={formik.values.country}
-                    // onChange={formik.handleChange}
+                    type="text"     
+                    name="no"
+                    value={formik.values.no}
+                    onChange={formik.handleChange}
                     className="form-control"
                     placeholder="Enter GST Number"
                   />
@@ -161,9 +236,9 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
                     <div className="col-9">
                       <Input
                         type="text"
-                        // name=""
-                        //   value={}
-                        //   onChange={}
+                        name="contactName"
+                          value={formik.values.contactName}
+                          onChange={formik.handleChange}
                         className="form-control"
                         placeholder=""
                       />
@@ -189,9 +264,9 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
                     <div className="col-9">
                       <Input
                         type="text"
-                        // name=""
-                        //   value={}
-                        //   onChange={}
+                        name="contactNo"
+                          value={formik.values.contactName}
+                          onChange={formik.handleChange}
                         className="form-control"
                         placeholder=""
                       />
@@ -234,7 +309,7 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
                 <div className="d-flex justify-content-center">
                   <div className="mb-3 mx-3 d-flex justify-content-end">
                     <button
-                      // onClick={formik.handleSubmit}
+                      onClick={formik.handleSubmit}
                       className=" btn btn-primary"
                     >
                       Save

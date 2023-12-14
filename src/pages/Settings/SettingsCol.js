@@ -4,6 +4,15 @@ import {reset_icon} from "../../assets/images";
 
 // -------------------------Setting - Users-------------------------
 
+const calculateTimeDifference = (lastLoggedIn) => {
+    const lastLoggedInDate = new Date(lastLoggedIn);
+    const timeDifferenceMillis = new Date() - lastLoggedInDate;
+    const timeDifferenceHours = timeDifferenceMillis / (1000 * 60 * 60);
+    const formattedTimeDifference = timeDifferenceHours.toFixed(1);
+    return `${formattedTimeDifference} hours`;
+  };
+  
+
 export const UserName = ({cellProps,viewPopupHandler}) => {
     return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }
@@ -17,7 +26,9 @@ export const Role = ({cellProps,viewPopupHandler}) => {
     return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }
 export const LastActive = ({cellProps,viewPopupHandler}) => {
-    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
+    const {value} = cellProps;
+    const lastActiveTime =  value ? calculateTimeDifference(value) : '-';
+    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{lastActiveTime}</span>;
 }
 export const ResetPassword = ({cellProps,viewPopupHandler}) => {
     return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{<img src={reset_icon} alt="Reset" />}</span>;

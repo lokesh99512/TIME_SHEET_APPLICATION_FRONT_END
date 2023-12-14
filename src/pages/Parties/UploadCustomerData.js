@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 import { FieldArray, FormikProvider, useFormik } from 'formik';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Select from "react-select";
@@ -19,6 +19,9 @@ import ModalAddNewIndustryType from "./Modal/ModalAddNewIndustryType";
 import ModalAddNewKeyAccountManager from './Modal/ModalAddNewKeyAccountManager';
 import ModalAddNewSalesEmployee from './Modal/ModalAddNewSalesEmployee';
 import { optionCustcustomerType, optionCustdepartment, optionCustdesignation, optionCustentityType, optionCustindustryType, optionCustkeyAccountManager, optionCustopCode, optionCustsalesEmployee, optionCusttitle } from '../../common/data/settings';
+import { useSelector } from 'react-redux';
+import { getAllCustomerDetailsData, getAllPartiesData, getAllUserDetails, getCustomersCityData, getCustomersCountryData, getCustomersPincodeData, getCustomersStateData } from '../../store/Parties/actions';
+import { getCompanyCountryData } from '../../store/Settings/actions';
 
 export default function UploadCustomerData() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
@@ -33,6 +36,7 @@ export default function UploadCustomerData() {
     const [entityTypeModal, setEntityTypeModal] = useState(false);
     const [industryTypeModal, setIndustryTypeModal] = useState(false);
     const [customerTypeModal, setCustomerTypeModal] = useState(false);
+    const [modalAlldata,setModalAllData]= useState([])
     const navigate = useNavigate();
     const [surcharges, setSurcharges] = useState([]);
     const dispatch = useDispatch();
@@ -100,7 +104,7 @@ export default function UploadCustomerData() {
     const companyDetailsFormik = useFormik({
         initialValues: {
             companyName: "",
-            logo: "",
+            image: "",
             address: "",
             city: "",
             state: "",
@@ -125,8 +129,677 @@ export default function UploadCustomerData() {
             industryType: "",
             customerType: "",
         },
-        onSubmit: (values) => {
-            console.log(values);
+        onSubmit: async ({ image, ...values }) => {
+            console.log(image, "---->image")
+            console.log(values, "---companyDetailsFormik--->values");
+
+            let formData = new FormData();
+
+            Object.keys(values).forEach((key) => {
+                formData.append(key, values[key]);
+            });
+
+
+            // const projectUATRequestDTO = {
+            //     "version": 9,
+            //     "modifiedBy": 2,
+            //     "createdBy": 2,
+            //     "name": values.companyName,
+            //     "logo": null,
+            //     "logoPath": values.image,
+            //     "address": values.address,
+            //     "pinCode": {
+            //         "createdDate": null,
+            //         "modifiedDate": null,
+            //         "version": 0,
+            //         "modifiedBy": null,
+            //         "createdBy": null,
+            //         "id": 1,
+            //         "pin": values.zipcode
+            //     },
+            //     "city": {
+            //         "createdDate": null,
+            //         "modifiedDate": null,
+            //         "version": 0,
+            //         "modifiedBy": null,
+            //         "createdBy": null,
+            //         "id": 1,
+            //         "cityName": values.city
+            //     },
+            //     "state": {
+            //         "createdDate": null,
+            //         "modifiedDate": "2023-11-26T06:19:28",
+            //         "version": 4,
+            //         "modifiedBy": 2,
+            //         "createdBy": null,
+            //         "id": 1,
+            //         "stateName": values.state
+            //     },
+            //     "country": {
+            //         "createdDate": "2023-09-15T14:32:27",
+            //         "modifiedDate": "2023-09-15T14:32:27",
+            //         "version": 0,
+            //         "modifiedBy": 1,
+            //         "createdBy": 1,
+            //         "id": 2,
+            //         "countryName": values.country
+            //     },
+            //     "website": values.website,
+            //     "contactName": values.contactName,
+            //     "contactNo": values.phoneNumber,
+            //     "contactEmail": values.email,
+            //     "department": values.department,
+            //     "designation": values.designation,
+            //     "salesUser": {
+            //         ...parties_all_employee_details?.content[0],
+            //         "firstName": values.salesEmployee
+            //     },
+            //     "accountManager": {
+            //         ...parties_all_employee_details?.content[0],
+            //         "firstName": values.keyAccountManager
+            //     },
+            //     "serviceType": "AIR",
+            //     "cin": values.CINnumber,
+            //     "gst": values.GSTnumber,
+            //     "pan": values.PANnumber,
+            //     "entityType": values.entityType,
+            //     "industryType": values.industryType,
+            //     "type": values.customerType,
+            //     "status": "ACTIVE",
+            //     "addresses": [],
+            //     "contacts": [],
+            //     "documents": [],
+            //     "tenant": {
+            //         "createdDate": null,
+            //         "modifiedDate": "2023-12-13T09:15:50",
+            //         "version": 122,
+            //         "modifiedBy": 2,
+            //         "createdBy": null,
+            //         "id": 1,
+            //         "entityType": values.entityType,
+            //         "industryType": values.industryType,
+            //         "name": values.companyName,
+            //         "address": values.address,
+            //         "pinCode": {
+            //             "createdDate": null,
+            //             "modifiedDate": null,
+            //             "version": 0,
+            //             "modifiedBy": null,
+            //             "createdBy": null,
+            //             "id": 1,
+            //             "pin": values.zipcode
+            //         },
+            //         "city": {
+            //             "createdDate": null,
+            //             "modifiedDate": null,
+            //             "version": 0,
+            //             "modifiedBy": null,
+            //             "createdBy": null,
+            //             "id": 1,
+            //             "cityName": values.city
+            //         },
+            //         "state": {
+            //             "createdDate": null,
+            //             "modifiedDate": "2023-11-26T06:19:28",
+            //             "version": 4,
+            //             "modifiedBy": 2,
+            //             "createdBy": null,
+            //             "id": 1,
+            //             "stateName": values.state
+            //         },
+            //         "country": {
+            //             "createdDate": "2023-09-17T16:25:41",
+            //             "modifiedDate": "2023-09-17T16:25:41",
+            //             "version": 0,
+            //             "modifiedBy": 1,
+            //             "createdBy": 1,
+            //             "id": 5,
+            //             "countryName": values.country
+            //         },
+            //         "contactName": values.contactName,
+            //         "contactNumber": values.phoneNumber,
+            //         "email": values.email,
+            //         "cin": values.CINnumber,
+            //         "pan": values.PANnumber,
+            //         "transporterId": null,
+            //         "logo": null,
+            //         "logoPath": values.image,
+            //         "status": "ACTIVE",
+            //         "subscriptionType": null,
+            //         "tenantGSTS": [
+            //             {
+            //                 "version": 6,
+            //                 "id": 1,
+            //                 "no": values.GSTnumber,
+            //                 "address": values.address,
+            //                 "pinCode": {
+            //                     "createdDate": null,
+            //                     "modifiedDate": null,
+            //                     "version": 0,
+            //                     "modifiedBy": null,
+            //                     "createdBy": null,
+            //                     "id": 1,
+            //                     "pin": values.zipcode
+            //                 },
+            //                 "city": {
+            //                     "createdDate": null,
+            //                     "modifiedDate": null,
+            //                     "version": 0,
+            //                     "modifiedBy": null,
+            //                     "createdBy": null,
+            //                     "id": 1,
+            //                     "cityName": values.city
+            //                 },
+            //                 "state": {
+            //                     "createdDate": null,
+            //                     "modifiedDate": "2023-11-26T06:19:28",
+            //                     "version": 4,
+            //                     "modifiedBy": 2,
+            //                     "createdBy": null,
+            //                     "id": 1,
+            //                     "stateName": values.state
+            //                 },
+            //                 "country": {
+            //                     "createdDate": "2023-09-15T14:32:27",
+            //                     "modifiedDate": "2023-09-15T14:32:27",
+            //                     "version": 0,
+            //                     "modifiedBy": 1,
+            //                     "createdBy": 1,
+            //                     "id": 2,
+            //                     "countryName": values.country
+            //                 },
+            //                 "placeOfService": "Kolkata2",
+            //                 "status": "ACTIVE"
+            //             },
+            //         ]
+            //     }
+            // }
+
+            const projectUATRequestDTO = {
+                "createdDate": "2023-12-14T05:59:19",
+                "modifiedDate": "2023-12-14T05:59:19",
+                "version": 9,
+                "modifiedBy": 2,
+                "createdBy": 2,
+                "name": values.companyName,
+                "logo": null,
+                "logoPath": "/tmp/tariff-tales/Group 1000004097.png",
+                "address": values.address,
+                "pinCode": {
+                    "createdDate": null,
+                    "modifiedDate": null,
+                    "version": 0,
+                    "modifiedBy": null,
+                    "createdBy": null,
+                    "id": 1,
+                    "pin": values.zipcode,
+                    "city": {
+                        "createdDate": null,
+                        "modifiedDate": "2023-12-12T17:18:17",
+                        "version": 2,
+                        "modifiedBy": 2,
+                        "createdBy": null,
+                        "id": 1,
+                        "cityName": values.city,
+                        "state": {
+                            "createdDate": null,
+                            "modifiedDate": "2023-12-13T03:37:41",
+                            "version": 6,
+                            "modifiedBy": 1,
+                            "createdBy": null,
+                            "id": 1,
+                            "stateName": values.state,
+                            "country": {
+                                "createdDate": "2023-09-15T14:32:27",
+                                "modifiedDate": "2023-09-15T14:32:27",
+                                "version": 0,
+                                "modifiedBy": 1,
+                                "createdBy": 1,
+                                "id": 2,
+                                "countryName": values.country
+                            }
+                        },
+                        "country": {
+                            "createdDate": "2023-09-15T14:32:27",
+                            "modifiedDate": "2023-09-15T14:32:27",
+                            "version": 0,
+                            "modifiedBy": 1,
+                            "createdBy": 1,
+                            "id": 2,
+                            "countryName": values.country
+                        }
+                    },
+                    "state": {
+                        "createdDate": null,
+                        "modifiedDate": "2023-12-13T03:37:41",
+                        "version": 6,
+                        "modifiedBy": 1,
+                        "createdBy": null,
+                        "id": 1,
+                        "stateName": values.state,
+                        "country": {
+                            "createdDate": "2023-09-15T14:32:27",
+                            "modifiedDate": "2023-09-15T14:32:27",
+                            "version": 0,
+                            "modifiedBy": 1,
+                            "createdBy": 1,
+                            "id": 2,
+                            "countryName": values.country
+                        }
+                    },
+                    "country": {
+                        "createdDate": "2023-09-15T14:32:27",
+                        "modifiedDate": "2023-09-15T14:32:27",
+                        "version": 0,
+                        "modifiedBy": 1,
+                        "createdBy": 1,
+                        "id": 2,
+                        "countryName": values.country
+                    }
+                },
+                "city": {
+                    "createdDate": null,
+                    "modifiedDate": "2023-12-12T17:18:17",
+                    "version": 2,
+                    "modifiedBy": 2,
+                    "createdBy": null,
+                    "id": 1,
+                    "cityName": values.city,
+                    "state": {
+                        "createdDate": null,
+                        "modifiedDate": "2023-12-13T03:37:41",
+                        "version": 6,
+                        "modifiedBy": 1,
+                        "createdBy": null,
+                        "id": 1,
+                        "stateName": values.state,
+                        "country": {
+                            "createdDate": "2023-09-15T14:32:27",
+                            "modifiedDate": "2023-09-15T14:32:27",
+                            "version": 0,
+                            "modifiedBy": 1,
+                            "createdBy": 1,
+                            "id": 2,
+                            "countryName": values.country
+                        }
+                    },
+                    "country": {
+                        "createdDate": "2023-09-15T14:32:27",
+                        "modifiedDate": "2023-09-15T14:32:27",
+                        "version": 0,
+                        "modifiedBy": 1,
+                        "createdBy": 1,
+                        "id": 2,
+                        "countryName": values.country
+                    }
+                },
+                "state": {
+                    "createdDate": null,
+                    "modifiedDate": "2023-12-13T03:37:41",
+                    "version": 6,
+                    "modifiedBy": 1,
+                    "createdBy": null,
+                    "id": 1,
+                    "stateName": values.state,
+                    "country": {
+                        "createdDate": "2023-09-15T14:32:27",
+                        "modifiedDate": "2023-09-15T14:32:27",
+                        "version": 0,
+                        "modifiedBy": 1,
+                        "createdBy": 1,
+                        "id": 2,
+                        "countryName": values.country
+                    }
+                },
+                "country": {
+                    "createdDate": "2023-09-15T14:32:27",
+                    "modifiedDate": "2023-09-15T14:32:27",
+                    "version": 0,
+                    "modifiedBy": 1,
+                    "createdBy": 1,
+                    "id": 2,
+                    "countryName": values.country
+                },
+                "website": values.website,
+                "contactName": values.contactName,
+                "contactNo": values.phoneNumber,
+                "contactEmail": values.email,
+                "department": values.department,
+                "designation": values.designation,
+                "salesUser": {
+                    ...parties_all_employee_details?.content[0],
+                    "firstName": values?.salesEmployee
+                },
+                "accountManager": {
+                    ...parties_all_employee_details?.content[0],
+                    "firstName": values?.keyAccountManager
+                },
+                "serviceType": "AIR",
+                "cin":values.CINnumber,
+                "gst": values.GSTnumber,
+                "pan": values.PANnumber,
+                "entityType": values.entityType,
+                "industryType": values.industryType,
+                "type": values.customerType,
+                "status": "ACTIVE",
+                "addresses": [],
+                "contacts": [],
+                "documents": [],
+                "tenant": {
+                    "createdDate": null,
+                    "modifiedDate": "2023-12-14T04:43:32",
+                    "version": 47,
+                    "modifiedBy": 2,
+                    "createdBy": null,
+                    "id": 1,
+                    "entityType": values.entityType,
+                    "industryType": values.industryType,
+                    "name": values.companyName,
+                    "address": values.address,
+                    "pinCode": {
+                        "createdDate": null,
+                        "modifiedDate": null,
+                        "version": 0,
+                        "modifiedBy": null,
+                        "createdBy": null,
+                        "id": 1,
+                        "pin": values.zipcode,
+                        "city": {
+                            "createdDate": null,
+                            "modifiedDate": "2023-12-12T17:18:17",
+                            "version": 2,
+                            "modifiedBy": 2,
+                            "createdBy": null,
+                            "id": 1,
+                            "cityName": values.city,
+                            "state": {
+                                "createdDate": null,
+                                "modifiedDate": "2023-12-13T03:37:41",
+                                "version": 6,
+                                "modifiedBy": 1,
+                                "createdBy": null,
+                                "id": 1,
+                                "stateName": values.state,
+                                "country": {
+                                    "createdDate": "2023-09-15T14:32:27",
+                                    "modifiedDate": "2023-09-15T14:32:27",
+                                    "version": 0,
+                                    "modifiedBy": 1,
+                                    "createdBy": 1,
+                                    "id": 2,
+                                    "countryName":values.country
+                                }
+                            },
+                            "country": {
+                                "createdDate": "2023-09-15T14:32:27",
+                                "modifiedDate": "2023-09-15T14:32:27",
+                                "version": 0,
+                                "modifiedBy": 1,
+                                "createdBy": 1,
+                                "id": 2,
+                                "countryName": values.country
+                            }
+                        },
+                        "state": {
+                            "createdDate": null,
+                            "modifiedDate": "2023-12-13T03:37:41",
+                            "version": 6,
+                            "modifiedBy": 1,
+                            "createdBy": null,
+                            "id": 1,
+                            "stateName": values.state,
+                            "country": {
+                                "createdDate": "2023-09-15T14:32:27",
+                                "modifiedDate": "2023-09-15T14:32:27",
+                                "version": 0,
+                                "modifiedBy": 1,
+                                "createdBy": 1,
+                                "id": 2,
+                                "countryName": values.country
+                            }
+                        },
+                        "country": {
+                            "createdDate": "2023-09-15T14:32:27",
+                            "modifiedDate": "2023-09-15T14:32:27",
+                            "version": 0,
+                            "modifiedBy": 1,
+                            "createdBy": 1,
+                            "id": 2,
+                            "countryName": values.country
+                        }
+                    },
+                    "city": {
+                        "createdDate": null,
+                        "modifiedDate": "2023-12-12T17:18:17",
+                        "version": 2,
+                        "modifiedBy": 2,
+                        "createdBy": null,
+                        "id": 1,
+                        "cityName":values.city,
+                        "state": {
+                            "createdDate": null,
+                            "modifiedDate": "2023-12-13T03:37:41",
+                            "version": 6,
+                            "modifiedBy": 1,
+                            "createdBy": null,
+                            "id": 1,
+                            "stateName":values.state,
+                            "country": {
+                                "createdDate": "2023-09-15T14:32:27",
+                                "modifiedDate": "2023-09-15T14:32:27",
+                                "version": 0,
+                                "modifiedBy": 1,
+                                "createdBy": 1,
+                                "id": 2,
+                                "countryName": values.country
+                            }
+                        },
+                        "country": {
+                            "createdDate": "2023-09-15T14:32:27",
+                            "modifiedDate": "2023-09-15T14:32:27",
+                            "version": 0,
+                            "modifiedBy": 1,
+                            "createdBy": 1,
+                            "id": 2,
+                            "countryName": values.country
+                        }
+                    },
+                    "state": {
+                        "createdDate": null,
+                        "modifiedDate": "2023-12-13T03:37:41",
+                        "version": 6,
+                        "modifiedBy": 1,
+                        "createdBy": null,
+                        "id": 1,
+                        "stateName": values.state,
+                        "country": {
+                            "createdDate": "2023-09-15T14:32:27",
+                            "modifiedDate": "2023-09-15T14:32:27",
+                            "version": 0,
+                            "modifiedBy": 1,
+                            "createdBy": 1,
+                            "id": 2,
+                            "countryName": values.country
+                        }
+                    },
+                    "country": {
+                        "createdDate": "2023-09-17T16:25:41",
+                        "modifiedDate": "2023-12-13T03:18:04",
+                        "version": 1,
+                        "modifiedBy": 1,
+                        "createdBy": 1,
+                        "id": 5,
+                        "countryName": values.country
+                    },
+                    "contactName": values.contactName,
+                    "contactNumber": values.phoneNumber,
+                    "email":values.email,
+                    "cin": values.CINnumber,
+                    "pan": values.PANnumber,
+                    "transporterId": null,
+                    "logo": null,
+                    "logoPath": "/tmp/tariff-tales/Reliance_Jio_Logo.svg.png",
+                    "status": "ACTIVE",
+                    "subscriptionType": null,
+                    "tenantGSTS": [
+                        {
+                        "createdDate": "2023-11-26T16:18:21",
+                        "modifiedDate": "2023-11-26T16:21:30",
+                        "version": 1,
+                        "modifiedBy": 2,
+                        "createdBy": 2,
+                        "id": 1,
+                        "no": values.GSTnumber,
+                        "address": values.address,
+                        "pinCode": {
+                            "createdDate": null,
+                            "modifiedDate": null,
+                            "version": 0,
+                            "modifiedBy": null,
+                            "createdBy": null,
+                            "id": 1,
+                            "pin": values.zipcode,
+                            "city": {
+                                "createdDate": null,
+                                "modifiedDate": "2023-12-12T17:18:17",
+                                "version": 2,
+                                "modifiedBy": 2,
+                                "createdBy": null,
+                                "id": 1,
+                                "cityName": values.city,
+                                "state": {
+                                    "createdDate": null,
+                                    "modifiedDate": "2023-12-13T03:37:41",
+                                    "version": 6,
+                                    "modifiedBy": 1,
+                                    "createdBy": null,
+                                    "id": 1,
+                                    "stateName":  values.state,
+                                    "country": {
+                                        "createdDate": "2023-09-15T14:32:27",
+                                        "modifiedDate": "2023-09-15T14:32:27",
+                                        "version": 0,
+                                        "modifiedBy": 1,
+                                        "createdBy": 1,
+                                        "id": 2,
+                                        "countryName": values.country
+                                    }
+                                },
+                                "country": {
+                                    "createdDate": "2023-09-15T14:32:27",
+                                    "modifiedDate": "2023-09-15T14:32:27",
+                                    "version": 0,
+                                    "modifiedBy": 1,
+                                    "createdBy": 1,
+                                    "id": 2,
+                                    "countryName": values.country
+                                }
+                            },
+                            "state": {
+                                "createdDate": null,
+                                "modifiedDate": "2023-12-13T03:37:41",
+                                "version": 6,
+                                "modifiedBy": 1,
+                                "createdBy": null,
+                                "id": 1,
+                                "stateName":  values.state,
+                                "country": {
+                                    "createdDate": "2023-09-15T14:32:27",
+                                    "modifiedDate": "2023-09-15T14:32:27",
+                                    "version": 0,
+                                    "modifiedBy": 1,
+                                    "createdBy": 1,
+                                    "id": 2,
+                                    "countryName":values.country
+                                }
+                            },
+                            "country": {
+                                "createdDate": "2023-09-15T14:32:27",
+                                "modifiedDate": "2023-09-15T14:32:27",
+                                "version": 0,
+                                "modifiedBy": 1,
+                                "createdBy": 1,
+                                "id": 2,
+                                "countryName": values.country
+                            }
+                        },
+                        "city": {
+                            "createdDate": null,
+                            "modifiedDate": "2023-12-12T17:18:17",
+                            "version": 2,
+                            "modifiedBy": 2,
+                            "createdBy": null,
+                            "id": 1,
+                            "cityName":values.city,
+                            "state": {
+                                "createdDate": null,
+                                "modifiedDate": "2023-12-13T03:37:41",
+                                "version": 6,
+                                "modifiedBy": 1,
+                                "createdBy": null,
+                                "id": 1,
+                                "stateName": values.state,
+                                "country": {
+                                    "createdDate": "2023-09-15T14:32:27",
+                                    "modifiedDate": "2023-09-15T14:32:27",
+                                    "version": 0,
+                                    "modifiedBy": 1,
+                                    "createdBy": 1,
+                                    "id": 2,
+                                    "countryName": values.country
+                                }
+                            },
+                            "country": {
+                                "createdDate": "2023-09-15T14:32:27",
+                                "modifiedDate": "2023-09-15T14:32:27",
+                                "version": 0,
+                                "modifiedBy": 1,
+                                "createdBy": 1,
+                                "id": 2,
+                                "countryName": values.country
+                            }
+                        },
+                        "state": {
+                            "createdDate": null,
+                            "modifiedDate": "2023-12-13T03:37:41",
+                            "version": 6,
+                            "modifiedBy": 1,
+                            "createdBy": null,
+                            "id": 1,
+                            "stateName": values.state,
+                            "country": {
+                                "createdDate": "2023-09-15T14:32:27",
+                                "modifiedDate": "2023-09-15T14:32:27",
+                                "version": 0,
+                                "modifiedBy": 1,
+                                "createdBy": 1,
+                                "id": 2,
+                                "countryName":values.country
+                            }
+                        },
+                        "country": {
+                            "createdDate": "2023-09-15T14:32:27",
+                            "modifiedDate": "2023-09-15T14:32:27",
+                            "version": 0,
+                            "modifiedBy": 1,
+                            "createdBy": 1,
+                            "id": 2,
+                            "countryName": values.country
+                        },
+                        "placeOfService": "Kolkata2",
+                        "status": "ACTIVE"
+                    }, 
+                   
+                ]
+                }
+            }
+
+
+            console.log(projectUATRequestDTO, "--projectUATRequestDTO");
+            // formData.append('tenant', image);
+            formData.append('file', image);
+            formData.append('tenantCustomer', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
+            dispatch(getAllCustomerDetailsData(formData));
         },
     })
     const contactsFormik = useFormik({
@@ -180,6 +853,86 @@ export default function UploadCustomerData() {
         })
     }
 
+    const { parties_city_details, parties_all_details, parties_all_employee_details, parties_state_details, parties_country_details, parties_pincode_details } = useSelector(
+        (state) => state?.parties
+    );
+    // console.log(settings_companyPincode_data, "-------settings_companyPincode_data");
+
+    // console.log(getCompanyCityData(), "=======>>getCompanyCityData")
+    // console.log(settings_company_settings_all_data, "=======>>settings_company_settings_all_data")
+    // console.log(parties_all_details, "=======>>parties_all_details")
+    console.log(parties_all_employee_details, "=======>>parties_all_employee_details")
+
+
+    useEffect(() => {
+        dispatch(getCustomersCityData())
+        dispatch(getAllUserDetails())
+        // dispatch(getAllPartiesData())
+        // dispatch(getAllCustomerDetailsData())
+    }, [])
+
+    // all employee option value for customer
+
+    const optionOfEmployee = parties_all_employee_details?.content || [];
+
+    console.log(optionOfEmployee, "optionOfEmployee");
+
+    const salesEmployeeOptions = optionOfEmployee?.map((item) => ({
+        value: item?.firstName,
+        label: item?.firstName,
+    }));
+
+    const accountManagerOptions = optionOfEmployee?.map((item) => {
+        return {
+            value: item?.firstName,
+            label: item?.firstName
+        }
+    })
+
+    useEffect(() => {
+        if (parties_state_details && parties_state_details?.content?.length > 0) {
+            companyDetailsFormik.setFieldValue("state", parties_state_details?.content[0]?.stateName)
+        }
+        if (parties_country_details && parties_country_details?.content?.length > 0) {
+            companyDetailsFormik.setFieldValue("country", parties_country_details?.content[0]?.countryName)
+        }
+        // if(parties_pincode_details && parties_pincode_details?.content?.length > 0){
+        //   companyDetailsFormik.setFieldValue("zipcode", parties_pincode_details?.content?.map((item)=>item?.pin))
+        // }
+        if (parties_all_details && parties_all_details?.content?.length > 0) {
+            // companyDetailsFormik.setValues({
+            //     companyName: parties_all_details && parties_all_details?.content[0]?.name,
+            //     address: parties_all_details && parties_all_details?.content[0]?.address,
+            //     city: parties_all_details && parties_all_details?.content[0]?.city?.cityName,
+            //     state: parties_all_details && parties_all_details?.content[0]?.state?.stateName,
+            //     country: parties_all_details && parties_all_details?.content[0]?.country?.countryName,
+            //     zipcode: parties_all_details && parties_all_details?.content[0]?.pinCode?.pin,
+            //     website: parties_all_details && parties_all_details?.content[0]?.website,
+            //     contactName: parties_all_details && parties_all_details?.content[0]?.contactName,
+            //     phoneNumber: parties_all_details && parties_all_details?.content[0]?.contactNo,
+            //     email: parties_all_details && parties_all_details?.content[0]?.contactEmail,
+            //     department: parties_all_details && parties_all_details?.content[0]?.department,
+            //     designation: parties_all_details && parties_all_details?.content[0]?.designation,
+            //     CINnumber: parties_all_details && parties_all_details?.content[0]?.cin,
+            //     GSTnumber: parties_all_details && parties_all_details?.content[0]?.gst,
+            //     PANnumber: parties_all_details && parties_all_details?.content[0]?.pan,
+            //     entityType: parties_all_details && parties_all_details?.content[0]?.entityType,
+            //     industryType: parties_all_details && parties_all_details?.content[0]?.industryType,
+            //     customerType: parties_all_details && parties_all_details?.content[0]?.type,
+            //     salesEmployee: (parties_all_details && parties_all_details?.content[0]?.salesUser?.firstName) + " " + (parties_all_details && parties_all_details?.content[0]?.salesUser?.lastName),
+            //     // logo : parties_all_details && parties_all_details?.content[0]?.logo
+            // })
+            // contactsFormik.setValues({
+            //     "contacts[0].name": parties_all_details && parties_all_details?.content[0]?.contacts[0]?.contactName
+            // })
+            // contactsFormik.setFieldValue("contacts[0].name", parties_all_details && parties_all_details?.content[0]?.contacts[0]?.contactName)
+            // contactsFormik.setFieldValue("contacts[0].phoneNumber", parties_all_details && parties_all_details?.content[0]?.contacts[0]?.contactNo)
+            // contactsFormik.setFieldValue("contacts[0].emailId", parties_all_details && parties_all_details?.content[0]?.contacts[0]?.contactEmail)
+            // contactsFormik.setFieldValue("contacts[0].department", parties_all_details && parties_all_details?.content[0]?.contacts[0]?.department)
+            // contactsFormik.setFieldValue("contacts[0].designation", parties_all_details && parties_all_details?.content[0]?.contacts[0]?.designation)
+        }
+    }, [parties_state_details, parties_country_details, parties_pincode_details, parties_all_details])
+
     const removeInputFields = (index) => {
         const rows = [...surcharges];
         rows.splice(index, 1);
@@ -231,9 +984,13 @@ export default function UploadCustomerData() {
     };
 
     const onUploadChange = (file) => {
-        companyDetailsFormik.setFieldValue("logo", file)
+        console.log(file.name, "file")
+        companyDetailsFormik.setFieldValue("image", file)
     };
 
+    const gstDetailsHandler = (data) => {
+        setModalAllData((prev) => ([...prev, data]))
+      }
 
     return (
         <>
@@ -350,6 +1107,7 @@ export default function UploadCustomerData() {
                                                                             <FileUpload
                                                                                 iconName="img"
                                                                                 onUpload={onUploadChange}
+                                                                                src={companyDetailsFormik?.values?.image}
                                                                             />
                                                                         </div>
                                                                     </div>
@@ -372,11 +1130,25 @@ export default function UploadCustomerData() {
                                                                             <Input
                                                                                 type="text"
                                                                                 name="city"
+                                                                                list='cityList'
                                                                                 value={companyDetailsFormik.values.city}
-                                                                                onChange={companyDetailsFormik.handleChange}
+                                                                                // onChange={companyDetailsFormik.handleChange}
+                                                                                onChange={(e) => {
+                                                                                    companyDetailsFormik.handleChange(e);
+                                                                                    const cityData = parties_city_details?.content?.find((city) => city.cityName === e.target.value)
+                                                                                    if (cityData) {
+                                                                                        dispatch(getCustomersStateData({ cityId: cityData.id }));
+                                                                                        dispatch(getCustomersCountryData({ cityId: cityData.id }));
+                                                                                        dispatch(getCustomersPincodeData({ cityId: cityData.id }));
+                                                                                    }
+                                                                                }
+                                                                                }
                                                                                 className="form-control"
                                                                                 placeholder=""
                                                                             />
+                                                                            <datalist id="cityList">
+                                                                                {parties_city_details && parties_city_details?.content?.map((item, i) => <option key={i} value={item.cityName} />)}
+                                                                            </datalist>
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-12 col-md-6">
@@ -411,11 +1183,15 @@ export default function UploadCustomerData() {
                                                                             <Input
                                                                                 type="text"
                                                                                 name="zipcode"
+                                                                                list='pincodeList'
                                                                                 value={companyDetailsFormik.values.zipcode}
                                                                                 onChange={companyDetailsFormik.handleChange}
                                                                                 className="form-control"
                                                                                 placeholder=""
                                                                             />
+                                                                            <datalist id="pincodeList">
+                                                                                {parties_pincode_details && parties_pincode_details?.content?.map((item, i) => <option key={i} value={item.pin} />)}
+                                                                            </datalist>
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-12 col-md-6">
@@ -517,8 +1293,8 @@ export default function UploadCustomerData() {
                                                                                     <Input
                                                                                         type="text"
                                                                                         name="phoneNumber"
-                                                                                        value={companyDetailsFormik.values.phoneNumber}
-                                                                                        onChange={companyDetailsFormik.handleChange}
+                                                                                        // value={companyDetailsFormik.values.phoneNumber}
+                                                                                        // onChange={companyDetailsFormik.handleChange}
                                                                                         className="form-control"
                                                                                         placeholder=""
                                                                                     />
@@ -613,6 +1389,7 @@ export default function UploadCustomerData() {
                                                                                                 companyDetailsFormik?.values?.salesEmployee
                                                                                         )
                                                                                         : ""
+                                                                                    // companyDetailsFormik?.values?.salesEmployee
                                                                                 }
                                                                                 onChange={(e) => {
                                                                                     if (e.label == "Add New") {
@@ -623,10 +1400,26 @@ export default function UploadCustomerData() {
                                                                                         e.value
                                                                                     );
                                                                                 }}
-                                                                                options={optionCustsalesEmployee}
+                                                                                options={salesEmployeeOptions}
                                                                                 classNamePrefix="select2-selection form-select"
                                                                             // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
                                                                             />
+                                                                            {/* <Input
+                                                                                name='salesEmployee'
+                                                                                value={
+                                                                                    companyDetailsFormik?.values?.salesEmployee
+                                                                                }
+                                                                                onChange={(e) => {
+                                                                                    if (e.label == "Add New") {
+                                                                                        setSalesEmployeeModal(true)
+                                                                                    }
+                                                                                    companyDetailsFormik.setFieldValue(
+                                                                                        `salesEmployee`,
+                                                                                        e.value
+                                                                                    );
+                                                                                }}
+                                                                                classNamePrefix="select2-selection form-select"
+                                                                            /> */}
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-12 col-md-6">
@@ -652,7 +1445,7 @@ export default function UploadCustomerData() {
                                                                                         e.value
                                                                                     );
                                                                                 }}
-                                                                                options={optionCustkeyAccountManager}
+                                                                                options={accountManagerOptions}
                                                                                 // isDisabled={carrierData?.vendor_type?.value === 'agent'}
                                                                                 classNamePrefix="select2-selection form-select"
                                                                             />
@@ -814,6 +1607,7 @@ export default function UploadCustomerData() {
                                                             </>
                                                         </CardBody>
                                                     </Card>
+                                                    {/* onSubmitHandler={gstDetailsHandler} */}
                                                     <ModalAddGST modal={gstModal} onCloseClick={onCloseClick} />
                                                     <ModalAddNewDepartment modal={departmentModal} onCloseClick={onCloseClick} />
                                                     <ModalAddNewDesignation modal={designationModal} onCloseClick={onCloseClick} />
@@ -1313,12 +2107,12 @@ export default function UploadCustomerData() {
                                                     </Link>
                                                 </li>
 
-                                                <li className={`${activeTabProgress === 1 ? isAnyValueEmpty(companyDetailsFormik.values) ? "disabled" : "" : activeTabProgress === 2 ? isAnyValueEmptyInArray(contactsFormik?.values?.contacts) ? "disabled" : ""
+                                                {/* <li className={`${activeTabProgress === 1 ? isAnyValueEmpty(companyDetailsFormik.values) ? "disabled" : "" : activeTabProgress === 2 ? isAnyValueEmptyInArray(contactsFormik?.values?.contacts) ? "disabled" : ""
                                                     : activeTabProgress === 3 ? isAnyValueEmptyInArray(documentsFormik?.values?.document) ? "disabled" : ""
                                                         : ""}`}>
                                                     <Link
                                                         to="#"
-                                                        className={`btn btn-primary d-flex align-items-center ${activeTabProgress === 1 ? isAnyValueEmpty(companyDetailsFormik.values) ? "disabled" : "" :
+                                                        className={`btn btn-primary d-flex align-items-center ${activeTabProgress === 1 ? isAnyValueEmpty(companyDetailsFormik?.values) ? "disabled" : "" :
                                                             activeTabProgress === 2 ? isAnyValueEmptyInArray(contactsFormik?.values?.contacts) ? "disabled" : ""
                                                                 : activeTabProgress === 3 ? isAnyValueEmptyInArray(documentsFormik?.values?.document) ? "disabled" : ""
                                                                     : ""}`}
@@ -1332,6 +2126,18 @@ export default function UploadCustomerData() {
                                                                 <i className="bx bx-chevron-right ms-1"></i>
                                                             </>
                                                         )}
+                                                    </Link>
+                                                </li> */}
+                                                <li>
+                                                    <Link>
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-primary d-flex align-items-center"
+                                                            onClick={companyDetailsFormik.handleSubmit}
+                                                        >
+                                                            Save
+                                                            <i className="bx bx-chevron-right ms-1"></i>
+                                                        </button>
                                                     </Link>
                                                 </li>
                                             </ul>

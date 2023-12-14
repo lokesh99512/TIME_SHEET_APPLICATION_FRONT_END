@@ -8,17 +8,19 @@ import TableReact from "./TableReact"
 import { fclSurchargeBreadcrumb, fclSurchargeRateData } from '../../../common/data/procurement'
 import { useSelector } from 'react-redux'
 import { getFclData } from '../../../store/Procurement/actions'
-import { getFclSurchargeData } from '../../../store/Settings/actions'
+import { getAllTableSurcharge, getAllTableSurchargeAlias, getFclSurchargeData } from '../../../store/Settings/actions'
 import { useDispatch } from 'react-redux'
 import { CarrierName, ChargeAliasCode, ChargeCategory, ChargeCode, ChargeDesc, ChargeId } from './SurchargeCol'
 import { edit_icon, eye_icon } from '../../../assets/images'
 import ModalAddNew from './Modal/ModalAddNewCategory'
+import { useNavigate } from 'react-router-dom'
 
 
 export default function FclSurcharge() {
-    const fclSurchargeData = useSelector((state) => state?.settings?.fcl_surcharge_data);
+    const { settings_surcharges_table_data, settings_surcharges_alias_table_data } = useSelector((state) => state?.settings);
 
-    // console.log(fclSurchargeData,"<<<<");
+    // console.log(settings_surcharges_table_data, "<<<<");
+    // console.log(settings_surcharges_alias_table_data, "<<<settings_surcharges_alias_table_data");
     const [isRight, setIsRight] = useState(false);
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
@@ -30,15 +32,26 @@ export default function FclSurcharge() {
         alias_code: '',
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
-    const dispatch = useDispatch(); 
+    const dispatch = useDispatch();
+    // const navigate = useNavigate();
 
     const viewPopupHandler = (data) => {
+        // console.log(data, "data in viewPopupHandler");
         setModal(true);
         setViewData(data);
     }
 
     const onCloseClick = () => {
         setModal(false);
+    }
+
+    const editHandler = (id) => {
+        console.log(id, "e.target.value");
+        // navigate("/settings/upload/fclSurcharge", {
+        //     state: {
+        //         id
+        //     }
+        // })
     }
 
     // right filter sidebar 
@@ -48,23 +61,25 @@ export default function FclSurcharge() {
 
     const applyFilterHandler = () => {
         setIsRight(false);
-        console.log(filterDetails,"filterDetails fcl-----------------------")
+        console.log(filterDetails, "filterDetails fcl-----------------------")
     }
     const clearValueHandler = () => {
         setfilterDetails(inputArr)
     }
-   
-    useEffect(() => {
 
-        // console.log(getFclSurchargeData() , "getFclSurchargeData");
-       
-        dispatch(getFclSurchargeData());
-    }, [dispatch]);
+
+
+    useEffect(() => {
+        dispatch(getAllTableSurcharge())
+        dispatch(getAllTableSurchargeAlias())
+
+        // dispatch(getFclSurchargeData());
+    }, []);
 
     const columns = useMemo(() => [
         {
             Header: 'Surcharge Code',
-            accessor: 'charge_code',
+            accessor: 'code',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -73,7 +88,7 @@ export default function FclSurcharge() {
         },
         {
             Header: 'Surcharge Desc',
-            accessor: 'charge_desc',
+            accessor: 'description',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -82,16 +97,17 @@ export default function FclSurcharge() {
         },
         {
             Header: 'Surcharge Category',
-            accessor: 'charge_category',
+            accessor: 'surchargeCategory.name',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
+
                 return <ChargeCategory cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
             Header: 'SurchargeAliasCode',
-            accessor: 'charge_alias_code',
+            accessor: "surchargeAlias.name",
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -101,25 +117,39 @@ export default function FclSurcharge() {
         {
             Header: 'Action',
             Cell: (cellProps) => {
+                // console.log(cellProps, "cellProps in actions")
                 return (
                     <UncontrolledDropdown>
                         <DropdownToggle className="btn btn-link text-muted py-1 font-size-16 shadow-none" tag="a">
                             <i className='bx bx-dots-vertical-rounded'></i>
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-end">
-                            <DropdownItem onClick={(e)=>{console.log(e,"e")}}>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
+                            <DropdownItem
+                                onClick={() => {
+                                    editHandler(cellProps?.row?.original?.id)
+                                }}
+                            >
+                                Edit
+                                <img
+                                    src={edit_icon}
+                                    alt="Edit"
+                                // onClick={() => {
+                                //     editHandler(cellProps?.row?.original?.id)
+                                // }}
+                                />
+                            </DropdownItem>
                             {/* <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem> */}
                             <DropdownItem onClick={(e) => e.stopPropagation()}>
                                 Activate
                                 <div className="switch_wrap">
                                     <FormGroup switch>
-                                        <Input 
-                                        type="switch"
-                                        checked={cellProps.row.original?.is_active || false}
-                                        onClick={() => {
-                                            switchHandler(cellProps.row.original);
-                                        }}
-                                        readOnly
+                                        <Input
+                                            type="switch"
+                                            checked={cellProps.row.original?.is_active || false}
+                                            onClick={() => {
+                                                switchHandler(cellProps.row.original);
+                                            }}
+                                            readOnly
                                         />
                                     </FormGroup>
                                 </div>
@@ -130,7 +160,7 @@ export default function FclSurcharge() {
             }
         },
     ]);
-  
+
     return (
         <>
             <div className="page-content">
@@ -144,7 +174,7 @@ export default function FclSurcharge() {
                         {/* React Table */}
                         <TableReact
                             columns={columns}
-                            data={fclSurchargeData || []}
+                            data={settings_surcharges_table_data?.content || []}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}
