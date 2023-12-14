@@ -104,7 +104,7 @@ const ModalFclInlandCharge = ({ viewData, modal, onCloseClick }) => {
                                 </AccordionBody>
                             </AccordionItem>
                             <AccordionItem className='freigth_details_wrap'>
-                                <AccordionHeader targetId={`freight_detail_${viewData?.charge_id}`}>
+                                <AccordionHeader targetId={`freight_detail_${viewData?.id || ''}`}>
                                     <h3 className="sub_modal_title">Freight Details</h3>
                                 </AccordionHeader>
                                 <AccordionBody accordionId={`freight_detail_${viewData?.charge_id}`}>

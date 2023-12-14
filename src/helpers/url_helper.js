@@ -126,10 +126,10 @@ export const GET_Invested_Overview = "GET_Invested_Overview"
 // --------------------- procurement --------------------------------
 export const GET_FCL = "/get-fcl"
 export const GET_LCL = "/get-lcl"
-export const GET_PORTLOCALCHARGES = "/get-portlocalcharges"
+// export const GET_PORTLOCALCHARGES = "/get-portlocalcharges"
 export const GET_WAYBILL = "/get-waybill"
 export const GET_CONSOLE = "/get-console"
-export const GET_INLAND = "/get-inland"
+// export const GET_INLAND = "/get-inland"
 
 // --------------------- Rate Management --------------------------------
 export const GET_FCL_SURCHARGE = "/get-fcl-surcharge"
@@ -180,4 +180,9 @@ export const Upload_FCL_surcharge_Data= "/api/v1/tenant-ocean-fcl-rp/update/surc
 
 
 // FCL Port & Local Charges
+export const GET_PORTLOCALCHARGES_ALL = "/api/v1/tenant-ocean-fcl-rp/port-and-local-charges/all"
 export const Upload_FCL_PL_Data= "/api/v1/tenant-ocean-fcl-rp/port-and-local-charges"
+
+
+// FCL Inland Charges
+export const GET_FCL_INLAND = "/api/v1/inland-vendor-charge/"

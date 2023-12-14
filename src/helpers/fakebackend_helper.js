@@ -301,10 +301,10 @@ export const getInvestedData = (data) =>
 // -------------- Procurement ---------------------------------------
 // export const getFCLTableData = () => get(url.GET_FCL);
 export const getLCLTableData = () => get(url.GET_LCL);
-export const getPortLocalChargesTableData = () => get(url.GET_PORTLOCALCHARGES);
+// export const getPortLocalChargesTableData = () => get(url.GET_PORTLOCALCHARGES);
 export const getAirwaybillTableData = () => get(url.GET_WAYBILL);
 export const getAirConsoleTableData = () => get(url.GET_CONSOLE);
-export const getInlandTableData = () => get(url.GET_INLAND);
+// export const getInlandTableData = () => get(url.GET_INLAND);
 
 // -------------- Rate Management ---------------------------------------
 export const getFCLSurcharge = () => get(url.GET_FCL_SURCHARGE);

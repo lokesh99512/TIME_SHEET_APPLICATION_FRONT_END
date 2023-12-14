@@ -10,6 +10,7 @@ import TableReact from './TableReactPortLocalCharges'
 import TopBreadcrumbs from '../partials/TopBreadcrumbs'
 import FilterPortCanvasComp from '../Modal/FilterPortCanvasComp'
 import { FILTER_PORTLOCALCHARGES_DATA } from '../../../../store/Procurement/actiontype'
+import axios from 'axios'
 
 export default function PortLocalFreight() {
     const [isRight, setIsRight] = useState(false);
@@ -23,8 +24,10 @@ export default function PortLocalFreight() {
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
     const dispatch = useDispatch();
-    // const portLocalData = useSelector((state) => state.procurement.portLocalChargesData);
+    const portLocalData2 = useSelector((state) => state.procurement.portLocalChargesData);
     const portLocalData = [];
+
+    console.log(portLocalData2,"portLocalData2");
 
     const viewPopupHandler = (data) => {
         setModal(true);
@@ -62,8 +65,31 @@ export default function PortLocalFreight() {
         dispatch(getPortLocalChargesData());
     }
 
+    let token = localStorage.getItem('token');
+
     useEffect(() => {
-        dispatch(getPortLocalChargesData());
+        // dispatch(getPortLocalChargesData());
+
+        let data = {
+            "username": "setuptarrfitales@gmail.com",
+            "password": "P@ssw0rd123",
+            "rememberMe": false
+        }
+
+        axios({
+            method: 'GET',
+            url: '/api/v1/tenant-ocean-fcl-rp/port-and-local-charges/all',
+            data,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization':  JSON.parse(token),
+            },
+        }).then((res) => {
+            console.log(res.data, "res.data");
+        }).catch((err) => {
+            console.log(err, "err");
+        })
+
     }, [dispatch]);
 
     const columns = useMemo(() => [

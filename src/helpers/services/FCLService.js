@@ -15,5 +15,13 @@ export const getFCLDestinationData = (id) => get(`${url.Get_FCL_destination_Data
 
 
 // FCL Port & Local Charges
+export const getPortLocalChargesTableData = () => get(url.GET_PORTLOCALCHARGES_ALL, {
+    headers: {
+        'Content-Type': 'application/json',
+    }
+});
 export const postFclPLUploadSer = (dataObj) => postFormData(url.Upload_FCL_PL_Data, dataObj);
 
+
+// FCL Inland Charges
+export const getFCLInlandTableData = () => get(url.GET_FCL_INLAND);

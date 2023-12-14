@@ -1,4 +1,4 @@
-import { ADD_AIRWAYBILL_DATA, ADD_FCL_DATA, ADD_INLAND_DATA, BLANK_CARRIER_DATA, FILTER_FCL_DATA, FILTER_PORTLOCALCHARGES_DATA, GET_CONSOLE_TABLE_DATA_FAIL, GET_CONSOLE_TABLE_DATA_SUCCESS, GET_FCL_CHARGE_ID, GET_FCL_DESTINATION_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_LOADER, GET_FCL_LOADER, GET_FCL_SURCHARGE_VIEW_DATA_SUCCESS, GET_FCL_SURCHARGE_VIEW_LOADER, GET_FCL_TABLE_DATA_FAIL, GET_FCL_TABLE_DATA_SUCCESS, GET_INLAND_TABLE_DATA_FAIL, GET_INLAND_TABLE_DATA_SUCCESS, GET_LCL_TABLE_DATA_FAIL, GET_LCL_TABLE_DATA_SUCCESS, GET_PORTLOCALCHARGES_TABLE_DATA_FAIL, GET_PORTLOCALCHARGES_TABLE_DATA_SUCCESS, GET_WAYBILL_TABLE_DATA_FAIL, GET_WAYBILL_TABLE_DATA_SUCCESS, UPDATE_AIRCONSOLE_SWITCH, UPDATE_AIRWAYBILL_SWITCH, UPDATE_CARRIER_DATA, UPDATE_FCL_ACTIVE_TAB, UPDATE_FCL_SWITCH, UPDATE_FCL_TABLE_DATA, UPDATE_INLAND_ACTIVE_TAB, UPDATE_INLAND_SWITCH, UPDATE_LCL_SWITCH } from "./actiontype";
+import { ADD_AIRWAYBILL_DATA, ADD_FCL_DATA, ADD_INLAND_DATA, BLANK_CARRIER_DATA, FILTER_FCL_DATA, FILTER_PORTLOCALCHARGES_DATA, GET_CONSOLE_TABLE_DATA_FAIL, GET_CONSOLE_TABLE_DATA_SUCCESS, GET_FCL_CHARGE_ID, GET_FCL_DESTINATION_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_LOADER, GET_FCL_INLAND_LOADER, GET_FCL_INLAND_TABLE_DATA_FAIL, GET_FCL_INLAND_TABLE_DATA_SUCCESS, GET_FCL_LOADER, GET_FCL_SURCHARGE_VIEW_DATA_SUCCESS, GET_FCL_SURCHARGE_VIEW_LOADER, GET_FCL_TABLE_DATA_FAIL, GET_FCL_TABLE_DATA_SUCCESS, GET_LCL_TABLE_DATA_FAIL, GET_LCL_TABLE_DATA_SUCCESS, GET_PORTLOCALCHARGES_TABLE_DATA_FAIL, GET_PORTLOCALCHARGES_TABLE_DATA_SUCCESS, GET_WAYBILL_TABLE_DATA_FAIL, GET_WAYBILL_TABLE_DATA_SUCCESS, UPDATE_AIRCONSOLE_SWITCH, UPDATE_AIRWAYBILL_SWITCH, UPDATE_CARRIER_DATA, UPDATE_FCL_ACTIVE_TAB, UPDATE_FCL_SWITCH, UPDATE_FCL_TABLE_DATA, UPDATE_INLAND_ACTIVE_TAB, UPDATE_INLAND_SWITCH, UPDATE_LCL_SWITCH } from "./actiontype";
 
 const INIT_STATE = {
     fcl_data: [],
@@ -26,7 +26,8 @@ const INIT_STATE = {
     portLocalChargesData: [],
     waybillData: [],
     consoleData: [],
-    inlandData: [],
+    fclInlandData: [],
+    fclInlandLoader: false,
     addInland: {
         carrierDetails:{},
         freightUpload:{},
@@ -143,6 +144,23 @@ const procurement = (state = INIT_STATE, action) => {
                 }),
             }            
 
+        // fcl inland
+        case GET_FCL_INLAND_TABLE_DATA_SUCCESS:
+            return{
+                ...state,
+                fclInlandData: action.payload.content
+            }
+
+        case GET_FCL_INLAND_TABLE_DATA_FAIL:
+            return{
+                ...state,
+                inlandError: action.payload
+            }
+        case GET_FCL_INLAND_LOADER:
+            return{
+                ...state,
+                fclInlandLoader: action.payload
+            }
 
 
         // lcl
@@ -193,18 +211,7 @@ const procurement = (state = INIT_STATE, action) => {
             return{
                 ...state,
                 consoleError: action.payload
-            }
-        case GET_INLAND_TABLE_DATA_SUCCESS:
-            return{
-                ...state,
-                inlandData: action.payload
-            }
-
-        case GET_INLAND_TABLE_DATA_FAIL:
-            return{
-                ...state,
-                inlandError: action.payload
-            }
+            }        
 
         case UPDATE_FCL_ACTIVE_TAB:
             return{
@@ -299,10 +306,10 @@ const procurement = (state = INIT_STATE, action) => {
 
         case UPDATE_INLAND_SWITCH:
             const { inland_id,inland_is_active } = action.payload;
-            const updatedInlandItems = state.inlandData.map(item =>
+            const updatedInlandItems = state.fclInlandData.map(item =>
                 item.id === inland_id ? { ...item, is_active: !inland_is_active } : item
             );
-            return { ...state, inlandData: updatedInlandItems };
+            return { ...state, fclInlandData: updatedInlandItems };
 
         default:
             return state;

@@ -6,15 +6,16 @@ import { edit_icon, eye_icon } from '../../../../assets/images';
 import { inLandBreadcrumb, inLandRateData } from '../../../../common/data/procurement';
 import { getInLandData, updateInLandSwitchData } from '../../../../store/Procurement/actions';
 import FilterOffCanvasComp from '../Modal/FilterOffCanvasComp';
-import ModalFreight from '../Modal/ModalFreight';
-import { CargoType, CarrierName, ChargeId, CommonValue, DetentionFree, MinValue, TransitTime, ValidTill, VendorName } from '../partials/OceanCol';
+import ModalFclInlandCharge from '../Modal/ModalFclInlandCharge';
+import { CarrierName, ChargeId, ValidTill, VendorName } from '../partials/OceanCol';
 import TableReact from '../partials/TableReact';
 import TopBreadcrumbs from '../partials/TopBreadcrumbs';
-import ModalFclInlandCharge from '../Modal/ModalFclInlandCharge';
 
 const FclInlandCharge = () => {
     document.title = "Inland Charges || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
-    const inlandData = useSelector((state) => state?.procurement?.inlandData);
+
+    const inlandData = useSelector((state) => state?.procurement?.fclInlandData);
+    const inlandloader = useSelector((state) => state?.procurement?.fclInlandLoader);
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
     const [isRight, setIsRight] = useState(false);
@@ -68,25 +69,25 @@ const FclInlandCharge = () => {
     const columns = useMemo(() => [
         {
             Header: 'Charge ID',
-            accessor: 'charge_id',
+            accessor: 'id',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
                 return <ChargeId cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
-        {
-            Header: 'Charge Type',
-            accessor: 'charge_type',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
+        // {
+        //     Header: 'Charge Type',
+        //     accessor: 'charge_type',
+        //     filterable: true,
+        //     disableFilters: true,
+        //     Cell: (cellProps) => {
+        //         return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+        //     }
+        // },
         {
             Header: 'Carrier Name',
-            accessor: 'carrier_name',
+            accessor: 'tenantCarrier.name',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -95,43 +96,43 @@ const FclInlandCharge = () => {
         },
         {
             Header: 'Vendor Name',
-            accessor: 'vendor_name',
+            accessor: 'tenantVendor.name',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
                 return <VendorName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
+        // {
+        //     Header: 'Mode',
+        //     accessor: 'transport_mode',
+        //     filterable: true,
+        //     disableFilters: true,
+        //     Cell: (cellProps) => {
+        //         return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+        //     }
+        // },
+        // {
+        //     Header: 'Origin',
+        //     accessor: 'origin',
+        //     filterable: true,
+        //     disableFilters: true,
+        //     Cell: (cellProps) => {
+        //         return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+        //     }
+        // },
+        // {
+        //     Header: 'Destination',
+        //     accessor: 'destination',
+        //     filterable: true,
+        //     disableFilters: true,
+        //     Cell: (cellProps) => {
+        //         return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+        //     }
+        // },
         {
-            Header: 'Mode',
-            accessor: 'transport_mode',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Origin',
-            accessor: 'origin',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Destination',
-            accessor: 'destination',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Valid Till',
-            accessor: 'valid_till',
+            Header: 'Valid To',
+            accessor: 'validTo',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -139,14 +140,23 @@ const FclInlandCharge = () => {
             }
         },
         {
-            Header: 'Transit Time',
-            accessor: 'transit_time',
+            Header: 'Valid From',
+            accessor: 'validFrom',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <TransitTime cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
-        },        
+        },
+        // {
+        //     Header: 'Transit Time',
+        //     accessor: 'transit_time',
+        //     filterable: true,
+        //     disableFilters: true,
+        //     Cell: (cellProps) => {
+        //         return <TransitTime cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+        //     }
+        // },        
         {
             Header: 'Action',
             Cell: (cellProps) => {
@@ -159,12 +169,12 @@ const FclInlandCharge = () => {
                             <DropdownItem>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
                             <DropdownItem onClick={(e) => { e.stopPropagation(); viewPopupHandler(cellProps.row.original) }}>View <img src={eye_icon} alt="Eye" /></DropdownItem>
                             <DropdownItem onClick={(e) => e.stopPropagation()}>
-                                Activate
+                                {cellProps.row.original?.status === "ACTIVE" ? "Activate" : "Deactive"}
                                 <div className="switch_wrap">
                                     <FormGroup switch>
                                         <Input
                                             type="switch"
-                                            checked={cellProps.row.original?.is_active || false}
+                                            checked={cellProps.row.original?.status === 'ACTIVE' || false}
                                             onClick={() => {
                                                 switchHandler(cellProps.row.original);
                                             }}
@@ -197,6 +207,7 @@ const FclInlandCharge = () => {
                             customPageSize={10}
                             toggleRightCanvas={toggleRightCanvas}
                             component={'inland'}
+                            loader={inlandloader}
                         />
 
                         {/* modal */}

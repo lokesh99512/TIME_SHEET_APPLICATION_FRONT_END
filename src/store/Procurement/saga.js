@@ -1,9 +1,9 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 import { showErrorToast, showSuccessToast } from "../../components/Common/CustomToast";
-import { getAirConsoleTableData, getAirwaybillTableData, getInlandTableData, getLCLTableData, getPortLocalChargesTableData } from "../../helpers/fakebackend_helper";
-import { getFCLDestinationData, getFCLFreightViewData, getFCLSurchargeViewData, getFCLTableData, postFclFreightUploadSer, postFclPLUploadSer, postFclSurchargeUploadSer, postFclUploadSer } from "../../helpers/services/FCLService";
+import { getAirConsoleTableData, getAirwaybillTableData, getLCLTableData } from "../../helpers/fakebackend_helper";
+import { getFCLDestinationData, getFCLFreightViewData, getFCLInlandTableData, getFCLSurchargeViewData, getFCLTableData, getPortLocalChargesTableData, postFclFreightUploadSer, postFclPLUploadSer, postFclSurchargeUploadSer, postFclUploadSer } from "../../helpers/services/FCLService";
 import { getAirConsoleDataFail, getAirConsoleDataSuccess, getAirwaybillDataFail, getAirwaybillDataSuccess, getFclDataFail, getFclDataSuccess, getInLandDataFail, getInLandDataSuccess, getLclDataFail, getLclDataSuccess, getPortLocalChargesDataFail, getPortLocalChargesDataSuccess } from "./actions";
-import { GET_CONSOLE_TABLE_DATA, GET_FCL_CHARGE_ID, GET_FCL_DESTINATION_DATA, GET_FCL_DESTINATION_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_DATA, GET_FCL_FREIGHT_VIEW_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_LOADER, GET_FCL_LOADER, GET_FCL_SURCHARGE_VIEW_DATA, GET_FCL_SURCHARGE_VIEW_DATA_SUCCESS, GET_FCL_SURCHARGE_VIEW_LOADER, GET_FCL_TABLE_DATA, GET_INLAND_TABLE_DATA, GET_LCL_TABLE_DATA, GET_PORTLOCALCHARGES_TABLE_DATA, GET_WAYBILL_TABLE_DATA, UPLOAD_FCL_CARRIER_DATA, UPLOAD_FCL_FREIGHT, UPLOAD_FCL_PORTLOCALCHARGES, UPLOAD_FCL_SURCHARGE } from "./actiontype";
+import { GET_CONSOLE_TABLE_DATA, GET_FCL_CHARGE_ID, GET_FCL_DESTINATION_DATA, GET_FCL_DESTINATION_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_DATA, GET_FCL_FREIGHT_VIEW_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_LOADER, GET_FCL_INLAND_LOADER, GET_FCL_INLAND_TABLE_DATA, GET_FCL_LOADER, GET_FCL_SURCHARGE_VIEW_DATA, GET_FCL_SURCHARGE_VIEW_DATA_SUCCESS, GET_FCL_SURCHARGE_VIEW_LOADER, GET_FCL_TABLE_DATA, GET_LCL_TABLE_DATA, GET_PORTLOCALCHARGES_TABLE_DATA, GET_WAYBILL_TABLE_DATA, UPLOAD_FCL_CARRIER_DATA, UPLOAD_FCL_FREIGHT, UPLOAD_FCL_PORTLOCALCHARGES, UPLOAD_FCL_SURCHARGE } from "./actiontype";
 
 function* fetchFclData() {
     yield put({type: GET_FCL_LOADER, payload: true});
@@ -78,6 +78,14 @@ function* postFclSurchargeUploadSaga({ payload: { data, id } }) {
 }
 
 // ------------------ FCL Port & Local Charges ------------------
+function* fetchPLChargesData() {
+    try {
+        const response = yield call(getPortLocalChargesTableData);
+        yield put(getPortLocalChargesDataSuccess(response));
+    } catch (error) {
+        yield put(getPortLocalChargesDataFail(error));
+    }
+}
 function* postPLChargesData({payload: { dataObj }}) {
     console.log(dataObj, "dataObj");
     try {
@@ -91,21 +99,25 @@ function* postPLChargesData({payload: { dataObj }}) {
     }
 }
 
+// FCL Inland charges
+function* fetchFCLInLandData() {
+    yield put ({type: GET_FCL_INLAND_LOADER, payload: true});
+    try {
+        const response = yield call(getFCLInlandTableData);
+        yield put ({type: GET_FCL_INLAND_LOADER, payload: false});
+        yield put(getInLandDataSuccess(response));
+    } catch (error) {
+        yield put ({type: GET_FCL_INLAND_LOADER, payload: false});
+        yield put(getInLandDataFail(error));
+    }
+}
+
 function* fetchLclData() {
     try {
         const response = yield call(getLCLTableData);
         yield put(getLclDataSuccess(response));
     } catch (error) {
         yield put(getLclDataFail(error));
-    }
-}
-
-function* fetchPLChargesData() {
-    try {
-        const response = yield call(getPortLocalChargesTableData);
-        yield put(getPortLocalChargesDataSuccess(response));
-    } catch (error) {
-        yield put(getPortLocalChargesDataFail(error));
     }
 }
 
@@ -127,15 +139,6 @@ function* fetchAirConsoleData() {
     }
 }
 
-function* fetchInLandData() {
-    try {
-        const response = yield call(getInlandTableData);
-        yield put(getInLandDataSuccess(response));
-    } catch (error) {
-        yield put(getInLandDataFail(error));
-    }
-}
-
 export function* watchGetProcureData() {
     yield takeEvery(GET_FCL_TABLE_DATA, fetchFclData);
     yield takeEvery(GET_FCL_FREIGHT_VIEW_DATA, fetchFclFreightViewData);
@@ -151,7 +154,7 @@ export function* watchGetProcureData() {
     yield takeEvery(GET_LCL_TABLE_DATA, fetchLclData)
     yield takeEvery(GET_WAYBILL_TABLE_DATA, fetchWaybillData);
     yield takeEvery(GET_CONSOLE_TABLE_DATA, fetchAirConsoleData);
-    yield takeEvery(GET_INLAND_TABLE_DATA, fetchInLandData)
+    yield takeEvery(GET_FCL_INLAND_TABLE_DATA, fetchFCLInLandData)
 }
 
 function* procurementSaga() {
