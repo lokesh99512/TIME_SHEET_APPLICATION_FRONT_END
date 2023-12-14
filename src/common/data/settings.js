@@ -55,13 +55,20 @@ export const companyDetailsData = [
 ];
 
 // company details select options
-export const industryType = [{ label: "Supply Chain", value: "Supply Chain" }];
+export const industryType = [
+  { label: "SUPPLY CHAIN", value: "SUPPLY_CHAIN" },
+  { label: "SOFTWARE SERVICE", value: "SOFTWARE_SERVICE" },
+  { label: "AGRICULTURE", value: "AGRICULTURE" },
+  { label: "MANUFACTURING", value: "MANUFACTURING" },
+  { label: "TRANSPORTATION", value: "TRANSPORTATION" }
+];
+
 export const entityType = [
-  { label: "Private Limited", value: "Private Limited" },
-  { label: "Public Limited", value: "Public Limited" },
-  { label: "Single Director", value: "Single Director" },
+  { label: "PRIVATE LTD", value: "PRIVATE_LTD" },
+  { label: "PUBLIC LTD", value: "PUBLIC_LTD" },
+  { label: "SINGLE DIRECTOR", value: "SINGLE_DIRECTOR" },
   { label: "LLP", value: "LLP" },
-  { label: "proprietorship", value: "proprietorship" },
+  { label: "PROPRIETORSHIP", value: "PROPRIETORSHIP" },
 ];
 
 export const placeOfSupply = [
@@ -1038,51 +1045,68 @@ export const optionCustopCode = [
   { label: "+91", value: "+91" },
 ]
 export const optionCustdepartment = [
-  { label: "Accounts", value: "Accounts" },
-  { label: "Sales", value: "Sales" },
-  { label: "Finance", value: "Finance" },
+  { label: "Accounts", value: "ACCOUNTS" },
+  { label: "Sales", value: "SALES" },
+  { label: "Finance", value: "FINANCE" },
   { label: "Management", value: "Management" },
   { label: "Primary", value: "Primary" },
   { label: "Add New", value: "Add New" },
 ]
 export const optionCustdesignation = [
-  { label: "Executive", value: "Executive" },
-  { label: "Asst. Manager", value: "Asst. Manager" },
-  { label: "Manager", value: "Manager" },
-  { label: "Sr. Manager", value: "Sr. Manager" },
+  { label: "Executive", value: "EXECUTIVE" },
+  { label: "Asst. Manager", value: "ASST_MANAGER" },
+  { label: "Manager", value: "MANAGER" },
+  { label: "Sr. Manager", value: "SR_MANAGER" },
   { label: "AVP", value: "AVP" },
   { label: "VP", value: "VP" },
-  { label: "President", value: "President" },
-  { label: "Director", value: "Director" },
+  { label: "President", value: "PRESIDENT" },
+  { label: "Director", value: "DIRECTOR" },
   { label: "CEO", value: "CEO" },
   { label: "COO", value: "COO" },
   { label: "MD", value: "MD" },
-  { label: "Sales", value: "Sales" },
-  { label: "Finance", value: "Finance" },
-  { label: "Management", value: "Management" },
-  { label: "Primary", value: "Primary" },
+  // { label: "Sales", value: "Sales" },
+  // { label: "Finance", value: "Finance" },
+  // { label: "Management", value: "Management" },
+  // { label: "Primary", value: "Primary" },
   { label: "Add New", value: "Add New" },
 ]
+// export const optionCustentityType = [
+//   { label: "Proprietorship", value: "Proprietorship" },
+//   { label: "Single Director", value: "SINGLE_DIRECTOR" },
+//   { label: "LLP", value: "LLP" },
+//   { label: "Private Limited", value: "Private Limited" },
+//   { label: "Public Limited", value: "Public Limited" },
+//   { label: "Add New", value: "Add New" },
+// ]
+
 export const optionCustentityType = [
-  { label: "Proprietorship", value: "Proprietorship" },
-  { label: "Single Director", value: "Single Director" },
+  { label: "PRIVATE LTD", value: "PRIVATE_LTD" },
+  { label: "PUBLIC LTD", value: "PUBLIC_LTD" },
+  { label: "SINGLE DIRECTOR", value: "SINGLE_DIRECTOR" },
   { label: "LLP", value: "LLP" },
-  { label: "Private Limited", value: "Private Limited" },
-  { label: "Public Limited", value: "Public Limited" },
-  { label: "Add New", value: "Add New" },
-]
+  { label: "PROPRIETORSHIP", value: "PROPRIETORSHIP" },
+];
+// export const optionCustindustryType = [
+//   { label: "Supply Chain", value: "Supply Chain" },
+//   { label: "Software services", value: "Software services" },
+//   { label: "Agriculture", value: "AGRICULTURE" },
+//   { label: "Manufacturing", value: "Manufacturing" },
+//   { label: "Transportation", value: "Transportation" },
+//   { label: "Add New", value: "Add New" },
+// ]
+
 export const optionCustindustryType = [
-  { label: "Supply Chain", value: "Supply Chain" },
-  { label: "Software services", value: "Software services" },
-  { label: "Agriculture", value: "Agriculture" },
-  { label: "Manufacturing", value: "Manufacturing" },
-  { label: "Transportation", value: "Transportation" },
-  { label: "Add New", value: "Add New" },
-]
+  { label: "SUPPLY CHAIN", value: "SUPPLY_CHAIN" },
+  { label: "SOFTWARE SERVICE", value: "SOFTWARE_SERVICE" },
+  { label: "AGRICULTURE", value: "AGRICULTURE" },
+  { label: "MANUFACTURING", value: "MANUFACTURING" },
+  { label: "TRANSPORTATION", value: "TRANSPORTATION" }
+];
+
 export const optionCustcustomerType = [
-  { label: "Customer", value: "Customer" },
-  { label: "Agent", value: "Agent" },
-  { label: "Franchisee", value: "Franchisee" },
+  { label: "Customer", value: "CUSTOMER" },
+  { label: "Agent", value: "AGENT" },
+  { label: "Franchisee", value: "FRANCHISEE" },
   { label: "Add New", value: "Add New" },
 ]
 export const optionCustsalesEmployee = [

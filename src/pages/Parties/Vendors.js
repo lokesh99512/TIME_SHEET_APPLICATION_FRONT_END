@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { getCustomersData, getVendorsData, updateCustomerSwitchData, updateVendorSwitchData } from '../../store/Parties/actions';
+import { getAllTableVendor, getCustomersData, getVendorsData, updateCustomerSwitchData, updateVendorSwitchData } from '../../store/Parties/actions';
 import { useSelector } from 'react-redux';
 import TableVenders from './TableVenders';
 import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap';
@@ -14,9 +14,12 @@ const Vendors = () => {
 const dispatch = useDispatch();
 
 const partiesVendorsData = useSelector(
-  (state) => state.parties.parties_vendors_data
+  (state) => state?.parties?.parties_all_vendors_data
 );
 
+// const { parties_all_vendors_data } = useSelector((state)=> state.parties)
+
+console.log(partiesVendorsData, "--partiesVendorsData--");
 const viewPopupHandler = (data) => {
   setModal(true);
   setViewData(data);
@@ -31,42 +34,43 @@ const switchHandler = (data) => {
 }
 
 useEffect(() => {
-  dispatch(getVendorsData());
-}, [dispatch]);
+  dispatch(getAllTableVendor())
+  // dispatch(getVendorsData());
+}, []);
 
 const columns = useMemo(
   () => [
-    {
-      Header: "Vendor Code",
-      accessor: "VendorCode",
-      filterable: true,
-      disableFilters: true,
-      Cell: (cellProps) => {
-        return (
-          <VendorCode
-            cellProps={cellProps}
-            viewPopupHandler={viewPopupHandler}
-          />
-        );
-      },
-    },
-    {
-      Header: "Vendor Name",
-      accessor: "VendorName",
-      filterable: true,
-      disableFilters: true,
-      Cell: (cellProps) => {
-        return (
-          <VendorName
-            cellProps={cellProps}
-            viewPopupHandler={viewPopupHandler}
-          />
-        );
-      },
-    },
+    // {
+    //   Header: "Vendor Code",
+    //   accessor: "VendorCode",
+    //   filterable: true,
+    //   disableFilters: true,
+    //   Cell: (cellProps) => {
+    //     return (
+    //       <VendorCode
+    //         cellProps={cellProps}
+    //         viewPopupHandler={viewPopupHandler}
+    //       />
+    //     );
+    //   },
+    // },
+    // {
+    //   Header: "Vendor Name",
+    //   accessor: "VendorName",
+    //   filterable: true,
+    //   disableFilters: true,
+    //   Cell: (cellProps) => {
+    //     return (
+    //       <VendorName
+    //         cellProps={cellProps}
+    //         viewPopupHandler={viewPopupHandler}
+    //       />
+    //     );
+    //   },
+    // },
     {
       Header: "Vendor Type",
-      accessor: "VendorType",
+      accessor: "vendorType",
       filterable: true,
       disableFilters: true,
       Cell: (cellProps) => {
@@ -80,7 +84,7 @@ const columns = useMemo(
     },
     {
       Header: "Service Type",
-      accessor: "ServiceType",
+      accessor: "serviceType",
       filterable: true,
       disableFilters: true,
       Cell: (cellProps) => {
@@ -122,7 +126,7 @@ const columns = useMemo(
     },
     {
       Header: "Email Id",
-      accessor: "email",
+      accessor: "contactEmail",
       filterable: true,
       disableFilters: true,
       Cell: (cellProps) => {
@@ -159,74 +163,74 @@ const columns = useMemo(
     //     );
     //   },
     // },
-    {
-      Header: "Last Transaction",
-      accessor: "lastTransaction",
-      filterable: true,
-      disableFilters: true,
-      Cell: (cellProps) => {
-        return (
-          <LastTransactionV
-            cellProps={cellProps}
-            viewPopupHandler={viewPopupHandler}
-          />
-        );
-      },
-    },
-    {
-      Header: "Created On",
-      accessor: "createdOn",
-      filterable: true,
-      disableFilters: true,
-      Cell: (cellProps) => {
-        return (
-          <CreatedOnV
-            cellProps={cellProps}
-            viewPopupHandler={viewPopupHandler}
-          />
-        );
-      },
-    },
-    {
-      Header: "Action",
-      Cell: (cellProps) => {
-        return (
-          <UncontrolledDropdown>
-            <DropdownToggle
-              className="btn btn-link text-muted py-1 font-size-16 shadow-none"
-              tag="a"
-            >
-              <i className="bx bx-dots-vertical-rounded"></i>
-            </DropdownToggle>
-            <DropdownMenu className="dropdown-menu-end">
-              <DropdownItem
-                onClick={(e) => {
-                  console.log(e, "e");
-                }}
-              >
-                Edit <img src={edit_icon} alt="Edit" />
-              </DropdownItem>
-              {/* <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem> */}
-              <DropdownItem onClick={(e) => e.stopPropagation()}>
-                Activate
-                <div className="switch_wrap">
-                  <FormGroup switch>
-                    <Input
-                      type="switch"
-                      checked={cellProps.row.original?.is_active || false}
-                      onClick={() => {
-                        switchHandler(cellProps.row.original);
-                      }}
-                      readOnly
-                    />
-                  </FormGroup>
-                </div>
-              </DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown>
-        );
-      },
-    },
+    // {
+    //   Header: "Last Transaction",
+    //   accessor: "lastTransaction",
+    //   filterable: true,
+    //   disableFilters: true,
+    //   Cell: (cellProps) => {
+    //     return (
+    //       <LastTransactionV
+    //         cellProps={cellProps}
+    //         viewPopupHandler={viewPopupHandler}
+    //       />
+    //     );
+    //   },
+    // },
+    // {
+    //   Header: "Created On",
+    //   accessor: "createdOn",
+    //   filterable: true,
+    //   disableFilters: true,
+    //   Cell: (cellProps) => {
+    //     return (
+    //       <CreatedOnV
+    //         cellProps={cellProps}
+    //         viewPopupHandler={viewPopupHandler}
+    //       />
+    //     );
+    //   },
+    // },
+    // {
+    //   Header: "Action",
+    //   Cell: (cellProps) => {
+    //     return (
+    //       <UncontrolledDropdown>
+    //         <DropdownToggle
+    //           className="btn btn-link text-muted py-1 font-size-16 shadow-none"
+    //           tag="a"
+    //         >
+    //           <i className="bx bx-dots-vertical-rounded"></i>
+    //         </DropdownToggle>
+    //         <DropdownMenu className="dropdown-menu-end">
+    //           <DropdownItem
+    //             onClick={(e) => {
+    //               console.log(e, "e");
+    //             }}
+    //           >
+    //             Edit <img src={edit_icon} alt="Edit" />
+    //           </DropdownItem>
+    //           {/* <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem> */}
+    //           <DropdownItem onClick={(e) => e.stopPropagation()}>
+    //             Activate
+    //             <div className="switch_wrap">
+    //               <FormGroup switch>
+    //                 <Input
+    //                   type="switch"
+    //                   checked={cellProps.row.original?.is_active || false}
+    //                   onClick={() => {
+    //                     switchHandler(cellProps.row.original);
+    //                   }}
+    //                   readOnly
+    //                 />
+    //               </FormGroup>
+    //             </div>
+    //           </DropdownItem>
+    //         </DropdownMenu>
+    //       </UncontrolledDropdown>
+    //     );
+    //   },
+    // },
   ],
   []
 );
@@ -241,7 +245,7 @@ const columns = useMemo(
             {/* React Table */}
             <TableVenders
               columns={columns}
-              data={partiesVendorsData}
+              data={partiesVendorsData?.content || []}
               isGlobalFilter={true}
               isAddInvoiceList={true}
               customPageSize={10}

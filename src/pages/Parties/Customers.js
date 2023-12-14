@@ -33,7 +33,7 @@ import {
   LastTransaction,
 } from "./PartiesCol";
 import { useDispatch } from "react-redux";
-import { getCustomersData, updateCustomerSwitchData } from "../../store/Parties/actions";
+import { getAllPartiesData, getAllTableParties, getCustomersData, updateCustomerSwitchData } from "../../store/Parties/actions";
 import ModalCustomerValue from "./Modal/ModalCustomerValue";
 
 const Customers = () => {
@@ -41,9 +41,13 @@ const Customers = () => {
     const [viewData, setViewData] = useState(false);
   const dispatch = useDispatch();
 
-  const partiesCustomersData = useSelector(
-    (state) => state.parties.parties_customers_data
-  );
+  // const partiesCustomersData = useSelector(
+  //   (state) => state?.parties?.parties_table_all_details
+  // );
+
+  const {parties_all_details} = useSelector((state)=> state?.parties)
+
+  console.log(parties_all_details, "--partiesCustomersData");
 
   const viewPopupHandler = (data) => {
     setModal(true);
@@ -59,28 +63,30 @@ const Customers = () => {
 }
 
   useEffect(() => {
-    dispatch(getCustomersData());
-  }, [dispatch]);
+    // dispatch(getCustomersData());
+    dispatch(getAllPartiesData())
+    // dispatch(getAllTableParties())
+  }, []);
 
   const columns = useMemo(
     () => [
-      {
-        Header: "Customer Code",
-        accessor: "customerCode",
-        filterable: true,
-        disableFilters: true,
-        Cell: (cellProps) => {
-          return (
-            <CustomerCode
-              cellProps={cellProps}
-              viewPopupHandler={viewPopupHandler}
-            />
-          );
-        },
-      },
+      // {
+      //   Header: "Customer Code",
+      //   accessor: "customerCode",
+      //   filterable: true,
+      //   disableFilters: true,
+      //   Cell: (cellProps) => {
+      //     return (
+      //       <CustomerCode
+      //         cellProps={cellProps}
+      //         viewPopupHandler={viewPopupHandler}
+      //       />
+      //     );
+      //   },
+      // },
       {
         Header: "Customer Name",
-        accessor: "customerName",
+        accessor: "name",
         filterable: true,
         disableFilters: true,
         Cell: (cellProps) => {
@@ -94,7 +100,7 @@ const Customers = () => {
       },
       {
         Header: "Customer Type",
-        accessor: "customerType",
+        accessor: "type",
         filterable: true,
         disableFilters: true,
         Cell: (cellProps) => {
@@ -136,7 +142,7 @@ const Customers = () => {
       },
       {
         Header: "Email Id",
-        accessor: "email",
+        accessor: "contactEmail",
         filterable: true,
         disableFilters: true,
         Cell: (cellProps) => {
@@ -150,7 +156,7 @@ const Customers = () => {
       },
       {
         Header: "City",
-        accessor: "city",
+        accessor: "city.cityName",
         filterable: true,
         disableFilters: true,
         Cell: (cellProps) => {
@@ -161,7 +167,7 @@ const Customers = () => {
       },
       {
         Header: "Country",
-        accessor: "country",
+        accessor: "country.countryName",
         filterable: true,
         disableFilters: true,
         Cell: (cellProps) => {
@@ -173,74 +179,74 @@ const Customers = () => {
           );
         },
       },
-      {
-        Header: "Last Transaction (in Days)",
-        accessor: "lastTransaction",
-        filterable: true,
-        disableFilters: true,
-        Cell: (cellProps) => {
-          return (
-            <LastTransaction
-              cellProps={cellProps}
-              viewPopupHandler={viewPopupHandler}
-            />
-          );
-        },
-      },
-      {
-        Header: "Created On",
-        accessor: "createdOn",
-        filterable: true,
-        disableFilters: true,
-        Cell: (cellProps) => {
-          return (
-            <CreatedOn
-              cellProps={cellProps}
-              viewPopupHandler={viewPopupHandler}
-            />
-          );
-        },
-      },
-      {
-        Header: "Action",
-        Cell: (cellProps) => {
-          return (
-            <UncontrolledDropdown>
-              <DropdownToggle
-                className="btn btn-link text-muted py-1 font-size-16 shadow-none"
-                tag="a"
-              >
-                <i className="bx bx-dots-vertical-rounded"></i>
-              </DropdownToggle>
-              <DropdownMenu className="dropdown-menu-end">
-                <DropdownItem
-                  onClick={(e) => {
-                    console.log(e, "e");
-                  }}
-                >
-                  Edit <img src={edit_icon} alt="Edit" />
-                </DropdownItem>
-                {/* <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem> */}
-                <DropdownItem onClick={(e) => e.stopPropagation()}>
-                  Activate
-                  <div className="switch_wrap">
-                    <FormGroup switch>
-                      <Input
-                        type="switch"
-                        checked={cellProps.row.original?.is_active || false}
-                        onClick={() => {
-                          switchHandler(cellProps.row.original);
-                        }}
-                        readOnly
-                      />
-                    </FormGroup>
-                  </div>
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-          );
-        },
-      },
+      // {
+      //   Header: "Last Transaction (in Days)",
+      //   accessor: "lastTransaction",
+      //   filterable: true,
+      //   disableFilters: true,
+      //   Cell: (cellProps) => {
+      //     return (
+      //       <LastTransaction
+      //         cellProps={cellProps}
+      //         viewPopupHandler={viewPopupHandler}
+      //       />
+      //     );
+      //   },
+      // },
+      // {
+      //   Header: "Created On",
+      //   accessor: "createdOn",
+      //   filterable: true,
+      //   disableFilters: true,
+      //   Cell: (cellProps) => {
+      //     return (
+      //       <CreatedOn
+      //         cellProps={cellProps}
+      //         viewPopupHandler={viewPopupHandler}
+      //       />
+      //     );
+      //   },
+      // },
+      // {
+      //   Header: "Action",
+      //   Cell: (cellProps) => {
+      //     return (
+      //       <UncontrolledDropdown>
+      //         <DropdownToggle
+      //           className="btn btn-link text-muted py-1 font-size-16 shadow-none"
+      //           tag="a"
+      //         >
+      //           <i className="bx bx-dots-vertical-rounded"></i>
+      //         </DropdownToggle>
+      //         <DropdownMenu className="dropdown-menu-end">
+      //           <DropdownItem
+      //             onClick={(e) => {
+      //               console.log(e, "e");
+      //             }}
+      //           >
+      //             Edit <img src={edit_icon} alt="Edit" />
+      //           </DropdownItem>
+      //           {/* <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem> */}
+      //           <DropdownItem onClick={(e) => e.stopPropagation()}>
+      //             Activate
+      //             <div className="switch_wrap">
+      //               <FormGroup switch>
+      //                 <Input
+      //                   type="switch"
+      //                   checked={cellProps.row.original?.is_active || false}
+      //                   onClick={() => {
+      //                     switchHandler(cellProps.row.original);
+      //                   }}
+      //                   readOnly
+      //                 />
+      //               </FormGroup>
+      //             </div>
+      //           </DropdownItem>
+      //         </DropdownMenu>
+      //       </UncontrolledDropdown>
+      //     );
+      //   },
+      // },
     ],
     []
   );
@@ -255,7 +261,7 @@ const Customers = () => {
             {/* React Table */}
             <TableCustomers
               columns={columns}
-              data={partiesCustomersData}
+              data={parties_all_details?.content || []}
               isGlobalFilter={true}
               isAddInvoiceList={true}
               customPageSize={10}

@@ -11,7 +11,7 @@ import accessToken from "./jwt-token-access/accessToken"
 //   baseURL: API_URL,
 // })
 
-axios.defaults.baseURL = "http://65.0.98.102:7005";
+axios.defaults.baseURL = "http://demo-api.tarifftales.com:7005";
 
 // axiosApi.defaults.headers.common["Authorization"] = token
 
@@ -19,9 +19,9 @@ const axiosInstance = axios.create();
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
-    console.log(token, "api helper")
+    const removequote = JSON.parse(token)
     if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
+      config.headers["Authorization"] = removequote;
     }
     return config;
   },
@@ -41,7 +41,7 @@ export async function get(url, config = {}) {
 
 export async function post(url, data, config = {}) {
   return axiosInstance
-    .post(url, { ...data }, { ...config })
+    .post(url, data, { ...config })
     .then(response => response.data)
 }
 
