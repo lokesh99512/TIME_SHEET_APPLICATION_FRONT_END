@@ -178,12 +178,15 @@ export const Upload_FCL_surcharge_Data= "/api/v1/tenant-ocean-fcl-rp/update/surc
 
 
 // FCL Port & Local Charges
-export const GET_PORTLOCALCHARGES_ALL = "/api/v1/tenant-ocean-fcl-rp/port-and-local-charges/all"
+export const GET_PORTLOCALCHARGES_ALL = "/api/v1/port-and-local-charges/"
 export const Upload_FCL_PL_Data= "/api/v1/tenant-ocean-fcl-rp/port-and-local-charges"
 
 
 // FCL Inland Charges
 export const GET_FCL_INLAND = "/api/v1/inland-vendor-charge/"
+export const GET_FCL_INLAND_FREIGHT = "/api/v1/inland-vendor-freight/all/"
+export const GET_FCL_INLAND_SURCHARGE = "/api/v1/inland-vendor-surcharge/all/"
+export const Upload_FCL_INLAND_Carrier = "/api/v1/inland-vendor-charge/"
 
 
 // --------------------------------------------------------- Kunal ---------------------------------------------------------
@@ -203,15 +206,11 @@ export const COMPANY_BUSINESS_DETAILS = "/api/v1/tenant/update-business-details"
 // get api in settings of Companysettings
 export const COMPANY_GET_ALL_DETAILS = "/api/v1/tenant/" 
 
-
 // tenant customers 
 export const PARTIES_CUSTOMERS_BASIC_DETAILS = "/api/v1/tenant/customer/update-basic-details"
 
-
-
 // get all parties customer details
 export const GET_ALL_PARTIES_CUSTOMERS = "/api/v1/tenant/customer/"
-
 
 // get all table in parties
 export const GET_ALL_PARTIES_TABLE = "/api/v1/tenant/customer"

@@ -4,10 +4,10 @@ import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input
 
 import { edit_icon, eye_icon } from '../../../../assets/images';
 import { inLandBreadcrumb, inLandRateData } from '../../../../common/data/procurement';
-import { getInLandData, updateInLandSwitchData } from '../../../../store/Procurement/actions';
+import { getInLandData, getInLandFreightAction, getInLandSurchargeAction, updateInLandSwitchData } from '../../../../store/Procurement/actions';
 import FilterOffCanvasComp from '../Modal/FilterOffCanvasComp';
 import ModalFclInlandCharge from '../Modal/ModalFclInlandCharge';
-import { CarrierName, ChargeId, ValidTill, VendorName } from '../partials/OceanCol';
+import { CarrierName, ChargeId, CommonValue, ValidTill, VendorName } from '../partials/OceanCol';
 import TableReact from '../partials/TableReact';
 import TopBreadcrumbs from '../partials/TopBreadcrumbs';
 
@@ -37,6 +37,8 @@ const FclInlandCharge = () => {
     const viewPopupHandler = (data) => {
         setModal(true);
         setViewData(data);
+        dispatch(getInLandFreightAction(data?.id));        
+        dispatch(getInLandSurchargeAction(data?.id));        
     }
 
     const onCloseClick = () => {
@@ -101,6 +103,24 @@ const FclInlandCharge = () => {
             disableFilters: true,
             Cell: (cellProps) => {
                 return <VendorName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Rate Type',
+            accessor: 'rateType',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Rate Source',
+            accessor: 'rateSource',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         // {

@@ -108,11 +108,6 @@ const ModalAddGST = ({ modal, onSubmitHandler, onCloseClick }) => {
     (state) => state.settings
   );
 
-
-  console.log(settings_companyCity_data, "=======>>getCompanyCityData")
-  // dispatch(getCompanyDetailsData())
-
-
   useEffect(() => {
     if (settings_companyState_data && settings_companyState_data?.content?.length > 0) {
       formik.setFieldValue("state", settings_companyState_data?.content[0]?.stateName)

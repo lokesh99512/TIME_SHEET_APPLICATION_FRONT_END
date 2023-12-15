@@ -24,10 +24,7 @@ export default function PortLocalFreight() {
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
     const dispatch = useDispatch();
-    const portLocalData2 = useSelector((state) => state.procurement.portLocalChargesData);
-    const portLocalData = [];
-
-    console.log(portLocalData2,"portLocalData2");
+    const portLocalData = useSelector((state) => state.procurement.portLocalChargesData);
 
     const viewPopupHandler = (data) => {
         setModal(true);
@@ -65,37 +62,14 @@ export default function PortLocalFreight() {
         dispatch(getPortLocalChargesData());
     }
 
-    let token = localStorage.getItem('token');
-
     useEffect(() => {
-        // dispatch(getPortLocalChargesData());
-
-        let data = {
-            "username": "setuptarrfitales@gmail.com",
-            "password": "P@ssw0rd123",
-            "rememberMe": false
-        }
-
-        axios({
-            method: 'GET',
-            url: '/api/v1/tenant-ocean-fcl-rp/port-and-local-charges/all',
-            data,
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization':  JSON.parse(token),
-            },
-        }).then((res) => {
-            console.log(res.data, "res.data");
-        }).catch((err) => {
-            console.log(err, "err");
-        })
-
+        dispatch(getPortLocalChargesData());
     }, [dispatch]);
 
     const columns = useMemo(() => [
         {
             Header: 'Surcharge ID',
-            accessor: 'surcharge_id',
+            accessor: 'id',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -104,7 +78,7 @@ export default function PortLocalFreight() {
         },
         {
             Header: 'Surcharge Category',
-            accessor: 'surcharge_category',
+            accessor: 'surchargeCategory.name',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -113,7 +87,7 @@ export default function PortLocalFreight() {
         },
         {
             Header: 'Port Name',
-            accessor: 'port_name',
+            accessor: 'oceanPort.name',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -122,7 +96,7 @@ export default function PortLocalFreight() {
         },
         {
             Header: 'Terminals',
-            accessor: 'terminals',
+            accessor: 'oceanPortTerminal.name',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -131,7 +105,7 @@ export default function PortLocalFreight() {
         },
         {
             Header: 'Movement Type',
-            accessor: 'movement_type',
+            accessor: 'movementType',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -140,7 +114,7 @@ export default function PortLocalFreight() {
         },
         {
             Header: 'Carrier Name',
-            accessor: 'carrier_name',
+            accessor: 'tenantCarrier.name',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -149,7 +123,7 @@ export default function PortLocalFreight() {
         },
         {
             Header: 'Vendor Name',
-            accessor: 'vendor_name',
+            accessor: 'tenantVendor.name',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -158,7 +132,7 @@ export default function PortLocalFreight() {
         },
         {
             Header: 'Valid Till',
-            accessor: 'valid_till',
+            accessor: 'validFrom',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -210,7 +184,7 @@ export default function PortLocalFreight() {
                         {/* React Table */}
                         <TableReact
                             columns={columns}
-                            data={portLocalData}
+                            data={portLocalData?.content}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}
