@@ -1,6 +1,6 @@
 # This workflow will build and push the SPA application to GCS bucket when code change is committed.
 
-name: Deploy SPA app to GCP Cloud Storage bucket
+name: GCP staging deployment
 
 on:
   push:
