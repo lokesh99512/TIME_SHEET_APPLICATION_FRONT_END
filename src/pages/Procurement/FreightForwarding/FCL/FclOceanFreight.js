@@ -8,7 +8,7 @@ import { fclBreadcrumb, fclRateData, fclTableData } from '../../../../common/dat
 import { getFclData, getFclDestinationAction, getFclFreightViewAction, getFclSurchargeViewAction, updatefclSwitchData } from '../../../../store/Procurement/actions'
 import FilterOffCanvasComp from '../Modal/FilterOffCanvasComp'
 import ModalFreight from '../Modal/ModalFreight'
-import { CargoType, CarrierName, ChargeId, DestPort, DetentionFree, OrgPort, TransitTime, ValidTill, VendorName, ViaPort } from '../partials/OceanCol'
+import { CargoType, CarrierName, ChargeId, CommonReplaceValue, DestPort, DetentionFree, OrgPort, TransitTime, ValidTill, VendorName, ViaPort } from '../partials/OceanCol'
 import TableReact from '../partials/TableReact'
 import TopBreadcrumbs from '../partials/TopBreadcrumbs'
 import { FILTER_FCL_DATA } from '../../../../store/Procurement/actiontype'
@@ -154,7 +154,7 @@ export default function FclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <CommonReplaceValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },   
         {

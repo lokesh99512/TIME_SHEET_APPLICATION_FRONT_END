@@ -11,7 +11,8 @@ import inlandfileData from '../../../../assets/extra/Inlandcharge_Upload.xlsx';
 import { delete_icon } from '../../../../assets/images';
 import { optionCalculationType, optionCarrierName, optionRateSource, optionRateType, optionValidityApp, optionVendorType } from '../../../../common/data/procurement';
 import { formatBytes, isAnyValueEmpty, isExcelFile } from '../../../../components/Common/CommonLogic';
-import { addInlandData, updateInlandActiveTab, uploadFclInlandCarrierAction } from '../../../../store/Procurement/actions';
+import { addInlandData, updateInlandActiveTab, uploadFclInlandCarrierAction, uploadFclInlandFreightAction, uploadFclInlandSurchargeAction } from '../../../../store/Procurement/actions';
+import { BLANK_FCL_CARRIER_DATA, BLANK_SURCHARGE_DATA } from '../../../../store/Procurement/actiontype';
 
 export default function FclInlandUpload() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
@@ -23,12 +24,23 @@ export default function FclInlandUpload() {
     const [fileError, setfileError] = useState('');
     const [vendorName, setVendorName] = useState([]);
     const inlandActiveTab = useSelector((state) => state?.procurement?.inlandActiveTab);
+    const fcl_Inland_Charge_id = useSelector((state) => state?.procurement?.fcl_Inland_Charge_id);
     const addInland = useSelector((state) => state?.procurement?.addInland);
     const vendor_data = useSelector((state) => state?.globalReducer?.vendor_data);
     const currency_data = useSelector((state) => state?.globalReducer?.currency_data);
     const UOM_data = useSelector((state) => state?.globalReducer?.UOM_data);
     const surchargeCode_data = useSelector((state) => state?.globalReducer?.surchargeCode_data);
     const dispatch = useDispatch();
+    // let carrierObj = {
+    //     rate_type: '',
+    //     rate_source: '',
+    //     vendor_type: '',
+    //     vendor_name: '',
+    //     carrier_name: '',
+    //     validity_application: '',
+    //     validity_from: '',
+    //     validity_to: '',
+    // }
 
     useEffect(() => {
         let vendorlist = vendor_data?.content?.map((item) => {
@@ -51,7 +63,6 @@ export default function FclInlandUpload() {
 
     const finalSaveButton = () => {
         if (activeTabProgress === 1) {
-            console.log(addInland?.carrierDetails, "addInland?.carrierDetails");
             let data = {
                 // "id": null,
                 "rateSource": addInland?.carrierDetails?.rate_source?.label || '',
@@ -60,10 +71,10 @@ export default function FclInlandUpload() {
                     "id": addInland?.carrierDetails?.vendor_name?.id || '',
                     "version": addInland?.carrierDetails?.vendor_name?.version || 0
                 },
-                // "tenantCarrierVendor": {
-                //     "id": 1,
-                //     "version": 0
-                // },
+                "tenantCarrierVendor": {
+                    "id": 1,
+                    "version": 0
+                },
                 // "validityApplication": addInland?.carrierDetails?.validity_application?.value || '',
                 "validFrom": addInland?.carrierDetails?.validity_from || '',
                 "validTo": addInland?.carrierDetails?.validity_to || '',
@@ -71,39 +82,72 @@ export default function FclInlandUpload() {
                 // "version": null
             }
             dispatch(uploadFclInlandCarrierAction({ ...data }));
-            // dispatch({ type: BLANK_CARRIER_DATA });
+            dispatch({ type: BLANK_FCL_CARRIER_DATA, payload: { name: 'addInland', data: {...addInland, carrierDetails: {}} } });
         } else if (activeTabProgress === 2) {
             let xlxsfile = selectedFiles[0]
             const formData = new FormData();
             formData.append('file', xlxsfile);
-            // dispatch(uploadFclFrightData(formData, fclChargeId));
-            // setselectedFiles([]);
+            
+            dispatch(uploadFclInlandFreightAction(formData, fcl_Inland_Charge_id?.id));
+            setselectedFiles([]);
             // formData.append('tenantVendor', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
         }
         if (activeTabProgress === 3) {
-            console.log(addInland?.surcharges, "addInland?.surcharges");
-            console.log(surcharges, "surcharges");
-            let data = addInland?.surcharges?.map((item) => {
-                return {
-                    "surchargeCodeId": item?.surcharges_name?.id,
-                    "uomId": item?.uom?.id,
-                    "destinationIds": item?.destination?.length !== 0 ? item?.destination?.map((item) => item?.id) : [],
-                    "currencyId": item?.charge_currency?.id,
-                    "containerWiseValues": {
-                        "40GP": item?.gp2,
-                        "40HQ": item?.hq1,
-                        "45HQ": item?.hq2,
-                        "20RF": item?.rf1,
-                        "40RF": item?.rf2,
-                        "20GP": item?.gp1
-                    }
+            console.log(addInland?.surcharges?.charge_currency,"addInland?.surcharges")
+            // let data = addInland?.surcharges?.map((item) => {
+            //     return {
+            //         "inlandVendorCharge": {
+            //             "version": fcl_Inland_Charge_id?.version,
+            //             "id": fcl_Inland_Charge_id?.id,
+            //         },
+            //         "surchargeCode": {
+            //             "id": item?.surcharges_name?.id || '',
+            //             "version": item?.surcharges_name?.version || null
+            //         },
+            //         "unitOfMeasurement": {
+            //             "id": item?.charge_basis?.id || '',
+            //             "version": item?.charge_basis?.version || null
+            //         },
+            //         "calculationType": item?.calculation_type || '',
+            //         "value": item?.rate || 0,
+            //         "applicableTax": item?.tax || 0,
+            //         "currency": {
+            //             "id": item?.charge_currency?.id || '',
+            //             "version": item?.charge_currency?.version || null
+            //         }
+            //     }
+            // });
+
+            let data = {
+                "inlandVendorCharge": {
+                    "version": fcl_Inland_Charge_id?.version,
+                    "id": fcl_Inland_Charge_id?.id,
+                },
+                "surchargeCode": {
+                    "id": addInland?.surcharges[0]?.surcharges_name?.id || '',
+                    "version": addInland?.surcharges[0]?.surcharges_name?.version || 0
+                },
+                "unitOfMeasurement": {
+                    "id": addInland?.surcharges[0]?.charge_basis?.id || '',
+                    "version": addInland?.surcharges[0]?.charge_basis?.version || 0
+                },
+                "calculationType": addInland?.surcharges[0]?.calculation_type || '',
+                "value": addInland?.surcharges[0]?.rate || 0,
+                "applicableTax": addInland?.surcharges[0]?.tax || 0,
+                "currency": {
+                    "id": addInland?.surcharges[0]?.charge_currency?.id || '',
+                    "version": addInland?.surcharges[0]?.charge_currency?.version || 0
                 }
-            });
-            // dispatch(uploadFclSurchargeData(data, fclChargeId));
-            // setSurcharges([]);
+            }
+
+            dispatch(uploadFclInlandSurchargeAction(data));
+            setSurcharges([]);
+            dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name:'addInland', data: {...addInland, surcharges: []}} });
         }
         setOpenSaveModal(false);
+        console.log(addInland?.surcharges,"addInland?.surcharges")
     }
+    console.log(addInland?.surcharges[0]?.charge_currency?.version,"addInland?.surcharges")
 
     const toggleTabProgress = (tab) => {
         if (activeTabProgress !== tab) {
@@ -148,7 +192,7 @@ export default function FclInlandUpload() {
             calculation_type: '',
             rate: '',
             tax: '',
-            currency: ''
+            charge_currency: ''
         }
         setSurcharges(s => [...s, newSurcharge])
         handleAddInland("surcharges", [...surcharges, newSurcharge])
@@ -265,7 +309,7 @@ export default function FclInlandUpload() {
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Vendor Type</label>
                                                                     <Select
-                                                                        value={addInland?.carrierDetails?.vendor_type}
+                                                                        value={addInland?.carrierDetails?.vendor_type || ''}
                                                                         name='vendor_type'
                                                                         onChange={(opt) => {
                                                                             handleAddInland('carrierDetails', { ...addInland?.carrierDetails, vendor_type: opt });
@@ -311,7 +355,7 @@ export default function FclInlandUpload() {
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Validity Application</label>
                                                                     <Select
-                                                                        value={addInland?.carrierDetails?.validity_application}
+                                                                        value={addInland?.carrierDetails?.validity_application || ''}
                                                                         name='validity_application'
                                                                         onChange={(opt) => {
                                                                             handleAddInland('carrierDetails', { ...addInland?.carrierDetails, validity_application: opt });
@@ -493,7 +537,7 @@ export default function FclInlandUpload() {
                                                                                     value={item.charge_currency || ''}
                                                                                     name='currency'
                                                                                     onChange={(opt) => {
-                                                                                        handleSelectGroup2(opt, 'currency', index);
+                                                                                        handleSelectGroup2(opt, 'charge_currency', index);
                                                                                     }}
                                                                                     options={currency_data}
                                                                                     classNamePrefix="select2-selection form-select"

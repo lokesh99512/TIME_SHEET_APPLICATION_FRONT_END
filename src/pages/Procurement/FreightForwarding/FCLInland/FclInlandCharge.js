@@ -221,7 +221,7 @@ const FclInlandCharge = () => {
                         {/* React Table */}
                         <TableReact
                             columns={columns}
-                            data={inlandData}
+                            data={inlandData || []}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}

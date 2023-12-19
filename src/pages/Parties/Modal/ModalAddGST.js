@@ -87,7 +87,7 @@ const ModalAddGST = ({ modal, onCloseClick ,}) => {
     (state) => state.parties
   );
 
-console.log(parties_city_details,"parties_city_details");
+// console.log(parties_city_details,"parties_city_details");
 
 
 

@@ -4,6 +4,7 @@ import { getPartiesCustomers, getPartiesVendors } from "../../helpers/fakebacken
 import { getCustomersDataFail, getCustomersDataSuccess, getVendorsDataFail, getVendorsDataSuccess } from "./actions"
 import { GET_CUSTOMERS_TABLE_DATA, GET_PARTIES_ALL_DETAILS, GET_PARTIES_ALL_DETAILS_SUCCESS, GET_PARTIES_COMPANY_CITY_DATA, GET_PARTIES_COMPANY_CITY_DATA_SUCCESS, GET_PARTIES_COMPANY_COUNTRY_DATA, GET_PARTIES_COMPANY_COUNTRY_DATA_SUCCESS, GET_PARTIES_COMPANY_PINCODE_DATA, GET_PARTIES_COMPANY_PINCODE_DATA_SUCCESS, GET_PARTIES_COMPANY_STATE_DATA, GET_PARTIES_COMPANY_STATE_DATA_SUCCESS, GET_PARTIES_CUSTOMERS_DETAILS, GET_PARTIES_CUSTOMERS_DETAILS_SUCCESS, GET_PARTIES_CUSTOMER_EMPLOYEE_DETAILS, GET_PARTIES_CUSTOMER_EMPLOYEE_DETAILS_SUCCESS, GET_PARTIES_SURCHARGE_TABLE, GET_PARTIES_SURCHARGE_TABLE_SUCCESS, GET_PARTIES_TABLE, GET_PARTIES_TABLE_SUCCESS, GET_PARTIES_VENDOR_TABLE, GET_PARTIES_VENDOR_TABLE_SUCCESS, GET_VENDORS_TABLE_DATA } from "./actiontype"
 import { CompanyCityDetails, CompanyCountryDetails, CompanyPincodeDetails, CompanyStateDetails, GetPartiesAllCustomers, PartiesCustomerDetails, getAllPartiesCustomerEmployeeDeatils, getPartiesAllTable, getPartiesAllVendorTable,  } from "../../helpers/services/AuthService"
+import { showErrorToast, showSuccessToast } from "../../components/Common/CustomToast"
 
 function* getCustomersData(){
     try {
@@ -30,8 +31,9 @@ function* getPartiesCustomerDetailsData({ payload }) {
         const response = yield call(PartiesCustomerDetails, payload)
         console.log(response, "response of getCompanyDetailsData")
         yield put({ type: GET_PARTIES_CUSTOMERS_DETAILS_SUCCESS, payload: response.data });
+        showSuccessToast("Customer Details Added Successfully")
     } catch (error) {
-        // showErrorToast(error?.message);
+        showErrorToast(error?.message);
         console.log(error, "saga login api error")
     }
 }

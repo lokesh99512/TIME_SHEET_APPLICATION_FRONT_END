@@ -1,40 +1,20 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  Container,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  FormGroup,
-  Input,
-  UncontrolledDropdown,
+  Container
 } from "reactstrap";
-import TableCustomers from "./TableCustomers";
-import {
-  Edit,
-  FirstName,
-  LastActive,
-  LastName,
-  ResetPassword,
-  Role,
-  UserName,
-} from "../Settings/SettingsCol";
-import { useSelector } from "react-redux";
-import { edit_icon } from "../../assets/images";
+import { getAllPartiesData, updateCustomerSwitchData } from "../../store/Parties/actions";
+import ModalCustomerValue from "./Modal/ModalCustomerValue";
 import {
   City,
   ConatctNo,
   ContactName,
   Country,
-  CreatedOn,
-  CustomerCode,
   CustomerName,
   CustomerType,
-  EmailId,
-  LastTransaction,
+  EmailId
 } from "./PartiesCol";
-import { useDispatch } from "react-redux";
-import { getAllPartiesData, getAllTableParties, getCustomersData, updateCustomerSwitchData } from "../../store/Parties/actions";
-import ModalCustomerValue from "./Modal/ModalCustomerValue";
+import TableCustomers from "./TableCustomers";
 
 const Customers = () => {
     const [modal, setModal] = useState(false);
@@ -47,7 +27,7 @@ const Customers = () => {
 
   const {parties_all_details} = useSelector((state)=> state?.parties)
 
-  console.log(parties_all_details, "--partiesCustomersData");
+  // console.log(parties_all_details, "--partiesCustomersData");
 
   const viewPopupHandler = (data) => {
     setModal(true);

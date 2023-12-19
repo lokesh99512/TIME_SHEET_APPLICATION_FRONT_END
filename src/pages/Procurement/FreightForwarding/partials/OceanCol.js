@@ -70,9 +70,12 @@ const MinValue = ({cellProps,viewPopupHandler}) => {
 const CommonValue = ({cellProps,viewPopupHandler}) => {
     return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }
+const CommonReplaceValue = ({cellProps,viewPopupHandler}) => {
+    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value.split('_').join(' ') : '-'}</span>;
+}
 // -------------------------FCL-------------------------
 
 
 export {
-    ChargeId,CarrierName,VendorName,OrgPort,DestPort,ViaPort,ValidFrom,ValidTill,TransitTime,CargoType,DetentionFree,MinValue,CommonValue
+    ChargeId,CarrierName,VendorName,OrgPort,DestPort,ViaPort,ValidFrom,ValidTill,TransitTime,CargoType,DetentionFree,MinValue,CommonValue,CommonReplaceValue
 }

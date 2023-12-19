@@ -187,6 +187,8 @@ export const GET_FCL_INLAND = "/api/v1/inland-vendor-charge/"
 export const GET_FCL_INLAND_FREIGHT = "/api/v1/inland-vendor-freight/all/"
 export const GET_FCL_INLAND_SURCHARGE = "/api/v1/inland-vendor-surcharge/all/"
 export const Upload_FCL_INLAND_Carrier = "/api/v1/inland-vendor-charge/"
+export const Upload_FCL_INLAND_Freight = "/api/v1/inland-vendor-freight/"
+export const Upload_FCL_INLAND_Surcharge = "/api/v1/inland-vendor-surcharge/"
 
 
 // --------------------------------------------------------- Kunal ---------------------------------------------------------

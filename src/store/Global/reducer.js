@@ -34,7 +34,7 @@ const globalReducer = (state = INIT_STATE, action) => {
                 ...state,
                 UOM_data: action.payload.content?.map((item) => {
                     return {
-                        label: item?.code,
+                        label: item?.code.split('_').join(' '),
                         value: item?.code,
                         description: item?.description,
                         id: item?.id,
@@ -73,7 +73,7 @@ const globalReducer = (state = INIT_STATE, action) => {
                 ...state,
                 oceanPort_data: action.payload.content?.map((item) => {
                     return {
-                        label: `${item?.code} - ${item?.geoTag}`,
+                        label: `${item?.code} - ${item?.address}`,
                         value: `${item?.code}`,
                         id: `${item?.id}`,
                         version: `${item?.version}`,

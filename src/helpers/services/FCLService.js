@@ -24,3 +24,9 @@ export const getFCLInlandTableData = () => get(url.GET_FCL_INLAND);
 export const getFCLInlandFreightSer = (id) => get(url.GET_FCL_INLAND_FREIGHT + id);
 export const getFCLInlandSurchargeSer = (id) => get(url.GET_FCL_INLAND_SURCHARGE + id);
 export const postFclInlandUploadSer = (data) => post(url.Upload_FCL_INLAND_Carrier, data);
+export const postFclInlandFreightUploadSer = ({formData, id}) => postFormData(url.Upload_FCL_INLAND_Freight + id, formData, {
+    headers: {
+        'Content-Type': 'multipart/form-data',
+    }
+});
+export const postFclInlandSurchargeUploadSer = (data) => postFormData(url.Upload_FCL_INLAND_Surcharge, data);

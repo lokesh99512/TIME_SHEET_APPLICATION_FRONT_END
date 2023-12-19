@@ -1,4 +1,4 @@
-import { ADD_AIRWAYBILL_DATA, ADD_FCL_DATA, ADD_INLAND_DATA, BLANK_CARRIER_DATA, FILTER_FCL_DATA, FILTER_PORTLOCALCHARGES_DATA, GET_CONSOLE_TABLE_DATA_FAIL, GET_CONSOLE_TABLE_DATA_SUCCESS, GET_FCL_CHARGE_ID, GET_FCL_DESTINATION_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_LOADER, GET_FCL_INLAND_FREIGHT_ACTION_SUCCESS, GET_FCL_INLAND_FREIGHT_LOADER, GET_FCL_INLAND_LOADER, GET_FCL_INLAND_SURCHARGE_ACTION_SUCCESS, GET_FCL_INLAND_SURCHARGE_LOADER, GET_FCL_INLAND_TABLE_DATA_FAIL, GET_FCL_INLAND_TABLE_DATA_SUCCESS, GET_FCL_LOADER, GET_FCL_SURCHARGE_VIEW_DATA_SUCCESS, GET_FCL_SURCHARGE_VIEW_LOADER, GET_FCL_TABLE_DATA_FAIL, GET_FCL_TABLE_DATA_SUCCESS, GET_LCL_TABLE_DATA_FAIL, GET_LCL_TABLE_DATA_SUCCESS, GET_PORTLOCALCHARGES_TABLE_DATA_FAIL, GET_PORTLOCALCHARGES_TABLE_DATA_SUCCESS, GET_WAYBILL_TABLE_DATA_FAIL, GET_WAYBILL_TABLE_DATA_SUCCESS, UPDATE_AIRCONSOLE_SWITCH, UPDATE_AIRWAYBILL_SWITCH, UPDATE_CARRIER_DATA, UPDATE_FCL_ACTIVE_TAB, UPDATE_FCL_SWITCH, UPDATE_FCL_TABLE_DATA, UPDATE_INLAND_ACTIVE_TAB, UPDATE_INLAND_SWITCH, UPDATE_LCL_SWITCH } from "./actiontype";
+import { ADD_AIRWAYBILL_DATA, ADD_FCL_DATA, ADD_INLAND_DATA, BLANK_CARRIER_DATA, BLANK_FCL_CARRIER_DATA, BLANK_SURCHARGE_DATA, FILTER_FCL_DATA, FILTER_PORTLOCALCHARGES_DATA, GET_CONSOLE_TABLE_DATA_FAIL, GET_CONSOLE_TABLE_DATA_SUCCESS, GET_FCL_CHARGE_ID, GET_FCL_DESTINATION_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_LOADER, GET_FCL_INLAND_CHARGE_ID, GET_FCL_INLAND_FREIGHT_ACTION_SUCCESS, GET_FCL_INLAND_FREIGHT_LOADER, GET_FCL_INLAND_LOADER, GET_FCL_INLAND_SURCHARGE_ACTION_SUCCESS, GET_FCL_INLAND_SURCHARGE_LOADER, GET_FCL_INLAND_TABLE_DATA_FAIL, GET_FCL_INLAND_TABLE_DATA_SUCCESS, GET_FCL_LOADER, GET_FCL_SURCHARGE_VIEW_DATA_SUCCESS, GET_FCL_SURCHARGE_VIEW_LOADER, GET_FCL_TABLE_DATA_FAIL, GET_FCL_TABLE_DATA_SUCCESS, GET_LCL_TABLE_DATA_FAIL, GET_LCL_TABLE_DATA_SUCCESS, GET_PORTLOCALCHARGES_TABLE_DATA_FAIL, GET_PORTLOCALCHARGES_TABLE_DATA_SUCCESS, GET_WAYBILL_TABLE_DATA_FAIL, GET_WAYBILL_TABLE_DATA_SUCCESS, UPDATE_AIRCONSOLE_SWITCH, UPDATE_AIRWAYBILL_SWITCH, UPDATE_CARRIER_DATA, UPDATE_FCL_ACTIVE_TAB, UPDATE_FCL_SWITCH, UPDATE_FCL_TABLE_DATA, UPDATE_INLAND_ACTIVE_TAB, UPDATE_INLAND_SWITCH, UPDATE_LCL_SWITCH } from "./actiontype";
 
 const INIT_STATE = {
     fcl_data: [],
@@ -30,6 +30,7 @@ const INIT_STATE = {
     fclInlandFreightLoader: false,
     fclInlandSurchargeView: [],
     fclInlandSurchargeLoader: false,
+    fcl_Inland_Charge_id: '',
     addInland: {
         carrierDetails:{},
         freightUpload:{},
@@ -144,7 +145,6 @@ const procurement = (state = INIT_STATE, action) => {
                 ...state,
                 fclInlandData: action.payload.content
             }
-
         case GET_FCL_INLAND_TABLE_DATA_FAIL:
             return{
                 ...state,
@@ -175,7 +175,11 @@ const procurement = (state = INIT_STATE, action) => {
                 ...state,
                 fclInlandSurchargeView: action.payload
             }
-
+        case GET_FCL_INLAND_CHARGE_ID:
+            return{
+                ...state,
+                fcl_Inland_Charge_id: action.payload
+            }
 
         // lcl
         case GET_LCL_TABLE_DATA_SUCCESS:
@@ -187,7 +191,8 @@ const procurement = (state = INIT_STATE, action) => {
             return{
                 ...state,
                 lclError: action.payload,
-            }   
+            }  
+
         // port local charges
         case GET_PORTLOCALCHARGES_TABLE_DATA_SUCCESS:
             return{
@@ -203,7 +208,8 @@ const procurement = (state = INIT_STATE, action) => {
             return{
                 ...state,
                 portLocalChargesData: action.payload,
-            }  
+            } 
+                        
         // waybill
         case GET_WAYBILL_TABLE_DATA_SUCCESS: 
             return{
@@ -220,13 +226,11 @@ const procurement = (state = INIT_STATE, action) => {
                 ...state,
                 consoleData: action.payload
             }
-
         case GET_CONSOLE_TABLE_DATA_FAIL:
             return{
                 ...state,
                 consoleError: action.payload
             }        
-
         case UPDATE_FCL_ACTIVE_TAB:
             return{
                 ...state,
@@ -237,7 +241,6 @@ const procurement = (state = INIT_STATE, action) => {
             ...state,
             inlandActiveTab: action.payload.tab
         }
-
         case ADD_FCL_DATA:
             return{
                 ...state,                
@@ -290,7 +293,18 @@ const procurement = (state = INIT_STATE, action) => {
                         validity_to: '' 
                     }
                 }  
-            }    
+            } 
+        case BLANK_FCL_CARRIER_DATA:
+            return{
+                ...state, 
+                [action.payload.name]: action.payload.data
+            } 
+        case BLANK_SURCHARGE_DATA:
+            return{
+                ...state, 
+                [action.payload.name]: action.payload.data
+            } 
+
         case UPDATE_FCL_SWITCH:
             const { fcl_id, fcl_is_active } = action.payload;
             const updatedFCLItems = state.fcl_data.map(item =>
