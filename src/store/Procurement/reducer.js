@@ -14,7 +14,7 @@ const INIT_STATE = {
             rate_type:"",
             rate_source:"",
             vendor_name:"",
-            carrier_name:"",
+            // carrier_name:"",
             validity_from:"",
             validity_to:""
         },
@@ -32,7 +32,14 @@ const INIT_STATE = {
     fclInlandSurchargeLoader: false,
     fcl_Inland_Charge_id: '',
     addInland: {
-        carrierDetails:{},
+        carrierDetails:{
+            rate_type: '',
+            rate_source: '',
+            vendor_type: '',
+            vendor_name: '',
+            validity_from: '',
+            validity_to: ''
+        },
         freightUpload:{},
         surcharges:[]
     },
@@ -131,7 +138,7 @@ const procurement = (state = INIT_STATE, action) => {
                 ...state,
                 fcl_destinationData: action.payload.map(item => {
                     return {
-                        label: `${item?.code} - ${item?.geoTag}`,
+                        label: `${item?.code} - ${item?.address}`,
                         value: `${item?.code}`,
                         id: `${item?.id}`,
                         version: `${item?.version}`,
@@ -287,7 +294,7 @@ const procurement = (state = INIT_STATE, action) => {
                         rate_source: '',
                         vendor_type: '',
                         vendor_name: '',
-                        carrier_name: '',
+                        // carrier_name: '',
                         validity_application: '',
                         validity_from: '',
                         validity_to: '' 

@@ -6,7 +6,7 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import Select from "react-select";
 import { Card, CardBody, Col, Container, Form, Modal, NavItem, NavLink, Progress, Row, TabContent, TabPane, UncontrolledTooltip } from 'reactstrap';
 import inlandfileData from '../../../../assets/extra/Inlandcharge_Upload.xlsx';
-import fileData from '../../../../assets/extra/upload_Formats.xlsx';
+import fileData from '../../../../assets/extra/FclUplaodFormat.xlsx';
 import { delete_icon } from '../../../../assets/images';
 import { optcurrency, optionCarrierName, optionMultiDestination, optionPaymentType, optionRateSource, optionRateType, optionSurchargesName, optionVendorName } from '../../../../common/data/procurement';
 import { formatBytes, isAnyValueEmpty, isExcelFile } from '../../../../components/Common/CommonLogic';

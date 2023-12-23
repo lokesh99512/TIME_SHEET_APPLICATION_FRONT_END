@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Select from "react-select";
 import { Card, CardBody, Col, Container, Form, Input, Modal, NavItem, NavLink, Progress, Row, TabContent, TabPane, UncontrolledTooltip } from 'reactstrap';
-import fileData from '../../assets/extra/upload_Formats.xlsx';
+import fileData from '../../assets/extra/FclUplaodFormat.xlsx';
 import { delete_icon } from '../../assets/images';
 import { optcurrency, optionCarrierName, optionMultiDestination, optionPaymentType, optionRateSource, optionRateType, optionSurchargesName, optionValidityApp, optionVendorName, optionVendorType } from '../../common/data/procurement';
 import { formatBytes, isAnyValueEmpty, isExcelFile } from '../../components/Common/CommonLogic';

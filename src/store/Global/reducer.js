@@ -21,7 +21,7 @@ const globalReducer = (state = INIT_STATE, action) => {
                 ...state,
                 currency_data: action.payload.content?.map((item) => {
                     return {
-                        label: item?.currencyName,
+                        label: `${item?.currencyCode} - ${item?.currencyName}`,
                         value: item?.currencyName,
                         currencyCode: item?.currencyCode,
                         id: item?.id,
@@ -34,7 +34,7 @@ const globalReducer = (state = INIT_STATE, action) => {
                 ...state,
                 UOM_data: action.payload.content?.map((item) => {
                     return {
-                        label: item?.code.split('_').join(' '),
+                        label: item?.description.split('_').join(' '),
                         value: item?.code,
                         description: item?.description,
                         id: item?.id,
@@ -47,11 +47,12 @@ const globalReducer = (state = INIT_STATE, action) => {
                 ...state,
                 surchargeCode_data: action.payload.content?.map((item) => {
                     return {
-                        label: item?.code,
+                        label: `${item?.code} - ${item?.description}`,
                         value: item?.code,
                         description: item?.description,
                         id: item?.id,
-                        version: item?.version
+                        version: item?.version,
+                        surchargeCategory: item?.surchargeCategory?.name
                     }
                 })
             }

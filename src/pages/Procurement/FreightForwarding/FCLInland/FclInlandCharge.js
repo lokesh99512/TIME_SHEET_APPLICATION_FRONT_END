@@ -78,31 +78,13 @@ const FclInlandCharge = () => {
                 return <ChargeId cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
-        // {
-        //     Header: 'Charge Type',
-        //     accessor: 'charge_type',
-        //     filterable: true,
-        //     disableFilters: true,
-        //     Cell: (cellProps) => {
-        //         return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-        //     }
-        // },
         {
-            Header: 'Carrier Name',
-            accessor: 'tenantCarrier.name',
+            Header: 'Vendor Name/Carrier Name',
+            accessor: (row) => `${row.tenantVendor === null ? row.tenantCarrierVendor?.name : row.tenantVendor?.name}`,
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
                 return <CarrierName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Vendor Name',
-            accessor: 'tenantVendor.name',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <VendorName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
@@ -123,33 +105,6 @@ const FclInlandCharge = () => {
                 return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
-        // {
-        //     Header: 'Mode',
-        //     accessor: 'transport_mode',
-        //     filterable: true,
-        //     disableFilters: true,
-        //     Cell: (cellProps) => {
-        //         return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-        //     }
-        // },
-        // {
-        //     Header: 'Origin',
-        //     accessor: 'origin',
-        //     filterable: true,
-        //     disableFilters: true,
-        //     Cell: (cellProps) => {
-        //         return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-        //     }
-        // },
-        // {
-        //     Header: 'Destination',
-        //     accessor: 'destination',
-        //     filterable: true,
-        //     disableFilters: true,
-        //     Cell: (cellProps) => {
-        //         return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-        //     }
-        // },
         {
             Header: 'Valid To',
             accessor: 'validTo',
@@ -167,16 +122,7 @@ const FclInlandCharge = () => {
             Cell: (cellProps) => {
                 return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
-        },
-        // {
-        //     Header: 'Transit Time',
-        //     accessor: 'transit_time',
-        //     filterable: true,
-        //     disableFilters: true,
-        //     Cell: (cellProps) => {
-        //         return <TransitTime cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-        //     }
-        // },        
+        },        
         {
             Header: 'Action',
             Cell: (cellProps) => {

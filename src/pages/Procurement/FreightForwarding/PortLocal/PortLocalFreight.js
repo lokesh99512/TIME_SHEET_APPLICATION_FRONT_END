@@ -24,9 +24,7 @@ export default function PortLocalFreight() {
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
     const dispatch = useDispatch();
-    const portLocalData2 = useSelector((state) => state.procurement.portLocalChargesData);
-    const portLocalData = [];
-    console.log(portLocalData2,"portLocalData2");
+    const portLocalData = useSelector((state) => state.procurement.portLocalChargesData);
 
     const viewPopupHandler = (data) => {
         setModal(true);
@@ -174,7 +172,7 @@ export default function PortLocalFreight() {
         },
     ]);
     document.title="Port & Local Charges || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
-    console.log(portLocalData?.content,"portLocalData")
+
     return (
         <>
             <div className="page-content">
@@ -187,7 +185,7 @@ export default function PortLocalFreight() {
                         {/* React Table */}
                         <TableReact
                             columns={columns}
-                            data={portLocalData2?.content || []}
+                            data={portLocalData?.content || []}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}

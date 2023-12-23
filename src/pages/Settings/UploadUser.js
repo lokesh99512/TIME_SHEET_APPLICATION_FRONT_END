@@ -18,7 +18,7 @@ import {
   TabPane,
   UncontrolledTooltip,
 } from "reactstrap";
-import fileData from "../../assets/extra/upload_Formats.xlsx";
+import fileData from "../../assets/extra/FclUplaodFormat.xlsx";
 
 import {
   formatBytes,

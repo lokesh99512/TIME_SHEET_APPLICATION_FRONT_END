@@ -2,15 +2,15 @@ import classnames from 'classnames';
 import React, { useCallback, useEffect, useState } from 'react';
 import Dropzone from 'react-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Select from "react-select";
 import { Card, CardBody, Col, Container, Form, Modal, NavItem, NavLink, Progress, Row, TabContent, TabPane, UncontrolledTooltip } from 'reactstrap';
-import fileData from '../../../../assets/extra/upload_Formats.xlsx';
+import fileData from '../../../../assets/extra/FclUplaodFormat.xlsx';
 import { delete_icon } from '../../../../assets/images';
 import { optionCarrierName, optionRateSource, optionRateType, optionValidityApp, optionVendorType } from '../../../../common/data/procurement';
-import { formatBytes, isAnyValueEmpty, isExcelFile } from '../../../../components/Common/CommonLogic';
+import { formatBytes, isAnyValueEmpty, isAnyValueEmptyInArray, isExcelFile } from '../../../../components/Common/CommonLogic';
 import { addFCLData, getFclDestinationAction, updateFCLActiveTab, uploadFclCarrierData, uploadFclFrightData, uploadFclSurchargeData } from '../../../../store/Procurement/actions';
-import { BLANK_CARRIER_DATA, BLANK_FCL_CARRIER_DATA, BLANK_SURCHARGE_DATA } from '../../../../store/Procurement/actiontype';
+import { BLANK_FCL_CARRIER_DATA, BLANK_SURCHARGE_DATA } from '../../../../store/Procurement/actiontype';
 
 export default function UploadFreightData() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
@@ -20,6 +20,7 @@ export default function UploadFreightData() {
     const navigate = useNavigate();
     const [surcharges, setSurcharges] = useState([]);
     const [fileError, setfileError] = useState('');
+    const [AllVendorName, setAllVendorName] = useState([]);
     const [vendorName, setVendorName] = useState([]);
     const addFCL = useSelector((state) => state?.procurement?.addFCL);
     const fclActiveTab = useSelector((state) => state?.procurement?.fclActiveTab);
@@ -30,13 +31,12 @@ export default function UploadFreightData() {
     const UOM_data = useSelector((state) => state?.globalReducer?.UOM_data);
     const surchargeCode_data = useSelector((state) => state?.globalReducer?.surchargeCode_data);
     const dispatch = useDispatch();
-    const navigateState = useLocation();
+
     let carrierObj = {
         rate_type: '',
         rate_source: '',
         vendor_type: '',
         vendor_name: '',
-        carrier_name: '',
         validity_application: '',
         validity_from: '',
         validity_to: ''
@@ -44,9 +44,9 @@ export default function UploadFreightData() {
 
     useEffect(() => {
         let vendorlist = vendor_data?.content?.map((item) => {
-            return { label: item?.name, value: item?.name, version: item?.version, id: item?.id }
+            return { label: item?.name, value: item?.name, version: item?.version, id: item?.id, type: item?.vendorType }
         })
-        setVendorName(vendorlist);
+        setAllVendorName(vendorlist);
     }, [vendor_data]);
 
     useEffect(() => {
@@ -55,71 +55,7 @@ export default function UploadFreightData() {
         if (fclActiveTab === 2) { setProgressValue(66) }
         if (fclActiveTab === 3) { setProgressValue(100); }
         setSurcharges(addFCL?.surcharges)
-    }, []);
-
-    useEffect(() => {
-        if (fclChargeId !== '') {
-            dispatch(getFclDestinationAction(fclChargeId));
-        }
-    }, [fclChargeId]);
-
-    const openSaveConfirmModal = () => {
-        setOpenSaveModal(!openSaveModal);
-    }
-
-    const finalSaveButton = () => {
-        if (activeTabProgress === 1) {
-            let data = {
-                // "id": null,
-                "rateSource": addFCL?.carrierDetails?.rate_source?.label || '',
-                "rateType": addFCL?.carrierDetails?.rate_type?.label || '',
-                "tenantVendor": {
-                    "id": addFCL?.carrierDetails?.vendor_name?.id || '',
-                    "version": addFCL?.carrierDetails?.vendor_name?.version || 0
-                },
-                // "tenantCarrierVendor": {
-                //     "id": 1,
-                //     "version": 0
-                // },
-                "validityApplication": addFCL?.carrierDetails?.validity_application?.value || '',
-                "validFrom": addFCL?.carrierDetails?.validity_from || '',
-                "validTo": addFCL?.carrierDetails?.validity_to || '',
-                // "status": "ACTIVE",
-                // "version": null
-            }
-            dispatch(uploadFclCarrierData({ ...data }));
-            dispatch({ type: BLANK_FCL_CARRIER_DATA, payload: { name: 'addFCL', data: { ...addFCL, carrierDetails: carrierObj } } });
-        } else if (activeTabProgress === 2) {
-            let xlxsfile = selectedFiles[0]
-            const formData = new FormData();
-            formData.append('file', xlxsfile);
-            dispatch(uploadFclFrightData(formData, fclChargeId));
-            setselectedFiles([]);
-            // formData.append('tenantVendor', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
-        }
-        if (activeTabProgress === 3) {
-            let data = addFCL?.surcharges?.map((item) => {
-                return {
-                    "surchargeCodeId": item?.surcharges_name?.id,
-                    "uomId": item?.uom?.id,
-                    "destinationIds": item?.destination?.length !== 0 ? item?.destination?.map((item) => item?.id) : [],
-                    "currencyId": item?.charge_currency?.id,
-                    "containerWiseValues": {
-                        "40GP": item?.gp2,
-                        "40HQ": item?.hq1,
-                        "45HQ": item?.hq2,
-                        "20RF": item?.rf1,
-                        "40RF": item?.rf2,
-                        "20GP": item?.gp1
-                    }
-                }
-            });
-            dispatch(uploadFclSurchargeData(data, fclChargeId));
-            dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addFCL', data: { ...addFCL, surcharges: [] } } });
-            setSurcharges([]);
-        }
-        setOpenSaveModal(false);
-    }
+    }, []);    
 
     const toggleTabProgress = (tab) => {
         if (activeTabProgress !== tab) {
@@ -211,8 +147,75 @@ export default function UploadFreightData() {
     }, [surcharges]);
 
     // ------------------ integration
+
+    const openSaveConfirmModal = () => {
+        setOpenSaveModal(!openSaveModal);
+    }
+    const finalSaveButton = () => {        
+        if (activeTabProgress === 3) {
+            let data = addFCL?.surcharges?.map((item) => {
+                return {
+                    "surchargeCodeId": item?.surcharges_name?.id,
+                    "uomId": item?.uom?.id,
+                    "destinationIds": item?.destination?.length !== 0 ? item?.destination?.map((item) => item?.id) : [],
+                    "currencyId": item?.charge_currency?.id,
+                    "containerWiseValues": {
+                        "40GP": item?.gp2,
+                        "40HQ": item?.hq1,
+                        "45HQ": item?.hq2,
+                        "20RF": item?.rf1,
+                        "40RF": item?.rf2,
+                        "20GP": item?.gp1
+                    }
+                }
+            });
+
+            dispatch(uploadFclSurchargeData(data, fclChargeId));
+            dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addFCL', data: { ...addFCL, surcharges: [] } } });
+
+            setSurcharges([]);
+            // toggleTabProgress(1);
+        }
+        setOpenSaveModal(false);
+    }
     const uploadSaveHandler = () => {
-        openSaveConfirmModal();
+        if (activeTabProgress === 1) {
+            const data = {
+                rateSource: addFCL?.carrierDetails?.rate_source?.label || '',
+                rateType: addFCL?.carrierDetails?.rate_type?.label || '',
+                validityApplication: addFCL?.carrierDetails?.validity_application?.value || '',
+                validFrom: addFCL?.carrierDetails?.validity_from || '',
+                validTo: addFCL?.carrierDetails?.validity_to || '',
+            };
+
+            const vendorInfo = {
+                id: addFCL?.carrierDetails?.vendor_name?.id || '',
+                version: addFCL?.carrierDetails?.vendor_name?.version || 0,
+            };
+
+            const newData = {
+                ...data,
+                [addFCL?.carrierDetails?.vendor_type?.value === 'CARRIER' ? 'tenantCarrierVendor' : 'tenantVendor']: vendorInfo,
+            };
+
+            dispatch(uploadFclCarrierData({ ...newData }));
+            dispatch({ type: BLANK_FCL_CARRIER_DATA, payload: { name: 'addFCL', data: { ...addFCL, carrierDetails: carrierObj } } });
+
+            toggleTabProgress(2);
+        } else if (activeTabProgress === 2) {
+            let xlxsfile = selectedFiles[0]
+            const formData = new FormData();
+            formData.append('file', xlxsfile);
+
+            dispatch(uploadFclFrightData(formData, fclChargeId));
+
+            setselectedFiles([]);
+            toggleTabProgress(3);
+            // formData.append('tenantVendor', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
+        }
+        if (activeTabProgress === 3) {
+            openSaveConfirmModal();
+        }        
     }
 
     return (
@@ -228,31 +231,31 @@ export default function UploadFreightData() {
                                         <div id="progrss-wizard" className="twitter-bs-wizard upload_freight_wrap">
                                             <ul className="twitter-bs-wizard-nav nav-justified nav nav-pills">
                                                 <NavItem>
-                                                    <NavLink className={classnames({ active: activeTabProgress === 1 })} onClick={() => { toggleTabProgress(1); }} >
+                                                    <NavLink className={classnames({ active: activeTabProgress === 1 })}>
                                                         <div className="step-icon" data-bs-toggle="tooltip" id="SellerDetails">
                                                             <i className="bx bx-list-ul"></i>
                                                             <UncontrolledTooltip placement="top" target="SellerDetails">
-                                                                Carrier Details
+                                                                FCL Ocean Carrier Details
                                                             </UncontrolledTooltip>
                                                         </div>
                                                     </NavLink>
                                                 </NavItem>
                                                 <NavItem>
-                                                    <NavLink className={classnames({ active: activeTabProgress === 2 })} onClick={() => { toggleTabProgress(2); }} >
+                                                    <NavLink className={classnames({ active: activeTabProgress === 2 })}>
                                                         <div className="step-icon" data-bs-toggle="tooltip" id="CompanyDocument">
                                                             <i className="bx bx-book-bookmark"></i>
                                                             <UncontrolledTooltip placement="top" target="CompanyDocument">
-                                                                Freight Upload
+                                                                FCL Ocean Freight Upload
                                                             </UncontrolledTooltip>
                                                         </div>
                                                     </NavLink>
                                                 </NavItem>
                                                 <NavItem>
-                                                    <NavLink className={classnames({ active: activeTabProgress === 3 })} onClick={() => { toggleTabProgress(3); }} >
+                                                    <NavLink className={classnames({ active: activeTabProgress === 3 })}>
                                                         <div className="step-icon" data-bs-toggle="tooltip" id="BankDetails">
                                                             <i className="bx bxs-bank"></i>
                                                             <UncontrolledTooltip placement="top" target="BankDetails">
-                                                                Surcharges
+                                                                FCL Ocean Surcharges
                                                             </UncontrolledTooltip>
                                                         </div>
                                                     </NavLink>
@@ -265,7 +268,7 @@ export default function UploadFreightData() {
                                             <TabContent activeTab={activeTabProgress} className="twitter-bs-wizard-tab-content">
                                                 <TabPane tabId={1}>
                                                     <div className="text-center mb-4">
-                                                        <h5>Carrier Details</h5>
+                                                        <h5>FCL Ocean Carrier Details</h5>
                                                     </div>
                                                     <form>
                                                         <div className="row">
@@ -307,7 +310,10 @@ export default function UploadFreightData() {
                                                                         value={addFCL?.carrierDetails?.vendor_type}
                                                                         name='vendor_type'
                                                                         onChange={(opt) => {
-                                                                            handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, vendor_type: opt });
+                                                                            handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, vendor_name: "", vendor_type: opt });
+                                                                            let newList = [...AllVendorName];
+                                                                            let filterlist = newList.filter((item) => item.type === opt.value);
+                                                                            setVendorName(filterlist);
                                                                         }}
                                                                         options={optionVendorType}
                                                                         classNamePrefix="select2-selection form-select"
@@ -316,20 +322,20 @@ export default function UploadFreightData() {
                                                             </div>
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
-                                                                    <label className="form-label">Vendor Name</label>
+                                                                    <label className="form-label">Vendor Name/Carrier Name</label>
                                                                     <Select
                                                                         value={addFCL?.carrierDetails?.vendor_name || ''}
                                                                         name='vendor_name'
                                                                         onChange={(opt) => {
                                                                             handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, vendor_name: opt });
                                                                         }}
-                                                                        options={vendorName}
+                                                                        options={vendorName || []}
                                                                         classNamePrefix="select2-selection form-select"
                                                                     // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
                                                                     />
                                                                 </div>
                                                             </div>
-                                                            <div className="col-lg-4">
+                                                            {/* <div className="col-lg-4">
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Carrier Name</label>
                                                                     <Select
@@ -343,8 +349,9 @@ export default function UploadFreightData() {
                                                                         classNamePrefix="select2-selection form-select"
                                                                     />
                                                                 </div>
-                                                            </div>
+                                                            </div> */}
                                                         </div>
+
                                                         <div className="row">
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
@@ -383,7 +390,7 @@ export default function UploadFreightData() {
                                                 <TabPane tabId={2}>
                                                     <div>
                                                         <div className="text-center mb-4">
-                                                            <h5>Freight Upload</h5>
+                                                            <h5>FCL Ocean Freight Upload</h5>
                                                         </div>
                                                         <div className='mb-3 d-flex justify-content-end'>
                                                             <a href={fileData} className="download_formate btn btn-primary w-sm-100" download="Fcl Uplaod Format">Download Format</a>
@@ -445,10 +452,8 @@ export default function UploadFreightData() {
                                                 <TabPane tabId={3}>
                                                     <div>
                                                         <div className="text-center mb-4">
-                                                            <h5>Surcharges</h5>
+                                                            <h5>FCL Ocean Surcharges</h5>
                                                         </div>
-                                                        {console.log(addFCL?.surcharges, "addFCL?.surcharges")}
-                                                        {console.log(surcharges, "surcharges")}
                                                         <form>
                                                             {addFCL?.surcharges && addFCL?.surcharges?.map((item, index) => (
                                                                 <div key={index} className='upload_surcharges_row'>
@@ -593,18 +598,18 @@ export default function UploadFreightData() {
 
                                                 <li className={`d-flex`}>
                                                     <button
-                                                        className={`btn btn-primary ${activeTabProgress === 1 ? isAnyValueEmpty(addFCL?.carrierDetails) ? "disabled" : "" : activeTabProgress === 2 ? selectedFiles?.length === 0 ? "disabled" : "" : ""}`}
+                                                        className={`btn btn-primary ${activeTabProgress === 1 ? isAnyValueEmpty(addFCL?.carrierDetails) ? "disabled" : "" : activeTabProgress === 2 ? selectedFiles?.length === 0 ? "disabled" : "" : activeTabProgress === 3 ? isAnyValueEmptyInArray(addFCL?.surcharges) ? "disabled" : "" : ""}`}
                                                         onClick={() => { uploadSaveHandler() }}
-                                                    >Save</button>
+                                                    >Save <i className="bx bx-chevron-right ms-1"></i></button>
 
-                                                    {activeTabProgress !== 3 && (
+                                                    {/* {activeTabProgress !== 3 && (
                                                         <button
                                                             className={`btn btn-primary d-flex align-items-center ms-2`}
                                                             onClick={() => {
                                                                 toggleTabProgress(activeTabProgress + 1);
                                                             }}
                                                         >Next <i className="bx bx-chevron-right ms-1"></i> </button>
-                                                    )}
+                                                    )} */}
                                                 </li>
                                             </ul>
                                         </div>

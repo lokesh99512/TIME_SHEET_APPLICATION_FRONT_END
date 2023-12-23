@@ -3,7 +3,7 @@ import { showErrorToast, showSuccessToast } from "../../components/Common/Custom
 import { getAirConsoleTableData, getAirwaybillTableData, getLCLTableData } from "../../helpers/fakebackend_helper";
 import { getFCLDestinationData, getFCLFreightViewData, getFCLInlandFreightSer, getFCLInlandSurchargeSer, getFCLInlandTableData, getFCLSurchargeViewData, getFCLTableData, getPortLocalChargesTableData, postFclFreightUploadSer, postFclInlandFreightUploadSer, postFclInlandSurchargeUploadSer, postFclInlandUploadSer, postFclPLUploadSer, postFclSurchargeUploadSer, postFclUploadSer } from "../../helpers/services/FCLService";
 import { getAirConsoleDataFail, getAirConsoleDataSuccess, getAirwaybillDataFail, getAirwaybillDataSuccess, getFclDataFail, getFclDataSuccess, getInLandDataFail, getInLandDataSuccess, getLclDataFail, getLclDataSuccess, getPortLocalChargesDataFail, getPortLocalChargesDataSuccess } from "./actions";
-import { GET_CONSOLE_TABLE_DATA, GET_FCL_CHARGE_ID, GET_FCL_DESTINATION_DATA, GET_FCL_DESTINATION_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_DATA, GET_FCL_FREIGHT_VIEW_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_LOADER, GET_FCL_INLAND_CHARGE_ID, GET_FCL_INLAND_FREIGHT_ACTION, GET_FCL_INLAND_FREIGHT_ACTION_SUCCESS, GET_FCL_INLAND_FREIGHT_LOADER, GET_FCL_INLAND_LOADER, GET_FCL_INLAND_SURCHARGE_ACTION, GET_FCL_INLAND_SURCHARGE_ACTION_SUCCESS, GET_FCL_INLAND_SURCHARGE_LOADER, GET_FCL_INLAND_TABLE_DATA, GET_FCL_LOADER, GET_FCL_SURCHARGE_VIEW_DATA, GET_FCL_SURCHARGE_VIEW_DATA_SUCCESS, GET_FCL_SURCHARGE_VIEW_LOADER, GET_FCL_TABLE_DATA, GET_LCL_TABLE_DATA, GET_PORTLOCALCHARGES_TABLE_DATA, GET_WAYBILL_TABLE_DATA, UPLOAD_FCL_CARRIER_DATA, UPLOAD_FCL_FREIGHT, UPLOAD_FCL_INLAND_CARRIER_DATA, UPLOAD_FCL_INLAND_FREIGHT_DATA, UPLOAD_FCL_INLAND_SURCHARGE_DATA, UPLOAD_FCL_PORTLOCALCHARGES, UPLOAD_FCL_SURCHARGE } from "./actiontype";
+import { GET_CONSOLE_TABLE_DATA, GET_FCL_CHARGE_ID, GET_FCL_DESTINATION_DATA, GET_FCL_DESTINATION_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_DATA, GET_FCL_FREIGHT_VIEW_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_LOADER, GET_FCL_INLAND_CHARGE_ID, GET_FCL_INLAND_FREIGHT_ACTION, GET_FCL_INLAND_FREIGHT_ACTION_SUCCESS, GET_FCL_INLAND_FREIGHT_LOADER, GET_FCL_INLAND_LOADER, GET_FCL_INLAND_SURCHARGE_ACTION, GET_FCL_INLAND_SURCHARGE_ACTION_SUCCESS, GET_FCL_INLAND_SURCHARGE_LOADER, GET_FCL_INLAND_TABLE_DATA, GET_FCL_LOADER, GET_FCL_SURCHARGE_VIEW_DATA, GET_FCL_SURCHARGE_VIEW_DATA_SUCCESS, GET_FCL_SURCHARGE_VIEW_LOADER, GET_FCL_TABLE_DATA, GET_LCL_TABLE_DATA, GET_PORTLOCALCHARGES_TABLE_DATA, GET_WAYBILL_TABLE_DATA, UPDATE_INLAND_ACTIVE_TAB, UPLOAD_FCL_CARRIER_DATA, UPLOAD_FCL_FREIGHT, UPLOAD_FCL_INLAND_CARRIER_DATA, UPLOAD_FCL_INLAND_FREIGHT_DATA, UPLOAD_FCL_INLAND_SURCHARGE_DATA, UPLOAD_FCL_PORTLOCALCHARGES, UPLOAD_FCL_SURCHARGE } from "./actiontype";
 
 function* fetchFclData() {
     yield put({type: GET_FCL_LOADER, payload: true});
@@ -57,10 +57,14 @@ function* postFclUploadSaga({ payload: { dataObj } }) {
     }
 }
 function* postFclFreightUploadSaga({ payload: { formData, id } }) {
+    console.log(formData.get("file"), "formData");
     try {
         const response = yield call(postFclFreightUploadSer, {formData, id});
+        const destRes = yield call(getFCLDestinationData, id);
         console.log(response, "response surcharge");
         showSuccessToast("Update Successfully");
+        console.log(destRes, "response surcharge destination");
+        yield put({type: GET_FCL_DESTINATION_DATA_SUCCESS, payload: destRes})
     } catch (error) {
         console.log(error, "error");
         showErrorToast(error?.message);
@@ -139,6 +143,7 @@ function* postFCLInLandSaga({ payload: { dataObj } }) {
         const response = yield call(postFclInlandUploadSer, dataObj);
         console.log(response, "response inland");
         yield put({type: GET_FCL_INLAND_CHARGE_ID, payload: {id:response?.id, version: response?.version}});
+        yield put({type: UPDATE_INLAND_ACTIVE_TAB, payload: {tab: 2}});
         showSuccessToast("Update Successfully");
     } catch (error) {
         console.log(error, "error");
@@ -150,6 +155,7 @@ function* postFCLInLandFreightSaga({ payload: { formData, id } }) {
         const response = yield call(postFclInlandFreightUploadSer, {formData, id});
         console.log(response, "response inland");
         showSuccessToast("Update Successfully");
+        yield put({type: UPDATE_INLAND_ACTIVE_TAB, payload: {tab: 3}});
     } catch (error) {
         console.log(error, "error");
         showErrorToast(error?.message);
@@ -160,6 +166,7 @@ function* postFCLInLandSurchargeSaga({ payload: { data } }) {
         const response = yield call(postFclInlandSurchargeUploadSer, data);
         console.log(response, "response inland");
         showSuccessToast("Update Successfully");
+        yield put({type: UPDATE_INLAND_ACTIVE_TAB, payload: {tab: 1}});
     } catch (error) {
         console.log(error, "error");
         showErrorToast(error?.message);

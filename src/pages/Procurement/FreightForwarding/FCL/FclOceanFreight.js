@@ -104,8 +104,8 @@ export default function FclOceanFreight() {
             }
         },
         {
-            Header: 'Vendor Name',
-            accessor: 'tenantVendor.name',
+            Header: 'Vendor Name/Carrier Name',
+            accessor: (row) => `${row.tenantVendor === null ? row.tenantCarrierVendor.name : row.tenantVendor.name}`,
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {

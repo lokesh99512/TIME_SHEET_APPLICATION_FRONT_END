@@ -18,8 +18,6 @@ const ModalFclInlandCharge = ({ viewData, modal, onCloseClick }) => {
     const [open, setOpen] = useState("");
     const fclInlandFreightView = useSelector((state) => state?.procurement?.fclInlandFreightView);
     const fclInlandSurchargeView = useSelector((state) => state?.procurement?.fclInlandSurchargeView);
-
-    console.log(fclInlandSurchargeView,"fclInlandSurchargeView")
     const toggle = (id) => {
         if (open === id) {
             setOpen("");
@@ -40,7 +38,6 @@ const ModalFclInlandCharge = ({ viewData, modal, onCloseClick }) => {
                     <span className="close" onClick={onCloseClick}></span>
                 </ModalHeader>
                 <ModalBody>
-                    {console.log(viewData, "viewData")}
                     <div className="table_view_data_wrap">
                         <Accordion flush open={open} toggle={toggle} className='main_accordion'>
                             <AccordionItem className='view_details_wrap'>
