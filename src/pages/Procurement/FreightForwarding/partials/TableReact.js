@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
 import ReactPaginate from 'react-paginate';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useAsyncDebounce, useExpanded, useFilters, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
 import { Row, Table } from 'reactstrap';
 import { filter_icon, upload_icon } from '../../../../assets/images';
 import { DefaultColumnFilter, Filter } from '../../../../components/Common/filters';
-import { useDispatch } from 'react-redux';
 import { updateFCLActiveTab } from '../../../../store/Procurement/actions';
 import { BLANK_CARRIER_DATA } from '../../../../store/Procurement/actiontype';
 
@@ -16,7 +16,6 @@ function GlobalFilter({
     setGlobalFilter,
   }) {
     const count = preGlobalFilteredRows.length;
-    // console.log(count,"count");
     const [value, setValue] = React.useState(globalFilter);
     const onChange = useAsyncDebounce(value => {
       setGlobalFilter(value || undefined);

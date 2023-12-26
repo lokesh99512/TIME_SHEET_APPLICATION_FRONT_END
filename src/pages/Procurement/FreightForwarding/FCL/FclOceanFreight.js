@@ -1,23 +1,19 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap'
 
-import { useDispatch } from 'react-redux'
 import { edit_icon, eye_icon } from '../../../../assets/images'
 import { fclBreadcrumb, fclRateData, fclTableData } from '../../../../common/data/procurement'
-import { getFclData, getFclDestinationAction, getFclFreightViewAction, getFclSurchargeViewAction, updatefclSwitchData } from '../../../../store/Procurement/actions'
+import { getFclData, getFclFreightViewAction, getFclSurchargeViewAction, updatefclSwitchData } from '../../../../store/Procurement/actions'
+import { FILTER_FCL_DATA } from '../../../../store/Procurement/actiontype'
 import FilterOffCanvasComp from '../Modal/FilterOffCanvasComp'
-import ModalFreight from '../Modal/ModalFreight'
-import { CargoType, CarrierName, ChargeId, CommonReplaceValue, DestPort, DetentionFree, OrgPort, TransitTime, ValidTill, VendorName, ViaPort } from '../partials/OceanCol'
+import { ChargeId, CommonReplaceValue, ValidTill, VendorName } from '../partials/OceanCol'
 import TableReact from '../partials/TableReact'
 import TopBreadcrumbs from '../partials/TopBreadcrumbs'
-import { FILTER_FCL_DATA } from '../../../../store/Procurement/actiontype'
 import ModalFCLFreight from './ModalFCLFreight'
-import { useNavigate } from 'react-router-dom'
 
 export default function FclOceanFreight() {
     document.title="FCL || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
-    // const navigate = useNavigate();
     const fclData = useSelector((state) => state.procurement.fcl_data);
     const fcl_loader = useSelector((state) => state.procurement.fcl_get_loader);
     const [modal, setModal] = useState(false);

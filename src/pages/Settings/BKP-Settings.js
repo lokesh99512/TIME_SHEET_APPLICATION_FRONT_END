@@ -1,4 +1,4 @@
-import { FieldArray, FormikProvider, useFormik } from "formik";
+import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +11,35 @@ import { getAllCompanyDetailData, getBusinessData, getCompanyCityData, getCompan
 import FileUpload from "./FileUpload";
 import ModalAddGST from "./Modal/ModalAddGST";
 
+const companyDetailsInitialValue = {
+  image: "",
+  companyName: "",
+  contactNumber: "",
+  email: "",
+  companyAddress: "",
+  city: "",
+  state: "",
+  zipcode: "",
+  country: "",
+};
+
+const taxDetailsInitialValue = {
+  pan: "",
+  cin: "",
+  transporterId: "",
+  no: "",
+  placeOfService: "",
+  // moreGstNumbers: {
+  //   gstNo: "",
+  //   placeOfSupply: "",
+  // },
+};
+
+const bussinessTypeInitialValue = {
+  industryType: "",
+  entityType: "",
+};
+
 const stateConverter = (num) => {
   return placeOfSupply.find((place) => +place.Code === +num)?.value;
 };
@@ -18,50 +47,31 @@ const stateConverter = (num) => {
 const Settings = () => {
   const [gstModal, setGstModal] = useState(false);
   const [modalAlldata, setModalAllData] = useState([]);
+  const [companyData, setCompanyData] = useState([]);
   const [viewGst, setViewGst] = useState(false);
   const [active, setActive] = useState("comapanyDetails");
-  const [logofile, setLogoFile] = useState("");
-
-  const companyDetailsInitialValue = {
-    image: "",
-    companyName: "",
-    contactNumber: "",
-    email: "",
-    companyAddress: "",
-    city: "",
-    state: "",
-    zipcode: "",
-    country: "",
-  };
-  
-  const taxDetailsInitialValue = {
-    pan: "",
-    cin: "",
-    transporterId: "",
-    no: "",
-    placeOfService: "",
-    moreGstNumbers: [
-      {
-        gstNo: "",
-        placeOfService: ""
-      },
-    ],
-  };
-  
-  const bussinessTypeInitialValue = {
-    industryType: "",
-    entityType: "",
-  };
-
+  const [companyDetailsInitial, setCompanyDetailsInitial] = useState(
+    companyDetailsInitialValue
+  );
+  const [taxDetailsInitial, setTaxDetailsInitial] = useState(
+    taxDetailsInitialValue
+  );
+  const [bussinessTypeInitial, setBussinessTypeInitial] = useState(
+    bussinessTypeInitialValue
+  );
   const dispatch = useDispatch();
 
   const { settings_companydetails_data, settings_companyCity_data, settings_company_settings_all_data, settings_companyState_data, settings_companyCountry_data, settings_companyPincode_data } = useSelector(
     (state) => state?.settings
   );
 
+  // console.log(settings_companydetails_data, "=======>>settings_company_settings_all_data")
+
   useEffect(() => {
     dispatch(getCompanyCityData())
-    dispatch(getAllCompanyDetailData());
+    dispatch(getAllCompanyDetailData())
+    // dispatch(getCompanyDetailsData())
+    // dispatch(getCompanyDetailsData())
   }, [])
 
   useEffect(() => {
@@ -89,13 +99,6 @@ const Settings = () => {
       taxDetailsFormik.setFieldValue("placeOfService", settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.tenantGSTS[0]?.placeOfService)
       bussinessTypeFormik.setFieldValue("industryType", settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.industryType)
       bussinessTypeFormik.setFieldValue("entityType", settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.entityType)
-
-      if(settings_company_settings_all_data?.content[0]?.tenantGSTS?.length >= 2){
-        taxDetailsFormik.setFieldValue("moreGstNumbers", settings_company_settings_all_data?.content[0]?.tenantGSTS?.slice(0,1).map((item)=>({
-          gstNo: item?.no,
-          placeOfService: item?.placeOfService
-        })))
-      }
     }
 
     // if(settings_companyPincode_data){
@@ -105,20 +108,19 @@ const Settings = () => {
   }, [settings_companyState_data, settings_companydetails_data, settings_companyCountry_data, settings_companyPincode_data, settings_company_settings_all_data])
 
   const companyDetailsFormik = useFormik({
-    initialValues: companyDetailsInitialValue,
+    initialValues: companyDetailsInitial,
     enableReinitialize: true,
     // validationSchema: Yup.object({
     //   email: schema.email
     // }),
     onSubmit: async ({ image, ...value }) => {
-      // console.log(value, "value");
-      console.log(logofile, "---logofile")
+      console.log(value, "value");
+      // console.log(image, "---image")
       let formData = new FormData();
 
-      // Object.keys(value).forEach((key) => {
-      //   formData.append(key, value[key]);
-      // });
-      
+      Object.keys(value).forEach((key) => {
+        formData.append(key, value[key]);
+      });
       const projectUATRequestDTO = {
         // "version": 44,
         // "entityType": "PUBLIC_LTD",
@@ -151,12 +153,11 @@ const Settings = () => {
         "contactNumber": value.contactNumber,
         "email": value.email,
       }
-      // console.log(logofile,"projectUATRequestDTO")
 
+      // console.log(projectUATRequestDTO, "--projectUATRequestDTO");
       formData.append('file', image);
-      const jsonBlob = new Blob([JSON.stringify(projectUATRequestDTO)], { type: 'application/json' });
-      formData.append('tenant', jsonBlob);
-      dispatch(getCompanyDetailsData(formData));      
+      formData.append('tenant', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
+      dispatch(getCompanyDetailsData(formData));
     },
   });
   const cstDetailsHandler = (data) => {
@@ -164,8 +165,8 @@ const Settings = () => {
   }
 
   const taxDetailsFormik = useFormik({
+    initialValues: taxDetailsInitial,
     enableReinitialize: true,
-    initialValues: taxDetailsInitialValue,
     onSubmit: (value) => {
       // console.log(value, "taxDetailsFormik value");
       // console.log(modalAlldata,"modalAlldata")
@@ -362,7 +363,7 @@ const Settings = () => {
         ]
       }
 
-      console.log(payload, "payload")
+      console.log(payload,"payload")
 
       // dispatch(getTaxDetailsData(data));
       // taxDetailsFormik.resetForm();
@@ -370,7 +371,7 @@ const Settings = () => {
   });
 
   const bussinessTypeFormik = useFormik({
-    initialValues: bussinessTypeInitialValue,
+    initialValues: bussinessTypeInitial,
     enableReinitialize: true,
     onSubmit: (value) => {
       console.log(value, "---bussinessTypeFormikvalue");
@@ -410,34 +411,13 @@ const Settings = () => {
   };
 
   const onUploadChange = (file) => {
-    // console.log(file, "file");
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = (e) => {
-        // When the file is loaded, set the Data URL in the state
-        setLogoFile(e.target.result);
-      };
-
-      // Read the file as a Data URL
-      reader.readAsDataURL(file);
-    }
-    // if(file){
-      // Convert the Blob URL to a File object
-      // const blobUrl = window.URL.createObjectURL(new Blob([file]));
-      // console.log(blobUrl,"blobUrl");
-      // setLogoFile(blobUrl);
-      // const blobData = fetch(blobUrl).then((response) => response.blob());
-      // console.log(blobData,"blobData");
-
-      // Create a new File object
-      // const uploadedFile = new File([blobData], file.name, { type: file.type });
-
-      // Don't forget to revoke the Blob URL to release resources
-      // URL.revokeObjectURL(blobUrl);
-    // }
+    console.log(file, "file");
     companyDetailsFormik.setFieldValue("image", file)
   };
+
+  // useEffect(() => {
+  //   dispatch(getCompanyDetailsData());
+  // }, []);
 
   return (
     <>
@@ -812,7 +792,6 @@ const Settings = () => {
                         </a>
                       </div>
                       {/* ------------ map GST ------ */}
-                      {console.log(taxDetailsFormik?.values,"taxDetailsFormik")}
                       {viewGst &&
                         taxDetailsFormik?.values?.moreGstNumbers?.map(
                           (gst, key) => {
@@ -867,65 +846,7 @@ const Settings = () => {
                             );
                           }
                         )}
-                      {/* {viewGst && (
-                        <FormikProvider value={taxDetailsFormik}>
-                          <FieldArray name="moreGstNumbers">
-                            {(arrayHelpers) => {
-                              return (
-                                <>
-                                  {
-                                    taxDetailsFormik.values.moreGstNumbers?.length > 0 &&
-                                    taxDetailsFormik.values.moreGstNumbers?.map((item, index) => (
-                                      <div className="row" key={index}>
-                                        <div className="col-12 col-md-6 mb-4">
-                                          <label className="form-label">
-                                            GST Number
-                                          </label>
-                                          <Input
-                                            type="text"
-                                            value={taxDetailsFormik.values.moreGstNumbers[index]?.gstNo || ''}
-                                            name={`moreGstNumbers[${index}].gstNo`}
-                                            onChange={gstNumberHandler}
-                                            className="form-control"
-                                            placeholder=""
-                                          />
-                                        </div>
-                                        <div className="col-10 col-md-5 mb-4">
-                                          <label className="form-label">
-                                            Place of Supply
-                                          </label>
-                                          <Select
-                                            value={taxDetailsFormik.values.moreGstNumbers[index]?.placeOfService || ''}
-                                            name={`moreGstNumbers[${index}].placeOfService`}
-                                            options={placeOfSupply}
-                                            onChange={(e) => {
-                                              taxDetailsFormik.setFieldValue(`moreGstNumbers[${index}]?.placeOfService`, e);
-                                            }}
-                                            placeholder={"Select Place of Supply"}
-                                            classNamePrefix="select2-selection form-select"
-                                          />
-                                        </div>
-                                        <div className="col-2 col-md-1">
-                                          {taxDetailsFormik.values.moreGstNumbers[index].length > 1 && (
-                                            <button
-                                              className="btn border mt-4"
-                                              onClick={() => {
-                                                arrayHelpers.remove(index);
-                                              }}
-                                            >
-                                              <i className="bx bx-trash fs-5 align-middle text-danger"></i>
-                                            </button>
-                                          )}
-                                        </div>
-                                      </div>
-                                    ))
-                                  }
-                                </>
-                              )
-                            }}
-                          </FieldArray>
-                        </FormikProvider>
-                      )} */}
+
                       {/* ----------- more GST --------------- */}
 
                       <div className="row">

@@ -1,6 +1,6 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
-import { GET_CURRENCY_DETAIL, GET_CURRENCY_DETAIL_SUCCESS, GET_OCEAEN_PORT_DATA, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA, GET_UOM_DATA_SUCCESS, GET_VENDOR_DETAILS, GET_VENDOR_DETAILS_SUCCESS } from "./actiontype";
-import { getCurrencyData, getOceanPortData, getSurchargeCategoryData, getSurchargeCodeData, getUomData, getVendorData } from "../../helpers/services/GlobalService";
+import { GET_CARGO_TYPE_DATA, GET_CARGO_TYPE_DATA_SUCCEESS, GET_CONTAINER_DATA, GET_CONTAINER_DATA_SUCCEESS, GET_CURRENCY_DETAIL, GET_CURRENCY_DETAIL_SUCCESS, GET_OCEAEN_PORT_DATA, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA, GET_UOM_DATA_SUCCESS, GET_VENDOR_DETAILS, GET_VENDOR_DETAILS_SUCCESS } from "./actiontype";
+import { getCargoTypeData, getContainerData, getCurrencyData, getOceanPortData, getSurchargeCategoryData, getSurchargeCodeData, getUomData, getVendorData } from "../../helpers/services/GlobalService";
 
 function* fetchVendorData(){
     try{
@@ -57,6 +57,24 @@ function* fetchOceanPortData(){
         console.log(error,"currency error-----------");
     }
 }
+function* fetchCargoTypeData(){
+    try{
+        const response = yield call(getCargoTypeData);
+        console.log(response,"response Cargo type===============");
+        yield put({type: GET_CARGO_TYPE_DATA_SUCCEESS, payload: response});
+    } catch(error){
+        console.log(error,"cargo type error-----------");
+    }
+}
+function* fetchContainerData(){
+    try{
+        const response = yield call(getContainerData);
+        console.log(response,"response Container===============");
+        yield put({type: GET_CONTAINER_DATA_SUCCEESS, payload: response});
+    } catch(error){
+        console.log(error,"Container error-----------");
+    }
+}
 
 function* watchGetglobalData(){
     yield takeEvery(GET_VENDOR_DETAILS, fetchVendorData);
@@ -65,6 +83,8 @@ function* watchGetglobalData(){
     yield takeEvery(GET_SURCHARGE_CODE_DATA, fetchSurchageCodeData);
     yield takeEvery(GET_SURCHARGE_CATEGORY_DATA, fetchSurchageCategoryData);
     yield takeEvery(GET_OCEAEN_PORT_DATA, fetchOceanPortData);
+    yield takeEvery(GET_CARGO_TYPE_DATA, fetchCargoTypeData);
+    yield takeEvery(GET_CONTAINER_DATA, fetchContainerData);
 }
 
 function* globalSaga() {

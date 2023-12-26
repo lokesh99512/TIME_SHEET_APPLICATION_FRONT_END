@@ -11,6 +11,7 @@ import TopBreadcrumbs from '../partials/TopBreadcrumbs'
 import FilterPortCanvasComp from '../Modal/FilterPortCanvasComp'
 import { FILTER_PORTLOCALCHARGES_DATA } from '../../../../store/Procurement/actiontype'
 import axios from 'axios'
+import { GET_CARGO_TYPE_DATA } from '../../../../store/Global/actiontype'
 
 export default function PortLocalFreight() {
     const [isRight, setIsRight] = useState(false);
@@ -63,7 +64,7 @@ export default function PortLocalFreight() {
     }
 
     useEffect(() => {
-        dispatch(getPortLocalChargesData());
+        dispatch(getPortLocalChargesData());        
     }, [dispatch]);
 
     const columns = useMemo(() => [

@@ -11,7 +11,8 @@ import {
   Input,
   Row
 } from "reactstrap";
-import { optionCalculationType, optionCargoType, optionContainerType, optionMovementType } from "../../../../common/data/procurement";
+import { optionCalculationType, optionMovementType } from "../../../../common/data/procurement";
+import { GET_CARGO_TYPE_DATA, GET_CONTAINER_DATA } from "../../../../store/Global/actiontype";
 import { postPortLocalChargesData } from "../../../../store/Procurement/actions";
 import ModalAddTerm from "../Modal/ModalAddTerm";
 
@@ -51,12 +52,9 @@ const initialValue = {
 };
 
 export default function UploadPortLocalChargesData() {
-  const surchargeCategory_data = useSelector((state) => state?.globalReducer?.surchargeCategory_data);
-  const oceanPort_data = useSelector((state) => state?.globalReducer?.oceanPort_data);
-  const vendor_data = useSelector((state) => state?.globalReducer?.vendor_data);
-  const surchargeCode_data = useSelector((state) => state?.globalReducer?.surchargeCode_data);
-  const UOM_data = useSelector((state) => state?.globalReducer?.UOM_data);
-  const currency_data = useSelector((state) => state?.globalReducer?.currency_data);
+  const {
+    surchargeCategory_data, oceanPort_data, vendor_data, surchargeCode_data, UOM_data, currency_data, cargoType_data,container_data,
+  } = useSelector(state => state?.globalReducer);
   const [optionVendorName, setOptionVendorName] = useState([]);
   const [optionCarrierName, setOptionCarrierName] = useState([]);
   const [addTermsModal, setAddTermsModal] = useState({ isOpen: false, id: "" });
@@ -94,15 +92,15 @@ export default function UploadPortLocalChargesData() {
           "id": value?.portName?.id || 0,
           "version": value?.portName?.version || 0
         },
-        // "oceanPortTerminal": {
-        //   "id": 1,
-        //   "version": 0
-        // },
+        "oceanPortTerminal": {
+          "id": 1,
+          "version": 0
+        },
         "movementType": value?.movementType?.value || "IMPORT",
-        // "tenantCarrier": {
-        //   "id": value?.carrierName?.id || 1,
-        //   "version": value?.carrierName?.version || 0
-        // },
+        "tenantCarrier": {
+          "id": value?.carrierName?.id || 1,
+          "version": value?.carrierName?.version || 0
+        },
         "tenantVendor": {
           "id": value?.vendorName?.id || 1,
           "version": value?.vendorName?.version || 0
@@ -116,10 +114,10 @@ export default function UploadPortLocalChargesData() {
               "id": item?.chargeCode?.id || 1,
               "version": item?.chargeCode?.version || 0
             },
-            // "unitOfMeasurement": {
-            //   "id": item?.chargeBasis?.id || 1,
-            //   "version": item?.chargeBasis?.version || 0
-            // },
+            "unitOfMeasurement": {
+              "id": item?.chargeBasis?.id || 1,
+              "version": item?.chargeBasis?.version || 0
+            },
             "paymentTerm": item?.addTerms?.paymentTerm || "PREPAID",
             "standard": item?.addTerms?.isStandard === 'incidental' ? false : true,
             "calculationType": item?.calculationType || "FLAT",
@@ -127,14 +125,14 @@ export default function UploadPortLocalChargesData() {
             "applicableTax": item?.tax || 0,
             "tenantVendorFCLSurchargeValues": item?.subBox?.map((subItem) => {
               return {
-                // "cargoType": {
-                //   "id": subItem?.cargoType?.id || 1,
-                //   "version": subItem?.cargoType?.version || 0
-                // },
-                // "oceanContainer": {
-                //   "id": subItem?.containerType?.id || 1,
-                //   "version": subItem?.containerType?.version || 0
-                // },
+                "cargoType": {
+                  "id": subItem?.cargoType?.id || 1,
+                  "version": subItem?.cargoType?.version || 0
+                },
+                "oceanContainer": {
+                  "id": subItem?.containerType?.id || 1,
+                  "version": subItem?.containerType?.version || 0
+                },
                 "currency": {
                   "id": item?.currency?.id || 1,
                   "version": item?.currency?.version || 0
@@ -163,6 +161,8 @@ export default function UploadPortLocalChargesData() {
           }
         })
       }   
+
+      console.log(JSON.stringify(data),"data")
 
       // let test = "tenantVendorFCLSurchargeDetails": value?.mainBox?.map((item) => {
       //   return {
@@ -219,6 +219,11 @@ export default function UploadPortLocalChargesData() {
       dispatch(postPortLocalChargesData(data));
     },
   });
+
+  useEffect(() => {
+    dispatch({type: GET_CARGO_TYPE_DATA});
+    dispatch({type: GET_CONTAINER_DATA});
+  },[dispatch])
 
   return (
     <>
@@ -374,9 +379,7 @@ export default function UploadPortLocalChargesData() {
                                         {/* Charge Code */}
                                         <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
                                           <div className="mb-3">
-                                            <label className="form-label">
-                                              Surcharge Code
-                                            </label>
+                                            <label className="form-label"> Surcharge Code </label>
                                             <Select
                                               name={`mainBox[${index}].chargeCode`}
                                               value={formik.values.mainBox[index].chargeCode || ""}
@@ -422,9 +425,7 @@ export default function UploadPortLocalChargesData() {
                                         {/* Calculation Type */}
                                         <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
                                           <div className="mb-3">
-                                            <label className="form-label">
-                                              Calculation Type
-                                            </label>
+                                            <label className="form-label"> Calculation Type </label>
                                             <Select
                                               name={`mainBox[${index}].calculationType`}
                                               value={optionCalculationType ? optionCalculationType.find((option) => option.value === formik.values.mainBox[index].calculationType) : ""}
@@ -461,9 +462,7 @@ export default function UploadPortLocalChargesData() {
                                         {/* Currency */}
                                         <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
                                           <div className="mb-3">
-                                            <label className="form-label">
-                                              Currency
-                                            </label>
+                                            <label className="form-label"> Currency </label>
                                             <Select
                                               name={`mainBox[${index}].currency`}
                                               value={formik.values.mainBox[index].currency || ""}
@@ -479,9 +478,7 @@ export default function UploadPortLocalChargesData() {
                                         {/* Min Value */}
                                         <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
                                           <div className="mb-3">
-                                            <label className="form-label">
-                                              Min Value
-                                            </label>
+                                            <label className="form-label"> Min Value </label>
                                             <Input
                                               type="text"
                                               name={`mainBox[${index}].minValue`}
@@ -495,9 +492,7 @@ export default function UploadPortLocalChargesData() {
                                         {/* Tax Value */}
                                         <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
                                           <div className="mb-3">
-                                            <label className="form-label">
-                                              Tax
-                                            </label>
+                                            <label className="form-label"> Tax </label>
                                             <Input
                                               type="text"
                                               name={`mainBox[${index}].tax`}
@@ -562,7 +557,7 @@ export default function UploadPortLocalChargesData() {
                                                                     onChange={(e) => {
                                                                       formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].cargoType`, e);
                                                                     }}
-                                                                    options={optionCargoType}
+                                                                    options={cargoType_data}
                                                                     classNamePrefix="select2-selection form-select"
                                                                   />
                                                                 </div>
@@ -577,11 +572,10 @@ export default function UploadPortLocalChargesData() {
                                                                   onChange={(e) => {
                                                                     formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].containerType`, e);
                                                                   }}
-                                                                  options={optionContainerType}
+                                                                  options={container_data}
                                                                   classNamePrefix="select2-selection form-select"
                                                                 />
                                                               </div>
-                                                              {/* </div> */}
 
                                                               {/* From Slab */}
                                                               {formik.values.mainBox[index].calculationType === "SLAB" && (

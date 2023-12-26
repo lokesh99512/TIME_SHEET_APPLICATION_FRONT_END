@@ -166,6 +166,8 @@ export const Get_Uom_Data= "/api/v1/unit-of-measurement/"
 export const Get_surcharge_code_Data= "/api/v1/surcharge-code/"
 export const Get_surcharge_category_Data= "/api/v1/surcharge-category/"
 export const Get_Ocean_Port_Data= "/api/v1/ocean-port/"
+export const Get_Cargo_Type_Data= "/api/v1/cargo-type/"
+export const Get_Container_Data= "/api/v1/ocean-container/"
 
 // FCL
 export const Get_FCL_Data= "/api/v1/tenant-ocean-fcl-rp/"

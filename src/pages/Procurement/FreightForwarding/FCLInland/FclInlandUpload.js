@@ -1,15 +1,14 @@
 import classnames from 'classnames';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Dropzone from 'react-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import Select from "react-select";
 import { Card, CardBody, Col, Container, Form, Input, Modal, NavItem, NavLink, Progress, Row, TabContent, TabPane, UncontrolledTooltip } from 'reactstrap';
 
-import { useEffect } from 'react';
 import inlandfileData from '../../../../assets/extra/Inlandcharge_Upload.xlsx';
 import { delete_icon } from '../../../../assets/images';
-import { optionCalculationType, optionCarrierName, optionRateSource, optionRateType, optionValidityApp, optionVendorType } from '../../../../common/data/procurement';
+import { optionCalculationType, optionRateSource, optionRateType, optionVendorType } from '../../../../common/data/procurement';
 import { formatBytes, isAnyValueEmpty, isAnyValueEmptyInArray, isExcelFile } from '../../../../components/Common/CommonLogic';
 import { addInlandData, updateInlandActiveTab, uploadFclInlandCarrierAction, uploadFclInlandFreightAction, uploadFclInlandSurchargeAction } from '../../../../store/Procurement/actions';
 import { BLANK_FCL_CARRIER_DATA, BLANK_SURCHARGE_DATA } from '../../../../store/Procurement/actiontype';
@@ -24,14 +23,15 @@ export default function FclInlandUpload() {
     const [fileError, setfileError] = useState('');
     const [vendorName, setVendorName] = useState([]);
     const [AllVendorName, setAllVendorName] = useState([]);
-    const inlandActiveTab = useSelector((state) => state?.procurement?.inlandActiveTab);
-    const fcl_Inland_Charge_id = useSelector((state) => state?.procurement?.fcl_Inland_Charge_id);
-    const addInland = useSelector((state) => state?.procurement?.addInland);
-    const vendor_data = useSelector((state) => state?.globalReducer?.vendor_data);
-    const currency_data = useSelector((state) => state?.globalReducer?.currency_data);
-    const UOM_data = useSelector((state) => state?.globalReducer?.UOM_data);
-    const surchargeCode_data = useSelector((state) => state?.globalReducer?.surchargeCode_data);
+    const {
+        inlandActiveTab, fcl_Inland_Charge_id, addInland
+    } = useSelector((state) => state?.procurement);
+    const {
+        vendor_data, currency_data, UOM_data,surchargeCode_data
+    } = useSelector((state) => state?.globalReducer);
+
     const dispatch = useDispatch();
+    
     let carrierObj = {
         rate_type: '',
         rate_source: '',
@@ -527,7 +527,11 @@ export default function FclInlandUpload() {
                                                     <button
                                                         className={`btn btn-primary ${activeTabProgress === 1 ? isAnyValueEmpty(addInland?.carrierDetails) ? "disabled" : "" : activeTabProgress === 2 ? selectedFiles?.length === 0 ? "disabled" : "" : activeTabProgress === 3 ? isAnyValueEmptyInArray(addInland?.surcharges) ? "disabled" : "" : ""}`}
                                                         onClick={() => { uploadSaveHandler() }}
-                                                    >Save</button>
+                                                    >
+                                                        {activeTabProgress === 3 ? "Save": (
+                                                            <>Next <i className="bx bx-chevron-right ms-1"></i></>
+                                                        )}
+                                                    </button>
 
                                                     {/* {activeTabProgress !== 3 && (
                                                         <button

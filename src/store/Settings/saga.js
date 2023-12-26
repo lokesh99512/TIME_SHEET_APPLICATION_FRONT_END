@@ -5,6 +5,7 @@ import { getUsersDataSuccess, getUsersDataFail, getCompanyDetailsDataFail, getCo
 import { getCompanyDetails, getFCLSurcharge, getSettingsUsers } from "../../helpers/fakebackend_helper"
 import { COMPANY_BASIC_DETAILS } from "../../helpers/url_helper"
 import { CompanyAllDetails, CompanyBasicDetailsAPI, CompanyBusinessDetails, CompanyCityDetails, CompanyCountryDetails, CompanyPinCodeBasicDetails, CompanyPincodeDetails, CompanyStateDetails, CompanyTaxDetails, CompanyUserAddDetails, CompanyUsersDetails, PartiesCustomerDetails, getAddSurchargeData, getAllSurchargeCategory, getPartiesSurchargeTable, getPartiesSurchargeTableAliasCode } from "../../helpers/services/AuthService"
+import { showErrorToast, showSuccessToast } from "../../components/Common/CustomToast"
 
 function* getUsersData() {
     try {
@@ -45,8 +46,9 @@ function* getCompanyDetailsData({ payload }) {
         const response = yield call(CompanyBasicDetailsAPI, payload)
         console.log(response, "response of getCompanyDetailsData")
         yield put({ type: GET_COMPANYDETAILS_BASIC_DATA_SUCCESS, payload: response });
+        showSuccessToast("update successfully");
     } catch (error) {
-        // showErrorToast(error?.message);
+        showErrorToast(error?.message);
         console.log(error, "saga login api error")
     }
 }

@@ -2,14 +2,14 @@ import classnames from 'classnames';
 import React, { useCallback, useEffect, useState } from 'react';
 import Dropzone from 'react-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Select from "react-select";
 import { Card, CardBody, Col, Container, Form, Modal, NavItem, NavLink, Progress, Row, TabContent, TabPane, UncontrolledTooltip } from 'reactstrap';
 import fileData from '../../../../assets/extra/FclUplaodFormat.xlsx';
 import { delete_icon } from '../../../../assets/images';
-import { optionCarrierName, optionRateSource, optionRateType, optionValidityApp, optionVendorType } from '../../../../common/data/procurement';
+import { optionRateSource, optionRateType, optionValidityApp, optionVendorType } from '../../../../common/data/procurement';
 import { formatBytes, isAnyValueEmpty, isAnyValueEmptyInArray, isExcelFile } from '../../../../components/Common/CommonLogic';
-import { addFCLData, getFclDestinationAction, updateFCLActiveTab, uploadFclCarrierData, uploadFclFrightData, uploadFclSurchargeData } from '../../../../store/Procurement/actions';
+import { addFCLData, updateFCLActiveTab, uploadFclCarrierData, uploadFclFrightData, uploadFclSurchargeData } from '../../../../store/Procurement/actions';
 import { BLANK_FCL_CARRIER_DATA, BLANK_SURCHARGE_DATA } from '../../../../store/Procurement/actiontype';
 
 export default function UploadFreightData() {
@@ -22,14 +22,8 @@ export default function UploadFreightData() {
     const [fileError, setfileError] = useState('');
     const [AllVendorName, setAllVendorName] = useState([]);
     const [vendorName, setVendorName] = useState([]);
-    const addFCL = useSelector((state) => state?.procurement?.addFCL);
-    const fclActiveTab = useSelector((state) => state?.procurement?.fclActiveTab);
-    const fclChargeId = useSelector((state) => state?.procurement?.fcl_charge_id);
-    const fcl_destinationData = useSelector((state) => state?.procurement?.fcl_destinationData);
-    const vendor_data = useSelector((state) => state?.globalReducer?.vendor_data);
-    const currency_data = useSelector((state) => state?.globalReducer?.currency_data);
-    const UOM_data = useSelector((state) => state?.globalReducer?.UOM_data);
-    const surchargeCode_data = useSelector((state) => state?.globalReducer?.surchargeCode_data);
+    const {addFCL,fclActiveTab, fclChargeId,fcl_destinationData } = useSelector((state) => state?.procurement);
+    const {vendor_data,currency_data, UOM_data,surchargeCode_data } = useSelector((state) => state?.globalReducer);
     const dispatch = useDispatch();
 
     let carrierObj = {
@@ -331,25 +325,9 @@ export default function UploadFreightData() {
                                                                         }}
                                                                         options={vendorName || []}
                                                                         classNamePrefix="select2-selection form-select"
-                                                                    // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
                                                                     />
                                                                 </div>
                                                             </div>
-                                                            {/* <div className="col-lg-4">
-                                                                <div className="mb-3">
-                                                                    <label className="form-label">Carrier Name</label>
-                                                                    <Select
-                                                                        value={addFCL?.carrierDetails?.carrier_name}
-                                                                        name='carrier_name'
-                                                                        onChange={(opt) => {
-                                                                            handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, carrier_name: opt });
-                                                                        }}
-                                                                        options={optionCarrierName}
-                                                                        // isDisabled={carrierData?.vendor_type?.value === 'agent'}
-                                                                        classNamePrefix="select2-selection form-select"
-                                                                    />
-                                                                </div>
-                                                            </div> */}
                                                         </div>
 
                                                         <div className="row">

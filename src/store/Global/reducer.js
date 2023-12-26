@@ -1,4 +1,4 @@
-import { GET_CURRENCY_DETAIL_SUCCESS, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA_SUCCESS, GET_VENDOR_DETAILS_SUCCESS } from "./actiontype";
+import { GET_CARGO_TYPE_DATA_SUCCEESS, GET_CONTAINER_DATA_SUCCEESS, GET_CURRENCY_DETAIL_SUCCESS, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA_SUCCESS, GET_VENDOR_DETAILS_SUCCESS } from "./actiontype";
 
 const INIT_STATE = {
     vendor_data: [],
@@ -7,6 +7,8 @@ const INIT_STATE = {
     surchargeCode_data: [],
     surchargeCategory_data: [],
     oceanPort_data: [],
+    cargoType_data: [],
+    container_data: [],
 }
 
 const globalReducer = (state = INIT_STATE, action) => {
@@ -78,6 +80,32 @@ const globalReducer = (state = INIT_STATE, action) => {
                         value: `${item?.code}`,
                         id: `${item?.id}`,
                         version: `${item?.version}`,
+                    }
+                })
+            }
+        case GET_CARGO_TYPE_DATA_SUCCEESS:
+            return {
+                ...state,
+                cargoType_data: action.payload.content?.map((item) => {
+                    return {
+                        label: `${item?.type}`,
+                        value: `${item?.type}`,
+                        id: `${item?.id}`,
+                        version: `${item?.version}`,
+                    }
+                })
+            }
+        case GET_CONTAINER_DATA_SUCCEESS:
+            return {
+                ...state,
+                container_data: action.payload.content?.map((item) => {
+                    return {
+                        label: `${item?.name}`,
+                        value: `${item?.name}`,
+                        id: `${item?.id}`,
+                        version: `${item?.version}`,
+                        size: `${item?.size}`,
+                        unit: `${item?.unit}`,
                     }
                 })
             }
