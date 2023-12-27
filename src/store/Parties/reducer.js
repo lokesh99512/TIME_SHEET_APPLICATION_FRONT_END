@@ -1,6 +1,33 @@
 import { GET_ALL_PARTIES_TABLE } from "../../helpers/url_helper";
-import { GET_CUSTOMERS_TABLE_DATA_FAIL, GET_CUSTOMERS_TABLE_DATA_SUCCESS, GET_PARTIES_ALL_DETAILS_FAIL, GET_PARTIES_ALL_DETAILS_SUCCESS, GET_PARTIES_COMPANY_CITY_DATA_FAIL, GET_PARTIES_COMPANY_CITY_DATA_SUCCESS, GET_PARTIES_COMPANY_COUNTRY_DATA_FAIL, GET_PARTIES_COMPANY_COUNTRY_DATA_SUCCESS, GET_PARTIES_COMPANY_PINCODE_DATA_FAIL, GET_PARTIES_COMPANY_PINCODE_DATA_SUCCESS, GET_PARTIES_COMPANY_STATE_DATA_FAIL, GET_PARTIES_COMPANY_STATE_DATA_SUCCESS, GET_PARTIES_CUSTOMERS_DETAILS_FAIL, GET_PARTIES_CUSTOMERS_DETAILS_SUCCESS, GET_PARTIES_CUSTOMER_EMPLOYEE_DETAILS_FAIL, GET_PARTIES_CUSTOMER_EMPLOYEE_DETAILS_SUCCESS, GET_PARTIES_SURCHARGE_TABLE_FAIL, GET_PARTIES_SURCHARGE_TABLE_SUCCESS, GET_PARTIES_TABLE_FAIL, GET_PARTIES_TABLE_SUCCESS, GET_PARTIES_VENDOR_TABLE_FAIL, GET_PARTIES_VENDOR_TABLE_SUCCESS, GET_VENDORS_TABLE_DATA_FAIL, GET_VENDORS_TABLE_DATA_SUCCESS, UPDATE_CUSTOMER_SWITCH, UPDATE_VENDOR_SWITCH } from "./actiontype";
-
+import {
+  GET_CUSTOMERS_TABLE_DATA_FAIL,
+  GET_CUSTOMERS_TABLE_DATA_SUCCESS,
+  GET_PARTIES_ALL_DETAILS_FAIL,
+  GET_PARTIES_ALL_DETAILS_SUCCESS,
+  GET_PARTIES_COMPANY_CITY_DATA_FAIL,
+  GET_PARTIES_COMPANY_CITY_DATA_SUCCESS,
+  GET_PARTIES_COMPANY_COUNTRY_DATA_FAIL,
+  GET_PARTIES_COMPANY_COUNTRY_DATA_SUCCESS,
+  GET_PARTIES_COMPANY_PINCODE_DATA_FAIL,
+  GET_PARTIES_COMPANY_PINCODE_DATA_SUCCESS,
+  GET_PARTIES_COMPANY_STATE_DATA_FAIL,
+  GET_PARTIES_COMPANY_STATE_DATA_SUCCESS,
+  GET_PARTIES_CUSTOMERS_DETAILS_FAIL,
+  GET_PARTIES_CUSTOMERS_DETAILS_SUCCESS,
+  GET_PARTIES_CUSTOMER_EMPLOYEE_DETAILS_FAIL,
+  GET_PARTIES_CUSTOMER_EMPLOYEE_DETAILS_SUCCESS,
+  GET_PARTIES_SURCHARGE_TABLE_FAIL,
+  GET_PARTIES_SURCHARGE_TABLE_SUCCESS,
+  GET_PARTIES_TABLE_FAIL,
+  GET_PARTIES_TABLE_SUCCESS,
+  GET_PARTIES_VENDOR_TABLE_FAIL,
+  GET_PARTIES_VENDOR_TABLE_SUCCESS,
+  GET_VENDORS_TABLE_DATA_FAIL,
+  GET_VENDORS_TABLE_DATA_SUCCESS,
+  UPDATE_CUSTOMER_SWITCH,
+  UPDATE_VENDOR_SWITCH,
+  UPLOAD_VENDOR_DATA,
+} from "./actiontype";
 
 const INIT_STATE = {
   parties_customers_data: [],
@@ -13,8 +40,9 @@ const INIT_STATE = {
   parties_all_details: [],
   parties_table_all_details: [],
   parties_all_vendors_data: [],
-  parties_all_employee_details: []
-  // parties_vendors_details: [],
+  parties_all_employee_details: [],
+  parties_vendors_details: [],
+  // addVendorData: [],
   // error: null,
 };
 
@@ -50,26 +78,26 @@ const parties = (state = INIT_STATE, action) => {
       return {
         ...state,
         parties_city_details: action.payload,
-      }
+      };
 
     case GET_PARTIES_COMPANY_CITY_DATA_FAIL:
       return {
         ...state,
         error: action.payload,
-      }
+      };
 
     // state api
     case GET_PARTIES_COMPANY_STATE_DATA_SUCCESS:
       return {
         ...state,
         parties_state_details: action.payload,
-      }
+      };
 
     case GET_PARTIES_COMPANY_STATE_DATA_FAIL:
       return {
         ...state,
         error: action.payload,
-      }
+      };
 
     // country api
 
@@ -77,25 +105,25 @@ const parties = (state = INIT_STATE, action) => {
       return {
         ...state,
         parties_country_details: action.payload,
-      }
+      };
 
     case GET_PARTIES_COMPANY_COUNTRY_DATA_FAIL:
       return {
         ...state,
         error: action.payload,
-      }
+      };
 
     case GET_PARTIES_COMPANY_PINCODE_DATA_SUCCESS:
       return {
         ...state,
         parties_pincode_details: action.payload,
-      }
+      };
 
     case GET_PARTIES_COMPANY_PINCODE_DATA_FAIL:
       return {
         ...state,
         error: action.payload,
-      }
+      };
 
     // parties all data
 
@@ -125,11 +153,10 @@ const parties = (state = INIT_STATE, action) => {
         error: action.payload,
       };
 
-
     // get all table in vendor
 
     case GET_PARTIES_VENDOR_TABLE_SUCCESS:
-      console.log(action.payload, "action.payload")
+      console.log(action.payload, "action.payload");
       return {
         ...state,
         parties_all_vendors_data: action.payload,
@@ -141,7 +168,7 @@ const parties = (state = INIT_STATE, action) => {
         error: action.payload,
       };
 
-    // all customers in parties 
+    // all customers in parties
 
     case GET_PARTIES_CUSTOMER_EMPLOYEE_DETAILS_SUCCESS:
       return {
@@ -154,8 +181,6 @@ const parties = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
-
-
 
     case UPDATE_CUSTOMER_SWITCH:
       const { user_id, user_is_active } = action.payload;
@@ -184,8 +209,12 @@ const parties = (state = INIT_STATE, action) => {
       );
       return { ...state, parties_vendors_data: updatedVendorItems };
     // ---------------------
-
-
+    // case UPLOAD_VENDOR_DATA:
+    //   console.log("action", action.payload);
+    //   return {
+    //     ...state,
+    //     addVendorData: action.payload,
+    //   };
     default:
       return state;
   }
