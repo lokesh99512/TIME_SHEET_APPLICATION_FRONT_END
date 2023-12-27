@@ -79,7 +79,7 @@ const ModalFCLFreight = ({ viewData, modal, onCloseClick, modalType }) => {
                                         </div>
                                         <div className="details">
                                             <span className="title">Rate Source:</span>
-                                            <span className="data">{viewData?.rateSource.split('_').join(' ') || '-'}</span>
+                                            <span className="data">{viewData?.rateSource?.split('_').join(' ') || '-'}</span>
                                         </div>
                                     </div>
                                 </AccordionBody>
