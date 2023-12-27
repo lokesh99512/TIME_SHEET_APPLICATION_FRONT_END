@@ -310,9 +310,9 @@ export default function UploadPortLocalChargesData() {
                         <label className="form-label">Carrier Name</label>
                         <Select
                           name="carrierName"
-                          value={optionCarrierName ? optionCarrierName.find((option) => option.value === formik.values.carrierName) : ""}
+                          value={formik.values.carrierName || ""}
                           onChange={(e) => {
-                            formik.setFieldValue(`carrierName`, e.value);
+                            formik.setFieldValue(`carrierName`, e);
                           }}
                           options={optionCarrierName}
                           placeholder={"Select Carrier Name"}

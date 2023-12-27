@@ -155,6 +155,8 @@ export default function FclInlandUpload() {
                 }
             });
 
+            console.log(JSON.stringify(data),"data");
+
             dispatch(uploadFclInlandSurchargeAction(data));
             setSurcharges([]);
             dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addInland', data: { ...addInland, surcharges: [] } } });
@@ -178,7 +180,7 @@ export default function FclInlandUpload() {
 
             const newData = {
                 ...data,
-                [addInland?.carrierDetails?.vendor_type?.value === 'CARRIER' ? 'tenantCarrierVendor' : 'tenantVendor']: vendorInfo,
+                [addInland?.carrierDetails?.vendor_type?.value === 'CARRIER' ? 'tenantCarrier' : 'tenantVendor']: vendorInfo,
             };
             console.log(newData, 'newData');
             dispatch(uploadFclInlandCarrierAction({ ...newData }));

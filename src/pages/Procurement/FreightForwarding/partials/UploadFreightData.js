@@ -22,8 +22,8 @@ export default function UploadFreightData() {
     const [fileError, setfileError] = useState('');
     const [AllVendorName, setAllVendorName] = useState([]);
     const [vendorName, setVendorName] = useState([]);
-    const {addFCL,fclActiveTab, fclChargeId,fcl_destinationData } = useSelector((state) => state?.procurement);
-    const {vendor_data,currency_data, UOM_data,surchargeCode_data } = useSelector((state) => state?.globalReducer);
+    const { addFCL, fclActiveTab, fcl_charge_id, fcl_destinationData } = useSelector((state) => state?.procurement);
+    const { vendor_data, currency_data, UOM_data, surchargeCode_data } = useSelector((state) => state?.globalReducer);
     const dispatch = useDispatch();
 
     let carrierObj = {
@@ -49,7 +49,7 @@ export default function UploadFreightData() {
         if (fclActiveTab === 2) { setProgressValue(66) }
         if (fclActiveTab === 3) { setProgressValue(100); }
         setSurcharges(addFCL?.surcharges)
-    }, []);    
+    }, [fclActiveTab]);
 
     const toggleTabProgress = (tab) => {
         if (activeTabProgress !== tab) {
@@ -145,7 +145,7 @@ export default function UploadFreightData() {
     const openSaveConfirmModal = () => {
         setOpenSaveModal(!openSaveModal);
     }
-    const finalSaveButton = () => {        
+    const finalSaveButton = () => {
         if (activeTabProgress === 3) {
             let data = addFCL?.surcharges?.map((item) => {
                 return {
@@ -164,7 +164,9 @@ export default function UploadFreightData() {
                 }
             });
 
-            dispatch(uploadFclSurchargeData(data, fclChargeId));
+            console.log(JSON.stringify(data), "data");
+
+            dispatch(uploadFclSurchargeData(data, fcl_charge_id));
             dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addFCL', data: { ...addFCL, surcharges: [] } } });
 
             setSurcharges([]);
@@ -175,8 +177,8 @@ export default function UploadFreightData() {
     const uploadSaveHandler = () => {
         if (activeTabProgress === 1) {
             const data = {
-                rateSource: addFCL?.carrierDetails?.rate_source?.label || '',
-                rateType: addFCL?.carrierDetails?.rate_type?.label || '',
+                rateSource: addFCL?.carrierDetails?.rate_source?.value || '',
+                rateType: addFCL?.carrierDetails?.rate_type?.value || '',
                 validityApplication: addFCL?.carrierDetails?.validity_application?.value || '',
                 validFrom: addFCL?.carrierDetails?.validity_from || '',
                 validTo: addFCL?.carrierDetails?.validity_to || '',
@@ -194,22 +196,21 @@ export default function UploadFreightData() {
 
             dispatch(uploadFclCarrierData({ ...newData }));
             dispatch({ type: BLANK_FCL_CARRIER_DATA, payload: { name: 'addFCL', data: { ...addFCL, carrierDetails: carrierObj } } });
-
-            toggleTabProgress(2);
+            // toggleTabProgress(2);
         } else if (activeTabProgress === 2) {
             let xlxsfile = selectedFiles[0]
             const formData = new FormData();
             formData.append('file', xlxsfile);
 
-            dispatch(uploadFclFrightData(formData, fclChargeId));
+            dispatch(uploadFclFrightData(formData, fcl_charge_id));
 
             setselectedFiles([]);
-            toggleTabProgress(3);
+            // toggleTabProgress(3);
             // formData.append('tenantVendor', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
         }
         if (activeTabProgress === 3) {
             openSaveConfirmModal();
-        }        
+        }
     }
 
     return (
@@ -225,7 +226,7 @@ export default function UploadFreightData() {
                                         <div id="progrss-wizard" className="twitter-bs-wizard upload_freight_wrap">
                                             <ul className="twitter-bs-wizard-nav nav-justified nav nav-pills">
                                                 <NavItem>
-                                                    <NavLink className={classnames({ active: activeTabProgress === 1 })}>
+                                                    <NavLink className={classnames({ active: activeTabProgress === 1 })} onClick={() => { toggleTabProgress(1) }}>
                                                         <div className="step-icon" data-bs-toggle="tooltip" id="SellerDetails">
                                                             <i className="bx bx-list-ul"></i>
                                                             <UncontrolledTooltip placement="top" target="SellerDetails">
@@ -235,7 +236,7 @@ export default function UploadFreightData() {
                                                     </NavLink>
                                                 </NavItem>
                                                 <NavItem>
-                                                    <NavLink className={classnames({ active: activeTabProgress === 2 })}>
+                                                    <NavLink className={classnames({ active: activeTabProgress === 2 })} onClick={() => { toggleTabProgress(2) }}>
                                                         <div className="step-icon" data-bs-toggle="tooltip" id="CompanyDocument">
                                                             <i className="bx bx-book-bookmark"></i>
                                                             <UncontrolledTooltip placement="top" target="CompanyDocument">
@@ -245,7 +246,7 @@ export default function UploadFreightData() {
                                                     </NavLink>
                                                 </NavItem>
                                                 <NavItem>
-                                                    <NavLink className={classnames({ active: activeTabProgress === 3 })}>
+                                                    <NavLink className={classnames({ active: activeTabProgress === 3 })} onClick={() => { toggleTabProgress(3) }}>
                                                         <div className="step-icon" data-bs-toggle="tooltip" id="BankDetails">
                                                             <i className="bx bxs-bank"></i>
                                                             <UncontrolledTooltip placement="top" target="BankDetails">

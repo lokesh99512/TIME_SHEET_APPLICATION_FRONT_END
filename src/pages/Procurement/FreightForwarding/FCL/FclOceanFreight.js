@@ -123,7 +123,7 @@ export default function FclOceanFreight() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <CommonReplaceValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {

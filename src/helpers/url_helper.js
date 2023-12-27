@@ -160,6 +160,7 @@ export const GET_INQUIRY_TABLE = "GET_INQUIRY_TABLE"
 export const LOGIN_API = "/api/v1/user/sign-in"
 
 // Global
+// get
 export const Get_Vendor_Data= "/api/v1/tenant/vendor/"
 export const Get_Currency_Data= "/api/v1/currency/"
 export const Get_Uom_Data= "/api/v1/unit-of-measurement/"
@@ -168,6 +169,11 @@ export const Get_surcharge_category_Data= "/api/v1/surcharge-category/"
 export const Get_Ocean_Port_Data= "/api/v1/ocean-port/"
 export const Get_Cargo_Type_Data= "/api/v1/cargo-type/"
 export const Get_Container_Data= "/api/v1/ocean-container/"
+export const Get_Surcharge_Alice_Data= "/api/v1/surcharge-alias/"
+
+// post
+export const Post_Surcharge_Data= "/api/v1/surcharge-code/"
+
 
 // FCL
 export const Get_FCL_Data= "/api/v1/tenant-ocean-fcl-rp/"

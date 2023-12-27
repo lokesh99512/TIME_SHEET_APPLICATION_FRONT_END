@@ -80,7 +80,7 @@ const FclInlandCharge = () => {
         },
         {
             Header: 'Vendor Name/Carrier Name',
-            accessor: (row) => `${row.tenantVendor === null ? row.tenantCarrierVendor?.name : row.tenantVendor?.name}`,
+            accessor: (row) => `${row.tenantVendor === null ? row.tenantCarrier?.name : row.tenantVendor?.name}`,
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {

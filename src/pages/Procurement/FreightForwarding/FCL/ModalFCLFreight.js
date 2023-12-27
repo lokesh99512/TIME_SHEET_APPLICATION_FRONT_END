@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import SimpleBar from "simplebar-react";
@@ -79,7 +79,7 @@ const ModalFCLFreight = ({ viewData, modal, onCloseClick, modalType }) => {
                                         </div>
                                         <div className="details">
                                             <span className="title">Rate Source:</span>
-                                            <span className="data">{viewData?.rateSource || '-'}</span>
+                                            <span className="data">{viewData?.rateSource.split('_').join(' ') || '-'}</span>
                                         </div>
                                     </div>
                                 </AccordionBody>
@@ -151,10 +151,10 @@ const ModalFCLFreight = ({ viewData, modal, onCloseClick, modalType }) => {
                                 </AccordionBody>
                             </AccordionItem>
                             <AccordionItem className='charge_details'>
-                                <AccordionHeader targetId={`charge_detail_${viewData?.charge_id}`}>
+                                <AccordionHeader targetId={`charge_detail_${viewData?.id}`}>
                                     <h3 className="sub_modal_title">{modalType === 'inland' ? 'SurCharge' : 'Charge'} Details</h3>
                                 </AccordionHeader>
-                                <AccordionBody accordionId={`charge_detail_${viewData?.charge_id}`}>
+                                <AccordionBody accordionId={`charge_detail_${viewData?.id}`}>
                                     <div className="table_view_popup_table">
                                         <SimpleBar style={{ maxHeight: "400px", maxWidth: '100%' }} ref={ref2}>
                                             <table style={{ minWidth: '800px' }}>
@@ -179,7 +179,7 @@ const ModalFCLFreight = ({ viewData, modal, onCloseClick, modalType }) => {
                                                             <td>{item?.surchargeCode?.code}</td>
                                                             <td>{item?.surchargeCode?.surchargeAlias?.name || '-'}</td>
                                                             <td>{item?.destinationPort?.code || '-'}</td>
-                                                            <td>{item?.unitOfMeasurement?.code || '-'}</td>
+                                                            <td>{item?.unitOfMeasurement?.code?.split('_').join(' ') || '-'}</td>
                                                             <td>{item?.currency?.currencyName || '-'}</td>
                                                             <td>{item?.oceanContainer?.name === '20GP' ? item?.surchargeValue || '-' : '-'}</td>
                                                             <td>{item?.oceanContainer?.name === '40GP' ? item?.surchargeValue || '-' : '-'}</td>

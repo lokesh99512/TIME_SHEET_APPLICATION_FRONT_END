@@ -6921,7 +6921,7 @@ const optionRateType = [
 const optionRateSource = [
     { label: "EMAIL", value: "EMAIL" },
     { label: "WEBSITE", value: "WEBSITE" },
-    { label: "SALES TEAM", value: "SALES TEAM" }
+    { label: "SALES TEAM", value: "SALES_TEAM" }
 ]
 const optionVendorType = [
     { label: "ALL", value: "ALL" },
