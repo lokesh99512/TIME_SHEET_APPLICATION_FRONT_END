@@ -167,8 +167,8 @@ export default function FclInlandUpload() {
         if (activeTabProgress === 1) {
             console.log(addInland?.carrierDetails, 'addInland?.carrierDetails');
             const data = {
-                rateSource: addInland?.carrierDetails?.rate_source?.label || '',
-                rateType: addInland?.carrierDetails?.rate_type?.label || '',
+                rateSource: addInland?.carrierDetails?.rate_source?.value || '',
+                rateType: addInland?.carrierDetails?.rate_type?.value || '',
                 validFrom: addInland?.carrierDetails?.validity_from || '',
                 validTo: addInland?.carrierDetails?.validity_to || '',
             };
@@ -413,7 +413,7 @@ export default function FclInlandUpload() {
                                                                                     name='surcharges_name'
                                                                                     onChange={(opt) => {
                                                                                         if (opt.label == "Add New") {
-                                                                                            navigate("/freight/upload/inland/add-new")
+                                                                                            navigate("/freight/upload/inland/add-new", { state: { id: "inland" } })
                                                                                         }
                                                                                         handleSelectGroup2(opt, 'surcharges_name', index);
                                                                                     }}

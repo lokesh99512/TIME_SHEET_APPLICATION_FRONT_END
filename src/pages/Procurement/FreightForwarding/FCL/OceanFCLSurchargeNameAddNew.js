@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import {
   Card,
@@ -20,6 +20,22 @@ export default function OceanFCLSurchargeNameAddNew() {
   const { surchargeCategory_data, surchargeAlice_data, surchargeAlice_descri } = useSelector((state) => state.globalReducer);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [surchargeCateData, setSurchargeCateData] = useState([]);  
+  const navigateState = useLocation();  
+
+  useEffect(() => {
+    let newData= []
+    if(navigateState?.state?.id === "inland" || navigateState?.pathname?.includes('inland')) {
+      
+      newData = surchargeCategory_data?.filter((item) => {
+        return item.value === "DESTINATION TRANSPORTATION" || item.value === "ORIGIN TRANSPORTATION"
+      }) || []
+    } else {
+      newData = surchargeCategory_data?.filter((item) => item.value === "OCEAN SURCHARGE") || []
+    }
+    console.log(newData,"newData")
+    setSurchargeCateData(newData);
+  }, [surchargeCategory_data]);
 
   const onCloseClick = () => {
     setAliasModal(false);
@@ -52,19 +68,22 @@ export default function OceanFCLSurchargeNameAddNew() {
         code: values?.surchargeCode || '',
         description: values?.surchargeDesc || '',
         surchargeCategory: {
-          version: values?.surchargeCategory?.version || '',
+          version: values?.surchargeCategory?.version || 0,
           id: values?.surchargeCategory?.id || '',
         },
         surchargeAlias: {
-          version: values?.surchargeAliasCode?.version || '',
+          version: values?.surchargeAliasCode?.version || 0,
           id: values?.surchargeAliasCode?.id || '',
         }
       }
+
+      console.log(JSON.stringify(data), "data");
 
       dispatch(postSurchargeCodeAction(data));
 
     },
   })
+  console.log(surchargeFormik?.values?.surchargeCategory?.version, "surchargeFormik");
 
   useEffect(() => {
     dispatch({ type: GET_SURCHARGE_ALICE_DATA });
@@ -134,7 +153,7 @@ export default function OceanFCLSurchargeNameAddNew() {
                               onChange={(opt) => {
                                 surchargeFormik.setFieldValue("surchargeCategory", opt);
                               }}
-                              options={surchargeCategory_data?.filter((item) => item.value === "OCEAN SURCHARGE") || []}
+                              options={surchargeCateData}
                               placeholder={"Select Surcharge Category"}
                               classNamePrefix="select2-selection form-select"
                             />

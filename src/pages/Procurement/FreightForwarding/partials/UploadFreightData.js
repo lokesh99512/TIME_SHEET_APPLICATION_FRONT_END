@@ -445,7 +445,7 @@ export default function UploadFreightData() {
                                                                                     name='surcharges_name'
                                                                                     onChange={(opt) => {
                                                                                         if (opt.label == "Add New") {
-                                                                                            navigate("/freight/upload/fcl/add-new")
+                                                                                            navigate("/freight/upload/fcl/add-new", { state: { id: "fcl" } })
                                                                                         }
                                                                                         handleSelectGroup2(opt, 'surcharges_name', index);
                                                                                     }}
