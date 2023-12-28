@@ -45,7 +45,7 @@ const CustomerCompDetails = () => {
         setEntityTypeModal(false)
         setIndustryTypeModal(false)
         setCustomerTypeModal(false)
-    };    
+    };
 
     const gstDetailsHandler = (data) => {
         setModalAllData((prev) => ([...prev, data]))
@@ -80,491 +80,58 @@ const CustomerCompDetails = () => {
             customerType: "",
         },
         onSubmit: async ({ image, ...values }) => {
-            console.log("values company details", image);
+            // console.log("values company details", image);
+            // console.log("values company details", values);
             let formData = new FormData();
-
-            // Object.keys(values).forEach((key) => {
-            //     formData.append(key, values[key]);
-            // });
 
             const projectUATRequestDTO = {
                 "name": values.companyName || "",
                 "logo": null,
                 "logoPath": image?.preview || "",
-                "address": values.address,
-                "pinCode": {
-                    "createdDate": null,
-                    "modifiedDate": null,
-                    "version": 0,
-                    "modifiedBy": null,
-                    "createdBy": null,
-                    "id": 1,
-                    "pin": values.zipcode,
-                    "city": {
-                        "createdDate": null,
-                        "modifiedDate": "2023-12-12T17:18:17",
-                        "version": 2,
-                        "modifiedBy": 2,
-                        "createdBy": null,
-                        "id": 1,
-                        "cityName": values.city,
-                        "state": {
-                            "createdDate": null,
-                            "modifiedDate": "2023-12-13T03:37:41",
-                            "version": 6,
-                            "modifiedBy": 1,
-                            "createdBy": null,
-                            "id": 1,
-                            "stateName": values.state,
-                            "country": {
-                                "createdDate": "2023-09-15T14:32:27",
-                                "modifiedDate": "2023-09-15T14:32:27",
-                                "version": 0,
-                                "modifiedBy": 1,
-                                "createdBy": 1,
-                                "id": 2,
-                                "countryName": values.country
-                            }
-                        },
-                        "country": {
-                            "createdDate": "2023-09-15T14:32:27",
-                            "modifiedDate": "2023-09-15T14:32:27",
-                            "version": 0,
-                            "modifiedBy": 1,
-                            "createdBy": 1,
-                            "id": 2,
-                            "countryName": values.country
-                        }
-                    },
-                    "state": {
-                        "createdDate": null,
-                        "modifiedDate": "2023-12-13T03:37:41",
-                        "version": 6,
-                        "modifiedBy": 1,
-                        "createdBy": null,
-                        "id": 1,
-                        "stateName": values.state,
-                        "country": {
-                            "createdDate": "2023-09-15T14:32:27",
-                            "modifiedDate": "2023-09-15T14:32:27",
-                            "version": 0,
-                            "modifiedBy": 1,
-                            "createdBy": 1,
-                            "id": 2,
-                            "countryName": values.country
-                        }
-                    },
-                    "country": {
-                        "createdDate": "2023-09-15T14:32:27",
-                        "modifiedDate": "2023-09-15T14:32:27",
-                        "version": 0,
-                        "modifiedBy": 1,
-                        "createdBy": 1,
-                        "id": 2,
-                        "countryName": values.country
-                    }
-                },
-                "city": {
-                    "createdDate": null,
-                    "modifiedDate": "2023-12-12T17:18:17",
-                    "version": 2,
-                    "modifiedBy": 2,
-                    "createdBy": null,
-                    "id": 1,
-                    "cityName": values.city,
-                    "state": {
-                        "createdDate": null,
-                        "modifiedDate": "2023-12-13T03:37:41",
-                        "version": 6,
-                        "modifiedBy": 1,
-                        "createdBy": null,
-                        "id": 1,
-                        "stateName": values.state,
-                        "country": {
-                            "createdDate": "2023-09-15T14:32:27",
-                            "modifiedDate": "2023-09-15T14:32:27",
-                            "version": 0,
-                            "modifiedBy": 1,
-                            "createdBy": 1,
-                            "id": 2,
-                            "countryName": values.country
-                        }
-                    },
-                    "country": {
-                        "createdDate": "2023-09-15T14:32:27",
-                        "modifiedDate": "2023-09-15T14:32:27",
-                        "version": 0,
-                        "modifiedBy": 1,
-                        "createdBy": 1,
-                        "id": 2,
-                        "countryName": values.country
-                    }
-                },
-                "state": {
-                    "createdDate": null,
-                    "modifiedDate": "2023-12-13T03:37:41",
-                    "version": 6,
-                    "modifiedBy": 1,
-                    "createdBy": null,
-                    "id": 1,
-                    "stateName": values.state,
-                    "country": {
-                        "createdDate": "2023-09-15T14:32:27",
-                        "modifiedDate": "2023-09-15T14:32:27",
-                        "version": 0,
-                        "modifiedBy": 1,
-                        "createdBy": 1,
-                        "id": 2,
-                        "countryName": values.country
-                    }
-                },
-                "country": {
-                    "createdDate": "2023-09-15T14:32:27",
-                    "modifiedDate": "2023-09-15T14:32:27",
-                    "version": 0,
-                    "modifiedBy": 1,
-                    "createdBy": 1,
-                    "id": 2,
-                    "countryName": values.country
-                },
-                "website": values.website,
-                "contactName": values.contactName,
-                "contactNo": values.phoneNumber,
-                "contactEmail": values.email,
-                "department": values.department,
-                "designation": values.designation,
+                "address": values.address || null,
+                // "pinCode": {
+                //     "pin": values.zipcode || null,
+                // },
+                // "city": {
+                //     "cityName": values.city || null,
+                // },
+                // "state": {
+                //     "stateName": values.state || null,
+                // },
+                // "country": {
+                //     "countryName": values.country || null,
+                // },
+                "website": values.website || null,
+                "contactName": values.contactName || null,
+                "contactNo": values.phoneNumber || null,
+                "contactEmail": values.email || null,
+                "department": values.department || null,
+                "designation": values.designation || null,
                 "salesUser": {
-                    ...parties_all_employee_details?.content[0],
-                    "firstName": values?.salesEmployee
+                    id: values?.salesEmployee?.id,
+                    version: values?.salesEmployee?.version
                 },
                 "accountManager": {
-                    ...parties_all_employee_details?.content[0],
-                    "firstName": values?.keyAccountManager
+                    id: values?.keyAccountManager?.id,
+                    version: values?.keyAccountManager?.version
                 },
                 "serviceType": "AIR",
-                "cin": values.CINnumber,
-                "gst": values.GSTnumber,
-                "pan": values.PANnumber,
-                "entityType": values.entityType,
-                "industryType": values.industryType,
-                "type": values.customerType,
+                "cin": values.CINnumber || null,
+                "gst": values.GSTnumber || null,
+                "pan": values.PANnumber || null,
+                "entityType": values.entityType || null,
+                "industryType": values.industryType || null,
+                "type": values.customerType || null,
                 "status": "ACTIVE",
                 "addresses": [],
                 "contacts": [],
                 "documents": [],
-                "tenant": {
-                    "createdDate": null,
-                    "modifiedDate": "2023-12-14T04:43:32",
-                    "version": 47,
-                    "modifiedBy": 2,
-                    "createdBy": null,
-                    "id": 1,
-                    "entityType": values.entityType,
-                    "industryType": values.industryType,
-                    "name": values.companyName,
-                    "address": values.address,
-                    "pinCode": {
-                        "createdDate": null,
-                        "modifiedDate": null,
-                        "version": 0,
-                        "modifiedBy": null,
-                        "createdBy": null,
-                        "id": 1,
-                        "pin": values.zipcode,
-                        "city": {
-                            "createdDate": null,
-                            "modifiedDate": "2023-12-12T17:18:17",
-                            "version": 2,
-                            "modifiedBy": 2,
-                            "createdBy": null,
-                            "id": 1,
-                            "cityName": values.city,
-                            "state": {
-                                "createdDate": null,
-                                "modifiedDate": "2023-12-13T03:37:41",
-                                "version": 6,
-                                "modifiedBy": 1,
-                                "createdBy": null,
-                                "id": 1,
-                                "stateName": values.state,
-                                "country": {
-                                    "createdDate": "2023-09-15T14:32:27",
-                                    "modifiedDate": "2023-09-15T14:32:27",
-                                    "version": 0,
-                                    "modifiedBy": 1,
-                                    "createdBy": 1,
-                                    "id": 2,
-                                    "countryName": values.country
-                                }
-                            },
-                            "country": {
-                                "createdDate": "2023-09-15T14:32:27",
-                                "modifiedDate": "2023-09-15T14:32:27",
-                                "version": 0,
-                                "modifiedBy": 1,
-                                "createdBy": 1,
-                                "id": 2,
-                                "countryName": values.country
-                            }
-                        },
-                        "state": {
-                            "createdDate": null,
-                            "modifiedDate": "2023-12-13T03:37:41",
-                            "version": 6,
-                            "modifiedBy": 1,
-                            "createdBy": null,
-                            "id": 1,
-                            "stateName": values.state,
-                            "country": {
-                                "createdDate": "2023-09-15T14:32:27",
-                                "modifiedDate": "2023-09-15T14:32:27",
-                                "version": 0,
-                                "modifiedBy": 1,
-                                "createdBy": 1,
-                                "id": 2,
-                                "countryName": values.country
-                            }
-                        },
-                        "country": {
-                            "createdDate": "2023-09-15T14:32:27",
-                            "modifiedDate": "2023-09-15T14:32:27",
-                            "version": 0,
-                            "modifiedBy": 1,
-                            "createdBy": 1,
-                            "id": 2,
-                            "countryName": values.country
-                        }
-                    },
-                    "city": {
-                        "createdDate": null,
-                        "modifiedDate": "2023-12-12T17:18:17",
-                        "version": 2,
-                        "modifiedBy": 2,
-                        "createdBy": null,
-                        "id": 1,
-                        "cityName": values.city,
-                        "state": {
-                            "createdDate": null,
-                            "modifiedDate": "2023-12-13T03:37:41",
-                            "version": 6,
-                            "modifiedBy": 1,
-                            "createdBy": null,
-                            "id": 1,
-                            "stateName": values.state,
-                            "country": {
-                                "createdDate": "2023-09-15T14:32:27",
-                                "modifiedDate": "2023-09-15T14:32:27",
-                                "version": 0,
-                                "modifiedBy": 1,
-                                "createdBy": 1,
-                                "id": 2,
-                                "countryName": values.country
-                            }
-                        },
-                        "country": {
-                            "createdDate": "2023-09-15T14:32:27",
-                            "modifiedDate": "2023-09-15T14:32:27",
-                            "version": 0,
-                            "modifiedBy": 1,
-                            "createdBy": 1,
-                            "id": 2,
-                            "countryName": values.country
-                        }
-                    },
-                    "state": {
-                        "createdDate": null,
-                        "modifiedDate": "2023-12-13T03:37:41",
-                        "version": 6,
-                        "modifiedBy": 1,
-                        "createdBy": null,
-                        "id": 1,
-                        "stateName": values.state,
-                        "country": {
-                            "createdDate": "2023-09-15T14:32:27",
-                            "modifiedDate": "2023-09-15T14:32:27",
-                            "version": 0,
-                            "modifiedBy": 1,
-                            "createdBy": 1,
-                            "id": 2,
-                            "countryName": values.country
-                        }
-                    },
-                    "country": {
-                        "createdDate": "2023-09-17T16:25:41",
-                        "modifiedDate": "2023-12-13T03:18:04",
-                        "version": 1,
-                        "modifiedBy": 1,
-                        "createdBy": 1,
-                        "id": 5,
-                        "countryName": values.country
-                    },
-                    "contactName": values.contactName,
-                    "contactNumber": values.phoneNumber,
-                    "email": values.email,
-                    "cin": values.CINnumber,
-                    "pan": values.PANnumber,
-                    "transporterId": null,
-                    "logo": null,
-                    "logoPath": "/tmp/tariff-tales/Reliance_Jio_Logo.svg.png",
-                    "status": "ACTIVE",
-                    "subscriptionType": null,
-                    "tenantGSTS": [
-                        {
-                            "createdDate": "2023-11-26T16:18:21",
-                            "modifiedDate": "2023-11-26T16:21:30",
-                            "version": 1,
-                            "modifiedBy": 2,
-                            "createdBy": 2,
-                            "id": 1,
-                            "no": values.GSTnumber,
-                            "address": values.address,
-                            "pinCode": {
-                                "createdDate": null,
-                                "modifiedDate": null,
-                                "version": 0,
-                                "modifiedBy": null,
-                                "createdBy": null,
-                                "id": 1,
-                                "pin": values.zipcode,
-                                "city": {
-                                    "createdDate": null,
-                                    "modifiedDate": "2023-12-12T17:18:17",
-                                    "version": 2,
-                                    "modifiedBy": 2,
-                                    "createdBy": null,
-                                    "id": 1,
-                                    "cityName": values.city,
-                                    "state": {
-                                        "createdDate": null,
-                                        "modifiedDate": "2023-12-13T03:37:41",
-                                        "version": 6,
-                                        "modifiedBy": 1,
-                                        "createdBy": null,
-                                        "id": 1,
-                                        "stateName": values.state,
-                                        "country": {
-                                            "createdDate": "2023-09-15T14:32:27",
-                                            "modifiedDate": "2023-09-15T14:32:27",
-                                            "version": 0,
-                                            "modifiedBy": 1,
-                                            "createdBy": 1,
-                                            "id": 2,
-                                            "countryName": values.country
-                                        }
-                                    },
-                                    "country": {
-                                        "createdDate": "2023-09-15T14:32:27",
-                                        "modifiedDate": "2023-09-15T14:32:27",
-                                        "version": 0,
-                                        "modifiedBy": 1,
-                                        "createdBy": 1,
-                                        "id": 2,
-                                        "countryName": values.country
-                                    }
-                                },
-                                "state": {
-                                    "createdDate": null,
-                                    "modifiedDate": "2023-12-13T03:37:41",
-                                    "version": 6,
-                                    "modifiedBy": 1,
-                                    "createdBy": null,
-                                    "id": 1,
-                                    "stateName": values.state,
-                                    "country": {
-                                        "createdDate": "2023-09-15T14:32:27",
-                                        "modifiedDate": "2023-09-15T14:32:27",
-                                        "version": 0,
-                                        "modifiedBy": 1,
-                                        "createdBy": 1,
-                                        "id": 2,
-                                        "countryName": values.country
-                                    }
-                                },
-                                "country": {
-                                    "createdDate": "2023-09-15T14:32:27",
-                                    "modifiedDate": "2023-09-15T14:32:27",
-                                    "version": 0,
-                                    "modifiedBy": 1,
-                                    "createdBy": 1,
-                                    "id": 2,
-                                    "countryName": values.country
-                                }
-                            },
-                            "city": {
-                                "createdDate": null,
-                                "modifiedDate": "2023-12-12T17:18:17",
-                                "version": 2,
-                                "modifiedBy": 2,
-                                "createdBy": null,
-                                "id": 1,
-                                "cityName": values.city,
-                                "state": {
-                                    "createdDate": null,
-                                    "modifiedDate": "2023-12-13T03:37:41",
-                                    "version": 6,
-                                    "modifiedBy": 1,
-                                    "createdBy": null,
-                                    "id": 1,
-                                    "stateName": values.state,
-                                    "country": {
-                                        "createdDate": "2023-09-15T14:32:27",
-                                        "modifiedDate": "2023-09-15T14:32:27",
-                                        "version": 0,
-                                        "modifiedBy": 1,
-                                        "createdBy": 1,
-                                        "id": 2,
-                                        "countryName": values.country
-                                    }
-                                },
-                                "country": {
-                                    "createdDate": "2023-09-15T14:32:27",
-                                    "modifiedDate": "2023-09-15T14:32:27",
-                                    "version": 0,
-                                    "modifiedBy": 1,
-                                    "createdBy": 1,
-                                    "id": 2,
-                                    "countryName": values.country
-                                }
-                            },
-                            "state": {
-                                "createdDate": null,
-                                "modifiedDate": "2023-12-13T03:37:41",
-                                "version": 6,
-                                "modifiedBy": 1,
-                                "createdBy": null,
-                                "id": 1,
-                                "stateName": values.state,
-                                "country": {
-                                    "createdDate": "2023-09-15T14:32:27",
-                                    "modifiedDate": "2023-09-15T14:32:27",
-                                    "version": 0,
-                                    "modifiedBy": 1,
-                                    "createdBy": 1,
-                                    "id": 2,
-                                    "countryName": values.country
-                                }
-                            },
-                            "country": {
-                                "createdDate": "2023-09-15T14:32:27",
-                                "modifiedDate": "2023-09-15T14:32:27",
-                                "version": 0,
-                                "modifiedBy": 1,
-                                "createdBy": 1,
-                                "id": 2,
-                                "countryName": values.country
-                            },
-                            "placeOfService": "Kolkata2",
-                            "status": "ACTIVE"
-                        },
-
-                    ]
-                }
             }
 
-            // formData.append('tenant', image);
+            console.log(projectUATRequestDTO, "projectUATRequestDTO");
             formData.append('file', image);
             formData.append('tenantCustomer', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
-            // dispatch(getAllCustomerDetailsData(formData));
+            dispatch(getAllCustomerDetailsData(formData));
             // companyDetailsFormik.resetForm();
         },
     })
@@ -583,24 +150,28 @@ const CustomerCompDetails = () => {
     const salesEmployeeOptions = optionOfEmployee?.map((item) => ({
         value: item?.firstName,
         label: item?.firstName,
+        id: item?.id,
+        version: item?.version
     }));
 
     const accountManagerOptions = optionOfEmployee?.map((item) => {
         return {
             value: item?.firstName,
-            label: item?.firstName
+            label: item?.firstName,
+            id: item?.id,
+            version: item?.version
         }
     })
 
     const onUploadChange = (file) => {
         console.log(file.name, "file")
         if (file) {
-            const reader = new FileReader();    
+            const reader = new FileReader();
             reader.onload = (e) => {
-              // When the file is loaded, set the Data URL in the state
-              setLogoFile(e.target.result);
+                // When the file is loaded, set the Data URL in the state
+                setLogoFile(e.target.result);
             };
-      
+
             // Read the file as a Data URL
             reader.readAsDataURL(file);
         }
@@ -896,7 +467,6 @@ const CustomerCompDetails = () => {
                                         );
                                     }}
                                     options={optionCustdesignation}
-                                    // isDisabled={carrierData?.vendor_type?.value === 'agent'}
                                     classNamePrefix="select2-selection form-select"
                                 />
                             </div>
@@ -906,45 +476,16 @@ const CustomerCompDetails = () => {
                                 <label className="form-label">Sales Employee</label>
                                 <Select
                                     name='salesEmployee'
-                                    value={
-                                        salesEmployeeOptions
-                                            ? salesEmployeeOptions.find(
-                                                (option) =>
-                                                    option.value ===
-                                                    companyDetailsFormik?.values?.salesEmployee
-                                            )
-                                            : ""
-                                        // companyDetailsFormik?.values?.salesEmployee
-                                    }
+                                    value={companyDetailsFormik?.values?.salesEmployee || ''}
                                     onChange={(e) => {
                                         if (e.label == "Add New") {
                                             setSalesEmployeeModal(true)
                                         }
-                                        companyDetailsFormik.setFieldValue(
-                                            `salesEmployee`,
-                                            e.value
-                                        );
+                                        companyDetailsFormik.setFieldValue(`salesEmployee`, e);
                                     }}
                                     options={salesEmployeeOptions}
                                     classNamePrefix="select2-selection form-select"
-                                // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
                                 />
-                                {/* <Input
-                                    name='salesEmployee'
-                                    value={
-                                        companyDetailsFormik?.values?.salesEmployee
-                                    }
-                                    onChange={(e) => {
-                                        if (e.label == "Add New") {
-                                            setSalesEmployeeModal(true)
-                                        }
-                                        companyDetailsFormik.setFieldValue(
-                                            `salesEmployee`,
-                                            e.value
-                                        );
-                                    }}
-                                    classNamePrefix="select2-selection form-select"
-                                /> */}
                             </div>
                         </div>
                         <div className="col-12 col-md-6">
@@ -952,26 +493,14 @@ const CustomerCompDetails = () => {
                                 <label className="form-label">Key Account Manager</label>
                                 <Select
                                     name='keyAccountManager'
-                                    value={
-                                        accountManagerOptions
-                                            ? accountManagerOptions.find(
-                                                (option) =>
-                                                    option.value ===
-                                                    companyDetailsFormik?.values?.keyAccountManager
-                                            )
-                                            : ""
-                                    }
+                                    value={companyDetailsFormik?.values?.keyAccountManager || ''}
                                     onChange={(e) => {
                                         if (e.label == "Add New") {
                                             setKeyAccountManagerModal(true)
                                         }
-                                        companyDetailsFormik.setFieldValue(
-                                            `keyAccountManager`,
-                                            e.value
-                                        );
+                                        companyDetailsFormik.setFieldValue(`keyAccountManager`, e);
                                     }}
                                     options={accountManagerOptions}
-                                    // isDisabled={carrierData?.vendor_type?.value === 'agent'}
                                     classNamePrefix="select2-selection form-select"
                                 />
                             </div>
@@ -1124,14 +653,16 @@ const CustomerCompDetails = () => {
                 </CardBody>
             </Card>
 
-            <button
-                type="button"
-                className="btn btn-primary d-flex align-items-center"
-                onClick={companyDetailsFormik.handleSubmit}
-            >
-                Save
-            </button>
-
+            <div className="d-flex justify-content-end" style={{ margin: "0 0 -62px" }}>
+                <button
+                    type="button"
+                    className="btn btn-primary d-flex align-items-center"
+                    onClick={companyDetailsFormik.handleSubmit}
+                >
+                    Save
+                    <i className="bx bx-chevron-right ms-1"></i>
+                </button>
+            </div>
 
             {/* onSubmitHandler={gstDetailsHandler} */}
             <ModalAddGST modal={gstModal} onCloseClick={onCloseClick} />

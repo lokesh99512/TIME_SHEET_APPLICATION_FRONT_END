@@ -78,12 +78,10 @@ export default function OceanFCLSurchargeNameAddNew() {
       }
 
       console.log(JSON.stringify(data), "data");
-
       dispatch(postSurchargeCodeAction(data));
-
+      surchargeFormik.resetForm();      
     },
   })
-  console.log(surchargeFormik?.values?.surchargeCategory?.version, "surchargeFormik");
 
   useEffect(() => {
     dispatch({ type: GET_SURCHARGE_ALICE_DATA });

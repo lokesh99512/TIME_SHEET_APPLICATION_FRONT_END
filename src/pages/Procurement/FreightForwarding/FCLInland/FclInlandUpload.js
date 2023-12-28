@@ -133,7 +133,7 @@ export default function FclInlandUpload() {
         if (activeTabProgress === 3) {
             let data = addInland?.surcharges?.map((item) => {
                 return {
-                    "inlandVendorCharge": {
+                    "proxyVendorCharge": {
                         "version": fcl_Inland_Charge_id?.version,
                         "id": fcl_Inland_Charge_id?.id,
                     },

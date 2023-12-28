@@ -187,7 +187,7 @@ export const Upload_FCL_surcharge_Data= "/api/v1/tenant-ocean-fcl-rp/update/surc
 
 // FCL Port & Local Charges
 export const GET_PORTLOCALCHARGES_ALL = "/api/v1/port-and-local-charges/"
-export const Upload_FCL_PL_Data= "/api/v1/tenant-ocean-fcl-rp/port-and-local-charges"
+export const Upload_FCL_PL_Data= "/api/v1/port-and-local-charges/"
 
 
 // FCL Inland Charges

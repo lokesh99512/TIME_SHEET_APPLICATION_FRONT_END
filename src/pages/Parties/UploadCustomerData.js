@@ -1303,7 +1303,7 @@ export default function UploadCustomerData() {
                                             </TabContent>
 
                                             <ul className="pager wizard twitter-bs-wizard-pager-link d-flex align-items-center justify-content-between">
-                                                {/* <li className={`previous ${activeTabProgress === 1 ? "disabled" : ""}`}>
+                                                <li className={`previous ${activeTabProgress === 1 ? "disabled" : ""}`}>
                                                     <Link
                                                         to="#"
                                                         className={`d-flex align-items-center ${activeTabProgress === 1 ? "btn btn-primary disabled" : "btn btn-primary"}`}
@@ -1313,7 +1313,7 @@ export default function UploadCustomerData() {
                                                     >
                                                         <i className="bx bx-chevron-left me-1"></i> Previous
                                                     </Link>
-                                                </li> */}
+                                                </li>
 
                                                 {/* <li className={`${activeTabProgress === 1 ? isAnyValueEmpty(companyDetailsFormik.values) ? "disabled" : "" : activeTabProgress === 2 ? isAnyValueEmptyInArray(contactsFormik?.values?.contacts) ? "disabled" : ""
                                                     : activeTabProgress === 3 ? isAnyValueEmptyInArray(documentsFormik?.values?.document) ? "disabled" : ""

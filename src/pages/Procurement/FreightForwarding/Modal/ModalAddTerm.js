@@ -139,7 +139,7 @@ const ModalAddTerm = ({ modal, onCloseClick, setTermHandler }) => {
                 </div>
 
                 {/* Service Type */}
-                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
+                {/* <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
                   <label className="form-label">Service Type</label>
                   <Select
                     name="serviceType"
@@ -158,7 +158,7 @@ const ModalAddTerm = ({ modal, onCloseClick, setTermHandler }) => {
                     options={optionServiceType}
                     classNamePrefix="select2-selection form-select"
                   />
-                </div>
+                </div> */}
               </div>
 
               <div className="row">

@@ -92,30 +92,36 @@ export default function UploadPortLocalChargesData() {
           "id": value?.portName?.id || 0,
           "version": value?.portName?.version || 0
         },
-        "oceanPortTerminal": {
-          "id": 1,
-          "version": 0
-        },
+        ...(value?.terminalName && {          
+          "oceanPortTerminal": {
+            "id": 1,
+            "version": 0
+          },
+        }),
         "movementType": value?.movementType?.value || "IMPORT",
-        "tenantCarrier": {
-          "id": value?.carrierName?.id || 1,
-          "version": value?.carrierName?.version || 0
-        },
-        "tenantVendor": {
-          "id": value?.vendorName?.id || 1,
-          "version": value?.vendorName?.version || 0
-        },
+        ...(value?.carrierName && {                    
+          "tenantCarrier": {
+            "id": value?.carrierName?.id || '',
+            "version": value?.carrierName?.version || 0
+          },
+        }),
+        ...(value?.vendorName && {          
+          "tenantVendor": {
+            "id": value?.vendorName?.id || '',
+            "version": value?.vendorName?.version || 0
+          },
+        }),        
         "validFrom": value?.validityFrom || 0,
         "validTo": value?.validityTo || 0,
         "tenantVendorFCLSurchargeCategoryTerminals": [],
         "tenantVendorFCLSurchargeDetails": value?.mainBox?.map((item) => {
           return {
             "surchargeCode": {
-              "id": item?.chargeCode?.id || 1,
+              "id": item?.chargeCode?.id || '',
               "version": item?.chargeCode?.version || 0
             },
             "unitOfMeasurement": {
-              "id": item?.chargeBasis?.id || 1,
+              "id": item?.chargeBasis?.id || '',
               "version": item?.chargeBasis?.version || 0
             },
             "paymentTerm": item?.addTerms?.paymentTerm || "PREPAID",
@@ -125,16 +131,18 @@ export default function UploadPortLocalChargesData() {
             "applicableTax": item?.tax || 0,
             "tenantVendorFCLSurchargeValues": item?.subBox?.map((subItem) => {
               return {
-                "cargoType": {
-                  "id": subItem?.cargoType?.id || 1,
-                  "version": subItem?.cargoType?.version || 0
-                },
+                ...(subItem?.cargoType && {
+                  "cargoType": {
+                    "id": subItem?.cargoType?.id || '',
+                    "version": subItem?.cargoType?.version || 0
+                  }
+                }),
                 "oceanContainer": {
-                  "id": subItem?.containerType?.id || 1,
+                  "id": subItem?.containerType?.id || '',
                   "version": subItem?.containerType?.version || 0
                 },
                 "currency": {
-                  "id": item?.currency?.id || 1,
+                  "id": item?.currency?.id || '',
                   "version": item?.currency?.version || 0
                 },
                 "fromSlab": subItem?.fromSlab || 0,
@@ -162,61 +170,9 @@ export default function UploadPortLocalChargesData() {
         })
       }   
 
-      console.log(JSON.stringify(data),"data")
-
-      // let test = "tenantVendorFCLSurchargeDetails": value?.mainBox?.map((item) => {
-      //   return {
-      //     "surchargeCode": {
-      //       "id": item?.chargeCode?.id || 1,
-      //       "version": item?.chargeCode?.version || 0
-      //     },
-      //     // "unitOfMeasurement": {
-      //     //   "id": item?.chargeBasis?.id || 1,
-      //     //   "version": item?.chargeBasis?.version || 0
-      //     // },
-      //     "paymentTerm": item?.addTerms?.paymentTerm || "PREPAID",
-      //     "standard": item?.addTerms?.isStandard === 'incidental' ? false : true,
-      //     "calculationType": item?.calculationType || "FLAT",
-      //     // "minimumValue": item?.minValue || 0,
-      //     // "applicableTax": item?.tax || 0,
-      //     "tenantVendorFCLSurchargeValues": item?.subBox?.map((subItem) => {
-      //       return {
-      //         "cargoType": {
-      //           "id": subItem?.cargoType?.id || 1,
-      //           "version": subItem?.cargoType?.version || 0
-      //         },
-      //         "oceanContainer": {
-      //           "id": subItem?.containerType?.id || 1,
-      //           "version": subItem?.containerType?.version || 0
-      //         },
-      //         "currency": {
-      //           "id": item?.currency?.id || 1,
-      //           "version": item?.currency?.version || 0
-      //         },
-      //         "fromSlab": subItem?.fromSlab || 0,
-      //         "toSlab": subItem?.toSlab || 0,
-      //         "value": subItem?.rate || 0
-      //       }
-      //     }),
-      //     "tenantVendorFCLSurchargeDetailIncoterms": item?.addTerms?.incoTerm?.map((incoterm,index) => {
-      //       return {
-      //         "incoterm": {
-      //           "id": incoterm?.id || (index + 1),
-      //           "version": incoterm?.version || 0
-      //         }
-      //       }
-      //     }),
-      //     "tenantVendorFCLSurchargeDetailCommodities": item?.addTerms?.commodity?.map((commodity,index) => {
-      //       return {
-      //         "commodity": {
-      //           "id": commodity?.id || (index + 1),
-      //           "version": commodity?.version || 0
-      //         }
-      //       }
-      //     })
-      //   }
-      // })
+      console.log(JSON.stringify(data),"data");
       dispatch(postPortLocalChargesData(data));
+      formik.resetForm();
     },
   });
 

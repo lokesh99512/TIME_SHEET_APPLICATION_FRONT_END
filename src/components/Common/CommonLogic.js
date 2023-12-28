@@ -1,6 +1,18 @@
 import moment from "moment/moment";
 import { useEffect } from "react";
 
+export function removeNullProperties(obj) {
+    if (obj && typeof obj === 'object') {
+      for (const key in obj) {
+        if (obj[key] === null || obj[key] === undefined) {
+          delete obj[key];
+        } else if (typeof obj[key] === 'object') {
+          removeNullProperties(obj[key]);
+        }
+      }
+    }
+}
+
 
 // -------------- Currency wise total
 export const convertToINR = (amount, currency) => {

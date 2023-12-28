@@ -7,7 +7,7 @@ import { inLandBreadcrumb, inLandRateData } from '../../../../common/data/procur
 import { getInLandData, getInLandFreightAction, getInLandSurchargeAction, updateInLandSwitchData } from '../../../../store/Procurement/actions';
 import FilterOffCanvasComp from '../Modal/FilterOffCanvasComp';
 import ModalFclInlandCharge from '../Modal/ModalFclInlandCharge';
-import { CarrierName, ChargeId, CommonValue, ValidTill, VendorName } from '../partials/OceanCol';
+import { CarrierName, ChargeId, CommonReplaceValue, CommonValue, ValidTill, VendorName } from '../partials/OceanCol';
 import TableReact from '../partials/TableReact';
 import TopBreadcrumbs from '../partials/TopBreadcrumbs';
 
@@ -102,7 +102,7 @@ const FclInlandCharge = () => {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <CommonReplaceValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
