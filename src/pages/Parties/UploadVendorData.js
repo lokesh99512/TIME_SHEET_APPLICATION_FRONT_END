@@ -71,7 +71,6 @@ import VenderDetails from "./vender-details-form/VenderDetails";
 import ContactDetailsForm from "./contact-details-form/ContactDetailsForm";
 import DocumentDetailsForm from "./document-details-form/DocumentDetailsForm";
 
-
 import { postVendorData } from "../../store/Parties/actions";
 
 export default function UploadVendorData() {
@@ -110,6 +109,7 @@ export default function UploadVendorData() {
       settings_company_settings_all_data.content
     ) {
       setTenantInfo(settings_company_settings_all_data.content);
+     
     }
   }, [settings_company_settings_all_data]);
 
@@ -171,25 +171,25 @@ export default function UploadVendorData() {
       setfileError("File is required");
     }
   }
-  
+
   const companyDetailsFormik = useFormik({
     initialValues: {
-      image:"",
+      image: "",
       companyName: "",
       logo: "",
       address: "",
-      city: "",
-      state: "",
-      country: "",
-      zipcode: "",
+      city: null,
+      state: null,
+      country: null,
+      zipcode: null,
       website: "",
       contactName: "",
       phoneNumber: "",
       email: "",
       department: "",
       designation: "",
-      venderType: [],
-      serviceType: [],
+      venderType: "",
+      serviceType: "",
       CINnumber: "",
       GSTnumber: "",
       PANnumber: "",
@@ -199,7 +199,7 @@ export default function UploadVendorData() {
     onSubmit: async ({ image, ...value }) => {
       try {
         const targetPinCode = value.zipcode;
-        console.log("i am image :=", image);
+        console.log("i am image :=", value);
 
         if (
           settings_companyPincode_data.content &&
@@ -222,56 +222,45 @@ export default function UploadVendorData() {
             const projectUATRequestDTO = {
               name: value.companyName,
               address: value.address,
-              contactName: value.contactName,
-              contactEmail: value.email,
-              contactNo: value.phoneNumber,
-              department: value.department,
-
-              designation: value.designation,
-              vendorType: value.venderType,
-              serviceType: value.serviceType,
-              cin: value.CINnumber,
-              gst: value.GSTnumber,
-              pan: value.PANnumber,
-              entityType: value.entityType,
-              industryType: value.industryType,
-
-              pinCode: {
-                version: foundPinCodeEntry.version,
-
-                id: foundPinCodeEntry.id,
-                pin: foundPinCodeEntry.pin,
-              },
-              city: {
-                version: foundCity.version,
-
-                id: foundCity.id,
-                cityName: foundCity.cityName,
-              },
-              state: {
-                version: foundPinCodeEntry.state.version,
-
-                id: foundPinCodeEntry.state.id,
-                stateName: value.state,
-              },
-              country: {
-                version: foundPinCodeEntry.country.version,
-                id: foundPinCodeEntry.country.id,
-                countryName: value.country,
-              },
-              logo: "",
-              logoPath: "",
-              tenant: [...tenantInfo],
+              pinCode: null,
+              city: null,
+              state: null,
+              country: null,
+              website: null,
+              contactName:value.contactName,
+              contactNo:value.phoneNumber,
+              contactEmail:value.email,
+              department: "SALES",
+              designation: "SR_MANAGER",
+              vendorType: "CARRIER",
+              serviceType: "OCEAN",
+              cin: "12345615",
+              gst: "ABCD12345",
+              pan: "ABCD12345A",
+              entityType: "PRIVATE_LTD",
+              industryType: "AGRICULTURE",
+              status: "ACTIVE",
+              tenant: tenantInfo[0],
             };
 
-            console.log("finaly vender payload:-", projectUATRequestDTO);
-            const formData = new FormData();
-            formData.append("file", image);
-            const jsonBlob = new Blob([JSON.stringify(projectUATRequestDTO)], {
-              type: "application/json",
-            });
-            formData.append("tenant", jsonBlob);
-             dispatch(postVendorData(formData));
+            console.log(
+              "i am  finalPayload uploadVender:-",
+              projectUATRequestDTO
+            );
+            if (image) {
+              const formData = new FormData();
+              formData.append("file", image);
+              const jsonBlob = new Blob(
+                [JSON.stringify(projectUATRequestDTO)],
+                {
+                  type: "application/json",
+                }
+              );
+              formData.append("tenantVendor", jsonBlob);
+              dispatch(postVendorData(formData));
+            } else {
+              console.error("Error: 'image' is undefined");
+            }
           } else {
             console.error("Error: City data is undefined or empty");
           }
@@ -283,58 +272,6 @@ export default function UploadVendorData() {
       }
     },
   });
-
-  useEffect(() => {
-    if (
-      settings_companyState_data &&
-      settings_companyState_data?.content?.length > 0
-    ) {
-      companyDetailsFormik.setFieldValue(
-        "state",
-        settings_companyState_data?.content[0]?.stateName
-      );
-    }
-    if (
-      settings_companyCountry_data &&
-      settings_companyCountry_data?.content?.length > 0
-    ) {
-      companyDetailsFormik.setFieldValue(
-        "country",
-        settings_companyCountry_data?.content[0]?.countryName
-      );
-    }
-    if (
-      settings_company_settings_all_data &&
-      settings_company_settings_all_data?.content?.length > 0
-    ) {
-      companyDetailsFormik.setFieldValue(
-        "city",
-        settings_company_settings_all_data &&
-          settings_company_settings_all_data?.content[0]?.city?.cityName
-      );
-      companyDetailsFormik.setFieldValue(
-        "state",
-        settings_company_settings_all_data &&
-          settings_company_settings_all_data?.content[0]?.state?.stateName
-      );
-      companyDetailsFormik.setFieldValue(
-        "country",
-        settings_company_settings_all_data &&
-          settings_company_settings_all_data?.content[0]?.country?.countryName
-      );
-      companyDetailsFormik.setFieldValue(
-        "zipcode",
-        settings_company_settings_all_data &&
-          settings_company_settings_all_data?.content[0]?.pinCode?.pin
-      );
-    }
-  }, [
-    settings_companyState_data,
-    settings_companydetails_data,
-    settings_companyCountry_data,
-    settings_companyPincode_data,
-    settings_company_settings_all_data,
-  ]);
 
   const contactsFormik = useFormik({
     initialValues: {

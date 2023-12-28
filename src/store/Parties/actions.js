@@ -149,10 +149,7 @@ export const getAllUserDetails = (data) => {
 
 //VENDOR
 
-export const postVendorData = (data) => {
-  console.log("i am vender post:-",data);
-  return {
-    type: UPLOAD_VENDOR_DATA,
-    payload: data,
-  };
-};
+export const postVendorData = (formData) => ({
+  type: UPLOAD_VENDOR_DATA,
+  payload: { formData },
+});

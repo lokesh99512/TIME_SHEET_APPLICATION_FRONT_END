@@ -3,8 +3,12 @@ import * as url from "../url_helper";
 
 
 
-export const postVenderUpload = ({formData}) => postFormData(url.Upload_Vender_Data, formData, {
-    headers: {
-        'Content-Type': 'multipart/form-data',
-    }
-});
+export const postVenderUpload = data => {
+   
+    return postFormData(url.Upload_Vender_Data, data, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    })
+}
+

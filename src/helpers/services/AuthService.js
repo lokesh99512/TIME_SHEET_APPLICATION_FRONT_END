@@ -21,7 +21,7 @@ export async function LoginAPI(dataObj) {
 // }
 
 export const CompanyBasicDetailsAPI = data => {
-    // console.log("CompanyBasicDetailsAPICompanyBasicDetailsAPI",data);
+   
     return post(url.COMPANY_BASIC_DETAILS, data, {
         headers: {
             'Content-Type': 'multipart/form-data',
