@@ -250,4 +250,4 @@ export const GET_SURCHARGE_CATEGORY = "/api/v1/surcharge-category/"
 export const GET_PARTIES_CUSTOMERS_EMPLOYEE_DETAILS = "/api/v1/user/" 
 
 //add vender details
-export const Upload_Vender_Data = "/api/v1/tenant/vendor/update-contact-details"
+export const Upload_Vender_Data = "/api/v1/tenant/vendor/update-basic-details"

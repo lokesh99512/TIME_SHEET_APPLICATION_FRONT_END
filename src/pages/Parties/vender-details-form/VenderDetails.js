@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
-import {
-  Card,
-  CardBody,
-  Input,
- 
-} from "reactstrap";
+import { Card, CardBody, Input } from "reactstrap";
 import ModalAddNewDepartment from "../Modal/ModalAddNewDepartment";
 import ModalAddNewDesignation from "../Modal/ModalAddNewDesignation";
 import ModalAddNewEntityType from "../Modal/ModalAddNewEntityType";
@@ -31,6 +26,7 @@ import {
   getCompanyPincodeData,
   getCompanyStateData,
 } from "../../../store/Settings/actions";
+import { country_list, state_list } from "../../../common/data/settings";
 
 const gen = [
   { label: "Mr", value: "Mr" },
@@ -68,21 +64,39 @@ const VenderDetails = ({ companyDetailsFormik }) => {
     dispatch(getAllSurchargeCategoryData());
     dispatch(getAllCompanyDetailData());
   }, []);
-  
+
   const onUploadChange = (file) => {
-   
     if (file) {
       const reader = new FileReader();
 
-     
-
-    
       reader.readAsDataURL(file);
     }
-    
+
     companyDetailsFormik.setFieldValue("image", file);
   };
 
+  const handleCityChange = (e) => {
+    companyDetailsFormik.handleChange(e);
+    const cityData = settings_companyCity_data?.content?.find(
+      (city) => city.cityName === e.target.value
+    );
+    if (cityData) {
+      // Update the state and country fields in the form
+      companyDetailsFormik.setFieldValue(
+        "state",
+        cityData.state?.stateName || ""
+      );
+      companyDetailsFormik.setFieldValue(
+        "country",
+        cityData.state?.country?.countryName || ""
+      );
+
+      // Dispatch actions to get pincode data if needed
+      dispatch(getCompanyStateData({ cityId: cityData.id }));
+      dispatch(getCompanyCountryData({ cityId: cityData.id }));
+      dispatch(getCompanyPincodeData({ cityId: cityData.id }));
+    }
+  };
   const onCloseClick = () => {
     setDesignationModal(false);
     setDepartmentModal(false);
@@ -117,7 +131,7 @@ const VenderDetails = ({ companyDetailsFormik }) => {
               <div className="col-12 col-md-6">
                 <div className="mb-3">
                   <label className="form-label">Logo</label>
-                 
+
                   <FileUpload
                     iconName="img"
                     name="image"
@@ -145,70 +159,27 @@ const VenderDetails = ({ companyDetailsFormik }) => {
               <div className="col-12 col-md-6">
                 <div className="mb-3">
                   <label className="form-label">City</label>
-                  {/* <Input
-                                        type="text"
-                                        name="city"
-                                        value={companyDetailsFormik.values.city}
-                                        onChange={
-                                          companyDetailsFormik.handleChange
-                                        }
-                                        className="form-control"
-                                        placeholder=""
-                                      /> */}
 
                   <Input
                     type="text"
                     name="city"
-                    invalid={
-                      companyDetailsFormik.touched.city &&
-                      companyDetailsFormik.errors.city
-                        ? true
-                        : false
-                    }
+                    list="cityList"
                     value={companyDetailsFormik?.values?.city || ""}
-                    onChange={(e) => {
-                      companyDetailsFormik.handleChange(e);
-                      const cityData = settings_companyCity_data?.content?.find(
-                        (city) => city.cityName === e.target.value
-                      );
-                      if (cityData) {
-                        dispatch(
-                          getCompanyStateData({
-                            cityId: cityData.id,
-                          })
-                        );
-                        dispatch(
-                          getCompanyCountryData({
-                            cityId: cityData.id,
-                          })
-                        );
-                        dispatch(
-                          getCompanyPincodeData({
-                            cityId: cityData.id,
-                          })
-                        );
-                      }
-                    }}
+                    onChange={handleCityChange}
                     className="form-control"
                     placeholder=""
                   />
+                  <datalist id="cityList">
+                    {settings_companyCity_data &&
+                      settings_companyCity_data?.content?.map((item, i) => (
+                        <option key={i} value={item.cityName} />
+                      ))}
+                  </datalist>
                 </div>
               </div>
               <div className="col-12 col-md-6">
                 <div className="mb-3">
                   <label className="form-label">State</label>
-                  {/* <Input
-                                        type="text"
-                                        name="state"
-                                        value={
-                                          companyDetailsFormik.values.state
-                                        }
-                                        onChange={
-                                          companyDetailsFormik.handleChange
-                                        }
-                                        className="form-control"
-                                        placeholder=""
-                                      /> */}
 
                   <Input
                     type="text"
@@ -219,6 +190,12 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                     className="form-control"
                     placeholder=""
                   />
+                  <datalist id="stateList">
+                    {state_list &&
+                      state_list.map((item, i) => (
+                        <option key={i} value={item} />
+                      ))}
+                  </datalist>
                 </div>
               </div>
               <div className="col-12 col-md-6">
@@ -227,28 +204,23 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                   <Input
                     type="text"
                     name="country"
-                    value={companyDetailsFormik.values.country}
+                    list="countryList"
+                    value={companyDetailsFormik?.values?.country || ""}
                     onChange={companyDetailsFormik.handleChange}
                     className="form-control"
                     placeholder=""
                   />
+                  <datalist id="countryList">
+                    {country_list &&
+                      country_list.map((item, i) => (
+                        <option key={i} value={item} />
+                      ))}
+                  </datalist>
                 </div>
               </div>
               <div className="col-12 col-md-6">
                 <div className="mb-3">
                   <label className="form-label">Zipcode</label>
-                  {/* <Input
-                                        type="text"
-                                        name="zipcode"
-                                        value={
-                                          companyDetailsFormik.values.zipcode
-                                        }
-                                        onChange={
-                                          companyDetailsFormik.handleChange
-                                        }
-                                        className="form-control"
-                                        placeholder=""
-                                      /> */}
                   <Input
                     type="text"
                     name="zipcode"
@@ -258,6 +230,12 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                     className="form-control"
                     placeholder=""
                   />
+                  <datalist id="zipcodeList">
+                    {settings_companyPincode_data &&
+                      settings_companyPincode_data?.content?.map((item, i) => (
+                        <option key={i} value={item.pin} />
+                      ))}
+                  </datalist>
                 </div>
               </div>
               <div className="col-12 col-md-6">
@@ -434,39 +412,6 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                 </div>
               </div>
             </div>
-
-            {/* <div className="row">
-                                                            <div className="col-6">
-                                                                <div className="mb-3">
-                                                                    <label className="form-label">Sales Employee</label>
-                                                                    <Select
-                                                                        // value={carrierData.vendor_name}
-                                                                        // name='vendor_name'
-                                                                        // onChange={(opt) => {
-                                                                        //     handleSelectGroup('vendor_name', opt)
-                                                                        // }}
-                                                                        options={department}
-                                                                        classNamePrefix="select2-selection form-select"
-                                                                    // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-6">
-                                                                <div className="mb-3">
-                                                                    <label className="form-label">Key Account Manager</label>
-                                                                    <Select
-                                                                        // value={carrierData.carrier_name}
-                                                                        // name='carrier_name'
-                                                                        // onChange={(opt) => {
-                                                                        //     handleSelectGroup('carrier_name', opt)
-                                                                        // }}
-                                                                        options={designation}
-                                                                        // isDisabled={carrierData?.vendor_type?.value === 'agent'}
-                                                                        classNamePrefix="select2-selection form-select"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        </div> */}
           </form>
         </CardBody>
       </Card>
@@ -482,107 +427,52 @@ const VenderDetails = ({ companyDetailsFormik }) => {
               <div className="col-12 col-md-6">
                 <div className="mb-3">
                   <label className="form-label">Vender Type</label>
-                  {/* <Select
-                                        name="vendorType"
-                                        isMulti
-                                        value={
-                                          vendorType
-                                            ? vendorType.find(
-                                                (option) =>
-                                                  option.value ===
-                                                  companyDetailsFormik?.values
-                                                    ?.vendorType
-                                              )
-                                            : ""
-                                        }
-                                        onChange={(e) => {
-                                          if (e.label == "Add New") {
-                                            setVendorTypeModal(true);
-                                          }
-                                          companyDetailsFormik.setFieldValue(
-                                            `vendorType`,
-                                            e.value
-                                          );
-                                        }}
-                                        options={vendorType}
-                                        classNamePrefix="select2-selection form-select"
-                                        // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
-                                      /> */}
-
                   <Select
-                    value={vendorTypeOptions.filter((option) =>
-                      companyDetailsFormik.values.venderType.includes(
-                        option.value
-                      )
-                    )}
-                    onChange={(selectedOptions) => {
-                      const selectedValues = selectedOptions.map(
-                        (option) => option.value
-                      );
-                      companyDetailsFormik.setFieldValue(
-                        "venderType",
-                        selectedValues
-                      );
-                    }}
                     name="venderType"
                     id="venderType"
+                    value={
+                      vendorTypeOptions
+                        ? vendorTypeOptions.find(
+                            (option) =>
+                              option.value ===
+                              companyDetailsFormik?.values?.venderType
+                          )
+                        : ""
+                    }
+                    onChange={(e) => {
+                      companyDetailsFormik.setFieldValue(`venderType`, e.value);
+                    }}
                     options={vendorTypeOptions}
-                    isMulti
-                    placeholder="Select Vendor"
                     classNamePrefix="select2-selection form-select"
+                    // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
                   />
                 </div>
               </div>
               <div className="col-12 col-md-6">
                 <div className="mb-3">
                   <label className="form-label">Service Type</label>
-                  {/* <Select
-                                        name="serviceType"
-                                        isMulti
-                                        value={
-                                          serviceType
-                                            ? serviceType.find(
-                                                (option) =>
-                                                  option.value ===
-                                                  companyDetailsFormik?.values
-                                                    ?.serviceType
-                                              )
-                                            : ""
-                                        }
-                                        onChange={(e) => {
-                                          if (e.label == "Add New") {
-                                            setServiceTypeModal(true);
-                                          }
-                                          companyDetailsFormik.setFieldValue(
-                                            `serviceType`,
-                                            e.value
-                                          );
-                                        }}
-                                        options={serviceType}
-                                        // isDisabled={carrierData?.vendor_type?.value === 'agent'}
-                                        classNamePrefix="select2-selection form-select"
-                                      /> */}
+
                   <Select
-                    value={serviceTypeOptions.filter((option) =>
-                      companyDetailsFormik.values.serviceType.includes(
-                        option.value
-                      )
-                    )}
-                    onChange={(selectedOptions) => {
-                      const selectedValues = selectedOptions.map(
-                        (option) => option.value
-                      );
-                      companyDetailsFormik.setFieldValue(
-                        "serviceType",
-                        selectedValues
-                      );
-                    }}
                     name="serviceType"
                     id="serviceType"
+                    value={
+                      serviceTypeOptions
+                        ? serviceTypeOptions.find(
+                            (option) =>
+                              option.value ===
+                              companyDetailsFormik?.values?.serviceType
+                          )
+                        : ""
+                    }
+                    onChange={(e) => {
+                      companyDetailsFormik.setFieldValue(
+                        `serviceType`,
+                        e.value
+                      );
+                    }}
                     options={serviceTypeOptions}
-                    isMulti
-                    placeholder="Select service type"
                     classNamePrefix="select2-selection form-select"
+                 
                   />
                 </div>
               </div>
@@ -617,14 +507,7 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                   />
                 </div>
               </div>
-              {/* <div className="col-1">
-                                                                <button
-                                                                    className="btn btn-primary mt-4"
-                                                                    onClick={() => setGstModal(true)}
-                                                                >
-                                                                    <i className="bx bx-plus"></i>
-                                                                </button>
-                                                                </div> */}
+
               <div className="col-12 col-md-6">
                 <div className="mb-3">
                   <label className="form-label">PAN Number</label>
