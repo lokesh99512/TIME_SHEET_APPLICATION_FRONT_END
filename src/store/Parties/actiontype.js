@@ -76,3 +76,7 @@ export const GET_PARTIES_CUSTOMER_EMPLOYEE_DETAILS_FAIL =
 //All Vender
 
 export const UPLOAD_VENDOR_DATA = "UPLOAD_VENDOR_DATA";
+
+
+// customer
+export const GET_CUSTOMERS_ID = "GET_CUSTOMERS_ID";

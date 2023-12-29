@@ -12,3 +12,8 @@ export const postVenderUpload = data => {
     })
 }
 
+
+
+
+// --------------------------------------- Darshita
+export const postCustomerContactSer = (data) => postFormData(url.UPLOAD_CUSTOMER_CONTACT_URL, data);

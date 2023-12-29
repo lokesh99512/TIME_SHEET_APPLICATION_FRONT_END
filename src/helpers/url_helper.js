@@ -198,6 +198,9 @@ export const Upload_FCL_INLAND_Carrier = "/api/v1/inland-vendor-charge/"
 export const Upload_FCL_INLAND_Freight = "/api/v1/inland-vendor-freight/"
 export const Upload_FCL_INLAND_Surcharge = "/api/v1/inland-vendor-surcharge/"
 
+// customer
+export const UPLOAD_CUSTOMER_CONTACT_URL = "/api/v1/tenant/customer/update-contact-details"
+
 
 // --------------------------------------------------------- Kunal ---------------------------------------------------------
 

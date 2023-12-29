@@ -407,7 +407,7 @@ export default function FclInlandUpload() {
                                                                     <div className="row">
                                                                         <div className="col-lg-3">
                                                                             <div className="mb-3">
-                                                                                <label htmlFor="surcharges_name" className="form-label">Surcharge Name</label>
+                                                                                <label htmlFor="surcharges_name" className="form-label">Surcharge Name</label>                                                                                
                                                                                 <Select
                                                                                     value={item.surcharges_name || ''}
                                                                                     name='surcharges_name'
@@ -417,7 +417,7 @@ export default function FclInlandUpload() {
                                                                                         }
                                                                                         handleSelectGroup2(opt, 'surcharges_name', index);
                                                                                     }}
-                                                                                    options={[...surchargeCode_data, { label: "Add New", value: "Add New" }]}
+                                                                                    options={[...(surchargeCode_data?.filter((item) => (item?.surchargeCategory === "DESTINATION TRANSPORTATION" || item?.surchargeCategory === "ORIGIN TRANSPORTATION")) || []), { label: "Add New", value: "Add New" }]}
                                                                                     classNamePrefix="select2-selection form-select"
                                                                                 />
                                                                             </div>

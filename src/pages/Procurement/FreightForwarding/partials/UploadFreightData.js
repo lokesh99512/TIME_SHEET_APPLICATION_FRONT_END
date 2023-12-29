@@ -449,7 +449,7 @@ export default function UploadFreightData() {
                                                                                         }
                                                                                         handleSelectGroup2(opt, 'surcharges_name', index);
                                                                                     }}
-                                                                                    options={[...surchargeCode_data, { label: "Add New", value: "Add New" }]}
+                                                                                    options={[...(surchargeCode_data?.filter((item) => item?.surchargeCategory === "OCEAN SURCHARGE") || []), { label: "Add New", value: "Add New" }]}
                                                                                     classNamePrefix="select2-selection form-select"
                                                                                 />
                                                                             </div>

@@ -341,7 +341,7 @@ export default function UploadPortLocalChargesData() {
                                               value={formik.values.mainBox[index].chargeCode || ""}
                                               onChange={(e) => {
                                                 if (e.label == "Add New") {
-                                                  navigate("/freight/ocean/upload/PortLocalCharges/add-new")
+                                                  navigate("/freight/ocean/upload/fcl-pl/add-new", { state: { id: 'fcl-pl'}})
                                                 }
                                                 formik.setFieldValue(`mainBox[${index}].chargeCode`, e);
                                               }}

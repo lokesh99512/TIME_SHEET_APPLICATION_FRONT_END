@@ -1,5 +1,6 @@
 import { GET_ALL_PARTIES_TABLE } from "../../helpers/url_helper";
 import {
+  GET_CUSTOMERS_ID,
   GET_CUSTOMERS_TABLE_DATA_FAIL,
   GET_CUSTOMERS_TABLE_DATA_SUCCESS,
   GET_PARTIES_ALL_DETAILS_FAIL,
@@ -42,6 +43,7 @@ const INIT_STATE = {
   parties_all_vendors_data: [],
   parties_all_employee_details: [],
   parties_vendors_details: [],
+  customer_id: [],
   // addVendorData: [],
   // error: null,
 };
@@ -209,12 +211,11 @@ const parties = (state = INIT_STATE, action) => {
       );
       return { ...state, parties_vendors_data: updatedVendorItems };
     // ---------------------
-    // case UPLOAD_VENDOR_DATA:
-    //   console.log("action", action.payload);
-    //   return {
-    //     ...state,
-    //     addVendorData: action.payload,
-    //   };
+    case GET_CUSTOMERS_ID:
+      return {
+        ...state,
+        customer_id: action.payload,
+      };
     default:
       return state;
   }

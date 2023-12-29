@@ -283,3 +283,18 @@ export const PartiesVendorsData = [
     },
     
   ];
+
+const optionCustomerDocumentType = [
+  {label: 'PAN', value: 'PAN'},
+  {label: 'AADHAAR', value: 'AADHAAR'},
+  {label: 'TAN', value: 'TAN'},
+  {label: 'COMPANY INCORPORATION CERTIFICATE', value: 'COMPANY_INCORPORATION_CERTIFICATE'},
+  {label: 'GST CERTIFICATE', value: 'GST_CERTIFICATE'},
+  {label: 'AOA', value: 'AOA'},
+  {label: 'MOA', value: 'MOA'},
+  {label: 'IMPORT EXPORT CERTIFICATE', value: 'IMPORT_EXPORT_CERTIFICATE'},
+]
+
+export {
+  optionCustomerDocumentType
+}

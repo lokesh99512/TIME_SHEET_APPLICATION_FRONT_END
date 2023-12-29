@@ -4,7 +4,8 @@ import { useSelector } from 'react-redux';
 import Select from "react-select";
 import { Card, CardBody, Input } from 'reactstrap';
 
-import { optionCustcustomerType, optionCustdepartment, optionCustdesignation, optionCustentityType, optionCustindustryType, optionCustkeyAccountManager, optionCustopCode, optionCustsalesEmployee, optionCusttitle } from '../../../../common/data/settings';
+import { useDispatch } from 'react-redux';
+import { optionCustcustomerType, optionCustdepartment, optionCustdesignation, optionCustentityType, optionCustindustryType, optionCustopCode, optionCusttitle } from '../../../../common/data/settings';
 import { getAllCustomerDetailsData, getCustomersCountryData, getCustomersPincodeData, getCustomersStateData } from '../../../../store/Parties/actions';
 import FileUpload from '../../FileUpload';
 import ModalAddGST from '../../Modal/ModalAddGST';
@@ -15,10 +16,9 @@ import ModalAddNewEntityType from '../../Modal/ModalAddNewEntityType';
 import ModalAddNewIndustryType from '../../Modal/ModalAddNewIndustryType';
 import ModalAddNewKeyAccountManager from '../../Modal/ModalAddNewKeyAccountManager';
 import ModalAddNewSalesEmployee from '../../Modal/ModalAddNewSalesEmployee';
-import { useDispatch } from 'react-redux';
 
 
-const CustomerCompDetails = () => {
+const CustomerCompDetails = ({ toggleTabProgress }) => {
     const [logoFile, setLogoFile] = useState('');
     const [gstModal, setGstModal] = useState(false);
     const [departmentModal, setDepartmentModal] = useState(false);
@@ -51,6 +51,11 @@ const CustomerCompDetails = () => {
         setModalAllData((prev) => ([...prev, data]))
     }
 
+    // console.log(parties_pincode_details,"parties_pincode_details");
+    // console.log(parties_country_details,"parties_country_details");
+    // console.log(parties_state_details,"parties_state_details");
+    // console.log(parties_city_details,"parties_state_details");
+
     const companyDetailsFormik = useFormik({
         initialValues: {
             companyName: "",
@@ -82,6 +87,12 @@ const CustomerCompDetails = () => {
         onSubmit: async ({ image, ...values }) => {
             // console.log("values company details", image);
             // console.log("values company details", values);
+            let countryVal = parties_country_details?.content?.filter((con) => con?.countryName === values?.country) || [];
+            let cityVal = parties_city_details?.content?.filter((city) => city?.cityName === values?.city) || [];
+            // let cityVal = parties_country_details?.content?.filter((city) => city?.countryName === values?.country) || [];
+            let stateVal = parties_state_details?.content?.filter((state) => state?.stateName === values?.state) || [];
+            let pincodeVal = parties_pincode_details?.content?.filter((pin) => pin?.pin === values?.zipcode) || [];
+   
             let formData = new FormData();
 
             const projectUATRequestDTO = {
@@ -89,18 +100,32 @@ const CustomerCompDetails = () => {
                 "logo": null,
                 "logoPath": image?.preview || "",
                 "address": values.address || null,
-                // "pinCode": {
-                //     "pin": values.zipcode || null,
-                // },
-                // "city": {
-                //     "cityName": values.city || null,
-                // },
-                // "state": {
-                //     "stateName": values.state || null,
-                // },
-                // "country": {
-                //     "countryName": values.country || null,
-                // },
+                ...(pincodeVal?.length !== 0 && {
+                    "pinCode": {
+                        id: pincodeVal[0]?.id,
+                        version: pincodeVal[0]?.version
+                    },
+                }),
+                ...(cityVal?.length !== 0 && {
+                    "city": {
+                        id: cityVal[0]?.id,
+                        version: cityVal[0]?.version
+                    },
+                }),
+                ...(stateVal?.length !== 0 && {
+                    "state": {
+                        id: stateVal[0]?.id,
+                        version: stateVal[0]?.version
+                    },
+                }),
+                ...(countryVal?.length !== 0 && {
+                    "country": {
+                        id: countryVal[0]?.id,
+                        version: countryVal[0]?.version
+                    },
+                }),
+                // "pinCode": null,
+                // "state": null,
                 "website": values.website || null,
                 "contactName": values.contactName || null,
                 "contactNo": values.phoneNumber || null,
@@ -132,6 +157,7 @@ const CustomerCompDetails = () => {
             formData.append('file', image);
             formData.append('tenantCustomer', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
             dispatch(getAllCustomerDetailsData(formData));
+            toggleTabProgress(2);
             // companyDetailsFormik.resetForm();
         },
     })
@@ -233,7 +259,10 @@ const CustomerCompDetails = () => {
                                     // onChange={companyDetailsFormik.handleChange}
                                     onChange={(e) => {
                                         companyDetailsFormik.handleChange(e);
-                                        const cityData = parties_city_details?.content?.find((city) => city.cityName === e.target.value)
+                                        companyDetailsFormik.setFieldValue('state', '');
+                                        companyDetailsFormik.setFieldValue('country', '');
+                                        companyDetailsFormik.setFieldValue('zipcode', '');
+                                        const cityData = parties_city_details?.content?.find((city) => city.cityName === e.target.value);
                                         if (cityData) {
                                             dispatch(getCustomersStateData({ cityId: cityData.id }));
                                             dispatch(getCustomersCountryData({ cityId: cityData.id }));

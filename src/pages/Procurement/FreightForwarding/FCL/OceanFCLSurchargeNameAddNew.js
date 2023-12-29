@@ -25,11 +25,12 @@ export default function OceanFCLSurchargeNameAddNew() {
 
   useEffect(() => {
     let newData= []
-    if(navigateState?.state?.id === "inland" || navigateState?.pathname?.includes('inland')) {
-      
+    if(navigateState?.state?.id === "inland" || navigateState?.pathname?.includes('inland')) {      
       newData = surchargeCategory_data?.filter((item) => {
         return item.value === "DESTINATION TRANSPORTATION" || item.value === "ORIGIN TRANSPORTATION"
       }) || []
+    } else if(navigateState?.state?.id === "fcl-pl" || navigateState?.pathname?.includes('fcl-pl')){
+      newData = surchargeCategory_data?.filter((option) => (option?.value !== "DESTINATION TRANSPORTATION" && option?.value !== "ORIGIN TRANSPORTATION" && option?.value !== "OCEAN SURCHARGE")) || []
     } else {
       newData = surchargeCategory_data?.filter((item) => item.value === "OCEAN SURCHARGE") || []
     }

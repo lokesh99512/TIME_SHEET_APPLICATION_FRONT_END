@@ -10,6 +10,7 @@ import {
   getVendorsDataSuccess,
 } from "./actions";
 import {
+  GET_CUSTOMERS_ID,
   GET_CUSTOMERS_TABLE_DATA,
   GET_PARTIES_ALL_DETAILS,
   GET_PARTIES_ALL_DETAILS_SUCCESS,
@@ -78,6 +79,7 @@ function* getPartiesCustomerDetailsData({ payload }) {
       type: GET_PARTIES_CUSTOMERS_DETAILS_SUCCESS,
       payload: response.data,
     });
+    yield put({type: GET_CUSTOMERS_ID, payload: { id: response?.id, version: response?.version}});
     showSuccessToast("Customer Details Added Successfully");
   } catch (error) {
     showErrorToast(error?.message);
