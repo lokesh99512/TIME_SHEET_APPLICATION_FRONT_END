@@ -1,18 +1,16 @@
 import classnames from 'classnames';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Dropzone from 'react-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Select from "react-select";
 import { Card, CardBody, Col, Container, Form, Modal, NavItem, NavLink, Progress, Row, TabContent, TabPane, UncontrolledTooltip } from 'reactstrap';
-import fileData from '../../../../assets/extra/upload_Formats.xlsx';
-import inlandfileData from '../../../../assets/extra/Inlandcharge_Upload.xlsx';
+import fileData from '../../../../assets/extra/FclUplaodFormat.xlsx';
 import { delete_icon } from '../../../../assets/images';
-import { optcurrency, optionCarrierName, optionMultiDestination, optionPaymentType, optionRateSource, optionRateType, optionSurchargesName, optionValidityApp, optionVendorName, optionVendorType } from '../../../../common/data/procurement';
-import { formatBytes, isAnyValueEmpty, isExcelFile } from '../../../../components/Common/CommonLogic';
-import { addFCLData, updateCarrierData, updateFCLActiveTab } from '../../../../store/Procurement/actions';
-import { BLANK_CARRIER_DATA } from '../../../../store/Procurement/actiontype';
-import { useEffect } from 'react';
+import { optionRateSource, optionRateType, optionValidityApp, optionVendorType } from '../../../../common/data/procurement';
+import { formatBytes, isAnyValueEmpty, isAnyValueEmptyInArray, isExcelFile } from '../../../../components/Common/CommonLogic';
+import { addFCLData, updateFCLActiveTab, uploadFclCarrierData, uploadFclFrightData, uploadFclSurchargeData } from '../../../../store/Procurement/actions';
+import { BLANK_FCL_CARRIER_DATA, BLANK_SURCHARGE_DATA } from '../../../../store/Procurement/actiontype';
 
 export default function UploadFreightData() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
@@ -22,36 +20,36 @@ export default function UploadFreightData() {
     const navigate = useNavigate();
     const [surcharges, setSurcharges] = useState([]);
     const [fileError, setfileError] = useState('');
-    const [removeValue, setRemoveValue] = useState('');
-    const carrierData = useSelector((state) => state?.procurement?.carrierDetails);
-    const addFCL = useSelector((state) => state?.procurement?.addFCL);
-    const fclActiveTab = useSelector((state) => state?.procurement?.fclActiveTab);
+    const [AllVendorName, setAllVendorName] = useState([]);
+    const [vendorName, setVendorName] = useState([]);
+    const { addFCL, fclActiveTab, fcl_charge_id, fcl_destinationData } = useSelector((state) => state?.procurement);
+    const { vendor_data, currency_data, UOM_data, surchargeCode_data } = useSelector((state) => state?.globalReducer);
     const dispatch = useDispatch();
-    const { tabName } = useParams();
-    const navigateState = useLocation();
 
-    
+    let carrierObj = {
+        rate_type: '',
+        rate_source: '',
+        vendor_type: '',
+        vendor_name: '',
+        validity_application: '',
+        validity_from: '',
+        validity_to: ''
+    }
 
-    useEffect(()=>{
+    useEffect(() => {
+        let vendorlist = vendor_data?.content?.map((item) => {
+            return { label: item?.name, value: item?.name, version: item?.version, id: item?.id, type: item?.vendorType }
+        })
+        setAllVendorName(vendorlist);
+    }, [vendor_data]);
+
+    useEffect(() => {
         setActiveTabProgress(fclActiveTab)
         if (fclActiveTab === 1) { setProgressValue(33) }
         if (fclActiveTab === 2) { setProgressValue(66) }
         if (fclActiveTab === 3) { setProgressValue(100); }
         setSurcharges(addFCL?.surcharges)
-    },[])
-
-    const openSaveConfirmModal = () => {
-        setOpenSaveModal(!openSaveModal);
-    }
-    
-    const finalSaveButton = () => {
-        setSurcharges([]);
-        setActiveTabProgress(1);
-        setProgressValue(33);
-        setselectedFiles([]);
-        dispatch({type: BLANK_CARRIER_DATA});
-        setOpenSaveModal(false);
-    }
+    }, [fclActiveTab]);
 
     const toggleTabProgress = (tab) => {
         if (activeTabProgress !== tab) {
@@ -62,12 +60,6 @@ export default function UploadFreightData() {
                 if (tab === 2) { setProgressValue(66) }
                 if (tab === 3) { setProgressValue(100); }
             }
-        }
-        if (tab === 4) {
-            console.log(carrierData, "carrierData step1");
-            console.log(selectedFiles, "selectedFiles step2");
-            console.log(surcharges, "surcharges step3");
-            openSaveConfirmModal();
         }
     }
 
@@ -86,7 +78,7 @@ export default function UploadFreightData() {
                 setselectedFiles(files);
             } else {
                 setfileError("The file type is not supported. Upload an Excel file.");
-                setselectedFiles();
+                setselectedFiles([]);
             }
         } else {
             setfileError("File is required");
@@ -98,7 +90,7 @@ export default function UploadFreightData() {
         const newSurcharge = {
             surcharges_name: '',
             destination: [],
-            payment_type: 'prepaid',
+            uom: '',
             gp1: '',
             gp2: '',
             hq1: '',
@@ -106,41 +98,32 @@ export default function UploadFreightData() {
             rf1: '',
             rf2: ''
         }
-        setSurcharges(s =>[...s, newSurcharge])
-        handleAddFCL("surcharges",[...surcharges,newSurcharge])
+        setSurcharges(s => [...s, newSurcharge])
+        handleAddFCL("surcharges", [...surcharges, newSurcharge])
     }
-
-
     const removeInputFields = (index) => {
         const rows = [...surcharges];
         rows.splice(index, 1);
         setSurcharges(rows);
-        handleAddFCL("surcharges",rows)
+        handleAddFCL("surcharges", rows)
     }
 
     const handleChange = (e, name, index) => {
         const list = [...surcharges];
         list[index][name] = e.target.value;
         setSurcharges(list);
+        handleAddFCL("surcharges", list);
     }
 
-    const handleAddFCL = useCallback((name, opt)=>{
-        dispatch(addFCLData(name,opt));
-    },[addFCL])
-
-    const handleSelectGroup = useCallback((name, opt) => {
-        dispatch(updateCarrierData(name, opt));
-        if (carrierData?.vendor_type?.value === 'agent') {
-            setRemoveValue('carrier_name');
-        } else {
-            setRemoveValue('vendor_name');
-        }
-    }, [carrierData]);
+    const handleAddFCL = useCallback((name, opt) => {
+        dispatch(addFCLData(name, opt));
+    }, [addFCL]);
 
     const handleSelectGroup2 = useCallback((opt, name, index) => {
         const list = [...surcharges];
         list[index][name] = opt;
         setSurcharges(list);
+        handleAddFCL("surcharges", list)
     }, [surcharges]);
 
     const handleMultiSelectChange = useCallback((selected, name, options, index) => {
@@ -149,13 +132,86 @@ export default function UploadFreightData() {
         if (selected.some(option => option.value === 'selectAll')) {
             list[index][name] = options.filter(option => option.value !== 'selectAll');
             setSurcharges(list);
+            handleAddFCL("surcharges", list);
             return;
         }
         list[index][name] = selected;
         setSurcharges(list);
+        handleAddFCL("surcharges", list)
     }, [surcharges]);
 
-    
+    // ------------------ integration
+
+    const openSaveConfirmModal = () => {
+        setOpenSaveModal(!openSaveModal);
+    }
+    const finalSaveButton = () => {
+        if (activeTabProgress === 3) {
+            let data = addFCL?.surcharges?.map((item) => {
+                return {
+                    "surchargeCodeId": item?.surcharges_name?.id,
+                    "uomId": item?.uom?.id,
+                    "destinationIds": item?.destination?.length !== 0 ? item?.destination?.map((item) => item?.id) : [],
+                    "currencyId": item?.charge_currency?.id,
+                    "containerWiseValues": {
+                        "40GP": item?.gp2,
+                        "40HQ": item?.hq1,
+                        "45HQ": item?.hq2,
+                        "20RF": item?.rf1,
+                        "40RF": item?.rf2,
+                        "20GP": item?.gp1
+                    }
+                }
+            });
+
+            console.log(JSON.stringify(data), "data");
+
+            dispatch(uploadFclSurchargeData(data, fcl_charge_id));
+            dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addFCL', data: { ...addFCL, surcharges: [] } } });
+
+            setSurcharges([]);
+            // toggleTabProgress(1);
+        }
+        setOpenSaveModal(false);
+    }
+    const uploadSaveHandler = () => {
+        if (activeTabProgress === 1) {
+            const data = {
+                rateSource: addFCL?.carrierDetails?.rate_source?.value || '',
+                rateType: addFCL?.carrierDetails?.rate_type?.value || '',
+                validityApplication: addFCL?.carrierDetails?.validity_application?.value || '',
+                validFrom: addFCL?.carrierDetails?.validity_from || '',
+                validTo: addFCL?.carrierDetails?.validity_to || '',
+            };
+
+            const vendorInfo = {
+                id: addFCL?.carrierDetails?.vendor_name?.id || '',
+                version: addFCL?.carrierDetails?.vendor_name?.version || 0,
+            };
+
+            const newData = {
+                ...data,
+                [addFCL?.carrierDetails?.vendor_type?.value === 'CARRIER' ? 'tenantCarrierVendor' : 'tenantVendor']: vendorInfo,
+            };
+
+            dispatch(uploadFclCarrierData({ ...newData }));
+            dispatch({ type: BLANK_FCL_CARRIER_DATA, payload: { name: 'addFCL', data: { ...addFCL, carrierDetails: carrierObj } } });
+            // toggleTabProgress(2);
+        } else if (activeTabProgress === 2) {
+            let xlxsfile = selectedFiles[0]
+            const formData = new FormData();
+            formData.append('file', xlxsfile);
+
+            dispatch(uploadFclFrightData(formData, fcl_charge_id));
+
+            setselectedFiles([]);
+            // toggleTabProgress(3);
+            // formData.append('tenantVendor', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
+        }
+        if (activeTabProgress === 3) {
+            openSaveConfirmModal();
+        }
+    }
 
     return (
         <>
@@ -170,31 +226,31 @@ export default function UploadFreightData() {
                                         <div id="progrss-wizard" className="twitter-bs-wizard upload_freight_wrap">
                                             <ul className="twitter-bs-wizard-nav nav-justified nav nav-pills">
                                                 <NavItem>
-                                                    <NavLink className={classnames({ active: activeTabProgress === 1 })} onClick={() => { toggleTabProgress(1); }} >
+                                                    <NavLink className={classnames({ active: activeTabProgress === 1 })} onClick={() => { toggleTabProgress(1) }}>
                                                         <div className="step-icon" data-bs-toggle="tooltip" id="SellerDetails">
                                                             <i className="bx bx-list-ul"></i>
                                                             <UncontrolledTooltip placement="top" target="SellerDetails">
-                                                                Carrier Details
+                                                                FCL Ocean Carrier Details
                                                             </UncontrolledTooltip>
                                                         </div>
                                                     </NavLink>
                                                 </NavItem>
                                                 <NavItem>
-                                                    <NavLink className={classnames({ active: activeTabProgress === 2 })} onClick={() => { toggleTabProgress(2); }} >
+                                                    <NavLink className={classnames({ active: activeTabProgress === 2 })} onClick={() => { toggleTabProgress(2) }}>
                                                         <div className="step-icon" data-bs-toggle="tooltip" id="CompanyDocument">
                                                             <i className="bx bx-book-bookmark"></i>
                                                             <UncontrolledTooltip placement="top" target="CompanyDocument">
-                                                                Freight Upload
+                                                                FCL Ocean Freight Upload
                                                             </UncontrolledTooltip>
                                                         </div>
                                                     </NavLink>
                                                 </NavItem>
                                                 <NavItem>
-                                                    <NavLink className={classnames({ active: activeTabProgress === 3 })} onClick={() => { toggleTabProgress(3); }} >
+                                                    <NavLink className={classnames({ active: activeTabProgress === 3 })} onClick={() => { toggleTabProgress(3) }}>
                                                         <div className="step-icon" data-bs-toggle="tooltip" id="BankDetails">
                                                             <i className="bx bxs-bank"></i>
                                                             <UncontrolledTooltip placement="top" target="BankDetails">
-                                                                Surcharges
+                                                                FCL Ocean Surcharges
                                                             </UncontrolledTooltip>
                                                         </div>
                                                     </NavLink>
@@ -207,7 +263,7 @@ export default function UploadFreightData() {
                                             <TabContent activeTab={activeTabProgress} className="twitter-bs-wizard-tab-content">
                                                 <TabPane tabId={1}>
                                                     <div className="text-center mb-4">
-                                                        <h5>Carrier Details</h5>
+                                                        <h5>FCL Ocean Carrier Details</h5>
                                                     </div>
                                                     <form>
                                                         <div className="row">
@@ -215,10 +271,9 @@ export default function UploadFreightData() {
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Rate Type</label>
                                                                     <Select
-                                                                        value={carrierData.rate_type}
+                                                                        value={addFCL?.carrierDetails?.rate_type}
                                                                         name='rate_type'
                                                                         onChange={(opt) => {
-                                                                            handleSelectGroup('rate_type', opt);
                                                                             handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, rate_type: opt });
                                                                         }}
                                                                         options={optionRateType}
@@ -230,10 +285,9 @@ export default function UploadFreightData() {
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Rate Source</label>
                                                                     <Select
-                                                                        value={carrierData.rate_source}
+                                                                        value={addFCL?.carrierDetails?.rate_source}
                                                                         name='rate_source'
                                                                         onChange={(opt) => {
-                                                                            handleSelectGroup('rate_source', opt)
                                                                             handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, rate_source: opt });
                                                                         }}
                                                                         options={optionRateSource}
@@ -244,84 +298,68 @@ export default function UploadFreightData() {
                                                         </div>
 
                                                         <div className="row">
-                                                            {/* <div className="col-lg-4">
+                                                            <div className="col-lg-4">
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Vendor Type</label>
                                                                     <Select
-                                                                        value={carrierData.vendor_type}
+                                                                        value={addFCL?.carrierDetails?.vendor_type}
                                                                         name='vendor_type'
                                                                         onChange={(opt) => {
-                                                                            handleSelectGroup('vendor_type', opt)
+                                                                            handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, vendor_name: "", vendor_type: opt });
+                                                                            let newList = [...AllVendorName];
+                                                                            let filterlist = newList.filter((item) => item.type === opt.value);
+                                                                            setVendorName(filterlist);
                                                                         }}
                                                                         options={optionVendorType}
                                                                         classNamePrefix="select2-selection form-select"
                                                                     />
                                                                 </div>
-                                                            </div> */}
+                                                            </div>
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
-                                                                    <label className="form-label">Vendor Name</label>
+                                                                    <label className="form-label">Vendor Name/Carrier Name</label>
                                                                     <Select
-                                                                        value={carrierData.vendor_name}
+                                                                        value={addFCL?.carrierDetails?.vendor_name || ''}
                                                                         name='vendor_name'
                                                                         onChange={(opt) => {
-                                                                            handleSelectGroup('vendor_name', opt)
                                                                             handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, vendor_name: opt });
                                                                         }}
-                                                                        options={optionVendorName}
+                                                                        options={vendorName || []}
                                                                         classNamePrefix="select2-selection form-select"
-                                                                    // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
                                                                     />
                                                                 </div>
                                                             </div>
+                                                        </div>
+
+                                                        <div className="row">
                                                             <div className="col-lg-4">
-                                                                <div className="mb-3">
-                                                                    <label className="form-label">Carrier Name</label>
-                                                                    <Select
-                                                                        value={carrierData.carrier_name}
-                                                                        name='carrier_name'
-                                                                        onChange={(opt) => {
-                                                                            handleSelectGroup('carrier_name', opt)
-                                                                            handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, carrier_name: opt });
-                                                                        }}
-                                                                        options={optionCarrierName}
-                                                                        // isDisabled={carrierData?.vendor_type?.value === 'agent'}
-                                                                        classNamePrefix="select2-selection form-select"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            {/* <div className="col-lg-4">
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Validity Application</label>
                                                                     <Select
-                                                                        value={carrierData.validity_application}
+                                                                        value={addFCL?.carrierDetails?.validity_application}
                                                                         name='validity_application'
                                                                         onChange={(opt) => {
-                                                                            handleSelectGroup('validity_application', opt)
+                                                                            handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, validity_application: opt });
                                                                         }}
                                                                         options={optionValidityApp}
                                                                         classNamePrefix="select2-selection form-select"
                                                                     />
                                                                 </div>
-                                                            </div> */}
-                                                        </div>
-                                                        <div className="row">
+                                                            </div>
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
                                                                     <label htmlFor='validity_from' className="form-label">Validity From</label>
-                                                                    <input type="date" name="validity_from" id="validity_from" className='form-control' value={carrierData.validity_from} onChange={(e) => {
-                                                                        handleSelectGroup('validity_from', e.target.value)
+                                                                    <input type="date" name="validity_from" id="validity_from" className='form-control' value={addFCL?.carrierDetails?.validity_from} onChange={(e) => {
                                                                         handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, validity_from: e.target.value });
-                                                                        }} />
+                                                                    }} />
                                                                 </div>
                                                             </div>
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
                                                                     <label htmlFor='validity_to' className="form-label">Validity To</label>
-                                                                    <input type="date" name="validity_to" id="validity_to" className='form-control' value={carrierData.validity_to} onChange={(e) => {
-                                                                        handleSelectGroup('validity_to', e.target.value)
+                                                                    <input type="date" name="validity_to" id="validity_to" className='form-control' value={addFCL?.carrierDetails?.validity_to || ''} onChange={(e) => {
                                                                         handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, validity_to: e.target.value });
-                                                                        }} />
+                                                                    }} />
 
                                                                 </div>
                                                             </div>
@@ -331,14 +369,10 @@ export default function UploadFreightData() {
                                                 <TabPane tabId={2}>
                                                     <div>
                                                         <div className="text-center mb-4">
-                                                            <h5>Freight Upload</h5>
+                                                            <h5>FCL Ocean Freight Upload</h5>
                                                         </div>
                                                         <div className='mb-3 d-flex justify-content-end'>
-                                                            {navigateState?.state?.id === "inland" ? (
-                                                                <a href={inlandfileData} className="download_formate btn btn-primary" download="Inland Upload Format">Download Format</a>
-                                                            ) : (
-                                                                <a href={fileData} className="download_formate btn btn-primary w-sm-100" download="Fcl Uplaod Format">Download Format</a>
-                                                            )}
+                                                            <a href={fileData} className="download_formate btn btn-primary w-sm-100" download="Fcl Uplaod Format">Download Format</a>
                                                         </div>
                                                         <Form>
                                                             <Dropzone
@@ -397,7 +431,7 @@ export default function UploadFreightData() {
                                                 <TabPane tabId={3}>
                                                     <div>
                                                         <div className="text-center mb-4">
-                                                            <h5>Surcharges</h5>
+                                                            <h5>FCL Ocean Surcharges</h5>
                                                         </div>
                                                         <form>
                                                             {addFCL?.surcharges && addFCL?.surcharges?.map((item, index) => (
@@ -405,30 +439,30 @@ export default function UploadFreightData() {
                                                                     <div className="row">
                                                                         <div className="col-lg-3">
                                                                             <div className="mb-3">
-                                                                                <label htmlFor="surcharges_name" className="form-label">Select Surcharge Name</label>
+                                                                                <label htmlFor="surcharges_name" className="form-label">Surcharge Name</label>
                                                                                 <Select
-                                                                                    value={optionSurchargesName ? optionSurchargesName.find(obj => obj.value === item.surcharges_name) : ''}
+                                                                                    value={item.surcharges_name}
                                                                                     name='surcharges_name'
                                                                                     onChange={(opt) => {
                                                                                         if (opt.label == "Add New") {
-                                                                                            navigate("/freight/upload/fcl/add-new")
+                                                                                            navigate("/freight/upload/fcl/add-new", { state: { id: "fcl" } })
                                                                                         }
-                                                                                        handleSelectGroup2(opt.value, 'surcharges_name', index);
+                                                                                        handleSelectGroup2(opt, 'surcharges_name', index);
                                                                                     }}
-                                                                                    options={optionSurchargesName}
+                                                                                    options={[...(surchargeCode_data?.filter((item) => item?.surchargeCategory === "OCEAN SURCHARGE") || []), { label: "Add New", value: "Add New" }]}
                                                                                     classNamePrefix="select2-selection form-select"
                                                                                 />
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-lg-3">
                                                                             <div className="mb-3">
-                                                                                <label htmlFor='destination' className="form-label">Surcharge Applicable on destination</label>
+                                                                                <label htmlFor='destination' className="form-label">Surcharge Applicable on dest..</label>
                                                                                 <Select
                                                                                     value={item.destination}
                                                                                     name='destination'
                                                                                     isMulti
-                                                                                    options={optionMultiDestination}
-                                                                                    onChange={(opt) => { handleMultiSelectChange(opt, 'destination', optionMultiDestination, index) }}
+                                                                                    options={(fcl_destinationData?.length !== 0 && fcl_destinationData !== undefined) ? [{ value: 'selectAll', label: 'Select All' }, ...fcl_destinationData] : []}
+                                                                                    onChange={(opt) => { handleMultiSelectChange(opt, 'destination', (fcl_destinationData?.length !== 0 && fcl_destinationData !== undefined) ? [{ value: 'selectAll', label: 'Select All' }, ...fcl_destinationData] : [], index) }}
                                                                                     className="basic-multi-select"
                                                                                     classNamePrefix="select2-selection form-select"
                                                                                 />
@@ -438,17 +472,31 @@ export default function UploadFreightData() {
                                                                             <div className="mb-3">
                                                                                 <label htmlFor='charge_currency' className="form-label">Select Currency</label>
                                                                                 <Select
-                                                                                    value={optcurrency ? optcurrency.find(obj => obj.value === item.charge_currency) : ''}
+                                                                                    value={item?.charge_currency || ''}
                                                                                     name='charge_currency'
                                                                                     onChange={(opt) => {
-                                                                                        handleSelectGroup2(opt.value, 'charge_currency', index);
+                                                                                        handleSelectGroup2(opt, 'charge_currency', index);
                                                                                     }}
-                                                                                    options={optcurrency}
+                                                                                    options={currency_data}
                                                                                     classNamePrefix="select2-selection form-select"
                                                                                 />
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-lg-3">
+                                                                            <div className="mb-3">
+                                                                                <label htmlFor='uom' className="form-label">UOM</label>
+                                                                                <Select
+                                                                                    value={item.uom}
+                                                                                    name='uom'
+                                                                                    onChange={(opt) => {
+                                                                                        handleSelectGroup2(opt, 'uom', index);
+                                                                                    }}
+                                                                                    options={UOM_data}
+                                                                                    classNamePrefix="select2-selection form-select"
+                                                                                />
+                                                                            </div>
+                                                                        </div>
+                                                                        {/* <div className="col-lg-3">
                                                                             <div className="mb-3">
                                                                                 <label htmlFor='payment_type' className="form-label">Select Payment Type For the surcharge</label>
                                                                                 <Select
@@ -461,7 +509,7 @@ export default function UploadFreightData() {
                                                                                     classNamePrefix="select2-selection form-select"
                                                                                 />
                                                                             </div>
-                                                                        </div>                                                                        
+                                                                        </div> */}
                                                                     </div>
                                                                     <div className="row">
                                                                         <div className="col-lg-2">
@@ -527,20 +575,20 @@ export default function UploadFreightData() {
                                                     </button>
                                                 </li>
 
-                                                <li className={`${activeTabProgress === 1 ? isAnyValueEmpty(carrierData, removeValue) ? "disabled" : "" : activeTabProgress === 2 ? selectedFiles?.length === 0 ? "disabled" : "" : ""}`}>
+                                                <li className={`d-flex`}>
                                                     <button
-                                                        className={`btn btn-primary d-flex align-items-center ${activeTabProgress === 1 ? !(carrierData?.carrier_name !== '' && carrierData?.validity_from !== '' && carrierData?.validity_to !== '') ? "disabled" : "" : activeTabProgress === 2 ? selectedFiles?.length === 0 ? "disabled" : "" : ""}`}
-                                                        onClick={() => {
-                                                            toggleTabProgress(activeTabProgress + 1);
-                                                        }}
-                                                    >
-                                                        {activeTabProgress === 3 ? 'Save' : (
-                                                            <>
-                                                                Next
-                                                                <i className="bx bx-chevron-right ms-1"></i>
-                                                            </>
-                                                        )}
-                                                    </button>
+                                                        className={`btn btn-primary ${activeTabProgress === 1 ? isAnyValueEmpty(addFCL?.carrierDetails) ? "disabled" : "" : activeTabProgress === 2 ? selectedFiles?.length === 0 ? "disabled" : "" : activeTabProgress === 3 ? isAnyValueEmptyInArray(addFCL?.surcharges) ? "disabled" : "" : ""}`}
+                                                        onClick={() => { uploadSaveHandler() }}
+                                                    >Save <i className="bx bx-chevron-right ms-1"></i></button>
+
+                                                    {/* {activeTabProgress !== 3 && (
+                                                        <button
+                                                            className={`btn btn-primary d-flex align-items-center ms-2`}
+                                                            onClick={() => {
+                                                                toggleTabProgress(activeTabProgress + 1);
+                                                            }}
+                                                        >Next <i className="bx bx-chevron-right ms-1"></i> </button>
+                                                    )} */}
                                                 </li>
                                             </ul>
                                         </div>

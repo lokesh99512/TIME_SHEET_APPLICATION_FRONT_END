@@ -1,61 +1,45 @@
-import classnames from "classnames";
-import { useFormik } from "formik";
-import React, { useCallback, useState } from "react";
-import Dropzone from "react-dropzone";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
+import { useFormik } from "formik";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   Card,
   CardBody,
   Col,
   Container,
-  Form,
   Input,
-  Label,
-  NavItem,
-  NavLink,
-  Progress,
   Row,
-  TabContent,
-  TabPane,
-  UncontrolledTooltip,
+  FormFeedback,
 } from "reactstrap";
-
-const role = [
-  { label: "Mode", value: "Mode" },
-];
-const manager = [
-  { label: "manager", value: "manager" },
-];
-const location = [
-  { label: "mumbai", value: "mumbai" },
-  { label: "delhi", value: "delhi" },
-];
-
-const initialValue = {
-  firstName:"",
-  lastName:"",
-  email:"",
-  role:"",
-  password:"",
-  reEnterdPassword:"",
-  manager:"",
-  location:"",
-}
-
+import { getUsersData } from "../../store/Settings/actions";
+import { rolesInfo, locations } from "./constants/userInfo";
+import useAddUser from "./hook/useAddUser";
 
 export default function AddUserData() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { settings_users_data } = useSelector((state) => state.settings);
 
+  useEffect(() => {
+    dispatch(getUsersData());
+  }, []);
+
+  const managerInfo = Array.isArray(settings_users_data.content)
+    ? settings_users_data.content.map((user) => ({
+        label: `${user.firstName} ${user.lastName}`,
+        value: user.id.toString(),
+        id: user.id,
+      }))
+    : [];
+
+  const { initialValues, schema, handleAddUser } = useAddUser();
   const formik = useFormik({
-    initialValues:initialValue,
-    onSubmit : (values)=>{
-      console.log(values,"<---values");
-    }
-  })
-
-
+    initialValues: initialValues,
+    validationSchema: schema,
+    onSubmit: handleAddUser,
+  });
 
   return (
     <>
@@ -88,7 +72,16 @@ export default function AddUserData() {
                               onChange={formik.handleChange}
                               className="form-control"
                               placeholder="Enter First Name"
+                              invalid={
+                                formik.touched.firstName &&
+                                formik.errors.firstName
+                                  ? true
+                                  : false
+                              }
                             />
+                            <FormFeedback>
+                              {formik.errors.firstName}
+                            </FormFeedback>
                           </div>
                         </div>
                       </div>
@@ -106,7 +99,16 @@ export default function AddUserData() {
                               onChange={formik.handleChange}
                               className="form-control"
                               placeholder="Enter Last Name"
+                              invalid={
+                                formik.touched.lastName &&
+                                formik.errors.lastName
+                                  ? true
+                                  : false
+                              }
                             />
+                            <FormFeedback>
+                              {formik.errors.lastName}
+                            </FormFeedback>
                           </div>
                         </div>
                       </div>
@@ -119,11 +121,18 @@ export default function AddUserData() {
                               type="text"
                               name="email"
                               id="email"
+                              autoComplete="off"
                               value={formik.values.email}
                               onChange={formik.handleChange}
                               className="form-control"
                               placeholder="Enter Email id"
+                              invalid={
+                                formik.touched.email && formik.errors.email
+                                  ? true
+                                  : false
+                              }
                             />
+                            <FormFeedback>{formik.errors.email}</FormFeedback>
                           </div>
                         </div>
                       </div>
@@ -132,29 +141,33 @@ export default function AddUserData() {
                     <div className="row">
                       <div className="col-md-6 col-lg-4 mb-4">
                         <div className="row">
-                          <label className="form-label">
-                            Select Role
-                          </label>
+                          <label className="form-label">Select Role</label>
                           <div className="">
                             <Select
-                            value={
-                                role
-                                  ? role.find(
-                                      (option) =>
-                                        option.value ===
-                                        formik.values.role
-                                    )
-                                  : ""
-                              }
-                              onChange={(e) => {
-                                formik.setFieldValue("role", e.value);
+                              value={rolesInfo.filter((role) =>
+                                formik.values.roles.includes(role.id)
+                              )}
+                              onChange={(selectedOptions) => {
+                                const selectedValues = selectedOptions.map(
+                                  (option) => option.id
+                                );
+                                formik.setFieldValue("roles", selectedValues);
                               }}
-                              name="role"
-                              id="role"
-                              options={role}
-                              placeholder={"Select Role"}
+                              autoComplete="off"
+                              name="roles"
+                              id="roles"
+                              options={rolesInfo}
+                              isMulti
+                              placeholder="Select Role"
                               classNamePrefix="select2-selection form-select"
+                              invalid={
+                                formik.touched.roles && formik.errors.roles
+                                  ? true
+                                  : false
+                              }
                             />
+
+                            <FormFeedback>{formik.errors.roles}</FormFeedback>
                           </div>
                         </div>
                       </div>
@@ -167,20 +180,30 @@ export default function AddUserData() {
                             <Input
                               type="password"
                               name="password"
-                              // id="password1"
                               value={formik.values.password}
                               onChange={formik.handleChange}
                               className="form-control"
                               placeholder="Enter Password"
                               autoComplete="off"
+                              invalid={
+                                formik.touched.password &&
+                                formik.errors.password
+                                  ? true
+                                  : false
+                              }
                             />
+                            <FormFeedback>
+                              {formik.errors.password}
+                            </FormFeedback>
                           </div>
                         </div>
                       </div>
 
                       <div className="col-md-6 col-lg-4 mb-4">
                         <div className="row">
-                          <label className="form-label">Re-Enter Password</label>
+                          <label className="form-label">
+                            Re-Enter Password
+                          </label>
 
                           <div className="">
                             <Input
@@ -192,7 +215,16 @@ export default function AddUserData() {
                               className="form-control"
                               placeholder="Re-Enter Password"
                               autoComplete="off"
+                              invalid={
+                                formik.touched.reEnterdPassword &&
+                                formik.errors.reEnterdPassword
+                                  ? true
+                                  : false
+                              }
                             />
+                            <FormFeedback>
+                              {formik.errors.reEnterdPassword}
+                            </FormFeedback>
                           </div>
                         </div>
                       </div>
@@ -200,57 +232,69 @@ export default function AddUserData() {
                       {/* added 2 new fields */}
                       <div className="col-md-6 col-lg-4 mb-4">
                         <div className="row">
-                          <label className="form-label">
-                            Manager
-                          </label>
+                          <label className="form-label">Manager</label>
                           <div className="">
                             <Select
-                            value={
-                              manager
-                                  ? manager.find(
+                              name="roleNames"
+                              id="roleNames"
+                              value={
+                                managerInfo
+                                  ? managerInfo.find(
                                       (option) =>
-                                        option.value ===
-                                        formik.values.manager
-                                    )
+                                        option.value === formik.values.roleNames
+                                    ) ||""
                                   : ""
                               }
                               onChange={(e) => {
-                                formik.setFieldValue("manager", e.value);
+                                formik.setFieldValue("roleNames", e.value);
                               }}
-                              name="manager"
-                              id="manager"
-                              options={manager}
-                              placeholder={"Select Role"}
+                              options={managerInfo}
+                              placeholder="Select Employee"
                               classNamePrefix="select2-selection form-select"
+                              invalid={
+                                formik.touched.roleNames &&
+                                formik.errors.roleNames
+                                  ? true
+                                  : false
+                              }
                             />
+                            <FormFeedback>
+                              {formik.errors.roleNames}
+                            </FormFeedback>
                           </div>
                         </div>
                       </div>
                       <div className="col-md-6 col-lg-4 mb-4">
                         <div className="row">
-                          <label className="form-label">
-                            Location
-                          </label>
+                          <label className="form-label">Location</label>
                           <div className="">
                             <Select
-                            value={
-                              location
-                                  ? location.find(
+                              name="location"
+                              id="location"
+                              value={
+                                locations
+                                  ? locations.find(
                                       (option) =>
-                                        option.value ===
-                                        formik.values.location
-                                    )
+                                        option.value === formik.values.location
+                                    ) || ""
                                   : ""
                               }
                               onChange={(e) => {
                                 formik.setFieldValue("location", e.value);
                               }}
-                              name="role"
-                              id="role"
-                              options={location}
-                              placeholder={"Select Role"}
+                              options={locations}
+                              placeholder={"Select locations"}
                               classNamePrefix="select2-selection form-select"
+                              invalid={
+                                formik.touched.location &&
+                                formik.errors.location
+                                  ? true
+                                  : false
+                              }
                             />
+                            <FormFeedback>
+                              {formik.errors.location}
+                            </FormFeedback>
                           </div>
                         </div>
                       </div>
@@ -259,7 +303,13 @@ export default function AddUserData() {
                     <div className="row">
                       <div className="d-flex justify-content-center">
                         <div className="mb-3 mx-3 d-flex justify-content-end">
-                          <button className=" btn btn-primary" onClick={formik.handleSubmit}>Save</button>
+                          <button
+                            className=" btn btn-primary"
+                            type="submit"
+                            onClick={formik.handleSubmit}
+                          >
+                            Save
+                          </button>
                         </div>
                         <div className="mb-3 mx-3 d-flex justify-content-end">
                           <button className=" btn btn-primary">Cancel</button>

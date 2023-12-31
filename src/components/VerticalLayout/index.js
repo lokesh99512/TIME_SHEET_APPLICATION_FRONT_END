@@ -2,22 +2,23 @@ import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import {
   changeLayout,
+  changeLayoutWidth,
   changeSidebarTheme,
   changeSidebarType,
   changeTopbarTheme,
-  changeLayoutWidth,
   changelayoutMode,
   showRightSidebarAction
 } from "../../store/actions";
 
 // Layout Related Components
+import RightSidebar from "../CommonForBoth/RightSidebar";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
-import Footer from "./Footer";
-import RightSidebar from "../CommonForBoth/RightSidebar";
 
 //redux
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { ToastWrapper } from "../Common/CustomToast";
+import { GET_CURRENCY_DETAIL, GET_OCEAEN_PORT_DATA, GET_SURCHARGE_CATEGORY_DATA, GET_SURCHARGE_CODE_DATA, GET_UOM_DATA, GET_VENDOR_DETAILS } from "../../store/Global/actiontype";
 const Layout = props => {
   const dispatch = useDispatch();
 
@@ -132,6 +133,16 @@ const Layout = props => {
     }
   };
 
+  // ---------- call global api-----------
+  useEffect(() => {
+    dispatch({type: GET_VENDOR_DETAILS});
+    dispatch({type: GET_CURRENCY_DETAIL});
+    dispatch({type: GET_UOM_DATA});
+    dispatch({type: GET_SURCHARGE_CODE_DATA});
+    dispatch({type: GET_SURCHARGE_CATEGORY_DATA});
+    dispatch({type: GET_OCEAEN_PORT_DATA});
+  },[]);
+
   return (
     <React.Fragment>
       <div className="pace pace-active" id="preloader">
@@ -154,6 +165,7 @@ const Layout = props => {
         </div>
       </div>
       {showRightSidebar ? <RightSidebar onChangeLayoutMode={onChangeLayoutMode} /> : ''}
+      <ToastWrapper />
     </React.Fragment>
   );
 };

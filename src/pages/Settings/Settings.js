@@ -1,104 +1,405 @@
-import { useFormik } from "formik";
+import { FieldArray, FormikProvider, useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
-import { Card, CardBody, Container, FormFeedback, Input, Row } from "reactstrap";
+import {
+  Card,
+  CardBody,
+  Container,
+  FormFeedback,
+  Input,
+  Row,
+} from "reactstrap";
 import SimpleBar from "simplebar-react";
-import * as Yup from "yup";
-import * as schema from "../../api/global-schema";
-import { city_list, country_list, entityType, industryType, placeOfSupply, state_list, zipcode_list } from "../../common/data/settings";
+import {
+  country_list,
+  entityType,
+  industryType,
+  placeOfSupply,
+  state_list,
+} from "../../common/data/settings";
 import { isAnyValueEmpty } from "../../components/Common/CommonLogic";
-import { getCompanyDetailsData } from "../../store/Settings/actions";
+import {
+  getAllCompanyDetailData,
+  getBusinessData,
+  getCompanyCityData,
+  getCompanyCountryData,
+  getCompanyDetailsData,
+  getCompanyPincodeData,
+  getCompanyStateData,
+  getTaxDetailsData,
+} from "../../store/Settings/actions";
 import FileUpload from "./FileUpload";
 import ModalAddGST from "./Modal/ModalAddGST";
-
-const companyDetailsInitialValue = {
-  image: "",
-  companyName: "",
-  contactNumber: "",
-  email: "",
-  companyAddress: "",
-  city: "",
-  state: "",
-  zipcode: "",
-  country: "",
-};
-
-const taxDetailsInitialValue = {
-  panNumber: "",
-  cinNumber: "",
-  tranceporterId: "",
-  gstNumber: "",
-  placeOfSupply: "",
-  moreGstNumbers: {
-    gstNo: "",
-    placeOfSupply: "",
-  },
-};
-
-const bussinessTypeInitialValue = {
-  industryType: "",
-  entityType: "",
-};
-
+import { comapanySchema } from "./schema";
+import CompanyDetailsForm from "./company-details-form/CompanyDetailsForm";
 const stateConverter = (num) => {
   return placeOfSupply.find((place) => +place.Code === +num)?.value;
 };
 
 const Settings = () => {
   const [gstModal, setGstModal] = useState(false);
+  const [companyData, setCompanyData] = useState([]);
+  const [modalAlldata, setModalAllData] = useState([]);
+  const [tenantGSTSData, setTenantGSTSData] = useState([]);
   const [viewGst, setViewGst] = useState(false);
   const [active, setActive] = useState("comapanyDetails");
-  const [companyDetailsInitial, setCompanyDetailsInitial] = useState(
-    companyDetailsInitialValue
-  );
-  const [taxDetailsInitial, setTaxDetailsInitial] = useState(
-    taxDetailsInitialValue
-  );
-  const [bussinessTypeInitial, setBussinessTypeInitial] = useState(
-    bussinessTypeInitialValue
-  );
+  const [logofile, setLogoFile] = useState("");
 
-  const companyDetailsData = useSelector(
-    (state) => state?.settings?.settings_companydetails_data
-  );
+  const companyDetailsInitialValue = {
+    image: "",
+    companyName: "",
+    contactNumber: "",
+    email: "",
+    companyAddress: "",
+    city: "",
+    state: "",
+    zipcode: "",
+    country: "",
+  };
 
-  useEffect(() => {
-    setCompanyDetailsInitial(companyDetailsData[0]);
-    setTaxDetailsInitial(companyDetailsData[0]);
-    setBussinessTypeInitial(companyDetailsData[0]);
-  }, [companyDetailsData]);
+  const taxDetailsInitialValue = {
+    pan: "",
+    cin: "",
+    transporterId: "",
+    no: "",
+    placeOfService: "",
+    moreGstNumbers: [
+      {
+        gstNo: "",
+        placeOfService: "",
+      },
+    ],
+  };
+
+  const bussinessTypeInitialValue = {
+    industryType: "",
+    entityType: "",
+  };
 
   const dispatch = useDispatch();
 
+  const {
+    settings_companydetails_data,
+    settings_companyCity_data,
+    settings_company_settings_all_data,
+    settings_companyState_data,
+    settings_companyCountry_data,
+    settings_companyPincode_data,
+  } = useSelector((state) => state?.settings);
+
+  useEffect(() => {
+    dispatch(getCompanyCityData());
+    dispatch(getAllCompanyDetailData());
+  }, []);
+
+  useEffect(() => {
+    if (
+      settings_companyState_data &&
+      settings_companyState_data?.content?.length > 0
+    ) {
+      companyDetailsFormik.setFieldValue(
+        "state",
+        settings_companyState_data?.content[0]?.stateName
+      );
+    }
+    if (
+      settings_companyCountry_data &&
+      settings_companyCountry_data?.content?.length > 0
+    ) {
+      companyDetailsFormik.setFieldValue(
+        "country",
+        settings_companyCountry_data?.content[0]?.countryName
+      );
+    }
+    if (
+      settings_company_settings_all_data &&
+      settings_company_settings_all_data?.content?.length > 0
+    ) {
+      // const url = window.URL.createObjectURL(new Blob([settings_company_settings_all_data?.content[0]?.logoPath]));
+      companyDetailsFormik.setFieldValue(
+        "image",
+        settings_company_settings_all_data &&
+          settings_company_settings_all_data?.content[0]?.logoPath
+      );
+      companyDetailsFormik.setFieldValue(
+        "companyName",
+        settings_company_settings_all_data &&
+          settings_company_settings_all_data?.content[0]?.name
+      );
+      companyDetailsFormik.setFieldValue(
+        "contactNumber",
+        settings_company_settings_all_data &&
+          settings_company_settings_all_data?.content[0]?.contactNumber
+      );
+      companyDetailsFormik.setFieldValue(
+        "email",
+        settings_company_settings_all_data &&
+          settings_company_settings_all_data?.content[0]?.email
+      );
+      companyDetailsFormik.setFieldValue(
+        "companyAddress",
+        settings_company_settings_all_data &&
+          settings_company_settings_all_data?.content[0]?.address
+      );
+      // companyDetailsFormik.setFieldValue(
+      //   "city",
+      //   settings_company_settings_all_data &&
+      //     settings_company_settings_all_data?.content[0]?.city?.cityName
+      // );
+      // companyDetailsFormik.setFieldValue(
+      //   "state",
+      //   settings_company_settings_all_data &&
+      //     settings_company_settings_all_data?.content[0]?.state?.stateName
+      // );
+      // companyDetailsFormik.setFieldValue(
+      //   "country",
+      //   settings_company_settings_all_data &&
+      //     settings_company_settings_all_data?.content[0]?.country?.countryName
+      // );
+      // companyDetailsFormik.setFieldValue(
+      //   "zipcode",
+      //   settings_company_settings_all_data &&
+      //     settings_company_settings_all_data?.content[0]?.pinCode?.pin
+      // );
+      taxDetailsFormik.setFieldValue(
+        "pan",
+        settings_company_settings_all_data &&
+          settings_company_settings_all_data?.content[0]?.pan
+      );
+      taxDetailsFormik.setFieldValue(
+        "cin",
+        settings_company_settings_all_data &&
+          settings_company_settings_all_data?.content[0]?.cin
+      );
+      taxDetailsFormik.setFieldValue(
+        "transporterId",
+        settings_company_settings_all_data &&
+          settings_company_settings_all_data?.content[0]?.transporterId
+      );
+      taxDetailsFormik.setFieldValue(
+        "no",
+        settings_company_settings_all_data &&
+          settings_company_settings_all_data?.content[0]?.tenantGSTS[0]?.no
+      );
+      taxDetailsFormik.setFieldValue(
+        "placeOfService",
+        settings_company_settings_all_data &&
+          settings_company_settings_all_data?.content[0]?.tenantGSTS[0]
+            ?.placeOfService
+      );
+      bussinessTypeFormik.setFieldValue(
+        "industryType",
+        settings_company_settings_all_data &&
+          settings_company_settings_all_data?.content[0]?.industryType
+      );
+      bussinessTypeFormik.setFieldValue(
+        "entityType",
+        settings_company_settings_all_data &&
+          settings_company_settings_all_data?.content[0]?.entityType
+      );
+
+      if (
+        settings_company_settings_all_data?.content[0]?.tenantGSTS?.length >= 2
+      ) {
+        taxDetailsFormik.setFieldValue(
+          "moreGstNumbers",
+          settings_company_settings_all_data?.content[0]?.tenantGSTS
+            ?.slice(0, 1)
+            .map((item) => ({
+              gstNo: item?.no,
+              placeOfService: item?.placeOfService,
+            }))
+        );
+      }
+    }
+
+    // if(settings_companyPincode_data){
+    //   companyDetailsFormik.setFieldValue("zipcode", settings_companyPincode_data?.content?.map((item)=>item?.pin))
+    // }
+    // console.log(companyDetailsFormik?.values, "companyDetailsFormik");
+  }, [
+    settings_companyState_data,
+    settings_companydetails_data,
+    settings_companyCountry_data,
+    settings_companyPincode_data,
+    settings_company_settings_all_data,
+  ]);
+  useEffect(() => {
+    if (settings_company_settings_all_data?.content?.length > 0) {
+      const tenantGSTSArray =
+        settings_company_settings_all_data.content[0]?.tenantGSTS || [];
+      setTenantGSTSData(tenantGSTSArray);
+    }
+  }, [settings_company_settings_all_data]);
   const companyDetailsFormik = useFormik({
-    initialValues: companyDetailsInitial,
+    initialValues: companyDetailsInitialValue,
     enableReinitialize: true,
-    validationSchema: Yup.object({
-      email: schema.email
-    }),
-    onSubmit: (value) => {
-      console.log(value, "value");
-      companyDetailsFormik.resetForm();
+    validationSchema: comapanySchema,
+
+    onSubmit: async ({ image, ...value }) => {
+      try {
+        const targetPinCode = value.zipcode;
+
+        if (
+          settings_companyPincode_data.content &&
+          settings_companyPincode_data.content.length > 0
+        ) {
+          const foundPinCodeEntry = settings_companyPincode_data.content.find(
+            (pinCodeEntry) => pinCodeEntry.pin === targetPinCode
+          );
+
+          const targetCity = value.city;
+
+          if (
+            settings_companyCity_data.content &&
+            settings_companyCity_data.content.length > 0
+          ) {
+            const foundCity = settings_companyCity_data.content.find(
+              (city) => city.cityName === targetCity
+            );
+            console.log(value);
+            const projectUATRequestDTO = {
+              name: value.companyName,
+              address: value.companyAddress,
+              pinCode: {
+                version: foundPinCodeEntry.version,
+
+                id: foundPinCodeEntry.id,
+                pin: foundPinCodeEntry.pin,
+              },
+              city: {
+                version: foundCity.version,
+
+                id: foundCity.id,
+                cityName: foundCity.cityName,
+              },
+              state: {
+                version: foundPinCodeEntry.state.version,
+
+                id: foundPinCodeEntry.state.id,
+                stateName: value.state,
+              },
+              country: {
+                version: foundPinCodeEntry.country.version,
+                id: foundPinCodeEntry.country.id,
+                countryName: value.country,
+              },
+              logo: "",
+              logoPath: "",
+              contactName: value.companyName,
+              contactNumber: value.contactNumber,
+              email: value.email,
+            };
+
+            console.log("finaly Company  payload:-", projectUATRequestDTO);
+            const formData = new FormData();
+            formData.append("file", image);
+            const jsonBlob = new Blob([JSON.stringify(projectUATRequestDTO)], {
+              type: "application/json",
+            });
+            formData.append("tenant", jsonBlob);
+            dispatch(getCompanyDetailsData(formData));
+          } else {
+            console.error("Error: City data is undefined or empty");
+          }
+        } else {
+          console.error("Error: Pincode data is undefined or empty");
+        }
+      } catch (error) {
+        console.error("Error in Vender:-", error);
+      }
     },
   });
+  const cstDetailsHandler = (data) => {
+    setModalAllData((prev) => [...prev, data]);
+  };
 
   const taxDetailsFormik = useFormik({
-    initialValues: taxDetailsInitial,
     enableReinitialize: true,
-    onSubmit: (value) => {
-      console.log(value, "value");
-      taxDetailsFormik.resetForm();
+    initialValues: taxDetailsInitialValue,
+    onSubmit: (values) => {
+      // console.log("i am taxt details");
+
+      const targetPinCode = companyDetailsFormik?.values?.zipcode;
+      const foundPinCodeEntry = settings_companyPincode_data.content.find(
+        (pinCodeEntry) => pinCodeEntry.pin === targetPinCode
+      );
+      const targetCity = companyDetailsFormik?.values?.city;
+
+      const foundCity = settings_companyCity_data.content.find(
+        (city) => city.cityName === targetCity
+      );
+      setCompanyData((prev) => {
+        const payload = {
+          // ...settings_companydetails_data,
+          cin: values.cin,
+          pan: values.pan,
+          transporterId: values.transporterId,
+          tenantGSTS: [
+            {
+              no: values.no,
+              placeOfService: values.placeOfService,
+              address: companyDetailsFormik?.values?.companyAddress,
+              pinCode: {
+                version: foundPinCodeEntry.version,
+                modifiedBy: foundPinCodeEntry.modifiedBy,
+                createdBy: foundPinCodeEntry.createdBy,
+                id: foundPinCodeEntry.id,
+                pin: foundPinCodeEntry.pin,
+              },
+              city: {
+                version: foundCity.version,
+                modifiedBy: foundCity.modifiedBy,
+                createdBy: foundCity.createdBy,
+                id: foundCity.id,
+                cityName: foundCity.cityName,
+              },
+              state: {
+                version: foundPinCodeEntry.state.version,
+                modifiedBy: foundPinCodeEntry.state.modifiedBy,
+                createdBy: foundPinCodeEntry.state.createdBy,
+                id: foundPinCodeEntry.state.id,
+                stateName: companyDetailsFormik?.values?.stateName,
+              },
+              country: {
+                version: foundPinCodeEntry.country.version,
+                modifiedBy: foundPinCodeEntry.country.modifiedBy,
+                createdBy: foundPinCodeEntry.country.createdBy,
+                id: foundPinCodeEntry.country.id,
+                countryName: companyDetailsFormik?.values?.country,
+              },
+            },
+            ...modalAlldata,
+          ],
+        };
+
+        // console.log("final payload of tax deatils:=", payload);
+        dispatch(getTaxDetailsData(payload));
+      });
     },
   });
 
   const bussinessTypeFormik = useFormik({
-    initialValues: bussinessTypeInitial,
+    initialValues: bussinessTypeInitialValue,
     enableReinitialize: true,
     onSubmit: (value) => {
-      console.log(value, "value");
-      bussinessTypeFormik.resetForm();
+      const formdata = new FormData();
+
+      const projectUATRequestDTO = {
+        entityType: value.entityType,
+        industryType: value.industryType,
+      };
+      console.log("Final-Payload-Bussiness:-", projectUATRequestDTO);
+      formdata.append(
+        "tenant",
+        new Blob([JSON.stringify(projectUATRequestDTO)], {
+          type: "application/json",
+        })
+      );
+
+      dispatch(getBusinessData(value));
     },
   });
 
@@ -109,19 +410,24 @@ const Settings = () => {
   const gstNumberHandler = (e) => {
     taxDetailsFormik.handleChange(e);
     taxDetailsFormik.setFieldValue(
-      "placeOfSupply",
+      "placeOfService",
       stateConverter(e.target.value.substring(0, 2))
     );
   };
 
   const onUploadChange = (file) => {
-    console.log(file.name, "file");
-    companyDetailsFormik.setFieldValue("image", file)
-  };
+    if (file) {
+      const reader = new FileReader();
 
-  useEffect(() => {
-    dispatch(getCompanyDetailsData());
-  }, [dispatch]);
+      reader.onload = (e) => {
+        setLogoFile(e.target.result);
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    companyDetailsFormik.setFieldValue("image", file);
+  };
 
   return (
     <>
@@ -138,7 +444,7 @@ const Settings = () => {
                           <a
                             href="#comapanyDetails"
                             onClick={() => {
-                              setActive("comapanyDetails")
+                              setActive("comapanyDetails");
                               // scrollToSection("comapanyDetails")
                             }}
                             className={
@@ -154,11 +460,12 @@ const Settings = () => {
                           <a
                             href="#taxDetails"
                             onClick={() => {
-                              setActive("taxDetails")
+                              setActive("taxDetails");
                               // scrollToSection("taxDetails")
                             }}
                             className={active === "taxDetails" ? "active" : ""}
                           >
+                            
                             Tax Details
                           </a>
                         </span>
@@ -168,7 +475,7 @@ const Settings = () => {
                           <a
                             href="#bussinessType"
                             onClick={() => {
-                              setActive("bussinessType")
+                              setActive("bussinessType");
                               // scrollToSection("bussinessType")
                             }}
                             className={
@@ -213,165 +520,10 @@ const Settings = () => {
               <Card className="">
                 <PerfectScrollbar className="p-4" style={{ height: "802px" }}>
                   {/* Comapany details  */}
-                  <Card id="comapanyDetails" className="mb-4">
-                    <CardBody>
-                      <div>
-                        <h5>Company Details</h5>
-                      </div>
-                      <div className="row mt-4">
-                        <div className="col-12 col-md-4 mb-4">
-                          <label className="form-label">Image</label>
-                          <FileUpload
-                            iconName="img"
-                            onUpload={onUploadChange}
-                          />
-                        </div>
 
-                        <div className="col-12 col-md-8 mb-4">
-                          <label className="form-label">Company Name</label>
-                          <Input
-                            type="text"
-                            name="companyName"
-                            value={companyDetailsFormik?.values?.companyName || ''}
-                            onChange={companyDetailsFormik.handleChange}
-                            className="form-control"
-                            placeholder=""
-                          />
-                        </div>
-                      </div>
-
-                      <div className="row">
-                        <div className="col-12 col-md-6 mb-4">
-                          <label className="form-label">Contact Number</label>
-                          <Input
-                            type="text"
-                            name="contactNumber"
-                            value={companyDetailsFormik?.values?.contactNumber || ''}
-                            onChange={companyDetailsFormik.handleChange}
-                            className="form-control"
-                            placeholder=""
-                          />
-                        </div>
-
-                        <div className="col-12 col-md-6 mb-4">
-                          <label className="form-label">Email id</label>
-                          <Input
-                            type="text"
-                            name="email"
-                            value={companyDetailsFormik?.values?.email || ''}
-                            onChange={companyDetailsFormik.handleChange}
-                            onBlur={companyDetailsFormik.handleBlur}
-                            className="form-control"
-                            invalid={
-                              companyDetailsFormik.touched.email && companyDetailsFormik.errors.email ? true : false
-                            }
-                            placeholder=""
-                          />
-                          {companyDetailsFormik.touched.email && companyDetailsFormik.errors.email ? (
-                            <FormFeedback type="invalid">{companyDetailsFormik.errors.email}</FormFeedback>
-                          ) : null}
-                        </div>
-                      </div>
-
-                      <div className="row">
-                        <div className="col-12 mb-4">
-                          <label className="form-label">Company Address</label>
-                          <Input
-                            type="text"
-                            name="companyAddress"
-                            value={companyDetailsFormik?.values?.companyAddress || ''}
-                            onChange={companyDetailsFormik.handleChange}
-                            className="form-control"
-                            placeholder=""
-                          />
-                        </div>
-                      </div>
-
-                      <div className="row">
-                        <div className="col-12 col-md-6 mb-4">
-                          <label className="form-label">City</label>
-                          <Input
-                            type="text"
-                            name="city"
-                            list="cityList"
-                            value={companyDetailsFormik?.values?.city || ''}
-                            onChange={companyDetailsFormik.handleChange}
-                            className="form-control"
-                            placeholder=""
-                          />
-                          <datalist id="cityList">
-                            {city_list && city_list.map((item, i) => <option key={i} value={item} />)}
-                          </datalist>
-                        </div>
-
-                        <div className="col-12 col-md-6 mb-4">
-                          <label className="form-label">State</label>
-                          <Input
-                            type="text"
-                            name="state"
-                            list="stateList"
-                            value={companyDetailsFormik?.values?.state || ''}
-                            onChange={companyDetailsFormik.handleChange}
-                            className="form-control"
-                            placeholder=""
-                          />
-                          <datalist id="stateList">
-                            {state_list && state_list.map((item, i) => <option key={i} value={item} />)}
-                          </datalist>
-                        </div>
-                      </div>
-
-                      <div className="row">
-                        <div className="col-12 col-md-6 mb-4">
-                          <label className="form-label">Zipcode</label>
-                          <Input
-                            type="text"
-                            name="zipcode"
-                            list="zipcodeList"
-                            value={companyDetailsFormik?.values?.zipcode || ''}
-                            onChange={companyDetailsFormik.handleChange}
-                            className="form-control"
-                            placeholder=""
-                          />
-                          <datalist id="zipcodeList">
-                            {zipcode_list && zipcode_list.map((item, i) => <option key={i} value={item} />)}
-                          </datalist>
-                        </div>
-
-                        <div className="col-12 col-md-6 mb-4">
-                          <label className="form-label">Country</label>
-                          <Input
-                            type="text"
-                            name="country"
-                            list="countryList"
-                            value={companyDetailsFormik?.values?.country || ''}
-                            onChange={companyDetailsFormik.handleChange}
-                            className="form-control"
-                            placeholder=""
-                          />
-                          <datalist id="countryList">
-                            {country_list && country_list.map((item, i) => <option key={i} value={item} />)}
-                          </datalist>
-                        </div>
-                      </div>
-
-                      <div className="row">
-                        <div className="d-flex justify-content-center">
-                          <div className="mb-3 mx-3 d-flex justify-content-end">
-                            <button onClick={companyDetailsFormik.handleSubmit} className=" btn btn-primary" disabled={isAnyValueEmpty(companyDetailsFormik.values)}>
-                              Save
-                            </button>
-                          </div>
-                          <div className="mb-3 mx-3 d-flex justify-content-end">
-                            <button onClick={() => companyDetailsFormik.resetForm()} className=" btn btn-primary">
-                              Cancel
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </CardBody>
-                  </Card>
-
+                  <CompanyDetailsForm
+                    companyDetailsFormik={companyDetailsFormik}
+                  />
                   {/* Tax Details  */}
                   <Card id="taxDetails" className="my-4">
                     <CardBody>
@@ -384,8 +536,8 @@ const Settings = () => {
                           <label className="form-label">Pan Number</label>
                           <Input
                             type="text"
-                            name="panNumber"
-                            value={taxDetailsFormik?.values?.panNumber || ''}
+                            name="pan"
+                            value={taxDetailsFormik?.values?.pan || ""}
                             onChange={taxDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
@@ -396,8 +548,8 @@ const Settings = () => {
                           <label className="form-label">CIN Number</label>
                           <Input
                             type="text"
-                            name="cinNumber"
-                            value={taxDetailsFormik?.values?.cinNumber || ''}
+                            name="cin"
+                            value={taxDetailsFormik?.values?.cin || ""}
                             onChange={taxDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
@@ -410,8 +562,10 @@ const Settings = () => {
                           <label className="form-label">Transporter ID</label>
                           <Input
                             type="text"
-                            name="tranceporterId"
-                            value={taxDetailsFormik?.values?.tranceporterId || ''}
+                            name="transporterId"
+                            value={
+                              taxDetailsFormik?.values?.transporterId || ""
+                            }
                             onChange={taxDetailsFormik.handleChange}
                             className="form-control"
                             placeholder=""
@@ -424,9 +578,10 @@ const Settings = () => {
                           <label className="form-label">GST Number</label>
                           <Input
                             type="text"
-                            name="gstNumber"
+                            name="no"
                             onChange={gstNumberHandler}
-                            value={taxDetailsFormik?.values?.gstNumber || ''}
+                            value={taxDetailsFormik?.values?.no || ""}
+                            // value={modalAlldata?.no|| ''}
                             className="form-control"
                             placeholder="Enter GST Number"
                           />
@@ -438,18 +593,19 @@ const Settings = () => {
                             value={
                               placeOfSupply
                                 ? placeOfSupply.find(
-                                  (option) =>
-                                    option.value ===
-                                    taxDetailsFormik?.values?.placeOfSupply
-                                )
+                                    (option) =>
+                                      option.value ===
+                                      taxDetailsFormik?.values?.placeOfSupply
+                                  )
                                 : ""
+                              // modalAlldata?.placeOfService
                             }
-                            name="placeOfSupply"
+                            name="placeOfService"
                             options={placeOfSupply}
                             placeholder={"Select Place of Supply"}
                             onChange={(e) => {
                               taxDetailsFormik.setFieldValue(
-                                `placeOfSupply`,
+                                `placeOfService`,
                                 e.value
                               );
                             }}
@@ -468,10 +624,7 @@ const Settings = () => {
 
                       <div className="row mt-4 mb-2">
                         <a className="col-12 col-md-6 mb-4 d-flex">
-                          <p>
-                            {taxDetailsFormik?.values?.moreGstNumbers?.length}{" "}
-                            More GST available{" "}
-                          </p>
+                          <p>{tenantGSTSData.length} More GST available</p>
                           <p
                             onClick={() => {
                               setViewGst((prev) => !prev);
@@ -482,60 +635,56 @@ const Settings = () => {
                         </a>
                       </div>
                       {/* ------------ map GST ------ */}
-                      {viewGst &&
-                        taxDetailsFormik?.values?.moreGstNumbers?.map(
-                          (gst, key) => {
-                            return (
-                              <div className="row" key={key}>
-                                <div className="col-12 col-md-6 mb-4">
-                                  <label className="form-label">
-                                    GST Number
-                                  </label>
-                                  <Input
-                                    type="text"
-                                    name="moreGstNumbers.gstNo"
-                                    onChange={gstNumberHandler}
-                                    value={gst?.gstNo}
-                                    className="form-control"
-                                    placeholder=""
-                                  />
-                                </div>
 
-                                <div className="col-10 col-md-5 mb-4">
-                                  <label className="form-label">
-                                    Place of Supply
-                                  </label>
-                                  <Select
-                                    value={
-                                      placeOfSupply
-                                        ? placeOfSupply.find(
-                                          (option) =>
-                                            option.value ===
-                                            gst?.placeOfSupply
-                                        )
-                                        : ""
-                                    }
-                                    name="moreGstNumbers.placeOfSupply"
-                                    options={placeOfSupply}
-                                    // onChange={(e) => {
-                                    //   taxDetailsFormik.setFieldValue(
-                                    //     `placeOfSupply`,
-                                    //     e.value
-                                    //   );
-                                    // }}
-                                    // placeholder={"Select Place of Supply"}
-                                    classNamePrefix="select2-selection form-select"
-                                  />
-                                </div>
-                                <div className="col-2 col-md-1">
-                                  <button className="btn border mt-4" >
-                                    <i className="bx bx-trash fs-5 align-middle text-danger"></i>
-                                  </button>
-                                </div>
+                      {viewGst &&
+                        tenantGSTSData.map((gst, key) => {
+                          return (
+                            <div className="row" key={key}>
+                              <div className="col-12 col-md-6 mb-4">
+                                <label className="form-label">GST Number</label>
+                                <Input
+                                  type="text"
+                                  name={`moreGstNumbers[${key}].gstNo`}
+                                  onChange={gstNumberHandler}
+                                  value={gst?.no}
+                                  className="form-control"
+                                  placeholder=""
+                                />
                               </div>
-                            );
-                          }
-                        )}
+
+                              <div className="col-10 col-md-5 mb-4">
+                                <label className="form-label">
+                                  Place of Supply
+                                </label>
+                                <Select
+                                  value={
+                                    placeOfSupply
+                                      ? placeOfSupply.find(
+                                          (option) =>
+                                            option.value === gst?.placeOfSupply
+                                        )
+                                      : ""
+                                  }
+                                  name={`moreGstNumbers[${key}].placeOfSupply`}
+                                  options={placeOfSupply}
+                                  onChange={(e) => {
+                                    taxDetailsFormik.setFieldValue(
+                                      `placeOfSupply`,
+                                      e.value
+                                    );
+                                  }}
+                                  placeholder={"Select Place of Supply"}
+                                  classNamePrefix="select2-selection form-select"
+                                />
+                              </div>
+                              <div className="col-2 col-md-1">
+                                <button className="btn border mt-4">
+                                  <i className="bx bx-trash fs-5 align-middle text-danger"></i>
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })}
 
                       {/* ----------- more GST --------------- */}
 
@@ -543,9 +692,10 @@ const Settings = () => {
                         <div className="d-flex justify-content-center">
                           <div className="mb-3 mx-3 d-flex justify-content-end">
                             <button
+                              type="submit"
                               onClick={taxDetailsFormik.handleSubmit}
-                              className=" btn btn-primary"
-                              disabled={isAnyValueEmpty(taxDetailsFormik.values)}
+                              className="btn btn-primary"
+                              // disabled={isAnyValueEmpty(taxDetailsFormik.values)}
                             >
                               Save
                             </button>
@@ -553,7 +703,7 @@ const Settings = () => {
                           <div className="mb-3 mx-3 d-flex justify-content-end">
                             <button
                               onClick={() => taxDetailsFormik.resetForm()}
-                              className=" btn btn-primary"
+                              className="btn btn-primary"
                             >
                               Cancel
                             </button>
@@ -577,10 +727,10 @@ const Settings = () => {
                             value={
                               industryType
                                 ? industryType.find(
-                                  (option) =>
-                                    option.value ===
-                                    bussinessTypeFormik?.values?.industryType
-                                )
+                                    (option) =>
+                                      option.value ===
+                                      bussinessTypeFormik?.values?.industryType
+                                  )
                                 : ""
                             }
                             name="industryType"
@@ -602,10 +752,10 @@ const Settings = () => {
                             value={
                               entityType
                                 ? entityType.find(
-                                  (option) =>
-                                    option.value ===
-                                    bussinessTypeFormik?.values?.entityType
-                                )
+                                    (option) =>
+                                      option.value ===
+                                      bussinessTypeFormik?.values?.entityType
+                                  )
                                 : ""
                             }
                             name="entityType"
@@ -628,7 +778,9 @@ const Settings = () => {
                             <button
                               onClick={bussinessTypeFormik.handleSubmit}
                               className=" btn btn-primary"
-                              disabled={isAnyValueEmpty(bussinessTypeFormik.values)}
+                              disabled={isAnyValueEmpty(
+                                bussinessTypeFormik.values
+                              )}
                             >
                               Save
                             </button>
@@ -650,7 +802,11 @@ const Settings = () => {
               </Card>
             </div>
           </Row>
-          <ModalAddGST modal={gstModal} onCloseClick={onCloseClick} />
+          <ModalAddGST
+            modal={gstModal}
+            onSubmitHandler={cstDetailsHandler}
+            onCloseClick={onCloseClick}
+          />
         </Container>
       </div>
     </>

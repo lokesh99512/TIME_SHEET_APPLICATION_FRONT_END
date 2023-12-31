@@ -884,17 +884,17 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onGet(url.GET_PORTLOCALCHARGES).reply(() => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if(plChargesTableData){
-          resolve([200, plChargesTableData]);
-        } else {
-          reject([400, "Cannot get Port Local Charges Data"])
-        }
-      });
-    })
-  })
+  // mock.onGet(url.GET_PORTLOCALCHARGES).reply(() => {
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       if(plChargesTableData){
+  //         resolve([200, plChargesTableData]);
+  //       } else {
+  //         reject([400, "Cannot get Port Local Charges Data"])
+  //       }
+  //     });
+  //   })
+  // })
 
   mock.onGet(url.GET_WAYBILL).reply(() => {
     return new Promise((resolve, reject) => {
@@ -920,17 +920,17 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onGet(url.GET_INLAND).reply(() => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if(inLandTableData) {
-          resolve([200, inLandTableData]);
-        } else {
-          reject([400, 'Cannot get InLand Data']);
-        }
-      });
-    })
-  })
+  // mock.onGet(url.GET_INLAND).reply(() => {
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       if(inLandTableData) {
+  //         resolve([200, inLandTableData]);
+  //       } else {
+  //         reject([400, 'Cannot get InLand Data']);
+  //       }
+  //     });
+  //   })
+  // })
 
   mock.onGet(url.GET_QUOTATION).reply(() => {
     return new Promise((resolve, reject) => {

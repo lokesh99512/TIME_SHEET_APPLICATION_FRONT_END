@@ -9,12 +9,15 @@ import {
     ModalHeader
 } from "reactstrap";
 import SimpleBar from "simplebar-react";
+import { formatDate } from "../../../../components/Common/CommonLogic";
+import { useSelector } from "react-redux";
 
 const ModalFclInlandCharge = ({ viewData, modal, onCloseClick }) => {
     const ref = useRef();
     const ref2 = useRef();
     const [open, setOpen] = useState("");
-
+    const fclInlandFreightView = useSelector((state) => state?.procurement?.fclInlandFreightView);
+    const fclInlandSurchargeView = useSelector((state) => state?.procurement?.fclInlandSurchargeView);
     const toggle = (id) => {
         if (open === id) {
             setOpen("");
@@ -38,57 +41,57 @@ const ModalFclInlandCharge = ({ viewData, modal, onCloseClick }) => {
                     <div className="table_view_data_wrap">
                         <Accordion flush open={open} toggle={toggle} className='main_accordion'>
                             <AccordionItem className='view_details_wrap'>
-                                <AccordionHeader targetId={`view_detail_${viewData?.charge_id}`}>
+                                <AccordionHeader targetId={`view_detail_${viewData?.id}`}>
                                     <div className="top_details">
                                         <div className="row">
                                             <div className="col-lg-4">
                                                 <div className="details">
                                                     <span className="title">Charge ID:</span>
-                                                    <span className="data">{viewData?.charge_id || '-'}</span>
+                                                    <span className="data">{viewData?.id || '-'}</span>
                                                 </div>
                                             </div>
                                             <div className="col-lg-4">
                                                 <div className="details">
                                                     <span className="title">Carrier Name:</span>
-                                                    <span className="data">{viewData?.carrier_name || '-'}</span>
+                                                    <span className="data">{viewData?.tenantCarrier?.name || '-'}</span>
                                                 </div>
                                             </div>
                                             <div className="col-lg-4">
                                                 <div className="details">
                                                     <span className="title">Vendor Name:</span>
-                                                    <span className="data">{viewData?.vendor_name || '-'}</span>
+                                                    <span className="data">{viewData?.tenantVendor?.name || '-'}</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </AccordionHeader>
-                                <AccordionBody accordionId={`view_detail_${viewData?.charge_id}`}>
+                                <AccordionBody accordionId={`view_detail_${viewData?.id}`}>
                                     <div className="view_data_wrap d-flex flex-wrap">
                                         <div className="details">
                                             <span className="title">Valid From:</span>
-                                            <span className="data">{viewData?.valid_from || '-'}</span>
+                                            <span className="data">{viewData?.validFrom || '-'}</span>
                                         </div>
                                         <div className="details">
                                             <span className="title">Valid To:</span>
-                                            <span className="data">{viewData?.valid_till || '-'}</span>
+                                            <span className="data">{viewData?.validTo || '-'}</span>
                                         </div>
                                         <div className="details">
                                             <span className="title">Created By:</span>
-                                            <span className="data">{viewData?.created_by || '-'}</span>
+                                            <span className="data">{viewData?.createdBy || '-'}</span>
                                         </div>
                                         <div className="details">
                                             <span className="title">Created On:</span>
-                                            <span className="data">{viewData?.created_on || '-'}</span>
+                                            <span className="data">{formatDate(viewData?.createdDate) || '-'}</span>
                                         </div>
                                         <div className="details">
                                             <span className="title">Rate Type:</span>
-                                            <span className="data">{viewData?.rate_type || '-'}</span>
+                                            <span className="data">{viewData?.rateType || '-'}</span>
                                         </div>
                                         <div className="details">
                                             <span className="title">Rate Source:</span>
-                                            <span className="data">{viewData?.rate_source || '-'}</span>
+                                            <span className="data">{viewData?.rateSource?.split("_").join(" ") || '-'}</span>
                                         </div>
-                                        <div className="details">
+                                        {/* <div className="details">
                                             <span className="title">Updated By:</span>
                                             <span className="data">{viewData?.last_update_by || '-'}</span>
                                         </div>
@@ -99,99 +102,94 @@ const ModalFclInlandCharge = ({ viewData, modal, onCloseClick }) => {
                                         <div className="details">
                                             <span className="title">Detention Free Dest:</span>
                                             <span className="data">{viewData?.dest_detention_free || '-'}</span>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </AccordionBody>
                             </AccordionItem>
                             <AccordionItem className='freigth_details_wrap'>
-                                <AccordionHeader targetId={`freight_detail_${viewData?.charge_id}`}>
+                                <AccordionHeader targetId={`freight_detail_${viewData?.id}`}>
                                     <h3 className="sub_modal_title">Freight Details</h3>
                                 </AccordionHeader>
-                                <AccordionBody accordionId={`freight_detail_${viewData?.charge_id}`}>
+                                <AccordionBody accordionId={`freight_detail_${viewData?.id}`}>
                                     <div className="table_view_popup_table">
                                         <SimpleBar style={{ maxWidth: '100%' }} ref={ref2}>
-                                        <table style={{ minWidth: '800px' }}>
-                                            <thead>
-                                                <tr>
-                                                    <th>Origin</th>
-                                                    <th>Destination</th>
-                                                    <th>Charge Basis</th>
-                                                    <th>Currency</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>{viewData?.origin || ''}</td>
-                                                    <td>{viewData?.destination || ''}</td>
-                                                    <td>{viewData?.charge_basis || ''}</td>
-                                                    <td>{viewData?.currency || ''}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        </SimpleBar>
-                                        <span className="mt-3 d-block"></span>
-                                        <SimpleBar style={{ maxHeight: "400px", maxWidth: '100%' }} ref={ref}>
-                                        {viewData?.freight_charge !== undefined && 
                                             <table style={{ minWidth: '800px' }}>
                                                 <thead>
                                                     <tr>
-                                                        <th>Container Type</th>
                                                         <th>Cargo Type</th>
-                                                        <th>Cargo Wt Min (MT)</th>
-                                                        <th>Cargo Wt Max (MT)</th>
-                                                        <th>Rate</th>
+                                                        <th>Charge Type</th>
+                                                        <th>Commodity</th>
+                                                        <th>Origin</th>
+                                                        <th>Destination</th>
+                                                        <th>Transit Time</th>
+                                                        <th>Transport Mode</th>
+                                                        <th>Currency</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {viewData?.freight_charge?.map((item,index) => (
+                                                    {fclInlandFreightView?.content && fclInlandFreightView?.content?.map((item, index) => (
                                                         <tr key={index}>
-                                                            <td>{item?.container_type || ''}</td>
-                                                            <td>{item?.cargo_type || ''}</td>
-                                                            <td>{item?.cargo_wt_min || ''}</td>
-                                                            <td>{item?.cargo_wt_max || ''}</td>
-                                                            <td>{item?.rate || ''}</td>
+                                                            <td>{item?.cargoType?.type || ''}</td>
+                                                            <td>{item?.chargeType || ''}</td>
+                                                            <td>{item?.commodity?.name || ''}</td>
+                                                            <td>{item?.originCity?.cityName || ''} - {item?.originCity?.country?.countryName || ''}</td>
+                                                            <td>{item?.destinationCity?.cityName || ''} - {item?.destinationCity?.country?.countryName || ''}</td>
+                                                            <td>{item?.transitTime || ''}</td>
+                                                            <td>{item?.transportMode || ''}</td>
+                                                            <td>{item?.currency?.currencyName || ''}</td>
                                                         </tr>
                                                     ))}
+                                                    {(fclInlandFreightView?.content?.length === 0 || fclInlandFreightView?.content === undefined) && (
+                                                        <tr>
+                                                            <td colSpan={8} className="text-center py-4"><b>No Record Found</b></td>
+                                                        </tr>
+                                                    )}
                                                 </tbody>
                                             </table>
-                                        }
                                         </SimpleBar>
                                     </div>
                                 </AccordionBody>
                             </AccordionItem>
                             <AccordionItem className='charge_details'>
-                                <AccordionHeader targetId={`charge_detail_${viewData?.charge_id}`}>
+                                <AccordionHeader targetId={`charge_detail_${viewData?.id}`}>
                                     <h3 className="sub_modal_title">SurCharge Details</h3>
                                 </AccordionHeader>
-                                <AccordionBody accordionId={`charge_detail_${viewData?.charge_id}`}>
-                                    {viewData?.surcharges !== undefined && viewData?.surcharges?.map((item,index) => (
+                                <AccordionBody accordionId={`charge_detail_${viewData?.id}`}>
+                                    {fclInlandSurchargeView?.content !== undefined && fclInlandSurchargeView?.content?.map((item, index) => (
                                         <div className="view_data_wrap" key={index}>
                                             <div className="details">
                                                 <span className="title">Surcharge Name:</span>
-                                                <span className="data">{item?.name || '-'}</span>
+                                                <span className="data">{item?.surchargeCode?.code || '-'}</span>
                                             </div>
                                             <div className="details">
                                                 <span className="title">Charge Basis:</span>
-                                                <span className="data">{item?.charge_basis || '-'}</span>
+                                                <span className="data">{item?.unitOfMeasurement?.code?.split("_").join(" ") || '-'}</span>
                                             </div>
                                             <div className="details">
                                                 <span className="title">Calculation Type:</span>
-                                                <span className="data">{item?.calculation_type || '-'}</span>
+                                                <span className="data">{item?.calculationType || '-'}</span>
                                             </div>
                                             <div className="details">
                                                 <span className="title">Rate:</span>
-                                                <span className="data">{item?.rate || '-'}</span>
+                                                <span className="data">{item?.value || '-'}</span>
                                             </div>
                                             <div className="details">
                                                 <span className="title">Tax:</span>
-                                                <span className="data">{item?.tax || '-'}</span>
+                                                <span className="data">{item?.applicableTax || '-'}</span>
                                             </div>
                                             <div className="details">
                                                 <span className="title">Currency:</span>
-                                                <span className="data">{item?.currency || '-'}</span>
+                                                <span className="data">{item?.currency?.currencyName || '-'}</span>
                                             </div>
                                         </div>
                                     ))}
+                                    {(fclInlandSurchargeView?.content?.length === 0 || fclInlandSurchargeView?.content === undefined) && (
+                                        <div className="row">
+                                            <div className="col-12">
+                                                <div className="text-center border rounded py-3"><b>No Record Found</b></div>
+                                            </div>
+                                        </div>
+                                    )}
                                 </AccordionBody>
                             </AccordionItem>
                         </Accordion>

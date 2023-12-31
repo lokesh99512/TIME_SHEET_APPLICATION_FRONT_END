@@ -1,9 +1,27 @@
-import { ADD_AIRWAYBILL_DATA, ADD_FCL_DATA, ADD_INLAND_DATA, GET_CONSOLE_TABLE_DATA, GET_CONSOLE_TABLE_DATA_FAIL, GET_CONSOLE_TABLE_DATA_SUCCESS, GET_FCL_TABLE_DATA, GET_FCL_TABLE_DATA_FAIL, GET_FCL_TABLE_DATA_SUCCESS, GET_INLAND_TABLE_DATA, GET_INLAND_TABLE_DATA_FAIL, GET_INLAND_TABLE_DATA_SUCCESS, GET_LCL_TABLE_DATA, GET_LCL_TABLE_DATA_FAIL, GET_LCL_TABLE_DATA_SUCCESS, GET_PORTLOCALCHARGES_TABLE_DATA, GET_PORTLOCALCHARGES_TABLE_DATA_FAIL, GET_PORTLOCALCHARGES_TABLE_DATA_SUCCESS, GET_WAYBILL_TABLE_DATA, GET_WAYBILL_TABLE_DATA_FAIL, GET_WAYBILL_TABLE_DATA_SUCCESS, UPDATE_AIRCONSOLE_SWITCH, UPDATE_AIRWAYBILL_SWITCH, UPDATE_CARRIER_DATA, UPDATE_FCL_ACTIVE_TAB, UPDATE_FCL_SWITCH, UPDATE_FCL_TABLE_DATA, UPDATE_INLAND_ACTIVE_TAB, UPDATE_INLAND_SWITCH, UPDATE_LCL_SWITCH } from "./actiontype";
+import { ADD_AIRWAYBILL_DATA, ADD_FCL_DATA, ADD_INLAND_DATA, GET_CONSOLE_TABLE_DATA, GET_CONSOLE_TABLE_DATA_FAIL, GET_CONSOLE_TABLE_DATA_SUCCESS, GET_FCL_DESTINATION_DATA, GET_FCL_FREIGHT_VIEW_DATA, GET_FCL_INLAND_FREIGHT_ACTION, GET_FCL_INLAND_FREIGHT_DATA, GET_FCL_INLAND_SURCHARGE_ACTION, GET_FCL_INLAND_TABLE_DATA, GET_FCL_INLAND_TABLE_DATA_FAIL, GET_FCL_INLAND_TABLE_DATA_SUCCESS, GET_FCL_SURCHARGE_VIEW_DATA, GET_FCL_TABLE_DATA, GET_FCL_TABLE_DATA_FAIL, GET_FCL_TABLE_DATA_SUCCESS, GET_LCL_TABLE_DATA, GET_LCL_TABLE_DATA_FAIL, GET_LCL_TABLE_DATA_SUCCESS, GET_PORTLOCALCHARGES_TABLE_DATA, GET_PORTLOCALCHARGES_TABLE_DATA_FAIL, GET_PORTLOCALCHARGES_TABLE_DATA_SUCCESS, GET_WAYBILL_TABLE_DATA, GET_WAYBILL_TABLE_DATA_FAIL, GET_WAYBILL_TABLE_DATA_SUCCESS, UPDATE_AIRCONSOLE_SWITCH, UPDATE_AIRWAYBILL_SWITCH, UPDATE_CARRIER_DATA, UPDATE_FCL_ACTIVE_TAB, UPDATE_FCL_SWITCH, UPDATE_FCL_TABLE_DATA, UPDATE_INLAND_ACTIVE_TAB, UPDATE_INLAND_SWITCH, UPDATE_LCL_SWITCH, UPLOAD_FCL_CARRIER_DATA, UPLOAD_FCL_FREIGHT, UPLOAD_FCL_INLAND_CARRIER_DATA, UPLOAD_FCL_INLAND_FREIGHT_DATA, UPLOAD_FCL_INLAND_SURCHARGE_DATA, UPLOAD_FCL_PORTLOCALCHARGES, UPLOAD_FCL_SURCHARGE } from "./actiontype";
 
 export const getFclData = (data) => ({
     type: GET_FCL_TABLE_DATA,
     payload: data,
 })
+export const getFclFreightViewAction = (data) => {
+    return {
+        type: GET_FCL_FREIGHT_VIEW_DATA,
+        payload: data,
+    }
+}
+export const getFclSurchargeViewAction = (data) => {
+    return {
+        type: GET_FCL_SURCHARGE_VIEW_DATA,
+        payload: data,
+    }
+}
+export const getFclDestinationAction = (data) => {
+    return {
+        type: GET_FCL_DESTINATION_DATA,
+        payload: data,
+    }
+}
 
 export const updateFclData = (data) => ({
     type: UPDATE_FCL_TABLE_DATA,
@@ -19,6 +37,25 @@ export const getFclDataFail = (error) => ({
     type: GET_FCL_TABLE_DATA_FAIL,
     payload: error,
 })
+
+export const uploadFclCarrierData = (dataObj) => {
+    return {
+        type: UPLOAD_FCL_CARRIER_DATA,
+        payload: { dataObj }
+    }
+}
+export const uploadFclFrightData = (formData, id) => {
+    return {
+        type: UPLOAD_FCL_FREIGHT,
+        payload: { formData, id }
+    }
+}
+export const uploadFclSurchargeData = (data, id) => {
+    return {
+        type: UPLOAD_FCL_SURCHARGE,
+        payload: { data, id }
+    }
+}
 
 // oceanFreight/lcl
 export const getLclData = (data) => ({
@@ -57,6 +94,32 @@ export const getPortLocalChargesDataFail = (error) => ({
     type: GET_PORTLOCALCHARGES_TABLE_DATA_FAIL,
     payload: error,
 })
+export const postPortLocalChargesData = (dataObj) => {
+    return {
+        type: UPLOAD_FCL_PORTLOCALCHARGES,
+        payload: { dataObj },
+    }
+}
+
+// FCL Inland Actions
+export const uploadFclInlandCarrierAction = (dataObj) => {
+    return {
+        type: UPLOAD_FCL_INLAND_CARRIER_DATA,
+        payload: { dataObj }
+    }
+}
+export const uploadFclInlandFreightAction = (formData, id) => {
+    return {
+        type: UPLOAD_FCL_INLAND_FREIGHT_DATA,
+        payload: { formData, id }
+    }
+}
+export const uploadFclInlandSurchargeAction = (data) => {
+    return {
+        type: UPLOAD_FCL_INLAND_SURCHARGE_DATA,
+        payload: { data }
+    }
+}
 
 //---------------
 export const updateFCLActiveTab = (tab) => ({
@@ -72,31 +135,31 @@ export const updateInlandActiveTab = (tab) => ({
     }
 })
 
-export const addFCLData = (name,data) => ({
+export const addFCLData = (name, data) => ({
     type: ADD_FCL_DATA,
     payload: {
-        name,data
+        name, data
     }
 })
 
-export const addAirwaybillData = (name,data) => ({
+export const addAirwaybillData = (name, data) => ({
     type: ADD_AIRWAYBILL_DATA,
     payload: {
-        name,data
+        name, data
     }
 })
 
-export const addInlandData = (name,data) => ({
+export const addInlandData = (name, data) => ({
     type: ADD_INLAND_DATA,
     payload: {
-        name,data
+        name, data
     }
 })
 
-export const updateCarrierData = (name,data) => ({
+export const updateCarrierData = (name, data) => ({
     type: UPDATE_CARRIER_DATA,
     payload: {
-        name,data
+        name, data
     }
 })
 export const updatelclSwitchData = (lcl_id, lcl_is_active) => ({
@@ -139,28 +202,37 @@ export const getAirConsoleDataFail = (error) => ({
     type: GET_CONSOLE_TABLE_DATA_FAIL,
     payload: error
 })
-export const updateAirConsoleSwitchData = (console_id,console_is_active) => ({
+export const updateAirConsoleSwitchData = (console_id, console_is_active) => ({
     type: UPDATE_AIRCONSOLE_SWITCH,
     payload: {
-        console_id,console_is_active
+        console_id, console_is_active
     }
 })
 
 export const getInLandData = (data) => ({
-    type: GET_INLAND_TABLE_DATA,
+    type: GET_FCL_INLAND_TABLE_DATA,
     payload: data
 })
 export const getInLandDataSuccess = (data) => ({
-    type: GET_INLAND_TABLE_DATA_SUCCESS,
+    type: GET_FCL_INLAND_TABLE_DATA_SUCCESS,
     payload: data
 })
 export const getInLandDataFail = (error) => ({
-    type: GET_INLAND_TABLE_DATA_FAIL,
+    type: GET_FCL_INLAND_TABLE_DATA_FAIL,
     payload: error
 })
-export const updateInLandSwitchData = (inland_id,inland_is_active) => ({
+export const getInLandFreightAction = (id) => ({
+    type: GET_FCL_INLAND_FREIGHT_ACTION,
+    payload: { id }
+})
+export const getInLandSurchargeAction = (id) => ({
+    type: GET_FCL_INLAND_SURCHARGE_ACTION,
+    payload: { id }
+})
+
+export const updateInLandSwitchData = (inland_id, inland_is_active) => ({
     type: UPDATE_INLAND_SWITCH,
     payload: {
-        inland_id,inland_is_active
+        inland_id, inland_is_active
     }
 })

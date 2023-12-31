@@ -330,11 +330,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 2,
         charge_id: 'OCT2523001',
@@ -370,11 +370,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: '',
-        payment_term: '', 
-        charge_gp: '',          
-        charge_gp2: '',          
+        payment_term: '',
+        charge_gp: '',
+        charge_gp2: '',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 3,
         charge_id: 'OCT2523001',
@@ -410,11 +410,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: '',
-        payment_term: '', 
-        charge_gp: '',          
-        charge_gp2: '',          
+        payment_term: '',
+        charge_gp: '',
+        charge_gp2: '',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 4,
         charge_id: 'OCT2523001',
@@ -450,11 +450,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 5,
         charge_id: 'OCT2523001',
@@ -490,11 +490,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 6,
         charge_id: 'OCT2523001',
@@ -530,11 +530,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: '',
-        payment_term: '', 
-        charge_gp: '',          
-        charge_gp2: '',          
+        payment_term: '',
+        charge_gp: '',
+        charge_gp2: '',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 7,
         charge_id: 'OCT2523001',
@@ -570,11 +570,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 8,
         charge_id: 'OCT2523001',
@@ -610,11 +610,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 9,
         charge_id: 'OCT2523001',
@@ -650,11 +650,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 10,
         charge_id: 'OCT2523001',
@@ -690,11 +690,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 11,
         charge_id: 'OCT2523001',
@@ -730,11 +730,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 12,
         charge_id: 'OCT2523001',
@@ -770,11 +770,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 13,
         charge_id: 'OCT2523001',
@@ -810,11 +810,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 14,
         charge_id: 'OCT2523001',
@@ -850,11 +850,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: '',
-        payment_term: '', 
-        charge_gp: '',          
-        charge_gp2: '',          
+        payment_term: '',
+        charge_gp: '',
+        charge_gp2: '',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 15,
         charge_id: 'OCT2523001',
@@ -890,11 +890,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: '',
-        payment_term: '', 
-        charge_gp: '',          
-        charge_gp2: '',          
+        payment_term: '',
+        charge_gp: '',
+        charge_gp2: '',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 16,
         charge_id: 'OCT2523001',
@@ -930,11 +930,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 17,
         charge_id: 'OCT2523001',
@@ -970,11 +970,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 18,
         charge_id: 'OCT2523001',
@@ -1010,11 +1010,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: '',
-        payment_term: '', 
-        charge_gp: '',          
-        charge_gp2: '',          
+        payment_term: '',
+        charge_gp: '',
+        charge_gp2: '',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 19,
         charge_id: 'OCT2523001',
@@ -1050,11 +1050,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 20,
         charge_id: 'OCT2523001',
@@ -1090,11 +1090,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 21,
         charge_id: 'OCT2523001',
@@ -1130,11 +1130,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 22,
         charge_id: 'OCT2523001',
@@ -1170,11 +1170,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },  
+    },
     {
         id: 23,
         charge_id: 'OCT2523001',
@@ -1210,11 +1210,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },  
+    },
     {
         id: 24,
         charge_id: 'OCT2523001',
@@ -1250,11 +1250,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 25,
         charge_id: 'OCT2523002',
@@ -1290,11 +1290,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 26,
         charge_id: 'OCT2523002',
@@ -1330,11 +1330,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: '',
-        payment_term: '', 
-        charge_gp: '',          
-        charge_gp2: '',          
+        payment_term: '',
+        charge_gp: '',
+        charge_gp2: '',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 27,
         charge_id: 'OCT2523002',
@@ -1370,11 +1370,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: '',
-        payment_term: '', 
-        charge_gp: '',          
-        charge_gp2: '',          
+        payment_term: '',
+        charge_gp: '',
+        charge_gp2: '',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 28,
         charge_id: 'OCT2523002',
@@ -1410,11 +1410,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 29,
         charge_id: 'OCT2523002',
@@ -1450,11 +1450,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 30,
         charge_id: 'OCT2523002',
@@ -1490,11 +1490,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: '',
-        payment_term: '', 
-        charge_gp: '',          
-        charge_gp2: '',          
+        payment_term: '',
+        charge_gp: '',
+        charge_gp2: '',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 31,
         charge_id: 'OCT2523002',
@@ -1530,11 +1530,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 32,
         charge_id: 'OCT2523002',
@@ -1570,11 +1570,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 33,
         charge_id: 'OCT2523002',
@@ -1610,11 +1610,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 34,
         charge_id: 'OCT2523002',
@@ -1650,11 +1650,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },   
+    },
     {
         id: 35,
         charge_id: 'OCT2523002',
@@ -1690,11 +1690,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 36,
         charge_id: 'OCT2523002',
@@ -1730,11 +1730,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 37,
         charge_id: 'OCT2523002',
@@ -1770,11 +1770,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 38,
         charge_id: 'OCT2523002',
@@ -1810,11 +1810,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: '',
-        payment_term: '', 
-        charge_gp: '',          
-        charge_gp2: '',          
+        payment_term: '',
+        charge_gp: '',
+        charge_gp2: '',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 39,
         charge_id: 'OCT2523002',
@@ -1850,11 +1850,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: '',
-        payment_term: '', 
-        charge_gp: '',          
-        charge_gp2: '',          
+        payment_term: '',
+        charge_gp: '',
+        charge_gp2: '',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 40,
         charge_id: 'OCT2523002',
@@ -1890,11 +1890,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 41,
         charge_id: 'OCT2523002',
@@ -1930,11 +1930,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 42,
         charge_id: 'OCT2523002',
@@ -1970,11 +1970,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: '',
-        payment_term: '', 
-        charge_gp: '',          
-        charge_gp2: '',          
+        payment_term: '',
+        charge_gp: '',
+        charge_gp2: '',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 43,
         charge_id: 'OCT2523002',
@@ -2010,11 +2010,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 44,
         charge_id: 'OCT2523002',
@@ -2050,11 +2050,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 45,
         charge_id: 'OCT2523002',
@@ -2090,11 +2090,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 46,
         charge_id: 'OCT2523002',
@@ -2130,11 +2130,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },  
+    },
     {
         id: 47,
         charge_id: 'OCT2523002',
@@ -2170,11 +2170,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },  
+    },
     {
         id: 48,
         charge_id: 'OCT2523002',
@@ -2210,11 +2210,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },  
+    },
     {
         id: 49,
         charge_id: 'OCT2523003',
@@ -2250,11 +2250,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 50,
         charge_id: 'OCT2523003',
@@ -2290,11 +2290,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: '',
-        payment_term: '', 
-        charge_gp: '',          
-        charge_gp2: '',          
+        payment_term: '',
+        charge_gp: '',
+        charge_gp2: '',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 51,
         charge_id: 'OCT2523003',
@@ -2330,11 +2330,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: '',
-        payment_term: '', 
-        charge_gp: '',          
-        charge_gp2: '',          
+        payment_term: '',
+        charge_gp: '',
+        charge_gp2: '',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 52,
         charge_id: 'OCT2523003',
@@ -2370,11 +2370,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 53,
         charge_id: 'OCT2523003',
@@ -2410,11 +2410,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 54,
         charge_id: 'OCT2523003',
@@ -2450,11 +2450,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: '',
-        payment_term: '', 
-        charge_gp: '',          
-        charge_gp2: '',          
+        payment_term: '',
+        charge_gp: '',
+        charge_gp2: '',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 55,
         charge_id: 'OCT2523003',
@@ -2490,11 +2490,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 56,
         charge_id: 'OCT2523003',
@@ -2530,11 +2530,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 57,
         charge_id: 'OCT2523003',
@@ -2570,11 +2570,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 58,
         charge_id: 'OCT2523003',
@@ -2610,11 +2610,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 59,
         charge_id: 'OCT2523003',
@@ -2650,11 +2650,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 60,
         charge_id: 'OCT2523003',
@@ -2690,11 +2690,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 61,
         charge_id: 'OCT2523003',
@@ -2730,11 +2730,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 62,
         charge_id: 'OCT2523003',
@@ -2770,11 +2770,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: '',
-        payment_term: '', 
-        charge_gp: '',          
-        charge_gp2: '',          
+        payment_term: '',
+        charge_gp: '',
+        charge_gp2: '',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 63,
         charge_id: 'OCT2523003',
@@ -2810,11 +2810,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: '',
-        payment_term: '', 
-        charge_gp: '',          
-        charge_gp2: '',          
+        payment_term: '',
+        charge_gp: '',
+        charge_gp2: '',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 64,
         charge_id: 'OCT2523003',
@@ -2850,11 +2850,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 65,
         charge_id: 'OCT2523003',
@@ -2890,11 +2890,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 66,
         charge_id: 'OCT2523003',
@@ -2930,11 +2930,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: '',
-        payment_term: '', 
-        charge_gp: '',          
-        charge_gp2: '',          
+        payment_term: '',
+        charge_gp: '',
+        charge_gp2: '',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 67,
         charge_id: 'OCT2523003',
@@ -2970,11 +2970,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 68,
         charge_id: 'OCT2523003',
@@ -3010,11 +3010,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 69,
         charge_id: 'OCT2523003',
@@ -3050,11 +3050,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },    
+    },
     {
         id: 70,
         charge_id: 'OCT2523003',
@@ -3090,11 +3090,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },  
+    },
     {
         id: 71,
         charge_id: 'OCT2523003',
@@ -3130,11 +3130,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_gp: '22',          
-        charge_gp2: '44',          
+        payment_term: 'Prepaid',
+        charge_gp: '22',
+        charge_gp2: '44',
         charge_currency: 'USD',
-    },  
+    },
     {
         id: 72,
         charge_id: 'OCT2523003',
@@ -3170,11 +3170,11 @@ const fclTableData = [
         created_on: '29 Oct 2023',
         created_by: '29 Oct 2023',
         charge_name: 'OBS',
-        payment_term: 'Prepaid', 
-        charge_currency: 'USD',                
-        charge_gp: '22',          
-        charge_gp2: '44',          
-        charge_hc: '44',                
+        payment_term: 'Prepaid',
+        charge_currency: 'USD',
+        charge_gp: '22',
+        charge_gp2: '44',
+        charge_hc: '44',
     },
 ]
 
@@ -3554,13 +3554,13 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        chargeCode:"OTHC",
-        chargeBasis:"Per Container",
-        calculationType:"Flat",
-        slabBasis:"",
-        currency:"INR",
-        minValue:"1",
-        surchargeValue:[
+        chargeCode: "OTHC",
+        chargeBasis: "Per Container",
+        calculationType: "Flat",
+        slabBasis: "",
+        currency: "INR",
+        minValue: "1",
+        surchargeValue: [
             {
                 chargeCode: "OTHC",
                 chargeBasis: "Per Container",
@@ -3677,13 +3677,13 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        chargeCode:"THC",
-        chargeBasis:"Per Shipment",
-        calculationType:"Flat",
-        slabBasis:"",
-        currency:"INR",
-        minValue:"1",
-        surchargeValue:[
+        chargeCode: "THC",
+        chargeBasis: "Per Shipment",
+        calculationType: "Flat",
+        slabBasis: "",
+        currency: "INR",
+        minValue: "1",
+        surchargeValue: [
             {
                 chargeCode: "OTHC",
                 chargeBasis: "Per Container",
@@ -3800,13 +3800,13 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        chargeCode:"THC",
-        chargeBasis:"Per Container	",
-        calculationType:"Flat",
-        slabBasis:"",
-        currency:"INR",
-        minValue:"1",
-        surchargeValue:[
+        chargeCode: "THC",
+        chargeBasis: "Per Container	",
+        calculationType: "Flat",
+        slabBasis: "",
+        currency: "INR",
+        minValue: "1",
+        surchargeValue: [
             {
                 chargeCode: "OTHC",
                 chargeBasis: "Per Container",
@@ -3909,13 +3909,13 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        chargeCode:"THC",
-        chargeBasis:"Per Shipment",
-        calculationType:"Flat",
-        slabBasis:"",
-        currency:"INR",
-        minValue:"1",
-        surchargeValue:[
+        chargeCode: "THC",
+        chargeBasis: "Per Shipment",
+        calculationType: "Flat",
+        slabBasis: "",
+        currency: "INR",
+        minValue: "1",
+        surchargeValue: [
             {
                 chargeCode: "OTHC",
                 chargeBasis: "Per Container",
@@ -4018,13 +4018,13 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        chargeCode:"THC",
-        chargeBasis:"Per Shipment",
-        calculationType:"Flat",
-        slabBasis:"",
-        currency:"INR",
-        minValue:"1",
-        surchargeValue:[
+        chargeCode: "THC",
+        chargeBasis: "Per Shipment",
+        calculationType: "Flat",
+        slabBasis: "",
+        currency: "INR",
+        minValue: "1",
+        surchargeValue: [
             {
                 chargeCode: "OTHC",
                 chargeBasis: "Per Container",
@@ -4141,13 +4141,13 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        chargeCode:"THC",
-        chargeBasis:"Per Shipment",
-        calculationType:"Flat",
-        slabBasis:"",
-        currency:"INR",
-        minValue:"1",
-        surchargeValue:[
+        chargeCode: "THC",
+        chargeBasis: "Per Shipment",
+        calculationType: "Flat",
+        slabBasis: "",
+        currency: "INR",
+        minValue: "1",
+        surchargeValue: [
             {
                 chargeCode: "OTHC",
                 chargeBasis: "Per Container",
@@ -4264,13 +4264,13 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        chargeCode:"THC",
-        chargeBasis:"Per Shipment",
-        calculationType:"Flat",
-        slabBasis:"",
-        currency:"INR",
-        minValue:"1",
-        surchargeValue:[
+        chargeCode: "THC",
+        chargeBasis: "Per Shipment",
+        calculationType: "Flat",
+        slabBasis: "",
+        currency: "INR",
+        minValue: "1",
+        surchargeValue: [
             {
                 chargeCode: "BL FEE",
                 chargeBasis: "Per BL",
@@ -4293,7 +4293,7 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "5700"
-                    },                    
+                    },
                 ]
             },
             {
@@ -4318,7 +4318,7 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "5700"
-                    },                    
+                    },
                 ]
             },
             {
@@ -4395,13 +4395,13 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        chargeCode:"THC",
-        chargeBasis:"Per Shipment",
-        calculationType:"Flat",
-        slabBasis:"",
-        currency:"INR",
-        minValue:"1",
-        surchargeValue:[
+        chargeCode: "THC",
+        chargeBasis: "Per Shipment",
+        calculationType: "Flat",
+        slabBasis: "",
+        currency: "INR",
+        minValue: "1",
+        surchargeValue: [
             {
                 chargeCode: "BL FEE",
                 chargeBasis: "Per BL",
@@ -4424,7 +4424,7 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "5700"
-                    },                    
+                    },
                 ]
             },
             {
@@ -4449,7 +4449,7 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "5700"
-                    },                    
+                    },
                 ]
             },
             {
@@ -4526,13 +4526,13 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        chargeCode:"THC",
-        chargeBasis:"Per Shipment",
-        calculationType:"Flat",
-        slabBasis:"",
-        currency:"INR",
-        minValue:"1",
-        surchargeValue:[
+        chargeCode: "THC",
+        chargeBasis: "Per Shipment",
+        calculationType: "Flat",
+        slabBasis: "",
+        currency: "INR",
+        minValue: "1",
+        surchargeValue: [
             {
                 chargeCode: "BL FEE",
                 chargeBasis: "Per BL",
@@ -4555,7 +4555,7 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "3500"
-                    },                    
+                    },
                 ]
             },
             {
@@ -4580,7 +4580,7 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "750"
-                    },                    
+                    },
                 ]
             },
             {
@@ -4605,7 +4605,7 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "5"
-                    },                    
+                    },
                 ]
             },
             {
@@ -4630,7 +4630,7 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "170"
-                    },                    
+                    },
                 ]
             },
             {
@@ -4707,13 +4707,13 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        chargeCode:"THC",
-        chargeBasis:"Per Shipment",
-        calculationType:"Flat",
-        slabBasis:"",
-        currency:"INR",
-        minValue:"1",
-        surchargeValue:[
+        chargeCode: "THC",
+        chargeBasis: "Per Shipment",
+        calculationType: "Flat",
+        slabBasis: "",
+        currency: "INR",
+        minValue: "1",
+        surchargeValue: [
             {
                 chargeCode: "BL FEE",
                 chargeBasis: "Per BL",
@@ -4736,7 +4736,7 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "3500"
-                    },                    
+                    },
                 ]
             },
             {
@@ -4761,7 +4761,7 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "750"
-                    },                    
+                    },
                 ]
             },
             {
@@ -4786,7 +4786,7 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "5"
-                    },                    
+                    },
                 ]
             },
             {
@@ -4811,7 +4811,7 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "170"
-                    },                    
+                    },
                 ]
             },
             {
@@ -4888,7 +4888,7 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        surchargeValue:[]
+        surchargeValue: []
     },
     {
         id: 12,
@@ -4902,7 +4902,7 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        surchargeValue:[]
+        surchargeValue: []
     },
     {
         id: 13,
@@ -4916,7 +4916,7 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        surchargeValue:[]
+        surchargeValue: []
     },
     {
         id: 14,
@@ -4930,7 +4930,7 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        surchargeValue:[
+        surchargeValue: [
             {
                 chargeCode: "DTHC",
                 chargeBasis: "Per Container",
@@ -4981,7 +4981,7 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "230"
-                    },                    
+                    },
                 ]
             },
         ]
@@ -4998,7 +4998,7 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        surchargeValue:[]
+        surchargeValue: []
     },
     {
         id: 16,
@@ -5012,7 +5012,7 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        surchargeValue:[
+        surchargeValue: [
             {
                 chargeCode: "DTHC",
                 chargeBasis: "Per Container",
@@ -5080,7 +5080,7 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        surchargeValue:[]
+        surchargeValue: []
     },
     {
         id: 18,
@@ -5094,7 +5094,7 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        surchargeValue:[
+        surchargeValue: [
             {
                 chargeCode: "DTHC",
                 chargeBasis: "Per Container",
@@ -5145,7 +5145,7 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "220"
-                    },                    
+                    },
                 ]
             }
         ]
@@ -5162,7 +5162,7 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        surchargeValue:[
+        surchargeValue: [
             {
                 chargeCode: "DOC",
                 chargeBasis: "Per BL",
@@ -5185,7 +5185,7 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "1500"
-                    },                    
+                    },
                 ]
             },
             {
@@ -5210,10 +5210,10 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "500"
-                    },                    
+                    },
                 ]
             },
-        ] 
+        ]
     },
     {
         id: 20,
@@ -5227,7 +5227,7 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        surchargeValue:[
+        surchargeValue: [
             {
                 chargeCode: "DOC",
                 chargeBasis: "Per BL",
@@ -5250,7 +5250,7 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "100000"
-                    },                    
+                    },
                 ]
             },
             {
@@ -5275,7 +5275,7 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "300000"
-                    },                    
+                    },
                 ]
             },
             {
@@ -5317,7 +5317,7 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        surchargeValue:[
+        surchargeValue: [
             {
                 chargeCode: "DOC",
                 chargeBasis: "Per BL",
@@ -5340,7 +5340,7 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "1500"
-                    },                    
+                    },
                 ]
             },
             {
@@ -5365,10 +5365,10 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "500"
-                    },                    
+                    },
                 ]
             },
-        ] 
+        ]
     },
     {
         id: 22,
@@ -5382,7 +5382,7 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        surchargeValue:[
+        surchargeValue: [
             {
                 chargeCode: "DOC",
                 chargeBasis: "Per BL",
@@ -5472,7 +5472,7 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        surchargeValue:[
+        surchargeValue: [
             {
                 chargeCode: "DOC",
                 chargeBasis: "Per BL",
@@ -5495,7 +5495,7 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "1500"
-                    },                    
+                    },
                 ]
             },
             {
@@ -5520,10 +5520,10 @@ export const plChargesTableData = [
                         fromSlab: "",
                         toSlab: "",
                         rate: "500"
-                    },                    
+                    },
                 ]
             },
-        ]  
+        ]
     },
     {
         id: 24,
@@ -5537,7 +5537,7 @@ export const plChargesTableData = [
         vendor_name: '',
         valid_from: '25th OCT 2023',
         valid_till: '31st DEC 2023',
-        surchargeValue:[
+        surchargeValue: [
             {
                 chargeCode: "DOC",
                 chargeBasis: "Per BL",
@@ -5614,7 +5614,7 @@ export const plChargesTableData = [
                 ]
             },
         ]
-    },  
+    },
 ]
 
 const waybillTableData = [
@@ -6300,7 +6300,7 @@ const inLandTableData = [
         slab: '0Mt - 10MT',
         amount: '24,000',
         currency: 'INR',
-        cargo_type: 'General',        
+        cargo_type: 'General',
         last_update: '01 Jan 2023',
         last_update_by: 'Michelle Brewer',
         created_on: '01 Jan 2023',
@@ -6319,28 +6319,28 @@ const inLandTableData = [
                 cargo_wt_min: '7.7',
                 cargo_wt_max: '17.7',
                 rate: '26000'
-            },  
+            },
             {
                 container_type: '20 GP',
                 cargo_type: 'General',
                 cargo_wt_min: '17.7',
                 cargo_wt_max: '23.7',
                 rate: '29100'
-            },  
+            },
             {
                 container_type: '20 GP',
                 cargo_type: 'General',
                 cargo_wt_min: '23.7',
                 cargo_wt_max: '27.7',
                 rate: '32200'
-            },  
+            },
             {
                 container_type: '20 GP',
                 cargo_type: 'General',
                 cargo_wt_min: '27.7',
                 cargo_wt_max: '28.7',
                 rate: '32200'
-            },  
+            },
             {
                 container_type: '20 GP',
                 cargo_type: 'Hazardous',
@@ -6354,140 +6354,140 @@ const inLandTableData = [
                 cargo_wt_min: '7.7',
                 cargo_wt_max: '17.7',
                 rate: '33800'
-            },  
+            },
             {
                 container_type: '20 GP',
                 cargo_type: 'Hazardous',
                 cargo_wt_min: '17.7',
                 cargo_wt_max: '23.7',
                 rate: '37830'
-            },  
+            },
             {
                 container_type: '20 GP',
                 cargo_type: 'Hazardous',
                 cargo_wt_min: '23.7',
                 cargo_wt_max: '27.7',
                 rate: '41860'
-            },  
+            },
             {
                 container_type: '20 GP',
                 cargo_type: 'Hazardous',
                 cargo_wt_min: '27.7',
                 cargo_wt_max: '28.7',
                 rate: '41860'
-            },  
+            },
             {
                 container_type: '40 GP',
                 cargo_type: 'General',
                 cargo_wt_min: '1',
                 cargo_wt_max: '15.4',
                 rate: '39300'
-            },  
+            },
             {
                 container_type: '40 GP',
                 cargo_type: 'General',
                 cargo_wt_min: '15.4',
                 cargo_wt_max: '22.4',
                 rate: '40900'
-            },  
+            },
             {
                 container_type: '40 GP',
                 cargo_type: 'General',
                 cargo_wt_min: '22.4',
                 cargo_wt_max: '26.4',
                 rate: '41900'
-            },  
+            },
             {
                 container_type: '40 GP',
                 cargo_type: 'General',
                 cargo_wt_min: '26.4',
                 cargo_wt_max: '27.4',
                 rate: '43900'
-            },  
+            },
             {
                 container_type: '40 GP',
                 cargo_type: 'Hazardous',
                 cargo_wt_min: '1',
                 cargo_wt_max: '15.4',
                 rate: '51090'
-            },  
+            },
             {
                 container_type: '40 GP',
                 cargo_type: 'Hazardous',
                 cargo_wt_min: '15.4',
                 cargo_wt_max: '22.4',
                 rate: '53170'
-            },  
+            },
             {
                 container_type: '40 GP',
                 cargo_type: 'Hazardous',
                 cargo_wt_min: '22.4',
                 cargo_wt_max: '26.4',
                 rate: '54470'
-            },  
+            },
             {
                 container_type: '40 GP',
                 cargo_type: 'Hazardous',
                 cargo_wt_min: '26.4',
                 cargo_wt_max: '27.4',
                 rate: '57070'
-            },  
+            },
             {
                 container_type: '40 HQ',
                 cargo_type: 'General',
                 cargo_wt_min: '1',
                 cargo_wt_max: '15.4',
                 rate: '39300'
-            },  
+            },
             {
                 container_type: '40 HQ',
                 cargo_type: 'General',
                 cargo_wt_min: '15.4',
                 cargo_wt_max: '22.4',
                 rate: '40900'
-            },  
+            },
             {
                 container_type: '40 HQ',
                 cargo_type: 'General',
                 cargo_wt_min: '22.4',
                 cargo_wt_max: '26.4',
                 rate: '41900'
-            },  
+            },
             {
                 container_type: '40 HQ',
                 cargo_type: 'General',
                 cargo_wt_min: '26.4',
                 cargo_wt_max: '27.4',
                 rate: '43900'
-            },  
+            },
             {
                 container_type: '40 HQ',
                 cargo_type: 'Hazardous',
                 cargo_wt_min: '1',
                 cargo_wt_max: '15.4',
                 rate: '51090'
-            },  
+            },
             {
                 container_type: '40 HQ',
                 cargo_type: 'Hazardous',
                 cargo_wt_min: '15.4',
                 cargo_wt_max: '22.4',
                 rate: '53170'
-            },  
+            },
             {
                 container_type: '40 HQ',
                 cargo_type: 'Hazardous',
                 cargo_wt_min: '22.4',
                 cargo_wt_max: '26.4',
                 rate: '54470'
-            },  
+            },
             {
                 container_type: '40 HQ',
                 cargo_type: 'Hazardous',
                 cargo_wt_min: '26.4',
                 cargo_wt_max: '27.4',
                 rate: '57070'
-            },  
+            },
         ],
         surcharges: [
             {
@@ -6526,7 +6526,7 @@ const inLandTableData = [
         slab: '0Mt - 10MT',
         amount: '24,000',
         currency: 'INR',
-        cargo_type: 'General',        
+        cargo_type: 'General',
         last_update: '01 Jan 2023',
         last_update_by: 'Michelle Brewer',
         created_on: '01 Jan 2023',
@@ -6545,28 +6545,28 @@ const inLandTableData = [
                 cargo_wt_min: '7.7',
                 cargo_wt_max: '17.7',
                 rate: '26000'
-            },  
+            },
             {
                 container_type: '20 GP',
                 cargo_type: 'General',
                 cargo_wt_min: '17.7',
                 cargo_wt_max: '23.7',
                 rate: '29100'
-            },  
+            },
             {
                 container_type: '20 GP',
                 cargo_type: 'General',
                 cargo_wt_min: '23.7',
                 cargo_wt_max: '27.7',
                 rate: '32200'
-            },  
+            },
             {
                 container_type: '20 GP',
                 cargo_type: 'General',
                 cargo_wt_min: '27.7',
                 cargo_wt_max: '28.7',
                 rate: '32200'
-            },  
+            },
             {
                 container_type: '20 GP',
                 cargo_type: 'Hazardous',
@@ -6580,105 +6580,105 @@ const inLandTableData = [
                 cargo_wt_min: '7.7',
                 cargo_wt_max: '17.7',
                 rate: '33800'
-            },  
+            },
             {
                 container_type: '20 GP',
                 cargo_type: 'Hazardous',
                 cargo_wt_min: '17.7',
                 cargo_wt_max: '23.7',
                 rate: '37830'
-            },  
+            },
             {
                 container_type: '20 GP',
                 cargo_type: 'Hazardous',
                 cargo_wt_min: '23.7',
                 cargo_wt_max: '27.7',
                 rate: '41860'
-            },  
+            },
             {
                 container_type: '20 GP',
                 cargo_type: 'Hazardous',
                 cargo_wt_min: '27.7',
                 cargo_wt_max: '28.7',
                 rate: '41860'
-            },  
+            },
             {
                 container_type: '40 GP',
                 cargo_type: 'General',
                 cargo_wt_min: '1',
                 cargo_wt_max: '15.4',
                 rate: '39300'
-            },  
+            },
             {
                 container_type: '40 GP',
                 cargo_type: 'General',
                 cargo_wt_min: '15.4',
                 cargo_wt_max: '22.4',
                 rate: '40900'
-            },  
+            },
             {
                 container_type: '40 GP',
                 cargo_type: 'General',
                 cargo_wt_min: '22.4',
                 cargo_wt_max: '26.4',
                 rate: '41900'
-            }, 
+            },
             {
                 container_type: '40 GP',
                 cargo_type: 'Hazardous',
                 cargo_wt_min: '1',
                 cargo_wt_max: '15.4',
                 rate: '51090'
-            },  
+            },
             {
                 container_type: '40 GP',
                 cargo_type: 'Hazardous',
                 cargo_wt_min: '15.4',
                 cargo_wt_max: '22.4',
                 rate: '53170'
-            },  
+            },
             {
                 container_type: '40 GP',
                 cargo_type: 'Hazardous',
                 cargo_wt_min: '22.4',
                 cargo_wt_max: '26.4',
                 rate: '54470'
-            }, 
+            },
             {
                 container_type: '40 HQ',
                 cargo_type: 'General',
                 cargo_wt_min: '1',
                 cargo_wt_max: '15.4',
                 rate: '39300'
-            },  
+            },
             {
                 container_type: '40 HQ',
                 cargo_type: 'General',
                 cargo_wt_min: '15.4',
                 cargo_wt_max: '22.4',
                 rate: '40900'
-            },  
+            },
             {
                 container_type: '40 HQ',
                 cargo_type: 'General',
                 cargo_wt_min: '22.4',
                 cargo_wt_max: '26.4',
                 rate: '41900'
-            },    
+            },
             {
                 container_type: '40 HQ',
                 cargo_type: 'Hazardous',
                 cargo_wt_min: '1',
                 cargo_wt_max: '15.4',
                 rate: '51090'
-            },  
+            },
             {
                 container_type: '40 HQ',
                 cargo_type: 'Hazardous',
                 cargo_wt_min: '15.4',
                 cargo_wt_max: '22.4',
                 rate: '53170'
-            },  
+            },
             {
                 container_type: '40 HQ',
                 cargo_type: 'Hazardous',
@@ -6724,7 +6724,7 @@ const inLandTableData = [
         slab: '0Mt - 10MT',
         amount: '24,000',
         currency: 'INR',
-        cargo_type: 'General',        
+        cargo_type: 'General',
         last_update: '01 Jan 2023',
         last_update_by: 'Michelle Brewer',
         created_on: '01 Jan 2023',
@@ -6766,7 +6766,7 @@ const inLandTableData = [
         slab: '0Mt - 10MT',
         amount: '24,000',
         currency: 'INR',
-        cargo_type: 'General',        
+        cargo_type: 'General',
         last_update: '01 Jan 2023',
         last_update_by: 'Michelle Brewer',
         created_on: '01 Jan 2023',
@@ -6808,7 +6808,7 @@ const inLandTableData = [
         slab: '0Mt - 10MT',
         amount: '24,000',
         currency: 'INR',
-        cargo_type: 'General',        
+        cargo_type: 'General',
         last_update: '01 Jan 2023',
         last_update_by: 'Michelle Brewer',
         created_on: '01 Jan 2023',
@@ -6850,11 +6850,11 @@ const inLandTableData = [
         slab: '0Mt - 10MT',
         amount: '24,000',
         currency: 'INR',
-        cargo_type: 'General',        
+        cargo_type: 'General',
         last_update: '01 Jan 2023',
         last_update_by: 'Michelle Brewer',
         created_on: '01 Jan 2023',
-        created_by: '01 Jan 2023',               
+        created_by: '01 Jan 2023',
         surcharges: [
             {
                 name: 'FSC',
@@ -6877,17 +6877,62 @@ const inLandTableData = [
 ]
 
 // --------------------------- upload form options ---------------------------------
+// unused option
+const chargeCategory = [
+    { label: "OCEAN SURCHARGE", value: "freight_surcharge" },
+    { label: "PORT SURCHARGE", value: "port_surcharge" },
+    { label: "LOCAL SURCHARGE", value: "local_surcharge" },
+    { label: "ORIGIN TRANSPORTATION", value: "origin_transportation" },
+    { label: "DESTINATION TRANSPORTATION", value: "destination_transportation" },
+    { label: "ANCILLARY CHARGES", value: "ancillary_charges" },
+    { label: "VAS CHARGES", value: "vas_charges" },
+    { label: "CUSTOMS", value: "custom" },
+];
+const portName = [
+    { label: "BDDAC - DHAKA", value: "BDDAC" },
+    { label: "INMAA - CHENNAI", value: "INMAA" },
+    { label: "INKTP - CHENNAI", value: "INKTP" },
+    { label: "CNNGB - NINGBO", value: "CNNGB" },
+    { label: "CNSHA - SHANGHAI", value: "CNSHA" },
+    { label: "KHPNH - PHNOM PENH", value: "KHPNH" },
+    { label: "KHKOS - SIHANOUKVILLE", value: "KHKOS" },
+    { label: "HKHKG - HONG KONG", value: "HKHKG" },
+    { label: "IDBLW - BELAWAN", value: "IDBLW" },
+    { label: "IDJKT - JAKARTA", value: "IDJKT" },
+    { label: "IDPLM - PALEMBANG", value: "IDPLM" },
+    { label: "IDPNK - PONTIANAK", value: "IDPNK" },
+    { label: "IDSRG - SEMARANG", value: "IDSRG" },
+    { label: "IDSUB - SURABAYA", value: "IDSUB" },
+];
+// const serviceType = [
+//     { label: "Door To Door", value: "Door To Door" },
+//     { label: "Door To Port", value: "Door To Port" },
+//     { label: "Port To Door", value: "Port To Door" },
+//     { label: "Port To Port", value: "Port To Port" },
+// ];
+// unused option
+
+
 const optionRateType = [
-    { label: "SPOT", value: "spot" },
-    { label: "CONTRACT", value: "contract" }
+    { label: "SPOT", value: "SPOT" },
+    { label: "CONTRACT", value: "CONTRACT" },
+    { label: "TARIFF", value: "TARIFF" }
 ]
 const optionRateSource = [
-    { label: "WEBSITE", value: "website" },
-    { label: "EMAIL", value: "email" }
+    { label: "EMAIL", value: "EMAIL" },
+    { label: "WEBSITE", value: "WEBSITE" },
+    { label: "SALES TEAM", value: "SALES_TEAM" }
 ]
 const optionVendorType = [
-    { label: "Agent", value: "agent" },
-    { label: "Carrier", value: "carrier" },
+    { label: "ALL", value: "ALL" },
+    { label: "CARRIER", value: "CARRIER" },
+    { label: "NVOCC", value: "NVOCC" },
+    { label: "AGENT", value: "OVERSEAS_AGENT" },
+    { label: "CHA", value: "CHA" },
+    { label: "TRANSPORTER", value: "TRANSPORTER" },
+    { label: "CO LOADER", value: "CO_LOADER" },
+    { label: "LOCAL AGENT", value: "LOCAL_AGENT" },
+    { label: "MANPOWER AGENT", value: "MANPOWER_AGENT" },
 ]
 const optionVendorName = []
 const optionCarrierName = [
@@ -6896,12 +6941,12 @@ const optionCarrierName = [
     { label: "OOCL", value: "oocl" },
 ]
 const optionMovementType = [
-    { label: "Export", value: "export" },
-    { label: "Import", value: "import" },
+    { label: "IMPORT", value: "IMPORT" },
+    { label: "EXPORT", value: "EXPORT" },
 ]
 const optionValidityApp = [
-    { label: "Vessel Sailing Date", value: "vessel_sailing" },
-    { label: "Cargo Handover Date", value: "validityapp2" }
+    { label: "SAILING DATE", value: "SAILING_DATE" },
+    { label: "CARGO HANDOVER DATE", value: "CARGO_HANDOVER_DATE" }
 ]
 const optionSurchargesName = [
     { label: "OBS - One Bunker Surchage", value: "obs" },
@@ -6943,18 +6988,18 @@ const optionDestPort = [
     { label: "IDSUB", value: "IDSUB" },
 ]
 const optionOrgPort = [
-    { label: 'INMAA', value: 'INMAA'},
-    { label: 'INKTP', value: 'INKTP'},
+    { label: 'INMAA', value: 'INMAA' },
+    { label: 'INKTP', value: 'INKTP' },
 ]
 const optionPortlocalOrgPort = [
-    { label: 'INMAA', value: 'INMAA'},
-    { label: 'INKTP', value: 'INKTP'},
-    { label: 'BDDAC', value: 'BDDAC'},
-    { label: 'IDSUB', value: 'IDSUB'},
+    { label: 'INMAA', value: 'INMAA' },
+    { label: 'INKTP', value: 'INKTP' },
+    { label: 'BDDAC', value: 'BDDAC' },
+    { label: 'IDSUB', value: 'IDSUB' },
 ]
 const optionPaymentType = [
-    { label: "Prepaid", value: "prepaid" },
-    { label: "Postpaid", value: "postpaid" },
+    { label: "TO COLLECT", value: "TO_COLLECT" },
+    { label: "PREPAID", value: "PREPAID" },
 ]
 const optcurrency = [
     { label: "INR", value: "INR" },
@@ -6966,6 +7011,8 @@ const optcurrency = [
 ];
 const optionCargoType = [
     { label: "General", value: "general" },
+    { label: "Refer", value: "Refer" },
+    { label: "Haz", value: "Haz" },
 ]
 const optionChargeBasis = [
     { label: "Cargo Weight (MT)", value: "cargo_weight_mt" },
@@ -6980,17 +7027,33 @@ const optionChargeBasis = [
     { label: "Per Ton", value: "per_ton" },
     { label: "Per Ton/Per Container", value: "per_ton_container" },
     { label: "Per CBM", value: "per_cbm" },
-  ];
+];
 const optionCalculationType = [
-    { label: "Flat", value: "Flat" },
-    { label: "Slab", value: "Slab" },
-    { label: "Percentage", value: "Percentage" },
+    { label: "FLAT", value: "FLAT" },
+    { label: "Slab", value: "SLAB" },
+    { label: "Percentage", value: "PERCENTAGE" },
+];
+const optionContainerType = [
+    { label: "20 GP", value: "20_gp" },
+    { label: "40 GP", value: "40_gp" },
+    { label: "40 HQ", value: "40_hq" },
+    { label: "45 HQ", value: "45_hq" },
+    { label: "20 RF", value: "20_rf" },
+    { label: "40 RF", value: "40_rf" },
+];
+const optionServiceType = [
+    { label: "OCEAN", value: "OCEAN" },
+    { label: "AIR", value: "AIR" },
+];
+const optionIsStandard = [
+    { label: "Standard Charge", value: "standard_charge" },
+    { label: "Incidental", value: "incidental" },
 ];
 
 export {
-    fclBreadcrumb,fclRateData,fclTableData,lclBreadcrumb,portLocalBreadcrumb,lclRateData,lclTableData,
-    optionRateType,optionRateSource,optionVendorType,optionVendorName,optionCarrierName,optionValidityApp,optionSurchargesName,optionMultiDestination,optionPaymentType,
-    waybillBreadcrumb,waybillRateData,waybillTableData,consoleBreadcrumb,consoleRateData,consoleTableData,inLandBreadcrumb,inLandRateData,inLandTableData,fclSurchargeBreadcrumb,fclSurchargeRateData,
-    optcurrency,optionOrgPort,optionDestPort,optionCargoType,optionMovementType,optionPortlocalOrgPort,
-    optionChargeBasis,optionCalculationType
+    fclBreadcrumb, fclRateData, fclTableData, lclBreadcrumb, portLocalBreadcrumb, lclRateData, lclTableData,
+    optionRateType, optionRateSource, optionVendorType, optionVendorName, optionCarrierName, optionValidityApp, optionSurchargesName, optionMultiDestination, optionPaymentType,
+    waybillBreadcrumb, waybillRateData, waybillTableData, consoleBreadcrumb, consoleRateData, consoleTableData, inLandBreadcrumb, inLandRateData, inLandTableData, fclSurchargeBreadcrumb, fclSurchargeRateData,
+    optcurrency, optionOrgPort, optionDestPort, optionCargoType, optionMovementType, optionPortlocalOrgPort,
+    optionChargeBasis, optionCalculationType, optionContainerType, optionServiceType, optionIsStandard
 };

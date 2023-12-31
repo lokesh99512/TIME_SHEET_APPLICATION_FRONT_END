@@ -17,6 +17,8 @@ import salesSaga from "./Sales/saga"
 import rateManagementSaga from "./RateManagement/saga"
 import settingsSaga from "./Settings/saga"
 import partiesSaga from "./Parties/saga"
+import globalSaga from "./Global/saga"
+import partiesCustomerSaga from "./Parties/Customer/saga"
 
 export default function* rootSaga() {
   yield all([
@@ -35,6 +37,8 @@ export default function* rootSaga() {
     fork(salesSaga),
     // fork(rateManagementSaga),
     fork(settingsSaga),
-    fork(partiesSaga)
+    fork(partiesSaga),
+    fork(globalSaga),
+    fork(partiesCustomerSaga),
   ])
 }

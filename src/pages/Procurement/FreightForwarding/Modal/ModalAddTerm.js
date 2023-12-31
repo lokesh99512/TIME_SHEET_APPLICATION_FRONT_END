@@ -2,11 +2,8 @@ import React from "react";
 import { Input, Label, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Select from "react-select";
 import { useFormik } from "formik";
+import { optionIsStandard, optionPaymentType, optionServiceType } from "../../../../common/data/procurement";
 
-const paymentTerm = [
-  { label: "To Collect", value: "To Collect" },
-  { label: "Prepaid", value: "Prepaid" },
-];
 const incoTerm = [
   { label: "Carraige Paid To", value: "Carraige Paid To" },
   { label: "COST & FREIGHT", value: "COST & FREIGHT" },
@@ -28,8 +25,8 @@ const incoTerm = [
   { label: "FREE ON BOARD", value: "FREE ON BOARD" },
 ];
 const isStandard = [
-  { label: "Standard Charge", value: "Standard Charge" },
-  { label: "Incidental", value: "Incidental" },
+  { label: "Standard Charge", value: "standard_charge" },
+  { label: "Incidental", value: "incidental" },
 ];
 const commodity = [
   { label: "General", value: "General" },
@@ -82,155 +79,92 @@ const ModalAddTerm = ({ modal, onCloseClick, setTermHandler }) => {
         <ModalBody>
           <div className="table_view_data_wrap">
             <div className="charge_details">
-              {/* //// */}
               <div className="row mt-4 mb-2">
                 {/* Payment Term */}
                 <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
-                  {/* <div className="row"> */}
-                    <label className="form-label">Payment Term</label>
-                    {/* <div className="col-9"> */}
-                      <Select
-                        name="paymentTerm"
-                        value={
-                          paymentTerm
-                            ? paymentTerm.find(
-                                (option) =>
-                                  option.value === formik.values.paymentTerm
-                              )
-                            : ""
-                        }
-                        onChange={(e) => {
-                          formik.setFieldValue(`paymentTerm`, e.value);
-                          // changeHandler(`paymentTerm`, e.value)
-                        }}
-                        options={paymentTerm}
-                        classNamePrefix="select2-selection form-select"
-                      />
-                    {/* </div> */}
-                  {/* </div> */}
+                  <label className="form-label">Payment Term</label>
+                  <Select
+                    name="paymentTerm"
+                    value={optionPaymentType ? optionPaymentType.find((option) => option.value === formik.values.paymentTerm) : ""}
+                    onChange={(e) => {
+                      formik.setFieldValue(`paymentTerm`, e.value);
+                    }}
+                    options={optionPaymentType}
+                    classNamePrefix="select2-selection form-select"
+                  />
                 </div>
 
                 {/* Inco Term */}
                 <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
-                  {/* <div className="row"> */}
-                    <label className="form-label">Inco Term</label>
-                    {/* <div className="col-9"> */}
-                      <Select
-                        name="incoTerm"
-                        isMulti
-                        value={
-                          incoTerm
-                            ? incoTerm.find(
-                                (option) =>
-                                  option.value === formik.values.incoTerm
-                              )
-                            : ""
-                        }
-                        onChange={(e) => {
-                          // formik.setFieldValue(`incoTerm`, e);
-                          changeHandler(`incoTerm`, e);
-                        }}
-                        options={incoTerm}
-                        classNamePrefix="select2-selection form-select"
-                      />
-                    {/* </div> */}
-                  {/* </div> */}
+                  <label className="form-label">Inco Term</label>
+                  <Select
+                    name="incoTerm"
+                    isMulti
+                    value={incoTerm ? incoTerm.find((option) => option.value === formik.values.incoTerm) : ""}
+                    onChange={(e) => {
+                      changeHandler(`incoTerm`, e);
+                    }}
+                    options={incoTerm}
+                    classNamePrefix="select2-selection form-select"
+                  />
                 </div>
-              {/* </div> */}
 
-              {/* <div className="row mt-4 mb-2"> */}
                 {/* Is Standard */}
                 <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
-                  {/* <div className="row"> */}
-                    <label className="form-label">Is Standard</label>
-                    {/* <div className="col-9"> */}
-                      <Select
-                        name="isStandard"
-                        value={
-                          isStandard
-                            ? isStandard.find(
-                                (option) =>
-                                  option.value === formik.values.isStandard
-                              )
-                            : ""
-                        }
-                        onChange={(e) => {
-                          formik.setFieldValue(`isStandard`, e.value);
-                          // changeHandler(`isStandard`, e.value)
-                        }}
-                        options={isStandard}
-                        classNamePrefix="select2-selection form-select"
-                      />
-                    {/* </div> */}
-                  {/* </div> */}
+                  <label className="form-label">Is Standard</label>
+                  <Select
+                    name="isStandard"
+                    value={ optionIsStandard ? optionIsStandard.find( (option) => option.value === formik.values.isStandard ) : "" }
+                    onChange={(e) => {
+                      formik.setFieldValue(`isStandard`, e.value);
+                    }}
+                    options={optionIsStandard}
+                    classNamePrefix="select2-selection form-select"
+                  />
                 </div>
 
                 {/* Commodity */}
                 <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
-                  {/* <div className="row"> */}
-                    <label className="form-label">Commodity</label>
-                    {/* <div className="col-9"> */}
-                      <Select
-                        name="commodity"
-                        isMulti
-                        value={
-                          commodity
-                            ? commodity.find(
-                                (option) =>
-                                  option.value === formik.values.commodity
-                              )
-                            : ""
-                        }
-                        onChange={(e) => {
-                          // formik.setFieldValue(`commodity`, e);
-                          changeHandler(`commodity`, e);
-                        }}
-                        options={commodity}
-                        classNamePrefix="select2-selection form-select"
-                      />
-                    {/* </div> */}
-                  {/* </div> */}
+                  <label className="form-label">Commodity</label>
+                  <Select
+                    name="commodity"
+                    isMulti
+                    value={ commodity ? commodity.find( (option) => option.value === formik.values.commodity ) : "" }
+                    onChange={(e) => {
+                      changeHandler(`commodity`, e);
+                    }}
+                    options={commodity}
+                    classNamePrefix="select2-selection form-select"
+                  />
                 </div>
-              {/* </div> */}
 
-              {/* <div className="row mt-4 mb-2"> */}
                 {/* Service Type */}
-                <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
-                  {/* <div className="row"> */}
-                    <label className="form-label">Service Type</label>
-                    {/* <div className="col-9"> */}
-                      <Select
-                        name="serviceType"
-                        isMulti
-                        value={
-                          serviceType
-                            ? serviceType.find(
-                                (option) =>
-                                  option.value === formik.values.serviceType
-                              )
-                            : ""
-                        }
-                        onChange={(e) => {
-                          // formik.setFieldValue(`serviceType`, e);
-                          changeHandler(`serviceType`, e);
-                        }}
-                        options={serviceType}
-                        classNamePrefix="select2-selection form-select"
-                      />
-                    {/* </div> */}
-                  {/* </div> */}
-                </div>
+                {/* <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
+                  <label className="form-label">Service Type</label>
+                  <Select
+                    name="serviceType"
+                    isMulti
+                    value={
+                      optionServiceType
+                        ? optionServiceType.find(
+                          (option) =>
+                            option.value === formik.values.serviceType
+                        )
+                        : ""
+                    }
+                    onChange={(e) => {
+                      changeHandler(`serviceType`, e);
+                    }}
+                    options={optionServiceType}
+                    classNamePrefix="select2-selection form-select"
+                  />
+                </div> */}
               </div>
 
               <div className="row">
                 <div className="d-flex justify-content-center">
                   <div className="mb-3 mx-3 d-flex justify-content-end">
-                    <button
-                      className=" btn btn-primary"
-                      onClick={formik.handleSubmit}
-                    >
-                      Save
-                    </button>
+                    <button className=" btn btn-primary" onClick={formik.handleSubmit} > Save </button>
                   </div>
                   <div className="mb-3 mx-3 d-flex justify-content-end">
                     <button
@@ -245,7 +179,6 @@ const ModalAddTerm = ({ modal, onCloseClick, setTermHandler }) => {
                   </div>
                 </div>
               </div>
-              {/* //// */}
             </div>
           </div>
         </ModalBody>

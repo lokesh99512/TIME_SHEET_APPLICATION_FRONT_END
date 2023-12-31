@@ -10,6 +10,8 @@ import TableReact from './TableReactPortLocalCharges'
 import TopBreadcrumbs from '../partials/TopBreadcrumbs'
 import FilterPortCanvasComp from '../Modal/FilterPortCanvasComp'
 import { FILTER_PORTLOCALCHARGES_DATA } from '../../../../store/Procurement/actiontype'
+import axios from 'axios'
+import { GET_CARGO_TYPE_DATA } from '../../../../store/Global/actiontype'
 
 export default function PortLocalFreight() {
     const [isRight, setIsRight] = useState(false);
@@ -62,13 +64,13 @@ export default function PortLocalFreight() {
     }
 
     useEffect(() => {
-        dispatch(getPortLocalChargesData());
+        dispatch(getPortLocalChargesData());        
     }, [dispatch]);
 
     const columns = useMemo(() => [
         {
             Header: 'Surcharge ID',
-            accessor: 'surcharge_id',
+            accessor: 'id',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -77,7 +79,7 @@ export default function PortLocalFreight() {
         },
         {
             Header: 'Surcharge Category',
-            accessor: 'surcharge_category',
+            accessor: 'surchargeCategory.name',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -86,7 +88,7 @@ export default function PortLocalFreight() {
         },
         {
             Header: 'Port Name',
-            accessor: 'port_name',
+            accessor: 'oceanPort.name',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -95,7 +97,7 @@ export default function PortLocalFreight() {
         },
         {
             Header: 'Terminals',
-            accessor: 'terminals',
+            accessor: 'oceanPortTerminal.name',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -104,7 +106,7 @@ export default function PortLocalFreight() {
         },
         {
             Header: 'Movement Type',
-            accessor: 'movement_type',
+            accessor: 'movementType',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -113,7 +115,7 @@ export default function PortLocalFreight() {
         },
         {
             Header: 'Carrier Name',
-            accessor: 'carrier_name',
+            accessor: 'tenantCarrier.name',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -122,7 +124,7 @@ export default function PortLocalFreight() {
         },
         {
             Header: 'Vendor Name',
-            accessor: 'vendor_name',
+            accessor: 'tenantVendor.name',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -131,7 +133,7 @@ export default function PortLocalFreight() {
         },
         {
             Header: 'Valid Till',
-            accessor: 'valid_till',
+            accessor: 'validFrom',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -171,6 +173,7 @@ export default function PortLocalFreight() {
         },
     ]);
     document.title="Port & Local Charges || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
+
     return (
         <>
             <div className="page-content">
@@ -183,7 +186,7 @@ export default function PortLocalFreight() {
                         {/* React Table */}
                         <TableReact
                             columns={columns}
-                            data={portLocalData}
+                            data={portLocalData?.content || []}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}

@@ -1,14 +1,9 @@
 import React, { useState } from "react";
-import {
-  Accordion,
-  AccordionBody,
-  AccordionHeader,
-  AccordionItem,
-} from "reactstrap";
+import { Accordion, AccordionBody, AccordionHeader, AccordionItem, } from "reactstrap";
 import doc from "../../../../../assets/images/bg-1.jpg"
+import { formatDate } from "../../../../../components/Common/CommonLogic";
 
-const TabOneCustomerDetails = ({viewData1}) => {
-  // console.log(viewData1,"viewData1");
+const TabOneCustomerDetails = ({ viewData1 }) => {
   const viewData = {
     // companyName: "ABC software",
     logo: "logo",
@@ -73,15 +68,15 @@ const TabOneCustomerDetails = ({viewData1}) => {
                   </div>
                   <div className="details">
                     <span className="title">Logo:</span>
-                    <img src={doc} alt={viewData?.uploadDocument} width={150} height={120} />
+                    <img src={viewData1?.logo || doc} alt={"Logo"} width={150} height={120} />
                   </div>
                   <div className="details">
                     <span className="title">Company Name:</span>
-                    <span className="data">{viewData1?.customerName || "-"}</span>
+                    <span className="data">{viewData1?.name || "-"}</span>
                   </div>
                   <div className="details">
                     <span className="title">Customer Type:</span>
-                    <span className="data">{viewData1?.customerType || "-"}</span>
+                    <span className="data">{viewData1?.type || "-"}</span>
                   </div>
                   <div className="details">
                     <span className="title">Address:</span>
@@ -89,20 +84,20 @@ const TabOneCustomerDetails = ({viewData1}) => {
                   </div>
                   <div className="details">
                     <span className="title">City:</span>
-                    <span className="data">{viewData1?.city || "-"}</span>
+                    <span className="data">{viewData1?.city?.cityName || "-"}</span>
                   </div>
                   <div className="details">
                     <span className="title">State:</span>
-                    <span className="data">{viewData1?.state || "-"}</span>
+                    <span className="data">{viewData1?.state?.stateName || "-"}</span>
                   </div>
 
                   <div className="details">
                     <span className="title">Country:</span>
-                    <span className="data">{viewData1?.country || "-"}</span>
+                    <span className="data">{viewData1?.country?.countryName || "-"}</span>
                   </div>
                   <div className="details">
                     <span className="title">Zipcode:</span>
-                    <span className="data">{viewData1?.zipcode || "-"}</span>
+                    <span className="data">{viewData1?.pinCode?.pin || "-"}</span>
                   </div>
                   <div className="details">
                     <span className="title">Website:</span>
@@ -114,7 +109,7 @@ const TabOneCustomerDetails = ({viewData1}) => {
                   </div>
                   <div className="details">
                     <span className="title">Created On:</span>
-                    <span className="data">{viewData1?.createdOn || "-"}</span>
+                    <span className="data">{formatDate(viewData1?.createdDate) || "-"}</span>
                   </div>
                 </div>
               </div>
@@ -132,19 +127,18 @@ const TabOneCustomerDetails = ({viewData1}) => {
                   <div className="details">
                     <span className="title">Contact Name:</span>
                     <span className="data">
-                      {viewData1?.title + " " + viewData1?.contactName || "-"}
+                      {viewData1?.contactName || "-"}
                     </span>
                   </div>
                   <div className="details">
                     <span className="title">Phone Number:</span>
                     <span className="data">
-                      {/* {viewData?.opCode + " " + viewData?.phoneNumber || "-"} */}
                       {viewData1?.contactNo || "-"}
                     </span>
                   </div>
                   <div className="details">
                     <span className="title">Email Id:</span>
-                    <span className="data">{viewData1?.email || "-"}</span>
+                    <span className="data">{viewData1?.contactEmail || "-"}</span>
                   </div>
                   <div className="details">
                     <span className="title">Department:</span>
@@ -157,13 +151,13 @@ const TabOneCustomerDetails = ({viewData1}) => {
                   <div className="details">
                     <span className="title">Sales Employee:</span>
                     <span className="data">
-                      {viewData1?.salesEmployee || "-"}
+                      {viewData1?.salesUser?.firstName || "-"}
                     </span>
                   </div>
                   <div className="details">
                     <span className="title">Key Account Manager:</span>
                     <span className="data">
-                      {viewData1?.keyAccountManager || "-"}
+                      {viewData1?.accountManager?.firstName || "-"}
                     </span>
                   </div>
                 </div>
@@ -181,25 +175,25 @@ const TabOneCustomerDetails = ({viewData1}) => {
                 <div className="left_freight_details">
                   <div className="details">
                     <span className="title">CIN Number:</span>
-                    <span className="data">{viewData1?.CINnumber || "-"}</span>
+                    <span className="data">{viewData1?.cin || "-"}</span>
                   </div>
                   <div className="details">
                     <span className="title">GST Number:</span>
-                    <span className="data">{viewData1?.GSTnumber || "-"}</span>
+                    <span className="data">{viewData1?.gst || "-"}</span>
                   </div>
                   <div className="details">
                     <span className="title">PAN Number:</span>
-                    <span className="data">{viewData1?.PANnumber || "-"}</span>
+                    <span className="data">{viewData1?.pan || "-"}</span>
                   </div>
                   <div className="details">
                     <span className="title">Entity Type:</span>
-                    <span className="data">{viewData1?.entityType || "-"}</span>
+                    <span className="data">{viewData1?.entityType.split('_').join(' ') || "-"}</span>
                   </div>
 
                   <div className="details">
                     <span className="title">Industry Type:</span>
                     <span className="data">
-                      {viewData1?.industryType || "-"}
+                      {viewData1?.industryType.split('_').join(' ') || "-"}
                     </span>
                   </div>
                 </div>

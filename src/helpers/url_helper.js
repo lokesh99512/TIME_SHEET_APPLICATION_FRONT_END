@@ -126,10 +126,10 @@ export const GET_Invested_Overview = "GET_Invested_Overview"
 // --------------------- procurement --------------------------------
 export const GET_FCL = "/get-fcl"
 export const GET_LCL = "/get-lcl"
-export const GET_PORTLOCALCHARGES = "/get-portlocalcharges"
+// export const GET_PORTLOCALCHARGES = "/get-portlocalcharges"
 export const GET_WAYBILL = "/get-waybill"
 export const GET_CONSOLE = "/get-console"
-export const GET_INLAND = "/get-inland"
+// export const GET_INLAND = "/get-inland"
 
 // --------------------- Rate Management --------------------------------
 export const GET_FCL_SURCHARGE = "/get-fcl-surcharge"
@@ -153,3 +153,104 @@ export const GET_QUOTATION_SEARCH_RESULT3 = "get-quotation-result3"
 export const GET_quote_exchange_rate = "get-exchangerate"
 
 export const GET_INQUIRY_TABLE = "GET_INQUIRY_TABLE"
+
+// -------------------- original Url Helper
+
+// Auth
+export const LOGIN_API = "/api/v1/user/sign-in"
+
+// Global
+// get
+export const Get_Vendor_Data= "/api/v1/tenant/vendor/"
+export const Get_Currency_Data= "/api/v1/currency/"
+export const Get_Uom_Data= "/api/v1/unit-of-measurement/"
+export const Get_surcharge_code_Data= "/api/v1/surcharge-code/"
+export const Get_surcharge_category_Data= "/api/v1/surcharge-category/"
+export const Get_Ocean_Port_Data= "/api/v1/ocean-port/"
+export const Get_Cargo_Type_Data= "/api/v1/cargo-type/"
+export const Get_Container_Data= "/api/v1/ocean-container/"
+export const Get_Surcharge_Alice_Data= "/api/v1/surcharge-alias/"
+
+// post
+export const Post_Surcharge_Data= "/api/v1/surcharge-code/"
+
+
+// FCL
+export const Get_FCL_Data= "/api/v1/tenant-ocean-fcl-rp/"
+export const Get_FCL_View_Freight_Data= "/api/v1/tenant-ocean-fcl-rp/freight-details/"
+export const Get_FCL_View_Surcharge_Data= "/api/v1/tenant-ocean-fcl-rp/freight-surcharge-details/"
+export const Get_FCL_destination_Data= "/api/v1/tenant-ocean-fcl-rp/od-details/"
+export const Upload_FCL_Carrier_Data= "/api/v1/tenant-ocean-fcl-rp/"
+export const Upload_FCL_freight_Data= "/api/v1/tenant-ocean-fcl-rp/upload/freight/"
+export const Upload_FCL_surcharge_Data= "/api/v1/tenant-ocean-fcl-rp/update/surcharge/"
+
+
+// FCL Port & Local Charges
+export const GET_PORTLOCALCHARGES_ALL = "/api/v1/port-and-local-charges/"
+export const Upload_FCL_PL_Data= "/api/v1/port-and-local-charges/"
+
+
+// FCL Inland Charges
+export const GET_FCL_INLAND = "/api/v1/inland-vendor-charge/"
+export const GET_FCL_INLAND_FREIGHT = "/api/v1/inland-vendor-freight/all/"
+export const GET_FCL_INLAND_SURCHARGE = "/api/v1/inland-vendor-surcharge/all/"
+export const Upload_FCL_INLAND_Carrier = "/api/v1/inland-vendor-charge/"
+export const Upload_FCL_INLAND_Freight = "/api/v1/inland-vendor-freight/"
+export const Upload_FCL_INLAND_Surcharge = "/api/v1/inland-vendor-surcharge/"
+
+// customer
+export const UPLOAD_CUSTOMER_CONTACT_URL = "/api/v1/tenant/customer/update-contact-details"
+
+
+// --------------------------------------------------------- Kunal ---------------------------------------------------------
+
+export const COMPANY_BASIC_DETAILS = "/api/v1/tenant/update-basic-details"
+export const COMPANY_USER_DETAILS = "/api/v1/user/"
+export const COMPANY_USER_ADD_DETAILS = "/api/v1/user/"
+// export const COMPANY_CITY_DETAILS = "/api/v1/pin-code/"
+export const COMPANY_CITY_DETAILS = "/api/v1/city/"
+export const COMPANY_STATE_DETAILS = "/api/v1/state/"
+export const COMPANY_COUNTRY_DETAILS = "/api/v1/country/"
+export const COMPANY_PINCODE_DETAILS = "/api/v1/pin-code/"
+export const COMPANY_TAX_DETAILS = "/api/v1/tenant/update-tax-details"
+export const COMPANY_BUSINESS_DETAILS = "/api/v1/tenant/update-business-details"
+
+
+// get api in settings of Companysettings
+export const COMPANY_GET_ALL_DETAILS = "/api/v1/tenant/" 
+
+// tenant customers 
+export const PARTIES_CUSTOMERS_BASIC_DETAILS = "/api/v1/tenant/customer/update-basic-details"
+
+// get all parties customer details
+export const GET_ALL_PARTIES_CUSTOMERS = "/api/v1/tenant/customer/"
+
+// get all table in parties
+export const GET_ALL_PARTIES_TABLE = "/api/v1/tenant/customer"
+
+// All table vendor listing
+export const GET_ALL_PARTIES_VENDOR_TABLE = "/api/v1/tenant/vendor/"
+
+// Parties into Basic companyDetails 
+// export const PARTIES_VENDOR_BASIC_DETAILS = "/api/v1/tenant/vendor/update-basic-details"
+
+// get all table in surcharge fcl 
+export const GET_ALL_SETTINGS_SURCHARGE_FCL = "/api/v1/surcharge-code/"
+
+// get all table in surcharge fcl only alias code 
+export const GET_ALL_SETTINGS_SURCHARGE_FCL_ALIAS_CODE = "/api/v1/surcharge-alias/"
+
+// get to particular id to target
+export const GET_SURCHARGE_DATA_ID = "/api/v1/surcharge-code/"
+
+// post api call save data
+export const GET_SURCHARGE_ADD_DATA = "/api/v1/surcharge-code/"
+
+// surcharge Category data
+export const GET_SURCHARGE_CATEGORY = "/api/v1/surcharge-category/"
+
+// customers details of key manager and sales employee
+export const GET_PARTIES_CUSTOMERS_EMPLOYEE_DETAILS = "/api/v1/user/" 
+
+//add vender details
+export const Upload_Vender_Data = "/api/v1/tenant/vendor/update-basic-details"

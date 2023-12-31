@@ -183,8 +183,10 @@ const userRoutes = [
   { path: "/freight/upload/:tabName", component: <UploadFreightData /> },
   { path: "/freight/ocean/upload/:tabName", component: <UploadPortLocalChargesData /> },
   { path: "/freight/upload/fcl/add-new", component: <OceanFCLSurchargeNameAddNew /> },
-  { path: "/freight/upload/inland/add-new", component: <OceanInlandSurchargeNameAddNew /> },
-  { path: "/freight/ocean/upload/PortLocalCharges/add-new", component: <PortLocalChargesSurchargeCodeAddNew /> },
+  { path: "/freight/upload/inland/add-new", component: <OceanFCLSurchargeNameAddNew /> },
+  // { path: "/freight/upload/inland/add-new", component: <OceanInlandSurchargeNameAddNew /> },
+  { path: "/freight/ocean/upload/fcl-pl/add-new", component: <OceanFCLSurchargeNameAddNew /> },
+  // { path: "/freight/ocean/upload/PortLocalCharges/add-new", component: <PortLocalChargesSurchargeCodeAddNew /> },
 
 
 

@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Input, Label, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Select from "react-select";
 import { useFormik } from "formik";
 import { placeOfSupply } from "../../../common/data/settings";
+import { useDispatch } from "react-redux";
+import { getBusinessData, getCompanyCountryData, getCompanyDetailsData, getCompanyPincodeData, getCompanyStateData, getTaxDetailsData } from "../../../store/Settings/actions";
+import { useSelector } from "react-redux";
 
 // const placeOfSupply = [
 //   { label: "Jammu & Kashmir", value: "JK", Code: 1 },
@@ -46,33 +49,82 @@ import { placeOfSupply } from "../../../common/data/settings";
 // ];
 
 const addGstInitialValue = {
-  companyAddress: "",
+  address: "",
   city: "",
   state: "",
   zipcode: "",
   country: "",
-  gstNumber: "",
-  placeOfSupply: "",
+  no: "",
+  placeOfService: "",
 };
+
 
 const stateConverter = (num) => {
   // console.log(num, "number");
   return placeOfSupply.find((place) => +place.Code === +num)?.value;
 };
 
-const ModalAddGST = ({ modal, onCloseClick }) => {
+
+const ModalAddGST = ({ modal, onSubmitHandler, onCloseClick }) => {
+  const dispatch = useDispatch()
   const formik = useFormik({
     initialValues: addGstInitialValue,
     onSubmit: (value) => {
       console.log(value, "value");
+      const payload = {
+        ...value,
+        id:2,
+        pinCode: {
+          "version": 0,
+          "id": 1,
+          pin: value.zipcode
+        },
+        city: {
+          "version": 0,
+          "id": 1,
+          cityName: value.city
+        },
+        state: {
+          "version": 4,
+          "id": 1,
+          stateName: value.state
+        },
+        country: {
+          "version": 0,
+          "id": 5,
+          countryName: value.country
+        },
+        status: "ACTIVE"
+      }
+      onSubmitHandler(payload);
+      // dispatch(getTaxDetailsData(value));
       formik.resetForm();
     },
   });
 
+  // selector
+
+  const { settings_companyCity_data, settings_companyState_data, settings_companyCountry_data, settings_companyPincode_data } = useSelector(
+    (state) => state.settings
+  );
+
+  useEffect(() => {
+    if (settings_companyState_data && settings_companyState_data?.content?.length > 0) {
+      formik.setFieldValue("state", settings_companyState_data?.content[0]?.stateName)
+    }
+    if (settings_companyCountry_data && settings_companyCountry_data?.content?.length > 0) {
+      formik.setFieldValue("country", settings_companyCountry_data?.content[0]?.countryName)
+    }
+    // if(settings_companyPincode_data){
+    //   companyDetailsFormik.setFieldValue("zipcode", settings_companyPincode_data?.content?.map((item)=>item?.pin))
+    // }
+  }, [settings_companyState_data, settings_companyCountry_data, settings_companyPincode_data])
+
+
   const gstNumberHandler = (e) => {
     formik.handleChange(e);
     formik.setFieldValue(
-      "placeOfSupply",
+      "placeOfService",
       stateConverter(e.target.value.substring(0, 2))
     );
   };
@@ -93,8 +145,8 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
                   <label className="form-label">Comapany Address</label>
                   <Input
                     type="text"
-                    name="companyAddress"
-                    value={formik.values.companyAddress}
+                    name="address"
+                    value={formik.values.address}
                     onChange={formik.handleChange}
                     className="form-control"
                     placeholder="Enter Comapany Address"
@@ -106,11 +158,25 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
                   <Input
                     type="text"
                     name="city"
+                    list="cityList"
                     value={formik.values.city}
-                    onChange={formik.handleChange}
+                    onChange={(e) => {
+                      // formik.handleChange
+                      formik.handleChange(e);
+                      const cityData = settings_companyCity_data?.content?.find((city) => city.cityName === e.target.value)
+                      if (cityData) {
+                        dispatch(getCompanyStateData({ cityId: cityData.id }));
+                        dispatch(getCompanyCountryData({ cityId: cityData.id }));
+                        dispatch(getCompanyPincodeData({ cityId: cityData.id }));
+                      }
+                    }
+                    }
                     className="form-control"
                     placeholder="Enter City"
                   />
+                  <datalist id="cityList">
+                    {settings_companyCity_data && settings_companyCity_data?.content?.map((item, i) => <option key={i} value={item.cityName} />)}
+                  </datalist>
                 </div>
 
                 <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
@@ -118,11 +184,15 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
                   <Input
                     type="text"
                     name="state"
+                    list="stateList"
                     value={formik.values.state}
                     onChange={formik.handleChange}
                     className="form-control"
                     placeholder="Enter State"
                   />
+                  <datalist id="stateList">
+                    {settings_companyState_data && settings_companyState_data?.content?.map((item, i) => <option key={i} value={item.stateName} />)}
+                  </datalist>
                 </div>
 
                 <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
@@ -130,11 +200,15 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
                   <Input
                     type="text"
                     name="zipcode"
+                    list="zipcodeList"
                     value={formik.values.zipcode}
                     onChange={formik.handleChange}
                     className="form-control"
                     placeholder="Enter Zipcode"
                   />
+                  <datalist id="zipcodeList">
+                    {settings_companyPincode_data && settings_companyPincode_data?.content?.map((item, i) => <option key={i} value={item.pin} />)}
+                  </datalist>
                 </div>
 
                 <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
@@ -142,19 +216,23 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
                   <Input
                     type="text"
                     name="country"
+                    list="countryList"
                     value={formik.values.country}
                     onChange={formik.handleChange}
                     className="form-control"
                     placeholder="Enter Country"
                   />
+                  <datalist id="countryList">
+                    {settings_companyCountry_data && settings_companyCountry_data?.content?.map((item, i) => <option key={i} value={item.countryName} />)}
+                  </datalist>
                 </div>
 
                 <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
                   <label className="form-label">GST Number</label>
                   <Input
                     type="text"
-                    name="gstNumber"
-                    value={formik.values.gstNumber}
+                    name="no"
+                    value={formik.values.no}
                     onChange={gstNumberHandler}
                     className="form-control"
                     placeholder="Enter GST Number"
@@ -167,16 +245,16 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
                     value={
                       placeOfSupply
                         ? placeOfSupply.find(
-                            (option) =>
-                              option.value === formik.values.placeOfSupply
-                          )
+                          (option) =>
+                            option.value === formik.values.placeOfService
+                        )
                         : ""
                     }
-                    name="placeOfSupply"
+                    name="placeOfService"
                     options={placeOfSupply}
                     placeholder={"Select Place of Supply"}
                     onChange={(e) => {
-                      formik.setFieldValue(`placeOfSupply`, e.value);
+                      formik.setFieldValue(`placeOfService`, e.value);
                     }}
                     classNamePrefix="select2-selection form-select"
                   />
@@ -187,6 +265,7 @@ const ModalAddGST = ({ modal, onCloseClick }) => {
                 <div className="d-flex justify-content-center">
                   <div className="mb-3 mx-3 d-flex justify-content-end">
                     <button
+                      type="submit"
                       onClick={formik.handleSubmit}
                       className=" btn btn-primary"
                     >
