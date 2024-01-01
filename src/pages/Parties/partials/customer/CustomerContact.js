@@ -8,7 +8,7 @@ import { postCustomerContactAction } from '../../../../store/Parties/Customer/ac
 import { useSelector } from 'react-redux';
 
 const CustomerContact = ({ toggleTabProgress }) => {
-    const {customer_id} = useSelector((state) => state?.parties);
+    const { customer_id } = useSelector((state) => state?.customer);
     const dispatch = useDispatch();
     const contactsFormik = useFormik({
         initialValues: {
@@ -30,7 +30,7 @@ const CustomerContact = ({ toggleTabProgress }) => {
                 "version": customer_id?.version || '',
                 contacts: values?.contacts?.map((val) => {
                     return{
-                        "contactName": `${val?.title || ''} ${val?.name}`,
+                        "contactName": `${val?.title || ''} ${val?.name || ''}`,
                         "contactNo": val?.phoneNumber || '',
                         "contactEmail": val?.emailId || '',
                         "department": val?.department || '',

@@ -1,6 +1,4 @@
 import React from "react";
-import { edit_icon } from "../../assets/images";
-import {reset_icon} from "../../assets/images";
 
 // -------------------------Parties - customers-------------------------
 
@@ -34,48 +32,12 @@ export const LastTransaction = ({cellProps,viewPopupHandler}) => {
 export const CreatedOn = ({cellProps,viewPopupHandler}) => {
     return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }
-// export const Status = ({cellProps,viewPopupHandler}) => {
-//     return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
-// }
-// export const Edit = ({cellProps,viewPopupHandler}) => {
-//     return <p onClick={() => {viewPopupHandler(cellProps.row.original);}}>{<img src={edit_icon} alt="Edit" />}</p>;
-//     // return <p onClick={() => console.log("test")}>{<img src={edit_icon} alt="Edit" />}</p>;
-// }
-
-
 
 // -------------------------Parties - Vendors-------------------------
 
-export const VendorCode = ({cellProps,viewPopupHandler}) => {
+export const CommonValue = ({cellProps,viewPopupHandler}) => {
     return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }
-export const VendorName = ({cellProps,viewPopupHandler}) => {
-    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
-}
-export const VendorType = ({cellProps,viewPopupHandler}) => {
-    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
-}
-export const ServiceType = ({cellProps,viewPopupHandler}) => {
-    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
-}
-export const ConatctName = ({cellProps,viewPopupHandler}) => {
-    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
-}
-export const ConatctNoV = ({cellProps,viewPopupHandler}) => {
-    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
-}
-export const EmailIdV = ({cellProps,viewPopupHandler}) => {
-    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
-}
-export const CityV = ({cellProps,viewPopupHandler}) => {
-    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
-}
-// export const CountryV = ({cellProps,viewPopupHandler}) => {
-//     return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
-// }
-export const LastTransactionV = ({cellProps,viewPopupHandler}) => {
-    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
-}
-export const CreatedOnV = ({cellProps,viewPopupHandler}) => {
-    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
+export const CommonReplaceValue = ({cellProps,viewPopupHandler}) => {
+    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value.split('_').join(' ') : '-'}</span>;
 }

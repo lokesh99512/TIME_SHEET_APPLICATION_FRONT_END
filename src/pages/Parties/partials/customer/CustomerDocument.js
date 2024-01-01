@@ -3,8 +3,14 @@ import React from 'react';
 import Select from 'react-select';
 import { Card, CardBody, Input } from 'reactstrap';
 import { optionCustomerDocumentType } from '../../../../common/data/parties';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { postCustomerDocumentAction } from '../../../../store/Parties/Customer/action';
 
 const CustomerDocument = () => {
+    const { customer_id } = useSelector((state) => state?.customer);
+    const dispatch = useDispatch();
+
     const documentsFormik = useFormik({
         initialValues: {
             document: [
@@ -15,9 +21,52 @@ const CustomerDocument = () => {
             ],
         },
         onSubmit: (values) => {
-            console.log(values);
+            console.log(values, "values Document---------------");
+            // let data = {
+            //     "id": customer_id?.id || '',
+            //     "version": customer_id?.version || '',
+            //     "documents": values?.document?.map((val) => {
+            //         return {
+            //             "documentType": val?.documentType?.value || '',
+            //             "document": null,
+            //             "documentPath": val?.uploadDocument?.name || '',
+            //         }
+            //     })
+            // }
+            let data = values?.document?.map((val) => {
+                return {
+                    docfile: val?.uploadDocument || '',
+                    docdata: {
+                        "id": customer_id?.id || '',
+                        "version": customer_id?.version || '',
+                        "documents": [
+                            {
+                                "documentType": val?.documentType?.value || '',
+                                "document": null,
+                                "documentPath": val?.uploadDocument?.name || '',
+                            }
+                        ]
+                    }
+                }
+            })
+
+            const formDataArray = data?.map((document) => {
+                const formData = new FormData();
+                formData.append('file', document.docfile); // Adjust the field name as needed
+                formData.append('tenantCustomer', new Blob([JSON.stringify(document.docdata)], { type: "application/json" })); // Include other fields as needed
+                return formData;
+            });
+            
+            console.log(formDataArray, "data Document---------------");
+            dispatch(postCustomerDocumentAction({documents: formDataArray}));
+            documentsFormik.resetForm();
         },
     });
+
+    const documentUploadHandler = (e, name) => {
+        documentsFormik.setFieldValue(name, e.target.files[0]);
+    }
+
     return (
         <>
             <div className="text-center mb-4">
@@ -61,8 +110,8 @@ const CustomerDocument = () => {
                                                         <Input
                                                             type="file"
                                                             name={`document[${index}].uploadDocument`}
-                                                            //   value={}
-                                                            onChange={documentsFormik.handleChange}
+                                                            // value={}
+                                                            onChange={(e) => { documentUploadHandler(e, `document[${index}].uploadDocument`) }}
                                                             className="form-control"
                                                             placeholder=""
                                                         />

@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Card,
     CardBody,
@@ -17,8 +17,12 @@ import TabOneCustomerDetails from "./viewData/customers/TabOneCustomerDetails";
 import TabThreeDocuments from "./viewData/customers/TabThreeDocuments";
 import TabTwoContacts from "./viewData/customers/TabTwoContacts";
 
-const ModalCustomerValue = ({ viewData, modal, onCloseClick, modalType }) => {
-    const [activeTab, toggleTab] = useState("1");
+const ModalCustomerValue = ({ viewData, modal, onCloseClick }) => {
+    const [activeTab, toggleTab] = useState(`${viewData?.id}_1`);
+
+    useEffect(() => {
+        toggleTab(`${viewData?.id}_1`)
+    }, [viewData?.id]);
 
     return (
         <>
@@ -37,171 +41,129 @@ const ModalCustomerValue = ({ viewData, modal, onCloseClick, modalType }) => {
                         <div className="col">
                             <Card>
                                 <CardBody>
-                                    {/* <Row>
-                                <div className="col-sm order-2 order-sm-1">
-                                    <div className="d-flex align-items-start mt-3 mt-sm-0">
-                                        <div className="flex-shrink-0">
-                                            <div className="avatar-xl me-3">
-                                                <img src={avatar1} alt="" className="img-fluid rounded-circle d-block" />
-                                            </div>
-                                        </div>
-                                        <div className="flex-grow-1">
-                                            <div>
-                                                <h5 className="font-size-16 mb-1">Phyllis Gatlin</h5>
-                                                <p className="text-muted font-size-13">Full Stack Developer</p>
-
-                                                <div className="d-flex flex-wrap align-items-start gap-2 gap-lg-3 text-muted font-size-13">
-                                                    <div><i className="mdi mdi-circle-medium me-1 text-success align-middle"></i>Development</div>
-                                                    <div><i className="mdi mdi-circle-medium me-1 text-success align-middle"></i>phyllisgatlin@minia.com</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-sm-auto order-1 order-sm-2">
-                                    <div className="d-flex align-items-start justify-content-end gap-2">
-                                        <div>
-                                            <button type="button" className="btn btn-soft-light"><i className="me-1"></i> Message</button>
-                                        </div>
-                                        <div>
-                                            <UncontrolledDropdown>
-                                                <DropdownToggle className="btn btn-link font-size-16 shadow-none text-muted" tag="a">
-                                                    <i className="bx bx-dots-horizontal-rounded"></i>
-                                                </DropdownToggle>
-                                                <DropdownMenu className="dropdown-menu-end">
-                                                    <li><DropdownItem href="#">Action</DropdownItem></li>
-                                                    <li><DropdownItem href="#">Another action</DropdownItem></li>
-                                                    <li><DropdownItem href="#">Something else here</DropdownItem></li>
-                                                </DropdownMenu>
-                                            </UncontrolledDropdown>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Row> */}
-
+                                    {/* Tabs */}
                                     <Nav className="nav-tabs-custom card-header-tabs justify-content-between">
                                         <NavItem>
                                             <NavLink
                                                 href="#"
                                                 className={classnames({
-                                                    active: activeTab === "1",
+                                                    active: activeTab === `${viewData?.id}_1`,
                                                 }, "px-3")}
-                                                onClick={() => {
-                                                    toggleTab("1")
-                                                }}>
+                                                onClick={() => { toggleTab(`${viewData?.id}_1`) }}>
                                                 Customer Details</NavLink>
                                         </NavItem>
                                         <NavItem>
                                             <NavLink
                                                 href="#"
                                                 className={classnames({
-                                                    active: activeTab === "2",
+                                                    active: activeTab === `${viewData?.id}_2`,
                                                 }, "px-3")}
-                                                onClick={() => {
-                                                    toggleTab("2")
-                                                }}
+                                                onClick={() => { toggleTab(`${viewData?.id}_2`) }}
                                             >Contacts</NavLink>
                                         </NavItem>
                                         <NavItem>
                                             <NavLink
                                                 href="#"
                                                 className={classnames({
-                                                    active: activeTab === "3",
+                                                    active: activeTab === `${viewData?.id}_3`,
                                                 }, "px-3")}
-                                                onClick={() => {
-                                                    toggleTab("3")
-                                                }}
+                                                onClick={() => { toggleTab(`${viewData?.id}_3`) }}
                                             >Documents</NavLink>
                                         </NavItem>
                                         <NavItem>
                                             <NavLink
                                                 href="#"
                                                 className={classnames({
-                                                    active: activeTab === "4",
+                                                    active: activeTab === `${viewData?.id}_4`,
                                                 }, "px-3")}
-                                                onClick={() => {
-                                                    toggleTab("4")
-                                                }}
+                                                onClick={() => { toggleTab(`${viewData?.id}_4`) }}
                                             >Rates</NavLink>
                                         </NavItem>
                                         <NavItem>
                                             <NavLink
                                                 href="#"
                                                 className={classnames({
-                                                    active: activeTab === "5",
+                                                    active: activeTab === `${viewData?.id}_5`,
                                                 }, "px-3")}
-                                                onClick={() => {
-                                                    toggleTab("5")
-                                                }}
+                                                onClick={() => { toggleTab(`${viewData?.id}_5`) }}
                                             >Discounts</NavLink>
                                         </NavItem>
                                         <NavItem>
                                             <NavLink
                                                 href="#"
                                                 className={classnames({
-                                                    active: activeTab === "6",
+                                                    active: activeTab === `${viewData?.id}_6`,
                                                 }, "px-3")}
-                                                onClick={() => {
-                                                    toggleTab("6")
-                                                }}
+                                                onClick={() => { toggleTab(`${viewData?.id}_6`) }}
                                             >Invoice Settings</NavLink>
                                         </NavItem>
                                         <NavItem>
                                             <NavLink
                                                 href="#"
                                                 className={classnames({
-                                                    active: activeTab === "7",
+                                                    active: activeTab === `${viewData?.id}_7`,
                                                 }, "px-3")}
-                                                onClick={() => {
-                                                    toggleTab("7")
-                                                }}
+                                                onClick={() => { toggleTab(`${viewData?.id}_7`) }}
                                             >Communications</NavLink>
                                         </NavItem>
                                     </Nav>
                                 </CardBody>
                             </Card>
                             <TabContent activeTab={activeTab}>
-                                <TabPane tabId="1">
-                                    <TabOneCustomerDetails viewData1={viewData} />
+                                {/* Customer Details */}
+                                <TabPane tabId={`${viewData?.id}_1`}>
+                                    <TabOneCustomerDetails viewData={viewData} />
                                 </TabPane>
-                                <TabPane tabId="2">
-                                    <TabTwoContacts viewData2={viewData} />
+
+                                {/* Customer Contacts */}
+                                <TabPane tabId={`${viewData?.id}_2`}>
+                                    <TabTwoContacts viewData={viewData} />
                                 </TabPane>
-                                <TabPane tabId="3">
-                                    <TabThreeDocuments viewData3={viewData} />
+
+                                {/* Customer Documents */}
+                                <TabPane tabId={`${viewData?.id}_3`}>
+                                    <TabThreeDocuments viewData={viewData} />
                                 </TabPane>
-                                <TabPane tabId="4">
+
+                                {/* Customer Rates */}
+                                <TabPane tabId={`${viewData?.id}_4`}>
                                     <>
                                         <Card className="m-4">
                                             <CardBody>
-                                                tab 4 details
+                                                <b>Rate Details Not Found !</b>
                                             </CardBody>
                                         </Card>
                                     </>
                                 </TabPane>
-                                <TabPane tabId="5">
+
+                                {/* Customer discounts */}
+                                <TabPane tabId={`${viewData?.id}_5`}>
                                     <>
                                         <Card className="m-4">
                                             <CardBody>
-                                                tab 5 details
+                                                <b>Discount Details Not Found !</b>
                                             </CardBody>
                                         </Card>
                                     </>
                                 </TabPane>
-                                <TabPane tabId="6">
+
+                                {/* Customer Invoice */}
+                                <TabPane tabId={`${viewData?.id}_6`}>
                                     <>
                                         <Card className="m-4">
                                             <CardBody>
-                                                tab 6 details
+                                                <b>Invoice Details Not Found !</b>
                                             </CardBody>
                                         </Card>
                                     </>
                                 </TabPane>
-                                <TabPane tabId="7">
+
+                                {/* Customer Communication */}
+                                <TabPane tabId={`${viewData?.id}_7`}>
                                     <>
                                         <Card className="m-4">
                                             <CardBody>
-                                                tab 7 details
+                                                <b>Communication Details Not Found !</b>
                                             </CardBody>
                                         </Card>
                                     </>
@@ -209,7 +171,6 @@ const ModalCustomerValue = ({ viewData, modal, onCloseClick, modalType }) => {
                             </TabContent>
                         </div>
                     </Row>
-                    {/* </SimpleBar> */}
                 </ModalBody>
             </Modal>
         </>

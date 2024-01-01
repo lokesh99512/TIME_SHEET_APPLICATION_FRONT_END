@@ -6,7 +6,7 @@ import {
   AccordionItem,
 } from "reactstrap";
 
-const TabTwoContacts = ({viewData2}) => {
+const TabTwoContacts = ({ viewData }) => {
   const [open, setOpen] = useState("");
   const toggle = (id) => {
     if (open === id) {
@@ -15,7 +15,6 @@ const TabTwoContacts = ({viewData2}) => {
       setOpen(id);
     }
   };
-  console.log(viewData2,"viewData2");
   return (
     <div>
       <div className="table_view_data_wrap">
@@ -27,40 +26,35 @@ const TabTwoContacts = ({viewData2}) => {
             </AccordionHeader>
             <AccordionBody accordionId={"1"}>
 
-              {/* {viewData?.map((viewData,key)=>{
-                return( */}
-                    <div className="view_data_wrap d-flex align-items-start">
-                <div className="left_freight_details">
-                  <div className="details">
-                    <span className="title">Contact Name:</span>
-                    <span className="data">
-                      {/* {viewData2?.title + " " + viewData2?.contactName || "-"} */}
-                      {viewData2?.contactName || "-"}
-                    </span>
+              {viewData?.contacts?.map((item,index) => {
+                return (
+                  <div className="view_data_wrap d-flex align-items-start" key={index}>
+                    <div className="left_freight_details">
+                      <div className="details">
+                        <span className="title">Contact Name:</span>
+                        <span className="data"> {item?.contactName || "-"} </span>
+                      </div>
+                      <div className="details">
+                        <span className="title">Phone Number:</span>
+                        <span className="data"> {item?.contactNo || "-"} </span>
+                      </div>
+                      <div className="details">
+                        <span className="title">Email Id:</span>
+                        <span className="data">{item?.contactEmail || "-"}</span>
+                      </div>
+                      <div className="details">
+                        <span className="title">Department:</span>
+                        <span className="data">{item?.department || "-"}</span>
+                      </div>
+                      <div className="details">
+                        <span className="title">Designation:</span>
+                        <span className="data">{item?.designation?.split('_').join(' ') || "-"}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="details">
-                    <span className="title">Phone Number:</span>
-                    <span className="data">
-                      {/* {viewData?.opCode + " " + viewData?.phoneNumber || "-"} */}
-                      {viewData2?.contactNo || "-"}
-                    </span>
-                  </div>
-                  <div className="details">
-                    <span className="title">Email Id:</span>
-                    <span className="data">{viewData2?.contactEmail || "-"}</span>
-                  </div>
-                  <div className="details">
-                    <span className="title">Department:</span>
-                    <span className="data">{viewData2?.department || "-"}</span>
-                  </div>
-                  <div className="details">
-                    <span className="title">Designation:</span>
-                    <span className="data">{viewData2?.designation || "-"}</span>
-                  </div>
-                </div>
-              </div>
-                 {/* )
-               })} */}
+                )
+              })}
+              {viewData?.contacts?.length === 0 && <b>No Data Found !</b>}
             </AccordionBody>
           </AccordionItem>
 

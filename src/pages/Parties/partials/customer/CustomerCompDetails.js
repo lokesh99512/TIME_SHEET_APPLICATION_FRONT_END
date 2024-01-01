@@ -16,6 +16,7 @@ import ModalAddNewEntityType from '../../Modal/ModalAddNewEntityType';
 import ModalAddNewIndustryType from '../../Modal/ModalAddNewIndustryType';
 import ModalAddNewKeyAccountManager from '../../Modal/ModalAddNewKeyAccountManager';
 import ModalAddNewSalesEmployee from '../../Modal/ModalAddNewSalesEmployee';
+import { postCustomerDetailsAction } from '../../../../store/Parties/Customer/action';
 
 
 const CustomerCompDetails = ({ toggleTabProgress }) => {
@@ -85,11 +86,9 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
             customerType: "",
         },
         onSubmit: async ({ image, ...values }) => {
-            // console.log("values company details", image);
-            // console.log("values company details", values);
+            console.log("values company details", values);
             let countryVal = parties_country_details?.content?.filter((con) => con?.countryName === values?.country) || [];
             let cityVal = parties_city_details?.content?.filter((city) => city?.cityName === values?.city) || [];
-            // let cityVal = parties_country_details?.content?.filter((city) => city?.countryName === values?.country) || [];
             let stateVal = parties_state_details?.content?.filter((state) => state?.stateName === values?.state) || [];
             let pincodeVal = parties_pincode_details?.content?.filter((pin) => pin?.pin === values?.zipcode) || [];
    
@@ -156,9 +155,9 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
             console.log(projectUATRequestDTO, "projectUATRequestDTO");
             formData.append('file', image);
             formData.append('tenantCustomer', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
-            dispatch(getAllCustomerDetailsData(formData));
+            dispatch(postCustomerDetailsAction(formData));
             toggleTabProgress(2);
-            // companyDetailsFormik.resetForm();
+            companyDetailsFormik.resetForm();
         },
     })
 
@@ -418,8 +417,8 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                                         <Input
                                             type="text"
                                             name="phoneNumber"
-                                            // value={companyDetailsFormik.values.phoneNumber}
-                                            // onChange={companyDetailsFormik.handleChange}
+                                            value={companyDetailsFormik.values.phoneNumber}
+                                            onChange={companyDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
                                         />
