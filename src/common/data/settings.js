@@ -1048,8 +1048,8 @@ export const optionCustdepartment = [
   { label: "Accounts", value: "ACCOUNTS" },
   { label: "Sales", value: "SALES" },
   { label: "Finance", value: "FINANCE" },
-  { label: "Management", value: "Management" },
-  { label: "Primary", value: "Primary" },
+  { label: "Management", value: "MANAGEMENT" },
+  { label: "Primary", value: "PRIMARY" },
   { label: "Add New", value: "Add New" },
 ]
 export const optionCustdesignation = [

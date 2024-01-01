@@ -22,9 +22,6 @@ export default function UploadCustomerData() {
     const dispatch = useDispatch();
 
     const openSaveConfirmModal = () => {
-        // console.log(companyDetailsFormik.values, "companyDetailsFormik.values");
-        // console.log(contactsFormik?.values?.contacts, "contactsFormik?.values?.contacts");
-        // console.log(documentsFormik?.values?.document, "documentsFormik?.values?.document");
         setOpenSaveModal(!openSaveModal);
     }
 

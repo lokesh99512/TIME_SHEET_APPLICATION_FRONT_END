@@ -1,8 +1,22 @@
 import { all, call, fork, put, takeLatest } from "redux-saga/effects";
 import {
+  showErrorToast,
+  showSuccessToast,
+} from "../../components/Common/CustomToast";
+import {
   getPartiesCustomers,
   getPartiesVendors,
 } from "../../helpers/fakebackend_helper";
+import {
+  CompanyCityDetails,
+  CompanyCountryDetails,
+  CompanyPincodeDetails,
+  CompanyStateDetails,
+  getAllPartiesCustomerEmployeeDeatils,
+  getPartiesAllTable,
+  getPartiesAllVendorTable
+} from "../../helpers/services/AuthService";
+import { postVenderUpload } from "../../helpers/services/PartiesService";
 import {
   getCustomersDataFail,
   getCustomersDataSuccess,
@@ -10,10 +24,7 @@ import {
   getVendorsDataSuccess,
 } from "./actions";
 import {
-  GET_CUSTOMERS_ID,
   GET_CUSTOMERS_TABLE_DATA,
-  GET_PARTIES_ALL_DETAILS,
-  GET_PARTIES_ALL_DETAILS_SUCCESS,
   GET_PARTIES_COMPANY_CITY_DATA,
   GET_PARTIES_COMPANY_CITY_DATA_SUCCESS,
   GET_PARTIES_COMPANY_COUNTRY_DATA,
@@ -22,35 +33,15 @@ import {
   GET_PARTIES_COMPANY_PINCODE_DATA_SUCCESS,
   GET_PARTIES_COMPANY_STATE_DATA,
   GET_PARTIES_COMPANY_STATE_DATA_SUCCESS,
-  GET_PARTIES_CUSTOMERS_DETAILS,
-  GET_PARTIES_CUSTOMERS_DETAILS_SUCCESS,
   GET_PARTIES_CUSTOMER_EMPLOYEE_DETAILS,
   GET_PARTIES_CUSTOMER_EMPLOYEE_DETAILS_SUCCESS,
-  GET_PARTIES_SURCHARGE_TABLE,
-  GET_PARTIES_SURCHARGE_TABLE_SUCCESS,
   GET_PARTIES_TABLE,
   GET_PARTIES_TABLE_SUCCESS,
   GET_PARTIES_VENDOR_TABLE,
   GET_PARTIES_VENDOR_TABLE_SUCCESS,
   GET_VENDORS_TABLE_DATA,
-  UPLOAD_VENDOR_DATA,
+  UPLOAD_VENDOR_DATA
 } from "./actiontype";
-import {
-  CompanyCityDetails,
-  CompanyCountryDetails,
-  CompanyPincodeDetails,
-  CompanyStateDetails,
-  GetPartiesAllCustomers,
-  PartiesCustomerDetails,
-  getAllPartiesCustomerEmployeeDeatils,
-  getPartiesAllTable,
-  getPartiesAllVendorTable,
-} from "../../helpers/services/AuthService";
-import {
-  showErrorToast,
-  showSuccessToast,
-} from "../../components/Common/CustomToast";
-import { postVenderUpload } from "../../helpers/services/PartiesService";
 
 function* getCustomersData() {
   try {
@@ -67,23 +58,6 @@ function* getVendorsData() {
     yield put(getVendorsDataSuccess(response));
   } catch (error) {
     yield put(getVendorsDataFail(error));
-  }
-}
-
-function* getPartiesCustomerDetailsData({ payload }) {
-  try {
-    console.log("payload getPartiesCustomerAddDetailsData", payload);
-    const response = yield call(PartiesCustomerDetails, payload);
-    console.log(response, "response of getCompanyDetailsData");
-    yield put({
-      type: GET_PARTIES_CUSTOMERS_DETAILS_SUCCESS,
-      payload: response.data,
-    });
-    yield put({type: GET_CUSTOMERS_ID, payload: { id: response?.id, version: response?.version}});
-    showSuccessToast("Customer Details Added Successfully");
-  } catch (error) {
-    showErrorToast(error?.message);
-    console.log(error, "saga login api error");
   }
 }
 
@@ -147,17 +121,6 @@ function* getCompanyPincodeDetails({ payload: { cityId } }) {
   }
 }
 
-// get all parties company settings
-function* getAllPartiesCompanySettings() {
-  try {
-    const response = yield call(GetPartiesAllCustomers);
-    console.log(response, "reponse into getAllPartiesCompanySettings");
-    yield put({ type: GET_PARTIES_ALL_DETAILS_SUCCESS, payload: response });
-  } catch (error) {
-    console.log(error, "saga getAllCompanySettings api error");
-  }
-}
-
 function* getAllPartiesTable() {
   try {
     const response = yield call(getPartiesAllTable);
@@ -211,15 +174,15 @@ function* postVenderDataSaga({ payload: { formData } }) {
 export function* watchGetPartiesCustomersData() {
   yield takeLatest(GET_CUSTOMERS_TABLE_DATA, getCustomersData);
   yield takeLatest(GET_VENDORS_TABLE_DATA, getVendorsData);
-  yield takeLatest(
-    GET_PARTIES_CUSTOMERS_DETAILS,
-    getPartiesCustomerDetailsData
-  );
+  // yield takeLatest(
+  //   GET_PARTIES_CUSTOMERS_DETAILS,
+  //   getPartiesCustomerDetailsData
+  // );
   yield takeLatest(GET_PARTIES_COMPANY_CITY_DATA, getCompanyCityDetails);
   yield takeLatest(GET_PARTIES_COMPANY_STATE_DATA, getCompanyStateDetails);
   yield takeLatest(GET_PARTIES_COMPANY_COUNTRY_DATA, getCompanyCountryDetails);
   yield takeLatest(GET_PARTIES_COMPANY_PINCODE_DATA, getCompanyPincodeDetails);
-  yield takeLatest(GET_PARTIES_ALL_DETAILS, getAllPartiesCompanySettings);
+  // yield takeLatest(GET_PARTIES_ALL_DETAILS, getAllPartiesCompanySettings);
   yield takeLatest(GET_PARTIES_TABLE, getAllPartiesTable);
   yield takeLatest(GET_PARTIES_VENDOR_TABLE, getAllPartiesVendorTable);
   yield takeLatest(

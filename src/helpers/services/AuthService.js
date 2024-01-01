@@ -70,29 +70,6 @@ export const CompanyBusinessDetails = data => {
 // GET ALL company settings
 export const CompanyAllDetails = () => get(url.COMPANY_GET_ALL_DETAILS)
 
-
-// Tenant Basic company request customers
-export const PartiesCustomerDetails = data => {
-    console.log("PartiesCustomerDetailssAPI", data);
-    return post((url.PARTIES_CUSTOMERS_BASIC_DETAILS), data,
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                "Authorization": `Bearer ${localStorage.getItem("token")}`,
-            }
-        })
-}
-
-// get all parties customers
-export const GetPartiesAllCustomers = () => {
-    return get((url.GET_ALL_PARTIES_CUSTOMERS), {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-        }
-    })
-}
-
-// get all parties table data
 export const getPartiesAllTable = () => {
     return get((url.GET_ALL_PARTIES_TABLE), {
         headers: {

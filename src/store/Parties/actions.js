@@ -74,14 +74,14 @@ export const updateVendorSwitchData = (user_id, user_is_active) => ({
   },
 });
 
-// get basic company details
-export const getAllCustomerDetailsData = (data) => {
-  console.log(data, "---->>getAllCustomerDetailsData");
-  return {
-    type: GET_PARTIES_CUSTOMERS_DETAILS,
-    payload: data,
-  };
-};
+// // get basic company details
+// export const getAllCustomerDetailsData = (data) => {
+//   console.log(data, "---->>getAllCustomerDetailsData");
+//   return {
+//     type: GET_PARTIES_CUSTOMERS_DETAILS,
+//     payload: data,
+//   };
+// };
 
 // city get api
 export const getCustomersCityData = (data) => {
@@ -112,14 +112,14 @@ export const getCustomersPincodeData = (data) => {
   };
 };
 
-// ALL GET [PARTIES] details
-export const getAllPartiesData = (data) => {
-  console.log(data, "data getAllPartiesData");
-  return {
-    type: GET_PARTIES_ALL_DETAILS,
-    payload: data,
-  };
-};
+// // ALL GET [PARTIES] details
+// export const getAllPartiesData = (data) => {
+//   console.log(data, "data getAllPartiesData");
+//   return {
+//     type: GET_PARTIES_ALL_DETAILS,
+//     payload: data,
+//   };
+// };
 
 // all table parties data
 export const getAllTableParties = (data) => {

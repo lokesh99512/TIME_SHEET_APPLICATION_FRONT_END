@@ -199,7 +199,10 @@ export const Upload_FCL_INLAND_Freight = "/api/v1/inland-vendor-freight/"
 export const Upload_FCL_INLAND_Surcharge = "/api/v1/inland-vendor-surcharge/"
 
 // customer
+export const GET_PARTIES_CUSTOMERS_URL = "/api/v1/tenant/customer/"
+export const PARTIES_CUSTOMERS_BASIC_DETAILS = "/api/v1/tenant/customer/update-basic-details"
 export const UPLOAD_CUSTOMER_CONTACT_URL = "/api/v1/tenant/customer/update-contact-details"
+export const UPLOAD_CUSTOMER_DOCUMENT_URL = "/api/v1/tenant/customer/update-document-details"
 
 
 // --------------------------------------------------------- Kunal ---------------------------------------------------------
@@ -218,12 +221,6 @@ export const COMPANY_BUSINESS_DETAILS = "/api/v1/tenant/update-business-details"
 
 // get api in settings of Companysettings
 export const COMPANY_GET_ALL_DETAILS = "/api/v1/tenant/" 
-
-// tenant customers 
-export const PARTIES_CUSTOMERS_BASIC_DETAILS = "/api/v1/tenant/customer/update-basic-details"
-
-// get all parties customer details
-export const GET_ALL_PARTIES_CUSTOMERS = "/api/v1/tenant/customer/"
 
 // get all table in parties
 export const GET_ALL_PARTIES_TABLE = "/api/v1/tenant/customer"

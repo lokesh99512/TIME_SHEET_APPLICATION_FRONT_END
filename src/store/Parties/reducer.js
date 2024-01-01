@@ -1,6 +1,4 @@
-import { GET_ALL_PARTIES_TABLE } from "../../helpers/url_helper";
 import {
-  GET_CUSTOMERS_ID,
   GET_CUSTOMERS_TABLE_DATA_FAIL,
   GET_CUSTOMERS_TABLE_DATA_SUCCESS,
   GET_PARTIES_ALL_DETAILS_FAIL,
@@ -17,8 +15,6 @@ import {
   GET_PARTIES_CUSTOMERS_DETAILS_SUCCESS,
   GET_PARTIES_CUSTOMER_EMPLOYEE_DETAILS_FAIL,
   GET_PARTIES_CUSTOMER_EMPLOYEE_DETAILS_SUCCESS,
-  GET_PARTIES_SURCHARGE_TABLE_FAIL,
-  GET_PARTIES_SURCHARGE_TABLE_SUCCESS,
   GET_PARTIES_TABLE_FAIL,
   GET_PARTIES_TABLE_SUCCESS,
   GET_PARTIES_VENDOR_TABLE_FAIL,
@@ -26,8 +22,7 @@ import {
   GET_VENDORS_TABLE_DATA_FAIL,
   GET_VENDORS_TABLE_DATA_SUCCESS,
   UPDATE_CUSTOMER_SWITCH,
-  UPDATE_VENDOR_SWITCH,
-  UPLOAD_VENDOR_DATA,
+  UPDATE_VENDOR_SWITCH
 } from "./actiontype";
 
 const INIT_STATE = {
@@ -42,10 +37,7 @@ const INIT_STATE = {
   parties_table_all_details: [],
   parties_all_vendors_data: [],
   parties_all_employee_details: [],
-  parties_vendors_details: [],
-  customer_id: [],
-  // addVendorData: [],
-  // error: null,
+  parties_vendors_details: [],  
 };
 
 const parties = (state = INIT_STATE, action) => {
@@ -210,12 +202,7 @@ const parties = (state = INIT_STATE, action) => {
         item.id === id ? { ...item, is_active: !active } : item
       );
       return { ...state, parties_vendors_data: updatedVendorItems };
-    // ---------------------
-    case GET_CUSTOMERS_ID:
-      return {
-        ...state,
-        customer_id: action.payload,
-      };
+    
     default:
       return state;
   }
