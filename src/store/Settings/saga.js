@@ -77,6 +77,7 @@ import {
   showErrorToast,
   showSuccessToast,
 } from "../../components/Common/CustomToast";
+import { GetFileSer } from "../../helpers/services/GlobalService";
 
 function* getUsersData() {
   try {
@@ -134,7 +135,7 @@ function* getCompanyCityDetails() {
   try {
     // console.log("payload getCompanyCityDetails", payload)
     const response = yield call(CompanyCityDetails);
-    // console.log(response, "--respnse")
+    console.log(response, "--respnse");
     yield put({ type: GET_COMPANY_CITY_DATA_SUCCESS, payload: response });
   } catch (error) {
     // showErrorToast(error?.message);
@@ -209,8 +210,13 @@ function* getCompanyBusinessDeatilsData({ payload }) {
 function* getAllCompanySettings() {
   try {
     const response = yield call(CompanyAllDetails);
-    console.log(response, "reponse into getAllCompanySettings");
-    yield put({ type: GET_ALL_COMPANY_SETTINGS_SUCCESS, payload: response });
+    // logo
+    let imageData = response?.content?.[0]?.logoPath;
+    const base64Encoded = window.btoa(imageData);
+    // const base64Encoded = Buffer.from(imageData, 'binary').toString('base64');
+    const resImageData = yield call(GetFileSer, base64Encoded);
+
+    yield put({ type: GET_ALL_COMPANY_SETTINGS_SUCCESS, payload: {...response, imageData: resImageData} });
   } catch (error) {
     console.log(error, "saga getAllCompanySettings api error");
   }

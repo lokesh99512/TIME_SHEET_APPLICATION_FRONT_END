@@ -25,6 +25,9 @@ axiosInstance.interceptors.response.use(
   error => Promise.reject(error)
 )
 
+export async function getWithOutAuth(url, config = {}) {
+  return await axios.get(url, { ...config }).then(response => response.data)
+}
 export async function get(url, config = {}) {
   return await axiosInstance.get(url, { ...config }).then(response => response.data)
 }

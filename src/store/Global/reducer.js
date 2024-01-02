@@ -1,4 +1,4 @@
-import { GET_CARGO_TYPE_DATA_SUCCEESS, GET_CONTAINER_DATA_SUCCEESS, GET_CURRENCY_DETAIL_SUCCESS, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_SURCHARGE_ALICE_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA_SUCCESS, GET_VENDOR_DETAILS_SUCCESS } from "./actiontype";
+import { GET_CARGO_TYPE_DATA_SUCCEESS, GET_CONTAINER_DATA_SUCCEESS, GET_CURRENCY_DETAIL_SUCCESS, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_STATE_ALL_TYPE_SUCCEESS, GET_SURCHARGE_ALICE_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA_SUCCESS, GET_VENDOR_DETAILS_SUCCESS } from "./actiontype";
 
 const INIT_STATE = {
     vendor_data: [],
@@ -11,6 +11,7 @@ const INIT_STATE = {
     container_data: [],
     surchargeAlice_data: [],
     surchargeAlice_descri: [],
+    stateAllData: [],
 }
 
 const globalReducer = (state = INIT_STATE, action) => {
@@ -128,6 +129,18 @@ const globalReducer = (state = INIT_STATE, action) => {
                     return {
                         label: `${item?.description}`,
                         value: `${item?.name}`,
+                    }
+                })
+            }
+        case GET_STATE_ALL_TYPE_SUCCEESS:
+            return {
+                ...state,
+                stateAllData: action.payload.content?.map((item) => {
+                    return {
+                        label: `${item?.stateName}`,
+                        value: `${item?.stateName}`,
+                        id: `${item?.id}`,
+                        version: `${item?.version}`
                     }
                 })
             }

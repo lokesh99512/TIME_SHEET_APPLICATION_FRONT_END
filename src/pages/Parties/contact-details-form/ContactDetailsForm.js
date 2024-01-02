@@ -1,21 +1,10 @@
+import { FieldArray, FormikProvider } from "formik";
 import React from "react";
-import { FieldArray, FormikProvider, useFormik } from "formik";
 import Select from "react-select";
 import {
   Card,
   CardBody,
-  Col,
-  Container,
-  Form,
-  Input,
-  Modal,
-  NavItem,
-  NavLink,
-  Progress,
-  Row,
-  TabContent,
-  TabPane,
-  UncontrolledTooltip,
+  Input
 } from "reactstrap";
 import {
   department,
