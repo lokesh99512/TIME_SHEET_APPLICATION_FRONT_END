@@ -27,21 +27,20 @@ export const designation = [
 ];
 
 export const entityType = [
-  { label: "Proprietorship", value: "Proprietorship".toUpperCase() },
-  { label: "Single Director", value: "Single_Director".toUpperCase() },
-  { label: "LLP", value: "LLP".toUpperCase() },
-  { label: "Private Limited", value: "Private_Limited".toUpperCase() },
-  { label: "Add New", value: "Add New".toUpperCase() },
+  { label: "PRIVATE LTD", value: "PRIVATE_LTD"},
+  { label: "PUBLIC LTD", value: "PUBLIC_LTD"},
+  { label: "SINGLE DIRECTOR", value: "SINGLE_DIRECTOR"},
+  { label: "LLP", value: "LLP"},
+  { label: "PROPRIETORSHIP", value: "PROPRIETORSHIP"},
 ];
 
 
 export const industryType = [
-  { label: "Supply Chain", value: "Supply Chain".toUpperCase() },
-  { label: "Software services", value: "Software services".toUpperCase() },
-  { label: "Agriculture", value: "Agriculture".toUpperCase() },
-  { label: "Manufacturing", value: "Manufacturing".toUpperCase() },
-  { label: "Transportation", value: "Transportation".toUpperCase() },
-  { label: "Add New", value: "Add New".toUpperCase() },
+  { label: "Supply Chain", value: "SUPPLY_CHAIN" },
+  { label: "Software services", value: "SOFTWARE_SERVICE"},
+  { label: "Agriculture", value: "AGRICULTURE"},
+  { label: "Manufacturing", value: "MANUFACTURING"},
+  { label: "Transportation", value: "TRANSPORTATION"}
 ];
 
 export const vendorTypeOptions = [
@@ -53,11 +52,10 @@ export const vendorTypeOptions = [
   { label: "Co-Loader", value: "Co-Loader".toUpperCase() },
   { label: "Local Agent", value: "Local Agent".toUpperCase() },
   { label: "Manpower Agent", value: "Manpower Agent".toUpperCase() },
-  { label: "Add New", value: "Add New".toUpperCase() },
+  // { label: "Add New", value: "Add New"},
 ];
 
 export const serviceTypeOptions = [
-  { label: "Ocean", value: "Ocean".toUpperCase() },
-  { label: "Air", value: "Air".toUpperCase() },
-  { label: "Add New", value: "Add New".toUpperCase() },
+  { label: "Ocean", value: "OCEAN" },
+  { label: "Air", value: "AIR"},
 ];

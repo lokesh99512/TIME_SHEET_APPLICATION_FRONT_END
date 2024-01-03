@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { Card, CardBody, Input } from "reactstrap";
-import ModalAddNewDepartment from "../Modal/ModalAddNewDepartment";
-import ModalAddNewDesignation from "../Modal/ModalAddNewDesignation";
-import ModalAddNewEntityType from "../Modal/ModalAddNewEntityType";
-import ModalAddNewIndustryType from "../Modal/ModalAddNewIndustryType";
-import ModalAddNewVendorType from "../Modal/ModalAddNewVendorType";
-import ModalAddNewServiceType from "../Modal/ModalAddNewServiceType";
-import FileUpload from "../FileUpload";
+import ModalAddNewDepartment from "../../Modal/ModalAddNewDepartment";
+import ModalAddNewDesignation from "../../Modal/ModalAddNewDesignation";
+import ModalAddNewEntityType from "../../Modal/ModalAddNewEntityType";
+import ModalAddNewIndustryType from "../../Modal/ModalAddNewIndustryType";
+import ModalAddNewVendorType from "../../Modal/ModalAddNewVendorType";
+import ModalAddNewServiceType from "../../Modal/ModalAddNewServiceType";
+import FileUpload from "../../FileUpload";
 import {
   department,
   designation,
@@ -15,7 +15,7 @@ import {
   industryType,
   serviceTypeOptions,
   vendorTypeOptions,
-} from "../constants/venderEnumList";
+} from "../../constants/venderEnumList";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import {
@@ -25,20 +25,16 @@ import {
   getCompanyCountryData,
   getCompanyPincodeData,
   getCompanyStateData,
-} from "../../../store/Settings/actions";
-import { country_list, state_list } from "../../../common/data/settings";
+} from "../../../../store/Settings/actions";
+import { country_list, state_list } from "../../../../common/data/settings";
+import { optionVendorType } from "../../../../common/data/procurement";
+import { getCustomersCountryData, getCustomersPincodeData, getCustomersStateData } from "../../../../store/Parties/actions";
 
-const gen = [
-  { label: "Mr", value: "Mr" },
-  { label: "Ms", value: "Ms" },
-  { label: "Mrs", value: "Mrs" },
-];
 const title = [
   { label: "Mr", value: "Mr" },
   { label: "Ms", value: "Ms" },
   { label: "Mrs", value: "Mrs" },
 ];
-const phone = [{ label: "+91", value: "+91" }];
 const opCode = [{ label: "+91", value: "+91" }];
 
 const VenderDetails = ({ companyDetailsFormik }) => {
@@ -50,14 +46,18 @@ const VenderDetails = ({ companyDetailsFormik }) => {
   const [serviceTypeModal, setServiceTypeModal] = useState(false);
   const dispatch = useDispatch();
 
-  const {
-    settings_companydetails_data,
-    settings_companyCity_data,
-    settings_company_settings_all_data,
-    settings_companyState_data,
-    settings_companyCountry_data,
-    settings_companyPincode_data,
-  } = useSelector((state) => state?.settings);
+  const { parties_city_details, parties_all_details, parties_all_employee_details, parties_state_details,parties_country_details, parties_pincode_details } = useSelector(
+    (state) => state?.parties
+  );
+
+  useEffect(() => {
+    if (parties_state_details && parties_state_details?.content?.length > 0) {
+      companyDetailsFormik.setFieldValue("state", parties_state_details?.content[0]?.stateName)
+    }
+    if (parties_country_details && parties_country_details?.content?.length > 0) {
+      companyDetailsFormik.setFieldValue("country", parties_country_details?.content[0]?.countryName)
+    }
+}, [parties_state_details, parties_country_details, parties_pincode_details, parties_all_details]);
 
   useEffect(() => {
     dispatch(getAllTableSurchargeAlias());
@@ -71,32 +71,31 @@ const VenderDetails = ({ companyDetailsFormik }) => {
 
       reader.readAsDataURL(file);
     }
-
     companyDetailsFormik.setFieldValue("image", file);
   };
 
-  const handleCityChange = (e) => {
-    companyDetailsFormik.handleChange(e);
-    const cityData = settings_companyCity_data?.content?.find(
-      (city) => city.cityName === e.target.value
-    );
-    if (cityData) {
-      // Update the state and country fields in the form
-      companyDetailsFormik.setFieldValue(
-        "state",
-        cityData.state?.stateName || ""
-      );
-      companyDetailsFormik.setFieldValue(
-        "country",
-        cityData.state?.country?.countryName || ""
-      );
+  // const handleCityChange = (e) => {
+  //   companyDetailsFormik.handleChange(e);
+  //   const cityData = settings_companyCity_data?.content?.find(
+  //     (city) => city.cityName === e.target.value
+  //   );
+  //   if (cityData) {
+  //     // Update the state and country fields in the form
+  //     companyDetailsFormik.setFieldValue(
+  //       "state",
+  //       cityData.state?.stateName || ""
+  //     );
+  //     companyDetailsFormik.setFieldValue(
+  //       "country",
+  //       cityData.state?.country?.countryName || ""
+  //     );
 
-      // Dispatch actions to get pincode data if needed
-      dispatch(getCompanyStateData({ cityId: cityData.id }));
-      dispatch(getCompanyCountryData({ cityId: cityData.id }));
-      dispatch(getCompanyPincodeData({ cityId: cityData.id }));
-    }
-  };
+  //     // Dispatch actions to get pincode data if needed
+  //     dispatch(getCompanyStateData({ cityId: cityData.id }));
+  //     dispatch(getCompanyCountryData({ cityId: cityData.id }));
+  //     dispatch(getCompanyPincodeData({ cityId: cityData.id }));
+  //   }
+  // };
   const onCloseClick = () => {
     setDesignationModal(false);
     setDepartmentModal(false);
@@ -165,13 +164,25 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                     name="city"
                     list="cityList"
                     value={companyDetailsFormik?.values?.city || ""}
-                    onChange={handleCityChange}
+                    onChange={(e) => {
+                      companyDetailsFormik.handleChange(e);
+                      companyDetailsFormik.setFieldValue('state', '');
+                      companyDetailsFormik.setFieldValue('country', '');
+                      companyDetailsFormik.setFieldValue('zipcode', '');
+                      const cityData = parties_city_details?.content?.find((city) => city.cityName === e.target.value);
+                      if (cityData) {
+                        dispatch(getCustomersStateData({ cityId: cityData.id }));
+                        dispatch(getCustomersCountryData({ cityId: cityData.id }));
+                        dispatch(getCustomersPincodeData({ cityId: cityData.id }));
+                      }
+                    }
+                    }
                     className="form-control"
                     placeholder=""
                   />
                   <datalist id="cityList">
-                    {settings_companyCity_data &&
-                      settings_companyCity_data?.content?.map((item, i) => (
+                    {parties_city_details &&
+                      parties_city_details?.content?.map((item, i) => (
                         <option key={i} value={item.cityName} />
                       ))}
                   </datalist>
@@ -190,12 +201,12 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                     className="form-control"
                     placeholder=""
                   />
-                  <datalist id="stateList">
+                  {/* <datalist id="stateList">
                     {state_list &&
                       state_list.map((item, i) => (
                         <option key={i} value={item} />
                       ))}
-                  </datalist>
+                  </datalist> */}
                 </div>
               </div>
               <div className="col-12 col-md-6">
@@ -210,12 +221,12 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                     className="form-control"
                     placeholder=""
                   />
-                  <datalist id="countryList">
+                  {/* <datalist id="countryList">
                     {country_list &&
                       country_list.map((item, i) => (
                         <option key={i} value={item} />
                       ))}
-                  </datalist>
+                  </datalist> */}
                 </div>
               </div>
               <div className="col-12 col-md-6">
@@ -231,8 +242,8 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                     placeholder=""
                   />
                   <datalist id="zipcodeList">
-                    {settings_companyPincode_data &&
-                      settings_companyPincode_data?.content?.map((item, i) => (
+                    {parties_pincode_details &&
+                      parties_pincode_details?.content?.map((item, i) => (
                         <option key={i} value={item.pin} />
                       ))}
                   </datalist>
@@ -273,10 +284,10 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                         value={
                           title
                             ? title.find(
-                                (option) =>
-                                  option.value ===
-                                  companyDetailsFormik?.values?.title
-                              )
+                              (option) =>
+                                option.value ===
+                                companyDetailsFormik?.values?.title
+                            )
                             : ""
                         }
                         onChange={(e) => {
@@ -313,10 +324,10 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                         value={
                           opCode
                             ? opCode.find(
-                                (option) =>
-                                  option.value ===
-                                  companyDetailsFormik?.values?.opCode
-                              )
+                              (option) =>
+                                option.value ===
+                                companyDetailsFormik?.values?.opCode
+                            )
                             : ""
                         }
                         onChange={(e) => {
@@ -364,10 +375,10 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                     value={
                       department
                         ? department.find(
-                            (option) =>
-                              option.value ===
-                              companyDetailsFormik?.values?.department
-                          )
+                          (option) =>
+                            option.value ===
+                            companyDetailsFormik?.values?.department
+                        )
                         : ""
                     }
                     onChange={(e) => {
@@ -378,7 +389,7 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                     }}
                     options={department}
                     classNamePrefix="select2-selection form-select"
-                    // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
+                  // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
                   />
                 </div>
               </div>
@@ -390,10 +401,10 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                     value={
                       designation
                         ? designation.find(
-                            (option) =>
-                              option.value ===
-                              companyDetailsFormik?.values?.designation
-                          )
+                          (option) =>
+                            option.value ===
+                            companyDetailsFormik?.values?.designation
+                        )
                         : ""
                     }
                     onChange={(e) => {
@@ -430,21 +441,13 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                   <Select
                     name="venderType"
                     id="venderType"
-                    value={
-                      vendorTypeOptions
-                        ? vendorTypeOptions.find(
-                            (option) =>
-                              option.value ===
-                              companyDetailsFormik?.values?.venderType
-                          )
-                        : ""
-                    }
+                    value={optionVendorType ? optionVendorType.find((option) => option.value === companyDetailsFormik?.values?.venderType) : ""}
                     onChange={(e) => {
                       companyDetailsFormik.setFieldValue(`venderType`, e.value);
                     }}
-                    options={vendorTypeOptions}
+                    options={optionVendorType}
+                    // options={[...optionVendorType,{ label: "Add New", value: "Add New"}]}
                     classNamePrefix="select2-selection form-select"
-                    // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
                   />
                 </div>
               </div>
@@ -455,24 +458,12 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                   <Select
                     name="serviceType"
                     id="serviceType"
-                    value={
-                      serviceTypeOptions
-                        ? serviceTypeOptions.find(
-                            (option) =>
-                              option.value ===
-                              companyDetailsFormik?.values?.serviceType
-                          )
-                        : ""
-                    }
+                    value={serviceTypeOptions ? serviceTypeOptions.find((option) => option.value === companyDetailsFormik?.values?.serviceType) : ""}
                     onChange={(e) => {
-                      companyDetailsFormik.setFieldValue(
-                        `serviceType`,
-                        e.value
-                      );
+                      companyDetailsFormik.setFieldValue(`serviceType`, e.value);
                     }}
                     options={serviceTypeOptions}
                     classNamePrefix="select2-selection form-select"
-                 
                   />
                 </div>
               </div>
@@ -531,10 +522,10 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                     value={
                       entityType
                         ? entityType.find(
-                            (option) =>
-                              option.value ===
-                              companyDetailsFormik?.values?.entityType
-                          )
+                          (option) =>
+                            option.value ===
+                            companyDetailsFormik?.values?.entityType
+                        )
                         : ""
                     }
                     onChange={(e) => {
@@ -545,7 +536,7 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                     }}
                     options={entityType}
                     classNamePrefix="select2-selection form-select"
-                    // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
+                  // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
                   />
                 </div>
               </div>
@@ -557,10 +548,10 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                     value={
                       industryType
                         ? industryType.find(
-                            (option) =>
-                              option.value ===
-                              companyDetailsFormik?.values?.industryType
-                          )
+                          (option) =>
+                            option.value ===
+                            companyDetailsFormik?.values?.industryType
+                        )
                         : ""
                     }
                     onChange={(e) => {

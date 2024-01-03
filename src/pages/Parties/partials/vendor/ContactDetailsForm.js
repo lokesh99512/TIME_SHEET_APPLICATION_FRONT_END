@@ -9,7 +9,7 @@ import {
 import {
   department,
   designation,
-} from "../constants/venderEnumList";
+} from "../../constants/venderEnumList";
 const opCode = [{ label: "+91", value: "+91" }];
 
 const phone = [{ label: "+91", value: "+91" }];

@@ -33,42 +33,8 @@ import { GET_STATE_ALL_TYPE } from "../../store/Global/actiontype";
 
 const Settings = () => {
     const [gstModal, setGstModal] = useState(false);
-    const [companyData, setCompanyData] = useState([]);
     const [modalAlldata, setModalAllData] = useState([]);
-    const [tenantGSTSData, setTenantGSTSData] = useState([]);
     const [active, setActive] = useState("comapanyDetails");
-
-    // const companyDetailsInitialValue = {
-    //     image: "",
-    //     companyName: "",
-    //     contactNumber: "",
-    //     email: "",
-    //     companyAddress: "",
-    //     city: "",
-    //     state: "",
-    //     zipcode: "",
-    //     country: "",
-    // };
-
-    // const taxDetailsInitialValue = {
-    //     pan: "",
-    //     cin: "",
-    //     transporterId: "",
-    //     no: "",
-    //     placeOfService: "",
-    //     moreGstNumbers: [
-    //         {
-    //             gstNo: "",
-    //             placeOfService: "",
-    //         },
-    //     ],
-    // };
-
-    const bussinessTypeInitialValue = {
-        industryType: "",
-        entityType: "",
-    };
-
     const dispatch = useDispatch();
 
     const {
@@ -87,7 +53,6 @@ const Settings = () => {
     }, []);
 
     useEffect(() => {
-        console.log(settings_company_settings_all_data, "settings_company_settings_all_data")
         if (settings_company_settings_all_data && settings_company_settings_all_data?.imageData !== undefined) {
             let imageData = settings_company_settings_all_data?.imageData;
             // const base64Image = window.btoa(String.fromCharCode.apply(null, new Uint8Array(imageData)));
@@ -100,71 +65,7 @@ const Settings = () => {
             companyDetailsFormik.setFieldValue("image", objectURL);
             URL.revokeObjectURL(objectURL);
         }
-        if (settings_company_settings_all_data && settings_company_settings_all_data?.content?.length > 0) {
-            // taxDetailsFormik.setFieldValue(
-            //     "pan",
-            //     settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.pan
-            // );
-            // taxDetailsFormik.setFieldValue(
-            //     "cin",
-            //     settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.cin
-            // );
-            // taxDetailsFormik.setFieldValue(
-            //     "transporterId",
-            //     settings_company_settings_all_data &&
-            //     settings_company_settings_all_data?.content[0]?.transporterId
-            // );
-            // taxDetailsFormik.setFieldValue(
-            //     "no",
-            //     settings_company_settings_all_data &&
-            //     settings_company_settings_all_data?.content[0]?.tenantGSTS[0]?.no
-            // );
-            // taxDetailsFormik.setFieldValue(
-            //     "placeOfService",
-            //     settings_company_settings_all_data &&
-            //     settings_company_settings_all_data?.content[0]?.tenantGSTS[0]
-            //         ?.placeOfService
-            // );
-            bussinessTypeFormik.setFieldValue(
-                "industryType",
-                settings_company_settings_all_data &&
-                settings_company_settings_all_data?.content[0]?.industryType
-            );
-            bussinessTypeFormik.setFieldValue(
-                "entityType",
-                settings_company_settings_all_data &&
-                settings_company_settings_all_data?.content[0]?.entityType
-            );
-
-            if (
-                settings_company_settings_all_data?.content[0]?.tenantGSTS?.length >= 2
-            ) {
-                taxDetailsFormik.setFieldValue(
-                    "moreGstNumbers",
-                    settings_company_settings_all_data?.content[0]?.tenantGSTS
-                        ?.slice(1)
-                        .map((item) => ({
-                            gstNo: item?.no,
-                            placeOfService: item?.placeOfService,
-                        }))
-                );
-            }
-        }
-
-        // if(settings_companyPincode_data){
-        //   companyDetailsFormik.setFieldValue("zipcode", settings_companyPincode_data?.content?.map((item)=>item?.pin))
-        // }
-        // console.log(companyDetailsFormik?.values, "companyDetailsFormik");
-    }, [settings_companyState_data, settings_companydetails_data, settings_companyCountry_data, settings_companyPincode_data, settings_company_settings_all_data,]);
-    useEffect(() => {
-        if (settings_company_settings_all_data?.content?.length > 0) {
-            const tenantGSTSArray = settings_company_settings_all_data?.content[0]?.tenantGSTS?.slice(1).map((item) => ({
-                gstNo: item?.no,
-                placeOfService: item?.placeOfService,
-            })) || [];
-            setTenantGSTSData(tenantGSTSArray);
-        }
-    }, [settings_company_settings_all_data]);
+    }, [settings_company_settings_all_data,]);
 
     const companyDetailsFormik = useFormik({
         enableReinitialize: true,
@@ -245,96 +146,50 @@ const Settings = () => {
             moreGstNumbers: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.tenantGSTS?.slice(1).map((item) => ({
                 gstNo: item?.no,
                 placeOfService: item?.placeOfService,
-            })),
+                address: item?.address,
+                city: item?.city,
+                state: item?.state,
+                country: item?.country,
+                pinCode: item?.pinCode,
+            })) || [],
         },
-        onSubmit: (values) => {
-            // console.log("i am taxt details");
-
-            const targetPinCode = companyDetailsFormik?.values?.zipcode;
-            const foundPinCodeEntry = settings_companyPincode_data?.content?.find((pinCodeEntry) => pinCodeEntry.pin === targetPinCode);
-            const targetCity = companyDetailsFormik?.values?.city;
-            const foundCity = settings_companyCity_data?.content?.find((city) => city.cityName === targetCity);
+        onSubmit: (values) => {           
+            let mergeArray = [...values?.moreGstNumbers, ...modalAlldata];
 
             const payload = {
-                cin: values.cin,
-                pan: values.pan,
-                transporterId: values.transporterId,
-                tenantGSTS: [
-                    {
-                        no: values.no,
-                        placeOfService: values.placeOfService,
-                        address: companyDetailsFormik?.values?.companyAddress,
-                        // pinCode: {
-                        //     version: foundPinCodeEntry.version,
-                        //     modifiedBy: foundPinCodeEntry.modifiedBy,
-                        //     createdBy: foundPinCodeEntry.createdBy,
-                        //     id: foundPinCodeEntry.id,
-                        //     pin: foundPinCodeEntry.pin,
-                        // },
-                        // city: {
-                        //     version: foundCity.version,
-                        //     modifiedBy: foundCity.modifiedBy,
-                        //     createdBy: foundCity.createdBy,
-                        //     id: foundCity.id,
-                        //     cityName: foundCity.cityName,
-                        // },
-                        // state: {
-                        //     version: foundPinCodeEntry.state.version,
-                        //     modifiedBy: foundPinCodeEntry.state.modifiedBy,
-                        //     createdBy: foundPinCodeEntry.state.createdBy,
-                        //     id: foundPinCodeEntry.state.id,
-                        //     stateName: companyDetailsFormik?.values?.stateName,
-                        // },
-                        // country: {
-                        //     version: foundPinCodeEntry.country.version,
-                        //     modifiedBy: foundPinCodeEntry.country.modifiedBy,
-                        //     createdBy: foundPinCodeEntry.country.createdBy,
-                        //     id: foundPinCodeEntry.country.id,
-                        //     countryName: companyDetailsFormik?.values?.country,
-                        // },
-                    },
-                    ...modalAlldata,
-                ],
+                id: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.id || null,
+                version: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.version || null,
+                cin: values.cin || null,
+                pan: values.pan || null,
+                transporterId: values.transporterId || null,
+                tenantGSTS: mergeArray?.length !== 0 && mergeArray || [],
             };
-            console.log(payload, "payload")
+
             dispatch(getTaxDetailsData(payload));
         },
     });
 
     const bussinessTypeFormik = useFormik({
-        initialValues: bussinessTypeInitialValue,
         enableReinitialize: true,
+        initialValues: {
+            industryType: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.industryType || null,
+            entityType: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.entityType || null,
+        },
         onSubmit: (value) => {
-            const formdata = new FormData();
-
             const projectUATRequestDTO = {
-                entityType: value.entityType,
-                industryType: value.industryType,
+                id: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.id || null,
+                version: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.version || null,
+                entityType: value.entityType || null,
+                industryType: value.industryType || null,
             };
-            console.log("Final-Payload-Bussiness:-", projectUATRequestDTO);
-            formdata.append(
-                "tenant",
-                new Blob([JSON.stringify(projectUATRequestDTO)], {
-                    type: "application/json",
-                })
-            );
 
-            dispatch(getBusinessData(value));
+            dispatch(getBusinessData(projectUATRequestDTO));
         },
     });
 
     const onCloseClick = () => {
         setGstModal(false);
     };
-
-    // const gstNumberHandler = (e) => {
-    //     taxDetailsFormik.handleChange(e);
-    //     taxDetailsFormik.setFieldValue(
-    //         "placeOfService",
-    //         stateConverter(e.target.value.substring(0, 2))
-    //     );
-    // };
-
     return (
         <>
             <div className="page-content settings_wrapper">
@@ -426,12 +281,10 @@ const Settings = () => {
                             <Card className="">
                                 <PerfectScrollbar className="p-4" style={{ height: "802px" }}>
                                     {/* Comapany details  */}
+                                    <CompanyDetailsForm companyDetailsFormik={companyDetailsFormik} />
 
-                                    <CompanyDetailsForm
-                                        companyDetailsFormik={companyDetailsFormik}
-                                    />
                                     {/* Tax Details  */}
-                                    <SettingsTaxDetails taxDetailsFormik={taxDetailsFormik} setGstModal={setGstModal} tenantGSTSData={tenantGSTSData} />
+                                    <SettingsTaxDetails taxDetailsFormik={taxDetailsFormik} setGstModal={setGstModal} />
 
                                     {/* Bussiness Type */}
                                     <Card id="bussinessType" className="my-4 mb-auto">
@@ -517,6 +370,7 @@ const Settings = () => {
                                             </div>
                                         </CardBody>
                                     </Card>
+
                                     <div style={{ height: "525px" }}></div>
                                 </PerfectScrollbar>
                             </Card>

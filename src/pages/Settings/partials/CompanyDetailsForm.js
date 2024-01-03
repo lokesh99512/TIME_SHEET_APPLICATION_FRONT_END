@@ -7,22 +7,13 @@ import FileUpload from "../FileUpload";
 
 const CompanyDetailsForm = ({ companyDetailsFormik }) => {
   const dispatch = useDispatch();
-  const {
-    settings_companydetails_data,
-    settings_companyCity_data,
-    settings_company_settings_all_data,
-    settings_companyState_data,
-    settings_companyCountry_data,
-    settings_companyPincode_data,
-  } = useSelector((state) => state?.settings);
+  const { settings_companyCity_data, settings_companyState_data, settings_companyCountry_data, settings_companyPincode_data, } = useSelector((state) => state?.settings);
   const onUploadChange = (file) => {
     if (file) {
       const reader = new FileReader();
-
       reader.onload = (e) => {
         setLogoFile(e.target.result);
       };
-
       reader.readAsDataURL(file);
     }
 
@@ -30,7 +21,6 @@ const CompanyDetailsForm = ({ companyDetailsFormik }) => {
   };
 
   useEffect(() => {
-    console.log(settings_companyCountry_data,"settings_companyCountry_data")
     if (settings_companyState_data && settings_companyState_data?.content?.length > 0) {
       companyDetailsFormik.setFieldValue("state", settings_companyState_data?.content[0]?.stateName || "")
     }

@@ -19,6 +19,7 @@ import settingsSaga from "./Settings/saga"
 import partiesSaga from "./Parties/saga"
 import globalSaga from "./Global/saga"
 import partiesCustomerSaga from "./Parties/Customer/saga"
+import partiesVendorSaga from "./Parties/Vendor/saga"
 
 export default function* rootSaga() {
   yield all([
@@ -40,5 +41,6 @@ export default function* rootSaga() {
     fork(partiesSaga),
     fork(globalSaga),
     fork(partiesCustomerSaga),
+    fork(partiesVendorSaga),
   ])
 }

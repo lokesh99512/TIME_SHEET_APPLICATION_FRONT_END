@@ -191,6 +191,7 @@ input[type="date"]::-webkit-calendar-picker-indicator{
 }
 .invalid-feedback {
     @include font(400,14px,normal,$danger_7);
+    display: block;
 }
 .tf_common_form{
     .form-check {

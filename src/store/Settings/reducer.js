@@ -184,7 +184,6 @@ const settings = (state = INIT_STATE, action) => {
 
     // all get data
     case GET_ALL_COMPANY_SETTINGS_SUCCESS:
-      console.log(action?.payload, "action.payload");
       return {
         ...state,
         settings_company_settings_all_data: action.payload,

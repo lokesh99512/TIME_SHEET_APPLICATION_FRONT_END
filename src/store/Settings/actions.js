@@ -108,7 +108,6 @@ export const getBusinessData = (data) => {
 
 // ALl get company details
 export const getAllCompanyDetailData = (data) => {
-    console.log(data, "data getAllCompanyDetailData")
     return {
         type: GET_ALL_COMPANY_SETTINGS,
         payload: data,

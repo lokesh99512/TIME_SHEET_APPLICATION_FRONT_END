@@ -52,8 +52,6 @@ export default function UploadCustomerData() {
             openSaveConfirmModal();
         }
     }
-
-    // ----------forimik ----------
     
 
     // ------------- dynamic field ------------------------

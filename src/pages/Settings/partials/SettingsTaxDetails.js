@@ -1,13 +1,13 @@
+import { FieldArray, FormikProvider } from 'formik';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import Select from 'react-select';
 import { Card, CardBody, Input } from 'reactstrap';
-import { placeOfSupply } from '../../../common/data/settings';
-import { useSelector } from 'react-redux';
-import { FieldArray, FormikProvider } from 'formik';
-const stateConverter = (num) => {
-    return placeOfSupply.find((place) => +place.Code === +num)?.value;
-};
-const SettingsTaxDetails = ({ taxDetailsFormik, setGstModal, tenantGSTSData }) => {
+
+// const stateConverter = (num) => {
+//     return placeOfSupply.find((place) => +place.Code === +num)?.value;
+// };
+const SettingsTaxDetails = ({ taxDetailsFormik, setGstModal }) => {
     const [viewGst, setViewGst] = useState(false);
     const stateAllData = useSelector((state) => state?.globalReducer?.stateAllData);
     const gstNumberHandler = (e) => {
@@ -37,7 +37,6 @@ const SettingsTaxDetails = ({ taxDetailsFormik, setGstModal, tenantGSTSData }) =
                                 placeholder=""
                             />
                         </div>
-
                         <div className="col-12 col-md-6 mb-4">
                             <label className="form-label">CIN Number</label>
                             <Input
@@ -80,11 +79,10 @@ const SettingsTaxDetails = ({ taxDetailsFormik, setGstModal, tenantGSTSData }) =
                                 placeholder="Enter GST Number"
                             />
                         </div>
-
                         <div className="col-10 col-md-5 mb-4">
                             <label className="form-label">Place of Supply</label>
                             <Select
-                                value={stateAllData ? stateAllData.find((option) => option.value === taxDetailsFormik?.values?.placeOfSupply) : ""}
+                                value={stateAllData ? stateAllData.find((option) => option.value === taxDetailsFormik?.values?.placeOfService) : ""}
                                 name="placeOfService"
                                 options={stateAllData}
                                 placeholder={"Select Place of Supply"}
@@ -106,7 +104,7 @@ const SettingsTaxDetails = ({ taxDetailsFormik, setGstModal, tenantGSTSData }) =
 
                     <div className="row mt-4 mb-2">
                         <a className="col-12 col-md-6 mb-4 d-flex">
-                            <p>{tenantGSTSData.length} More GST available</p>
+                            <p>{taxDetailsFormik?.values?.moreGstNumbers?.length} More GST available</p>
                             <p
                                 onClick={() => {
                                     setViewGst((prev) => !prev);
@@ -117,101 +115,63 @@ const SettingsTaxDetails = ({ taxDetailsFormik, setGstModal, tenantGSTSData }) =
                         </a>
                     </div>
                     {/* ------------ map GST ------ */}
-                    {/* {console.log(taxDetailsFormik?.values, "taxDetailsFormik?.values")}
+                    {viewGst && (
                     <FormikProvider value={taxDetailsFormik}>
                         <FieldArray name="moreGstNumbers" validateOnChange={false}>
                             {(arrayHelpers) => (
                                 <>
-                                    {
-                                        taxDetailsFormik?.values?.moreGstNumbers?.map((gst, index) => (
-                                            <div className="row" key={index}>
-                                                <div className="col-12 col-md-6 mb-4">
-                                                    <label className="form-label">GST Number</label>
-                                                    <Input
-                                                        type="text"
-                                                        name={`moreGstNumbers[${index}].gstNo`}
-                                                        onChange={gstNumberHandler}
-                                                        value={taxDetailsFormik?.values?.moreGstNumbers?.[index]?.gstNo}
-                                                        className="form-control"
-                                                        placeholder=""
-                                                    />
-                                                </div>
-
-                                                <div className="col-10 col-md-5 mb-4">
-                                                    <label className="form-label">
-                                                        Place of Supply
-                                                    </label>
-                                                    <Select
-                                                        value={stateAllData ? stateAllData.find((option) => option.value === taxDetailsFormik?.values?.moreGstNumbers?.[index]?.placeOfSupply) : ""}
-                                                        name={`moreGstNumbers[${index}].placeOfSupply`}
-                                                        options={stateAllData}
-                                                        onChange={(e) => {
-                                                            taxDetailsFormik.setFieldValue(
-                                                                `moreGstNumbers[${index}].placeOfSupply`,
-                                                                e.value
-                                                            );
-                                                        }}
-                                                        placeholder={"Select Place of Supply"}
-                                                        classNamePrefix="select2-selection form-select"
-                                                    />
-                                                </div>
-                                                <div className="col-2 col-md-1">
-                                                    <button className="btn border mt-4">
-                                                        <i className="bx bx-trash fs-5 align-middle text-danger"></i>
-                                                    </button>
-                                                </div>
+                                    {taxDetailsFormik?.values?.moreGstNumbers?.map((gst, index) => (
+                                        <div className="row" key={index}>
+                                            <div className="col-12 col-md-6 mb-4">
+                                                <label className="form-label">GST Number</label>
+                                                <Input
+                                                    type="text"
+                                                    name={`moreGstNumbers[${index}].gstNo`}
+                                                    onChange={gstNumberHandler}
+                                                    value={taxDetailsFormik?.values?.moreGstNumbers?.[index]?.gstNo}
+                                                    className="form-control"
+                                                    placeholder=""
+                                                />
                                             </div>
-                                        ))
-                                    }
+
+                                            <div className="col-10 col-md-5 mb-4">
+                                                <label className="form-label">
+                                                    Place of Supply
+                                                </label>
+                                                <Select
+                                                    value={stateAllData ? stateAllData.find((option) => option.value === taxDetailsFormik?.values?.moreGstNumbers?.[index]?.placeOfService) : ""}
+                                                    name={`moreGstNumbers[${index}].placeOfSupply`}
+                                                    options={stateAllData}
+                                                    onChange={(e) => {
+                                                        taxDetailsFormik.setFieldValue(
+                                                            `moreGstNumbers[${index}].placeOfSupply`,
+                                                            e.value
+                                                        );
+                                                    }}
+                                                    placeholder={"Select Place of Supply"}
+                                                    classNamePrefix="select2-selection form-select"
+                                                />
+                                            </div>
+                                            <div className="col-2 col-md-1">
+                                                <button className="btn border mt-4" onClick={() => { arrayHelpers.remove(index); }}>
+                                                    <i className="bx bx-trash fs-5 align-middle text-danger"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                    {/* <button type="button" className='btn btn-primary'
+                                        onClick={() => arrayHelpers.push({
+                                            gstNo: '',
+                                            placeOfService: ''
+                                        })}>
+                                        Add
+                                    </button> */}
                                 </>
                             )
                             }
                         </FieldArray>
-                    </FormikProvider> */}
-                    {viewGst &&
-                        tenantGSTSData.map((gst, key) => {
-                            let index = key + 1
-                            return (
-                                <div className="row" key={index}>
-                                    <div className="col-12 col-md-6 mb-4">
-                                        <label className="form-label">GST Number</label>
-                                        <Input
-                                            type="text"
-                                            name={`moreGstNumbers[${index}].gstNo`}
-                                            onChange={gstNumberHandler}
-                                            value={gst.gstNo}
-                                            className="form-control"
-                                            placeholder=""
-                                        />
-                                    </div>
-
-                                    <div className="col-10 col-md-5 mb-4">
-                                        <label className="form-label">
-                                            Place of Supply
-                                        </label>
-                                        <Select
-                                            value={stateAllData ? stateAllData.find((option) => option.value === gst?.placeOfSupply) : ""}
-                                            name={`moreGstNumbers[${index}].placeOfSupply`}
-                                            options={stateAllData}
-                                            onChange={(e) => {
-                                                taxDetailsFormik.setFieldValue(
-                                                    `moreGstNumbers[${index}].placeOfSupply`,
-                                                    e.value
-                                                );
-                                            }}
-                                            placeholder={"Select Place of Supply"}
-                                            classNamePrefix="select2-selection form-select"
-                                        />
-                                    </div>
-                                    <div className="col-2 col-md-1">
-                                        <button className="btn border mt-4">
-                                            <i className="bx bx-trash fs-5 align-middle text-danger"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            );
-                        })}
-
+                    </FormikProvider>
+                    )}
                     {/* ----------- more GST --------------- */}
 
                     <div className="row">

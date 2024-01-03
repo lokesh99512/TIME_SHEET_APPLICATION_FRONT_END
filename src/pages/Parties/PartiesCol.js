@@ -1,4 +1,5 @@
 import React from "react";
+import { formatDate } from "../../components/Common/CommonLogic";
 
 // -------------------------Parties - customers-------------------------
 
@@ -30,7 +31,7 @@ export const LastTransaction = ({cellProps,viewPopupHandler}) => {
     return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }
 export const CreatedOn = ({cellProps,viewPopupHandler}) => {
-    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
+    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? formatDate(cellProps.value) : '-'}</span>;
 }
 
 // -------------------------Parties - Vendors-------------------------

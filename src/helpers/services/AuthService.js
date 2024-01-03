@@ -50,21 +50,23 @@ export const CompanyPincodeDetails = ({ cityId }) => get(`${url.COMPANY_PINCODE_
 
 
 // all taxes
-export const CompanyTaxDetails = data => {
-    return post((url.COMPANY_TAX_DETAILS), data, {
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    })
-}
-export const CompanyBusinessDetails = data => {
-    return post((url.COMPANY_BUSINESS_DETAILS), data,
-        {
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-}
+// export const CompanyTaxDetails = data => {
+//     return post((url.COMPANY_TAX_DETAILS), data, {
+//         headers: {
+//             'Content-Type': 'application/json',
+//         }
+//     })
+// }
+// export const CompanyBusinessDetails = data => {
+//     return post((url.COMPANY_BUSINESS_DETAILS), data,
+//         {
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             }
+//         })
+// }
+export const CompanyTaxDetails = (data) => post(url.COMPANY_TAX_DETAILS, data);
+export const CompanyBusinessDetails = (data) => post(url.COMPANY_BUSINESS_DETAILS, data);
 
 
 // GET ALL company settings
