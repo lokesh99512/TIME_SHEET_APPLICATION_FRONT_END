@@ -123,8 +123,6 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                         version: countryVal[0]?.version
                     },
                 }),
-                // "pinCode": null,
-                // "state": null,
                 "website": values.website || null,
                 "contactName": values.contactName || null,
                 "contactNo": values.phoneNumber || null,

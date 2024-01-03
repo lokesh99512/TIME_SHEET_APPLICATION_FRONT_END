@@ -38,8 +38,7 @@ export const updateUserSwitchData = (user_id, user_is_active) => ({
 
 // -------------------------------- company details
 
-export const getCompanyDetailsData = (data) => {
-    // console.log(data, "data getCompanyDetailsData")
+export const postSettingsCompanyDetailsAction = (data) => {
     return {
         type: GET_COMPANYDETAILS_BASIC_DATA,
         payload: data,
@@ -109,7 +108,6 @@ export const getBusinessData = (data) => {
 
 // ALl get company details
 export const getAllCompanyDetailData = (data) => {
-    console.log(data, "data getAllCompanyDetailData")
     return {
         type: GET_ALL_COMPANY_SETTINGS,
         payload: data,

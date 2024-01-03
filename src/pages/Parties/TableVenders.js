@@ -43,7 +43,7 @@ function GlobalFilter({
     );
   }
 
-const TableVenders = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanvas,component}) => {    
+const TableVenders = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanvas,component, loader}) => {    
     const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow, canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize, state, preGlobalFilteredRows, setGlobalFilter, state: { pageIndex, pageSize }, } = useTable({
           columns,
           data,
@@ -121,6 +121,29 @@ const TableVenders = ({columns,data,isGlobalFilter,customPageSize,toggleRightCan
                             </Fragment>
                         );
                         })}
+                        {page?.length === 0 && (
+                            <>   
+                                {loader ? (
+                                    <tr>
+                                        <td colSpan={headerGroups[0].headers.length} className="text-center py-5">
+                                            <div className='py-5'>
+                                                <div className="spinner-border text-primary" role="status">
+                                                    <span className="visually-hidden">Loading...</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ) : 
+                                    <tr>
+                                        <td colSpan={headerGroups[0].headers.length}>
+                                            <div className='no_table_data_found'>
+                                                <p>No Data Found. </p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }                                   
+                            </>
+                        )}
                     </tbody>
                     </Table>
                 </div>

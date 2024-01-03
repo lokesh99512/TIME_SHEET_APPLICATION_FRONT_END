@@ -48,6 +48,7 @@ import instantRate from "./InstantRate/reducer"
 //  Global
 import globalReducer from "./Global/reducer"
 import customer from "./Parties/Customer/reducer"
+import vendor from "./Parties/Vendor/reducer"
 
 const rootReducer = combineReducers({
   // public
@@ -69,7 +70,8 @@ const rootReducer = combineReducers({
   parties,
   instantRate,
   globalReducer,
-  customer
+  customer,
+  vendor
 })
 
 export default rootReducer

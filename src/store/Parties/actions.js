@@ -15,9 +15,11 @@ import {
   GET_VENDORS_TABLE_DATA,
   GET_VENDORS_TABLE_DATA_FAIL,
   GET_VENDORS_TABLE_DATA_SUCCESS,
+  GET_VENDOR_LIST_TYPE,
   UPDATE_CUSTOMER_SWITCH,
   UPDATE_VENDOR_SWITCH,
   UPLOAD_VENDOR_DATA,
+  UPLOAD_VENDOR_DETAILS_TYPE,
 } from "./actiontype";
 
 // --------------------------- Customers
@@ -130,15 +132,6 @@ export const getAllTableParties = (data) => {
   };
 };
 
-// all table in vendor data
-export const getAllTableVendor = (data) => {
-  console.log(data, "data getAllTableVendor");
-  return {
-    type: GET_PARTIES_VENDOR_TABLE,
-    payload: data,
-  };
-};
-
 export const getAllUserDetails = (data) => {
   console.log(data, "data getAllTableVendor");
   return {
@@ -146,10 +139,3 @@ export const getAllUserDetails = (data) => {
     payload: data,
   };
 };
-
-//VENDOR
-
-export const postVendorData = (formData) => ({
-  type: UPLOAD_VENDOR_DATA,
-  payload: { formData },
-});

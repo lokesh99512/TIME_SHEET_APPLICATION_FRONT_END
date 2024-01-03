@@ -18,15 +18,11 @@ import {
 import TableCustomers from "./TableCustomers";
 
 const Customers = () => {
-    const [modal, setModal] = useState(false);
-    const [viewData, setViewData] = useState(false);
+  const [modal, setModal] = useState(false);
+  const [viewData, setViewData] = useState(false);
   const dispatch = useDispatch();
 
-  // const partiesCustomersData = useSelector(
-  //   (state) => state?.parties?.parties_table_all_details
-  // );
-
-  const { customer_data } = useSelector((state)=> state?.customer)
+  const { customer_data } = useSelector((state) => state?.customer)
 
   console.log(customer_data, "--customer_data");
 
@@ -37,11 +33,11 @@ const Customers = () => {
 
   const onCloseClick = () => {
     setModal(false);
-}
+  }
 
   const switchHandler = (data) => {
-    dispatch(updateCustomerSwitchData(data.id,data.is_active));
-}
+    dispatch(updateCustomerSwitchData(data.id, data.is_active));
+  }
 
   useEffect(() => {
     dispatch(getAllPartiesCustomerData())
@@ -157,7 +153,7 @@ const Customers = () => {
             />
           );
         },
-      },      
+      },
     ],
     []
   );
@@ -177,7 +173,7 @@ const Customers = () => {
               isAddInvoiceList={true}
               customPageSize={10}
               //   toggleRightCanvas={toggleRightCanvas}
-              component={"Customers"}              
+              component={"Customers"}
             />
 
             {/* modal */}

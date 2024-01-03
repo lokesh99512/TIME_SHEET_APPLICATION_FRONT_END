@@ -1,72 +1,34 @@
-import React from "react";
-import {
-  Card,
-  CardBody,
-  Container,
-  FormFeedback,
-  Input,
-  Row,
-} from "reactstrap";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Card, CardBody, FormFeedback, Input } from "reactstrap";
+import { country_list, state_list } from "../../../common/data/settings";
+import { getCompanyCountryData, getCompanyPincodeData, getCompanyStateData, } from "../../../store/Settings/actions";
 import FileUpload from "../FileUpload";
-import { useDispatch } from "react-redux";
-import {
-  getCompanyCountryData,
-  getCompanyPincodeData,
-  getCompanyStateData,
-} from "../../../store/Settings/actions";
-import {
-  country_list,
-  industryType,
-  state_list,
-} from "../../../common/data/settings";
-import { useSelector } from "react-redux";
 
 const CompanyDetailsForm = ({ companyDetailsFormik }) => {
   const dispatch = useDispatch();
-  const {
-    settings_companydetails_data,
-    settings_companyCity_data,
-    settings_company_settings_all_data,
-    settings_companyState_data,
-    settings_companyCountry_data,
-    settings_companyPincode_data,
-  } = useSelector((state) => state?.settings);
+  const { settings_companyCity_data, settings_companyState_data, settings_companyCountry_data, settings_companyPincode_data, } = useSelector((state) => state?.settings);
   const onUploadChange = (file) => {
     if (file) {
       const reader = new FileReader();
-
       reader.onload = (e) => {
         setLogoFile(e.target.result);
       };
-
       reader.readAsDataURL(file);
     }
 
     companyDetailsFormik.setFieldValue("image", file);
   };
 
-  const handleCityChange = (e) => {
-    companyDetailsFormik.handleChange(e);
-    const cityData = settings_companyCity_data?.content?.find(
-      (city) => city.cityName === e.target.value
-    );
-    if (cityData) {
-      // Update the state and country fields in the form
-      companyDetailsFormik.setFieldValue(
-        "state",
-        cityData.state?.stateName || ""
-      );
-      companyDetailsFormik.setFieldValue(
-        "country",
-        cityData.state?.country?.countryName || ""
-      );
-
-      // Dispatch actions to get pincode data if needed
-      dispatch(getCompanyStateData({ cityId: cityData.id }));
-      dispatch(getCompanyCountryData({ cityId: cityData.id }));
-      dispatch(getCompanyPincodeData({ cityId: cityData.id }));
+  useEffect(() => {
+    if (settings_companyState_data && settings_companyState_data?.content?.length > 0) {
+      companyDetailsFormik.setFieldValue("state", settings_companyState_data?.content[0]?.stateName || "")
     }
-  };
+    if (settings_companyCountry_data && settings_companyCountry_data?.content?.length > 0) {
+      companyDetailsFormik.setFieldValue("country", settings_companyCountry_data?.content[0]?.countryName || "")
+    }
+  }, [settings_companyState_data, settings_companyCountry_data]);
+
   return (
     <>
       <Card id="comapanyDetails" className="mb-4">
@@ -123,14 +85,14 @@ const CompanyDetailsForm = ({ companyDetailsFormik }) => {
                 className="form-control"
                 invalid={
                   companyDetailsFormik.touched.email &&
-                  companyDetailsFormik.errors.email
+                    companyDetailsFormik.errors.email
                     ? true
                     : false
                 }
                 placeholder=""
               />
               {companyDetailsFormik.touched.email &&
-              companyDetailsFormik.errors.email ? (
+                companyDetailsFormik.errors.email ? (
                 <FormFeedback type="invalid">
                   {companyDetailsFormik.errors.email}
                 </FormFeedback>
@@ -160,7 +122,18 @@ const CompanyDetailsForm = ({ companyDetailsFormik }) => {
                 name="city"
                 list="cityList"
                 value={companyDetailsFormik?.values?.city || ""}
-                onChange={handleCityChange}
+                onChange={(e) => {
+                  companyDetailsFormik.handleChange(e);
+                  companyDetailsFormik.setFieldValue('state', '');
+                  companyDetailsFormik.setFieldValue('country', '');
+                  companyDetailsFormik.setFieldValue('zipcode', '');
+                  const cityData = settings_companyCity_data?.content?.find((city) => city.cityName === e.target.value);
+                  if (cityData) {
+                    dispatch(getCompanyStateData({ cityId: cityData.id }));
+                    dispatch(getCompanyCountryData({ cityId: cityData.id }));
+                    dispatch(getCompanyPincodeData({ cityId: cityData.id }));
+                  }
+                }}
                 className="form-control"
                 placeholder=""
               />
@@ -175,14 +148,14 @@ const CompanyDetailsForm = ({ companyDetailsFormik }) => {
             <div className="col-12 col-md-6 mb-4">
               <label className="form-label">State</label>
               <Input
-            type="text"
-            name="state"
-            list="stateList"
-            value={companyDetailsFormik?.values?.state || ''}
-            onChange={companyDetailsFormik.handleChange}
-            className="form-control"
-            placeholder=""
-          />
+                type="text"
+                name="state"
+                list="stateList"
+                value={companyDetailsFormik?.values?.state || ''}
+                onChange={companyDetailsFormik.handleChange}
+                className="form-control"
+                placeholder=""
+              />
               <datalist id="stateList">
                 {state_list &&
                   state_list.map((item, i) => <option key={i} value={item} />)}
