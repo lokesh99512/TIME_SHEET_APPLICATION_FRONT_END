@@ -199,7 +199,7 @@ export default function UploadVendorData() {
             let stateVal = parties_state_details?.content?.filter((state) => state?.stateName === value?.state) || [];
             let pincodeVal = parties_pincode_details?.content?.filter((pin) => pin?.pin === value?.zipcode) || [];
 
-            const data = {
+            const projectUATRequestDTO = {
                 name: value.companyName || "",
                 logo: null,
                 logoPath: image?.path || "",
@@ -247,10 +247,10 @@ export default function UploadVendorData() {
             };
 
             const formData = new FormData();
-            formData.append("file", image);
-            const jsonBlob = new Blob([JSON.stringify(data)], { type: "application/json", });
-            formData.append("tenantVendor", jsonBlob);
-            console.log(image,data, "data")
+
+            formData.append('file', image);
+            formData.append('tenantVendor', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
+            
             dispatch(postVendorDetailsAction(formData));
         },
     });
