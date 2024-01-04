@@ -1,15 +1,8 @@
 import { FieldArray, FormikProvider } from "formik";
 import React from "react";
 import Select from "react-select";
-import {
-  Card,
-  CardBody,
-  Input
-} from "reactstrap";
-import {
-  department,
-  designation,
-} from "../../constants/venderEnumList";
+import { Card, CardBody, Input } from "reactstrap";
+import { department, designation, } from "../../constants/venderEnumList";
 const opCode = [{ label: "+91", value: "+91" }];
 
 const phone = [{ label: "+91", value: "+91" }];
@@ -43,17 +36,7 @@ const ContactDetailsForm = ({ contactsFormik }) => {
                               <div className="col-4 col-md-2">
                                 <Select
                                   name={`contacts[${index}].title`}
-                                  value={
-                                    title
-                                      ? title.find(
-                                          (option) =>
-                                            option.value ===
-                                            contactsFormik?.values?.contacts[
-                                              index
-                                            ].title
-                                        )
-                                      : ""
-                                  }
+                                  value={title ? title.find((option) => option.value === contactsFormik?.values?.contacts[index].title) : ""}
                                   onChange={(e) => {
                                     contactsFormik.setFieldValue(
                                       `contacts[${index}].title`,
@@ -68,9 +51,9 @@ const ContactDetailsForm = ({ contactsFormik }) => {
                               <div className="col-8 col-md-6">
                                 <Input
                                   type="text"
-                                  name={`contacts[${index}].name`}
+                                  name={`contacts[${index}].contactName`}
                                   value={
-                                    contactsFormik.values.contacts[index].name
+                                    contactsFormik.values.contacts[index].contactName
                                   }
                                   onChange={contactsFormik.handleChange}
                                   className="form-control"
@@ -105,12 +88,12 @@ const ContactDetailsForm = ({ contactsFormik }) => {
                                   value={
                                     opCode
                                       ? opCode.find(
-                                          (option) =>
-                                            option.value ===
-                                            contactsFormik?.values?.contacts[
-                                              index
-                                            ].opCode
-                                        )
+                                        (option) =>
+                                          option.value ===
+                                          contactsFormik?.values?.contacts[
+                                            index
+                                          ].opCode
+                                      )
                                       : ""
                                   }
                                   onChange={(e) => {
@@ -127,11 +110,8 @@ const ContactDetailsForm = ({ contactsFormik }) => {
                               <div className="col-8 col-md-9">
                                 <Input
                                   type="text"
-                                  name={`contacts[${index}].phoneNumber`}
-                                  value={
-                                    contactsFormik.values.contacts[index]
-                                      .phoneNumber
-                                  }
+                                  name={`contacts[${index}].contactNo`}
+                                  value={contactsFormik.values.contacts[index].contactNo}
                                   onChange={contactsFormik.handleChange}
                                   className="form-control"
                                   placeholder=""
@@ -146,9 +126,9 @@ const ContactDetailsForm = ({ contactsFormik }) => {
                           </div>
                           <Input
                             type="text"
-                            name={`contacts[${index}].emailId`}
+                            name={`contacts[${index}].contactEmail`}
                             value={
-                              contactsFormik.values.contacts[index].emailId
+                              contactsFormik.values.contacts[index].contactEmail
                             }
                             onChange={contactsFormik.handleChange}
                             className="form-control"
@@ -163,25 +143,12 @@ const ContactDetailsForm = ({ contactsFormik }) => {
                             <label className="form-label">Department</label>
                             <Select
                               name={`contacts[${index}].department`}
-                              value={
-                                department
-                                  ? department.find(
-                                      (option) =>
-                                        option.value ===
-                                        contactsFormik?.values?.contacts[index]
-                                          .department
-                                    )
-                                  : ""
-                              }
+                              value={department ? department.find((option) => option.value === contactsFormik?.values?.contacts[index].department) : ""}
                               onChange={(e) => {
-                                contactsFormik.setFieldValue(
-                                  `contacts[${index}].department`,
-                                  e.value
-                                );
+                                contactsFormik.setFieldValue(`contacts[${index}].department`, e.value);
                               }}
                               options={department}
                               classNamePrefix="select2-selection form-select"
-                              // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
                             />
                           </div>
                         </div>
@@ -190,24 +157,11 @@ const ContactDetailsForm = ({ contactsFormik }) => {
                             <label className="form-label">Designation</label>
                             <Select
                               name={`contacts[${index}].designation`}
-                              value={
-                                designation
-                                  ? designation.find(
-                                      (option) =>
-                                        option.value ===
-                                        contactsFormik?.values?.contacts[index]
-                                          .designation
-                                    )
-                                  : ""
-                              }
+                              value={designation ? designation.find((option) => option.value === contactsFormik?.values?.contacts[index].designation) : ""}
                               onChange={(e) => {
-                                contactsFormik.setFieldValue(
-                                  `contacts[${index}].designation`,
-                                  e.value
-                                );
+                                contactsFormik.setFieldValue(`contacts[${index}].designation`, e.value);
                               }}
                               options={designation}
-                              // isDisabled={carrierData?.vendor_type?.value === 'agent'}
                               classNamePrefix="select2-selection form-select"
                             />
                           </div>
@@ -222,11 +176,11 @@ const ContactDetailsForm = ({ contactsFormik }) => {
                   onClick={() =>
                     arrayHelpers.push({
                       title: "",
-                      name: "",
-                      opCode: "",
-                      phoneNumber: "",
-                      emailId: "",
+                      contactName: "",
+                      contactNo: "",
+                      contactEmail: "",
                       department: "",
+                      opCode: "",
                       designation: "",
                     })
                   }

@@ -23,6 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 
 # file path
-.htaccess
+# .htaccess
 
 #"test": "react-scripts test --verbose",

@@ -12,14 +12,6 @@ export async function LoginAPI(dataObj) {
     }).then(response => response)
 }
 
-// export async function CompanyBasicDetailsAPI(dataObj) {
-//     return axios({
-//             method: 'POST',
-//             url: url.COMPANY_BASIC_DETAILS,                
-//            data : data
-//         }).then(response => response)
-// }
-
 export const CompanyBasicDetailsAPI = data => {
    
     return post(url.COMPANY_BASIC_DETAILS, data, {
@@ -38,33 +30,11 @@ export const CompanyUserAddDetails = data => {
     })
 }
 
-// export const CompanyCityDetails = data =>{
-//     console.log("CompanyPinCodeBasicDetails",data);
-//     return post(url.COMPANY_BASIC_PIN_CODE_DETAILS, data, {
-// })}
-
 export const CompanyCityDetails = () => get(url.COMPANY_CITY_DETAILS)
 export const CompanyStateDetails = ({ cityId }) => get(`${url.COMPANY_STATE_DETAILS}?cityId=${cityId}`)
 export const CompanyCountryDetails = ({ cityId }) => get(`${url.COMPANY_COUNTRY_DETAILS}?cityId=${cityId}`)
 export const CompanyPincodeDetails = ({ cityId }) => get(`${url.COMPANY_PINCODE_DETAILS}?cityId=${cityId}`)
 
-
-// all taxes
-// export const CompanyTaxDetails = data => {
-//     return post((url.COMPANY_TAX_DETAILS), data, {
-//         headers: {
-//             'Content-Type': 'application/json',
-//         }
-//     })
-// }
-// export const CompanyBusinessDetails = data => {
-//     return post((url.COMPANY_BUSINESS_DETAILS), data,
-//         {
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             }
-//         })
-// }
 export const CompanyTaxDetails = (data) => post(url.COMPANY_TAX_DETAILS, data);
 export const CompanyBusinessDetails = (data) => post(url.COMPANY_BUSINESS_DETAILS, data);
 

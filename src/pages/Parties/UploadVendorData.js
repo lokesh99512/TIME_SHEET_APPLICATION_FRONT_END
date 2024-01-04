@@ -1,97 +1,30 @@
 import classnames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
-import Dropzone from "react-dropzone";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
-import {
-    Card,
-    CardBody,
-    Col,
-    Container,
-    Form,
-    Input,
-    Modal,
-    NavItem,
-    NavLink,
-    Progress,
-    Row,
-    TabContent,
-    TabPane,
-    UncontrolledTooltip,
-} from "reactstrap";
+import { Card, CardBody, Col, Container, Modal, NavItem, NavLink, Progress, Row, TabContent, TabPane, UncontrolledTooltip } from "reactstrap";
 // import fileData from "../../assets/extra/upload_Formats.xlsx";
+import { useFormik } from "formik";
 import { delete_icon } from "../../assets/images";
-import {
-    optcurrency,
-    optionCarrierName,
-    optionMultiDestination,
-    optionPaymentType,
-    optionRateSource,
-    optionRateType,
-    optionSurchargesName,
-    optionValidityApp,
-    optionVendorName,
-    optionVendorType,
-} from "../../common/data/procurement";
-import {
-    formatBytes,
-    isAnyValueEmpty,
-    isExcelFile,
-} from "../../components/Common/CommonLogic";
-import { updateCarrierData } from "../../store/Procurement/actions";
+import { optionMultiDestination, optionSurchargesName } from "../../common/data/procurement";
+import { isAnyValueEmpty } from "../../components/Common/CommonLogic";
+import { postVendorContactAction, postVendorDetailsAction, postVendorDocumentAction } from "../../store/Parties/Vendor/action";
+import { getCustomersCityData } from "../../store/Parties/actions";
 import { BLANK_CARRIER_DATA } from "../../store/Procurement/actiontype";
-import ModalAddGST from "./Modal/ModalAddGST";
-import { FieldArray, FormikProvider, useFormik } from "formik";
-import FileUpload from "./FileUpload";
-import ModalAddNewDepartment from "./Modal/ModalAddNewDepartment";
-import ModalAddNewDesignation from "./Modal/ModalAddNewDesignation";
-import ModalAddNewEntityType from "./Modal/ModalAddNewEntityType";
-import ModalAddNewIndustryType from "./Modal/ModalAddNewIndustryType";
-import ModalAddNewVendorType from "./Modal/ModalAddNewVendorType";
-import ModalAddNewServiceType from "./Modal/ModalAddNewServiceType";
-import {
-    department,
-    designation,
-    entityType,
-    industryType,
-    serviceTypeOptions,
-    vendorTypeOptions,
-} from "./constants/venderEnumList";
-import {
-    getAllCompanyDetailData,
-    getCompanyCityData,
-    getCompanyCountryData,
-    getCompanyDetailsData,
-    getCompanyPincodeData,
-    getCompanyStateData,
-} from "../../store/Settings/actions";
-
-// import VenderDetails from "./vender-details-form/VenderDetails";
-// import ContactDetailsForm from "./contact-details-form/ContactDetailsForm";
-// import DocumentDetailsForm from "./document-details-form/DocumentDetailsForm";
-
-// import { postVendorData, postVendorDetailsAction } from "../../store/Parties/actions";
-import VenderDetails from "./partials/vendor/VenderDetails";
+import { getAllCompanyDetailData } from "../../store/Settings/actions";
 import ContactDetailsForm from "./partials/vendor/ContactDetailsForm";
 import DocumentDetailsForm from "./partials/vendor/DocumentDetailsForm";
-import { postVendorDetailsAction } from "../../store/Parties/Vendor/action";
-import { getCustomersCityData } from "../../store/Parties/actions";
+import VenderDetails from "./partials/vendor/VenderDetails";
 
 export default function UploadVendorData() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
     const [openSaveModal, setOpenSaveModal] = useState(false);
     const [progressValue, setProgressValue] = useState(25);
-    const [selectedFiles, setselectedFiles] = useState([]);
 
     const navigate = useNavigate();
     const [surcharges, setSurcharges] = useState([]);
-    const [fileError, setfileError] = useState("");
-    const [removeValue, setRemoveValue] = useState("");
-    const carrierData = useSelector(
-        (state) => state?.procurement?.carrierDetails
-    );
-    const [tenantInfo, setTenantInfo] = useState(null);
+    const { vendor_id, vendor_active_Tab } = useSelector((state) => state?.vendor);
     const { parties_city_details, parties_state_details, parties_country_details, parties_pincode_details } = useSelector(
         (state) => state?.parties
     );
@@ -102,6 +35,14 @@ export default function UploadVendorData() {
         dispatch(getAllCompanyDetailData());
     }, []);
 
+    console.log(vendor_active_Tab,"vendor_active_Tab");
+
+    useEffect(() => {
+        setActiveTabProgress(vendor_active_Tab.tab)
+        if (vendor_active_Tab.tab === 1) { setProgressValue(33) }
+        if (vendor_active_Tab.tab === 2) { setProgressValue(66) }
+        if (vendor_active_Tab.tab === 3) { setProgressValue(100); }
+    }, [vendor_active_Tab]);
 
     const openSaveConfirmModal = () => {
         setOpenSaveModal(!openSaveModal);
@@ -111,7 +52,6 @@ export default function UploadVendorData() {
         setSurcharges([]);
         setActiveTabProgress(1);
         setProgressValue(25);
-        setselectedFiles([]);
         dispatch({ type: BLANK_CARRIER_DATA });
         setOpenSaveModal(false);
     };
@@ -140,28 +80,6 @@ export default function UploadVendorData() {
         }
     };
 
-    function handleAcceptedFiles(files) {
-        if (files && files.length) {
-            var file = files[0];
-            var fileName = file.name;
-            if (isExcelFile(fileName)) {
-                setfileError("");
-                files.map((file) =>
-                    Object.assign(file, {
-                        preview: URL.createObjectURL(file),
-                        formattedSize: formatBytes(file.size),
-                    })
-                );
-                setselectedFiles(files);
-            } else {
-                setfileError("The file type is not supported. Upload an Excel file.");
-                setselectedFiles();
-            }
-        } else {
-            setfileError("File is required");
-        }
-    }
-
     const companyDetailsFormik = useFormik({
         initialValues: {
             image: "",
@@ -187,12 +105,7 @@ export default function UploadVendorData() {
             industryType: "",
         },
         onSubmit: async ({ image, ...value }) => {
-            console.log("Vendor Details", value);
-
-            console.log(parties_country_details,"parties_country_details")
-            console.log(parties_city_details,"parties_city_details")
-            console.log(parties_state_details,"parties_state_details")
-            console.log(parties_pincode_details,"parties_pincode_details")
+            // console.log("Vendor Details", value);
 
             let countryVal = parties_country_details?.content?.filter((con) => con?.countryName === value?.country) || [];
             let cityVal = parties_city_details?.content?.filter((city) => city?.cityName === value?.city) || [];
@@ -246,30 +159,48 @@ export default function UploadVendorData() {
                 documents: [],
             };
 
+            console.log(projectUATRequestDTO, "projectUATRequestDTO");
+
             const formData = new FormData();
 
             formData.append('file', image);
             formData.append('tenantVendor', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
-            
+
             dispatch(postVendorDetailsAction(formData));
         },
     });
-
     const contactsFormik = useFormik({
         initialValues: {
             contacts: [
                 {
                     title: "",
-                    name: "",
-                    phoneNumber: "",
-                    emailId: "",
+                    contactName: "",
+                    contactNo: "",
+                    contactEmail: "",
                     department: "",
                     designation: "",
+                    opCode: ""
                 },
             ],
         },
         onSubmit: (values) => {
-            console.log("contact page", values);
+            // console.log("contact page", values);
+            let data = {
+                "id": 85,
+                "version": 0,
+                contacts: values?.contacts?.map((val) => {
+                    return {
+                        "contactName": `${val?.title || ''} ${val?.contactName || ''}`,
+                        "contactNo": val?.contactNo || '',
+                        "contactEmail": val?.contactEmail || '',
+                        "department": val?.department || '',
+                        "designation": val?.designation || '',
+                    }
+                })
+            }
+
+            console.log(data, "vendor contact");
+            dispatch(postVendorContactAction(data));
         },
     });
     const documentsFormik = useFormik({
@@ -283,6 +214,32 @@ export default function UploadVendorData() {
         },
         onSubmit: (values) => {
             console.log("document submit", values);
+            let data = values?.document?.map((val) => {
+                return {
+                    docfile: val?.uploadDocument || '',
+                    docdata: {
+                        "id": vendor_id?.id || '',
+                        "version": vendor_id?.version || '',
+                        "documents": [
+                            {
+                                "documentType": val?.documentType?.value || '',
+                                "document": null,
+                                "documentPath": val?.uploadDocument?.name || '',
+                            }
+                        ]
+                    }
+                }
+            });
+
+            const formDataArray = data?.map((document) => {
+                const formData = new FormData();
+                formData.append('file', document.docfile); // Adjust the field name as needed
+                formData.append('tenantVendor', new Blob([JSON.stringify(document.docdata)], { type: "application/json" })); // Include other fields as needed
+                return formData;
+            });
+
+            dispatch(postVendorDocumentAction({ documents: formDataArray }));
+            // documentsFormik.resetForm();
         },
     });
 
@@ -316,18 +273,6 @@ export default function UploadVendorData() {
         list[index][name] = e.target.value;
         setSurcharges(list);
     };
-
-    const handleSelectGroup = useCallback(
-        (name, opt) => {
-            dispatch(updateCarrierData(name, opt));
-            if (carrierData?.vendor_type?.value === "agent") {
-                setRemoveValue("carrier_name");
-            } else {
-                setRemoveValue("vendor_name");
-            }
-        },
-        [carrierData]
-    );
 
     const handleSelectGroup2 = useCallback(
         (opt, name, index) => {

@@ -1,29 +1,23 @@
 export const department = [
-  { label: "Accounts", value: "Accounts".toUpperCase() },
-  { label: "Sales", value: "Sales".toUpperCase() },
-  { label: "Finance", value: "Finance".toUpperCase() },
-  { label: "Management", value: "Management".toUpperCase() },
-  { label: "Primary", value: "Primary".toUpperCase() },
-  { label: "Add New", value: "Add New".toUpperCase() },
+  { label: "Accounts", value: "ACCOUNTS"},
+  { label: "Sales", value: "SALES"},
+  { label: "Finance", value: "FINANCE"},
+  { label: "Management", value: "MANAGEMENT"},
+  { label: "Primary", value: "PRIMARY"}
 ];
 
 export const designation = [
-  { label: "Executive", value: "Executive".toUpperCase() },
-  { label: "Asst. Manager", value: "Asst. Manager".toUpperCase() },
-  { label: "Manager", value: "Manager".toUpperCase() },
-  { label: "Sr. Manager", value: "Sr. Manager".toUpperCase() },
+  { label: "Executive", value: "EXECUTIVE".toUpperCase() },
+  { label: "Asst. Manager", value: "ASST_MANAGER".toUpperCase() },
+  { label: "Manager", value: "MANAGER".toUpperCase() },
+  { label: "Sr. Manager", value: "SR_MANAGERr".toUpperCase() },
   { label: "AVP", value: "AVP".toUpperCase() },
   { label: "VP", value: "VP".toUpperCase() },
-  { label: "President", value: "President".toUpperCase() },
-  { label: "Director", value: "Director".toUpperCase() },
+  { label: "President", value: "PRESIDENT".toUpperCase() },
+  { label: "Director", value: "DIRECTOR".toUpperCase() },
   { label: "CEO", value: "CEO".toUpperCase() },
   { label: "COO", value: "COO".toUpperCase() },
-  { label: "MD", value: "MD".toUpperCase() },
-  { label: "Sales", value: "Sales".toUpperCase() },
-  { label: "Finance", value: "Finance".toUpperCase() },
-  { label: "Management", value: "Management".toUpperCase() },
-  { label: "Primary", value: "Primary".toUpperCase() },
-  { label: "Add New", value: "Add New".toUpperCase() },
+  { label: "MD", value: "MD".toUpperCase() }
 ];
 
 export const entityType = [
@@ -44,16 +38,16 @@ export const industryType = [
 ];
 
 export const vendorTypeOptions = [
-  { label: "Carrier", value: "Carrier".toUpperCase() },
-  { label: "NVOCC", value: "NVOCC".toUpperCase() },
-  { label: "Overseas Agent", value: "Overseas Agent".toUpperCase() },
-  { label: "CHA", value: "CHA".toUpperCase() },
-  { label: "Transporter", value: "Transporter".toUpperCase() },
-  { label: "Co-Loader", value: "Co-Loader".toUpperCase() },
-  { label: "Local Agent", value: "Local Agent".toUpperCase() },
-  { label: "Manpower Agent", value: "Manpower Agent".toUpperCase() },
-  // { label: "Add New", value: "Add New"},
-];
+  { label: "ALL", value: "ALL" },
+  { label: "CARRIER", value: "CARRIER" },
+  { label: "NVOCC", value: "NVOCC" },
+  { label: "AGENT", value: "OVERSEAS_AGENT" },
+  { label: "CHA", value: "CHA" },
+  { label: "TRANSPORTER", value: "TRANSPORTER" },
+  { label: "CO LOADER", value: "CO_LOADER" },
+  { label: "LOCAL AGENT", value: "LOCAL_AGENT" },
+  { label: "MANPOWER AGENT", value: "MANPOWER_AGENT" },
+]
 
 export const serviceTypeOptions = [
   { label: "Ocean", value: "OCEAN" },

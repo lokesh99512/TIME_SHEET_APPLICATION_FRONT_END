@@ -52,11 +52,6 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
         setModalAllData((prev) => ([...prev, data]))
     }
 
-    // console.log(parties_pincode_details,"parties_pincode_details");
-    // console.log(parties_country_details,"parties_country_details");
-    // console.log(parties_state_details,"parties_state_details");
-    // console.log(parties_city_details,"parties_state_details");
-
     const companyDetailsFormik = useFormik({
         initialValues: {
             companyName: "",
