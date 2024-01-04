@@ -1,34 +1,24 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import { Card, CardBody, Input } from "reactstrap";
+import { optionVendorType } from "../../../../common/data/procurement";
+import { getCustomersCountryData, getCustomersPincodeData, getCustomersStateData } from "../../../../store/Parties/actions";
+import { getAllCompanyDetailData, getAllSurchargeCategoryData, getAllTableSurchargeAlias } from "../../../../store/Settings/actions";
+import FileUpload from "../../FileUpload";
 import ModalAddNewDepartment from "../../Modal/ModalAddNewDepartment";
 import ModalAddNewDesignation from "../../Modal/ModalAddNewDesignation";
 import ModalAddNewEntityType from "../../Modal/ModalAddNewEntityType";
 import ModalAddNewIndustryType from "../../Modal/ModalAddNewIndustryType";
-import ModalAddNewVendorType from "../../Modal/ModalAddNewVendorType";
 import ModalAddNewServiceType from "../../Modal/ModalAddNewServiceType";
-import FileUpload from "../../FileUpload";
+import ModalAddNewVendorType from "../../Modal/ModalAddNewVendorType";
 import {
   department,
   designation,
   entityType,
   industryType,
-  serviceTypeOptions,
-  vendorTypeOptions,
+  serviceTypeOptions
 } from "../../constants/venderEnumList";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import {
-  getAllCompanyDetailData,
-  getAllSurchargeCategoryData,
-  getAllTableSurchargeAlias,
-  getCompanyCountryData,
-  getCompanyPincodeData,
-  getCompanyStateData,
-} from "../../../../store/Settings/actions";
-import { country_list, state_list } from "../../../../common/data/settings";
-import { optionVendorType } from "../../../../common/data/procurement";
-import { getCustomersCountryData, getCustomersPincodeData, getCustomersStateData } from "../../../../store/Parties/actions";
 
 const title = [
   { label: "Mr", value: "Mr" },
@@ -73,29 +63,6 @@ const VenderDetails = ({ companyDetailsFormik }) => {
     }
     companyDetailsFormik.setFieldValue("image", file);
   };
-
-  // const handleCityChange = (e) => {
-  //   companyDetailsFormik.handleChange(e);
-  //   const cityData = settings_companyCity_data?.content?.find(
-  //     (city) => city.cityName === e.target.value
-  //   );
-  //   if (cityData) {
-  //     // Update the state and country fields in the form
-  //     companyDetailsFormik.setFieldValue(
-  //       "state",
-  //       cityData.state?.stateName || ""
-  //     );
-  //     companyDetailsFormik.setFieldValue(
-  //       "country",
-  //       cityData.state?.country?.countryName || ""
-  //     );
-
-  //     // Dispatch actions to get pincode data if needed
-  //     dispatch(getCompanyStateData({ cityId: cityData.id }));
-  //     dispatch(getCompanyCountryData({ cityId: cityData.id }));
-  //     dispatch(getCompanyPincodeData({ cityId: cityData.id }));
-  //   }
-  // };
   const onCloseClick = () => {
     setDesignationModal(false);
     setDepartmentModal(false);

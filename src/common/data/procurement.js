@@ -6878,32 +6878,32 @@ const inLandTableData = [
 
 // --------------------------- upload form options ---------------------------------
 // unused option
-const chargeCategory = [
-    { label: "OCEAN SURCHARGE", value: "freight_surcharge" },
-    { label: "PORT SURCHARGE", value: "port_surcharge" },
-    { label: "LOCAL SURCHARGE", value: "local_surcharge" },
-    { label: "ORIGIN TRANSPORTATION", value: "origin_transportation" },
-    { label: "DESTINATION TRANSPORTATION", value: "destination_transportation" },
-    { label: "ANCILLARY CHARGES", value: "ancillary_charges" },
-    { label: "VAS CHARGES", value: "vas_charges" },
-    { label: "CUSTOMS", value: "custom" },
-];
-const portName = [
-    { label: "BDDAC - DHAKA", value: "BDDAC" },
-    { label: "INMAA - CHENNAI", value: "INMAA" },
-    { label: "INKTP - CHENNAI", value: "INKTP" },
-    { label: "CNNGB - NINGBO", value: "CNNGB" },
-    { label: "CNSHA - SHANGHAI", value: "CNSHA" },
-    { label: "KHPNH - PHNOM PENH", value: "KHPNH" },
-    { label: "KHKOS - SIHANOUKVILLE", value: "KHKOS" },
-    { label: "HKHKG - HONG KONG", value: "HKHKG" },
-    { label: "IDBLW - BELAWAN", value: "IDBLW" },
-    { label: "IDJKT - JAKARTA", value: "IDJKT" },
-    { label: "IDPLM - PALEMBANG", value: "IDPLM" },
-    { label: "IDPNK - PONTIANAK", value: "IDPNK" },
-    { label: "IDSRG - SEMARANG", value: "IDSRG" },
-    { label: "IDSUB - SURABAYA", value: "IDSUB" },
-];
+// const chargeCategory = [
+//     { label: "OCEAN SURCHARGE", value: "freight_surcharge" },
+//     { label: "PORT SURCHARGE", value: "port_surcharge" },
+//     { label: "LOCAL SURCHARGE", value: "local_surcharge" },
+//     { label: "ORIGIN TRANSPORTATION", value: "origin_transportation" },
+//     { label: "DESTINATION TRANSPORTATION", value: "destination_transportation" },
+//     { label: "ANCILLARY CHARGES", value: "ancillary_charges" },
+//     { label: "VAS CHARGES", value: "vas_charges" },
+//     { label: "CUSTOMS", value: "custom" },
+// ];
+// const portName = [
+//     { label: "BDDAC - DHAKA", value: "BDDAC" },
+//     { label: "INMAA - CHENNAI", value: "INMAA" },
+//     { label: "INKTP - CHENNAI", value: "INKTP" },
+//     { label: "CNNGB - NINGBO", value: "CNNGB" },
+//     { label: "CNSHA - SHANGHAI", value: "CNSHA" },
+//     { label: "KHPNH - PHNOM PENH", value: "KHPNH" },
+//     { label: "KHKOS - SIHANOUKVILLE", value: "KHKOS" },
+//     { label: "HKHKG - HONG KONG", value: "HKHKG" },
+//     { label: "IDBLW - BELAWAN", value: "IDBLW" },
+//     { label: "IDJKT - JAKARTA", value: "IDJKT" },
+//     { label: "IDPLM - PALEMBANG", value: "IDPLM" },
+//     { label: "IDPNK - PONTIANAK", value: "IDPNK" },
+//     { label: "IDSRG - SEMARANG", value: "IDSRG" },
+//     { label: "IDSUB - SURABAYA", value: "IDSUB" },
+// ];
 // const serviceType = [
 //     { label: "Door To Door", value: "Door To Door" },
 //     { label: "Door To Port", value: "Door To Port" },

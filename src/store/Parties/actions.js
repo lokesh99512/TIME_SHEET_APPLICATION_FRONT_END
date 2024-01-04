@@ -49,25 +49,6 @@ export const updateCustomerSwitchData = (user_id, user_is_active) => ({
   },
 });
 
-// -------------------------------- vendor
-
-export const getVendorsData = (data) => {
-  return {
-    type: GET_VENDORS_TABLE_DATA,
-    payload: data,
-  };
-};
-
-export const getVendorsDataSuccess = (data) => ({
-  type: GET_VENDORS_TABLE_DATA_SUCCESS,
-  payload: data,
-});
-
-export const getVendorsDataFail = (error) => ({
-  type: GET_VENDORS_TABLE_DATA_FAIL,
-  payload: error,
-});
-
 export const updateVendorSwitchData = (user_id, user_is_active) => ({
   type: UPDATE_VENDOR_SWITCH,
   payload: {
@@ -75,15 +56,6 @@ export const updateVendorSwitchData = (user_id, user_is_active) => ({
     user_is_active,
   },
 });
-
-// // get basic company details
-// export const getAllCustomerDetailsData = (data) => {
-//   console.log(data, "---->>getAllCustomerDetailsData");
-//   return {
-//     type: GET_PARTIES_CUSTOMERS_DETAILS,
-//     payload: data,
-//   };
-// };
 
 // city get api
 export const getCustomersCityData = (data) => {
@@ -113,19 +85,7 @@ export const getCustomersPincodeData = (data) => {
     payload: data,
   };
 };
-
-// // ALL GET [PARTIES] details
-// export const getAllPartiesData = (data) => {
-//   console.log(data, "data getAllPartiesData");
-//   return {
-//     type: GET_PARTIES_ALL_DETAILS,
-//     payload: data,
-//   };
-// };
-
-// all table parties data
 export const getAllTableParties = (data) => {
-  console.log(data, "data getAllTableParties");
   return {
     type: GET_PARTIES_TABLE,
     payload: data,
@@ -133,7 +93,6 @@ export const getAllTableParties = (data) => {
 };
 
 export const getAllUserDetails = (data) => {
-  console.log(data, "data getAllTableVendor");
   return {
     type: GET_PARTIES_CUSTOMER_EMPLOYEE_DETAILS,
     payload: data,

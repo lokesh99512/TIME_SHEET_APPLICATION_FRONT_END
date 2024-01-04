@@ -1,14 +1,7 @@
 import React, { useState } from "react";
-import {
-  Accordion,
-  AccordionBody,
-  AccordionHeader,
-  AccordionItem,
-} from "reactstrap";
+import { Accordion, AccordionBody, AccordionHeader, AccordionItem, } from "reactstrap";
 
-const TabTwoContacts = ({viewData2}) => {
-  // console.log(viewData2,"viewData2");
- 
+const TabTwoContacts = ({ viewData }) => {
   const [open, setOpen] = useState("");
   const toggle = (id) => {
     if (open === id) {
@@ -23,46 +16,43 @@ const TabTwoContacts = ({viewData2}) => {
         <Accordion flush open={open} toggle={toggle} className="main_accordion">
           {/* Contacts */}
           <AccordionItem className="freigth_details_wrap">
-            <AccordionHeader targetId={"1"}>
+            <AccordionHeader targetId={`contacts${viewData?.id}`}>
               <h3 className="sub_modal_title">Contacts</h3>
             </AccordionHeader>
-            <AccordionBody accordionId={"1"}>
-
-              {/* {viewData?.map((viewData,key)=>{
-                return( */}
-                    <div className="view_data_wrap d-flex align-items-start">
-                <div className="left_freight_details">
-                  <div className="details">
-                    <span className="title">Contact Name:</span>
-                    <span className="data">
-                      {viewData2?.title + " " + viewData2?.contactName || "-"}
-                    </span>
-                  </div>
-                  <div className="details">
-                    <span className="title">Phone Number:</span>
-                    <span className="data">
-                      {viewData2?.opCode + " " + viewData2?.contactNo || "-"}
-                    </span>
-                  </div>
-                  <div className="details">
-                    <span className="title">Email Id:</span>
-                    <span className="data">{viewData2?.email || "-"}</span>
-                  </div>
-                  <div className="details">
-                    <span className="title">Department:</span>
-                    <span className="data">{viewData2?.department || "-"}</span>
-                  </div>
-                  <div className="details">
-                    <span className="title">Designation:</span>
-                    <span className="data">{viewData2?.designation || "-"}</span>
+            <AccordionBody accordionId={`contacts${viewData?.id}`}>
+              {viewData?.contacts?.map((data, index) => (
+                <div className="view_data_wrap d-flex align-items-start" key={index}>
+                  <div className="left_freight_details">
+                    <div className="details">
+                      <span className="title">Contact Name:</span>
+                      <span className="data">
+                        {data?.contactName || "-"}
+                      </span>
+                    </div>
+                    <div className="details">
+                      <span className="title">Phone Number:</span>
+                      <span className="data">
+                        {data?.contactNo || "-"}
+                      </span>
+                    </div>
+                    <div className="details">
+                      <span className="title">Email Id:</span>
+                      <span className="data">{data?.contactEmail || "-"}</span>
+                    </div>
+                    <div className="details">
+                      <span className="title">Department:</span>
+                      <span className="data">{data?.department?.split("_").join(" ") || "-"}</span>
+                    </div>
+                    <div className="details">
+                      <span className="title">Designation:</span>
+                      <span className="data">{data?.designation?.split("_").join(" ") || "-"}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-                {/* )
-              })} */}
+              ))}
+              {viewData?.contacts?.length === 0 && <b>No Data Found !</b>}
             </AccordionBody>
           </AccordionItem>
-
         </Accordion>
       </div>
     </div>

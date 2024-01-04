@@ -207,6 +207,12 @@ export const UPLOAD_CUSTOMER_CONTACT_URL = "/api/v1/tenant/customer/update-conta
 export const UPLOAD_CUSTOMER_DOCUMENT_URL = "/api/v1/tenant/customer/update-document-details"
 
 
+// vendor
+export const UPLOAD_VENDOR_DETAIL_URL = "/api/v1/tenant/vendor/update-basic-details"
+export const UPLOAD_VENDOR_CONTACT_URL = "/api/v1/tenant/vendor/update-contact-details"
+export const UPLOAD_VENDOR_DOCUMENT_URL = "/api/v1/tenant/vendor/update-document-details"
+
+
 // --------------------------------------------------------- Kunal ---------------------------------------------------------
 
 export const COMPANY_BASIC_DETAILS = "/api/v1/tenant/update-basic-details"
@@ -250,6 +256,3 @@ export const GET_SURCHARGE_CATEGORY = "/api/v1/surcharge-category/"
 
 // customers details of key manager and sales employee
 export const GET_PARTIES_CUSTOMERS_EMPLOYEE_DETAILS = "/api/v1/user/" 
-
-//add vender details
-export const Upload_Vender_Data = "/api/v1/tenant/vendor/update-basic-details"
