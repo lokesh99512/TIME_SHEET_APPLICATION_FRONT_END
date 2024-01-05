@@ -1,81 +1,54 @@
 import React, { useEffect, useMemo, useState } from "react";
-import {
-  Container,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  FormGroup,
-  Input,
-  UncontrolledDropdown,
-} from "reactstrap";
-import TableUsers from "./TableUsers";
-import {
-  Edit,
-  FirstName,
-  LastActive,
-  LastName,
-  ResetPassword,
-  Role,
-  Status,
-  UserName,
-} from "./SettingsCol";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { getUsersData, updateUserSwitchData } from "../../store/Settings/actions";
-import { edit_icon } from "../../assets/images";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Container, DropdownItem, FormGroup, Input } from "reactstrap";
+import { getUsersData, updateUserSwitchData } from "../../store/Settings/actions";
 import ModalResetPassword from "./Modal/ModalResetPassword";
+import { Edit, FirstName, LastActive, LastName, Role, UserName } from "./SettingsCol";
+import TableUsers from "./TableUsers";
+import { GET_ROLE_TYPE } from "../../store/Global/actiontype";
 
 const Users = () => {
-  const [isRight, setIsRight] = useState(false);
   const [resetModal, setResetModal] = useState(false);
-//   const [viewData, setViewData] = useState(false);
   const dispatch = useDispatch();
   const navidate = useNavigate()
 
   const resetHandler = (data) => {
     setResetModal(true);
-    // setViewData(data);
-}
+  }
 
-  const {settings_users_data} = useSelector(
-    (state) => state.settings
-  );
+  const { settings_users_data } = useSelector((state) => state.settings);
 
-  // const {settings_users_data} = useSelector(
-  //   (state) => state?.settings
-  // );
-
-  // const usersData = settingsUsersData?.content
 
   console.log(settings_users_data, "--->settingsUsersData");
 
-  const toggleRightCanvas = () => {
-    setIsRight(!isRight);
-  };
-
   const onCloseClick = () => {
     setResetModal(false);
-}
+  }
 
   const viewPopupHandler = (data) => {
     console.log("popup");
   };
   const editHandler = (data) => {
-    navidate(`/settings/users/editUser`, {
+    navidate(`/settings/users/addUser`, {
       state: {
-        data,
+        id: data?.id || '',
       },
     });
-    // console.log("edit clicked");
+    // navidate(`/settings/users/editUser`, {
+    //   state: {
+    //     data,
+    //   },
+    // });
   };
 
   const switchHandler = (data) => {
-    dispatch(updateUserSwitchData(data.id,data.is_active));
-}
+    dispatch(updateUserSwitchData(data.id, data.is_active));
+  }
 
   useEffect(() => {
     dispatch(getUsersData());
+    dispatch({type: GET_ROLE_TYPE});
   }, []);
 
   const columns = useMemo(() => ([
@@ -133,10 +106,7 @@ const Users = () => {
       disableFilters: true,
       Cell: (cellProps) => {
         return (
-          <LastActive
-            cellProps={cellProps}
-            viewPopupHandler={viewPopupHandler}
-          />
+          <LastActive cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
         );
       },
     },
@@ -160,14 +130,13 @@ const Users = () => {
       filterable: true,
       disableFilters: true,
       Cell: (cellProps) => {
-        // return <Status cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
         return (
           <DropdownItem onClick={(e) => e.stopPropagation()}>
             <div className="switch_wrap">
               <FormGroup switch>
                 <Input
                   type="switch"
-                  checked={cellProps.row.original?.is_active || false}
+                  checked={cellProps.row.original?.status === "ACTIVE" || false}
                   onClick={() => {
                     switchHandler(cellProps.row.original);
                   }}
@@ -176,34 +145,16 @@ const Users = () => {
               </FormGroup>
             </div>
           </DropdownItem>
-
-
-        // <div
-        //               className="form-check form-switch form-switch-md mb-3"
-        //               dir="ltr"
-        //             >
-        //               <input
-        //                 type="checkbox"
-        //                 className="form-check-input"
-        //                 id="customSwitchsizemd"
-        //               />
-        //             </div>
         );
       },
     },
-    // {
-    //   Header: "Edit",
-    //   accessor: "edit",
-    //   filterable: true,
-    //   disableFilters: true,
-    //   Cell: (cellProps) => {
-    //     return <Edit cellProps={cellProps} viewPopupHandler={editHandler} />
-    //     // return <Edit />
-    //     // console.log(cellProps);
-    //     // return (<button onClick={()=>console.log("hello")}><img src={edit_icon} alt="Edit" /></button>);
-    //   },
-    // },
-  ]),[]);
+    {
+      Header: "Edit",
+      Cell: (cellProps) => {
+        return <Edit cellProps={cellProps} viewPopupHandler={editHandler} />
+      },
+    },
+  ]), []);
 
   return (
     <>
@@ -216,19 +167,17 @@ const Users = () => {
             {/* React Table */}
             <TableUsers
               columns={columns}
-              // data={usersData}
               data={settings_users_data?.content || []}
               isFilterable={true}
               isGlobalFilter={true}
               isAddInvoiceList={true}
               customPageSize={10}
-            //   toggleRightCanvas={toggleRightCanvas}
               component={"Users"}
             />
 
             {/* modal */}
             {/* <ModalSurchargeValue modal={modal} onCloseClick={onCloseClick} viewData={viewData} modalType={'PortLocalCharges'} /> */}
-            <ModalResetPassword modal={resetModal} onCloseClick={onCloseClick}  />
+            <ModalResetPassword modal={resetModal} onCloseClick={onCloseClick} />
 
           </div>
         </Container>
