@@ -3,13 +3,13 @@ import { useEffect } from "react";
 
 export function removeNullProperties(obj) {
     if (obj && typeof obj === 'object') {
-      for (const key in obj) {
-        if (obj[key] === null || obj[key] === undefined) {
-          delete obj[key];
-        } else if (typeof obj[key] === 'object') {
-          removeNullProperties(obj[key]);
+        for (const key in obj) {
+            if (obj[key] === null || obj[key] === undefined) {
+                delete obj[key];
+            } else if (typeof obj[key] === 'object') {
+                removeNullProperties(obj[key]);
+            }
         }
-      }
     }
 }
 
@@ -18,21 +18,21 @@ export function removeNullProperties(obj) {
 export const convertToINR = (amount, currency) => {
     // Define your conversion rate from USD to INR here
     const usdToINRConversionRate = 83; // Replace with the actual conversion rate      
-    const BDTToINRConversionRate = 1.33;      
-    const IDRToINRConversionRate = 0.0053;      
+    const BDTToINRConversionRate = 1.33;
+    const IDRToINRConversionRate = 0.0053;
     if (currency === '$' || currency?.toLowerCase() === 'usd') {
-      return amount * usdToINRConversionRate;
-    } 
-    if (currency === 'BDT'){
-        let newAmt = amount / BDTToINRConversionRate;
-        return Math.round(newAmt);            
+        return amount * usdToINRConversionRate;
     }
-    if (currency === 'IDR'){
+    if (currency === 'BDT') {
+        let newAmt = amount / BDTToINRConversionRate;
+        return Math.round(newAmt);
+    }
+    if (currency === 'IDR') {
         let newAmt = amount * IDRToINRConversionRate;
-        return Math.round(newAmt);            
+        return Math.round(newAmt);
     }
     return amount;
-}; 
+};
 
 // ------------ Formats the Date
 export const formatDate = (date) => {
@@ -40,6 +40,27 @@ export const formatDate = (date) => {
     return moment(d).format('ll');
 }
 
+export const calculateTimeDifference = (lastLoggedIn) => {
+    const currentTime = moment();
+    const targetTime = moment(lastLoggedIn);
+    const diffInDays = currentTime?.diff(targetTime, 'days');
+    const diffInHours = currentTime?.diff(targetTime, 'hours');
+    const diffInMinutes = currentTime?.diff(targetTime, 'minutes');
+
+    if (diffInDays === 1) {
+        return 'Yesterday';
+    } else if (diffInDays === 0) {
+        if (diffInHours === 0 && diffInMinutes > 0) {
+            return `${diffInMinutes} minutes ago`;
+        } else if (diffInHours > 0) {
+            return `${diffInHours} hours ago`;
+        } else {
+            return 'Just now';
+        }
+    } else {
+        return targetTime.format('MMM DD, YYYY');
+    }
+};
 
 /** * Formats the size */
 export function formatBytes(bytes, decimals = 2) {
@@ -52,8 +73,8 @@ export function formatBytes(bytes, decimals = 2) {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
 }
 
-export const isAnyValueEmpty = (obj,removeKey) => {
-    let updatedObj = {...obj};
+export const isAnyValueEmpty = (obj, removeKey) => {
+    let updatedObj = { ...obj };
     delete updatedObj?.[removeKey];
     for (const key in updatedObj) {
         if (Object.prototype.hasOwnProperty.call(updatedObj, key)) {
@@ -70,12 +91,12 @@ export const isAnyValueEmptyInArray = (arr, removeKey) => {
     for (const obj of arr) {
         let updatedObj = { ...obj };
         delete updatedObj?.[removeKey];
-        
+
         for (const key in updatedObj) {
             if (Object.prototype.hasOwnProperty.call(updatedObj, key)) {
                 const value = updatedObj[key];
                 if (value === '' || value === null || value === undefined) {
-                    return true; 
+                    return true;
                 }
             }
         }
@@ -90,7 +111,7 @@ export function customSort(array, sortField, sortOrder) {
         if (a[sortField] === null && b[sortField] === null) return 0;
         return (
             a[sortField].toString().localeCompare(b[sortField].toString(), "en", {
-            numeric: true,
+                numeric: true,
             }) * (sortOrder === "asc" ? 1 : -1)
         );
     });
@@ -120,7 +141,7 @@ export const isExcelFile = (fileName) => {
 // -------------------- outside click
 export const handleClickOutside = (event, wrapperRef, setOpenPop) => {
     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-        if (event.target.id !== 'more_menu') {  
+        if (event.target.id !== 'more_menu') {
             console.log("test................");
             setOpenPop(false);
         }

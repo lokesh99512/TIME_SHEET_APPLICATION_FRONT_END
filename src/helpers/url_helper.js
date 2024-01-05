@@ -170,8 +170,9 @@ export const Get_Ocean_Port_Data= "/api/v1/ocean-port/"
 export const Get_Cargo_Type_Data= "/api/v1/cargo-type/"
 export const Get_Container_Data= "/api/v1/ocean-container/"
 export const Get_Surcharge_Alice_Data= "/api/v1/surcharge-alias/"
-export const Get_File_URL= "/api/v1/misc/download-file/"
 export const Get_State_ALL_URL= "/api/v1/state/"
+export const GET_ROLE_URL= "/api/v1/role/"
+export const Get_File_URL= "/api/v1/misc/download-file/"
 
 // post
 export const Post_Surcharge_Data= "/api/v1/surcharge-code/"

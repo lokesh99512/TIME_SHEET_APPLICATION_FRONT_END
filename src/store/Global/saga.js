@@ -1,6 +1,6 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
-import { GET_CARGO_TYPE_DATA, GET_CARGO_TYPE_DATA_SUCCEESS, GET_CONTAINER_DATA, GET_CONTAINER_DATA_SUCCEESS, GET_CURRENCY_DETAIL, GET_CURRENCY_DETAIL_SUCCESS, GET_OCEAEN_PORT_DATA, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_STATE_ALL_TYPE, GET_STATE_ALL_TYPE_SUCCEESS, GET_SURCHARGE_ALICE_DATA, GET_SURCHARGE_ALICE_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA, GET_UOM_DATA_SUCCESS, GET_VENDOR_DETAILS, GET_VENDOR_DETAILS_SUCCESS, POST_SURCHARGE_CODE_DATA, POST_SURCHARGE_CODE_DATA_SUCCEESS } from "./actiontype";
-import { getCargoTypeData, getContainerData, getCurrencyData, getOceanPortData, getStateAllSer, getSurchargeAliceSer, getSurchargeCategoryData, getSurchargeCodeData, getUomData, getVendorData, postSurchargeCodeSer } from "../../helpers/services/GlobalService";
+import { GET_CARGO_TYPE_DATA, GET_CARGO_TYPE_DATA_SUCCEESS, GET_CONTAINER_DATA, GET_CONTAINER_DATA_SUCCEESS, GET_CURRENCY_DETAIL, GET_CURRENCY_DETAIL_SUCCESS, GET_OCEAEN_PORT_DATA, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_ROLE_TYPE, GET_ROLE_TYPE_SUCCEESS, GET_STATE_ALL_TYPE, GET_STATE_ALL_TYPE_SUCCEESS, GET_SURCHARGE_ALICE_DATA, GET_SURCHARGE_ALICE_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA, GET_UOM_DATA_SUCCESS, GET_VENDOR_DETAILS, GET_VENDOR_DETAILS_SUCCESS, POST_SURCHARGE_CODE_DATA, POST_SURCHARGE_CODE_DATA_SUCCEESS } from "./actiontype";
+import { getCargoTypeData, getContainerData, getCurrencyData, getOceanPortData, getRoleAllSer, getStateAllSer, getSurchargeAliceSer, getSurchargeCategoryData, getSurchargeCodeData, getUomData, getVendorData, postSurchargeCodeSer } from "../../helpers/services/GlobalService";
 import { showErrorToast, showSuccessToast } from "../../components/Common/CustomToast";
 
 function* fetchVendorData(){
@@ -85,13 +85,22 @@ function* fetchSurchargeAliceData(){
         console.log(error,"Container error-----------");
     }
 }
-function* postStateAllData(){
+function* fetchStateAllData(){
     try{
         const response = yield call(getStateAllSer);
         console.log(response,"response state===============");
         yield put({type: GET_STATE_ALL_TYPE_SUCCEESS, payload: response});
     } catch(error){
         console.log(error,"state error-----------");
+    }
+}
+function* fetchRoleData(){
+    try{
+        const response = yield call(getRoleAllSer);
+        console.log(response,"response role===============");
+        yield put({type: GET_ROLE_TYPE_SUCCEESS, payload: response});
+    } catch(error){
+        console.log(error,"role error-----------");
     }
 }
 function* postSurchargeCodeData({payload: { data }}){
@@ -117,7 +126,8 @@ function* watchGetglobalData(){
     yield takeEvery(GET_CARGO_TYPE_DATA, fetchCargoTypeData);
     yield takeEvery(GET_CONTAINER_DATA, fetchContainerData);
     yield takeEvery(GET_SURCHARGE_ALICE_DATA, fetchSurchargeAliceData);
-    yield takeEvery(GET_STATE_ALL_TYPE, postStateAllData);
+    yield takeEvery(GET_STATE_ALL_TYPE, fetchStateAllData);
+    yield takeEvery(GET_ROLE_TYPE, fetchRoleData);
     yield takeEvery(POST_SURCHARGE_CODE_DATA, postSurchargeCodeData);
 }
 

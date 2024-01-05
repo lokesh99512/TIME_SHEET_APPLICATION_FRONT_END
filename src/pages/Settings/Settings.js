@@ -35,6 +35,7 @@ const Settings = () => {
     const [gstModal, setGstModal] = useState(false);
     const [modalAlldata, setModalAllData] = useState([]);
     const [active, setActive] = useState("comapanyDetails");
+    const stateAllData = useSelector((state) => state?.globalReducer?.stateAllData);
     const dispatch = useDispatch();
 
     const {
@@ -144,7 +145,7 @@ const Settings = () => {
             no: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.tenantGSTS[0]?.no || "",
             placeOfService: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.tenantGSTS[0]?.placeOfService || "",
             moreGstNumbers: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.tenantGSTS?.slice(1).map((item) => ({
-                gstNo: item?.no,
+                no: item?.no,
                 placeOfService: item?.placeOfService,
                 address: item?.address,
                 city: item?.city,
@@ -153,8 +154,9 @@ const Settings = () => {
                 pinCode: item?.pinCode,
             })) || [],
         },
-        onSubmit: (values) => {           
-            let mergeArray = [...values?.moreGstNumbers, ...modalAlldata];
+        onSubmit: (values) => {      
+            let singleVal = values?.no !== "" && values?.placeOfService !== "" && [{ no: values?.no, placeOfService: values?.placeOfService }] || [];     
+            let mergeArray = [...values?.moreGstNumbers, ...modalAlldata, ...singleVal];
 
             const payload = {
                 id: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.id || null,
@@ -165,9 +167,13 @@ const Settings = () => {
                 tenantGSTS: mergeArray?.length !== 0 && mergeArray || [],
             };
 
+            console.log(payload,"payload");
+
             dispatch(getTaxDetailsData(payload));
         },
     });
+
+    console.log(taxDetailsFormik.values,"taxDetailsFormik");
 
     const bussinessTypeFormik = useFormik({
         enableReinitialize: true,

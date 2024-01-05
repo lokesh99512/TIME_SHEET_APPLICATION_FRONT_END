@@ -95,8 +95,8 @@ const Header = props => {
               <i className="fa fa-fw fa-bars"></i>
             </button>
 
-            <LanguageDropdown />
-            
+            {/* <LanguageDropdown /> */}
+
           </div>
 
           {/* <div className="d-flex">
@@ -124,26 +124,12 @@ const Header = props => {
             </div>
           </div> */}
           <div className="d-flex align-items-center">
-            <div className="dropdown d-inline-block d-lg-none mobile_search">
-              <button
-                onClick={() => {
-                  setsearch(!search);
-                }}
-                type="button"
-                className="btn header-item noti-icon common_header_btn"
-                id="page-header-search-dropdown"
-              >
-                <FeatherIcon
-                  icon="search"
-                  className="icon-lg"
-                />
+            {/* <div className="dropdown d-inline-block d-lg-none mobile_search">
+              <button onClick={() => { setsearch(!search); }} type="button" className="btn header-item noti-icon common_header_btn" id="page-header-search-dropdown" >
+                <FeatherIcon icon="search" className="icon-lg" />
               </button>
               <div
-                className={
-                  search
-                    ? "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0 show"
-                    : "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
-                }
+                className={search ? "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0 show" : "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"}
                 aria-labelledby="page-header-search-dropdown"
               >
                 <form className="p-3">
@@ -167,9 +153,9 @@ const Header = props => {
                   </div>
                 </form>
               </div>
-            </div>
+            </div> */}
 
-            <form className="app-search d-none d-lg-block">
+            {/* <form className="app-search d-none d-lg-block">
               <div className="position-relative">
                 <input type="search" className="form-control" placeholder="Search" />
                 <button className="btn" type="button">
@@ -177,10 +163,10 @@ const Header = props => {
                     icon="search"
                     className="icon-lg"
                   />
-                  {/* <i className="bx bx-search-alt align-middle"></i> */}
+                  <i className="bx bx-search-alt align-middle"></i>
                 </button>
               </div>
-            </form>
+            </form> */}
 
             {/* light / dark mode */}
             {/* <LightDark layoutMode={props['layoutMode']} onChangeLayoutMode={onChangeLayoutMode} /> */}
@@ -247,26 +233,15 @@ const Header = props => {
                 </div>
               </DropdownMenu>
             </Dropdown> */}
-            <button className='btn common_header_btn'>
+            {/* <button className='btn common_header_btn'>
               <img src={message_Icon} alt="Message" />
-            </button>
-            <NotificationDropdown />
-            <div
-              onClick={() =>{
-                dispatch(showRightSidebarAction(!showRightSidebar));
-              }}
-              className="dropdown d-md-inline-block d-none"
-            >
-              <button
-                type="button"
-                className="btn header-item noti-icon right-bar-toggle common_header_btn"
-              >
-                <FeatherIcon
-                  icon="settings"
-                  className="icon-lg"
-                />
+            </button> */}
+            {/* <NotificationDropdown /> */}
+            {/* <div onClick={() => { dispatch(showRightSidebarAction(!showRightSidebar)); }} className="dropdown d-md-inline-block d-none" >
+              <button type="button" className="btn header-item noti-icon right-bar-toggle common_header_btn" >
+                <FeatherIcon icon="settings" className="icon-lg" />
               </button>
-            </div>
+            </div> */}
             <ProfileMenu />
 
           </div>

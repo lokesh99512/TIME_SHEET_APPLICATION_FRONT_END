@@ -8,6 +8,7 @@ export const getOceanPortData = () => get(url.Get_Ocean_Port_Data);
 export const getCargoTypeData = () => get(url.Get_Cargo_Type_Data);
 export const getContainerData = () => get(url.Get_Container_Data);
 export const getStateAllSer = () => get(url.Get_State_ALL_URL);
+export const getRoleAllSer = () => get(url.GET_ROLE_URL);
 
 // surcharge
 export const getSurchargeCodeData = () => get(url.Get_surcharge_code_Data);

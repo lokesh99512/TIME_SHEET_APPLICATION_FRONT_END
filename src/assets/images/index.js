@@ -9,6 +9,7 @@ import avatar8 from "./users/avatar-8.jpg"
 
 // ----------- shipment Images
 import sitelogo from "../images/logo.png"
+import user_blank from "../images/icons/user.webp"
 import google_icon from "./icons/google.svg";
 import microsoft_icon from "./icons/microsoft.svg";
 import profImg from "./icons/avatar.png";
@@ -73,7 +74,7 @@ export {
   microsoft_icon,auth_slider1,auth_slider2,auth_slider3,auth_slider4,noti_Icon,message_Icon,
   marker_Img,marker_active_Img,filter_icon,upload_icon,eye_icon,edit_icon,reset_icon,delete_icon,range_indicator,avtar_filled,cube_filled,calendar_filled,location_filled,memoji,
   ship_filled,ship_darkblue,airplane_darkblue,airplane_filled,truk_darkblue,truk_filled,swap_arrow,
-  pickup_icon,pickup_icon2,pickup_icon3,pickup_icon4,pickup_icon5,pickup_icon6,cma_logo,truck_outline,status_update,oocl_logo,zim_logo,filter_img,
+  pickup_icon,pickup_icon2,pickup_icon3,pickup_icon4,pickup_icon5,pickup_icon6,cma_logo,truck_outline,status_update,oocl_logo,zim_logo,filter_img,user_blank,
 
 
   

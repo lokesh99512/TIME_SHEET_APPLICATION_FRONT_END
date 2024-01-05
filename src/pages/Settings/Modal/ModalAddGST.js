@@ -39,9 +39,6 @@ const ModalAddGST = ({ modal, onSubmitHandler, onCloseClick }) => {
       let stateVal = settings_companyState_data?.content?.find((item) => item?.stateName === value?.state) || [];
       let countryVal = settings_companyCountry_data?.content?.find((item) => item?.countryName === value?.country) || [];
       let zipcodeVal = settings_companyPincode_data?.content?.find((item) => item?.pin === value?.pinCode) || [];
-
-      console.log(countryVal, "countryVal");
-
       const payload = {
         address: value?.address || null,
         no: value?.no || null,
@@ -56,7 +53,6 @@ const ModalAddGST = ({ modal, onSubmitHandler, onCloseClick }) => {
       formik.resetForm();
     },
   });
-  console.log(formik.values, "values");
 
   useEffect(() => {
     if (settings_companyState_data && settings_companyState_data?.content?.length > 0) {

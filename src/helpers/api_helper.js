@@ -16,6 +16,10 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   (error) => {
+    if (error.response.status === 401) {
+      // Redirect to login page
+      window.location.href = '/logout';
+    }
     return Promise.reject(error);
   }
 );

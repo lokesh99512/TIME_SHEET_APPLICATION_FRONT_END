@@ -15,6 +15,7 @@ import { Link, NavLink } from "react-router-dom";
 
 // users
 import user1 from "../../../assets/images/users/avatar-1.jpg";
+import { user_blank } from "../../../assets/images";
 
 const ProfileMenu = props => {
   // Declare a new state variable, which we'll call "menu"
@@ -32,7 +33,7 @@ const ProfileMenu = props => {
         process.env.REACT_APP_DEFAULTAUTH === "jwt"
       ) {
         const obj = JSON.parse(localStorage.getItem("authUser"));
-        setusername(obj.username);
+        setusername(obj.name);
       }
     }
   }, [props.success]);
@@ -51,23 +52,24 @@ const ProfileMenu = props => {
         >
           <img
             className="rounded-circle header-profile-user"
-            src={user1}
+            src={user_blank}
             alt="Header Avatar"
           />
-          {/* <span className="d-none d-xl-inline-block ms-2 me-1">{username}</span>
-          <i className="mdi mdi-chevron-down d-none d-xl-inline-block" /> */}
+          {/* <span className="d-none d-xl-inline-block ms-2 me-1">{username}</span> */}
+          {/* <i className="mdi mdi-chevron-down d-none d-xl-inline-block" /> */}
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
           {/* <DropdownItem tag="a" href="/profile"> */}
-          <Link to={"/contacts-profile"} className="dropdown-item">
+          {/* <Link to={"/contacts-profile"} className="dropdown-item"> */}
+          <Link to={"#"} className="dropdown-item">
             <i className="bx bx-user font-size-16 align-middle me-1" />{" "}
-            {props.t("Profile")}{" "}
+            {username}{" "}
           </Link>{" "}
 
-          <Link to={"/profile"} className="dropdown-item">
+          {/* <Link to={"/profile"} className="dropdown-item">
             <i className="bx bx-wrench font-size-16 align-middle me-1" />
             {props.t("Settings")}
-          </Link>
+          </Link> */}
 
           <Link to="/page-lock-screen" className="dropdown-item">
             <i className="bx bx-lock-open font-size-16 align-middle me-1" />
