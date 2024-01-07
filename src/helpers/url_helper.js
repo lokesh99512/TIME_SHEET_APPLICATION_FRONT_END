@@ -256,3 +256,11 @@ export const GET_SURCHARGE_CATEGORY = "/api/v1/surcharge-category/"
 
 // customers details of key manager and sales employee
 export const GET_PARTIES_CUSTOMERS_EMPLOYEE_DETAILS = "/api/v1/user/" 
+
+
+// instant rate search from
+export const GET_INSTANT_RATE_LOCATION= "/api/v1/global/misc/fcl-location"
+
+
+// get all incoterm
+export const GET_ALL_INCOTERM ="/api/v1/incoterm/"
