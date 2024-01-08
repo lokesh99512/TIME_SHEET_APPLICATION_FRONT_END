@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Flatpickr from "react-flatpickr";
 import { useDispatch, useSelector } from "react-redux";
 import Select from 'react-select';
@@ -8,14 +8,8 @@ import { calendar_filled, cube_filled, delete_icon, filter_img, location_filled,
 import { cargoWeightUnitOption, optionCargoType, optionContainerType, optionContainerTypeRefrigerated, optionContainerTypeWithoutRefri, optionCurrency, optionIncoterm, optionPortList, weightUnitOption } from "../../common/data/sales";
 import { isAnyValueEmpty, useOutsideClick } from "../../components/Common/CommonLogic";
 import { UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK } from "../../store/InstantRate/actionType";
-
-const customerName = [
-  { value: "apex_export", label: 'Apex Export Pvt Ltd' },
-  { value: "balaji_enterprice", label: 'Balaji Enterprice' },
-  { value: "house_tea_exports", label: 'House of Tea Exports' },
-  { value: "raj_fruits", label: 'Raj Fruits Exports' },
-]
-
+import { getAllPartiesCustomerData } from "../../store/Parties/Customer/action";
+import { getAllIncoTerms, getInstantRateLocation } from "../../store/InstantRate/actions";
 const SearchForm = ({ activeTab, searchQuoteHandler }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubOpen, setIsSubOpen] = useState(false);
@@ -36,8 +30,10 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
   const [open, setOpen] = useState('1');
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
-  const searchForm = useSelector((state) => state?.instantRate?.searchForm);  
-
+  //const searchForm = useSelector((state) => state?.instantRate?.searchForm);  
+  const instantRateState = useSelector((state) => state.instantRate);
+  const { customer_data } = useSelector((state) => state?.customer)
+  const { searchForm, instantRateLocation, error,incoterm } = instantRateState;
   const [shipmentDetails, setShipmentDetails] = useState([
     {
       no_unit: '',
@@ -49,6 +45,34 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
       dimensions_unit: '',
     }
   ])
+   console.log(customer_data);
+  useEffect(() => {
+    dispatch(getInstantRateLocation());
+  }, []);
+
+  useEffect(() => {
+    dispatch(getAllPartiesCustomerData())
+  }, []);
+
+  useEffect(() => {
+    dispatch(getAllIncoTerms())
+  }, []);
+
+  const locationOptions = instantRateLocation.map(location => ({
+    value: location.id,
+    label: `${location.code}-${location.name}`,
+  }));
+  
+  const customerName = customer_data?.content?.map(customer => ({
+    value: customer.id,
+    label: customer.contactName,
+  })) || [];
+  
+  const optionIncoterm = incoterm?.content?.map(incoterm => ({
+    value: incoterm.id,
+    label: incoterm.name,
+  })) || [];
+  
 
   const toggle = (id) => {
     if (open === id) {
@@ -225,7 +249,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                           onChange={(opt) => {
                             handleChangeHandler({ ...searchForm?.location_from, address: opt }, "location_from");
                           }}
-                          options={optionPortList}
+                          options={locationOptions}
                           isOptionDisabled={(option) => option.value === searchForm?.location_to?.address?.value}
                           placeholder="Select Location"
                           menuPlacement="auto"
@@ -256,7 +280,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                           onChange={(opt) => {
                             handleChangeHandler({ ...searchForm?.location_from, address: opt }, "location_to");
                           }}
-                          options={optionPortList}
+                          options={locationOptions}
                           placeholder="Select Location"
                           isOptionDisabled={(option) => option.value === searchForm?.location_from?.address?.value}
                           classNamePrefix="select2-selection form-select"

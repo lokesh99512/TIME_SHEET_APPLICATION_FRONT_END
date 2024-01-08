@@ -20,6 +20,7 @@ import partiesSaga from "./Parties/saga"
 import globalSaga from "./Global/saga"
 import partiesCustomerSaga from "./Parties/Customer/saga"
 import partiesVendorSaga from "./Parties/Vendor/saga"
+import instantRateSaga from "./InstantRate/saga"
 
 export default function* rootSaga() {
   yield all([
@@ -42,5 +43,6 @@ export default function* rootSaga() {
     fork(globalSaga),
     fork(partiesCustomerSaga),
     fork(partiesVendorSaga),
+    fork(instantRateSaga),
   ])
 }

@@ -18,3 +18,9 @@ export const postSurchargeCodeSer = (data) => post(url.Post_Surcharge_Data, data
 
 // Image Download
 export const GetFileSer = (base64Encoded) => getWithOutAuth(url.Get_File_URL + base64Encoded);
+
+
+// instant rate search droup downs
+export const getInstantRateLocation = () => get(url.GET_INSTANT_RATE_LOCATION);
+
+export const getAllIncoTerms = () => get (url.GET_ALL_INCOTERM)

@@ -1,4 +1,4 @@
-import { ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK } from "./actionType"
+import { GET_INSTANT_RATE_LOCATION_FAILURE, GET_INSTANT_RATE_LOCATION_SUCCESS, ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK, GET_ALL_INCOTERM, GET_ALL_INCOTERM_SUCCESS } from "./actionType"
 
 
 const INIT_STATE = {
@@ -17,7 +17,11 @@ const INIT_STATE = {
         location_from: '',
         location_to: '',
     },
-}
+    instantRateLocation: [],
+    incoterm: [],
+    error: null,
+};
+
 
 const instantRate = (state = INIT_STATE, action) => {
     switch (action.type) {
@@ -78,7 +82,24 @@ const instantRate = (state = INIT_STATE, action) => {
                 }
             }
             return state = newObj
-
+        case GET_INSTANT_RATE_LOCATION_SUCCESS:
+            return {
+                ...state,
+                instantRateLocation: action.payload,
+                error: null,
+            };
+        case GET_INSTANT_RATE_LOCATION_FAILURE:
+            return {
+                ...state,
+                instantRateLocation: [],
+                error: action.payload,
+            };
+        case GET_ALL_INCOTERM_SUCCESS:
+            return {
+                ...state,
+                incoterm: action.payload,
+                error: null,
+            };
         default:
             return state;
     }
