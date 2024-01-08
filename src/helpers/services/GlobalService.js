@@ -3,7 +3,8 @@ import { get, getWithOutAuth, post } from "../api_helper";
 
 export const getVendorData = () => get(url.Get_Vendor_Data);
 export const getCurrencyData = () => get(url.Get_Currency_Data);
-export const getUomData = () => get(url.Get_Uom_Data);
+export const getUomData = () => get(`${url.Get_Uom_Data}`);
+export const getUomWeightData = () => get(url.Get_Uom_Data + '?weightParameterOnly=true');
 export const getOceanPortData = () => get(url.Get_Ocean_Port_Data);
 export const getCargoTypeData = () => get(url.Get_Cargo_Type_Data);
 export const getContainerData = () => get(url.Get_Container_Data);
@@ -18,3 +19,9 @@ export const postSurchargeCodeSer = (data) => post(url.Post_Surcharge_Data, data
 
 // Image Download
 export const GetFileSer = (base64Encoded) => getWithOutAuth(url.Get_File_URL + base64Encoded);
+
+
+// instant rate search droup downs
+export const getInstantRateLocation = () => get(url.GET_INSTANT_RATE_LOCATION);
+
+export const getAllIncoTerms = () => get (url.GET_ALL_INCOTERM)

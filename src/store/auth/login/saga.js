@@ -60,7 +60,7 @@ function* loginUser({ payload: { dataObj, history } }){
     yield put({type: LOGIN_SUCCESS, payload: response.data});
     history("/dashboard");
   } catch (error) {
-    showErrorToast(error?.message);
+    showErrorToast(error?.response?.data?.message);
     console.log(error,"saga login api error")
   }
 }

@@ -1166,6 +1166,10 @@ input[type="number"]{
                 }
             }
         }
+        &.scroller_dropdown{
+            max-height: 220px;
+            overflow-y: auto;
+        }
     }
     &.incoterm_field_wrap{
         .prof_wrap .con{

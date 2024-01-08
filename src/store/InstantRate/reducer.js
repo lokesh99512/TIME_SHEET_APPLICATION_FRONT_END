@@ -1,4 +1,4 @@
-import { ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK } from "./actionType"
+import { GET_INSTANT_RATE_LOCATION_FAILURE, GET_INSTANT_RATE_LOCATION_SUCCESS, ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK, GET_ALL_INCOTERM, GET_ALL_INCOTERM_SUCCESS, GET_INSTANT_SEARCH_RESULT_TYPE } from "./actionType"
 
 
 const INIT_STATE = {
@@ -7,17 +7,22 @@ const INIT_STATE = {
         // service_type: '',
         // shipping_by: '',
         // cargo_weight: { weight: "MT",value: ''},
-        cargo_type: { value: "general", name: "General" },
+        cargo_type: { value: "GENERAL",label: "GENERAL", id: 1, version: 0 },
         cargo_value: { currency: { name: 'Rupee', value: 'rupee', code: '₹' }, value: '' },
         // incoterm: '',
         customerName: '',
-        container_type: { cargo_weight: { weight: "MT", value: '' } },
+        container_type: { cargo_weight: { weight: {value: "MT",label: "MT", id: 7, version: 2}, value: '' } },
         // shipment_details: "",
         cargo_date: '',
         location_from: '',
         location_to: '',
     },
-}
+    instantRateLocation: [],
+    incoterm: [],
+    instantSearchResult: [],
+    error: null,
+};
+
 
 const instantRate = (state = INIT_STATE, action) => {
     switch (action.type) {
@@ -78,7 +83,32 @@ const instantRate = (state = INIT_STATE, action) => {
                 }
             }
             return state = newObj
-
+        case GET_INSTANT_RATE_LOCATION_SUCCESS:
+            return {
+                ...state,
+                instantRateLocation: action.payload,
+                error: null,
+            };
+        case GET_INSTANT_RATE_LOCATION_FAILURE:
+            return {
+                ...state,
+                instantRateLocation: [],
+                error: action.payload,
+            };
+        case GET_ALL_INCOTERM_SUCCESS:
+            return {
+                ...state,
+                incoterm: action.payload,
+                error: null,
+            };
+        
+        // ------------------ search Result
+        case GET_INSTANT_SEARCH_RESULT_TYPE:
+            return {
+                ...state,
+                instantSearchResult: action.payload
+            }
+        
         default:
             return state;
     }

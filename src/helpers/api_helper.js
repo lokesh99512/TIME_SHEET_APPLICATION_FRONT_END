@@ -16,6 +16,7 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   (error) => {
+    console.log(error,"error");
     if (error.response.status === 401) {
       // Redirect to login page
       window.location.href = '/logout';
@@ -26,9 +27,16 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   response => response,
-  error => Promise.reject(error)
+  (error) => {
+    console.log(error,"error");
+    if (error.response.status === 401) {
+      // Redirect to login page
+      window.location.href = '/logout';
+    }
+    return Promise.reject(error)
+  }
 )
-
+export default axiosInstance;
 export async function getWithOutAuth(url, config = {}) {
   return await axios.get(url, { ...config }).then(response => response.data)
 }

@@ -1,16 +1,17 @@
 import classnames from "classnames";
-import React from 'react';
+import moment from "moment";
+import React, { useEffect, useState } from 'react';
 import { Container, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
-import { useState } from 'react';
 
-import SearchForm from './SearchForm';
-import { useSelector } from "react-redux";
-import { getSalesQuotationResultData, getSalesQuotationResultData1, getSalesQuotationResultData2, getSalesQuotationResultData3 } from "../../store/Sales/actions";
-import SearchResultComp from "../Sales/Quotations/partials/SearchResultComp";
-import { useDispatch } from "react-redux";
-import QuotationModalComp from "../Sales/Quotations/partials/QuotationModalComp";
-import PreviewQuotationModal from "../Sales/Quotations/partials/PreviewQuotationModal";
+import { useDispatch, useSelector } from "react-redux";
+import { GET_CARGO_TYPE_DATA, GET_CONTAINER_DATA, GET_UOM_WEIGHT_DATA } from "../../store/Global/actiontype";
 import { ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH } from "../../store/InstantRate/actionType";
+import { postInstantSearchAction } from "../../store/InstantRate/actions";
+import { getSalesQuotationResultData, getSalesQuotationResultData1, getSalesQuotationResultData2, getSalesQuotationResultData3 } from "../../store/Sales/actions";
+import PreviewQuotationModal from "../Sales/Quotations/partials/PreviewQuotationModal";
+import QuotationModalComp from "../Sales/Quotations/partials/QuotationModalComp";
+import SearchResultComp from "../Sales/Quotations/partials/SearchResultComp";
+import SearchForm from './SearchForm';
 
 const InstantRate = () => {
     const [activeTab, toggleTab] = useState("FCL");
@@ -32,26 +33,72 @@ const InstantRate = () => {
     const showSearchResultHandler = () => {
         console.log(searchData, "searchForm------------------------------------")
         console.log(activeTab, "activeTab------------------------------------")
+        let dateFrom = moment(searchData?.cargo_date?.[0]).format("YYYY-MM-DD");
+        let dateTo = moment(searchData?.cargo_date?.[1]).format("YYYY-MM-DD");
+        let data = {
+            fclInquiryField: {
+                customerId: searchData?.customerName || null,
+                ...(searchData?.location_from?.locationType === "PORT" ? {
+                    "originPortId": searchData?.location_from?.value || null,
+                } : searchData?.location_from?.locationType === "CITY" ? {
+                    "originCityId": searchData?.location_from?.value || null,
+                } : searchData?.location_from?.locationType === "ICD" ? {
+                    "originIcdId": searchData?.location_from?.value || null,
+                } : ''),
+
+                ...(searchData?.location_to?.locationType === "PORT" ? {
+                    "destinationPortId": searchData?.location_to?.value || null,
+                } : searchData?.location_to?.locationType === "CITY" ? {
+                    "destinationCityId": searchData?.location_to?.value || null,
+                } : searchData?.location_to?.locationType === "ICD" ? {
+                    "destinationIcdId": searchData?.location_to?.value || null,
+                } : ''),
+                cargoDateFrom: dateFrom || null,
+                cargoDateTo: dateTo || null,
+                cargoTypeId: searchData?.cargo_type?.id || null,
+                cargoValue: searchData?.cargo_value?.value || 0,
+                cargoWeight: searchData?.container_type?.cargo_weight?.value || 0,
+                cargoWeightUOMId: searchData?.container_type?.cargo_weight?.weight?.id || null,
+                intercomId: searchData?.incoterm || null,
+                containerDetails: searchData?.container_type?.containerArray?.map((data) => {
+                    return {
+                        id: data?.id,
+                        size: data?.size,
+                        noOfUnits: data?.unitNew
+                    }
+                }) || null
+            }
+        }
+
+        console.log(data,"data");
+
+        dispatch(postInstantSearchAction(data));
 
         setSearchResult(true);
-        if (searchData?.location_from?.address?.value === "INMAA" && searchData?.location_to?.address?.value === "BDDAC") {
-            console.log("search1")
-            dispatch(getSalesQuotationResultData1());
-        } else if (searchData?.location_from?.address?.value === "BLRICD" && searchData?.location_to?.address?.value === "DHAKAICD") {
-            console.log("search2")
-            dispatch(getSalesQuotationResultData2());
-        } else if (searchData?.location_from?.address?.value === "BLRICD" && searchData?.location_to?.address?.value === "JAKARTAICD") {
-            console.log("search3")
-            dispatch(getSalesQuotationResultData3());
-        } else {
-            dispatch(getSalesQuotationResultData());
-        }
+        // if (searchData?.location_from?.address?.value === "INMAA" && searchData?.location_to?.address?.value === "BDDAC") {
+        //     console.log("search1")
+        //     dispatch(getSalesQuotationResultData1());
+        // } else if (searchData?.location_from?.address?.value === "BLRICD" && searchData?.location_to?.address?.value === "DHAKAICD") {
+        //     console.log("search2")
+        //     dispatch(getSalesQuotationResultData2());
+        // } else if (searchData?.location_from?.address?.value === "BLRICD" && searchData?.location_to?.address?.value === "JAKARTAICD") {
+        //     console.log("search3")
+        //     dispatch(getSalesQuotationResultData3());
+        // } else {
+        //     dispatch(getSalesQuotationResultData());
+        // }
     }
 
     // Preview Modal
     const previewModalHand = () => {
         setPreviewModal(!previewModal);
     }
+
+    useEffect(() => {
+        dispatch({type: GET_CARGO_TYPE_DATA});
+        dispatch({type: GET_CONTAINER_DATA});
+        dispatch({type: GET_UOM_WEIGHT_DATA});
+    },[]);
 
     return (
         <>
