@@ -99,9 +99,10 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
 
     return (
         <div>
-            <div className="result_tab_content_wrap">                
-                {data?.length !== 0 ? data.map((item, index) => (
-                    <div className="search_result_card_check_wrap d-flex align-items-center" key={item.id}>
+            <div className="result_tab_content_wrap">  
+            {console.log(data,"data")}
+                {data?.length !== 0 ? data?.map((item, index) => (
+                    <div className="search_result_card_check_wrap d-flex align-items-center" key={item.carrierId}>
                         <div className={`form-check me-2`} onClick={(e) => quotationCheckHandler(item)}>
                             <input
                                 className="form-check-input"
@@ -116,13 +117,13 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                             <div className="search_result_card_header d-flex align-items-center">
                                 <div className="card_img">
                                     <span className='d-flex align-items-center justify-content-center img mx-auto'>
-                                        <img src={item?.carrier_name.toLowerCase() === 'oocl' ? oocl_logo : item?.carrier_name.toLowerCase() === 'zim' ? zim_logo : cube_filled} alt="Logo" />
+                                        <img src={item?.carrier_name?.toLowerCase() === 'oocl' ? oocl_logo : item?.carrierName?.toLowerCase() === 'zim' ? zim_logo : cube_filled} alt="Logo" />
                                     </span>
-                                    <span className="title d-block text-center mt-2">{item?.carrier_name}</span>
+                                    <span className="title d-block text-center mt-2">{item?.carrierName || '-'}</span>
                                 </div>
                                 <div className="middle_content">
-                                    <span className="duration text-center d-block">Duration <b>{item.duration} days</b></span>
-                                    <div className="from_to_wrap mt-2 mb-3 d-flex justify-content-between">
+                                    <span className="duration text-center d-block">Duration <b>{item.oceanTransitTime || 0} days</b></span>
+                                    {/* <div className="from_to_wrap mt-2 mb-3 d-flex justify-content-between">
                                         {item.location_route.length === 4 ? (
                                             <>
                                                 <span className="from_loc">{item?.location_route[0]}</span>
@@ -138,23 +139,23 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                 <span className="to_loc">{item?.location_route[1]}</span>
                                             </>
                                         )}
-                                    </div>
+                                    </div> */}
                                     <div className="row">
-                                        <div className="col-lg-6 text-left"><span>Valid: <b>{item.valid_to || '-'}</b></span></div>
+                                        <div className="col-lg-6 text-left"><span>Valid: <b>{item.validFrom || '-'}</b></span></div>
                                         {/* <div className="col-lg-4 text-center"><span>Id: <b>{item.id || '-'}</b></span></div> */}
-                                        <div className="col-lg-6 text-end"><span>CO2: <b>{item.co_two || '-'}</b></span></div>
+                                        {/* <div className="col-lg-6 text-end"><span>CO2: <b>{item.co_two || '-'}</b></span></div> */}
                                     </div>
                                 </div>
                                 <div className="total_wrap">
                                     <p className="total_price text-center"><b>₹ {TotalQuotationCount(item)}</b></p>
-                                    <div className="btn_wrap d-flex">
-                                        <button type='button' className='btn text-primary view_detail_btn' onClick={() => { showDetailsHandler(index, item.id); }}>
+                                    {/* <div className="btn_wrap d-flex">
+                                        <button type='button' className='btn text-primary view_detail_btn' onClick={() => { showDetailsHandler(index, item.carrierId); }}>
                                             View{showDetails?.find(obj => obj.id === item.id)?.details ? 'Less' : 'Detail'}</button>
-                                        <button type='button' className='btn btn-primary quote_now_btn' onClick={() => { QuoteModalHandler(); singleQuoteModal(item) }} disabled={quote_Selected.some(obj => obj.id === item.id) || quote_Selected?.length >= 2}>Quote Now</button>
-                                    </div>
+                                        <button type='button' className='btn btn-primary quote_now_btn' onClick={() => { QuoteModalHandler(); singleQuoteModal(item) }} disabled={quote_Selected.some(obj => obj.id === item.carrierId) || quote_Selected?.length >= 2}>Quote Now</button>
+                                    </div> */}
                                 </div>
                             </div>
-                            {showDetails?.find(obj => obj.id === item.id)?.details && (
+                            {/* {showDetails?.find(obj => obj.id === item.id)?.details && (
                                 <div className="search_result_accordion_details">
                                     <Accordion flush open={open} toggle={toggle}>
                                         <AccordionItem>
@@ -324,7 +325,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                         </AccordionItem>
                                     </Accordion>
                                 </div>
-                            )}
+                            )} */}
                         </div>
                     </div>
                 )) : (

@@ -1,9 +1,10 @@
-import { GET_CARGO_TYPE_DATA_SUCCEESS, GET_CONTAINER_DATA_SUCCEESS, GET_CURRENCY_DETAIL_SUCCESS, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_ROLE_TYPE_SUCCEESS, GET_STATE_ALL_TYPE_SUCCEESS, GET_SURCHARGE_ALICE_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA_SUCCESS, GET_VENDOR_DETAILS_SUCCESS } from "./actiontype";
+import { GET_CARGO_TYPE_DATA_SUCCEESS, GET_CONTAINER_DATA_SUCCEESS, GET_CURRENCY_DETAIL_SUCCESS, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_ROLE_TYPE_SUCCEESS, GET_STATE_ALL_TYPE_SUCCEESS, GET_SURCHARGE_ALICE_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA_SUCCESS, GET_UOM_WEIGHT_DATA_SUCCESS, GET_VENDOR_DETAILS_SUCCESS } from "./actiontype";
 
 const INIT_STATE = {
     vendor_data: [],
     currency_data: [],
     UOM_data: [],
+    UOM_weight_data: [],
     surchargeCode_data: [],
     surchargeCategory_data: [],
     oceanPort_data: [],
@@ -41,6 +42,19 @@ const globalReducer = (state = INIT_STATE, action) => {
                 UOM_data: action.payload.content?.map((item) => {
                     return {
                         label: item?.description.split('_').join(' '),
+                        value: item?.code,
+                        description: item?.description,
+                        id: item?.id,
+                        version: item?.version
+                    }
+                })
+            }
+        case GET_UOM_WEIGHT_DATA_SUCCESS:
+            return {
+                ...state,
+                UOM_weight_data: action.payload.content?.map((item) => {
+                    return {
+                        label: item?.code,
                         value: item?.code,
                         description: item?.description,
                         id: item?.id,
@@ -110,6 +124,9 @@ const globalReducer = (state = INIT_STATE, action) => {
                         version: `${item?.version}`,
                         size: `${item?.size}`,
                         unit: `${item?.unit}`,
+                        rateId: item?.name === '20GP' ? '_standard1' : item?.name === '40GP' ? '_standard2' :
+                        item?.name === '40HQ' ? '_high_cube1' : item?.name === '45HQ' ? '_high_cube2' :
+                        item?.name === '20RF' ? '_refrigerated1' : '_refrigerated2'
                     }
                 })
             }

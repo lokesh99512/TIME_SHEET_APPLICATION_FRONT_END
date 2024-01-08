@@ -1,9 +1,9 @@
 import axios from "axios";
 import * as url from "../url_helper"
-import { get, post } from "../api_helper";
+import axiosInstance, { get, post } from "../api_helper";
 
 export async function LoginAPI(dataObj) {
-    return axios({
+    return axiosInstance({
         method: 'POST',
         url: url.LOGIN_API,
         headers: {

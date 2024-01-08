@@ -265,3 +265,7 @@ export const GET_INSTANT_RATE_LOCATION= "/api/v1/global/misc/fcl-location"
 
 // get all incoterm
 export const GET_ALL_INCOTERM ="/api/v1/incoterm/"
+
+
+// INstant Rate ---------------------------------------
+export const POST_INSTANT_RATE_URL = "/api/v1/fcl-inquiry-detail/"
