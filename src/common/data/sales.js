@@ -2327,9 +2327,9 @@ const optionPortDischargeCharge = [
 ];
 
 const optionMarkupType = [
-    {value: "percentage", label: "Percentage"},
-    {value: "flat", label: "Flat"},
-]
+    { label: "FLAT", value: "FLAT" },
+    { label: "Percentage", value: "PERCENTAGE" },
+];
 const optionCurrencyCharges = [
     {value: "gbp", label: "Pound", code: '£'},
     {value: "$", label: "USD", code: '$'},

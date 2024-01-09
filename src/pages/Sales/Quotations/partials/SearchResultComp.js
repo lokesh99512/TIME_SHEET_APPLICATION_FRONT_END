@@ -25,8 +25,8 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
     const resultData = useSelector((state) => state?.sales?.quotation_result_data);
-    const quote_Selected = useSelector((state) => state.sales.quote_selected_data);
-    const {instantSearchResult} = useSelector((state) => state?.instantRate);
+    const quote_Selected = useSelector((state) => state.instantRate.quote_selected_data);
+    const {instantSearchResult, instantSearchResultCopy} = useSelector((state) => state?.instantRate);
     // console.log(resultsDataOr, "resultsDataOr");
 
     const navToggle = (tab) => {
@@ -50,15 +50,15 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
     }
 
     const getResultCount = () => {
-        let filteredResults = resultData;
+        let filteredResults = instantSearchResultCopy || [];
       
-        if (activeTab === 'preferred') {
-          filteredResults = resultData?.filter(item => item?.quote_type === 'preffered');
-        } else if (activeTab === 'cheaper') {
-          filteredResults = resultData?.filter(item => item?.quote_type === 'cheaper');
-        } else if (activeTab === 'faster') {
-          filteredResults = resultData?.filter(item => item?.quote_type === 'faster');
-        }
+        // if (activeTab === 'preferred') {
+        //   filteredResults = resultData?.filter(item => item?.quote_type === 'preffered');
+        // } else if (activeTab === 'cheaper') {
+        //   filteredResults = resultData?.filter(item => item?.quote_type === 'cheaper');
+        // } else if (activeTab === 'faster') {
+        //   filteredResults = resultData?.filter(item => item?.quote_type === 'faster');
+        // }
       
         return filteredResults?.length || 0;
     };
@@ -103,13 +103,13 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
                 </div>
 
                 {activeTab === 'all' ? (
-                    <SearchResultCard data={instantSearchResult} QuoteModalHandler={QuoteModalHandler} />
+                    <SearchResultCard data={instantSearchResultCopy} QuoteModalHandler={QuoteModalHandler} />
                 ) : activeTab === 'preferred' ? (
-                    <SearchResultCard data={instantSearchResult} QuoteModalHandler={QuoteModalHandler} />
+                    <SearchResultCard data={instantSearchResultCopy} QuoteModalHandler={QuoteModalHandler} />
                 ) : activeTab === "cheaper" ? (
-                    <SearchResultCard data={instantSearchResult} QuoteModalHandler={QuoteModalHandler} />
+                    <SearchResultCard data={instantSearchResultCopy} QuoteModalHandler={QuoteModalHandler} />
                 ) : (
-                    <SearchResultCard data={instantSearchResult} QuoteModalHandler={QuoteModalHandler} />
+                    <SearchResultCard data={instantSearchResultCopy} QuoteModalHandler={QuoteModalHandler} />
                     // <SearchResultCard data={resultData?.filter(item => item?.quote_type === 'faster')} QuoteModalHandler={QuoteModalHandler} />
                 )}
             </div>

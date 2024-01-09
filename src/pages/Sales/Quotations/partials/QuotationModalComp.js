@@ -8,9 +8,10 @@ import { optionChargeBasis, optionCurrency, optionCurrencyCharges, optionCustome
 import { convertToINR, useOutsideClick } from '../../../../components/Common/CommonLogic';
 import { ADD_QUOTE_MODAL_CHARGES, BLANK_MODAL_CHARGE, REMOVE_QUOTE_MODAL_CHARGES, UPDATE_QUOTE_MODAL_CHARGES } from '../../../../store/Sales/Quotation/actiontype';
 import { getCurrencyExchangeRate } from '../../../../store/Sales/actions';
-import { QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_UPDATE } from '../../../../store/Sales/actiontype';
+// import { QUOTATION_RESULT_UPDATE } from '../../../../store/Sales/actiontype';
 import ShipmentForm from './ShipmentForm';
 import CompanyForm from './CompanyForm';
+import { QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_UPDATE } from '../../../../store/InstantRate/actionType';
 
 const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setPreviewModal, viewData }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +19,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
     const dropdownRef = useRef(null);
     const [open, setOpen] = useState('');
     const [openInner, setOpenInner] = useState('');
-    const quoteData = useSelector((state) => state.sales.quote_selected_data);  
+    const quoteData = useSelector((state) => state.instantRate.quote_selected_data);
     const exchangedata = useSelector((state) => state?.quotation?.currency_ExchangeRate);
     const mainChargeObj = useSelector((state) => state?.quotation?.mainChargeObj);
     const dispatch = useDispatch();
@@ -38,9 +39,9 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         }
     };
 
-    useEffect(() => {
-        dispatch(getCurrencyExchangeRate());
-    }, [])
+    // useEffect(() => {
+    //     dispatch(getCurrencyExchangeRate());
+    // }, [])
 
     const formik = useFormik({
         enableReinitialize: true,
@@ -102,7 +103,9 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
             sale_cost = Number(data.buy_cost) + marginValue + (data.tax ? calculateTax(Number(data.buy_cost), Number(data.tax)) : 0);
         }
 
-        existingHandleChange(e.target.value, name, index, charge_name, objId, sale_cost, marginValue);
+        console.log(data, e, name, index, charge_name, objId, sale_cost, marginValue, "margin");
+
+        // existingHandleChange(e.target.value, name, index, charge_name, objId, sale_cost, marginValue);
     }
 
     const calculateMarkupVal = (type, buycost, value) => {
@@ -134,7 +137,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         return array?.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost), charge.currency), 0) + (newArray !== undefined ? newArray?.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost), charge.currency), 0) : 0);
     }
     const subTotalHandler = (quoteObject) => {
-        
+
         let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.id);
 
         let pickupbuyVal = quoteObject?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.pickup_quote_charge !== undefined && mainChargeCurr?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
@@ -149,8 +152,8 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         let oceanbuyVal = quoteObject?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.ocean_quote_charge !== undefined && mainChargeCurr?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
         let oceanmarginVal = quoteObject?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0) + (mainChargeCurr?.ocean_quote_charge !== undefined && mainChargeCurr?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0));
         // let oceanTotalVal = convertToINR(Number(quoteObject?.ocean_freight_charge || 0), quoteObject?.ocean_freight_charge_currency)
-        
-        let oceanSubTotal = oceanbuyVal + oceanmarginVal 
+
+        let oceanSubTotal = oceanbuyVal + oceanmarginVal
 
         let portdischargebuyVal = quoteObject?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0) + (mainChargeCurr?.port_discharge_charges !== undefined && mainChargeCurr?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost), charge.currency), 0));
         let portdischargemarginVal = quoteObject?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0) + (mainChargeCurr?.port_discharge_charges !== undefined && mainChargeCurr?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0));
@@ -180,9 +183,9 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         // console.log(pickuptaxVal, origintaxVal, oceantaxVal, portDischargetaxVal)
 
         return pickuptaxVal + origintaxVal + oceantaxVal + portDischargetaxVal;
-    }    
+    }
 
-    const overAllMarginHandler = (quoteObject, subtotalvalue) => {        
+    const overAllMarginHandler = (quoteObject, subtotalvalue) => {
         let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.id);
         let pickupmarginVal = quoteObject?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0) + (mainChargeCurr?.pickup_quote_charge !== undefined && mainChargeCurr?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0));
 
@@ -270,74 +273,255 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                             {!viewData && (
                                 <>
                                     <AccordionItem>
-                                        <AccordionHeader targetId={`customerdetails_${quoteData.id}`}>
+                                        <AccordionHeader targetId={`customerdetails_${quoteData?.carrierId}`}>
                                             Company Details
                                         </AccordionHeader>
-                                        <AccordionBody accordionId={`customerdetails_${quoteData.id}`}>
+                                        <AccordionBody accordionId={`customerdetails_${quoteData?.carrierId}`}>
                                             <CompanyForm />
                                         </AccordionBody>
                                     </AccordionItem>
                                     <AccordionItem>
-                                        <AccordionHeader targetId={`shipmentdetails_${quoteData.id}`}>
+                                        <AccordionHeader targetId={`shipmentdetails_${quoteData?.carrierId}`}>
                                             Shipment Details
                                         </AccordionHeader>
-                                        <AccordionBody accordionId={`shipmentdetails_${quoteData.id}`}>
+                                        <AccordionBody accordionId={`shipmentdetails_${quoteData?.carrierId}`}>
                                             <ShipmentForm />
                                         </AccordionBody>
-                                    </AccordionItem>                                
+                                    </AccordionItem>
                                 </>
                             )}
 
                             {quoteData.map((item, mainindex) => (
-                                <AccordionItem key={item.id}>
+                                <AccordionItem key={item.carrierId}>
                                     <AccordionHeader targetId={`main_${mainindex}`}>
                                         <div className="card_img d-flex align-items-center">
                                             <span className='d-flex align-items-center justify-content-center img me-2'>
-                                                <img src={item?.carrier_name?.toLowerCase() === 'oocl' ? oocl_logo : item?.carrier_name?.toLowerCase() === 'zim' ? zim_logo : cube_filled} alt="Logo" />
+                                                <img src={item?.carrierName?.toLowerCase() === 'oocl' ? oocl_logo : item?.carrierName?.toLowerCase() === 'zim' ? zim_logo : cube_filled} alt="Logo" />
                                             </span>
                                             <div className="con d-flex align-items-center">
-                                                <span className="title d-block text-center me-2">{item.carrier_name || '-'}</span>
-                                                <span className={`tag ${item.quote_type || 'preferred'}`}>{item.quote_type || '-'}</span>
+                                                <span className="title d-block text-center me-2">{item.carrierName || '-'}</span>
+                                                {/* <span className={`tag ${item.quote_type || 'preferred'}`}>{item.quote_type || '-'}</span> */}
                                             </div>
                                         </div>
-                                        <div className="right_con d-flex ms-auto">
+                                        {/* <div className="right_con d-flex ms-auto">
                                             <div className="margin_wrap">Margin Value: <b>{overAllMarginHandler(item, subTotalHandler(item))}%</b></div>
                                             <span className='text-primary'>
                                                 {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '}
                                                 {formik.values.currencyVal !== 'rupee' ? ((subTotalHandler(item) + totalTaxHandler(item)) * Number(formik.values.exchangeRate)).toFixed(2) : (subTotalHandler(item) + totalTaxHandler(item))}
                                             </span>
-                                        </div>
+                                        </div> */}
                                     </AccordionHeader>
                                     <AccordionBody accordionId={`main_${mainindex}`}>
                                         <Accordion flush open={openInner} toggle={toggle2}>
-                                            {item.pickup && (
+                                            {item?.tariffDetails?.length !== 0 && item?.tariffDetails?.map((data, index) => (
+                                                <AccordionItem key={index}>
+                                                    <AccordionHeader targetId={`subacco_${index}`}>
+                                                        {data?.header?.split('_').join(" ") || '-'}
+                                                        <div className="right_con ms-auto">
+                                                            {/* <span className="price text-primary">{'₹'} {innerTotalHandler((item?.pickup_quote_charge || []), (mainChargeObj?.find(obj => obj.carrierId === item.carrierId)?.pickup_quote_charge || []))}</span> */}
+                                                        </div>
+                                                    </AccordionHeader>
+                                                    <AccordionBody accordionId={`subacco_${index}`}>
+                                                        {data?.tariffBreakDowns?.length !== 0 && data?.tariffBreakDowns?.map((subData, subindex) => (                                                            
+                                                            <div className="charges_wrap mb-3" key={subindex}>
+                                                                <div className="row">
+                                                                    <div className="col-2">
+                                                                        <div className="field_wrap">
+                                                                            {subindex === 0 && <label className='form-label' htmlFor="charges_name">{subData?.component || ''}</label>}
+                                                                            <input type="text" value={subData?.amount || ''} name="charges_name" id="charges_name" placeholder='Freight' readOnly disabled={viewData} />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-1">
+                                                                        <div className="field_wrap">
+                                                                            {subindex === 0 && <label className='form-label' htmlFor="uom">Charge Basis</label>}
+                                                                            <input type="text" value={subData?.uomCode || ''} name="uom" id="uom" readOnly disabled={viewData} />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-1">
+                                                                        <div className="field_wrap">
+                                                                            {subindex === 0 && <label className='form-label' htmlFor="quantity">Quantity</label>}
+                                                                            <input type="text" value={subData?.unit || ''} name="quantity" id="quantity" readOnly disabled={viewData} />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-1">
+                                                                        <div className="field_wrap">
+                                                                            {subindex === 0 && <label className='form-label' htmlFor="buy_currency">Buy Currency</label>}
+                                                                            <input type="text" value={subData?.currencyCode || ''} name="buy_currency" id="buy_currency" placeholder='USD' readOnly disabled={viewData} />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-1">
+                                                                        <div className="field_wrap">
+                                                                            {subindex === 0 && <label className='form-label' htmlFor="buy_cost">Total Buy Cost</label>}
+                                                                            <input type="text" value={subData?.amount || ''} name="buy_cost" id="buy_cost" readOnly disabled={viewData} />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-2">
+                                                                        <div className="field_wrap">
+                                                                            {subindex === 0 && <label htmlFor='markup_type' className='form-label'>Markup Type</label>}
+                                                                            <Select
+                                                                                value={optionMarkupType ? optionMarkupType.find(obj => obj.value === data?.markup_type) : ''}
+                                                                                name='markup_type'
+                                                                                onChange={(opt) => {
+                                                                                    existingHandleChange(opt.value, 'markup_type', subindex , `${data?.header}`, item.carrierId);
+                                                                                }}
+                                                                                options={optionMarkupType}
+                                                                                isDisabled={viewData}
+                                                                                classNamePrefix="select2-selection form-select"
+                                                                                menuPlacement="auto"
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-1">
+                                                                        <div className="field_wrap">
+                                                                            {subindex === 0 && <label className='form-label' htmlFor="markup_val">Markup Value</label>}
+                                                                            <input type="text" name="markup_val" id="markup_val"
+                                                                                value={data?.markup_val || ''}
+                                                                                onChange={(e) => {
+                                                                                    existingHandleChangeMargin(data, e, 'markup_val', subindex, `${data?.header}`, item.carrierId);
+                                                                                }}
+                                                                                placeholder='Enter value' disabled={viewData} />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-1">
+                                                                        <div className="field_wrap">
+                                                                            {subindex === 0 && <label className='form-label' htmlFor="tax">Tax</label>}
+                                                                            <input type="text" value={subData?.taxDetail?.taxPercentage || ''} name="tax" id="tax" placeholder='tax' readOnly disabled={viewData} />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-2">
+                                                                        <div className="field_wrap">
+                                                                            {subindex === 0 && <label className='form-label' htmlFor="total_sale_cost">Total Sale Cost</label>}
+                                                                            <input type="text" value={Number(subData?.amount + (subData?.taxDetail?.value || 0)).toFixed(2) || ''} name="total_sale_cost" id="total_sale_cost" placeholder='2200' readOnly disabled={viewData} />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+
+                                                        {/* {mainChargeObj?.find(obj => obj.id === item.id)?.pickup_quote_charge?.map((data, i) => (
+                                                            <div className="charges_wrap mt-3" key={i}>
+                                                                <div className="label_delete_wwrap d-flex justify-content-between">
+                                                                    <label className="form-label">Select Charge</label>
+                                                                    <div className="btn_wrap">
+                                                                        <button type='button' onClick={() => { removeInputFields(i, item.id, 'pickup_quote_charge') }} className="btn p-0"><img src={delete_icon} alt="Delete" /></button>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="row">
+                                                                    <div className="col-2">
+                                                                        <div className="field_wrap">
+                                                                            <Select
+                                                                                value={optionPickupCharge ? optionPickupCharge.find(obj => obj.label === data?.charges_name) : ''}
+                                                                                name='charges_name'
+                                                                                onChange={(opt) => {
+                                                                                    handleChange(opt?.label, 'charges_name', i, 'pickup_quote_charge', item.id);
+                                                                                }}
+                                                                                options={optionPickupCharge}
+                                                                                classNamePrefix="select2-selection form-select"
+                                                                                menuPlacement="auto"
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-1">
+                                                                        <div className="field_wrap">
+                                                                            <Select
+                                                                                value={optionChargeBasis ? optionChargeBasis.find(obj => obj.label === data?.uom) : ''}
+                                                                                name='uom'
+                                                                                onChange={(opt) => {
+                                                                                    handleChange(opt?.label, 'uom', i, 'pickup_quote_charge', item.id);
+                                                                                }}
+                                                                                options={optionChargeBasis}
+                                                                                placeholder='Select'
+                                                                                classNamePrefix="select2-selection form-select"
+                                                                                menuPlacement="auto"
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-1">
+                                                                        <div className="field_wrap">
+                                                                            <input type="text" name="quantity" id="quantity" value={data?.quantity || ''} onChange={(e) => handleChange(e.target.value, 'quantity', i, 'pickup_quote_charge', item.id)} placeholder='Enter quantity' />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-1">
+                                                                        <div className="field_wrap">
+                                                                            <Select
+                                                                                value={optionCurrencyCharges ? optionCurrencyCharges.find(obj => obj.value === data?.currency) : ''}
+                                                                                name='currency'
+                                                                                onChange={(opt) => {
+                                                                                    handleChange(opt?.value, 'currency', i, 'pickup_quote_charge', item.id);
+                                                                                }}
+                                                                                options={optionCurrencyCharges}
+                                                                                classNamePrefix="select2-selection form-select"
+                                                                                menuPlacement="auto"
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-1">
+                                                                        <div className="field_wrap">
+                                                                            <input type="text" name="buy_cost" id="buy_cost" value={data?.buy_cost || ''} onChange={(e) => handleChange(e.target.value, 'buy_cost', i, 'pickup_quote_charge', item.id)} placeholder='Enter cost' />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-2">
+                                                                        <div className="field_wrap">
+                                                                            <Select
+                                                                                value={optionMarkupType ? optionMarkupType.find(obj => obj.value === data?.markup_type) : ''}
+                                                                                name='markup_type'
+                                                                                onChange={(opt) => {
+                                                                                    handleChange(opt?.value, 'markup_type', i, 'pickup_quote_charge', item.id);
+                                                                                }}
+                                                                                options={optionMarkupType}
+                                                                                classNamePrefix="select2-selection form-select"
+                                                                                menuPlacement="auto"
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-1">
+                                                                        <div className="field_wrap">
+                                                                            <input type="text" name={`markup_val`} id="markup_val"
+                                                                                value={data?.markup_val || ''}
+                                                                                onChange={(e) => {
+                                                                                    handleChangeAndCalculate(data, e, 'markup_val', i, 'pickup_quote_charge', item.id);
+                                                                                }}
+                                                                                placeholder='Enter value' />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-1">
+                                                                        <div className="field_wrap">
+                                                                            <input type="text" name="tax" id="tax"
+                                                                                value={data?.tax || ''}
+                                                                                onChange={(e) => {
+                                                                                    handleChangeAndCalculate(data, e, 'tax', i, 'pickup_quote_charge', item.id);
+                                                                                }}
+                                                                                placeholder='Enter tax'
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-2">
+                                                                        <div className="field_wrap">
+                                                                            <input type="text" name="total_sale_cost" id="total_sale_cost" value={Number(data?.total_sale_cost).toFixed(2)} placeholder='Enter cost' readOnly disabled />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        ))} */}
+                                                        {!viewData && (
+                                                            <div className="add_btn_box mt-3">
+                                                                <div className="add_btn_wrap">
+                                                                    <button type='button' className="btn btn-primary add_btn d-flex align-items-center" onClick={() => { addHandler(`${data?.header}`, item?.carrierId); }}> <i className='bx bx-plus me-2'></i> Add Charges</button>
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                    </AccordionBody>
+                                                </AccordionItem>
+                                            ))}
+                                            {/* {item.pickup && (
                                                 <AccordionItem>
                                                     <AccordionHeader targetId={`pickup_${item.id}`}>
                                                         Pickup
-                                                        {/* <div className="right_con ms-auto">
-                                                            <span className="price text-primary">{'₹'} {item?.truck ? Number(item?.truck_charge) + innerTotalHandler((item?.pickup_quote_charge || []), (mainChargeObj?.find(obj => obj.id === item.id)?.pickup_quote_charge || [])) : item?.rail ? Number(item?.rail_charge) + innerTotalHandler((item?.pickup_quote_charge || []), (mainChargeObj?.find(obj => obj.id === item.id)?.pickup_quote_charge || [])) : innerTotalHandler((item?.pickup_quote_charge || []), (mainChargeObj?.find(obj => obj.id === item.id)?.pickup_quote_charge || []))}</span>
-                                                        </div> */}
                                                         <div className="right_con ms-auto">
                                                             <span className="price text-primary">{'₹'} {innerTotalHandler((item?.pickup_quote_charge || []), (mainChargeObj?.find(obj => obj.id === item.id)?.pickup_quote_charge || []))}</span>
                                                         </div>
                                                     </AccordionHeader>
                                                     <AccordionBody accordionId={`pickup_${item.id}`}>
-                                                        {/* <div className="charges_wrap pickup_charge mb-3">
-                                                            <div className="row">
-                                                                <div className="col-2">
-                                                                    <div className="field_wrap">
-                                                                        <b>{item?.truck ? 'Truck' : 'Rail'}</b>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="col-8">
-                                                                </div>
-                                                                <div className="col-2">
-                                                                    <div className="field_wrap text-end ">
-                                                                        <span className='text-primary'>₹ {item?.truck ? (item?.truck_charge || 0) : (item?.rail_charge || 0)}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div> */}
                                                         {item?.pickup_quote_charge?.length !== 0 && item?.pickup_quote_charge?.map((data, index) => (
                                                             <div className="charges_wrap mb-3" key={index}>
                                                                 <div className="row">
@@ -433,13 +617,11 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                 options={optionPickupCharge}
                                                                                 classNamePrefix="select2-selection form-select"
                                                                                 menuPlacement="auto"
-                                                                            // defaultMenuIsOpen
                                                                             />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {/* <input type="text" name="uom" id="uom" value={data?.uom || ''} onChange={(e) => handleChange(e.target.value, 'uom', i, 'pickup_quote_charge', item.id)} placeholder='Enter Charge basis' /> */}
                                                                             <Select
                                                                                 value={optionChargeBasis ? optionChargeBasis.find(obj => obj.label === data?.uom) : ''}
                                                                                 name='uom'
@@ -529,8 +711,8 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                         )}
                                                     </AccordionBody>
                                                 </AccordionItem>
-                                            )}
-                                            {item.origin_port && (
+                                            )} */}
+                                            {/* {item.origin_port && (
                                                 <AccordionItem>
                                                     <AccordionHeader targetId={`origin_port_${item.id}`}>
                                                         Port of origin
@@ -634,13 +816,11 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                 options={optionOriginPortCharge}
                                                                                 classNamePrefix="select2-selection form-select"
                                                                                 menuPlacement="auto"
-                                                                            // defaultMenuIsOpen
                                                                             />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {/* <input type="text" name="uom" id="uom" value={data?.uom} onChange={(e) => handleChange(e.target.value, 'uom', i, 'originport_quote_charge', item.id)}  /> */}
                                                                             <Select
                                                                                 value={optionChargeBasis ? optionChargeBasis.find(obj => obj.label === data?.uom) : ''}
                                                                                 name='uom'
@@ -731,39 +911,16 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                         )}
                                                     </AccordionBody>
                                                 </AccordionItem>
-                                            )}
-                                            {item.ocean_freight && (
+                                            )} */}
+                                            {/* {item.ocean_freight && (
                                                 <AccordionItem>
                                                     <AccordionHeader targetId={`ocean_freight_${item.id}`}>
                                                         Ocean Freight
-                                                        {/* {item?.ocean_freight_charge !== undefined && (
-                                                            <div className="right_con ms-auto">
-                                                                <span className="price text-primary">{mainChargeObj?.find(obj => obj.id === item.id)?.ocean_quote_charge !== undefined ? '₹' : item?.ocean_freight_charge_currency} {item?.ocean_freight_charge ? convertToINR(Number(item?.ocean_freight_charge), item?.ocean_freight_charge_currency) + innerTotalHandler((item?.ocean_quote_charge || []), (mainChargeObj?.find(obj => obj.id === item.id)?.ocean_quote_charge || [])) : innerTotalHandler((item?.ocean_quote_charge || []), (mainChargeObj?.find(obj => obj.id === item.id)?.ocean_quote_charge || []))}</span>
-                                                            </div>
-                                                        )} */}
                                                         <div className="right_con ms-auto">
                                                             <span className="price text-primary">₹{innerTotalHandler(item?.ocean_quote_charge, mainChargeObj?.find(obj => obj.id === item.id)?.ocean_quote_charge)}</span>
                                                         </div>
                                                     </AccordionHeader>
                                                     <AccordionBody accordionId={`ocean_freight_${item.id}`}>
-                                                        {/* {(item?.ocean_freight_charge !== '' && item?.ocean_freight_charge !== undefined) && (
-                                                            <div className="charges_wrap pickup_charge mb-3">
-                                                                <div className="row">
-                                                                    <div className="col-2">
-                                                                        <div className="field_wrap">
-                                                                            <b>Ocean Freight</b>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-8">
-                                                                    </div>
-                                                                    <div className="col-2">
-                                                                        <div className="field_wrap text-end ">
-                                                                            <span className='text-primary'>{item?.ocean_freight_charge_currency || '₹'}{item?.ocean_freight_charge}</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        )} */}
                                                         {item?.ocean_quote_charge?.length !== 0 && item?.ocean_quote_charge?.map((data, index) => (
                                                             <div className="charges_wrap mb-3" key={index}>
                                                                 <div className="charges_wrap mb-3" key={index}>
@@ -861,13 +1018,11 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                 options={optionOceanCharge}
                                                                                 classNamePrefix="select2-selection form-select"
                                                                                 menuPlacement="auto"
-                                                                            // defaultMenuIsOpen
                                                                             />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {/* <input type="text" name="uom" id="uom" value={data?.uom || ''} onChange={(e) => handleChange(e.target.value, 'uom', i, 'ocean_quote_charge', item.id)} /> */}
                                                                             <Select
                                                                                 value={optionChargeBasis ? optionChargeBasis.find(obj => obj.label === data?.uom) : ''}
                                                                                 name='uom'
@@ -957,8 +1112,8 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                         )}
                                                     </AccordionBody>
                                                 </AccordionItem>
-                                            )}
-                                            {item.pickport_discharge && (
+                                            )} */}
+                                            {/* {item.pickport_discharge && (
                                                 <AccordionItem>
                                                     <AccordionHeader targetId={`pickport_discharge_${item.id}`}>
                                                         Port of Discharge
@@ -1061,13 +1216,11 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                 options={optionPortDischargeCharge}
                                                                                 classNamePrefix="select2-selection form-select"
                                                                                 menuPlacement="auto"
-                                                                            // defaultMenuIsOpen
                                                                             />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
-                                                                            {/* <input type="text" name="uom" id="uom" value={data?.uom || ''} onChange={(e) => handleChange(e.target.value, 'uom', i, 'port_discharge_charges', item.id)} /> */}
                                                                             <Select
                                                                                 value={optionChargeBasis ? optionChargeBasis.find(obj => obj.label === data?.uom) : ''}
                                                                                 name='uom'
@@ -1157,16 +1310,11 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                         )}
                                                     </AccordionBody>
                                                 </AccordionItem>
-                                            )}
-                                            {item.delivery && (
+                                            )} */}
+                                            {/* {item.delivery && (
                                                 <AccordionItem>
                                                     <AccordionHeader targetId={`delivery_${item.id}`}>
                                                         Delivery
-                                                        {/* {item?.delivery_charge !== undefined && (
-                                                            <div className="right_con ms-auto">
-                                                                <span className="price text-primary">{item?.delivery_currency || '₹'} {item?.delivery_charge}</span>
-                                                            </div>
-                                                        )} */}
                                                         <div className="right_con ms-auto">
                                                             <span className="price text-primary">₹ {innerTotalHandler(item?.delivery_quote_charge, mainChargeObj?.find(obj => obj.id === item.id)?.delivery_quote_charge)}</span>
                                                         </div>
@@ -1249,29 +1397,11 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                 </div>
                                                             </div>
                                                         ))}
-                                                        {/* {(item?.delivery_charge !== '' && item?.delivery_charge !== undefined) && (
-                                                            <div className="charges_wrap pickup_charge mb-3">
-                                                                <div className="row">
-                                                                    <div className="col-2">
-                                                                        <div className="field_wrap">
-                                                                            <b>Road</b>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-8">
-                                                                    </div>
-                                                                    <div className="col-2">
-                                                                        <div className="field_wrap text-end ">
-                                                                            <span className='text-primary'>{item?.delivery_currency || '₹'}{item?.delivery_charge}</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        )} */}
                                                     </AccordionBody>
                                                 </AccordionItem>
-                                            )}
+                                            )} */}
                                         </Accordion>
-                                        <div className="row">
+                                        {/* <div className="row">
                                             <div className="col-4 d-flex justify-content-between">
                                                 <span>Sub Total:</span>
                                                 <span>
@@ -1299,7 +1429,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                     </b>
                                                 </span>
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </AccordionBody>
                                 </AccordionItem>
                             ))}

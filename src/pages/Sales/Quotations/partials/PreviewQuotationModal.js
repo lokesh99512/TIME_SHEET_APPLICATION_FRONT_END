@@ -4,14 +4,14 @@ import { edit_icon, sitelogo } from '../../../../assets/images';
 import { useSelector } from 'react-redux';
 import PreviewCommonTable from './PreviewCommonTable';
 import { useDispatch } from 'react-redux';
-import { CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_SELECTED_BLANK } from '../../../../store/Sales/actiontype';
 import { BLANK_MODAL_CHARGE } from '../../../../store/Sales/Quotation/actiontype';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_SELECTED_BLANK } from '../../../../store/InstantRate/actionType';
 
 export default function PreviewQuotationModal({ previewModal, previewModalHand, setPreviewModal, QuoteModalHandler }) {
     const ref = useRef();
-    const quoteData = useSelector((state) => state.sales.quote_selected_data);
+    const quoteData = useSelector((state) => state.instantRate.quote_selected_data);
     const mainChargeObj = useSelector((state) => state?.quotation?.mainChargeObj);
     const preferData = quoteData?.filter(obj => obj.quote_type === 'preffered');
     const cheaperData = quoteData?.filter(obj => obj.quote_type === 'cheaper');

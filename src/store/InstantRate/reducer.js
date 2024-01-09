@@ -1,4 +1,4 @@
-import { GET_INSTANT_RATE_LOCATION_FAILURE, GET_INSTANT_RATE_LOCATION_SUCCESS, ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK, GET_ALL_INCOTERM, GET_ALL_INCOTERM_SUCCESS, GET_INSTANT_SEARCH_RESULT_TYPE } from "./actionType"
+import { GET_INSTANT_RATE_LOCATION_FAILURE, GET_INSTANT_RATE_LOCATION_SUCCESS, ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK, GET_ALL_INCOTERM, GET_ALL_INCOTERM_SUCCESS, GET_INSTANT_SEARCH_RESULT_TYPE, UPDATE_QUOTATION_RESULT_DETAILS, CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_UPDATE, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_SELECTED } from "./actionType"
 
 
 const INIT_STATE = {
@@ -20,6 +20,8 @@ const INIT_STATE = {
     instantRateLocation: [],
     incoterm: [],
     instantSearchResult: [],
+    instantSearchResultCopy: [],
+    quote_selected_data: [],
     error: null,
 };
 
@@ -106,9 +108,86 @@ const instantRate = (state = INIT_STATE, action) => {
         case GET_INSTANT_SEARCH_RESULT_TYPE:
             return {
                 ...state,
-                instantSearchResult: action.payload
+                instantSearchResult: action.payload,
+                instantSearchResultCopy: action.payload.map((item) => {
+                    return {
+                        ...item,
+                        tariffDetails: item.tariffDetails.map((item) => {
+                            return {
+                                ...item,
+                                selected: true
+                            }
+                        })
+                    }
+                }),
             }
-        
+        case UPDATE_QUOTATION_RESULT_DETAILS:
+            return {
+                ...state,
+                instantSearchResultCopy: state.instantSearchResultCopy.map((item, index) => {
+                    if (item.carrierId === action.payload.id) {
+                        return {
+                            ...item,
+                            tariffDetails: item.tariffDetails.map((item, index) => {
+                                if (index === action.payload.index) {
+                                    return {
+                                        ...item,
+                                        selected: action.payload.value
+                                    };
+                                }
+                                return item;
+                            })
+                        };
+                    }
+                    return item;
+                }),
+            }
+        case QUOTATION_RESULT_SELECTED:
+            return {
+                ...state,
+                quote_selected_data: action.payload
+            }
+
+        case QUOTATION_RESULT_UPDATE:
+            const newArray = [...state.quote_selected_data];
+            const existingIndex = newArray.findIndex(obj => obj.id === action.payload.id);
+            const updatedItem = {
+                ...newArray[existingIndex],
+                [action.payload.charge_name]: newArray[existingIndex][action.payload.charge_name].map((item, index) => {
+                    if (index === action.payload.index) {
+                        if (action.payload.name === 'markup_val') {
+                            return {
+                                ...item,
+                                [action.payload.name]: action.payload.value,
+                                'margin_value': action.payload.marginVal,
+                                total_sale_cost: action.payload.sales_cost
+                            };
+                        } else {
+                            return {
+                                ...item,
+                                [action.payload.name]: action.payload.value
+                            };
+                        }
+                    }
+                    return item;
+                })
+            };
+            newArray[existingIndex] = updatedItem;
+
+            return {
+                ...state,
+                quote_selected_data: newArray
+            };
+    
+        case CONFIRM_PREVIEW_DATA:
+            return {
+                ...state,
+                quote_selected_data: action.payload
+            } 
+
+        case QUOTATION_RESULT_SELECTED_BLANK:
+            return { ...state, quote_selected_data: [] }
+
         default:
             return state;
     }
