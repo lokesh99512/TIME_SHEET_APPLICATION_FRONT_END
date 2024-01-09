@@ -227,8 +227,6 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
     console.log(rows, "rows--------------------");
   }
 
-  console.log(searchForm, "<---searchform");
-
   // ------------ custom dropdown -------------------
   const toggleDropdown = (id) => {
     setIsOpen(!isOpen);

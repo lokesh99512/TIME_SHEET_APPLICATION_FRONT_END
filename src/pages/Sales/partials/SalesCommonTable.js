@@ -5,7 +5,8 @@ import { useAsyncDebounce, useExpanded, useFilters, useGlobalFilter, usePaginati
 import { Row, Table } from 'reactstrap';
 import { filter_icon, upload_icon } from '../../../assets/images';
 import { DefaultColumnFilter, Filter } from '../../../components/Common/filters';
-import { QUOTATION_RESULT_SELECTED_BLANK, SEARCH_QUOTATION_BLANK } from '../../../store/Sales/actiontype';
+import { SEARCH_QUOTATION_BLANK } from '../../../store/Sales/actiontype';
+import { QUOTATION_RESULT_SELECTED_BLANK } from '../../../store/InstantRate/actionType';
 
 // Define a default UI for filtering
 function GlobalFilter({

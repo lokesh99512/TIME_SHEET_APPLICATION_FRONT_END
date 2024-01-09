@@ -9,10 +9,11 @@ import { getSalesQuotationData } from '../../../store/Sales/actions'
 import { edit_icon, eye_icon, status_update } from '../../../assets/images'
 import { CommonValue } from '../partials/SalesCol'
 import FilterSalesComp from '../partials/FilterSalesComp'
-import { FILTER_QUOTATION_DATA, QUOTATION_RESULT_SELECTED } from '../../../store/Sales/actiontype'
+import { FILTER_QUOTATION_DATA } from '../../../store/Sales/actiontype'
 import QuotationModalComp from './partials/QuotationModalComp'
 import PreviewQuotationModal from './partials/PreviewQuotationModal'
 import { useLocation } from 'react-router-dom'
+import { QUOTATION_RESULT_SELECTED } from '../../../store/InstantRate/actionType'
 
 export default function Quotations() {
     document.title = "Sales || Navigating Freight Costs with Precision||Ultimate Rate Management platform"

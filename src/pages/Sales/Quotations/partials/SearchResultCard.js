@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from 'reactstrap';
 import { cube_filled, oocl_logo, ship_filled, truck_outline, zim_logo } from '../../../../assets/images';
-import { QUOTATION_RESULT_SELECTED, UPDATE_QUOTATION_RESULT_DETAILS } from '../../../../store/Sales/actiontype';
 import { convertToINR } from '../../../../components/Common/CommonLogic';
+import { QUOTATION_RESULT_SELECTED, UPDATE_QUOTATION_RESULT_DETAILS } from '../../../../store/InstantRate/actionType';
 const SearchResultCard = ({ data, QuoteModalHandler }) => {
     const [showDetails, setShowDetails] = useState([]);
     const dispatch = useDispatch();
     const [open, setOpen] = useState('');
-    const quote_Selected = useSelector((state) => state.sales.quote_selected_data);
+    const quote_Selected = useSelector((state) => state.instantRate.quote_selected_data);
+    const { instantRateLocation } = useSelector((state) => state.instantRate);
 
     const toggle = (id) => {
         if (open === id) {
@@ -35,7 +36,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
     }
 
     const handleChange = (val, name, index, id) => {
-        dispatch({ type: UPDATE_QUOTATION_RESULT_DETAILS, payload: { name, value: val, id } })
+        dispatch({ type: UPDATE_QUOTATION_RESULT_DETAILS, payload: { name, value: val, id, index } })
         let newArry = [];
         dispatch({ type: QUOTATION_RESULT_SELECTED, payload: newArry })
     }   
@@ -44,19 +45,19 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
         const maxSelection = 3;
 
         if (quote_Selected.length < maxSelection) {
-            const isItemSelected = quote_Selected.some(selectedItem => selectedItem.id === item.id);
+            const isItemSelected = quote_Selected.some(selectedItem => selectedItem.carrierId === item.carrierId);
 
             if (isItemSelected) {
-                const updatedSelection = quote_Selected.filter(selectedItem => selectedItem.id !== item.id);
+                const updatedSelection = quote_Selected.filter(selectedItem => selectedItem.carrierId !== item.carrierId);
                 dispatch({ type: QUOTATION_RESULT_SELECTED, payload: updatedSelection });
             } else {
                 const updatedSelection = [...quote_Selected, item];
                 dispatch({ type: QUOTATION_RESULT_SELECTED, payload: updatedSelection });
             }
         } else {
-            const isItemSelected = quote_Selected.some(selectedItem => selectedItem.id === item.id);
+            const isItemSelected = quote_Selected.some(selectedItem => selectedItem.carrierId === item.carrierId);
             if (isItemSelected) {
-                const updatedSelection = quote_Selected.filter(selectedItem => selectedItem.id !== item.id);
+                const updatedSelection = quote_Selected.filter(selectedItem => selectedItem.carrierId !== item.carrierId);
                 dispatch({ type: QUOTATION_RESULT_SELECTED, payload: updatedSelection });
             }
             console.log("You can select a maximum of 3 items.");
@@ -67,40 +68,26 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
         dispatch({ type: QUOTATION_RESULT_SELECTED, payload: newArry })
     }
 
-    // Total------------------     
-
+    // Total & SubTotal ----------------------------------     
     const innerTotalHandler = (array) => {
-        return array !== undefined ? array?.reduce((total, charge) => total + convertToINR(Number(charge.buy_cost), charge.currency), 0) : 0;
+        return array !== undefined ? array?.reduce((total, charge) => total + convertToINR(Number(charge.amount), charge.currencyCode), 0) : 0;
     }
-
     const TotalQuotationCount = (item) => {
-        let amount = 0;
-        let pickupCharge = 0;
-        let originPortCharge = 0;
-        if (item.pickup) {
-            pickupCharge = item?.pickup_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge.buy_cost), charge.currency), 0)
-            amount += pickupCharge
-        }
-        if (item.origin_port) {
-            originPortCharge = item?.originport_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge.buy_cost), charge.currency), 0)
-            amount += originPortCharge
-        }
-        if (item.ocean_freight) {
-            amount += item?.ocean_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge.buy_cost), charge.currency), 0)
-        }
-        if (item.pickport_discharge) {
-            amount += item?.port_discharge_charges?.reduce((total, charge) => total + convertToINR(Number(charge.buy_cost), charge.currency), 0);
-        }
-        if (item.delivery) {
-            amount += item?.delivery_quote_charge?.reduce((total, charge) => total + convertToINR(Number(charge.buy_cost), charge.currency), 0);
-        }
-        return amount;
+        const totalSum = item?.tariffDetails?.reduce((accOuter, currentOuter) => {
+            let innerSum = 0;
+            if(currentOuter?.selected){
+                innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+                return accInner + convertToINR(Number(currentInner.amount), currentInner.currencyCode);
+                }, 0);
+            }          
+            return accOuter + innerSum;
+        }, 0);
+        return totalSum;
     }
 
     return (
         <div>
             <div className="result_tab_content_wrap">  
-            {console.log(data,"data")}
                 {data?.length !== 0 ? data?.map((item, index) => (
                     <div className="search_result_card_check_wrap d-flex align-items-center" key={item.carrierId}>
                         <div className={`form-check me-2`} onClick={(e) => quotationCheckHandler(item)}>
@@ -109,7 +96,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                 type="checkbox"
                                 id={`result_card_${index}`}
                                 name={`result_card_${index}`}
-                                checked={quote_Selected.some(obj => obj.id === item.id)}
+                                checked={quote_Selected.some(obj => obj.carrierId === item.carrierId)}
                                 readOnly
                             />
                         </div>
@@ -117,12 +104,18 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                             <div className="search_result_card_header d-flex align-items-center">
                                 <div className="card_img">
                                     <span className='d-flex align-items-center justify-content-center img mx-auto'>
-                                        <img src={item?.carrier_name?.toLowerCase() === 'oocl' ? oocl_logo : item?.carrierName?.toLowerCase() === 'zim' ? zim_logo : cube_filled} alt="Logo" />
+                                        <img src={item?.carrierName?.toLowerCase() === 'oocl' ? oocl_logo : item?.carrierName?.toLowerCase() === 'zim' ? zim_logo : cube_filled} alt="Logo" />
                                     </span>
                                     <span className="title d-block text-center mt-2">{item?.carrierName || '-'}</span>
                                 </div>
                                 <div className="middle_content">
+                                    {/* {console.log(instantRateLocation,"instantRateLocation")} */}
                                     <span className="duration text-center d-block">Duration <b>{item.oceanTransitTime || 0} days</b></span>
+                                    <div className="from_to_wrap mt-2 mb-3 d-flex justify-content-between">
+                                        <span className="from_loc">{instantRateLocation?.find((obj) => obj?.id === item?.originId).code || '-'}</span>
+                                        <span className="icon d-flex align-items-center justify-content-center"><img src={ship_filled} alt="Shipping" /></span>
+                                        <span className="to_loc">{instantRateLocation?.find((obj) => obj?.id === item?.destinationId).code || '-'}</span>
+                                    </div>
                                     {/* <div className="from_to_wrap mt-2 mb-3 d-flex justify-content-between">
                                         {item.location_route.length === 4 ? (
                                             <>
@@ -148,184 +141,56 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                 </div>
                                 <div className="total_wrap">
                                     <p className="total_price text-center"><b>₹ {TotalQuotationCount(item)}</b></p>
-                                    {/* <div className="btn_wrap d-flex">
+                                    <div className="btn_wrap d-flex">
                                         <button type='button' className='btn text-primary view_detail_btn' onClick={() => { showDetailsHandler(index, item.carrierId); }}>
                                             View{showDetails?.find(obj => obj.id === item.id)?.details ? 'Less' : 'Detail'}</button>
                                         <button type='button' className='btn btn-primary quote_now_btn' onClick={() => { QuoteModalHandler(); singleQuoteModal(item) }} disabled={quote_Selected.some(obj => obj.id === item.carrierId) || quote_Selected?.length >= 2}>Quote Now</button>
-                                    </div> */}
+                                    </div>
                                 </div>
                             </div>
-                            {/* {showDetails?.find(obj => obj.id === item.id)?.details && (
-                                <div className="search_result_accordion_details">
-                                    <Accordion flush open={open} toggle={toggle}>
-                                        <AccordionItem>
-                                            <AccordionHeader targetId={`pickup_${index}`}>
-                                                <div className="left_lable d-flex align-items-center">
-                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.pickup, 'pickup', index, item.id); }}>
-                                                        <input
-                                                            className="form-check-input"
-                                                            type="checkbox"
-                                                            id={`pickup_${index}`}
-                                                            name={`pickup`}
-                                                            checked={item.pickup || false}
-                                                            readOnly
-                                                        />
-                                                        <label className="form-check-label" htmlFor={`pickup_${index}`}></label>
-                                                    </div>
-                                                    <img src={truck_outline} alt="Truck" className='me-2' />
-                                                    Pick up
-                                                </div>
-                                                <div className="right_con d-flex ms-auto">
-                                                    {item.pickup_co !== '' && <span>CO2: <b>{item.pickup_co}</b></span>}
-                                                    <span className='text-primary'>{'₹'} {innerTotalHandler(item?.pickup_quote_charge)}</span>
-                                                </div>
-                                            </AccordionHeader>
-                                            <AccordionBody accordionId={`pickup_${index}`}>
-                                                <div className="price_details_wrap ps-5">
-                                                    {item?.pickup_quote_charge?.length !== 0 && item?.pickup_quote_charge?.map((data,index) => (
-                                                        <div className="details d-flex justify-content-between" key={`key_${index}`}>
-                                                            <p className='me-2'>{data?.charges_name || 'Pickup'}</p>
-                                                            <span className='text-primary'>{data?.currency || '₹'} {data.buy_cost || '0'}</span>
+                            {showDetails?.find(obj => obj.id === item?.carrierId)?.details && (
+                                <div className="search_result_accordion_details">  
+                                    {item?.tariffDetails?.length !== 0 && (                                    
+                                        <Accordion flush open={open} toggle={toggle}>
+                                            {item?.tariffDetails?.map((data, index) => (                                            
+                                                <AccordionItem key={index}>
+                                                    <AccordionHeader targetId={`detail_${index}`}>
+                                                        <div className="left_lable d-flex align-items-center">
+                                                            <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!data?.selected, data?.header,index,item?.carrierId); }}>
+                                                                <input
+                                                                    className="form-check-input"
+                                                                    type="checkbox"
+                                                                    id={`${data?.header}`}
+                                                                    name={`${data?.header}`}
+                                                                    checked={data?.selected || false}
+                                                                    readOnly
+                                                                />
+                                                                <label className="form-check-label" htmlFor={`${data?.header}`}></label>
+                                                            </div>
+                                                            <img src={truck_outline} alt="Truck" className='me-2' />
+                                                            {data?.header?.split('_').join(' ') || '-'}
                                                         </div>
-                                                    ))}
-                                                </div>
-                                            </AccordionBody>
-                                        </AccordionItem>
-                                        <AccordionItem>
-                                            <AccordionHeader targetId={`origin_port_${index}`}>
-                                                <div className="left_lable d-flex align-items-center">
-                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.origin_port, 'origin_port', index, item.id); }}>
-                                                        <input
-                                                            className="form-check-input"
-                                                            type="checkbox"
-                                                            id={`origin_port${index}`}
-                                                            name={`origin_port`}
-                                                            checked={item.origin_port || false}
-                                                            readOnly
-                                                        />
-                                                        <label className="form-check-label" htmlFor={`origin_port${index}`}></label>
-                                                    </div>
-                                                    <img src={truck_outline} alt="Truck" className='me-2' />
-                                                    Port of origin
-                                                </div>
-                                                <div className="right_con d-flex ms-auto">
-                                                    {item.pickup_co !== '' && <span>CO2: <b>{item.origin_port_co}</b></span>}
-                                                    <span className='text-primary'>{'₹'} {innerTotalHandler(item?.originport_quote_charge)}</span>
-                                                </div>
-                                            </AccordionHeader>
-                                            <AccordionBody accordionId={`origin_port_${index}`}>
-                                                <div className="price_details_wrap ps-5">
-                                                    {item?.originport_quote_charge?.length !== 0 && item?.originport_quote_charge?.map((data) => (
-                                                        <div className="details d-flex justify-content-between" key={`key_${data?.charges_name}`}>
-                                                            <p className='me-2'>{data?.charges_name}</p>
-                                                            <span className='text-primary'>{data?.currency || '₹'} {data.buy_cost || '0'}</span>
+                                                        <div className="right_con d-flex ms-auto">
+                                                            {/* {item.pickup_co !== '' && <span>CO2: <b>{item.pickup_co}</b></span>} */}
+                                                            <span className='text-primary'>{'₹'} {innerTotalHandler(data?.tariffBreakDowns || [])}</span>
                                                         </div>
-                                                    ))}
-                                                </div>
-                                            </AccordionBody>
-                                        </AccordionItem>
-                                        <AccordionItem>
-                                            <AccordionHeader targetId={`ocean_freight_${index}`}>
-                                                <div className="left_lable d-flex align-items-center">
-                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.ocean_freight, 'ocean_freight', index, item.id); }}>
-                                                        <input
-                                                            className="form-check-input"
-                                                            type="checkbox"
-                                                            id={`ocean_freight${index}`}
-                                                            name={`ocean_freight`}
-                                                            checked={item.ocean_freight}
-                                                            readOnly
-                                                        />
-                                                        <label className="form-check-label" htmlFor={`ocean_freight${index}`}></label>
-                                                    </div>
-                                                    <img src={truck_outline} alt="Truck" className='me-2' />
-                                                    Ocean Freight
-                                                </div>
-                                                <div className="right_con d-flex ms-auto">
-                                                    {item.ocean_freight_co !== '' && <span>CO2: <b>{item.ocean_freight_co}</b></span>}
-                                                    <span className='text-primary'>{'₹'} {innerTotalHandler(item?.ocean_quote_charge)}</span>
-                                                </div>
-                                            </AccordionHeader>
-                                            <AccordionBody accordionId={`ocean_freight_${index}`}>
-                                                <div className="price_details_wrap ps-5">
-                                                    {item?.ocean_quote_charge?.length !== 0 && item?.ocean_quote_charge?.map((data,index) => (
-                                                        <div className="details d-flex justify-content-between" key={`key_${index}`}>
-                                                            <p className='me-2'>{data?.charges_name || 'Ocean Freight'}</p>
-                                                            <span className='text-primary'>{data?.currency || '₹'} {data.buy_cost || '0'}</span>
+                                                    </AccordionHeader>
+                                                    <AccordionBody accordionId={`detail_${index}`}>
+                                                        <div className="price_details_wrap ps-5">
+                                                            {data?.tariffBreakDowns?.length !== 0 && data?.tariffBreakDowns?.map((val,index) => (
+                                                                <div className="details d-flex justify-content-between" key={`key_${index}`}>
+                                                                    <p className='me-2'>{val?.component || 'Pickup'}</p>
+                                                                    <span className='text-primary'>{val?.currencyCode || '₹'} {val?.amount || '0'}</span>
+                                                                </div>
+                                                            ))}
                                                         </div>
-                                                    ))}
-                                                </div>
-                                            </AccordionBody>
-                                        </AccordionItem>
-                                        <AccordionItem>
-                                            <AccordionHeader targetId={`pickport_discharge_${index}`}>
-                                                <div className="left_lable d-flex align-items-center">
-                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.pickport_discharge, 'pickport_discharge', index, item.id); }}>
-                                                        <input
-                                                            className="form-check-input"
-                                                            type="checkbox"
-                                                            id={`pickport_discharge${index}`}
-                                                            name={`pickport_discharge`}
-                                                            checked={item.pickport_discharge}
-                                                            readOnly
-                                                        />
-                                                        <label className="form-check-label" htmlFor={`pickport_discharge${index}`}></label>
-                                                    </div>
-                                                    <img src={truck_outline} alt="Truck" className='me-2' />
-                                                    Port of discharge
-                                                </div>
-                                                <div className="right_con d-flex ms-auto">
-                                                    {item?.port_discharge_co !== '' && <span>CO2: <b>{item.port_discharge_co}</b></span>}
-                                                    <span className='text-primary'>{'₹'} {innerTotalHandler(item?.port_discharge_charges)}</span>
-                                                </div>
-                                            </AccordionHeader>
-                                            <AccordionBody accordionId={`pickport_discharge_${index}`}>
-                                                <div className="price_details_wrap ps-5">
-                                                    {item?.port_discharge_charges?.length !== 0 && item?.port_discharge_charges?.map((data) => (
-                                                        <div className="details d-flex justify-content-between" key={`key_${data?.charges_name}`}>
-                                                            <p className='me-2'>{data?.charges_name}</p>
-                                                            <span className='text-primary'>{data?.currency || '₹'}  {data.buy_cost || '0'}</span>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </AccordionBody>
-                                        </AccordionItem>
-                                        <AccordionItem>
-                                            <AccordionHeader targetId={`delivery_charge_${index}`}>
-                                                <div className="left_lable d-flex align-items-center">
-                                                    <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!item.delivery, 'delivery', index, item.id); }}>
-                                                        <input
-                                                            className="form-check-input"
-                                                            type="checkbox"
-                                                            id={`delivery${index}`}
-                                                            name={`delivery`}
-                                                            checked={item.delivery}
-                                                            readOnly
-                                                        />
-                                                        <label className="form-check-label" htmlFor={`delivery${index}`}></label>
-                                                    </div>
-                                                    <img src={truck_outline} alt="Truck" className='me-2' />
-                                                    Delivery
-                                                </div>
-                                                <div className="right_con d-flex ms-auto">
-                                                    {item?.port_discharge_co !== '' && <span>CO2: <b>{item.port_discharge_co}</b></span>}
-                                                    <span className='text-primary'>{'₹'} {innerTotalHandler(item?.delivery_quote_charge)}</span>
-                                                </div>
-                                            </AccordionHeader>
-                                            <AccordionBody accordionId={`delivery_charge_${index}`}>
-                                                <div className="price_details_wrap ps-5">
-                                                    {item?.delivery_quote_charge?.length !== 0 && item?.delivery_quote_charge?.map((data,index) => (
-                                                        <div className="details d-flex justify-content-between" key={`key_${index}`}>
-                                                            <p className='me-2'>{data?.charges_name || 'Delivery'}</p>
-                                                            <span className='text-primary'>{data?.currency || '₹'} {data.buy_cost || '0'}</span>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </AccordionBody>
-                                        </AccordionItem>
-                                    </Accordion>
+                                                    </AccordionBody>
+                                                </AccordionItem>
+                                            ))}
+                                        </Accordion>
+                                    )}                              
                                 </div>
-                            )} */}
+                            )}
                         </div>
                     </div>
                 )) : (

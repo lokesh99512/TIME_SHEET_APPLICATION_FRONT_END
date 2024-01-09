@@ -19,7 +19,7 @@ export default function CreateQuotation() {
     const searchData = useSelector((state) => state?.sales?.createFields);    
     const navigate = useNavigate();
     const dispatch = useDispatch();    
-    const quote_Selected = useSelector((state) => state.sales.quote_selected_data);
+    const quote_Selected = useSelector((state) => state.instantRate.quote_selected_data);
 
     function removeBodyCss() {
         document.body.classList.add("no_padding");

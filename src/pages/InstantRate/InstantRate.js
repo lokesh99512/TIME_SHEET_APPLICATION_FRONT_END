@@ -38,6 +38,10 @@ const InstantRate = () => {
         let data = {
             fclInquiryField: {
                 customerId: searchData?.customerName || null,
+
+                originLocationTypeId: searchData?.location_from?.locationType || null,
+                destinationLocationTypeId: searchData?.location_to?.locationType || null,
+
                 ...(searchData?.location_from?.locationType === "PORT" ? {
                     "originPortId": searchData?.location_from?.value || null,
                 } : searchData?.location_from?.locationType === "CITY" ? {
@@ -53,6 +57,7 @@ const InstantRate = () => {
                 } : searchData?.location_to?.locationType === "ICD" ? {
                     "destinationIcdId": searchData?.location_to?.value || null,
                 } : ''),
+
                 cargoDateFrom: dateFrom || null,
                 cargoDateTo: dateTo || null,
                 cargoTypeId: searchData?.cargo_type?.id || null,
@@ -156,7 +161,7 @@ const InstantRate = () => {
             {quoteModal && <QuotationModalComp quoteModal={quoteModal} setQuoteModal={setQuoteModal} QuoteModalHandler={QuoteModalHandler} setPreviewModal={setPreviewModal} />}
 
             {/* Preview Quotation Modal */}
-            {previewModal && <PreviewQuotationModal previewModal={previewModal} previewModalHand={previewModalHand} setPreviewModal={setPreviewModal} QuoteModalHandler={QuoteModalHandler} />}
+            {/* {previewModal && <PreviewQuotationModal previewModal={previewModal} previewModalHand={previewModalHand} setPreviewModal={setPreviewModal} QuoteModalHandler={QuoteModalHandler} />} */}
         </>
     )
 }
