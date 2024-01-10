@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
     Accordion,
     AccordionBody,
@@ -17,7 +17,7 @@ const ModalFclInlandCharge = ({ viewData, modal, onCloseClick }) => {
     const ref2 = useRef();
     const [open, setOpen] = useState("");
     const fclInlandFreightView = useSelector((state) => state?.procurement?.fclInlandFreightView);
-    const fclInlandSurchargeView = useSelector((state) => state?.procurement?.fclInlandSurchargeView);
+    const fclInlandSurchargeView = useSelector((state) => state?.procurement?.fclInlandSurchargeView);   
     const toggle = (id) => {
         if (open === id) {
             setOpen("");
@@ -133,7 +133,13 @@ const ModalFclInlandCharge = ({ viewData, modal, onCloseClick }) => {
                                                             <td>{item?.chargeType || ''}</td>
                                                             <td>{item?.commodity?.name || ''}</td>
                                                             <td>{item?.originCity?.cityName || ''} - {item?.originCity?.country?.countryName || ''}</td>
-                                                            <td>{item?.destinationCity?.cityName || ''} - {item?.destinationCity?.country?.countryName || ''}</td>
+                                                            <td>{item?.destinationCity !== null ? item?.destinationCity?.cityName : 
+                                                            item?.destinationOceanIcd !== null ? item?.destinationOceanIcd?.code : 
+                                                            item?.destinationOceanPort !== null ? item?.destinationOceanPort?.code : ''} - 
+                                                            {item?.destinationCity !== null ? item?.destinationCity?.country?.countryName :
+                                                            item?.destinationOceanIcd !== null ? item?.destinationOceanIcd?.country?.countryName :
+                                                            item?.destinationOceanPort !== null ? item?.destinationOceanPort?.country?.countryName
+                                                             : ''}</td>
                                                             <td>{item?.transitTime || ''}</td>
                                                             <td>{item?.transportMode || ''}</td>
                                                             <td>{item?.currency?.currencyName || ''}</td>

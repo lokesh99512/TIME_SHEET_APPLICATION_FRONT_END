@@ -759,7 +759,35 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                         }}
                       />
                     </div>
-                    <div className="common_dropdwon_btn_wrap bottom_drop_field">
+                    <div className="common_dropdwon_btn_wrap bottom_drop_field currency_field_wrap">
+                      <Select
+                        id="more_menu"
+                        value={searchForm?.cargo_value?.currency}
+                        options={currency_data.map(({ value, currencyCode }) => ({ value, label: currencyCode, currencyCode })) || []}
+                        // options={optionCurrency.map(({ value, name, code }) => ({ value, label: name, code }))}
+                        onChange={(selectedOption) => {
+                          handleChangeHandler({ ...searchForm?.cargo_value, currency: selectedOption }, "cargo_value");
+                        }}
+                        isSearchable
+                        placeholder={searchForm?.cargo_value?.currency?.currencyCode || "Select Currency"}
+                        // formatOptionLabel={({ label, code }) => (
+                        //   <div className="d-flex justify-content-between">
+                        //     <span>{label}</span>
+                        //     <span>{code}</span>
+                        //   </div>
+                        // )}
+                        styles={{
+                          control: (provided) => ({
+                            ...provided,
+                            maxWidth: '150px',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }),
+                        }}
+                      />
+                    </div>
+                    {/* <div className="common_dropdwon_btn_wrap bottom_drop_field">
                       <div
                         id="more_menu"
                         className={`d-flex align-items-center ${isOpen && dropId === 8 ? "openmenu" : ""}`}
@@ -786,7 +814,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                           ))}
                         </ul>
                       ) : null}
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

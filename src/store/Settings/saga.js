@@ -54,7 +54,7 @@ import {
   getFCLSurcharge,
   getSettingsUsers,
 } from "../../helpers/fakebackend_helper";
-import { COMPANY_BASIC_DETAILS } from "../../helpers/url_helper";
+import { COMPANY_BASIC_DETAILS, Get_File_URL } from "../../helpers/url_helper";
 import {
   CompanyAllDetails,
   CompanyBasicDetailsAPI,
@@ -78,6 +78,7 @@ import {
   showSuccessToast,
 } from "../../components/Common/CustomToast";
 import { GetFileSer } from "../../helpers/services/GlobalService";
+import axios from "axios";
 
 function* getUsersData() {
   try {
@@ -215,6 +216,10 @@ function* getAllCompanySettings() {
     const base64Encoded = window.btoa(imageData);
     // const base64Encoded = Buffer.from(imageData, 'binary').toString('base64');
     const resImageData = yield call(GetFileSer, base64Encoded);
+    console.log(`${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`);
+    if (response && response.content && response.content[0]) {
+      response.content[0].logo = `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`;
+    }
 
     yield put({ type: GET_ALL_COMPANY_SETTINGS_SUCCESS, payload: {...response, imageData: resImageData} });
   } catch (error) {

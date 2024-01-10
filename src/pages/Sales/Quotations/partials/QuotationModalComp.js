@@ -327,8 +327,8 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                 <div className="row">
                                                                     <div className="col-2">
                                                                         <div className="field_wrap">
-                                                                            {subindex === 0 && <label className='form-label' htmlFor="charges_name">{subData?.component || ''}</label>}
-                                                                            <input type="text" value={subData?.amount || ''} name="charges_name" id="charges_name" placeholder='Freight' readOnly disabled={viewData} />
+                                                                            {subindex === 0 && <label className='form-label' htmlFor="charges_name">Charge Name</label>}
+                                                                            <input type="text" value={subData?.component || ''} name="charges_name" id="charges_name" placeholder='Freight' readOnly disabled={viewData} />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-1">
@@ -352,7 +352,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                     <div className="col-1">
                                                                         <div className="field_wrap">
                                                                             {subindex === 0 && <label className='form-label' htmlFor="buy_cost">Total Buy Cost</label>}
-                                                                            <input type="text" value={subData?.amount || ''} name="buy_cost" id="buy_cost" readOnly disabled={viewData} />
+                                                                            <input type="text" value={parseInt(subData?.unitPerPrice, 10) || ''} name="buy_cost" id="buy_cost" readOnly disabled={viewData} />
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-2">

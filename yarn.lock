@@ -12094,6 +12094,11 @@
   "resolved" "https://registry.npmjs.org/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz"
   "version" "3.0.4"
 
+"react-loading-skeleton@^3.3.1":
+  "integrity" "sha512-NilqqwMh2v9omN7LteiDloEVpFyMIa0VGqF+ukqp0ncVlYu1sKYbYGX9JEl+GtOT9TKsh04zCHAbavnQ2USldA=="
+  "resolved" "https://registry.npmjs.org/react-loading-skeleton/-/react-loading-skeleton-3.3.1.tgz"
+  "version" "3.3.1"
+
 "react-modal-video@^2.0.0":
   "integrity" "sha512-KvR6XYH36t5W5J4EvLjWdoJYboghVA0VZbfMhLN3NnAHt8O95kokoS0mAwlhE5HrDHvW+20OtPc+Zhk9uufvWw=="
   "resolved" "https://registry.npmjs.org/react-modal-video/-/react-modal-video-2.0.0.tgz"

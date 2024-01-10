@@ -9,6 +9,7 @@ import {
   GET_ALL_INCOTERM,
   POST_INSTANT_SEARCH_DATA_TYPE,
   GET_INSTANT_SEARCH_RESULT_TYPE,
+  POST_INSTANT_SEARCH_LOADER,
 } from "./actionType"
 import { showErrorToast, showSuccessToast } from "../../components/Common/CustomToast";
 import { postInstantRateSer } from "../../helpers/services/InstantRateService";
@@ -33,14 +34,15 @@ function* fetchAllIncoterm() {
     console.log(error, "location error-----------");
   }
 }
-function* postInstantSearchSaga({payload: { data }}) {
+function* postInstantSearchSaga({payload: { data }}) {  
+  yield put({ type: POST_INSTANT_SEARCH_LOADER, payload: true });
   try {
     const response = yield call(postInstantRateSer, data);
     console.log(response, "instant===============");   
     yield put({ type: GET_INSTANT_SEARCH_RESULT_TYPE, payload: response });
-    showSuccessToast("Update SuccessFully");
+    yield put({ type: POST_INSTANT_SEARCH_LOADER, payload: false });
   } catch (error) {
-    console.log(error, "location error-----------");
+    yield put({ type: POST_INSTANT_SEARCH_LOADER, payload: false });
     showErrorToast(error?.response?.data?.message);
   }
 }

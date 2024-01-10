@@ -69,7 +69,18 @@ function* postFclFreightUploadSaga({ payload: { formData, id } }) {
         yield put({type: UPDATE_FCL_ACTIVE_TAB, payload: {tab: 3}});
     } catch (error) {
         console.log(error, "error");
-        showErrorToast(error?.message);
+        if(error?.response?.status === 400){
+            const downloadFile = error?.response?.data?.filePath;
+            var rest = downloadFile.substring(0, downloadFile.lastIndexOf("/") + 1);
+            var last = downloadFile.substring(downloadFile.lastIndexOf("/") + 1, downloadFile.length);
+            const base64Encoded = window.btoa(last);
+            // const base64Encoded = Buffer.from(imageData, 'binary').toString('base64');
+            if(downloadFile !== undefined && downloadFile !== ''){
+                const resImageData = yield call(GetFileSer, base64Encoded);
+                console.log(resImageData,"resImageData");
+            }
+        }
+        showErrorToast(error?.response?.data?.description);
     }
 }
 function* postFclSurchargeUploadSaga({ payload: { data, id } }) {
