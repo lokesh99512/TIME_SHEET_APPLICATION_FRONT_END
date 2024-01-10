@@ -5,6 +5,7 @@ import { Nav, NavItem, NavLink } from 'reactstrap';
 import { filter_icon } from "../../../../assets/images";
 import FilterSalesComp from "../../partials/FilterSalesComp";
 import SearchResultCard from './SearchResultCard';
+import ResultCardSkeleton from "../../../Skeleton/ResultCardSkeleton";
 
 const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
     const [activeTab, setactiveTab] = useState("all");
@@ -25,8 +26,9 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
     const resultData = useSelector((state) => state?.sales?.quotation_result_data);
-    const quote_Selected = useSelector((state) => state.instantRate.quote_selected_data);
-    const {instantSearchResult, instantSearchResultCopy} = useSelector((state) => state?.instantRate);
+    // const quote_Selected = useSelector((state) => state.instantRate.quote_selected_data);
+    const {quote_selected_data,result_loader,instantSearchResultCopy} = useSelector((state) => state.instantRate);
+    // const {instantSearchResult, instantSearchResultCopy} = useSelector((state) => state?.instantRate);
     // console.log(resultsDataOr, "resultsDataOr");
 
     const navToggle = (tab) => {
@@ -70,7 +72,7 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
                     <span>{getResultCount()} Search Results</span>
                     
                     {searchResult && <button type="button" className='btn btn-primary ms-auto quote_btn' onClick={QuoteModalHandler} 
-                             disabled={quote_Selected?.length === 0}>Quote Now</button>}
+                             disabled={quote_selected_data?.length === 0}>Quote Now</button>}
                 </div>
                 <div className="result_tab_wrap">
                     <Nav pills className="navtab-bg nav-justified">
@@ -101,7 +103,8 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
                         </NavItem>
                     </Nav>
                 </div>
-
+                {/* {result_loader ? } */}
+                {/* <ResultCardSkeleton /> */}
                 {activeTab === 'all' ? (
                     <SearchResultCard data={instantSearchResultCopy} QuoteModalHandler={QuoteModalHandler} />
                 ) : activeTab === 'preferred' ? (

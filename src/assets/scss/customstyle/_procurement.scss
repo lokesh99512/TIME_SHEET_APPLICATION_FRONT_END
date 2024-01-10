@@ -1238,6 +1238,9 @@ input[type="number"]{
             }
         }
     }
+    &.currency_field_wrap{
+        width: 125px
+    }
     @media only screen and (max-height: 750px) {        
         &.bottom_drop_field{
             .common_dropdown_wrap{

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import SimpleBar from "simplebar-react";
@@ -12,6 +12,32 @@ const ModalFCLFreight = ({ viewData, modal, onCloseClick, modalType }) => {
     const [open, setOpen] = useState('');
     const ref = useRef();
     const ref2 = useRef();
+
+    // useEffect(() => {
+    //     const data = [
+    //         { id: 1, name: 'John', data: { age: 25 } },
+    //         { id: 2, name: 'Jane', data: { age: 30 } },
+    //         { id: 1, name: 'John', data: { city: 'New York', occupation: 'Engineer' } },
+    //         { id: 3, name: 'Bob', data: { hobby: 'Reading', gender: 'Male' } }
+    //       ];
+
+    //     // const mergedData = fcl_freight_view?.content?.reduce((acc, current) => {
+    //     //     // console.log(current,"current");
+    //     //     // console.log(acc,"acc");
+    //     //     const existingItem = acc?.find(item => item?.originPort?.code === current?.originPort?.code && item?.destinationPort?.code === current?.destinationPort?.code);
+    //     //     console.log(existingItem,"existingItem");
+          
+    //     //     if (existingItem) {
+    //     //         let obj = {name: current.oceanContainer.name, amount: current.freightAmount}
+    //     //       existingItem = { ...existingItem, obj};
+    //     //     } else {
+    //     //       acc.push(current);
+    //     //     }
+          
+    //     //     return acc;
+    //     // }, []);
+    //     // console.log(mergedData,"mergedData");
+    // }, [fcl_freight_view])
     const toggle = (id) => {
         if (open === id) {
             setOpen('');

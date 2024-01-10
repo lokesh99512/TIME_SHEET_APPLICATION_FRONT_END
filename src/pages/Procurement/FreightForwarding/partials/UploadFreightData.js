@@ -577,7 +577,7 @@ export default function UploadFreightData() {
 
                                                 <li className={`d-flex`}>
                                                     <button
-                                                        className={`btn btn-primary ${activeTabProgress === 1 ? isAnyValueEmpty(addFCL?.carrierDetails) ? "disabled" : "" : activeTabProgress === 2 ? selectedFiles?.length === 0 ? "disabled" : "" : activeTabProgress === 3 ? isAnyValueEmptyInArray(addFCL?.surcharges) ? "disabled" : "" : ""}`}
+                                                        className={`btn btn-primary ${activeTabProgress === 1 ? isAnyValueEmpty(addFCL?.carrierDetails) ? "disabled" : "" : activeTabProgress === 2 ? selectedFiles?.length === 0 ? "disabled" : "" : ""}`}
                                                         onClick={() => { uploadSaveHandler() }}
                                                     >Save <i className="bx bx-chevron-right ms-1"></i></button>
 
