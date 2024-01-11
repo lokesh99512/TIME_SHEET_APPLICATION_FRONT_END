@@ -8,22 +8,23 @@ const ShipmentForm = () => {
     const shipmentDetailsOld = useSelector((state) => state.sales.createFields);
     const shipmentDetails = useSelector((state) => state?.instantRate?.searchForm);
     const shipmentDetailsFormik = useFormik({
+        enableReinitialize: true,
         initialValues: {
-            origin_city: shipmentDetails?.location_from?.address?.label || '',
-            destination_city: shipmentDetails?.location_to?.address?.label || '',
-            origin_port: shipmentDetails?.location_from?.address?.value || '',
-            destination_port: shipmentDetails?.location_to?.address?.value || '',
-            cargo_type: shipmentDetails?.cargo_type?.name || '',
+            origin_city: shipmentDetails?.location_from?.locationType === "CITY" && shipmentDetails?.location_from?.code || '-',
+            destination_city: shipmentDetails?.location_to?.locationType === "CITY" && shipmentDetails?.location_to?.code || '-',
+            origin_port: shipmentDetails?.location_from?.locationType === "PORT" && shipmentDetails?.location_from?.code || '-',
+            destination_port: shipmentDetails?.location_to?.locationType === "PORT" && shipmentDetails?.location_to?.code || '-',
+            cargo_type: shipmentDetails?.cargo_type?.value || '-',
             commodity: "",
-            cargo_value: shipmentDetails?.cargo_value?.value || '',
-            incoterms: shipmentDetails?.incoterm || '',
+            cargo_value: shipmentDetails?.cargo_value?.value || '-',
+            incoterms: shipmentDetails?.incoterm?.label || '-',
 
-            container_type: shipmentDetails?.container_type[0]?.name || '',
-            quantity: shipmentDetails?.container_type[0]?.unit || '',
+            container_type: shipmentDetails?.container_type?.containerArray[0]?.label || '',
+            quantity: shipmentDetails?.container_type?.containerArray[0]?.unitNew || '',
             length: "",
             width: "",
             height: "",
-            gross_weight: (shipmentDetails?.cargo_weight?.value || '') +" "+ (shipmentDetails?.cargo_weight?.weight || ''),
+            gross_weight: (shipmentDetails?.container_type?.cargo_weight?.value || '') +" "+ (shipmentDetails?.container_type?.cargo_weight?.weight?.value || ''),
             volumentric_wt: "",
         },
         onSubmit: (values) => {
@@ -49,6 +50,7 @@ const ShipmentForm = () => {
                                             onChange={shipmentDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
+                                            readOnly
                                         />
                                     </div>
                                 </div>
@@ -62,6 +64,7 @@ const ShipmentForm = () => {
                                             onChange={shipmentDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
+                                            readOnly
                                         />
                                     </div>
                                 </div>
@@ -75,6 +78,7 @@ const ShipmentForm = () => {
                                             onChange={shipmentDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
+                                            readOnly
                                         />
                                     </div>
                                 </div>
@@ -88,6 +92,7 @@ const ShipmentForm = () => {
                                             onChange={shipmentDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
+                                            readOnly
                                         />
                                     </div>
                                 </div>
@@ -101,6 +106,7 @@ const ShipmentForm = () => {
                                             onChange={shipmentDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
+                                            readOnly
                                         />
                                     </div>
                                 </div>
@@ -126,6 +132,7 @@ const ShipmentForm = () => {
                                             onChange={shipmentDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
+                                            readOnly
                                         />
                                     </div>
                                 </div>
@@ -139,6 +146,7 @@ const ShipmentForm = () => {
                                             onChange={shipmentDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
+                                            readOnly
                                         />
                                     </div>
                                 </div>
@@ -152,6 +160,7 @@ const ShipmentForm = () => {
                                             onChange={shipmentDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
+                                            readOnly
                                         />
                                     </div>
                                 </div>
@@ -165,6 +174,7 @@ const ShipmentForm = () => {
                                             onChange={shipmentDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
+                                            readOnly
                                         />
                                     </div>
                                 </div>
@@ -178,6 +188,7 @@ const ShipmentForm = () => {
                                             onChange={shipmentDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
+                                            readOnly
                                         />
                                     </div>
                                 </div>
@@ -191,6 +202,7 @@ const ShipmentForm = () => {
                                             onChange={shipmentDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
+                                            readOnly
                                         />
                                     </div>
                                 </div>
@@ -204,6 +216,7 @@ const ShipmentForm = () => {
                                             onChange={shipmentDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
+                                            readOnly
                                         />
                                     </div>
                                 </div>
@@ -217,6 +230,7 @@ const ShipmentForm = () => {
                                             onChange={shipmentDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
+                                            readOnly
                                         />
                                     </div>
                                 </div>
@@ -230,6 +244,7 @@ const ShipmentForm = () => {
                                             onChange={shipmentDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
+                                            readOnly
                                         />
                                     </div>
                                 </div>

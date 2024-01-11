@@ -94,7 +94,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts --max_old_space_size=12000 build",
+    "build": "set \"GENERATE_SOURCEMAP=false\" && set CI=false && react-scripts --max_old_space_size=12000 build",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier --write \"**/*.{js,jsx,json,md,html,css,less,scss}\"",
