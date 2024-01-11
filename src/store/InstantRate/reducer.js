@@ -8,7 +8,7 @@ const INIT_STATE = {
         // shipping_by: '',
         // cargo_weight: { weight: "MT",value: ''},
         cargo_type: { value: "GENERAL",label: "GENERAL", id: 1, version: 0 },
-        cargo_value: { currency: { name: 'Rupee', value: 'rupee', code: '₹' }, value: '' },
+        cargo_value: { currency: { label: 'INR', value: 'rupee',currencyCode: "INR", id: 2, version: 0 }, value: '' },
         // incoterm: '',
         customerName: '',
         container_type: { cargo_weight: { weight: {value: "MT",label: "MT", id: 7, version: 2}, value: '' } },
@@ -99,10 +99,25 @@ const instantRate = (state = INIT_STATE, action) => {
                 error: action.payload,
             };
         case GET_ALL_INCOTERM_SUCCESS:
+            let existingObj = action.payload.content?.find((obj) => obj.name === "EX WORKS")
             return {
                 ...state,
-                incoterm: action.payload,
+                incoterm: action.payload.content.map((item) => {
+                    return {
+                        value: item.id,
+                        label: item.name,
+                        version: item.version
+                    }
+                }),
                 error: null,
+                searchForm: {
+                    ...state.searchForm,
+                    incoterm: {
+                        value: existingObj?.id,
+                        label: existingObj?.name,
+                        version: existingObj?.version
+                    }
+                }
             };
         
         // ------------------ search Result
@@ -151,28 +166,58 @@ const instantRate = (state = INIT_STATE, action) => {
 
         case QUOTATION_RESULT_UPDATE:
             const newArray = [...state.quote_selected_data];
-            const existingIndex = newArray.findIndex(obj => obj.id === action.payload.id);
-            const updatedItem = {
+            const existingIndex = newArray.findIndex(obj => obj.carrierId === action.payload.id);
+            let updatedItem = {
                 ...newArray[existingIndex],
-                [action.payload.charge_name]: newArray[existingIndex][action.payload.charge_name].map((item, index) => {
-                    if (index === action.payload.index) {
-                        if (action.payload.name === 'markup_val') {
+                tariffDetails: newArray[existingIndex].tariffDetails.map((item, innerIndex) => {
+                  if (innerIndex === action.payload.index) {
+                    return {
+                      ...item,
+                      tariffBreakDowns: item.tariffBreakDowns.map((subItem, subInnerIndex) => {
+                        if (subInnerIndex === action.payload.subindex) {
+                          if (action.payload.name === 'markup_val') {
                             return {
-                                ...item,
-                                [action.payload.name]: action.payload.value,
-                                'margin_value': action.payload.marginVal,
-                                total_sale_cost: action.payload.sales_cost
+                              ...subItem,
+                              margin_value: action.payload.marginVal,
+                              total_sale_cost: action.payload.sales_cost,
+                              [action.payload.name]: action.payload.value,
                             };
-                        } else {
+                          } else {
                             return {
-                                ...item,
-                                [action.payload.name]: action.payload.value
+                              ...subItem,
+                              [action.payload.name]: action.payload.value
                             };
+                          }
                         }
-                    }
-                    return item;
+                        return subItem;
+                      })
+                    };
+                  }
+                  return item;
                 })
-            };
+              };
+              
+            // const updatedItem = {
+            //     ...newArray[existingIndex],
+            //     [action.payload.charge_name]: newArray[existingIndex][action.payload.charge_name].map((item, index) => {
+            //         if (index === action.payload.index) {
+            //             if (action.payload.name === 'markup_val') {
+            //                 return {
+            //                     ...item,
+            //                     [action.payload.name]: action.payload.value,
+            //                     'margin_value': action.payload.marginVal,
+            //                     total_sale_cost: action.payload.sales_cost
+            //                 };
+            //             } else {
+            //                 return {
+            //                     ...item,
+            //                     [action.payload.name]: action.payload.value
+            //                 };
+            //             }
+            //         }
+            //         return item;
+            //     })
+            // };
             newArray[existingIndex] = updatedItem;
 
             return {

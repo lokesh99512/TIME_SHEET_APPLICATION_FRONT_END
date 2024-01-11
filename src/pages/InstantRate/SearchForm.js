@@ -67,12 +67,11 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
     version: customer.version
   })) || [];
 
-  const optionIncoterm = incoterm?.content?.map(incoterm => ({
-    value: incoterm.id,
-    label: incoterm.name,
-    version: incoterm.version
-  })) || [];
-
+  // const optionIncoterm = incoterm?.content?.map(incoterm => ({
+  //   value: incoterm.id,
+  //   label: incoterm.name,
+  //   version: incoterm.version
+  // })) || [];
 
   const toggle = (id) => {
     if (open === id) {
@@ -349,7 +348,8 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                           <i className="mdi mdi-chevron-down" />
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-end quantity_drop_wrap">
-                          {(container_data || "").map(({ id, value, label, version, size, unit, rateId }, index) => (
+                          {console.log(container_data,"container")}
+                          {(container_data || []).slice(0).reverse().map(({ id, value, label, version, size, unit, rateId }, index) => (
                             <DropdownItem key={index} className={`${searchForm?.container_type?.containerArray?.value === value ? "active" : ""}`} tag="div">
                               <div className="custom-option">
                                 <p>{label}</p>
@@ -635,10 +635,10 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                 <div className="con">
                   <label className="form-label">Customer Name</label>
                   <Select
-                    value={customerName ? customerName.find((obj) => obj.value === searchForm?.customerName) : ""}
+                    value={searchForm?.customerName || ""}
                     name="customerName"
                     onChange={(opt) => {
-                      handleChangeHandler(opt.value, "customerName");
+                      handleChangeHandler(opt, "customerName");
                     }}
                     options={customerName}
                     placeholder="Select Customer"
@@ -663,9 +663,9 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                     </div>
                     <div className="con">
                       <label className="form-label">Cargo Type</label>
-                      <span className={`value ${searchForm?.cargo_type?.name ? 'value_focus' : ''}`}>
-                        {(searchForm?.cargo_type?.name || 'Select Cargo Type')}
-                        {searchForm?.cargo_type?.value === 'hazardous' && classHazardous !== 0 ? (
+                      <span className={`value ${searchForm?.cargo_type?.label ? 'value_focus' : ''}`}>
+                        {(searchForm?.cargo_type?.label || 'Select Cargo Type')}
+                        {searchForm?.cargo_type?.value?.toLowerCase() === 'hazardous' && classHazardous !== 0 ? (
                           <>
                             , class: {classHazardous}
                           </>
@@ -700,6 +700,8 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                 </div>
               </div>
 
+              {console.log(searchForm,"search form")}
+
               {/* Incoterm */}
               <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
                 <div className="common_dropdwon_btn_wrap bottom_drop_field incoterm_field_wrap">
@@ -721,14 +723,13 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                           <option value={item?.label} key={index} />
                         )) : <option value="No Option" />}                         
                       </datalist> */}
-
                       <Select
-                        value={optionIncoterm ? optionIncoterm.find((obj) => obj.value === searchForm?.incoterm) : ""}
+                        value={searchForm?.incoterm}
                         name="address"
                         onChange={(opt) => {
-                          handleChangeHandler(opt.value, "incoterm");
+                          handleChangeHandler(opt, "incoterm");
                         }}
-                        options={optionIncoterm}
+                        options={incoterm}
                         placeholder="Select Incoterm"
                         classNamePrefix="select2-selection form-select"
                         menuPlacement="auto"
@@ -763,7 +764,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                       <Select
                         id="more_menu"
                         value={searchForm?.cargo_value?.currency}
-                        options={currency_data.map(({ value, currencyCode }) => ({ value, label: currencyCode, currencyCode })) || []}
+                        options={currency_data.map(({ value, currencyCode, id , version }) => ({ value, label: currencyCode, currencyCode,id,version })) || []}
                         // options={optionCurrency.map(({ value, name, code }) => ({ value, label: name, code }))}
                         onChange={(selectedOption) => {
                           handleChangeHandler({ ...searchForm?.cargo_value, currency: selectedOption }, "cargo_value");

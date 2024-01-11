@@ -37,7 +37,7 @@ const InstantRate = () => {
         let dateTo = moment(searchData?.cargo_date?.[1]).format("YYYY-MM-DD");
         let data = {
             fclInquiryField: {
-                customerId: searchData?.customerName || null,
+                customerId: searchData?.customerName?.value || null,
 
                 originLocationTypeId: searchData?.location_from?.locationType || null,
                 destinationLocationTypeId: searchData?.location_to?.locationType || null,

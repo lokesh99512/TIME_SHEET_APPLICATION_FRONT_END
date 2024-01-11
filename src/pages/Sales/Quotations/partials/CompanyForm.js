@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Select from "react-select";
 import { Card, CardBody, Input } from 'reactstrap';
 import { optionQuoteContactCode, optionQuoteContacttitle } from '../../../../common/data/sales';
+import { useSelector } from 'react-redux';
 
 const companyDetails = {
     id: 1,
@@ -19,22 +20,9 @@ const companyDetails = {
     email: "a@gmail.com",
 }
 
-const companyDetailsInitialValue = {
-    companyName: "",
-    address: "",
-    city: "",
-    state: "",
-    country: "",
-    zipcode: "",
-
-    title: "",
-    contactName: "",
-    opCode: "",
-    phoneNumber: "",
-    email: "",
-}
-
 const CompanyForm = () => {
+    const searchData = useSelector((state) => state?.instantRate?.searchForm);
+    const {settings_company_settings_all_data} = useSelector((state) => state?.settings);
     const [companyDetailsInitial, setCompanyDetailsInitial] = useState(companyDetails);
 
     useEffect(() => {
@@ -42,8 +30,21 @@ const CompanyForm = () => {
     }, [])
 
     const companyDetailsFormik = useFormik({
-        initialValues: companyDetailsInitial
+        initialValues: {
+            customerName: "Apex Export Pvt Ltd",
+            address: "12, Golden plazza",
+            city: "Banglore",
+            state: "Kolkata",
+            country: "India",
+            zipcode: "123456",
+            title: "Mr",
+            contactName: "Ajay",
+            opCode: "+91",
+            phoneNumber: "9800012345",
+            email: "a@gmail.com",
+        }
     })
+    console.log(searchData,"searchData");
     return (
         <>
             <div className="customer_form_details">

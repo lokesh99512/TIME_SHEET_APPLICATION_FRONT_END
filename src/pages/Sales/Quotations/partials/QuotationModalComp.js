@@ -61,14 +61,17 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
 
     // ------------- dynamic field ------------------------
     let inputObj = {
-        charges_name: '',
-        uom: '',
-        quantity: '',
-        currency: '',
-        buy_cost: '',
+        component: '',
+        uomCode: '',
+        unit: '',
+        currencyCode: '',
+        unitPerPrice: '',
         markup_type: '',
         markup_val: '',
-        tax: '',
+        taxDetail: {
+            taxPercentage: '',
+            value: ''
+        },
         total_sale_cost: ''
     }
     const mappCharge = {
@@ -90,26 +93,24 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         dispatch({ type: REMOVE_QUOTE_MODAL_CHARGES, payload: { index, id, charge_name } })
     }
 
-    const existingHandleChange = (value, name, index, charge_name, objId, sales_cost, marginVal) => {
-        dispatch({ type: QUOTATION_RESULT_UPDATE, payload: { value, name, index, charge_name, id: objId, sales_cost, marginVal } })
+    const existingHandleChange = (value, name, subindex, charge_name, objId,index, sales_cost, marginVal) => {       
+        dispatch({ type: QUOTATION_RESULT_UPDATE, payload: { value, name, subindex, charge_name, id: objId,index, sales_cost, marginVal } })
     }
 
-    const existingHandleChangeMargin = (data, e, name, index, charge_name, objId) => {
+    const existingHandleChangeMargin = (data, e, name, subindex, charge_name, objId, index) => {
         let sale_cost = 0;
         let marginValue = 0;
 
         if (e?.target?.name === 'markup_val') {
-            marginValue = calculateMarkupVal(data.markup_type, Number(data.buy_cost), Number(e.target.value));
-            sale_cost = Number(data.buy_cost) + marginValue + (data.tax ? calculateTax(Number(data.buy_cost), Number(data.tax)) : 0);
-        }
+            marginValue = calculateMarkupVal(data.markup_type, Number(data.amount), Number(e.target.value));
+            sale_cost = Number(data.amount) + marginValue + (data?.taxDetail && data?.taxDetail?.value || 0);
+        }        
 
-        console.log(data, e, name, index, charge_name, objId, sale_cost, marginValue, "margin");
-
-        // existingHandleChange(e.target.value, name, index, charge_name, objId, sale_cost, marginValue);
+        existingHandleChange(e.target.value, name, subindex, charge_name, objId,index, sale_cost, marginValue);
     }
 
     const calculateMarkupVal = (type, buycost, value) => {
-        if (type === 'percentage') {
+        if (type === 'PERCENTAGE') {
             return (buycost * value / 100)
         } else {
             return value;
@@ -359,10 +360,10 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                         <div className="field_wrap">
                                                                             {subindex === 0 && <label htmlFor='markup_type' className='form-label'>Markup Type</label>}
                                                                             <Select
-                                                                                value={optionMarkupType ? optionMarkupType.find(obj => obj.value === data?.markup_type) : ''}
+                                                                                value={optionMarkupType ? optionMarkupType.find(obj => obj.value === subData?.markup_type) : ''}
                                                                                 name='markup_type'
                                                                                 onChange={(opt) => {
-                                                                                    existingHandleChange(opt.value, 'markup_type', subindex , `${data?.header}`, item.carrierId);
+                                                                                    existingHandleChange(opt.value, 'markup_type', subindex , `${data?.header}`, item.carrierId,index);
                                                                                 }}
                                                                                 options={optionMarkupType}
                                                                                 isDisabled={viewData}
@@ -375,9 +376,9 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                         <div className="field_wrap">
                                                                             {subindex === 0 && <label className='form-label' htmlFor="markup_val">Markup Value</label>}
                                                                             <input type="text" name="markup_val" id="markup_val"
-                                                                                value={data?.markup_val || ''}
+                                                                                // value={subData?.markup_val || ''}
                                                                                 onChange={(e) => {
-                                                                                    existingHandleChangeMargin(data, e, 'markup_val', subindex, `${data?.header}`, item.carrierId);
+                                                                                    existingHandleChangeMargin(subData, e, 'markup_val', subindex, `${data?.header}`, item.carrierId, index);
                                                                                 }}
                                                                                 placeholder='Enter value' disabled={viewData} />
                                                                         </div>
@@ -391,7 +392,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                     <div className="col-2">
                                                                         <div className="field_wrap">
                                                                             {subindex === 0 && <label className='form-label' htmlFor="total_sale_cost">Total Sale Cost</label>}
-                                                                            <input type="text" value={Number(subData?.amount + (subData?.taxDetail?.value || 0)).toFixed(2) || ''} name="total_sale_cost" id="total_sale_cost" placeholder='2200' readOnly disabled={viewData} />
+                                                                            <input type="text" value={subData?.total_sale_cost || Number(subData?.amount + (subData?.taxDetail?.value || 0)).toFixed(2) || ''} name="total_sale_cost" id="total_sale_cost" placeholder='2200' readOnly disabled={viewData} />
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -503,13 +504,13 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                 </div>
                                                             </div>
                                                         ))} */}
-                                                        {!viewData && (
+                                                        {/* {!viewData && (
                                                             <div className="add_btn_box mt-3">
                                                                 <div className="add_btn_wrap">
                                                                     <button type='button' className="btn btn-primary add_btn d-flex align-items-center" onClick={() => { addHandler(`${data?.header}`, item?.carrierId); }}> <i className='bx bx-plus me-2'></i> Add Charges</button>
                                                                 </div>
                                                             </div>
-                                                        )}
+                                                        )} */}
                                                     </AccordionBody>
                                                 </AccordionItem>
                                             ))}
