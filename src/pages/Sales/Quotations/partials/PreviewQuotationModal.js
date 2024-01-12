@@ -16,33 +16,36 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
     const preferData = quoteData?.filter(obj => obj.quote_type === 'preffered');
     const cheaperData = quoteData?.filter(obj => obj.quote_type === 'cheaper');
     const fasterData = quoteData?.filter(obj => obj.quote_type === 'faster');
+    const shipmentDetails = useSelector((state) => state?.instantRate?.searchForm);
+    const {settings_company_settings_all_data} = useSelector((state) => state?.settings);
     const dispatch = useDispatch();
+    console.log(settings_company_settings_all_data,"settings_company_settings_all_data");
     const confirmHandler = () => {
-        const mergedArray = [...quoteData];
-        let newArry = [...mainChargeObj];
-        newArry.forEach(newItem => {
-            const existingIndex = mergedArray.findIndex(oldItem => oldItem.id === newItem.id);
-            if (existingIndex !== -1) {
+        // const mergedArray = [...quoteData];
+        // let newArry = [...mainChargeObj];
+        // newArry.forEach(newItem => {
+        //     const existingIndex = mergedArray.findIndex(oldItem => oldItem.id === newItem.id);
+        //     if (existingIndex !== -1) {
 
-                let updateCharge1 = [...mergedArray[existingIndex].pickup_quote_charge, ...newItem?.pickup_quote_charge || '']
-                let updateCharge2 = [...mergedArray[existingIndex].originport_quote_charge, ...newItem?.originport_quote_charge || '']
-                let updateCharge3 = [...mergedArray[existingIndex].ocean_quote_charge, ...newItem?.ocean_quote_charge || '']
+        //         let updateCharge1 = [...mergedArray[existingIndex].pickup_quote_charge, ...newItem?.pickup_quote_charge || '']
+        //         let updateCharge2 = [...mergedArray[existingIndex].originport_quote_charge, ...newItem?.originport_quote_charge || '']
+        //         let updateCharge3 = [...mergedArray[existingIndex].ocean_quote_charge, ...newItem?.ocean_quote_charge || '']
 
-                mergedArray[existingIndex] = {
-                    ...mergedArray[existingIndex],
-                    pickup_quote_charge: updateCharge1,
-                    originport_quote_charge: updateCharge2,
-                    ocean_quote_charge: updateCharge3,
-                };
-            }
-        });
+        //         mergedArray[existingIndex] = {
+        //             ...mergedArray[existingIndex],
+        //             pickup_quote_charge: updateCharge1,
+        //             originport_quote_charge: updateCharge2,
+        //             ocean_quote_charge: updateCharge3,
+        //         };
+        //     }
+        // });
 
-        dispatch({ type: CONFIRM_PREVIEW_DATA, payload: mergedArray });
-        dispatch({ type: BLANK_MODAL_CHARGE, payload: {} });
-        dispatch({ type: QUOTATION_RESULT_SELECTED_BLANK, payload: {} });
+        // dispatch({ type: CONFIRM_PREVIEW_DATA, payload: mergedArray });
+        // dispatch({ type: BLANK_MODAL_CHARGE, payload: {} });
+        // dispatch({ type: QUOTATION_RESULT_SELECTED_BLANK, payload: {} });
 
         setPreviewModal(false);
-        console.log(mergedArray, "mergedArray");
+        // console.log(mergedArray, "mergedArray");
     }
 
     const handleDownloadPDF = () => {        
@@ -89,19 +92,19 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
                                         <div className="col-lg-4">
                                             <div className="details">
                                                 <span>Name/Company</span>
-                                                <p>Customer xyz</p>
+                                                <p>{settings_company_settings_all_data?.content[0].name || '-'}</p>
                                             </div>
                                         </div>
                                         <div className="col-lg-4">
                                             <div className="details">
                                                 <span>Primary Contact</span>
-                                                <p>Samara Mcknight</p>
+                                                <p>{settings_company_settings_all_data?.content[0].contactName || '-'}</p>
                                             </div>
                                         </div>
                                         <div className="col-lg-4">
                                             <div className="details">
                                                 <span>Email Address</span>
-                                                <p>samara.mcknight@gmail.com</p>
+                                                <p>{settings_company_settings_all_data?.content[0].email || '-'}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -112,19 +115,19 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
                                         <div className="col-lg-4">
                                             <div className="details">
                                                 <span>Name/Company</span>
-                                                <p>Customer xyz</p>
+                                                <p>{settings_company_settings_all_data?.content[0].name || '-'}</p>
                                             </div>
                                         </div>
                                         <div className="col-lg-4">
                                             <div className="details">
                                                 <span>Primary Contact</span>
-                                                <p>Samara Mcknight</p>
+                                                <p>{settings_company_settings_all_data?.content[0].contactName || '-'}</p>
                                             </div>
                                         </div>
                                         <div className="col-lg-4">
                                             <div className="details">
                                                 <span>Email Address</span>
-                                                <p>samara.mcknight@gmail.com</p>
+                                                <p>{settings_company_settings_all_data?.content[0].email || '-'}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -135,22 +138,22 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
                                     <p className="title">Origin:</p>
                                     <div className="details">
                                         <span>Pickup</span>
-                                        <p>Chennai, Tamil nadu, India</p>
+                                        <p>-</p>
                                     </div>
                                     <div className="details">
                                         <span>Port</span>
-                                        <p>Inmaa - Chennai(Ex Madras) - India</p>
+                                        <p>{shipmentDetails?.location_from?.label || '-'}</p>
                                     </div>
                                 </div>
                                 <div className="half_box white_box">
                                     <p className="title">Destination:</p>
                                     <div className="details">
                                         <span>Port</span>
-                                        <p>USNYC - New york - US</p>
+                                        <p>{shipmentDetails?.location_to?.label || '-'}</p>
                                     </div>
                                     <div className="details">
                                         <span>Drop</span>
-                                        <p>Charleston, SC, USA</p>
+                                        <p>-</p>
                                     </div>
                                 </div>
                             </div>
@@ -169,19 +172,23 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
                                 <tbody>
                                     <tr>
                                         <td>Commodities</td>
-                                        <td>100xBox(s)(40x40x40 CM)</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        {/* <td>100xBox(s)(40x40x40 CM)</td>
                                         <td>12,000 KG</td>
-                                        <td>6.4</td>
+                                        <td>6.4</td> */}
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
 
-                        {preferData?.length !== 0 ? preferData?.map((data) => (<PreviewCommonTable data={data} key={data.id} newData={mainChargeObj.find(obj => obj.id === data.id)} />)) : null}
+                        <PreviewCommonTable  />
+                        {/* {preferData?.length !== 0 ? preferData?.map((data) => (<PreviewCommonTable data={data} key={data.id} newData={mainChargeObj.find(obj => obj.id === data.id)} />)) : null}
                         <span style={{pageBreakAfter: 'always'}}></span>
                         {cheaperData?.length !== 0 ? cheaperData?.map((data) => (<PreviewCommonTable data={data} key={data.id} newData={mainChargeObj.find(obj => obj.id === data.id)} />)) : null}
                         <span style={{pageBreakAfter: 'always'}}></span>
-                        {fasterData?.length !== 0 ? fasterData?.map((data) => (<PreviewCommonTable data={data} key={data.id} newData={mainChargeObj.find(obj => obj.id === data.id)} />)) : null}
+                        {fasterData?.length !== 0 ? fasterData?.map((data) => (<PreviewCommonTable data={data} key={data.id} newData={mainChargeObj.find(obj => obj.id === data.id)} />)) : null} */}
 
                     </div>
                 </div>

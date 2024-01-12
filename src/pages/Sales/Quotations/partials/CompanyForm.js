@@ -44,7 +44,7 @@ const CompanyForm = () => {
             email: "a@gmail.com",
         }
     })
-    console.log(searchData,"searchData");
+    // console.log(searchData,"searchData");
     return (
         <>
             <div className="customer_form_details">

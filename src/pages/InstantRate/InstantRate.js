@@ -12,6 +12,7 @@ import PreviewQuotationModal from "../Sales/Quotations/partials/PreviewQuotation
 import QuotationModalComp from "../Sales/Quotations/partials/QuotationModalComp";
 import SearchResultComp from "../Sales/Quotations/partials/SearchResultComp";
 import SearchForm from './SearchForm';
+import { getAllCompanyDetailData } from "../../store/Settings/actions";
 
 const InstantRate = () => {
     const [activeTab, toggleTab] = useState("FCL");
@@ -103,6 +104,7 @@ const InstantRate = () => {
         dispatch({type: GET_CARGO_TYPE_DATA});
         dispatch({type: GET_CONTAINER_DATA});
         dispatch({type: GET_UOM_WEIGHT_DATA});
+        dispatch(getAllCompanyDetailData());
     },[]);
 
     return (
@@ -161,7 +163,7 @@ const InstantRate = () => {
             {quoteModal && <QuotationModalComp quoteModal={quoteModal} setQuoteModal={setQuoteModal} QuoteModalHandler={QuoteModalHandler} setPreviewModal={setPreviewModal} />}
 
             {/* Preview Quotation Modal */}
-            {/* {previewModal && <PreviewQuotationModal previewModal={previewModal} previewModalHand={previewModalHand} setPreviewModal={setPreviewModal} QuoteModalHandler={QuoteModalHandler} />} */}
+            {previewModal && <PreviewQuotationModal previewModal={previewModal} previewModalHand={previewModalHand} setPreviewModal={setPreviewModal} QuoteModalHandler={QuoteModalHandler} />}
         </>
     )
 }
