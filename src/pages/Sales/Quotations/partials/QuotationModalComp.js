@@ -124,7 +124,8 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
     }
 
     const subTotalHandler = (quoteObject) => {
-        let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.carrierId);
+        let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.carrierId) || [];
+        console.log(mainChargeCurr, "mainChargeCurr")
 
         // const totalSum = buyValueTotal(quoteObject?.tariffDetails || [], mainChargeCurr?.tariffDetails || []);
         const totalSum = quoteObject?.tariffDetails?.reduce((accOuter, currentOuter) => {
@@ -146,28 +147,28 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
             return accOuter + innerSum;
         }, 0);
 
-        const newSubTotal = mainChargeCurr?.tariffDetails?.reduce((accOuter, currentOuter) => {
+        const newSubTotal = mainChargeCurr?.tariffDetails !== undefined ? mainChargeCurr?.tariffDetails?.reduce((accOuter, currentOuter) => {
             let innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
                 let totalAmt = Number(currentInner.unitPerPrice || 0) * Number(currentInner.unit || 1);
                 return accInner + convertToINR(Number(totalAmt), currentInner.currencyCode);
             }, 0);
             return accOuter + innerSum;
-        }, 0);
-        const totalNewMarginSum = mainChargeCurr?.tariffDetails?.reduce((accOuter, currentOuter) => {
+        }, 0): 0;
+        const totalNewMarginSum = mainChargeCurr?.tariffDetails !== undefined ? mainChargeCurr?.tariffDetails?.reduce((accOuter, currentOuter) => {
             let innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
                 return accInner + (convertToINR(currentInner?.margin_value ? Number(currentInner.margin_value) : 0, currentInner.currencyCode) || 0);
             }, 0);
             return accOuter + innerSum;
-        }, 0);
+        }, 0) : 0;
 
-        // console.log(totalSum, totalMarginSum, newSubTotal, totalNewMarginSum, "subtotal");
+        console.log(totalSum, totalMarginSum, newSubTotal, totalNewMarginSum, "subtotal");
 
         return totalSum + newSubTotal + totalMarginSum + totalNewMarginSum;
     }
 
     const totalTaxHandler = (quoteObject) => {
 
-        let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.carrierId);
+        let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.carrierId) || [];
         const totalTax = quoteObject?.tariffDetails?.reduce((accOuter, currentOuter) => {
             let innerSum = 0;
             if (currentOuter?.selected) {
@@ -178,19 +179,19 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
             return accOuter + innerSum;
         }, 0);
 
-        const totalNewTax = mainChargeCurr?.tariffDetails?.reduce((accOuter, currentOuter) => {
+        const totalNewTax = mainChargeCurr?.tariffDetails !== undefined ? mainChargeCurr?.tariffDetails?.reduce((accOuter, currentOuter) => {
             let innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
                 return accInner + (currentInner?.taxDetail !== undefined && (convertToINR(Number(currentInner?.taxDetail?.value || 0), currentInner.currencyCode) || 0));
             }, 0);
             return accOuter + innerSum;
-        }, 0);
+        }, 0) : 0;
 
         return totalTax + totalNewTax
     }
 
     const overAllMarginHandler = (quoteObject, subtotalvalue) => {
         
-        let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.carrierId);
+        let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.carrierId) || [];
 
         const totalMarginSum = quoteObject?.tariffDetails?.reduce((accOuter, currentOuter) => {
             let innerSum = 0;
@@ -202,12 +203,12 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
             return accOuter + innerSum;
         }, 0);
 
-        const totalNewMarginSum = mainChargeCurr?.tariffDetails?.reduce((accOuter, currentOuter) => {
+        const totalNewMarginSum = mainChargeCurr?.tariffDetails !== undefined ? mainChargeCurr?.tariffDetails?.reduce((accOuter, currentOuter) => {
             let innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
                 return accInner + (convertToINR(currentInner?.margin_value !== undefined ? Number(currentInner.margin_value || 0) : 0, currentInner.currencyCode) || 0);
             }, 0);
             return accOuter + innerSum;
-        }, 0);
+        }, 0) : 0;
 
         // console.log(totalMarginSum, totalNewMarginSum);
 
