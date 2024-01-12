@@ -348,7 +348,6 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                           <i className="mdi mdi-chevron-down" />
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-end quantity_drop_wrap">
-                          {console.log(container_data,"container")}
                           {(container_data || []).slice(0).reverse().map(({ id, value, label, version, size, unit, rateId }, index) => (
                             <DropdownItem key={index} className={`${searchForm?.container_type?.containerArray?.value === value ? "active" : ""}`} tag="div">
                               <div className="custom-option">
