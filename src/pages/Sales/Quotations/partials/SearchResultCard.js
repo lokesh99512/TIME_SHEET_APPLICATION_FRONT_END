@@ -89,7 +89,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
         <div>
             <div className="result_tab_content_wrap">  
                 {data?.length !== 0 ? data?.map((item, index) => (
-                    <div className="search_result_card_check_wrap d-flex align-items-center" key={item.carrierId}>
+                    <div className="search_result_card_check_wrap d-flex align-items-center" key={`main_${item.carrierId}`}>
                         <div className={`form-check me-2`} onClick={(e) => quotationCheckHandler(item)}>
                             <input
                                 className="form-check-input"
@@ -112,9 +112,9 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                     {/* {console.log(instantRateLocation,"instantRateLocation")} */}
                                     <span className="duration text-center d-block">Duration <b>{item.oceanTransitTime || 0} days</b></span>
                                     <div className="from_to_wrap mt-2 mb-3 d-flex justify-content-between">
-                                        <span className="from_loc">{instantRateLocation?.find((obj) => obj?.id === item?.originId).code || '-'}</span>
+                                        <span className="from_loc">{item?.originName || '-'}</span>
                                         <span className="icon d-flex align-items-center justify-content-center"><img src={ship_filled} alt="Shipping" /></span>
-                                        <span className="to_loc">{instantRateLocation?.find((obj) => obj?.id === item?.destinationId).code || '-'}</span>
+                                        <span className="to_loc">{item?.destinationName || '-'}</span>
                                     </div>
                                     {/* <div className="from_to_wrap mt-2 mb-3 d-flex justify-content-between">
                                         {item.location_route.length === 4 ? (

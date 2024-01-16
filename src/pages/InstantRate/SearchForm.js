@@ -30,7 +30,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
   })
   const [open, setOpen] = useState('1');
   const dropdownRef = useRef(null);
-  const dispatch = useDispatch();  
+  const dispatch = useDispatch();
   const instantRateState = useSelector((state) => state.instantRate);
   const { customer_data } = useSelector((state) => state?.customer)
   const { cargoType_data, container_data, UOM_weight_data, currency_data } = useSelector((state) => state?.globalReducer)
@@ -334,14 +334,10 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                               {searchForm?.container_type?.containerArray !== "" &&
                                 searchForm?.container_type?.containerArray !== undefined
                                 ? searchForm?.container_type?.containerArray?.map((item, index) => (
-                                  <span key={item.id}>
-                                    {unitValue[item.rateId] !== 0
-                                      ? `${item.label}, unit: "${unitValue[item.rateId]
-                                      }",`
-                                      : null}{" "}
-                                    &nbsp;
-                                  </span>
-                                ))
+                                    <span key={item.id}>
+                                      {item?.unitNew !== 0 ? ` ${item?.label}, unit: "${item?.unitNew}",` : null}
+                                    </span>
+                                  ))
                                 : "Select Container Type"}
                             </span>
                           </div>
@@ -365,7 +361,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                                     type="number"
                                     name={`${rateId}_unit`}
                                     id={`${rateId}_unit`}
-                                    value={unitValue[rateId]}
+                                    value={searchForm?.container_type?.containerArray?.length !== 0 ? searchForm?.container_type?.containerArray?.find((item) => item.label === label)?.unitNew : unitValue[rateId]}
                                     onChange={(e) => {
                                       e.stopPropagation();
                                       handleQuantity(e, rateId, { id, value, label, version, size, rateId }, 'container_type');
@@ -699,7 +695,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                 </div>
               </div>
 
-              {console.log(searchForm,"search form")}
+              {console.log(searchForm, "search form1")}
 
               {/* Incoterm */}
               <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
@@ -763,7 +759,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                       <Select
                         id="more_menu"
                         value={searchForm?.cargo_value?.currency}
-                        options={currency_data.map(({ value, currencyCode, id , version }) => ({ value, label: currencyCode, currencyCode,id,version })) || []}
+                        options={currency_data.map(({ value, currencyCode, id, version }) => ({ value, label: currencyCode, currencyCode, id, version })) || []}
                         // options={optionCurrency.map(({ value, name, code }) => ({ value, label: name, code }))}
                         onChange={(selectedOption) => {
                           handleChangeHandler({ ...searchForm?.cargo_value, currency: selectedOption }, "cargo_value");

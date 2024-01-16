@@ -1,49 +1,72 @@
 import React from 'react'
 import { convertToINR } from '../../../../components/Common/CommonLogic';
 
-export default function PreviewCommonTable({data,newData}) {
-    // const Subtotal = (data?.pickup_quote_charge !== undefined && data?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost || 0), charge.currency), 0)) 
-    // + (data?.originport_quote_charge !== undefined && data?.originport_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost || 0), charge.currency), 0)) 
-    // + (data?.ocean_quote_charge !== undefined && data?.ocean_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost || 0), charge.currency), 0)) 
-    // + (data?.port_discharge_charges !== undefined && data?.port_discharge_charges.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost || 0), charge.currency), 0)) 
-    // + (data?.delivery_quote_charge !== undefined && data?.delivery_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost || 0), charge.currency), 0)) 
-    // + (newData?.pickup_quote_charge !== undefined && newData?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost || 0), charge.currency), 0)) 
-    // + (newData?.originport_quote_charge !== undefined && newData?.originport_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost || 0), charge.currency), 0)) 
-    // + (newData?.ocean_quote_charge !== undefined && newData?.ocean_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost || 0), charge.currency), 0)) 
-    // + (newData?.port_discharge_charges !== undefined && newData?.port_discharge_charges.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost || 0), charge.currency), 0)) 
-    // + (newData?.delivery_quote_charge !== undefined && newData?.delivery_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost || 0), charge.currency), 0)) 
-    // + convertToINR(Number(data?.truck ? data?.truck_charge : data?.rail ? data?.rail_charge : 0), null)
-    // + convertToINR(Number(data?.ocean_freight_charge || 0), data?.ocean_freight_charge_currency)
-    // + convertToINR(Number(data?.road ? data?.road_charge : 0), data?.delivery_currency);
-    const Subtotal = 0;
+export default function PreviewCommonTable({ data, newData }) {
     const subtotalCount = () => {
-        let buyValue = (data?.pickup_quote_charge !== undefined && data?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost || 0), charge.currency), 0)) 
-        + (data?.originport_quote_charge !== undefined && data?.originport_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost || 0), charge.currency), 0)) 
-        + (data?.ocean_quote_charge !== undefined && data?.ocean_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost || 0), charge.currency), 0)) 
-        + (data?.port_discharge_charges !== undefined && data?.port_discharge_charges.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost || 0), charge.currency), 0)) 
-        + (data?.delivery_quote_charge !== undefined && data?.delivery_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost || 0), charge.currency), 0)) 
-        + (newData?.pickup_quote_charge !== undefined && newData?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost || 0), charge.currency), 0)) 
-        + (newData?.originport_quote_charge !== undefined && newData?.originport_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost || 0), charge.currency), 0)) 
-        + (newData?.ocean_quote_charge !== undefined && newData?.ocean_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost || 0), charge.currency), 0)) 
-        + (newData?.port_discharge_charges !== undefined && newData?.port_discharge_charges.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost || 0), charge.currency), 0));        
-        + (newData?.delivery_quote_charge !== undefined && newData?.delivery_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.buy_cost || 0), charge.currency), 0));        
+        let buyValue = (data?.tariffDetails?.reduce((outeracc, outerCurrent) => {
+            let sum = 0;
+            if (outerCurrent?.selected) {
+                sum = outerCurrent?.tariffBreakDowns?.reduce((inneracc, innerCurrent) => {
+                    return inneracc + convertToINR(Number(innerCurrent?.amount || 0), innerCurrent?.currencyCode);
+                }, 0);
+            }
+            return outeracc + sum;
+        }, 0))
+        let marginValue = (data?.tariffDetails?.reduce((outeracc, outerCurrent) => {
+            let sum = 0;
+            if (outerCurrent?.selected) {
+                sum = outerCurrent?.tariffBreakDowns?.reduce((inneracc, innerCurrent) => {
+                    return inneracc + convertToINR(innerCurrent?.margin_value ? Number(innerCurrent.margin_value) : 0, innerCurrent?.currencyCode);
+                }, 0);
+            }
+            return outeracc + sum;
+        }, 0))
 
-        let marginValue = (data?.pickup_quote_charge !== undefined && data?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0)) 
-        + (data?.originport_quote_charge !== undefined && data?.originport_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0)) 
-        + (data?.ocean_quote_charge !== undefined && data?.ocean_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0)) 
-        + (data?.port_discharge_charges !== undefined && data?.port_discharge_charges.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0)) 
-        + (data?.delivery_quote_charge !== undefined && data?.delivery_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0)) 
-        + (newData?.pickup_quote_charge !== undefined && newData?.pickup_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0)) 
-        + (newData?.originport_quote_charge !== undefined && newData?.originport_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0)) 
-        + (newData?.ocean_quote_charge !== undefined && newData?.ocean_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0)) 
-        + (newData?.port_discharge_charges !== undefined && newData?.port_discharge_charges.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0));
-        + (newData?.delivery_quote_charge !== undefined && newData?.delivery_quote_charge.reduce((total, charge) => total + convertToINR(Number(charge?.margin_value || 0), charge.currency), 0));
-        // return buyValue + marginValue;
-        return 0;
+        let newSubTotal = newData?.tariffDetails !== undefined ? newData?.tariffDetails?.reduce((accOuter, currentOuter) => {
+            let innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+                let totalAmt = Number(currentInner.unitPerPrice || 0) * Number(currentInner.unit || 1);
+                return accInner + convertToINR(Number(totalAmt), currentInner.currencyCode);
+            }, 0);
+            return accOuter + innerSum;
+        }, 0) : 0;
+        let totalNewMarginSum = newData?.tariffDetails !== undefined ? newData?.tariffDetails?.reduce((accOuter, currentOuter) => {
+            let innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+                return accInner + (convertToINR(currentInner?.margin_value ? Number(currentInner.margin_value) : 0, currentInner.currencyCode) || 0);
+            }, 0);
+            return accOuter + innerSum;
+        }, 0) : 0;
+
+        console.log(buyValue, marginValue, newSubTotal, totalNewMarginSum, "buyValue");
+
+        return buyValue + marginValue + newSubTotal + totalNewMarginSum;
     }
+
+    const totalCount = (subTotal) => {
+        let totalTax = data?.tariffDetails?.reduce((accOuter, currentOuter) => {
+            let innerSum = 0;
+            if (currentOuter?.selected) {
+                innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+                    return accInner + (currentInner?.taxDetail !== undefined && (convertToINR(Number(currentInner?.taxDetail?.value || 0), currentInner.currencyCode || 'INR') || 0));
+                }, 0);
+            }
+            return accOuter + innerSum;
+        }, 0);
+
+        let totalNewTax = newData?.tariffDetails !== undefined ? newData?.tariffDetails?.reduce((accOuter, currentOuter) => {
+            let innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+                return accInner + (currentInner?.taxDetail !== undefined && (convertToINR(Number(currentInner?.taxDetail?.value || 0), currentInner.currencyCode) || 0));
+            }, 0);
+            return accOuter + innerSum;
+        }, 0) : 0;
+
+        console.log(totalTax, totalNewTax, subTotal, "Total preview");
+
+        return subTotal + totalTax + totalNewTax;
+    }
+
     return (
         <>
-            {/* {data !== undefined && */}
+            {data !== undefined &&
                 <div className="preview_table_wrap">
                     <table>
                         <caption><p className='d-flex justify-content-between align-items-center'>Freight Charges </p></caption>
@@ -52,161 +75,62 @@ export default function PreviewCommonTable({data,newData}) {
                             <tr>
                                 <th>Charge Name</th>
                                 <th>Charge Basis</th>
-                                {/* <th>Container Type</th> */}
+                                <th>Curreny</th>
                                 <th>Quantity</th>
                                 <th>Tax</th>
                                 <th>Total Sale Cost</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {/* pickup */}
-                            {/* {(data?.pickup_quote_charge?.length !== 0 || (data?.truck || data?.rail)) && <tr>
-                                <td colSpan={6} className='title_row'>Pickup</td>
-                            </tr>} */}
-                            {/* {data?.truck || data?.rail && (
-                                <tr>
-                                    <td>{data?.truck ? 'truck' : 'rail'}</td>
-                                    <td>{`-`}</td>
-                                    <td>{`-`}</td>
-                                    <td>{`-`}</td>
-                                    <td>{`-`}</td>
-                                    <td>{'₹'} {data?.truck ? data?.truck_charge : data?.rail_charge}</td>
-                                </tr>
-                            )} */}
+                            {console.log(data, "data")}
 
-                            {/* {data?.pickup_quote_charge?.map((data,index) => (
-                                <tr key={`pickup_${data.id}_${index}`}>
-                                    <td>{data?.charges_name}</td>
-                                    <td>{data?.uom}</td>
-                                    <td>{data?.quantity}</td>
-                                    <td>{data?.tax}</td>
-                                    <td>{data?.currency || '₹'} {data?.total_sale_cost}</td>
-                                </tr>
-                            ))}   
-                            {newData?.pickup_quote_charge?.map((data,index) => (
-                                <tr key={`pickupnew_${data.id}_${index}`}>
-                                    <td>{data?.charges_name}</td>
-                                    <td>{data?.uom}</td>
-                                    <td>{data?.quantity}</td>
-                                    <td>{data?.tax}</td>
-                                    <td>{data?.currency || '₹'} {data?.total_sale_cost}</td>
-                                </tr>
-                            ))}    */}
+                            {data?.tariffDetails?.map((inner, index) => {
+                                if (inner?.selected) {
+                                    return (
+                                        <>
 
-                            {/* Port of Origin(shekou)  */}
-                            {/* {data?.originport_quote_charge?.length !== 0 && <tr>
-                                <td colSpan={5} className='title_row'>Port of Origin</td>
-                            </tr>} */}
-                            {/* {data?.originport_quote_charge?.map((data,index) => (
-                                <tr key={`origin_${data.id}_${index}`}>
-                                    <td>{data?.charges_name}</td>
-                                    <td>{data?.uom}</td>
-                                    <td>{data?.quantity}</td>
-                                    <td>{data?.tax}</td>
-                                    <td>{data?.currency || '₹'} {data?.total_sale_cost}</td>
-                                </tr>
-                            ))}     
-                            {newData?.originport_quote_charge?.map((data,index) => (
-                                <tr key={`pickupnew_${data.id}_${index}`}>
-                                    <td>{data?.charges_name}</td>
-                                    <td>{data?.uom}</td>
-                                    <td>{data?.quantity}</td>
-                                    <td>{data?.tax}</td>
-                                    <td>{data?.currency || '₹'} {data?.total_sale_cost}</td>
-                                </tr>
-                            ))}  */}
+                                            <tr key={`header_${data.id}_${index}`}>
+                                                <td colSpan={6} className='title_row'>{inner?.header?.split("_").join(" ") || '-'}</td>
+                                            </tr>
+                                            {inner?.tariffBreakDowns?.length !== 0 && inner?.tariffBreakDowns?.map((sub, index) => (
+                                                <tr key={`tariff_${data.id}_${index}`}>
+                                                    <td>{sub?.component || '-'}</td>
+                                                    <td>{sub?.uomCode?.split('_').join(" ") || '-'}</td>
+                                                    <td>{sub?.currencyCode || 'INR'}</td>
+                                                    <td>{sub?.unit || 0}</td>
+                                                    <td>{sub?.taxDetail?.taxPercentage || 0}</td>
+                                                    <td>{sub?.total_sale_cost || (Number(sub?.amount || 0) + Number(sub?.taxDetail?.value || 0))}</td>
+                                                </tr>
+                                            ))}
 
-                            {/* Ocean Freight(FIFO)  */}
-                            <tr>
-                                <td colSpan={5} className='title_row'>Ocean Freight</td>
-                            </tr>
-                            {/* {data?.ocean_freight_charge && (
-                                <tr>
-                                    <td>Ocean</td>
-                                    <td>{`-`}</td>
-                                    <td>{`-`}</td>
-                                    <td>{`-`}</td>
-                                    <td>{`-`}</td>
-                                    <td>{data?.ocean_freight_charge_currency || '₹'} {data?.ocean_freight_charge || 0}</td>
-                                </tr>
-                            )} */}
-                            {/* {data?.ocean_quote_charge?.map((data,index) => (
-                                <tr key={`ocean_${data.id}_${index}`}>
-                                    <td>{data?.charges_name || 'Ocean'}</td>
-                                    <td>{data?.uom}</td>
-                                    <td>{data?.quantity}</td>
-                                    <td>{data?.tax}</td>
-                                    <td>{data?.currency || '₹'} {data?.total_sale_cost}</td>
-                                </tr>
-                            ))}  
-                            {newData?.ocean_quote_charge?.map((data,index) => (
-                                <tr key={`pickupnew_${data.id}_${index}`}>
-                                    <td>{data?.charges_name}</td>
-                                    <td>{data?.uom}</td>
-                                    <td>{data?.quantity}</td>
-                                    <td>{data?.tax}</td>
-                                    <td>{data?.currency || '₹'} {data?.total_sale_cost}</td>
-                                </tr>
-                            ))}     */}
+                                            {newData?.tariffDetails !== undefined && newData?.tariffDetails?.find(obj => obj?.header === inner?.header)?.tariffBreakDowns?.map((newSub, newindex) => (
+                                                <tr key={`new_${data.id}_${index}`}>
+                                                    <td>{newSub?.component?.value || '-'}</td>
+                                                    <td>{newSub?.uomCode?.label || '-'}</td>
+                                                    <td>{newSub?.currencyCode || 'INR'}</td>
+                                                    <td>{newSub?.unit || 0}</td>
+                                                    <td>{newSub?.taxDetail?.taxPercentage || 0}</td>
+                                                    <td>{newSub?.total_sale_cost || 0}</td>
+                                                </tr>
+                                            ))}
 
-                            {/* Port of Discharge(Winningpeg)  */}
-                            {/* {data?.port_discharge_charges?.length !== 0 && <tr>
-                                <td colSpan={5} className='title_row'>Port of Discharge</td>
-                            </tr>}
-                            {data?.port_discharge_charges?.map((data,index) => (
-                                <tr key={`ocean_${data.id}_${index}`}>
-                                    <td>{data?.charges_name}</td>
-                                    <td>{data?.uom}</td>
-                                    <td>{data?.quantity}</td>
-                                    <td>{data?.tax}</td>
-                                    <td>{data?.currency || '₹'} {data?.total_sale_cost}</td>
-                                </tr>
-                            ))}  
-                            {newData?.port_discharge_charges?.map((data,index) => (
-                                <tr key={`pickupnew_${data.id}_${index}`}>
-                                    <td>{data?.charges_name}</td>
-                                    <td>{data?.uom}</td>
-                                    <td>{data?.quantity}</td>
-                                    <td>{data?.tax}</td>
-                                    <td>{data?.currency || '₹'} {data?.total_sale_cost}</td>
-                                </tr>
-                            ))} 
-                             */}
-                            {/* Delivery  */}
-                            <tr>
-                                <td colSpan={5} className='title_row'>Delivery</td>
-                            </tr>
-                            {/* {data?.delivery_charge && (
-                                <tr>
-                                    <td>Delivery</td>
-                                    <td>{`-`}</td>
-                                    <td>{`-`}</td>
-                                    <td>{`-`}</td>
-                                    <td>{`-`}</td>
-                                    <td>{data?.delivery_currency || '₹'} {data?.delivery_charge || 0}</td>
-                                </tr>
-                            )} */}
-                            {/* {data?.delivery_quote_charge?.map((data,index) => (
-                                <tr key={`delivery_${data.id}_${index}`}>
-                                    <td>{data?.charges_name}</td>
-                                    <td>{data?.uom}</td>
-                                    <td>{data?.quantity}</td>
-                                    <td>{data?.tax}</td>
-                                    <td>{data?.currency || '₹'} {data?.total_sale_cost}</td>
-                                </tr>
-                            ))}  */}
+                                            {(inner?.tariffBreakDowns?.length === 0 && newData?.tariffDetails?.find(obj => obj?.header === inner?.header) === undefined) && <tr><td colSpan={6}>No data found</td></tr>}
+                                        </>
+                                    )
+                                }
+                            })}
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colSpan={5}><p>Sub Total: <span>₹{subtotalCount()}</span></p></td>
+                                <td colSpan={6}><p>Sub Total: <span>₹{subtotalCount()}</span></p></td>
                             </tr>
                             <tr>
-                                <td colSpan={5}><p>Total: <span className='text-primary'><b>₹{Subtotal}</b></span></p></td>
+                                <td colSpan={6}><p>Total: <span className='text-primary'><b>₹{totalCount(subtotalCount())}</b></span></p></td>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
-            {/* } */}
+            }
         </>
     )
 }

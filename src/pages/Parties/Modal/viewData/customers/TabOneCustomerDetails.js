@@ -149,13 +149,13 @@ const TabOneCustomerDetails = ({ viewData }) => {
                   </div>
                   <div className="details">
                     <span className="title">Entity Type:</span>
-                    <span className="data">{viewData?.entityType.split('_').join(' ') || "-"}</span>
+                    <span className="data">{viewData?.entityType?.split('_').join(' ') || "-"}</span>
                   </div>
 
                   <div className="details">
                     <span className="title">Industry Type:</span>
                     <span className="data">
-                      {viewData?.industryType.split('_').join(' ') || "-"}
+                      {viewData?.industryType?.split('_').join(' ') || "-"}
                     </span>
                   </div>
                 </div>

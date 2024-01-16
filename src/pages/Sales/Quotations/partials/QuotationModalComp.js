@@ -125,9 +125,8 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
 
     const subTotalHandler = (quoteObject) => {
         let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.carrierId) || [];
-        console.log(mainChargeCurr, "mainChargeCurr")
+        // console.log(mainChargeCurr, "mainChargeCurr")
 
-        // const totalSum = buyValueTotal(quoteObject?.tariffDetails || [], mainChargeCurr?.tariffDetails || []);
         const totalSum = quoteObject?.tariffDetails?.reduce((accOuter, currentOuter) => {
             let innerSum = 0;
             if (currentOuter?.selected) {
@@ -153,7 +152,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                 return accInner + convertToINR(Number(totalAmt), currentInner.currencyCode);
             }, 0);
             return accOuter + innerSum;
-        }, 0): 0;
+        }, 0) : 0;
         const totalNewMarginSum = mainChargeCurr?.tariffDetails !== undefined ? mainChargeCurr?.tariffDetails?.reduce((accOuter, currentOuter) => {
             let innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
                 return accInner + (convertToINR(currentInner?.margin_value ? Number(currentInner.margin_value) : 0, currentInner.currencyCode) || 0);
@@ -161,7 +160,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
             return accOuter + innerSum;
         }, 0) : 0;
 
-        console.log(totalSum, totalMarginSum, newSubTotal, totalNewMarginSum, "subtotal");
+        // console.log(totalSum, totalMarginSum, newSubTotal, totalNewMarginSum, "subtotal");
 
         return totalSum + newSubTotal + totalMarginSum + totalNewMarginSum;
     }
@@ -190,7 +189,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
     }
 
     const overAllMarginHandler = (quoteObject, subtotalvalue) => {
-        
+
         let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.carrierId) || [];
 
         const totalMarginSum = quoteObject?.tariffDetails?.reduce((accOuter, currentOuter) => {
@@ -215,7 +214,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         let totalMargin = totalMarginSum + totalNewMarginSum;
         let buyvalue = subtotalvalue - totalMargin
 
-        return (totalMargin * 100 / buyvalue).toFixed(2)        
+        return (totalMargin * 100 / buyvalue).toFixed(2)
     }
 
     // ----------------- preview quotation -------------------
@@ -242,7 +241,28 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                     </h5>
                     <div className="right_wrap">
                         <div className="exchange_currency_wrap d-flex">
-                            <div className="common_dropdwon_btn_wrap">
+                            <div className="common_dropdwon_btn_wrap bottom_drop_field currency_field_wrap">
+                                <Select
+                                    value={formik?.values?.currencyVal}
+                                    options={currency_data.map(({ value, currencyCode, id, version }) => ({ value, label: currencyCode, currencyCode, id, version })) || []}
+                                    onChange={(selectedOption) => {
+                                        formik.setFieldValue('currencyVal', selectedOption);
+                                        // formik.setFieldValue('exchangeRate', (item.value !== 'rupee' ? exchangedata[item.value]?.rate : '-'))
+                                    }}
+                                    isSearchable
+                                    placeholder={"Select Currency"}
+                                    styles={{
+                                        control: (provided) => ({
+                                            ...provided,
+                                            maxWidth: '150px',
+                                            whiteSpace: 'nowrap',
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                        }),
+                                    }}
+                                />
+                            </div>
+                            {/* <div className="common_dropdwon_btn_wrap">
                                 <div
                                     id='more_menu'
                                     className={`d-flex align-items-center ${isOpen && dropId === 8 ? 'openmenu' : ''} ${viewData ? 'disable' : ''}`}
@@ -266,7 +286,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                         ))}
                                     </ul> : null
                                 }
-                            </div>
+                            </div> */}
                             <span className='exchange_rate'>Exchange Rate:
                                 <input type="number" name="exchangeRate" id="exchange_rate" placeholder='-' value={formik.values.exchangeRate}
                                     onChange={(e) => { formik.setFieldValue('exchangeRate', e.target.value) }} disabled={viewData} /></span>
@@ -331,214 +351,219 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                     </AccordionHeader>
                                     <AccordionBody accordionId={`main_${mainindex}`}>
                                         <Accordion flush open={openInner} toggle={toggle2}>
-                                            {item?.tariffDetails?.length !== 0 && item?.tariffDetails?.map((data, index) => (
-                                                <AccordionItem key={index}>
-                                                    <AccordionHeader targetId={`subacco_${index}`}>
-                                                        {data?.header?.split('_').join(" ") || '-'}
-                                                        <div className="right_con ms-auto">
-                                                            {/* <span className="price text-primary">{'₹'} {innerTotalHandler((item?.pickup_quote_charge || []), (mainChargeObj?.find(obj => obj.carrierId === item.carrierId)?.pickup_quote_charge || []))}</span> */}
-                                                        </div>
-                                                    </AccordionHeader>
-                                                    <AccordionBody accordionId={`subacco_${index}`}>
-                                                        {data?.tariffBreakDowns?.length !== 0 && data?.tariffBreakDowns?.map((subData, subindex) => (
-                                                            <div className="charges_wrap mb-3" key={subindex}>
-                                                                <div className="row">
-                                                                    <div className="col-2">
-                                                                        <div className="field_wrap">
-                                                                            {subindex === 0 && <label className='form-label' htmlFor="charges_name">Charge Name</label>}
-                                                                            <input type="text" value={subData?.component || ''} name="charges_name" id="charges_name" placeholder='Freight' readOnly disabled={viewData} />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-1">
-                                                                        <div className="field_wrap">
-                                                                            {subindex === 0 && <label className='form-label' htmlFor="uom">Charge Basis</label>}
-                                                                            <input type="text" value={subData?.uomCode || ''} name="uom" id="uom" readOnly disabled={viewData} />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-1">
-                                                                        <div className="field_wrap">
-                                                                            {subindex === 0 && <label className='form-label' htmlFor="quantity">Quantity</label>}
-                                                                            <input type="text" value={subData?.unit || 1} name="quantity" id="quantity" readOnly disabled={viewData} />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-1">
-                                                                        <div className="field_wrap">
-                                                                            {subindex === 0 && <label className='form-label' htmlFor="buy_currency">Buy Currency</label>}
-                                                                            <input type="text" value={subData?.currencyCode || ''} name="buy_currency" id="buy_currency" placeholder='USD' readOnly disabled={viewData} />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-1">
-                                                                        <div className="field_wrap">
-                                                                            {subindex === 0 && <label className='form-label' htmlFor="buy_cost">Total Buy Cost</label>}
-                                                                            <input type="text" value={parseInt(subData?.unitPerPrice, 10) || ''} name="buy_cost" id="buy_cost" readOnly disabled={viewData} />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-2">
-                                                                        <div className="field_wrap">
-                                                                            {subindex === 0 && <label htmlFor='markup_type' className='form-label'>Markup Type</label>}
-                                                                            <Select
-                                                                                value={optionMarkupType ? optionMarkupType.find(obj => obj.value === subData?.markup_type) : ''}
-                                                                                name='markup_type'
-                                                                                onChange={(opt) => {
-                                                                                    existingHandleChange(opt.value, 'markup_type', subindex, `${data?.header}`, item.carrierId, index);
-                                                                                }}
-                                                                                options={optionMarkupType}
-                                                                                isDisabled={viewData}
-                                                                                classNamePrefix="select2-selection form-select"
-                                                                                menuPlacement="auto"
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-1">
-                                                                        <div className="field_wrap">
-                                                                            {subindex === 0 && <label className='form-label' htmlFor="markup_val">Markup Value</label>}
-                                                                            <input type="text" name="markup_val" id="markup_val"
-                                                                                // value={subData?.markup_val || ''}
-                                                                                onChange={(e) => {
-                                                                                    existingHandleChangeMargin(subData, e, 'markup_val', subindex, `${data?.header}`, item.carrierId, index);
-                                                                                }}
-                                                                                placeholder='Enter value' disabled={viewData} />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-1">
-                                                                        <div className="field_wrap">
-                                                                            {subindex === 0 && <label className='form-label' htmlFor="tax">Tax</label>}
-                                                                            <input type="text" value={subData?.taxDetail?.taxPercentage || ''} name="tax" id="tax" placeholder='tax' readOnly disabled={viewData} />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-2">
-                                                                        <div className="field_wrap">
-                                                                            {subindex === 0 && <label className='form-label' htmlFor="total_sale_cost">Total Sale Cost</label>}
-                                                                            <input type="text" value={subData?.total_sale_cost || Number(subData?.amount + (subData?.taxDetail?.value || 0)).toFixed(2) || ''} name="total_sale_cost" id="total_sale_cost" placeholder='2200' readOnly disabled={viewData} />
-                                                                        </div>
-                                                                    </div>
+                                            {item?.tariffDetails?.length !== 0 && item?.tariffDetails?.map((data, index) => {
+                                                if (data?.selected) {
+                                                    return (
+                                                        <AccordionItem key={index}>
+                                                            <AccordionHeader targetId={`subacco_${index}`}>
+                                                                {data?.header?.split('_').join(" ") || '-'}
+                                                                <div className="right_con ms-auto">
+                                                                    {/* <span className="price text-primary">{'₹'} {innerTotalHandler((item?.pickup_quote_charge || []), (mainChargeObj?.find(obj => obj.carrierId === item.carrierId)?.pickup_quote_charge || []))}</span> */}
                                                                 </div>
-                                                            </div>
-                                                        ))}
-                                                        {/* {console.log(mainChargeObj,"mainChargeObj")} */}
-                                                        {mainChargeObj?.find(obj => obj.id === item.carrierId)?.tariffDetails?.find(obj => obj.header === data?.header)?.tariffBreakDowns?.map((newdata, i) => (
-                                                            <div className="charges_wrap mt-3" key={i}>
-                                                                <div className="label_delete_wwrap d-flex justify-content-between">
-                                                                    <label className="form-label">Select Charge</label>
-                                                                    <div className="btn_wrap">
-                                                                        <button type='button' onClick={() => { removeInputFields(i, item.carrierId, `${data?.header}`) }} className="btn p-0"><img src={delete_icon} alt="Delete" /></button>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="row">
-                                                                    <div className="col-2">
-                                                                        <div className="field_wrap">
-                                                                            <Select
-                                                                                value={newdata?.component || ''}
-                                                                                name='component'
-                                                                                onChange={(opt) => {
-                                                                                    handleChange(opt, 'component', i, `${data?.header}`, item.carrierId);
-                                                                                }}
-                                                                                options={surchargeCode_data}
-                                                                                classNamePrefix="select2-selection form-select"
-                                                                                menuPlacement="auto"
-                                                                            />
+                                                            </AccordionHeader>
+                                                            <AccordionBody accordionId={`subacco_${index}`}>
+                                                                {data?.tariffBreakDowns?.length !== 0 && data?.tariffBreakDowns?.map((subData, subindex) => (
+                                                                    <div className="charges_wrap mb-3" key={subindex}>
+                                                                        <div className="row">
+                                                                            <div className="col-2">
+                                                                                <div className="field_wrap">
+                                                                                    {subindex === 0 && <label className='form-label' htmlFor="charges_name">Charge Name</label>}
+                                                                                    <input type="text" value={subData?.component || ''} name="charges_name" id="charges_name" placeholder='Freight' readOnly disabled={viewData} />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="col-1">
+                                                                                <div className="field_wrap">
+                                                                                    {subindex === 0 && <label className='form-label' htmlFor="uom">Charge Basis</label>}
+                                                                                    <input type="text" value={subData?.uomCode || ''} name="uom" id="uom" readOnly disabled={viewData} />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="col-1">
+                                                                                <div className="field_wrap">
+                                                                                    {subindex === 0 && <label className='form-label' htmlFor="quantity">Quantity</label>}
+                                                                                    <input type="text" value={subData?.unit || 1} name="quantity" id="quantity" readOnly disabled={viewData} />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="col-1">
+                                                                                <div className="field_wrap">
+                                                                                    {subindex === 0 && <label className='form-label' htmlFor="buy_currency">Buy Currency</label>}
+                                                                                    <input type="text" value={subData?.currencyCode || ''} name="buy_currency" id="buy_currency" placeholder='USD' readOnly disabled={viewData} />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="col-1">
+                                                                                <div className="field_wrap">
+                                                                                    {subindex === 0 && <label className='form-label' htmlFor="buy_cost">Total Buy Cost</label>}
+                                                                                    <input type="text" value={parseInt(subData?.unitPerPrice, 10) || ''} name="buy_cost" id="buy_cost" readOnly disabled={viewData} />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="col-2">
+                                                                                <div className="field_wrap">
+                                                                                    {subindex === 0 && <label htmlFor='markup_type' className='form-label'>Markup Type</label>}
+                                                                                    <Select
+                                                                                        value={optionMarkupType ? optionMarkupType.find(obj => obj.value === subData?.markup_type) : ''}
+                                                                                        name='markup_type'
+                                                                                        onChange={(opt) => {
+                                                                                            existingHandleChange(opt.value, 'markup_type', subindex, `${data?.header}`, item.carrierId, index);
+                                                                                        }}
+                                                                                        options={optionMarkupType}
+                                                                                        isDisabled={viewData}
+                                                                                        classNamePrefix="select2-selection form-select"
+                                                                                        menuPlacement="auto"
+                                                                                    />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="col-1">
+                                                                                <div className="field_wrap">
+                                                                                    {subindex === 0 && <label className='form-label' htmlFor="markup_val">Markup Value</label>}
+                                                                                    <input type="text" name="markup_val" id="markup_val"
+                                                                                        // value={subData?.markup_val || ''}
+                                                                                        onChange={(e) => {
+                                                                                            existingHandleChangeMargin(subData, e, 'markup_val', subindex, `${data?.header}`, item.carrierId, index);
+                                                                                        }}
+                                                                                        placeholder='Enter value' disabled={viewData} />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="col-1">
+                                                                                <div className="field_wrap">
+                                                                                    {subindex === 0 && <label className='form-label' htmlFor="tax">Tax</label>}
+                                                                                    <input type="text" value={subData?.taxDetail?.taxPercentage || ''} name="tax" id="tax" placeholder='tax' readOnly disabled={viewData} />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="col-2">
+                                                                                <div className="field_wrap">
+                                                                                    {subindex === 0 && <label className='form-label' htmlFor="total_sale_cost">Total Sale Cost</label>}
+                                                                                    <input type="text" value={subData?.total_sale_cost || Number(subData?.amount + (subData?.taxDetail?.value || 0)).toFixed(2) || ''} name="total_sale_cost" id="total_sale_cost" placeholder='2200' readOnly disabled={viewData} />
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-1">
-                                                                        <div className="field_wrap">
-                                                                            <Select
-                                                                                value={newdata?.uomCode || ''}
-                                                                                name='uomCode'
-                                                                                onChange={(opt) => {
-                                                                                    handleChange(opt, 'uomCode', i, `${data?.header}`, item.carrierId);
-                                                                                }}
-                                                                                options={UOM_data}
-                                                                                placeholder='Select'
-                                                                                classNamePrefix="select2-selection form-select"
-                                                                                menuPlacement="auto"
-                                                                            />
+                                                                ))}
+                                                                {/* {console.log(mainChargeObj,"mainChargeObj")} */}
+                                                                {mainChargeObj?.find(obj => obj.id === item.carrierId)?.tariffDetails?.find(obj => obj.header === data?.header)?.tariffBreakDowns?.map((newdata, i) => (
+                                                                    <div className="charges_wrap mt-3" key={i}>
+                                                                        <div className="label_delete_wwrap d-flex justify-content-between">
+                                                                            <label className="form-label">Select Charge</label>
+                                                                            <div className="btn_wrap">
+                                                                                <button type='button' onClick={() => { removeInputFields(i, item.carrierId, `${data?.header}`) }} className="btn p-0"><img src={delete_icon} alt="Delete" /></button>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="row">
+                                                                            <div className="col-2">
+                                                                                <div className="field_wrap">
+                                                                                    <Select
+                                                                                        value={newdata?.component || ''}
+                                                                                        name='component'
+                                                                                        onChange={(opt) => {
+                                                                                            handleChange(opt, 'component', i, `${data?.header}`, item.carrierId);
+                                                                                        }}
+                                                                                        options={surchargeCode_data}
+                                                                                        classNamePrefix="select2-selection form-select"
+                                                                                        menuPlacement="auto"
+                                                                                    />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="col-1">
+                                                                                <div className="field_wrap">
+                                                                                    <Select
+                                                                                        value={newdata?.uomCode || ''}
+                                                                                        name='uomCode'
+                                                                                        onChange={(opt) => {
+                                                                                            handleChange(opt, 'uomCode', i, `${data?.header}`, item.carrierId);
+                                                                                        }}
+                                                                                        options={UOM_data}
+                                                                                        placeholder='Select'
+                                                                                        classNamePrefix="select2-selection form-select"
+                                                                                        menuPlacement="auto"
+                                                                                    />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="col-1">
+                                                                                <div className="field_wrap">
+                                                                                    <input type="text" name="unit" id="unit" value={newdata?.unit || 1} onChange={(e) => handleChange(e.target.value, 'unit', i, `${data?.header}`, item.carrierId)} placeholder='Enter quantity' />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="col-1">
+                                                                                <div className="field_wrap">
+                                                                                    <Select
+                                                                                        value={currency_data ? currency_data.find(obj => obj.value === newdata?.currencyCode) : ''}
+                                                                                        name='currencyCode'
+                                                                                        onChange={(opt) => {
+                                                                                            handleChange(opt?.currencyCode, 'currencyCode', i, `${data?.header}`, item.carrierId);
+                                                                                        }}
+                                                                                        options={currency_data}
+                                                                                        classNamePrefix="select2-selection form-select"
+                                                                                        menuPlacement="auto"
+                                                                                    />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="col-1">
+                                                                                <div className="field_wrap">
+                                                                                    <input type="text" name="unitPerPrice" id="unitPerPrice" value={newdata?.unitPerPrice || ''} onChange={(e) => handleChange(e.target.value, 'unitPerPrice', i, `${data?.header}`, item.carrierId)} placeholder='Enter cost' />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="col-2">
+                                                                                <div className="field_wrap">
+                                                                                    <Select
+                                                                                        value={optionMarkupType ? optionMarkupType.find(obj => obj.value === newdata?.markup_type) : ''}
+                                                                                        name='markup_type'
+                                                                                        onChange={(opt) => {
+                                                                                            handleChange(opt?.value, 'markup_type', i, `${data?.header}`, item.carrierId);
+                                                                                        }}
+                                                                                        options={optionMarkupType}
+                                                                                        classNamePrefix="select2-selection form-select"
+                                                                                        menuPlacement="auto"
+                                                                                    />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="col-1">
+                                                                                <div className="field_wrap">
+                                                                                    <input type="text" name={`markup_val`} id="markup_val"
+                                                                                        value={newdata?.markup_val || ''}
+                                                                                        onChange={(e) => {
+                                                                                            handleChangeAndCalculate(newdata, e, 'markup_val', i, `${data?.header}`, item.carrierId);
+                                                                                        }}
+                                                                                        placeholder='Enter value' />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="col-1">
+                                                                                <div className="field_wrap">
+                                                                                    <input type="text" name="taxPercentage" id="taxPercentage"
+                                                                                        value={newdata?.taxDetail?.taxPercentage || ''}
+                                                                                        onChange={(e) => {
+                                                                                            handleChangeAndCalculate(newdata, e, 'taxPercentage', i, `${data?.header}`, item.carrierId);
+                                                                                        }}
+                                                                                        placeholder='Enter tax'
+                                                                                    />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="col-2">
+                                                                                <div className="field_wrap">
+                                                                                    <input type="text" name="total_sale_cost" id="total_sale_cost" value={Number(newdata?.total_sale_cost).toFixed(2)} placeholder='Enter cost' readOnly disabled />
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-1">
-                                                                        <div className="field_wrap">
-                                                                            <input type="text" name="unit" id="unit" value={newdata?.unit || 1} onChange={(e) => handleChange(e.target.value, 'unit', i, `${data?.header}`, item.carrierId)} placeholder='Enter quantity' />
+                                                                ))}
+                                                                {!viewData && (
+                                                                    <div className="add_btn_box mt-3">
+                                                                        <div className="add_btn_wrap">
+                                                                            <button type='button' className="btn btn-primary add_btn d-flex align-items-center" onClick={() => { addHandler(`${data?.header}`, item?.carrierId); }}> <i className='bx bx-plus me-2'></i> Add Charges</button>
                                                                         </div>
                                                                     </div>
-                                                                    <div className="col-1">
-                                                                        <div className="field_wrap">
-                                                                            <Select
-                                                                                value={currency_data ? currency_data.find(obj => obj.value === newdata?.currencyCode) : ''}
-                                                                                name='currencyCode'
-                                                                                onChange={(opt) => {
-                                                                                    handleChange(opt?.currencyCode, 'currencyCode', i, `${data?.header}`, item.carrierId);
-                                                                                }}
-                                                                                options={currency_data}
-                                                                                classNamePrefix="select2-selection form-select"
-                                                                                menuPlacement="auto"
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-1">
-                                                                        <div className="field_wrap">
-                                                                            <input type="text" name="unitPerPrice" id="unitPerPrice" value={newdata?.unitPerPrice || ''} onChange={(e) => handleChange(e.target.value, 'unitPerPrice', i, `${data?.header}`, item.carrierId)} placeholder='Enter cost' />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-2">
-                                                                        <div className="field_wrap">
-                                                                            <Select
-                                                                                value={optionMarkupType ? optionMarkupType.find(obj => obj.value === newdata?.markup_type) : ''}
-                                                                                name='markup_type'
-                                                                                onChange={(opt) => {
-                                                                                    handleChange(opt?.value, 'markup_type', i, `${data?.header}`, item.carrierId);
-                                                                                }}
-                                                                                options={optionMarkupType}
-                                                                                classNamePrefix="select2-selection form-select"
-                                                                                menuPlacement="auto"
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-1">
-                                                                        <div className="field_wrap">
-                                                                            <input type="text" name={`markup_val`} id="markup_val"
-                                                                                value={newdata?.markup_val || ''}
-                                                                                onChange={(e) => {
-                                                                                    handleChangeAndCalculate(newdata, e, 'markup_val', i, `${data?.header}`, item.carrierId);
-                                                                                }}
-                                                                                placeholder='Enter value' />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-1">
-                                                                        <div className="field_wrap">
-                                                                            <input type="text" name="taxPercentage" id="taxPercentage"
-                                                                                value={newdata?.taxDetail?.taxPercentage || ''}
-                                                                                onChange={(e) => {
-                                                                                    handleChangeAndCalculate(newdata, e, 'taxPercentage', i, `${data?.header}`, item.carrierId);
-                                                                                }}
-                                                                                placeholder='Enter tax'
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-2">
-                                                                        <div className="field_wrap">
-                                                                            <input type="text" name="total_sale_cost" id="total_sale_cost" value={Number(newdata?.total_sale_cost).toFixed(2)} placeholder='Enter cost' readOnly disabled />
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        ))}
-                                                        {!viewData && (
-                                                            <div className="add_btn_box mt-3">
-                                                                <div className="add_btn_wrap">
-                                                                    <button type='button' className="btn btn-primary add_btn d-flex align-items-center" onClick={() => { addHandler(`${data?.header}`, item?.carrierId); }}> <i className='bx bx-plus me-2'></i> Add Charges</button>
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                    </AccordionBody>
-                                                </AccordionItem>
-                                            ))}
+                                                                )}
+                                                            </AccordionBody>
+                                                        </AccordionItem>
+                                                    )
+                                                }
+                                            })}
                                         </Accordion>
                                         <div className="row">
                                             <div className="col-4 d-flex justify-content-between">
                                                 <span>Sub Total:</span>
                                                 <span>
                                                     <b>
-                                                        {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '}
-                                                        {formik.values.currencyVal !== 'rupee' ? (subTotalHandler(item) * Number(formik.values.exchangeRate)).toFixed(2) : subTotalHandler(item)}
+                                                        {/* {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '} */}
+                                                        {/* {formik.values.currencyVal !== 'rupee' ? (subTotalHandler(item) * Number(formik.values.exchangeRate)).toFixed(2) : subTotalHandler(item)} */}
+                                                        {subTotalHandler(item)}
                                                     </b>
                                                 </span>
                                             </div>
@@ -546,8 +571,9 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                 <span>Tax:</span>
                                                 <span>
                                                     <b>
-                                                        {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '}
-                                                        {formik.values.currencyVal !== 'rupee' ? (totalTaxHandler(item) * Number(formik.values.exchangeRate)).toFixed(2) : totalTaxHandler(item)}
+                                                        {/* {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '} */}
+                                                        {/* {formik.values.currencyVal !== 'rupee' ? (totalTaxHandler(item) * Number(formik.values.exchangeRate)).toFixed(2) : totalTaxHandler(item)} */}
+                                                        {totalTaxHandler(item)}
                                                     </b>
                                                 </span>
                                             </div>
@@ -555,8 +581,9 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                 <span>Total Amount:</span>
                                                 <span>
                                                     <b className='h5'>
-                                                        {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '}
-                                                        {formik.values.currencyVal !== 'rupee' ? ((subTotalHandler(item) + totalTaxHandler(item)) * Number(formik.values.exchangeRate)).toFixed(2) : (subTotalHandler(item) + totalTaxHandler(item))}
+                                                        {/* {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '} */}
+                                                        {/* {formik.values.currencyVal !== 'rupee' ? ((subTotalHandler(item) + totalTaxHandler(item)) * Number(formik.values.exchangeRate)).toFixed(2) : (subTotalHandler(item) + totalTaxHandler(item))} */}
+                                                        {(subTotalHandler(item) + totalTaxHandler(item))}
                                                     </b>
                                                 </span>
                                             </div>
