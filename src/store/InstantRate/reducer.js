@@ -196,28 +196,6 @@ const instantRate = (state = INIT_STATE, action) => {
                   return item;
                 })
               };
-              
-            // const updatedItem = {
-            //     ...newArray[existingIndex],
-            //     [action.payload.charge_name]: newArray[existingIndex][action.payload.charge_name].map((item, index) => {
-            //         if (index === action.payload.index) {
-            //             if (action.payload.name === 'markup_val') {
-            //                 return {
-            //                     ...item,
-            //                     [action.payload.name]: action.payload.value,
-            //                     'margin_value': action.payload.marginVal,
-            //                     total_sale_cost: action.payload.sales_cost
-            //                 };
-            //             } else {
-            //                 return {
-            //                     ...item,
-            //                     [action.payload.name]: action.payload.value
-            //                 };
-            //             }
-            //         }
-            //         return item;
-            //     })
-            // };
             newArray[existingIndex] = updatedItem;
 
             return {

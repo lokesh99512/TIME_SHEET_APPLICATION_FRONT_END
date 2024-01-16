@@ -5,7 +5,6 @@ import Select from "react-select";
 import { Card, CardBody, Input } from 'reactstrap';
 
 const ShipmentForm = () => {
-    const shipmentDetailsOld = useSelector((state) => state.sales.createFields);
     const shipmentDetails = useSelector((state) => state?.instantRate?.searchForm);
     const shipmentDetailsFormik = useFormik({
         enableReinitialize: true,

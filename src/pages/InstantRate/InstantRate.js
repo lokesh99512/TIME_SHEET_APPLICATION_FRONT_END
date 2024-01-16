@@ -5,7 +5,7 @@ import { Container, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstra
 
 import { useDispatch, useSelector } from "react-redux";
 import { GET_CARGO_TYPE_DATA, GET_CONTAINER_DATA, GET_UOM_WEIGHT_DATA } from "../../store/Global/actiontype";
-import { ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH } from "../../store/InstantRate/actionType";
+import { ADD_OBJECT_INSTANT_SEARCH, QUOTATION_RESULT_SELECTED_BLANK, REMOVE_OBJECT_INSTANT_SEARCH } from "../../store/InstantRate/actionType";
 import { postInstantSearchAction } from "../../store/InstantRate/actions";
 import { getSalesQuotationResultData, getSalesQuotationResultData1, getSalesQuotationResultData2, getSalesQuotationResultData3 } from "../../store/Sales/actions";
 import PreviewQuotationModal from "../Sales/Quotations/partials/PreviewQuotationModal";
@@ -13,6 +13,7 @@ import QuotationModalComp from "../Sales/Quotations/partials/QuotationModalComp"
 import SearchResultComp from "../Sales/Quotations/partials/SearchResultComp";
 import SearchForm from './SearchForm';
 import { getAllCompanyDetailData } from "../../store/Settings/actions";
+import { BLANK_MODAL_CHARGE } from "../../store/Sales/Quotation/actiontype";
 
 const InstantRate = () => {
     const [activeTab, toggleTab] = useState("FCL");
@@ -39,7 +40,7 @@ const InstantRate = () => {
         let data = {
             fclInquiryField: {
                 customerId: searchData?.customerName?.value || null,
-
+                findAlternativeRoute: true,
                 originLocationTypeId: searchData?.location_from?.locationType || null,
                 destinationLocationTypeId: searchData?.location_to?.locationType || null,
 
@@ -65,18 +66,22 @@ const InstantRate = () => {
                 cargoValue: searchData?.cargo_value?.value || 0,
                 cargoWeight: searchData?.container_type?.cargo_weight?.value || 0,
                 cargoWeightUOMId: searchData?.container_type?.cargo_weight?.weight?.id || null,
-                intercomId: searchData?.incoterm || null,
-                containerDetails: searchData?.container_type?.containerArray?.map((data) => {
-                    return {
-                        id: data?.id,
-                        size: data?.size,
-                        noOfUnits: data?.unitNew
-                    }
-                }) || null
+                intercomId: searchData?.incoterm?.value || null,
+                containerDetails: (searchData?.container_type?.containerArray || [])
+                    .map((data) => (
+                        data?.unitNew !== 0
+                            ? {
+                                id: data?.id,
+                                size: data?.size,
+                                noOfUnits: data?.unitNew
+                            }
+                            : null
+                    ))
+                    .filter(Boolean)
             }
         }
 
-        console.log(data,"data");
+        console.log(data, "data");
 
         dispatch(postInstantSearchAction(data));
 
@@ -101,11 +106,14 @@ const InstantRate = () => {
     }
 
     useEffect(() => {
-        dispatch({type: GET_CARGO_TYPE_DATA});
-        dispatch({type: GET_CONTAINER_DATA});
-        dispatch({type: GET_UOM_WEIGHT_DATA});
+        dispatch({ type: GET_CARGO_TYPE_DATA });
+        dispatch({ type: GET_CONTAINER_DATA });
+        dispatch({ type: GET_UOM_WEIGHT_DATA });
         dispatch(getAllCompanyDetailData());
-    },[]);
+        dispatch({ type: BLANK_MODAL_CHARGE, payload: {} });
+        dispatch({ type: QUOTATION_RESULT_SELECTED_BLANK, payload: {} });
+        dispatch({ type: REMOVE_OBJECT_INSTANT_SEARCH });
+    }, []);
 
     return (
         <>
@@ -118,7 +126,7 @@ const InstantRate = () => {
                                 <NavLink
                                     href="#"
                                     className={classnames({ active: activeTab === "FCL", }, "px-3 py-2")}
-                                    onClick={() => { toggleTab("FCL"); dispatch({type: REMOVE_OBJECT_INSTANT_SEARCH, payload: 'shipment_details'}) }}>
+                                    onClick={() => { toggleTab("FCL"); dispatch({ type: REMOVE_OBJECT_INSTANT_SEARCH, payload: 'shipment_details' }) }}>
                                     <i className='bx bx-cube mx-1'></i>
                                     FCL</NavLink>
                             </NavItem>
@@ -126,21 +134,21 @@ const InstantRate = () => {
                                 <NavLink
                                     href="#"
                                     className={classnames({ active: activeTab === "LCL", }, "px-3 py-2")}
-                                    onClick={() => { toggleTab("LCL"); dispatch({type: ADD_OBJECT_INSTANT_SEARCH, payload: 'shipment_details'}) }}
+                                    onClick={() => { toggleTab("LCL"); dispatch({ type: ADD_OBJECT_INSTANT_SEARCH, payload: 'shipment_details' }) }}
                                 ><i className='bx bx-package mx-1'></i>LCL</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink
                                     href="#"
                                     className={classnames({ active: activeTab === "Air", }, "px-3 py-2")}
-                                    onClick={() => { toggleTab("Air"); dispatch({type: ADD_OBJECT_INSTANT_SEARCH, payload: 'shipment_details'}) }}
+                                    onClick={() => { toggleTab("Air"); dispatch({ type: ADD_OBJECT_INSTANT_SEARCH, payload: 'shipment_details' }) }}
                                 ><i className='bx bx-rocket mx-1'></i>Air</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink
                                     href="#"
                                     className={classnames({ active: activeTab === "Land", }, "px-3 py-2")}
-                                    onClick={() => { toggleTab("Land"); dispatch({type: ADD_OBJECT_INSTANT_SEARCH, payload: 'shipment_details'}) }}
+                                    onClick={() => { toggleTab("Land"); dispatch({ type: ADD_OBJECT_INSTANT_SEARCH, payload: 'shipment_details' }) }}
                                 ><i className='bx bx-train mx-1'></i>Land</NavLink>
                             </NavItem>
                         </Nav>

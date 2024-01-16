@@ -1,50 +1,28 @@
 import { useFormik } from 'formik';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import Select from "react-select";
 import { Card, CardBody, Input } from 'reactstrap';
 import { optionQuoteContactCode, optionQuoteContacttitle } from '../../../../common/data/sales';
-import { useSelector } from 'react-redux';
-
-const companyDetails = {
-    id: 1,
-    customerName: "Apex Export Pvt Ltd",
-    address: "12, Golden plazza",
-    city: "Banglore",
-    state: "Kolkata",
-    country: "India",
-    zipcode: "123456",
-    title: "Mr",
-    contactName: "Ajay",
-    opCode: "+91",
-    phoneNumber: "9800012345",
-    email: "a@gmail.com",
-}
-
 const CompanyForm = () => {
-    const searchData = useSelector((state) => state?.instantRate?.searchForm);
-    const {settings_company_settings_all_data} = useSelector((state) => state?.settings);
-    const [companyDetailsInitial, setCompanyDetailsInitial] = useState(companyDetails);
-
-    useEffect(() => {
-        setCompanyDetailsInitial(companyDetails)
-    }, [])
+    const { settings_company_settings_all_data } = useSelector((state) => state?.settings);
 
     const companyDetailsFormik = useFormik({
+        enableReinitialize: true,
         initialValues: {
-            customerName: "Apex Export Pvt Ltd",
-            address: "12, Golden plazza",
-            city: "Banglore",
-            state: "Kolkata",
-            country: "India",
-            zipcode: "123456",
+            customerName: settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.name || '-',
+            address: settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.address || '-',
+            city: settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.city?.cityName || '-',
+            state: settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.state?.stateName || '-',
+            country: settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.country?.countryName || '-',
+            zipcode: settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.pinCode?.pin || '-',
             title: "Mr",
-            contactName: "Ajay",
+            contactName: settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.contactName,
             opCode: "+91",
-            phoneNumber: "9800012345",
-            email: "a@gmail.com",
+            phoneNumber: settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.contactNumber || '-',
+            email: settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.email || '-',
         }
     })
-    // console.log(searchData,"searchData");
     return (
         <>
             <div className="customer_form_details">
@@ -53,7 +31,6 @@ const CompanyForm = () => {
                         <form>
                             <div className="row">
                                 <div className="col-12 col-md-6">
-                                    {/* {console.log(companyDetailsFormik?.values,"testing")} */}
                                     <div className="mb-3">
                                         <label className="form-label">Company name</label>
                                         <Input
@@ -63,6 +40,7 @@ const CompanyForm = () => {
                                             onChange={companyDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
+                                            readOnly
                                         />
                                     </div>
                                 </div>
@@ -76,6 +54,7 @@ const CompanyForm = () => {
                                             onChange={companyDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
+                                            readOnly
                                         />
                                     </div>
                                 </div>
@@ -89,6 +68,7 @@ const CompanyForm = () => {
                                             onChange={companyDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
+                                            readOnly
                                         />
                                     </div>
                                 </div>
@@ -102,6 +82,7 @@ const CompanyForm = () => {
                                             onChange={companyDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
+                                            readOnly
                                         />
                                     </div>
                                 </div>
@@ -115,6 +96,7 @@ const CompanyForm = () => {
                                             onChange={companyDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
+                                            readOnly
                                         />
                                     </div>
                                 </div>
@@ -128,6 +110,7 @@ const CompanyForm = () => {
                                             onChange={companyDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
+                                            readOnly
                                         />
                                     </div>
                                 </div>
@@ -148,7 +131,7 @@ const CompanyForm = () => {
                                                     }}
                                                     placeholder="Mr"
                                                     options={optionQuoteContacttitle}
-                                                    classNamePrefix="select2-selection form-select"
+                                                    classNamePrefix="select2-selection form-select"                                                    
                                                 />
                                             </div>
                                             <div className='col-6'>
@@ -159,6 +142,7 @@ const CompanyForm = () => {
                                                     onChange={companyDetailsFormik.handleChange}
                                                     className="form-control"
                                                     placeholder=""
+                                                    readOnly
                                                 />
                                             </div>
                                         </div>
@@ -192,6 +176,7 @@ const CompanyForm = () => {
                                                     onChange={companyDetailsFormik.handleChange}
                                                     className="form-control"
                                                     placeholder=""
+                                                    readOnly
                                                 />
                                             </div>
                                         </div>
@@ -207,6 +192,7 @@ const CompanyForm = () => {
                                             onChange={companyDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
+                                            readOnly
                                         />
                                     </div>
                                 </div>

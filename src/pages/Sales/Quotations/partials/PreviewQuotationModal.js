@@ -19,7 +19,6 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
     const shipmentDetails = useSelector((state) => state?.instantRate?.searchForm);
     const {settings_company_settings_all_data} = useSelector((state) => state?.settings);
     const dispatch = useDispatch();
-    console.log(settings_company_settings_all_data,"settings_company_settings_all_data");
     const confirmHandler = () => {
         // const mergedArray = [...quoteData];
         // let newArry = [...mainChargeObj];
@@ -173,7 +172,7 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
                                     <tr>
                                         <td>Commodities</td>
                                         <td>-</td>
-                                        <td>-</td>
+                                        <td>{shipmentDetails?.container_type?.cargo_weight?.value || 0} {shipmentDetails?.container_type?.cargo_weight?.weight?.value || ''}</td>
                                         <td>-</td>
                                         {/* <td>100xBox(s)(40x40x40 CM)</td>
                                         <td>12,000 KG</td>
@@ -184,6 +183,7 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
                         </div>
 
                         <PreviewCommonTable  />
+                        {quoteData?.length !== 0 ? quoteData?.map((data) => (<PreviewCommonTable data={data} key={data.carrierId} newData={mainChargeObj.find(obj => obj.id === data.carrierId) || []} />)) : null}
                         {/* {preferData?.length !== 0 ? preferData?.map((data) => (<PreviewCommonTable data={data} key={data.id} newData={mainChargeObj.find(obj => obj.id === data.id)} />)) : null}
                         <span style={{pageBreakAfter: 'always'}}></span>
                         {cheaperData?.length !== 0 ? cheaperData?.map((data) => (<PreviewCommonTable data={data} key={data.id} newData={mainChargeObj.find(obj => obj.id === data.id)} />)) : null}
