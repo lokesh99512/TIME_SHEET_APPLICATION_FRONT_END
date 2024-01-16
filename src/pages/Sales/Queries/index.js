@@ -62,7 +62,7 @@ export default function QueriesComp() {
     const columns = useMemo(() => [
         {
             Header: 'Inquiry ID',
-            accessor: 'inquiry_id',
+            accessor: 'inquiryId',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -71,7 +71,7 @@ export default function QueriesComp() {
         },
         {
             Header: 'Inquiry Dt',
-            accessor: 'inquiry_dt',
+            accessor: 'inquiryDate',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -80,7 +80,7 @@ export default function QueriesComp() {
         },
         {
             Header: 'Customer Name',
-            accessor: 'customer_name',
+            accessor: 'customerName',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -89,7 +89,7 @@ export default function QueriesComp() {
         },
         {
             Header: 'Customer Contact No',
-            accessor: 'customer_contact',
+            accessor: 'customerContactNo',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -98,7 +98,7 @@ export default function QueriesComp() {
         },
         {
             Header: 'Origin',
-            accessor: 'org_port',
+            accessor: 'origin',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -107,7 +107,7 @@ export default function QueriesComp() {
         },
         {
             Header: 'Destination',
-            accessor: 'dest_port',
+            accessor: 'destination',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -116,7 +116,7 @@ export default function QueriesComp() {
         },
         {
             Header: 'Cargo Ready Date',
-            accessor: 'cargo_ready_date',
+            accessor: 'cargoDate',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -125,7 +125,7 @@ export default function QueriesComp() {
         },
         {
             Header: 'Cargo Type',
-            accessor: 'cargo_type',
+            accessor: 'cargoType',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -134,7 +134,7 @@ export default function QueriesComp() {
         },
         {
             Header: 'Container type',
-            accessor: 'container_type',
+            accessor: 'containerTypes',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -152,7 +152,7 @@ export default function QueriesComp() {
         },
         {
             Header: 'Cargo Value',
-            accessor: 'cargo_value',
+            accessor: 'cargoValue',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -161,7 +161,7 @@ export default function QueriesComp() {
         },
         {
             Header: 'Incoterms',
-            accessor: 'incoterms',
+            accessor: 'incoterm',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -170,7 +170,7 @@ export default function QueriesComp() {
         },
         {
             Header: 'Sales Emp',
-            accessor: 'sales_person',
+            accessor: 'salesEmp',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -213,10 +213,7 @@ export default function QueriesComp() {
                         {/* sales table && filter */}
                         <SalesCommonTable
                             columns={columns}
-                            data={navigateType?.state?.id === 'Pending Enquires' ? inquiryData?.filter((item) => item?.status.toLowerCase() === 'pending') : 
-                                navigateType?.state?.id === 'Enquires Actioned' ? inquiryData?.filter((item) => item?.status.toLowerCase() === 'actioned') :
-                                navigateType?.state?.id === 'SLA breached' ? inquiryData?.filter((item) => item?.status.toLowerCase() === 'sla')
-                                 : inquiryData}
+                            data={!!inquiryData.content?inquiryData.content:[]}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}

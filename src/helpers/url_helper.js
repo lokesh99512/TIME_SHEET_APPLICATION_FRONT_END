@@ -152,7 +152,7 @@ export const GET_QUOTATION_SEARCH_RESULT2 = "get-quotation-result2"
 export const GET_QUOTATION_SEARCH_RESULT3 = "get-quotation-result3"
 export const GET_quote_exchange_rate = "get-exchangerate"
 
-export const GET_INQUIRY_TABLE = "GET_INQUIRY_TABLE"
+export const GET_INQUIRY_TABLE = "/api/v1/fcl-inquiry-detail/"
 
 // -------------------- original Url Helper
 
@@ -269,3 +269,7 @@ export const GET_ALL_INCOTERM ="/api/v1/incoterm/"
 
 // INstant Rate ---------------------------------------
 export const POST_INSTANT_RATE_URL = "/api/v1/fcl-inquiry-detail/"
+
+
+//tanant locaton --------------------------------
+export const TANANT_LOCATION = "/api/v1/location/"
