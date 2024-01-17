@@ -90,7 +90,7 @@ export default function UploadFreightData() {
         const newSurcharge = {
             surcharges_name: '',
             destination: [],
-            uom: '',
+            uom: {label: "PER CONTAINER",value: "PER_CONTAINER",description: "PER CONTAINER",id: 2,version: 0},
             gp1: '',
             gp2: '',
             hq1: '',
@@ -149,17 +149,17 @@ export default function UploadFreightData() {
         if (activeTabProgress === 3) {
             let data = addFCL?.surcharges?.map((item) => {
                 return {
-                    "surchargeCodeId": item?.surcharges_name?.id,
-                    "uomId": item?.uom?.id,
-                    "destinationIds": item?.destination?.length !== 0 ? item?.destination?.map((item) => item?.id) : [],
-                    "currencyId": item?.charge_currency?.id,
+                    ...(item?.surcharges_name && {"surchargeCodeId": item?.surcharges_name?.id}),
+                    ...(item?.uom && {"uomId": item?.uom?.id}),
+                    ...(item?.destination?.length !== 0 && {"destinationIds": item?.destination?.length !== 0 ? item?.destination?.map((item) => item?.id) : []}),
+                    ...(item?.charge_currency && {"currencyId": item?.charge_currency?.id}),
                     "containerWiseValues": {
-                        "40GP": item?.gp2,
-                        "40HQ": item?.hq1,
-                        "45HQ": item?.hq2,
-                        "20RF": item?.rf1,
-                        "40RF": item?.rf2,
-                        "20GP": item?.gp1
+                        ...(item?.gp1 && {"20GP": item?.gp1}),
+                        ...(item?.gp2 && {"40GP": item?.gp2}),
+                        ...(item?.hq1 && {"40HQ": item?.hq1}),
+                        ...(item?.hq2 && {"45HQ": item?.hq2}),
+                        ...(item?.rf1 && {"20RF": item?.rf1}),
+                        ...(item?.rf2 && {"40RF": item?.rf2})
                     }
                 }
             });
@@ -177,9 +177,9 @@ export default function UploadFreightData() {
     const uploadSaveHandler = () => {
         if (activeTabProgress === 1) {
             const data = {
-                rateSource: addFCL?.carrierDetails?.rate_source?.value || '',
+                ...(addFCL?.carrierDetails?.rate_source !== "" && {rateSource: addFCL?.carrierDetails?.rate_source?.value || ''}),
                 rateType: addFCL?.carrierDetails?.rate_type?.value || '',
-                validityApplication: addFCL?.carrierDetails?.validity_application?.value || '',
+                ...(addFCL?.carrierDetails?.validity_application !== "" && {validityApplication: addFCL?.carrierDetails?.validity_application?.value || ''}),
                 validFrom: addFCL?.carrierDetails?.validity_from || '',
                 validTo: addFCL?.carrierDetails?.validity_to || '',
             };
@@ -209,7 +209,19 @@ export default function UploadFreightData() {
             // formData.append('tenantVendor', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
         }
         if (activeTabProgress === 3) {
-            openSaveConfirmModal();
+            console.log(addFCL?.surcharges[0], "destination");
+            console.log(!isAnyValueEmptyInArray(addFCL?.surcharges, ['gp1','gp2','hq1','hq2','rf1','rf2']), "destination");
+            if(addFCL?.surcharges?.length !== 0){
+                if(!isAnyValueEmptyInArray(addFCL?.surcharges, ['gp1','gp2','hq1','hq2','rf1','rf2']) && addFCL?.surcharges[0]?.destination?.length !== 0){                              
+                    openSaveConfirmModal();
+                } else {
+                    navigate('/freight/ocean/fcl');
+                    dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addFCL', data: { ...addFCL, surcharges: [] } } });
+                    setSurcharges([]);
+                }
+            } else {
+                navigate('/freight/ocean/fcl');
+            }
         }
     }
 
@@ -269,7 +281,7 @@ export default function UploadFreightData() {
                                                         <div className="row">
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
-                                                                    <label className="form-label">Rate Type</label>
+                                                                    <label className="form-label">Rate Type<span className='required_star'>*</span></label>
                                                                     <Select
                                                                         value={addFCL?.carrierDetails?.rate_type}
                                                                         name='rate_type'
@@ -300,7 +312,7 @@ export default function UploadFreightData() {
                                                         <div className="row">
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
-                                                                    <label className="form-label">Vendor Type</label>
+                                                                    <label className="form-label">Vendor Type<span className='required_star'>*</span></label>
                                                                     <Select
                                                                         value={addFCL?.carrierDetails?.vendor_type}
                                                                         name='vendor_type'
@@ -317,7 +329,7 @@ export default function UploadFreightData() {
                                                             </div>
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
-                                                                    <label className="form-label">Vendor Name/Carrier Name</label>
+                                                                    <label className="form-label">Vendor Name/Carrier Name<span className='required_star'>*</span></label>
                                                                     <Select
                                                                         value={addFCL?.carrierDetails?.vendor_name || ''}
                                                                         name='vendor_name'
@@ -348,7 +360,7 @@ export default function UploadFreightData() {
                                                             </div>
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
-                                                                    <label htmlFor='validity_from' className="form-label">Validity From</label>
+                                                                    <label htmlFor='validity_from' className="form-label">Validity From<span className='required_star'>*</span></label>
                                                                     <input type="date" name="validity_from" id="validity_from" className='form-control' value={addFCL?.carrierDetails?.validity_from} onChange={(e) => {
                                                                         handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, validity_from: e.target.value });
                                                                     }} />
@@ -356,7 +368,7 @@ export default function UploadFreightData() {
                                                             </div>
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
-                                                                    <label htmlFor='validity_to' className="form-label">Validity To</label>
+                                                                    <label htmlFor='validity_to' className="form-label">Validity To<span className='required_star'>*</span></label>
                                                                     <input type="date" name="validity_to" id="validity_to" className='form-control' value={addFCL?.carrierDetails?.validity_to || ''} onChange={(e) => {
                                                                         handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, validity_to: e.target.value });
                                                                     }} />
@@ -456,7 +468,7 @@ export default function UploadFreightData() {
                                                                         </div>
                                                                         <div className="col-lg-3">
                                                                             <div className="mb-3">
-                                                                                <label htmlFor='destination' className="form-label">Surcharge Applicable on dest..</label>
+                                                                                <label htmlFor='destination' className="form-label">Applicable Destination Ports</label>
                                                                                 <Select
                                                                                     value={item.destination}
                                                                                     name='destination'
@@ -470,7 +482,7 @@ export default function UploadFreightData() {
                                                                         </div>
                                                                         <div className="col-lg-3">
                                                                             <div className="mb-3">
-                                                                                <label htmlFor='charge_currency' className="form-label">Select Currency</label>
+                                                                                <label htmlFor='charge_currency' className="form-label">Currency</label>
                                                                                 <Select
                                                                                     value={item?.charge_currency || ''}
                                                                                     name='charge_currency'
@@ -493,6 +505,7 @@ export default function UploadFreightData() {
                                                                                     }}
                                                                                     options={UOM_data}
                                                                                     classNamePrefix="select2-selection form-select"
+                                                                                    isDisabled
                                                                                 />
                                                                             </div>
                                                                         </div>
@@ -577,18 +590,9 @@ export default function UploadFreightData() {
 
                                                 <li className={`d-flex`}>
                                                     <button
-                                                        className={`btn btn-primary ${activeTabProgress === 1 ? isAnyValueEmpty(addFCL?.carrierDetails) ? "disabled" : "" : activeTabProgress === 2 ? selectedFiles?.length === 0 ? "disabled" : "" : ""}`}
+                                                        className={`btn btn-primary ${activeTabProgress === 1 ? isAnyValueEmpty(addFCL?.carrierDetails, ['rate_source','validity_application']) ? "disabled" : "" : activeTabProgress === 2 ? selectedFiles?.length === 0 ? "disabled" : "" : ""}`}
                                                         onClick={() => { uploadSaveHandler() }}
-                                                    >Save <i className="bx bx-chevron-right ms-1"></i></button>
-
-                                                    {/* {activeTabProgress !== 3 && (
-                                                        <button
-                                                            className={`btn btn-primary d-flex align-items-center ms-2`}
-                                                            onClick={() => {
-                                                                toggleTabProgress(activeTabProgress + 1);
-                                                            }}
-                                                        >Next <i className="bx bx-chevron-right ms-1"></i> </button>
-                                                    )} */}
+                                                    >{activeTabProgress !== 3 ? (<>Save <i className="bx bx-chevron-right ms-1"></i></>) : "Save & Skip"}</button>
                                                 </li>
                                             </ul>
                                         </div>

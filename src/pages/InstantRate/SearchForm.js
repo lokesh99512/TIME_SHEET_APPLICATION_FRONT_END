@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Flatpickr from "react-flatpickr";
 import { useDispatch, useSelector } from "react-redux";
 import Select from 'react-select';
-import { Accordion, AccordionBody, AccordionHeader, AccordionItem, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+import { Accordion, AccordionBody, AccordionHeader, AccordionItem, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap';
 import SimpleBar from "simplebar-react"
 
 import { calendar_filled, cube_filled, delete_icon, filter_img, location_filled, swap_arrow } from '../../assets/images';
@@ -94,10 +94,16 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
   }
 
   const handleDateChnage = (arr, value, target) => {
-    let arrItem = arr
-    dispatch({ type: UPDATE_SEARCH_INSTANT_RATE_DATE, payload: { arrItem } })
+    let arrItem = "";
+    if(arr?.length > 1){
+      arrItem = arr
+      dispatch({ type: UPDATE_SEARCH_INSTANT_RATE_DATE, payload: { arrItem } })
+    } else {
+      dispatch({ type: UPDATE_VALUE_BLANK, payload: 'cargo_date' })
+    }
   }
 
+  console.log(searchForm,"searchForm");
   // container handle 
   const handleContainerChangeHandler = (item, name) => {
     let newArray = [...containerData?.containerArray];
@@ -811,6 +817,24 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                         </ul>
                       ) : null}
                     </div> */}
+                  </div>
+                </div>
+              </div>
+
+              {/* Alternate */}
+              <div className="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-2 mt-2">
+                <div className="d-flex py-2">
+                  <span className="me-2">Show Alternate Route</span>
+                  <div className="switch_wrap">
+                    <FormGroup switch>
+                      <Input
+                        type="switch"
+                        checked={searchForm?.alternate_route || false}
+                        onChange={(e) => {
+                          handleChangeHandler(!searchForm?.alternate_route, "alternate_route");
+                        }}
+                      />
+                    </FormGroup>
                   </div>
                 </div>
               </div>

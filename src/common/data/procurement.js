@@ -130,26 +130,15 @@ const inLandBreadcrumb = [
 
 const fclSurchargeBreadcrumb = [
     {
-        label: 'Rate Management',
+        label: 'Settings',
         link: '/#',
         active: false
     },
     {
-        label: 'Surcharge Mater',
+        label: 'Surcharge Master',
         link: '/#',
-        active: false
-    },
-    {
-        label: 'Ocean Freight',
-        link: '/#',
-        active: false
-    },
-    // {
-    //     // label: 'FCL Surcharge master',
-    //     label: 'Inland Surcharges',
-    //     link: '/#',
-    //     active: true
-    // },
+        active: true
+    }
 ]
 // ---------------------- breadcrumbs --------------------------------------
 

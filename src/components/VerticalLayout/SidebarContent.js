@@ -397,10 +397,10 @@ const SidebarContent = props => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/#" className="has-arrow">
+                  <Link to="/settings/surcharge/fcl">
                     <span>Surcharge Master</span>
                   </Link>
-                  <ul className="sub-menu">
+                  {/* <ul className="sub-menu">
                     <li>
                       <Link to="/settings/surcharge/fcl">
                         <span>Ocean Surcharges</span>
@@ -416,7 +416,7 @@ const SidebarContent = props => {
                         <span>Inland Surcharges</span>
                       </Link>
                     </li>
-                  </ul>
+                  </ul> */}
                 </li>
                 <li className="opacity-25">
                   <Link to="#">

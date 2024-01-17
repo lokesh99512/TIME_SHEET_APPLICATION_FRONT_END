@@ -75,7 +75,11 @@ export function formatBytes(bytes, decimals = 2) {
 
 export const isAnyValueEmpty = (obj, removeKey) => {
     let updatedObj = { ...obj };
-    delete updatedObj?.[removeKey];
+    if(removeKey !== undefined && removeKey?.length > 0){
+        for (const key of removeKey) {
+            delete updatedObj?.[key];            
+        }
+    }
     for (const key in updatedObj) {
         if (Object.prototype.hasOwnProperty.call(updatedObj, key)) {
             const value = updatedObj[key];
@@ -90,7 +94,12 @@ export const isAnyValueEmpty = (obj, removeKey) => {
 export const isAnyValueEmptyInArray = (arr, removeKey) => {
     for (const obj of arr) {
         let updatedObj = { ...obj };
-        delete updatedObj?.[removeKey];
+
+        if(removeKey !== undefined && removeKey?.length > 0){
+            for (const key of removeKey) {
+                delete updatedObj?.[key];            
+            }
+        }
 
         for (const key in updatedObj) {
             if (Object.prototype.hasOwnProperty.call(updatedObj, key)) {
