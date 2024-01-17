@@ -40,7 +40,7 @@ const InstantRate = () => {
         let data = {
             fclInquiryField: {
                 customerId: searchData?.customerName?.value || null,
-                findAlternativeRoute: true,
+                findAlternativeRoute: searchData?.alternate_route,
                 originLocationTypeId: searchData?.location_from?.locationType || null,
                 destinationLocationTypeId: searchData?.location_to?.locationType || null,
 

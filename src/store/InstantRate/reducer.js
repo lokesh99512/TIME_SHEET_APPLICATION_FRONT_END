@@ -16,6 +16,7 @@ const INIT_STATE = {
         cargo_date: '',
         location_from: '',
         location_to: '',
+        alternate_route: false
     },
     instantRateLocation: [],
     incoterm: [],

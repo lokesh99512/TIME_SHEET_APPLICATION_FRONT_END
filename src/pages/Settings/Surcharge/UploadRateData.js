@@ -27,7 +27,7 @@ export default function UploadRateData() {
   const [aliasModal, setAliasModal] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   const { initialValue, uploadRateDataSchema, handleSubmit } =
     useUploadRateData();
 
@@ -104,7 +104,7 @@ export default function UploadRateData() {
     const foundAliasEntry = settings_surcharges_alias_table_data.content.find(
       (entry) => entry.name === targetAliasName
     );
-    setSurchargeAliasDescw(foundAliasEntry.description);
+    setSurchargeAliasDescw(foundAliasEntry.description || {});
   };
 
   return (
@@ -138,16 +138,9 @@ export default function UploadRateData() {
                               className="form-control"
                               id="Surcharge_Code"
                               placeholder="Enter Surcharge Code"
-                              invalid={
-                                formik.touched.surchargeCode &&
-                                formik.errors.surchargeCode
-                                  ? true
-                                  : false
-                              }
+                              invalid={formik.touched.surchargeCode && formik.errors.surchargeCode ? true : false}
                             />
-                            <FormFeedback>
-                              {formik.errors.surchargeCode}
-                            </FormFeedback>
+                            <FormFeedback> {formik.errors.surchargeCode} </FormFeedback>
                           </div>
                         </div>
                       </div>
@@ -165,16 +158,9 @@ export default function UploadRateData() {
                               className="form-control"
                               id="Surcharge_Desc"
                               placeholder="Enter Surcharge Desc"
-                              invalid={
-                                formik.touched.surchargeDesc &&
-                                formik.errors.surchargeDesc
-                                  ? true
-                                  : false
-                              }
+                              invalid={formik.touched.surchargeDesc && formik.errors.surchargeDesc ? true : false}
                             />
-                            <FormFeedback>
-                              {formik.errors.surchargeDesc}
-                            </FormFeedback>
+                            <FormFeedback> {formik.errors.surchargeDesc} </FormFeedback>
                           </div>
                         </div>
                       </div>
@@ -183,40 +169,23 @@ export default function UploadRateData() {
                     <div className="row">
                       <div className="col-md-6 col-lg-4 mb-4">
                         <div className="row">
-                          <label className="form-label">
-                            Surcharge Category
-                          </label>
+                          <label className="form-label"> Surcharge Category </label>
                           <div className="">
                             <Select
-                              value={
-                                surchargeCategory
-                                  ? surchargeCategory.find(
-                                      (option) =>
-                                        option.value ===
-                                        formik?.values?.surchargeCategory
-                                    )
-                                  : ""
-                              }
+                              value={surchargeCategory ? surchargeCategory.find((option) => option.value === formik?.values?.surchargeCategory) : ""}
                               name="surchargeCategory"
-                              options={surchargeCategoryOptions}
+                              options={[...surchargeCategoryOptions, { label: "Add New", value: "Add New" }]}
                               placeholder={"Select Surcharge Category"}
                               onChange={(e) => {
-                                formik.setFieldValue(
-                                  `surchargeCategory`,
-                                  e.value
-                                );
+                                if (e.label === 'Add New') {
+                                  setCategoryModal(true);
+                                }
+                                formik.setFieldValue(`surchargeCategory`, e.value);
                               }}
                               classNamePrefix="select2-selection form-select"
-                              invalid={
-                                formik.touched.surchargeCategory &&
-                                formik.errors.surchargeCategory
-                                  ? true
-                                  : false
-                              }
+                              invalid={formik.touched.surchargeCategory && formik.errors.surchargeCategory ? true : false}
                             />
-                            <FormFeedback>
-                              {formik.errors.surchargeCategory}
-                            </FormFeedback>
+                            <FormFeedback> {formik.errors.surchargeCategory} </FormFeedback>
                           </div>
                         </div>
                       </div>
@@ -228,32 +197,19 @@ export default function UploadRateData() {
                           </label>
                           <div className="">
                             <Select
-                              value={
-                                surchargeAliasCode
-                                  ? surchargeAliasCode.find(
-                                      (option) =>
-                                        option.value ===
-                                        formik?.values?.surchargeAliasCode
-                                    )
-                                  : ""
-                              }
+                              value={surchargeAliasCode ? surchargeAliasCode.find((option) => option.value === formik?.values?.surchargeAliasCode) : ""}
                               name="surchargeAliasCode"
-                              options={surchargeAliasCodeOptions}
+                              options={[...surchargeAliasCodeOptions, { label: "Add New", value: "Add New" }]}
                               placeholder={"Select Surcharge Alias Code"}
                               onChange={(e) => {
-                                formik.setFieldValue(
-                                  `surchargeAliasCode`,
-                                  e.value
-                                );
+                                formik.setFieldValue(`surchargeAliasCode`, e.value);
+                                if (e.label === 'Add New') {
+                                  setAliasModal(true);
+                                }
                                 handleSurchargeAliasDesc(e.value);
                               }}
                               classNamePrefix="select2-selection form-select"
-                              invalid={
-                                formik.touched.surchargeCategory &&
-                                formik.errors.surchargeCategory
-                                  ? true
-                                  : false
-                              }
+                              invalid={formik.touched.surchargeCategory && formik.errors.surchargeCategory ? true : false}
                             />
                             <FormFeedback>
                               {formik.errors.surchargeCategory}
@@ -286,7 +242,7 @@ export default function UploadRateData() {
                               classNamePrefix="select2-selection form-select"
                               invalid={
                                 formik.touched.surchargeAliasDesc &&
-                                formik.errors.surchargeAliasDesc
+                                  formik.errors.surchargeAliasDesc
                                   ? true
                                   : false
                               }

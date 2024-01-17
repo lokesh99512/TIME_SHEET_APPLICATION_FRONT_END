@@ -134,7 +134,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                         )}
                                     </div> */}
                                     <div className="row">
-                                        <div className="col-lg-6 text-left"><span>Valid: <b>{item.validFrom || '-'}</b></span></div>
+                                        <div className="col-lg-6 text-left"><span>Valid: <b>{item?.validTo || '-'}</b></span></div>
                                         {/* <div className="col-lg-4 text-center"><span>Id: <b>{item.id || '-'}</b></span></div> */}
                                         {/* <div className="col-lg-6 text-end"><span>CO2: <b>{item.co_two || '-'}</b></span></div> */}
                                     </div>
