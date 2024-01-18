@@ -1,25 +1,28 @@
 import { useFormik } from "formik";
-import Select from "react-select";
-import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Select from "react-select";
 import {
   Card,
   CardBody,
   Col,
   Container,
+  FormFeedback,
   Input,
   Row,
-  FormFeedback,
 } from "reactstrap";
-import ModalAddNewAlias from "./Modal/ModalAddNewAlias";
-import { useUploadRateData } from "./hook/useUploadRateData";
-import ModalAddNewCategory from "./Modal/ModalAddNewCategory";
+import { addSurchargeSettingsBreadcrumb } from "../../../common/data/parties";
+import { isAnyValueEmpty } from "../../../components/Common/CommonLogic";
 import {
   getAllCompanyDetailData,
   getAllSurchargeCategoryData,
   getAllTableSurchargeAlias,
 } from "../../../store/Settings/actions";
+import ModalAddNewAlias from "./Modal/ModalAddNewAlias";
+import ModalAddNewCategory from "./Modal/ModalAddNewCategory";
+import TopBreadcrumbs from "./TopBreadcrumbs";
+import { useUploadRateData } from "./hook/useUploadRateData";
 
 
 export default function UploadRateData() {
@@ -112,15 +115,15 @@ export default function UploadRateData() {
       <div className="page-content">
         <Container fluid>
           <div className="main_freight_wrapper surcharges_add_form_wrap">
+
+            {/* breadcrumbs && rate */}
+            <TopBreadcrumbs breadcrumbs={addSurchargeSettingsBreadcrumb} />
+
             <button
               type="button"
               className="btn border mb-3"
-              onClick={() => {
-                navigate(-1);
-              }}
-            >
-              Back
-            </button>
+              onClick={() => { navigate(-1); }}
+            > Back </button>
             <Row>
               <Col lg="12">
                 <Card>
@@ -128,7 +131,7 @@ export default function UploadRateData() {
                     <div className="row">
                       <div className="col-md-6 col-lg-4 mb-4">
                         <div className="row">
-                          <label className="form-label">Surcharge Code</label>
+                          <label className="form-label">Surcharge Code<span className='required_star'>*</span></label>
                           <div className="">
                             <Input
                               type="text"
@@ -147,7 +150,7 @@ export default function UploadRateData() {
 
                       <div className="col-md-6 col-lg-4 mb-4">
                         <div className="row">
-                          <label className="form-label">Surcharge Desc</label>
+                          <label className="form-label">Surcharge Desc<span className='required_star'>*</span></label>
 
                           <div className="">
                             <Input
@@ -169,7 +172,7 @@ export default function UploadRateData() {
                     <div className="row">
                       <div className="col-md-6 col-lg-4 mb-4">
                         <div className="row">
-                          <label className="form-label"> Surcharge Category </label>
+                          <label className="form-label"> Surcharge Category<span className='required_star'>*</span></label>
                           <div className="">
                             <Select
                               value={surchargeCategory ? surchargeCategory.find((option) => option.value === formik?.values?.surchargeCategory) : ""}
@@ -192,9 +195,7 @@ export default function UploadRateData() {
 
                       <div className="col-md-6 col-lg-4 mb-4">
                         <div className="row">
-                          <label className="form-label">
-                            Surcharge Alias Code
-                          </label>
+                          <label className="form-label"> Surcharge Alias Code </label>
                           <div className="">
                             <Select
                               value={surchargeAliasCode ? surchargeAliasCode.find((option) => option.value === formik?.values?.surchargeAliasCode) : ""}
@@ -209,11 +210,7 @@ export default function UploadRateData() {
                                 handleSurchargeAliasDesc(e.value);
                               }}
                               classNamePrefix="select2-selection form-select"
-                              invalid={formik.touched.surchargeCategory && formik.errors.surchargeCategory ? true : false}
                             />
-                            <FormFeedback>
-                              {formik.errors.surchargeCategory}
-                            </FormFeedback>
                           </div>
                         </div>
                       </div>
@@ -240,16 +237,7 @@ export default function UploadRateData() {
                               }}
                               isDisabled={true}
                               classNamePrefix="select2-selection form-select"
-                              invalid={
-                                formik.touched.surchargeAliasDesc &&
-                                  formik.errors.surchargeAliasDesc
-                                  ? true
-                                  : false
-                              }
                             />
-                            <FormFeedback>
-                              {formik.errors.surchargeAliasDesc}
-                            </FormFeedback>
                           </div>
                         </div>
                       </div>
@@ -262,6 +250,7 @@ export default function UploadRateData() {
                             type="submit"
                             className=" btn btn-primary"
                             onClick={formik.handleSubmit}
+                            disabled={isAnyValueEmpty(formik.values, ['surchargeAliasDesc', 'surchargeAliasCode'])}
                           >
                             Save
                           </button>

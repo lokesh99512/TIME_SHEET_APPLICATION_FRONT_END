@@ -6,7 +6,6 @@ const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
 
 export const addUserSchema = yup.object().shape({
   firstName: yup.string().required("First name required"),
-  lastName: yup.string().required("Last name required"),
   email: yup
     .string()
     .required("Email required")
@@ -16,7 +15,6 @@ export const addUserSchema = yup.object().shape({
     .of(yup.number().required("Select at least one role")),
   password: yup
     .string()
-    .matches(passwordRules, { message: "Please create a stronger password !" })
     .required("Password Required !"),
   reEnterdPassword: yup
     .string()

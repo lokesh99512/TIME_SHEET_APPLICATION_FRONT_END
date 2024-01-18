@@ -30,6 +30,8 @@ import CompanyDetailsForm from "./partials/CompanyDetailsForm";
 import { comapanySchema } from "./schema";
 import SettingsTaxDetails from "./partials/SettingsTaxDetails";
 import { GET_STATE_ALL_TYPE } from "../../store/Global/actiontype";
+import TopBreadcrumbs from "./Surcharge/TopBreadcrumbs";
+import { companySettingsBreadcrumb } from "../../common/data/parties";
 
 const Settings = () => {
     const [gstModal, setGstModal] = useState(false);
@@ -52,21 +54,6 @@ const Settings = () => {
         dispatch(getAllCompanyDetailData());
         dispatch({ type: GET_STATE_ALL_TYPE });
     }, []);
-
-    useEffect(() => {
-        if (settings_company_settings_all_data && settings_company_settings_all_data?.imageData !== undefined) {
-            let imageData = settings_company_settings_all_data?.imageData;
-            // const base64Image = window.btoa(String.fromCharCode.apply(null, new Uint8Array(imageData)));
-            // const url = window.URL.createObjectURL(new Blob([imageData]));
-            const blob = new Blob([imageData], { type: 'image/jpeg' });
-            const objectURL = URL.createObjectURL(blob);
-            // Create a data URL
-            // const dataURL = 'data:image/jpeg;base64,' + base64Image;
-            // console.log(imageData, "imgUrbase64Imagel")
-            companyDetailsFormik.setFieldValue("image", objectURL);
-            URL.revokeObjectURL(objectURL);
-        }
-    }, [settings_company_settings_all_data,]);
 
     const companyDetailsFormik = useFormik({
         enableReinitialize: true,
@@ -154,8 +141,8 @@ const Settings = () => {
                 pinCode: item?.pinCode,
             })) || [],
         },
-        onSubmit: (values) => {      
-            let singleVal = values?.no !== "" && values?.placeOfService !== "" && [{ no: values?.no, placeOfService: values?.placeOfService }] || [];     
+        onSubmit: (values) => {
+            let singleVal = values?.no !== "" && values?.placeOfService !== "" && [{ no: values?.no, placeOfService: values?.placeOfService }] || [];
             let mergeArray = [...values?.moreGstNumbers, ...modalAlldata, ...singleVal];
 
             const payload = {
@@ -167,19 +154,17 @@ const Settings = () => {
                 tenantGSTS: mergeArray?.length !== 0 && mergeArray || [],
             };
 
-            console.log(payload,"payload");
+            console.log(payload, "payload");
 
             dispatch(getTaxDetailsData(payload));
         },
     });
 
-    console.log(taxDetailsFormik.values,"taxDetailsFormik");
-
     const bussinessTypeFormik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            industryType: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.industryType || null,
-            entityType: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.entityType || null,
+            industryType: settings_company_settings_all_data?.content !== undefined ? settings_company_settings_all_data?.content[0]?.industryType : industryType.find((item) => item.value === 'TRANSPORTATION').value,
+            entityType: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.entityType || entityType.find((item) => item.value === 'PRIVATE_LTD').value,
         },
         onSubmit: (value) => {
             const projectUATRequestDTO = {
@@ -199,6 +184,7 @@ const Settings = () => {
     return (
         <>
             <div className="page-content settings_wrapper">
+                <TopBreadcrumbs breadcrumbs={companySettingsBreadcrumb} />
                 <Container fluid>
                     <Row>
                         <div className="col-12 col-md-2">
@@ -210,13 +196,8 @@ const Settings = () => {
                                                 <span>
                                                     <a
                                                         href="#comapanyDetails"
-                                                        onClick={() => {
-                                                            setActive("comapanyDetails");
-                                                            // scrollToSection("comapanyDetails")
-                                                        }}
-                                                        className={
-                                                            active === "comapanyDetails" ? "active" : ""
-                                                        }
+                                                        onClick={() => { setActive("comapanyDetails"); }}
+                                                        className={active === "comapanyDetails" ? "active" : ""}
                                                     >
                                                         Company Details
                                                     </a>
@@ -226,13 +207,9 @@ const Settings = () => {
                                                 <span>
                                                     <a
                                                         href="#taxDetails"
-                                                        onClick={() => {
-                                                            setActive("taxDetails");
-                                                            // scrollToSection("taxDetails")
-                                                        }}
+                                                        onClick={() => { setActive("taxDetails"); }}
                                                         className={active === "taxDetails" ? "active" : ""}
                                                     >
-
                                                         Tax Details
                                                     </a>
                                                 </span>
@@ -241,13 +218,8 @@ const Settings = () => {
                                                 <span>
                                                     <a
                                                         href="#bussinessType"
-                                                        onClick={() => {
-                                                            setActive("bussinessType");
-                                                            // scrollToSection("bussinessType")
-                                                        }}
-                                                        className={
-                                                            active === "bussinessType" ? "active" : ""
-                                                        }
+                                                        onClick={() => { setActive("bussinessType"); }}
+                                                        className={active === "bussinessType" ? "active" : ""}
                                                     >
                                                         Bussiness Type
                                                     </a>
@@ -301,23 +273,12 @@ const Settings = () => {
 
                                             <div className="row mt-4">
                                                 <div className="col-12 col-md-6 mb-4">
-                                                    <label className="form-label">Industry Type</label>
+                                                    <label className="form-label">Industry Type<span className='required_star'>*</span></label>
                                                     <Select
-                                                        value={
-                                                            industryType
-                                                                ? industryType.find(
-                                                                    (option) =>
-                                                                        option.value ===
-                                                                        bussinessTypeFormik?.values?.industryType
-                                                                )
-                                                                : ""
-                                                        }
+                                                        value={industryType ? industryType.find((option) => option.value === bussinessTypeFormik?.values?.industryType) : ""}
                                                         name="industryType"
                                                         onChange={(e) => {
-                                                            bussinessTypeFormik.setFieldValue(
-                                                                `industryType`,
-                                                                e.value
-                                                            );
+                                                            bussinessTypeFormik.setFieldValue(`industryType`, e.value);
                                                         }}
                                                         options={industryType}
                                                         placeholder={"Enter Industry Type"}
@@ -326,23 +287,12 @@ const Settings = () => {
                                                 </div>
 
                                                 <div className="col-12 col-md-6 mb-4">
-                                                    <label className="form-label">Entity Type</label>
+                                                    <label className="form-label">Entity Type<span className='required_star'>*</span></label>
                                                     <Select
-                                                        value={
-                                                            entityType
-                                                                ? entityType.find(
-                                                                    (option) =>
-                                                                        option.value ===
-                                                                        bussinessTypeFormik?.values?.entityType
-                                                                )
-                                                                : ""
-                                                        }
+                                                        value={entityType ? entityType.find((option) => option.value === bussinessTypeFormik?.values?.entityType) : ""}
                                                         name="entityType"
                                                         onChange={(e) => {
-                                                            bussinessTypeFormik.setFieldValue(
-                                                                `entityType`,
-                                                                e.value
-                                                            );
+                                                            bussinessTypeFormik.setFieldValue(`entityType`, e.value);
                                                         }}
                                                         options={entityType}
                                                         placeholder={"Enter Entity Type"}

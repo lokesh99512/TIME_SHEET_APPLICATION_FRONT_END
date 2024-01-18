@@ -209,8 +209,6 @@ export default function UploadFreightData() {
             // formData.append('tenantVendor', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
         }
         if (activeTabProgress === 3) {
-            console.log(addFCL?.surcharges[0], "destination");
-            console.log(!isAnyValueEmptyInArray(addFCL?.surcharges, ['gp1','gp2','hq1','hq2','rf1','rf2']), "destination");
             if(addFCL?.surcharges?.length !== 0){
                 if(!isAnyValueEmptyInArray(addFCL?.surcharges, ['gp1','gp2','hq1','hq2','rf1','rf2']) && addFCL?.surcharges[0]?.destination?.length !== 0){                              
                     openSaveConfirmModal();

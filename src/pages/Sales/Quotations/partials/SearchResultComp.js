@@ -29,7 +29,7 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
     // const quote_Selected = useSelector((state) => state.instantRate.quote_selected_data);
     const {quote_selected_data,result_loader,instantSearchResultCopy} = useSelector((state) => state.instantRate);
     // const {instantSearchResult, instantSearchResultCopy} = useSelector((state) => state?.instantRate);
-    // console.log(resultsDataOr, "resultsDataOr");
+    console.log(instantSearchResultCopy, "instantSearchResultCopy");
 
     const navToggle = (tab) => {
         if (activeTab !== tab) {
@@ -104,7 +104,6 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
                     </Nav>
                 </div>
                 {/* {result_loader ? } */}
-                {/* <ResultCardSkeleton /> */}
                 {activeTab === 'all' ? (
                     <SearchResultCard data={instantSearchResultCopy} QuoteModalHandler={QuoteModalHandler} />
                 ) : activeTab === 'preferred' ? (

@@ -34,7 +34,7 @@ function* fetchUOMData() {
 function* fetchUOMWeightData() {
     try {
         const response = yield call(getUomWeightData);
-        console.log(response, "response UOM Weight===============");
+        // console.log(response, "response UOM Weight===============");
         yield put({ type: GET_UOM_WEIGHT_DATA_SUCCESS, payload: response });
     } catch (error) {
         console.log(error, "currency error-----------");
@@ -52,7 +52,7 @@ function* fetchSurchageCodeData() {
 function* fetchSurchageCategoryData() {
     try {
         const response = yield call(getSurchargeCategoryData);
-        console.log(response, "response surcharge category===============");
+        // console.log(response, "response surcharge category===============");
         yield put({ type: GET_SURCHARGE_CATEGORY_DATA_SUCCESS, payload: response });
     } catch (error) {
         console.log(error, "currency error-----------");
@@ -61,7 +61,7 @@ function* fetchSurchageCategoryData() {
 function* fetchOceanPortData() {
     try {
         const response = yield call(getOceanPortData);
-        console.log(response, "response ocean port===============");
+        // console.log(response, "response ocean port===============");
         yield put({ type: GET_OCEAEN_PORT_DATA_SUCCEESS, payload: response });
     } catch (error) {
         console.log(error, "currency error-----------");
@@ -70,7 +70,7 @@ function* fetchOceanPortData() {
 function* fetchCargoTypeData() {
     try {
         const response = yield call(getCargoTypeData);
-        console.log(response, "response Cargo type===============");
+        // console.log(response, "response Cargo type===============");
         yield put({ type: GET_CARGO_TYPE_DATA_SUCCEESS, payload: response });
     } catch (error) {
         console.log(error, "cargo type error-----------");
@@ -79,7 +79,7 @@ function* fetchCargoTypeData() {
 function* fetchContainerData() {
     try {
         const response = yield call(getContainerData);
-        console.log(response, "response Container===============");
+        // console.log(response, "response Container===============");
         yield put({ type: GET_CONTAINER_DATA_SUCCEESS, payload: response });
     } catch (error) {
         console.log(error, "Container error-----------");
@@ -88,7 +88,7 @@ function* fetchContainerData() {
 function* fetchSurchargeAliceData() {
     try {
         const response = yield call(getSurchargeAliceSer);
-        console.log(response, "response Container===============");
+        // console.log(response, "response Container===============");
         yield put({ type: GET_SURCHARGE_ALICE_DATA_SUCCEESS, payload: response });
     } catch (error) {
         console.log(error, "Container error-----------");
@@ -97,7 +97,7 @@ function* fetchSurchargeAliceData() {
 function* fetchStateAllData() {
     try {
         const response = yield call(getStateAllSer);
-        console.log(response, "response state===============");
+        // console.log(response, "response state===============");
         yield put({ type: GET_STATE_ALL_TYPE_SUCCEESS, payload: response });
     } catch (error) {
         console.log(error, "state error-----------");
@@ -106,7 +106,7 @@ function* fetchStateAllData() {
 function* fetchRoleData() {
     try {
         const response = yield call(getRoleAllSer);
-        console.log(response, "response role===============");
+        // console.log(response, "response role===============");
         yield put({ type: GET_ROLE_TYPE_SUCCEESS, payload: response });
     } catch (error) {
         console.log(error, "role error-----------");

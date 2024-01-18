@@ -6,11 +6,6 @@ const fclBreadcrumb = [
         active: false
     },
     {
-        label: 'Freight Forwarding',
-        link: '/#',
-        active: false
-    },
-    {
         label: 'Ocean Freight',
         link: '/#',
         active: false
@@ -24,11 +19,6 @@ const fclBreadcrumb = [
 const lclBreadcrumb = [
     {
         label: 'Procurement',
-        link: '/#',
-        active: false
-    },
-    {
-        label: 'Freight Forwarding',
         link: '/#',
         active: false
     },
@@ -51,17 +41,12 @@ const portLocalBreadcrumb = [
         active: false
     },
     {
-        label: 'Freight Forwarding',
-        link: '/#',
-        active: false
-    },
-    {
         label: 'Ocean Freight',
         link: '/#',
         active: false
     },
     {
-        label: 'Port/Local Charges',
+        label: 'Port & Local Charges',
         link: '/#',
         active: true
     },
@@ -69,11 +54,6 @@ const portLocalBreadcrumb = [
 const waybillBreadcrumb = [
     {
         label: 'Procurement',
-        link: '/#',
-        active: false
-    },
-    {
-        label: 'Freight Forwarding',
         link: '/#',
         active: false
     },
@@ -95,11 +75,6 @@ const consoleBreadcrumb = [
         active: false
     },
     {
-        label: 'Freight Forwarding',
-        link: '/#',
-        active: false
-    },
-    {
         label: 'Air Freight',
         link: '/#',
         active: false
@@ -117,12 +92,12 @@ const inLandBreadcrumb = [
         active: false
     },
     {
-        label: 'Freight Forwarding',
+        label: 'Ocean Freight',
         link: '/#',
         active: false
     },
     {
-        label: 'Inland Charges',
+        label: 'FCL Inland Charges',
         link: '/#',
         active: true
     },
@@ -136,6 +111,13 @@ const fclSurchargeBreadcrumb = [
     },
     {
         label: 'Surcharge Master',
+        link: '/#',
+        active: true
+    }
+]
+const instantRateBreadcrumb = [    
+    {
+        label: 'Instant Rate',
         link: '/#',
         active: true
     }
@@ -7044,5 +7026,5 @@ export {
     optionRateType, optionRateSource, optionVendorType, optionVendorName, optionCarrierName, optionValidityApp, optionSurchargesName, optionMultiDestination, optionPaymentType,
     waybillBreadcrumb, waybillRateData, waybillTableData, consoleBreadcrumb, consoleRateData, consoleTableData, inLandBreadcrumb, inLandRateData, inLandTableData, fclSurchargeBreadcrumb, fclSurchargeRateData,
     optcurrency, optionOrgPort, optionDestPort, optionCargoType, optionMovementType, optionPortlocalOrgPort,
-    optionChargeBasis, optionCalculationType, optionContainerType, optionServiceType, optionIsStandard
+    optionChargeBasis, optionCalculationType, optionContainerType, optionServiceType, optionIsStandard,instantRateBreadcrumb
 };

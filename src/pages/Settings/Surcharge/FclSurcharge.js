@@ -2,25 +2,18 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap'
 // import ModalFreight from '../../Procurement/FreightForwarding/partials/Modal/ModalFreight'
 // import FilterOffCanvasComp from '../../Procurement/FreightForwarding/partials/Modal/FilterOffCanvasComp'
+import { useDispatch, useSelector } from 'react-redux'
+import { edit_icon } from '../../../assets/images'
+import { fclSurchargeBreadcrumb } from '../../../common/data/procurement'
+import { getAllTableSurcharge, getAllTableSurchargeAlias } from '../../../store/Settings/actions'
 import FilterOffCanvasComp from "./Modal/FilterOffCanvasComp"
-import TopBreadcrumbs from './TopBreadcrumbs'
+import { ChargeAliasCode, ChargeCategory, ChargeCode, ChargeDesc } from './SurchargeCol'
 import TableReact from "./TableReact"
-import { fclSurchargeBreadcrumb, fclSurchargeRateData } from '../../../common/data/procurement'
-import { useSelector } from 'react-redux'
-import { getFclData } from '../../../store/Procurement/actions'
-import { getAllTableSurcharge, getAllTableSurchargeAlias, getFclSurchargeData } from '../../../store/Settings/actions'
-import { useDispatch } from 'react-redux'
-import { CarrierName, ChargeAliasCode, ChargeCategory, ChargeCode, ChargeDesc, ChargeId } from './SurchargeCol'
-import { edit_icon, eye_icon } from '../../../assets/images'
-import ModalAddNew from './Modal/ModalAddNewCategory'
-import { useNavigate } from 'react-router-dom'
+import TopBreadcrumbs from './TopBreadcrumbs'
 
 
 export default function FclSurcharge() {
     const { settings_surcharges_table_data, settings_surcharges_alias_table_data } = useSelector((state) => state?.settings);
-
-    // console.log(settings_surcharges_table_data, "<<<<");
-    // console.log(settings_surcharges_alias_table_data, "<<<settings_surcharges_alias_table_data");
     const [isRight, setIsRight] = useState(false);
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
@@ -70,10 +63,8 @@ export default function FclSurcharge() {
 
 
     useEffect(() => {
-        dispatch(getAllTableSurcharge())
-        dispatch(getAllTableSurchargeAlias())
-
-        // dispatch(getFclSurchargeData());
+        dispatch(getAllTableSurcharge());
+        dispatch(getAllTableSurchargeAlias());
     }, []);
 
     const columns = useMemo(() => [
@@ -168,7 +159,6 @@ export default function FclSurcharge() {
                     <div className="main_freight_wrapper">
 
                         {/* breadcrumbs && rate */}
-                        {/* <TopBreadcrumbs breadcrumbs={fclSurchargeBreadcrumb} data={fclSurchargeRateData} /> */}
                         <TopBreadcrumbs breadcrumbs={fclSurchargeBreadcrumb} />
 
                         {/* React Table */}

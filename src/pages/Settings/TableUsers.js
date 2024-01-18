@@ -61,9 +61,9 @@ const TableUsers = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanva
     return (
         <>
             <div className="freight_filter_wrap d-flex align-items-center">
-                <p className="label flex-grow-1 m-0">Filters :</p>
+                {/* <p className="label flex-grow-1 m-0">Filters :</p> */}
 
-                <div className="right_actions_wrap flex-shrink-0 d-flex align-items-center">
+                <div className="right_actions_wrap flex-shrink-0 d-flex align-items-center ms-auto">
                     {isGlobalFilter && (
                         <GlobalFilter
                             preGlobalFilteredRows={preGlobalFilteredRows}
@@ -75,7 +75,7 @@ const TableUsers = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanva
                         <button className='bg-transparent' onClick={toggleRightCanvas}><img src={filter_icon} alt="filter" /></button>
                     </div> */}
                     <div className="upload_wrap">
-                        <button className='bg-transparent' onClick={() => {navidate(`/settings/users/uploadFile`);}}>
+                        <button className='bg-transparent disabled-opacity' onClick={() => {navidate(`/settings/users/uploadFile`);}} disabled>
                             <img src={upload_icon} alt="Upload" />Upload file
                         </button>
                     </div>

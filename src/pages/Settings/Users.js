@@ -2,11 +2,12 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Container, DropdownItem, FormGroup, Input } from "reactstrap";
+import { usersBreadcrumb } from "../../common/data/parties";
 import { getUsersData, updateUserSwitchData } from "../../store/Settings/actions";
 import ModalResetPassword from "./Modal/ModalResetPassword";
 import { Edit, FirstName, LastActive, LastName, Role, UserName } from "./SettingsCol";
+import TopBreadcrumbs from "./Surcharge/TopBreadcrumbs";
 import TableUsers from "./TableUsers";
-import { GET_ROLE_TYPE } from "../../store/Global/actiontype";
 
 const Users = () => {
   const [resetModal, setResetModal] = useState(false);
@@ -18,9 +19,7 @@ const Users = () => {
   }
 
   const { settings_users_data } = useSelector((state) => state.settings);
-
-
-  console.log(settings_users_data, "--->settingsUsersData");
+  const { roleData } = useSelector((state) => state.globalReducer);
 
   const onCloseClick = () => {
     setResetModal(false);
@@ -35,11 +34,6 @@ const Users = () => {
         id: data?.id || '',
       },
     });
-    // navidate(`/settings/users/editUser`, {
-    //   state: {
-    //     data,
-    //   },
-    // });
   };
 
   const switchHandler = (data) => {
@@ -47,8 +41,7 @@ const Users = () => {
   }
 
   useEffect(() => {
-    dispatch(getUsersData());
-    dispatch({type: GET_ROLE_TYPE});
+    dispatch(getUsersData());    
   }, []);
 
   const columns = useMemo(() => ([
@@ -95,7 +88,7 @@ const Users = () => {
       disableFilters: true,
       Cell: (cellProps) => {
         return (
-          <Role cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+          <Role cellProps={cellProps} viewPopupHandler={viewPopupHandler} roleData={roleData} />
         );
       },
     },
@@ -162,7 +155,7 @@ const Users = () => {
         <Container fluid>
           <div className="main_freight_wrapper">
             {/* breadcrumbs && rate */}
-            {/* <TopBreadcrumbs breadcrumbs={fclBreadcrumb} data={fclRateData} /> */}
+            <TopBreadcrumbs breadcrumbs={usersBreadcrumb} />
 
             {/* React Table */}
             <TableUsers

@@ -3,10 +3,14 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
-import { Card, CardBody, Col, Container, FormFeedback, Input, Row, } from "reactstrap";
+import { Card, CardBody, Col, Container, FormFeedback, Input, Modal, Row, } from "reactstrap";
+import { isAnyValueEmpty } from "../../components/Common/CommonLogic";
+import { GET_ROLE_TYPE } from "../../store/Global/actiontype";
 import { getUsersData } from "../../store/Settings/actions";
-import { locations, rolesInfo } from "./constants/userInfo";
+import { locations } from "./constants/userInfo";
 import useAddUser from "./hook/useAddUser";
+import TopBreadcrumbs from "./Surcharge/TopBreadcrumbs";
+import { addUserBreadcrumb } from "../../common/data/parties";
 
 export default function AddUserData() {
     const navigate = useNavigate();
@@ -14,9 +18,10 @@ export default function AddUserData() {
     const { settings_users_data } = useSelector((state) => state.settings);
     const { roleData } = useSelector((state) => state.globalReducer);
     const navigateState = useLocation();
-    
+
     useEffect(() => {
         dispatch(getUsersData());
+        dispatch({ type: GET_ROLE_TYPE });
     }, []);
 
     const managerInfo = Array.isArray(settings_users_data.content)
@@ -29,6 +34,7 @@ export default function AddUserData() {
         : [];
 
     const { initialValues, schema, handleAddUser } = useAddUser(navigateState?.state);
+
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: initialValues,
@@ -41,6 +47,7 @@ export default function AddUserData() {
             <div className="page-content">
                 <Container fluid>
                     <div className="main_freight_wrapper">
+                        <TopBreadcrumbs breadcrumbs={addUserBreadcrumb} />
 
                         {/* back button */}
                         <button type="button" className="btn border mb-3" onClick={() => { navigate(-1); }} > Back </button>
@@ -49,169 +56,184 @@ export default function AddUserData() {
                             <Col lg="12">
                                 <Card>
                                     <CardBody>
-                                        <div className="row">
-                                            {/* First name */}
-                                            <div className="col-md-6 col-lg-4 mb-4">
-                                                <label className="form-label">First Name</label>
-                                                <div className="">
-                                                    <Input
-                                                        type="text"
-                                                        name="firstName"
-                                                        id="firstName"
-                                                        value={formik.values.firstName}
-                                                        onChange={formik.handleChange}
-                                                        className="form-control"
-                                                        placeholder="Enter First Name"
-                                                        invalid={formik.touched.firstName && formik.errors.firstName ? true : false}
-                                                    />
-                                                    <FormFeedback> {formik.errors.firstName} </FormFeedback>
+                                        <form>
+                                            <div className="row">
+                                                {/* First name */}
+                                                <div className="col-md-6 col-lg-4 mb-4">
+                                                    <label className="form-label">First Name<span className='required_star'>*</span></label>
+                                                    <div className="">
+                                                        <Input
+                                                            type="text"
+                                                            name="firstName"
+                                                            id="firstName"
+                                                            value={formik.values.firstName}
+                                                            onChange={formik.handleChange}
+                                                            onBlur={formik.handleBlur}
+                                                            className="form-control"
+                                                            placeholder="Enter First Name"
+                                                            invalid={formik.touched.firstName && formik.errors.firstName ? true : false}
+                                                        />
+                                                        {formik.touched.firstName && formik.errors.firstName ? (
+                                                            <FormFeedback> {formik.errors.firstName} </FormFeedback>
+                                                        ) : null}
+                                                    </div>
+                                                </div>
+
+                                                {/* Last name */}
+                                                <div className="col-md-6 col-lg-4 mb-4">
+                                                    <label className="form-label">Last Name</label>
+                                                    <div className="">
+                                                        <Input
+                                                            type="text"
+                                                            name="lastName"
+                                                            id="lastName"
+                                                            value={formik.values.lastName}
+                                                            onChange={formik.handleChange}
+                                                            className="form-control"
+                                                            placeholder="Enter Last Name"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                {/* Email */}
+                                                <div className="col-md-6 col-lg-4 mb-4">
+                                                    <label className="form-label">Email Id<span className='required_star'>*</span></label>
+                                                    <div className="">
+                                                        <Input
+                                                            type="text"
+                                                            name="email"
+                                                            id="email"
+                                                            value={formik.values.email}
+                                                            onChange={formik.handleChange}
+                                                            onBlur={formik.handleBlur}
+                                                            className="form-control"
+                                                            placeholder="Enter Email id"
+                                                            invalid={formik.touched.email && formik.errors.email ? true : false}
+                                                        />
+                                                        {formik.touched.email && formik.errors.email ? (
+                                                            <FormFeedback> {formik.errors.email} </FormFeedback>
+                                                        ) : null}
+                                                    </div>
                                                 </div>
                                             </div>
 
-                                            {/* Last name */}
-                                            <div className="col-md-6 col-lg-4 mb-4">
-                                                <label className="form-label">Last Name</label>
-                                                <div className="">
-                                                    <Input
-                                                        type="text"
-                                                        name="lastName"
-                                                        id="lastName"
-                                                        value={formik.values.lastName}
-                                                        onChange={formik.handleChange}
-                                                        className="form-control"
-                                                        placeholder="Enter Last Name"
-                                                        invalid={formik.touched.lastName && formik.errors.lastName ? true : false}
-                                                    />
-                                                    <FormFeedback> {formik.errors.lastName} </FormFeedback>
+                                            <div className="row">
+                                                {/* Select Role */}
+                                                <div className="col-md-6 col-lg-4 mb-4">
+                                                    <label className="form-label">Role<span className='required_star'>*</span></label>
+                                                    <div className="">
+                                                        <Select
+                                                            value={roleData.filter((role) => formik.values.roles.includes(role.id))}
+                                                            onChange={(selectedOptions) => {
+                                                                const selectedValues = selectedOptions.map((option) => option.id);
+                                                                formik.setFieldValue("roles", selectedValues);
+                                                            }}
+                                                            name="roles"
+                                                            id="roles"
+                                                            options={roleData}
+                                                            onBlur={formik.handleBlur}
+                                                            isMulti
+                                                            placeholder="Select Role"
+                                                            classNamePrefix="select2-selection form-select"
+                                                            invalid={formik.touched.roles && formik.errors.roles ? true : false}
+                                                            autoComplete="off"
+                                                        />
+                                                        {formik.touched.roles && formik.errors.roles ? (
+                                                            <FormFeedback> {formik.errors.roles} </FormFeedback>
+                                                        ) : null}
+                                                    </div>
+                                                </div>
+
+                                                {/* Password */}
+                                                <div className="col-md-6 col-lg-4 mb-4">
+                                                    <label className="form-label">Enter Password<span className='required_star'>*</span></label>
+                                                    <div className="">
+                                                        <Input
+                                                            type="password"
+                                                            name="password"
+                                                            value={formik.values.password}
+                                                            onChange={formik.handleChange}
+                                                            onBlur={formik.handleBlur}
+                                                            className="form-control"
+                                                            placeholder="Enter Password"
+                                                            invalid={formik.touched.password && formik.errors.password ? true : false}
+                                                        />
+                                                        {formik.touched.password && formik.errors.password ? (
+                                                            <FormFeedback> {formik.errors.password} </FormFeedback>
+                                                        ) : null}
+                                                    </div>
+                                                </div>
+
+                                                {/* Re-Enter Password */}
+                                                <div className="col-md-6 col-lg-4 mb-4">
+                                                    <label className="form-label"> Re-Enter Password<span className='required_star'>*</span></label>
+                                                    <div className="">
+                                                        <Input
+                                                            type="password"
+                                                            name="reEnterdPassword"
+                                                            // id="password2"
+                                                            value={formik.values.reEnterdPassword}
+                                                            onChange={formik.handleChange}
+                                                            onBlur={formik.handleBlur}
+                                                            className="form-control"
+                                                            placeholder="Re-Enter Password"
+                                                            invalid={formik.touched.reEnterdPassword && formik.errors.reEnterdPassword ? true : false}
+                                                            autoComplete="off"
+                                                        />
+                                                        {formik.touched.reEnterdPassword && formik.errors.reEnterdPassword ? (
+                                                            <FormFeedback> {formik.errors.reEnterdPassword} </FormFeedback>
+                                                        ) : null}
+                                                    </div>
+                                                </div>
+
+                                                {/* Manager */}
+                                                <div className="col-md-6 col-lg-4 mb-4">
+                                                    <label className="form-label">Manager</label>
+                                                    <div className="">
+                                                        <Select
+                                                            name="roleNames"
+                                                            id="roleNames"
+                                                            value={managerInfo ? managerInfo.find((option) => option.value === formik.values.roleNames) || "" : ""}
+                                                            onChange={(e) => { formik.setFieldValue("roleNames", e.value); }}
+                                                            onBlur={formik.handleBlur}
+                                                            options={managerInfo}
+                                                            placeholder="Select Employee"
+                                                            classNamePrefix="select2-selection form-select"
+                                                            invalid={formik.touched.roleNames && formik.errors.roleNames ? true : false}
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                {/* Location */}
+                                                <div className="col-md-6 col-lg-4 mb-4">
+                                                    <label className="form-label">Location</label>
+                                                    <div className="">
+                                                        <Select
+                                                            name="location"
+                                                            id="location"
+                                                            value={locations ? locations.find((option) => option.value === formik.values.location) || "" : ""}
+                                                            onChange={(e) => { formik.setFieldValue("location", e.value); }}
+                                                            onBlur={formik.handleBlur}
+                                                            options={locations}
+                                                            placeholder={"Select locations"}
+                                                            classNamePrefix="select2-selection form-select"
+                                                            invalid={formik.touched.location && formik.errors.location ? true : false}
+                                                        />
+                                                    </div>
                                                 </div>
                                             </div>
 
-                                            {/* Email */}
-                                            <div className="col-md-6 col-lg-4 mb-4">
-                                                <label className="form-label">Email Id</label>
-                                                <div className="">
-                                                    <Input
-                                                        type="text"
-                                                        name="email"
-                                                        id="email"                                                        
-                                                        value={formik.values.email}
-                                                        onChange={formik.handleChange}
-                                                        className="form-control"
-                                                        placeholder="Enter Email id"
-                                                        invalid={formik.touched.email && formik.errors.email ? true : false}
-                                                    />
-                                                    <FormFeedback>{formik.errors.email}</FormFeedback>
+                                            <div className="row">
+                                                <div className="d-flex justify-content-center">
+                                                    <div className="mb-3 mx-3 d-flex justify-content-end">
+                                                        <button className=" btn btn-primary" type="submit" onClick={formik.handleSubmit} disabled={isAnyValueEmpty(formik?.values, ["lastName", "roleNames", "location"])}> Save </button>
+                                                    </div>
+                                                    <div className="mb-3 mx-3 d-flex justify-content-end">
+                                                        <button className=" btn btn-primary">Cancel</button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <div className="row">
-                                            {/* Select Role */}
-                                            <div className="col-md-6 col-lg-4 mb-4">
-                                                <label className="form-label">Select Role</label>
-                                                <div className="">
-                                                    <Select
-                                                        value={roleData.filter((role) => formik.values.roles.includes(role.id))}
-                                                        onChange={(selectedOptions) => {
-                                                            const selectedValues = selectedOptions.map((option) => option.id);
-                                                            formik.setFieldValue("roles", selectedValues);
-                                                        }}                                                        
-                                                        name="roles"
-                                                        id="roles"
-                                                        options={roleData}
-                                                        isMulti
-                                                        placeholder="Select Role"
-                                                        classNamePrefix="select2-selection form-select"
-                                                        invalid={formik.touched.roles && formik.errors.roles ? true : false}
-                                                        autoComplete="off"
-                                                    />
-                                                    <FormFeedback>{formik.errors.roles}</FormFeedback>
-                                                </div>
-                                            </div>
-
-                                            {/* Password */}
-                                            <div className="col-md-6 col-lg-4 mb-4">
-                                                <label className="form-label">Enter Password</label>
-                                                <div className="">
-                                                    <Input
-                                                        type="password"
-                                                        name="password"
-                                                        value={formik.values.password}
-                                                        onChange={formik.handleChange}
-                                                        className="form-control"
-                                                        placeholder="Enter Password"                                                        
-                                                        invalid={formik.touched.password && formik.errors.password ? true : false}
-                                                    />
-                                                    <FormFeedback> {formik.errors.password} </FormFeedback>
-                                                </div>
-                                            </div>
-
-                                            {/* Re-Enter Password */}
-                                            <div className="col-md-6 col-lg-4 mb-4">
-                                                <label className="form-label"> Re-Enter Password </label>
-                                                <div className="">
-                                                    <Input
-                                                        type="password"
-                                                        name="reEnterdPassword"
-                                                        // id="password2"
-                                                        value={formik.values.reEnterdPassword}
-                                                        onChange={formik.handleChange}
-                                                        className="form-control"
-                                                        placeholder="Re-Enter Password"
-                                                        invalid={formik.touched.reEnterdPassword && formik.errors.reEnterdPassword ? true : false}
-                                                        autoComplete="off"
-                                                    />
-                                                    <FormFeedback> {formik.errors.reEnterdPassword} </FormFeedback>
-                                                </div>
-                                            </div>
-
-                                            {/* Manager */}
-                                            <div className="col-md-6 col-lg-4 mb-4">
-                                                <label className="form-label">Manager</label>
-                                                <div className="">
-                                                    <Select
-                                                        name="roleNames"
-                                                        id="roleNames"
-                                                        value={managerInfo ? managerInfo.find((option) => option.value === formik.values.roleNames) || "" : ""}
-                                                        onChange={(e) => { formik.setFieldValue("roleNames", e.value); }}
-                                                        options={managerInfo}
-                                                        placeholder="Select Employee"
-                                                        classNamePrefix="select2-selection form-select"
-                                                        invalid={formik.touched.roleNames && formik.errors.roleNames ? true : false}
-                                                    />
-                                                    <FormFeedback> {formik.errors.roleNames} </FormFeedback>
-                                                </div>
-                                            </div>
-
-                                            {/* Location */}
-                                            <div className="col-md-6 col-lg-4 mb-4">
-                                                <label className="form-label">Location</label>
-                                                <div className="">
-                                                    <Select
-                                                        name="location"
-                                                        id="location"
-                                                        value={locations ? locations.find((option) => option.value === formik.values.location) || "" : ""}
-                                                        onChange={(e) => { formik.setFieldValue("location", e.value); }}
-                                                        options={locations}
-                                                        placeholder={"Select locations"}
-                                                        classNamePrefix="select2-selection form-select"
-                                                        invalid={formik.touched.location && formik.errors.location ? true : false}
-                                                    />
-                                                    <FormFeedback> {formik.errors.location} </FormFeedback>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="row">
-                                            <div className="d-flex justify-content-center">
-                                                <div className="mb-3 mx-3 d-flex justify-content-end">
-                                                    <button className=" btn btn-primary" type="submit" onClick={formik.handleSubmit} > Save </button>
-                                                </div>
-                                                <div className="mb-3 mx-3 d-flex justify-content-end">
-                                                    <button className=" btn btn-primary">Cancel</button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        </form>
                                     </CardBody>
                                 </Card>
                             </Col>
@@ -219,6 +241,43 @@ export default function AddUserData() {
                     </div>
                 </Container>
             </div>
+
+            {/* modal */}
+            {/* <Modal
+                isOpen={openSaveModal}
+                toggle={() => { setOpenSaveModal(!openSaveModal); }}
+                className='confirm_modal_wrap'
+            >
+                <div className="modal-header">
+                    <button
+                        type="button"
+                        onClick={() => { setOpenSaveModal(false); }}
+                        className="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div className="modal-body pb-5">
+                    <h4 className='text-center'>Are you sure?</h4>
+                </div>
+                <div className="modal-footer justify-content-center">
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setOpenSaveModal(!openSaveModal);
+                        }}
+                        className="btn btn-secondary "
+                        data-dismiss="modal"
+                    >
+                        Cancel
+                    </button>
+                    <button type="button" onClick={() => { setFinalSaveButton(true); }} className="btn btn-primary ">
+                        Save changes
+                    </button>
+                </div>
+            </Modal> */}
         </>
     );
 }

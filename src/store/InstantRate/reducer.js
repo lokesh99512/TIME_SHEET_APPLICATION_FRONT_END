@@ -162,7 +162,7 @@ const instantRate = (state = INIT_STATE, action) => {
         case QUOTATION_RESULT_SELECTED:
             return {
                 ...state,
-                quote_selected_data: action.payload
+                quote_selected_data: action.payload 
             }
 
         case QUOTATION_RESULT_UPDATE:

@@ -4,6 +4,7 @@ import { Card, CardBody, FormFeedback, Input } from "reactstrap";
 import { country_list, state_list } from "../../../common/data/settings";
 import { getCompanyCountryData, getCompanyPincodeData, getCompanyStateData, } from "../../../store/Settings/actions";
 import FileUpload from "../FileUpload";
+import { isAnyValueEmpty } from "../../../components/Common/CommonLogic";
 
 const CompanyDetailsForm = ({ companyDetailsFormik }) => {
   const dispatch = useDispatch();
@@ -49,7 +50,7 @@ const CompanyDetailsForm = ({ companyDetailsFormik }) => {
             </div>
 
             <div className="col-12 col-md-8 mb-4">
-              <label className="form-label">Company Name</label>
+              <label className="form-label">Company Name<span className='required_star'>*</span></label>
               <Input
                 type="text"
                 name="companyName"
@@ -63,7 +64,7 @@ const CompanyDetailsForm = ({ companyDetailsFormik }) => {
 
           <div className="row">
             <div className="col-12 col-md-6 mb-4">
-              <label className="form-label">Contact Number</label>
+              <label className="form-label">Contact Number<span className='required_star'>*</span></label>
               <Input
                 type="text"
                 name="contactNumber"
@@ -75,7 +76,7 @@ const CompanyDetailsForm = ({ companyDetailsFormik }) => {
             </div>
 
             <div className="col-12 col-md-6 mb-4">
-              <label className="form-label">Email id</label>
+              <label className="form-label">Email id<span className='required_star'>*</span></label>
               <Input
                 type="text"
                 name="email"
@@ -116,7 +117,7 @@ const CompanyDetailsForm = ({ companyDetailsFormik }) => {
 
           <div className="row">
             <div className="col-12 col-md-6 mb-4">
-              <label className="form-label">City</label>
+              <label className="form-label">City<span className='required_star'>*</span></label>
               <Input
                 type="text"
                 name="city"
@@ -184,7 +185,7 @@ const CompanyDetailsForm = ({ companyDetailsFormik }) => {
             </div>
 
             <div className="col-12 col-md-6 mb-4">
-              <label className="form-label">Country</label>
+              <label className="form-label">Country<span className='required_star'>*</span></label>
               <Input
                 type="text"
                 name="country"
@@ -210,6 +211,7 @@ const CompanyDetailsForm = ({ companyDetailsFormik }) => {
                   onClick={companyDetailsFormik.handleSubmit}
                   type="submit"
                   className=" btn btn-primary"
+                  disabled={isAnyValueEmpty(companyDetailsFormik?.values, ["image","companyAddress","state","zipcode","country"])}
                 >
                   Save
                 </button>

@@ -103,14 +103,15 @@ const SettingsTaxDetails = ({ taxDetailsFormik, setGstModal }) => {
                     </div>
 
                     <div className="row mt-4 mb-2">
-                        <a className="col-12 col-md-6 mb-4 d-flex">
+                        <a className="col-12 col-md-6 d-flex">
                             <p>{taxDetailsFormik?.values?.moreGstNumbers?.length} More GST available</p>
                             <p
+                                className='ms-1'
                                 onClick={() => {
                                     setViewGst((prev) => !prev);
                                 }}
                             >
-                                View {viewGst ? "less" : "More"}
+                                <u>View {viewGst ? " less" : " More"}</u>
                             </p>
                         </a>
                     </div>
@@ -135,9 +136,7 @@ const SettingsTaxDetails = ({ taxDetailsFormik, setGstModal }) => {
                                                 </div>
 
                                                 <div className="col-10 col-md-5 mb-4">
-                                                    <label className="form-label">
-                                                        Place of Supply
-                                                    </label>
+                                                    <label className="form-label"> Place of Supply </label>
                                                     <Select
                                                         value={stateAllData ? stateAllData.find((option) => option.value === taxDetailsFormik?.values?.moreGstNumbers?.[index]?.placeOfService) : ""}
                                                         name={`moreGstNumbers[${index}].placeOfService`}
@@ -178,7 +177,7 @@ const SettingsTaxDetails = ({ taxDetailsFormik, setGstModal }) => {
                                     type="submit"
                                     onClick={taxDetailsFormik.handleSubmit}
                                     className="btn btn-primary"
-                                // disabled={isAnyValueEmpty(taxDetailsFormik.values)}
+                                    disabled={taxDetailsFormik.values.no !== '' ? !(taxDetailsFormik.values.no !== '' && taxDetailsFormik.values.placeOfService !== '') : false}
                                 >
                                     Save
                                 </button>
