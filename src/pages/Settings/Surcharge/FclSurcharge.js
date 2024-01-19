@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap'
-// import ModalFreight from '../../Procurement/FreightForwarding/partials/Modal/ModalFreight'
-// import FilterOffCanvasComp from '../../Procurement/FreightForwarding/partials/Modal/FilterOffCanvasComp'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap'
 import { edit_icon } from '../../../assets/images'
 import { fclSurchargeBreadcrumb } from '../../../common/data/procurement'
 import { getAllTableSurcharge, getAllTableSurchargeAlias } from '../../../store/Settings/actions'
@@ -13,10 +12,8 @@ import TopBreadcrumbs from './TopBreadcrumbs'
 
 
 export default function FclSurcharge() {
-    const { settings_surcharges_table_data, settings_surcharges_alias_table_data } = useSelector((state) => state?.settings);
+    const { settings_surcharges_table_data } = useSelector((state) => state?.settings);
     const [isRight, setIsRight] = useState(false);
-    const [modal, setModal] = useState(false);
-    const [viewData, setViewData] = useState(false);
     const inputArr = {
         status: '',
         surcharge_code: '',
@@ -26,26 +23,6 @@ export default function FclSurcharge() {
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
     const dispatch = useDispatch();
-    // const navigate = useNavigate();
-
-    const viewPopupHandler = (data) => {
-        // console.log(data, "data in viewPopupHandler");
-        setModal(true);
-        setViewData(data);
-    }
-
-    const onCloseClick = () => {
-        setModal(false);
-    }
-
-    const editHandler = (id) => {
-        console.log(id, "e.target.value");
-        // navigate("/settings/upload/fclSurcharge", {
-        //     state: {
-        //         id
-        //     }
-        // })
-    }
 
     // right filter sidebar 
     const toggleRightCanvas = () => {
@@ -60,8 +37,6 @@ export default function FclSurcharge() {
         setfilterDetails(inputArr)
     }
 
-
-
     useEffect(() => {
         dispatch(getAllTableSurcharge());
         dispatch(getAllTableSurchargeAlias());
@@ -74,7 +49,7 @@ export default function FclSurcharge() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <ChargeCode cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <ChargeCode cellProps={cellProps} />
             }
         },
         {
@@ -83,7 +58,7 @@ export default function FclSurcharge() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <ChargeDesc cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <ChargeDesc cellProps={cellProps} />
             }
         },
         {
@@ -93,7 +68,7 @@ export default function FclSurcharge() {
             disableFilters: true,
             Cell: (cellProps) => {
 
-                return <ChargeCategory cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <ChargeCategory cellProps={cellProps} />
             }
         },
         {
@@ -102,7 +77,7 @@ export default function FclSurcharge() {
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <ChargeAliasCode cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <ChargeAliasCode cellProps={cellProps} />
             }
         },
         {
@@ -115,21 +90,9 @@ export default function FclSurcharge() {
                             <i className='bx bx-dots-vertical-rounded'></i>
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-end">
-                            <DropdownItem
-                                onClick={() => {
-                                    editHandler(cellProps?.row?.original?.id)
-                                }}
-                            >
-                                Edit
-                                <img
-                                    src={edit_icon}
-                                    alt="Edit"
-                                // onClick={() => {
-                                //     editHandler(cellProps?.row?.original?.id)
-                                // }}
-                                />
+                            <DropdownItem> 
+                                <Link to="/settings/surcharge/add" state= {{ id: cellProps.row.original.id }} className='d-flex w-100'>Edit <img src={edit_icon} alt="Edit" className='ms-auto' /></Link>
                             </DropdownItem>
-                            {/* <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem> */}
                             <DropdownItem onClick={(e) => e.stopPropagation()}>
                                 Activate
                                 <div className="switch_wrap">

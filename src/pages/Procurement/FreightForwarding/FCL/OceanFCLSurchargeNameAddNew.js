@@ -72,10 +72,10 @@ export default function OceanFCLSurchargeNameAddNew() {
           version: values?.surchargeCategory?.version || 0,
           id: values?.surchargeCategory?.id || '',
         },
-        surchargeAlias: {
+        ...(values?.surchargeAliasCode && {surchargeAlias: {
           version: values?.surchargeAliasCode?.version || 0,
           id: values?.surchargeAliasCode?.id || '',
-        }
+        }})
       }
 
       console.log(JSON.stringify(data), "data");
@@ -106,7 +106,7 @@ export default function OceanFCLSurchargeNameAddNew() {
                             <Input
                               type="text"
                               name="surchargeCode"
-                              value={surchargeFormik?.values?.surchargeCode}
+                              value={surchargeFormik?.values?.surchargeCode || ""}
                               onChange={(e) => {
                                 surchargeFormik.setFieldValue("surchargeCode", e.target.value);
                               }}
@@ -126,7 +126,7 @@ export default function OceanFCLSurchargeNameAddNew() {
                             <Input
                               type="text"
                               name="surchargeDesc"
-                              value={surchargeFormik?.values?.surchargeDesc}
+                              value={surchargeFormik?.values?.surchargeDesc || ""}
                               onChange={(e) => {
                                 surchargeFormik.setFieldValue("surchargeDesc", e.target.value);
                               }}
@@ -147,7 +147,7 @@ export default function OceanFCLSurchargeNameAddNew() {
                           </label>
                           <div className="">
                             <Select
-                              value={surchargeFormik?.values?.surchargeCategory}
+                              value={surchargeFormik?.values?.surchargeCategory || ""}
                               name="surchargeCategory"
                               onChange={(opt) => {
                                 surchargeFormik.setFieldValue("surchargeCategory", opt);
@@ -204,7 +204,7 @@ export default function OceanFCLSurchargeNameAddNew() {
                     <div className="row">
                       <div className="d-flex justify-content-center">
                         <div className="mb-3 mx-3 d-flex justify-content-end">
-                          <button className=" btn btn-primary" onClick={() => surchargeFormik.handleSubmit()}>Save</button>
+                          <button className=" btn btn-primary" onClick={() => surchargeFormik.handleSubmit()} disabled={isAnyValueEmpty(formik.values, ['surchargeAliasDesc', 'surchargeAliasCode'])}>Save</button>
                         </div>
                         <div className="mb-3 mx-3 d-flex justify-content-end">
                           <button className=" btn btn-primary" onClick={() => surchargeFormik.resetForm()}>Cancel</button>

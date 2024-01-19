@@ -18,7 +18,7 @@ const Users = () => {
     setResetModal(true);
   }
 
-  const { settings_users_data } = useSelector((state) => state.settings);
+  const { settings_users_data, users_loader } = useSelector((state) => state.settings);
   const { roleData } = useSelector((state) => state.globalReducer);
 
   const onCloseClick = () => {
@@ -149,6 +149,8 @@ const Users = () => {
     },
   ]), []);
 
+  console.log(users_loader,"users_loader");
+
   return (
     <>
       <div className="page-content settings_users_wrapper">
@@ -166,6 +168,7 @@ const Users = () => {
               isAddInvoiceList={true}
               customPageSize={10}
               component={"Users"}
+              loader={users_loader || false}
             />
 
             {/* modal */}

@@ -36,6 +36,7 @@ import {
   GET_PARTIES_SURCHARGE_TABLE_SUCCESS,
   GET_TAXES_DATA,
   GET_TAXES_DATA_SUCCESS,
+  GET_USERS_LOADER_TYPE,
   GET_USERS_TABLE_DATA,
   GET_USERS_TABLE_DATA_SUCCESS,
   POST_SETTINGS_SURCHARGE_DATA,
@@ -81,12 +82,14 @@ import { GetFileSer } from "../../helpers/services/GlobalService";
 import axios from "axios";
 
 function* getUsersData() {
+  yield put({type: GET_USERS_LOADER_TYPE, payload: true});
   try {
     const response = yield call(CompanyUsersDetails);
     console.log(response, "saga getUsersData call in settings");
     yield put({ type: GET_USERS_TABLE_DATA_SUCCESS, payload: response });
+    yield put({type: GET_USERS_LOADER_TYPE, payload: false});
   } catch (error) {
-    // showErrorToast(error?.message);
+    yield put({type: GET_USERS_LOADER_TYPE, payload: false});
     console.log(error, "saga user api error");
   }
 }
@@ -97,10 +100,9 @@ function* getCompanyAddUserData({ payload }) {
     console.log("payload getCompanyAddUserData", payload);
     const response = yield call(CompanyUserAddDetails, payload);
     showSuccessToast("Add User Successfully");
-    yield put({
-      type: GET_COMPANY_ADD_USERS_DATA_SUCCESS,
-      payload: response.data,
-    });
+    yield put({ type: GET_COMPANY_ADD_USERS_DATA_SUCCESS, payload: response.data, });
+    const userList = yield call(CompanyUsersDetails);
+    yield put({ type: GET_USERS_TABLE_DATA_SUCCESS, payload: userList });
   } catch (error) {
     showErrorToast(error?.message);
     console.log(error, "saga Add user ");
@@ -262,11 +264,9 @@ function* getAddSurchargeDeatilsData({ payload }) {
     console.log("payload getAddSurchargeData", payload);
     const response = yield call(getAddSurchargeData, payload);
     showSuccessToast("Add Surcharge Data successfully");
-    console.log(response, "response of getAddSurchargeData");
-    yield put({
-      type: POST_SETTINGS_SURCHARGE_DATA_SUCCESS,
-      payload: response,
-    });
+    yield put({ type: POST_SETTINGS_SURCHARGE_DATA_SUCCESS, payload: response, });
+    const response2 = yield call(getPartiesSurchargeTable);
+    yield put({ type: GET_PARTIES_SURCHARGE_TABLE_SUCCESS, payload: response2 });
   } catch (error) {
     showErrorToast(error?.message);
     console.log(error, "Surcharge Data saga");

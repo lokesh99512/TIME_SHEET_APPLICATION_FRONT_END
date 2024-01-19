@@ -33,10 +33,12 @@ import {
   POST_SETTINGS_SURCHARGE_DATA_FAIL,
   GET_ALL_SURCHARGE_CATEGORY_SUCCESS,
   GET_ALL_SURCHARGE_CATEGORY_FAIL,
+  GET_USERS_LOADER_TYPE,
 } from "./actiontype";
 
 const INIT_STATE = {
   settings_users_data: [],
+  users_loader: [],
   settings_Add_users_data: [],
   settings_companydetails_data: {},
   settings_companyCity_data: [],
@@ -71,6 +73,11 @@ const settings = (state = INIT_STATE, action) => {
       return {
         ...state,
         error: action.payload,
+      };
+    case GET_USERS_LOADER_TYPE:
+      return {
+        ...state,
+        users_loader: action.payload,
       };
 
     case GET_COMPANY_ADD_USERS_DATA_SUCCESS:
