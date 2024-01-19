@@ -272,4 +272,9 @@ export const POST_INSTANT_RATE_URL = "/api/v1/fcl-inquiry-detail/"
 
 
 //tanant locaton --------------------------------
-export const TANANT_LOCATION = "/api/v1/location/"
+export const GET_ALL_TANANT_LOCATION = "/api/v1/tenant-location/"
+export const POST_TANANT_LOCATION = "/api/v1/tenant-location/"
+
+// TANANT LOCATION TYPE --------------------------------
+export const GET_ALL_TANANT_LOCATION_TYPE = "/api/v1/tenant-location-type/"
+export const POST_TANANT_LOCATION_TYPE = "/api/v1/tenant-location-type/"

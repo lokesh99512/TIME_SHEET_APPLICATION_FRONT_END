@@ -4,21 +4,32 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { Card, CardBody, Col, Container, FormFeedback, Input, Row, } from "reactstrap";
-import { getUsersData } from "../../store/Settings/actions";
+import { getAllTenantLocationData, getUsersData } from "../../store/Settings/actions";
 import { locations, rolesInfo } from "./constants/userInfo";
 import useAddUser from "./hook/useAddUser";
 
 export default function AddUserData() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { settings_users_data } = useSelector((state) => state.settings);
+    const { settings_users_data, tenant_all_location_data } = useSelector((state) => state.settings);
     const { roleData } = useSelector((state) => state.globalReducer);
     const navigateState = useLocation();
-    
+
     useEffect(() => {
         dispatch(getUsersData());
+        dispatch(getAllTenantLocationData())
     }, []);
+    console.log(tenant_all_location_data?.content);
+    const locations = tenant_all_location_data?.content?.map(location => ({
+        value: location.id,
+        label: location.name,
+    })) || [];
 
+    const addNewItem = {
+        value: 'add_new',
+        label: 'Add New',
+    };
+    locations.push(addNewItem);
     const managerInfo = Array.isArray(settings_users_data.content)
         ? settings_users_data.content.map((user) => ({
             label: `${user.firstName} ${user.lastName}`,
@@ -93,7 +104,7 @@ export default function AddUserData() {
                                                     <Input
                                                         type="text"
                                                         name="email"
-                                                        id="email"                                                        
+                                                        id="email"
                                                         value={formik.values.email}
                                                         onChange={formik.handleChange}
                                                         className="form-control"
@@ -115,7 +126,7 @@ export default function AddUserData() {
                                                         onChange={(selectedOptions) => {
                                                             const selectedValues = selectedOptions.map((option) => option.id);
                                                             formik.setFieldValue("roles", selectedValues);
-                                                        }}                                                        
+                                                        }}
                                                         name="roles"
                                                         id="roles"
                                                         options={roleData}
@@ -139,7 +150,7 @@ export default function AddUserData() {
                                                         value={formik.values.password}
                                                         onChange={formik.handleChange}
                                                         className="form-control"
-                                                        placeholder="Enter Password"                                                        
+                                                        placeholder="Enter Password"
                                                         invalid={formik.touched.password && formik.errors.password ? true : false}
                                                     />
                                                     <FormFeedback> {formik.errors.password} </FormFeedback>
@@ -191,7 +202,13 @@ export default function AddUserData() {
                                                         name="location"
                                                         id="location"
                                                         value={locations ? locations.find((option) => option.value === formik.values.location) || "" : ""}
-                                                        onChange={(e) => { formik.setFieldValue("location", e.value); }}
+                                                        onChange={(e) => {
+                                                            if (e.label == "Add New") {
+                                                                navigate("/Settings/AddTanentLocation")
+                                                            } else {
+                                                                formik.setFieldValue("location", e.value);
+                                                            }
+                                                        }}
                                                         options={locations}
                                                         placeholder={"Select locations"}
                                                         classNamePrefix="select2-selection form-select"

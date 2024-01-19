@@ -11,6 +11,10 @@ import {
   GET_ALL_COMPANY_SETTINGS_SUCCESS,
   GET_ALL_SURCHARGE_CATEGORY,
   GET_ALL_SURCHARGE_CATEGORY_SUCCESS,
+  GET_ALL_TENANT_LOCATION,
+  GET_ALL_TENANT_LOCATION_SUCCESS,
+  GET_ALL_TENANT_LOCATION_TYPE,
+  GET_ALL_TENANT_LOCATION_TYPE_SUCCESS,
   GET_BUSINESS_DATA,
   GET_BUSINESS_DATA_SUCCESS,
   GET_COMPANYDETAILS_BASIC_DATA,
@@ -40,6 +44,10 @@ import {
   GET_USERS_TABLE_DATA_SUCCESS,
   POST_SETTINGS_SURCHARGE_DATA,
   POST_SETTINGS_SURCHARGE_DATA_SUCCESS,
+  POST_TENANT_LOCATION,
+  POST_TENANT_LOCATION_SUCCESS,
+  POST_TENANT_LOCATION_TYPE,
+  POST_TENANT_LOCATION_TYPE_SUCCESS,
 } from "./actiontype";
 import {
   getUsersDataSuccess,
@@ -77,7 +85,7 @@ import {
   showErrorToast,
   showSuccessToast,
 } from "../../components/Common/CustomToast";
-import { GetFileSer } from "../../helpers/services/GlobalService";
+import { GetFileSer, postTenantLocation, getAllTenantLocationType, postTenantLocationType, getAllTenantLocation } from "../../helpers/services/GlobalService";
 import axios from "axios";
 
 function* getUsersData() {
@@ -202,7 +210,7 @@ function* getCompanyBusinessDeatilsData({ payload }) {
     showSuccessToast("Update Business Deatils successfully");
     yield put({ type: GET_BUSINESS_DATA_SUCCESS, payload: response.data });
   } catch (error) {
-     showErrorToast(error?.message);
+    showErrorToast(error?.message);
     console.log(error, "saga getCompanyBusinessDeatilsData api error");
   }
 }
@@ -221,7 +229,7 @@ function* getAllCompanySettings() {
       response.content[0].logo = `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`;
     }
 
-    yield put({ type: GET_ALL_COMPANY_SETTINGS_SUCCESS, payload: {...response, imageData: resImageData} });
+    yield put({ type: GET_ALL_COMPANY_SETTINGS_SUCCESS, payload: { ...response, imageData: resImageData } });
   } catch (error) {
     console.log(error, "saga getAllCompanySettings api error");
   }
@@ -293,6 +301,51 @@ function* getSurchargeCategory() {
   }
 }
 
+function* getAllTenantLocations() {
+  try {
+    const response = yield call(getAllTenantLocation);
+    console.log(response, "reponse into getAllTenantLocation");
+    yield put({ type: GET_ALL_TENANT_LOCATION_SUCCESS, payload: response });
+  } catch (error) {
+    console.log(error, "saga getAllTenantLocation api error");
+  }
+}
+
+function* saveTenantLocation({ payload }) {
+  try {
+    const response = yield call(postTenantLocation, payload);
+    console.log(response, "reponse into saveTenantLocation");
+    showSuccessToast("Add Tenant Location Data successfully");
+    yield put({ type: POST_TENANT_LOCATION_SUCCESS, payload: response });
+  } catch (error) {
+    showErrorToast(error?.message);
+    console.log(error, "saga saveTenantLocation api error");
+  }
+}
+
+function* getAllTenantLocatonTypes() {
+  try {
+    const response = yield call(getAllTenantLocationType);
+    console.log(response, "reponse into getAllTenantLocatonTypes");
+    yield put({ type: GET_ALL_TENANT_LOCATION_TYPE_SUCCESS, payload: response });
+  } catch (error) {
+    console.log(error, "saga getAllTenantLocatonTypes api error");
+  }
+}
+
+function* postTenantLocationTypes({ payload }) {
+  try {
+    const response = yield call(postTenantLocationType, payload);
+    console.log(response, "reponse into postTenantLocationTypes");
+    showSuccessToast("Add Tenant Location Type Data successfully");
+    yield put({ type: POST_TENANT_LOCATION_TYPE_SUCCESS, payload: response });
+  } catch (error) {
+    showErrorToast(error?.message);
+    console.log(error, "saga postTenantLocationTypes api error");
+  }
+}
+
+
 export function* watchGetSettingsUsersData() {
   yield takeLatest(GET_USERS_TABLE_DATA, getUsersData);
   yield takeLatest(GET_COMPANY_ADD_USERS_DATA, getCompanyAddUserData);
@@ -312,6 +365,10 @@ export function* watchGetSettingsUsersData() {
   );
   yield takeLatest(POST_SETTINGS_SURCHARGE_DATA, getAddSurchargeDeatilsData);
   yield takeLatest(GET_ALL_SURCHARGE_CATEGORY, getSurchargeCategory);
+  yield takeLatest(GET_ALL_TENANT_LOCATION, getAllTenantLocations);
+  yield takeLatest(POST_TENANT_LOCATION, saveTenantLocation);
+  yield takeLatest(GET_ALL_TENANT_LOCATION_TYPE, getAllTenantLocatonTypes);
+  yield takeLatest(POST_TENANT_LOCATION_TYPE, postTenantLocationTypes);
 }
 
 function* settingsSaga() {

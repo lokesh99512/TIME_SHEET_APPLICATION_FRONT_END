@@ -153,6 +153,7 @@ import Users from "../pages/Settings/Users";
 import FclSurcharge from "../pages/Settings/Surcharge/FclSurcharge";
 import UploadRateData from "../pages/Settings/Surcharge/UploadRateData";
 import UploadFile from "../pages/Settings/Surcharge/UploadFile";
+import AddTanentLocation from "../pages/Settings/AddTanentLocation";
 
 const userRoutes = [
   //dashboard
@@ -187,9 +188,9 @@ const userRoutes = [
   // { path: "/freight/upload/inland/add-new", component: <OceanInlandSurchargeNameAddNew /> },
   { path: "/freight/ocean/upload/fcl-pl/add-new", component: <OceanFCLSurchargeNameAddNew /> },
   // { path: "/freight/ocean/upload/PortLocalCharges/add-new", component: <PortLocalChargesSurchargeCodeAddNew /> },
-
-
-
+  
+  
+  
   // Rate Management
   // { path: "/rate/surcharge/fcl", component: <FclSurcharge/> },
   // { path: "/rate/upload/:tabName", component: <UploadRateData /> },
@@ -204,7 +205,7 @@ const userRoutes = [
   { path: "/settings/users/editUser", component: <EditUserData /> }, 
   { path: "/settings/upload/:tabName", component: <UploadRateData /> },
   { path: "/settings/upload/uploadFile", component: <UploadFile /> },
-
+  { path: "/Settings/AddTanentLocation", component: <AddTanentLocation /> },
   // Parties
   { path: "/parties/customers", component: <Customers /> }, 
   { path: "/parties/customers/add-customer", component: <UploadCustomerData /> }, 

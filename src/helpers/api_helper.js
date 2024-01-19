@@ -1,7 +1,7 @@
 import axios from "axios"
 
 // axios.defaults.baseURL = "http://demo-api.tarifftales.com:7005";
-axios.defaults.baseURL = "https://demo-api.tarifftales.com";
+axios.defaults.baseURL = "http://localhost:7005";
 
 // axios.defaults.headers.common["Authorization"] = `${token}`
 
