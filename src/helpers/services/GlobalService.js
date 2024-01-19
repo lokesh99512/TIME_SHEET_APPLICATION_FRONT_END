@@ -25,3 +25,11 @@ export const GetFileSer = (base64Encoded) => getWithOutAuth(url.Get_File_URL + b
 export const getInstantRateLocation = () => get(url.GET_INSTANT_RATE_LOCATION);
 
 export const getAllIncoTerms = () => get (url.GET_ALL_INCOTERM)
+
+// tenant location
+export const getAllTenantLocation = () => get (url.GET_ALL_TANANT_LOCATION);
+export const postTenantLocation = (data) => post(url.POST_TANANT_LOCATION, data);
+
+// tenant location type
+export const getAllTenantLocationType = () => get (url.GET_ALL_TANANT_LOCATION_TYPE);
+export const postTenantLocationType= (data) => post (url.POST_TANANT_LOCATION_TYPE, data);
