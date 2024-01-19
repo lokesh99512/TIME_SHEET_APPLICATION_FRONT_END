@@ -144,7 +144,7 @@ function* getCompanyCityDetails() {
   try {
     // console.log("payload getCompanyCityDetails", payload)
     const response = yield call(CompanyCityDetails);
-    console.log(response, "--respnse");
+    // console.log(response, "--respnse");
     yield put({ type: GET_COMPANY_CITY_DATA_SUCCESS, payload: response });
   } catch (error) {
     // showErrorToast(error?.message);
@@ -166,9 +166,7 @@ function* getCompanyStateDetails({ payload: { cityId } }) {
 }
 function* getCompanyCountryDetails({ payload: { cityId } }) {
   try {
-    // console.log("payload getCompanyCityDetails", payload)
     const response = yield call(() => CompanyCountryDetails({ cityId }));
-    // console.log(response, "--respnse")
     yield put({ type: GET_COMPANY_COUNTRY_DATA_SUCCESS, payload: response });
   } catch (error) {
     // showErrorToast(error?.message);
@@ -178,12 +176,9 @@ function* getCompanyCountryDetails({ payload: { cityId } }) {
 
 function* getCompanyPincodeDetails({ payload: { cityId } }) {
   try {
-    // console.log("payload getCompanyPincodeDetails", payload)
     const response = yield call(() => CompanyPincodeDetails({ cityId }));
-    console.log(response, "--getCompanyPincodeDetails ---respnse");
     yield put({ type: GET_COMPANY_PINCODE_DATA_SUCCESS, payload: response });
   } catch (error) {
-    // showErrorToast(error?.message);
     console.log(error, "saga state api error");
   }
 }
@@ -191,27 +186,22 @@ function* getCompanyPincodeDetails({ payload: { cityId } }) {
 // All taxes
 function* getCompanyTaxDetails({ payload }) {
   try {
-    console.log("payload into getCompanyTaxDetails", payload);
     const response = yield call(CompanyTaxDetails, payload);
     showSuccessToast("Update Tax Info successfully");
-    console.log(response, "--respnse into getCompanyTaxDetails");
     yield put({ type: GET_TAXES_DATA_SUCCESS, payload: response });
   } catch (error) {
     showErrorToast(error?.message);
-    console.log(error, "saga getCompanyTaxDetails api error");
   }
 }
 
 // business type api call
 function* getCompanyBusinessDeatilsData({ payload }) {
   try {
-    console.log("payload getCompanyBusinessDeatilsData", payload);
     const response = yield call(CompanyBusinessDetails, payload);
     showSuccessToast("Update Business Deatils successfully");
     yield put({ type: GET_BUSINESS_DATA_SUCCESS, payload: response.data });
   } catch (error) {
     showErrorToast(error?.message);
-    console.log(error, "saga getCompanyBusinessDeatilsData api error");
   }
 }
 
@@ -221,10 +211,11 @@ function* getAllCompanySettings() {
     const response = yield call(CompanyAllDetails);
     // logo
     let imageData = response?.content?.[0]?.logoPath;
+    
     const base64Encoded = window.btoa(imageData);
-    // const base64Encoded = Buffer.from(imageData, 'binary').toString('base64');
+
     const resImageData = yield call(GetFileSer, base64Encoded);
-    console.log(`${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`);
+
     if (response && response.content && response.content[0]) {
       response.content[0].logo = `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`;
     }

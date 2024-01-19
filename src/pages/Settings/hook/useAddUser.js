@@ -2,10 +2,12 @@ import { useDispatch } from "react-redux";
 import { addUserSchema } from "../schema";
 import { addUsersData } from "../../../store/Settings/actions";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export const useAddUser = (state) => {
   const dispatch = useDispatch();
   const { settings_users_data } = useSelector((state) => state.settings);
+  const navigate = useNavigate();
 
   const currUserData = Array.isArray(settings_users_data.content) && settings_users_data.content.find((user) => user.id === state?.id) || {};
 
@@ -35,6 +37,7 @@ export const useAddUser = (state) => {
 
     dispatch(addUsersData(payload));
     resetForm();
+    navigate('/settings/users');
   };
 
   return {

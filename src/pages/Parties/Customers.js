@@ -16,6 +16,8 @@ import {
   EmailId
 } from "./PartiesCol";
 import TableCustomers from "./TableCustomers";
+import TopBreadcrumbs from "../Settings/Surcharge/TopBreadcrumbs";
+import { customersBreadcrumb } from "../../common/data/parties";
 
 const Customers = () => {
   const [modal, setModal] = useState(false);
@@ -162,8 +164,8 @@ const Customers = () => {
       <div className="page-content settings_users_wrapper">
         <Container fluid>
           <div className="main_freight_wrapper">
-            {/* breadcrumbs && rate */}
-            {/* <TopBreadcrumbs breadcrumbs={fclBreadcrumb} data={fclRateData} /> */}
+            {/* breadcrumbs */}
+            <TopBreadcrumbs breadcrumbs={customersBreadcrumb} />
 
             {/* React Table */}
             <TableCustomers

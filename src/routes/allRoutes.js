@@ -199,18 +199,18 @@ const userRoutes = [
   // Settings
   { path: "/settings/company-settings", component: <Settings /> },
   { path: "/settings/users", component: <Users /> },
-  { path: "/settings/surcharge/fcl", component: <FclSurcharge /> },
+  { path: "/settings/surcharge", component: <FclSurcharge /> },
   { path: "/settings/users/uploadFile", component: <UploadUser /> },
   { path: "/settings/users/addUser", component: <AddUserData /> }, 
   { path: "/settings/users/editUser", component: <EditUserData /> }, 
-  { path: "/settings/upload/:tabName", component: <UploadRateData /> },
+  { path: "/settings/surcharge/add", component: <UploadRateData /> },
   { path: "/settings/upload/uploadFile", component: <UploadFile /> },
   { path: "/Settings/AddTanentLocation", component: <AddTanentLocation /> },
   // Parties
-  { path: "/parties/customers", component: <Customers /> }, 
-  { path: "/parties/customers/add-customer", component: <UploadCustomerData /> }, 
-  { path: "/parties/vendors", component: <Vendors /> }, 
-  { path: "/parties/vendor/add-vendor", component: <UploadVendorData /> }, 
+  { path: "/customers", component: <Customers /> }, 
+  { path: "/customers/add-customer", component: <UploadCustomerData /> }, 
+  { path: "/vendors", component: <Vendors /> }, 
+  { path: "/vendor/add-vendor", component: <UploadVendorData /> }, 
 
   // Express
   { path: "/express", component: <ExpressComp /> },

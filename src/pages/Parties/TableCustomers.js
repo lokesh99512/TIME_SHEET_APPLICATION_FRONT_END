@@ -79,7 +79,7 @@ const TableCustomers = ({columns,data,isGlobalFilter,customPageSize,toggleRightC
                         </button>
                     </div> */}
                     <div className="add_btn">
-                        <button className='border-0' onClick={() => {navidate(`/parties/customers/add-customer`);}}>
+                        <button className='border-0' onClick={() => {navidate(`/customers/add-customer`);}}>
                             <i className='bx bx-plus align-middle'></i> Add
                         </button>
                     </div>

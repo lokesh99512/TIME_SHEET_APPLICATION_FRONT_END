@@ -60,9 +60,9 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanva
     return (
         <>
             <div className="freight_filter_wrap d-flex align-items-center">
-                <p className="label flex-grow-1 m-0">Filters :</p>
+                {/* <p className="label flex-grow-1 m-0">Filters :</p> */}
 
-                <div className="right_actions_wrap flex-shrink-0 d-flex align-items-center">
+                <div className="right_actions_wrap flex-shrink-0 d-flex align-items-center ms-auto">
                     {isGlobalFilter && (
                         <GlobalFilter
                             preGlobalFilteredRows={preGlobalFilteredRows}
@@ -70,16 +70,16 @@ const TableReact = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanva
                             setGlobalFilter={setGlobalFilter}
                         />
                     )}
-                    <div className="filter_wrap">
-                        <button className='bg-transparent' onClick={toggleRightCanvas}><img src={filter_icon} alt="filter" /></button>
-                    </div>
-                    <div className="upload_wrap">
-                        <button className='bg-transparent' onClick={() => {navidate(`/settings/upload/uploadFile`);}}>
+                        {/* <div className="filter_wrap">
+                            <button className='bg-transparent' onClick={toggleRightCanvas}><img src={filter_icon} alt="filter" /></button>
+                        </div> */}
+                    <div className="upload_wrap disabled-opacity">
+                        <button className='bg-transparent' onClick={() => {navidate(`/settings/surcharge/add`);}} disabled>
                             <img src={upload_icon} alt="Upload" />Upload file
                         </button>
                     </div>
                     <div className="add_btn">
-                        <button className='border-0' onClick={() => {navidate(`/settings/upload/${component}`);}}>
+                        <button className='border-0' onClick={() => {navidate(`/settings/surcharge/add`);}}>
                             <i className='bx bx-plus align-middle'></i> Add
                         </button>
                     </div>

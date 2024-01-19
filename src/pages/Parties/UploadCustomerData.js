@@ -12,6 +12,8 @@ import { BLANK_CARRIER_DATA } from '../../store/Procurement/actiontype';
 import CustomerCompDetails from './partials/customer/CustomerCompDetails';
 import CustomerContact from './partials/customer/CustomerContact';
 import CustomerDocument from './partials/customer/CustomerDocument';
+import TopBreadcrumbs from '../Settings/Surcharge/TopBreadcrumbs';
+import { addCustomersBreadcrumb } from '../../common/data/parties';
 
 export default function UploadCustomerData() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
@@ -52,7 +54,7 @@ export default function UploadCustomerData() {
             openSaveConfirmModal();
         }
     }
-    
+
 
     // ------------- dynamic field ------------------------
     const addHandler = () => {
@@ -107,6 +109,9 @@ export default function UploadCustomerData() {
             <div className="page-content">
                 <Container fluid>
                     <div className="main_freight_wrapper">
+                        {/* breadcrumbs */}
+                        <TopBreadcrumbs breadcrumbs={addCustomersBreadcrumb} />
+
                         <button type="button" className='btn border mb-3' onClick={() => { navigate(-1) }}>Back</button>
                         <Row>
                             <Col lg="12">

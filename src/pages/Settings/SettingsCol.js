@@ -14,8 +14,11 @@ export const FirstName = ({cellProps,viewPopupHandler}) => {
 export const LastName = ({cellProps,viewPopupHandler}) => {
     return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }
-export const Role = ({cellProps,viewPopupHandler}) => {
-    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
+export const Role = ({cellProps,viewPopupHandler, roleData}) => {
+    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value.length > 0 ? (
+    <>
+        {cellProps.value.map((item,index) => index !== 0 ? ', ' + roleData.find(obj => obj.id === item)?.label?.toLowerCase() : roleData.find(obj => obj.id === item)?.label.toLowerCase())}
+    </>) : '-'}</span>;
 }
 export const LastActive = ({cellProps,viewPopupHandler}) => {
     const {value} = cellProps;
@@ -30,5 +33,4 @@ export const ResetPassword = ({cellProps,viewPopupHandler}) => {
 // }
 export const Edit = ({cellProps,viewPopupHandler}) => {
     return <p onClick={() => {viewPopupHandler(cellProps.row.original);}}>{<img src={edit_icon} alt="Edit" />}</p>;
-    // return <p onClick={() => console.log("test")}>{<img src={edit_icon} alt="Edit" />}</p>;
 }

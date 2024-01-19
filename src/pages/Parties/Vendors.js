@@ -8,6 +8,8 @@ import { City, CityV, CommonReplaceValue, CommonValue, ConatctName, ConatctNo, C
 import { edit_icon } from '../../assets/images';
 import ModalVendorValue from './Modal/ModalVendorValue';
 import { getVendorListAction } from '../../store/Parties/Vendor/action';
+import TopBreadcrumbs from '../Settings/Surcharge/TopBreadcrumbs';
+import { vendorsBreadcrumb } from '../../common/data/parties';
 
 const Vendors = () => {
   const [modal, setModal] = useState(false);
@@ -133,7 +135,7 @@ const Vendors = () => {
         <Container fluid>
           <div className="main_freight_wrapper">
             {/* breadcrumbs && rate */}
-            {/* <TopBreadcrumbs breadcrumbs={fclBreadcrumb} data={fclRateData} /> */}
+            <TopBreadcrumbs breadcrumbs={vendorsBreadcrumb} />
 
             {/* React Table */}
             <TableVenders

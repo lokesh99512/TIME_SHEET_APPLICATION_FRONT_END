@@ -14,6 +14,8 @@ import SearchResultComp from "../Sales/Quotations/partials/SearchResultComp";
 import SearchForm from './SearchForm';
 import { getAllCompanyDetailData } from "../../store/Settings/actions";
 import { BLANK_MODAL_CHARGE } from "../../store/Sales/Quotation/actiontype";
+import { instantRateBreadcrumb } from "../../common/data/procurement";
+import TopBreadcrumbs from "../Settings/Surcharge/TopBreadcrumbs";
 
 const InstantRate = () => {
     const [activeTab, toggleTab] = useState("FCL");
@@ -40,7 +42,7 @@ const InstantRate = () => {
         let data = {
             fclInquiryField: {
                 customerId: searchData?.customerName?.value || null,
-                findAlternativeRoute: true,
+                findAlternativeRoute: searchData?.alternate_route,
                 originLocationTypeId: searchData?.location_from?.locationType || null,
                 destinationLocationTypeId: searchData?.location_to?.locationType || null,
 
@@ -119,7 +121,9 @@ const InstantRate = () => {
         <>
             <div className="page-content">
                 <Container fluid>
+                    <TopBreadcrumbs breadcrumbs={instantRateBreadcrumb} />
                     <div className="create_sales_wrapper instant_rate_wrapper">
+
                         {/* --------------------------tabs------------------------------- */}
                         <Nav className="nav-tabs-custom card-header-tabs border-bottom mb-3">
                             <NavItem>

@@ -7,12 +7,14 @@ import { Card, CardBody, Col, Container, Modal, NavItem, NavLink, Progress, Row,
 // import fileData from "../../assets/extra/upload_Formats.xlsx";
 import { useFormik } from "formik";
 import { delete_icon } from "../../assets/images";
+import { addVendorsBreadcrumb } from "../../common/data/parties";
 import { optionMultiDestination, optionSurchargesName } from "../../common/data/procurement";
 import { isAnyValueEmpty } from "../../components/Common/CommonLogic";
 import { postVendorContactAction, postVendorDetailsAction, postVendorDocumentAction } from "../../store/Parties/Vendor/action";
 import { getCustomersCityData } from "../../store/Parties/actions";
 import { BLANK_CARRIER_DATA } from "../../store/Procurement/actiontype";
 import { getAllCompanyDetailData } from "../../store/Settings/actions";
+import TopBreadcrumbs from "../Settings/Surcharge/TopBreadcrumbs";
 import ContactDetailsForm from "./partials/vendor/ContactDetailsForm";
 import DocumentDetailsForm from "./partials/vendor/DocumentDetailsForm";
 import VenderDetails from "./partials/vendor/VenderDetails";
@@ -35,7 +37,7 @@ export default function UploadVendorData() {
         dispatch(getAllCompanyDetailData());
     }, []);
 
-    console.log(vendor_active_Tab,"vendor_active_Tab");
+    console.log(vendor_active_Tab, "vendor_active_Tab");
 
     useEffect(() => {
         setActiveTabProgress(vendor_active_Tab.tab)
@@ -305,6 +307,9 @@ export default function UploadVendorData() {
             <div className="page-content">
                 <Container fluid>
                     <div className="main_freight_wrapper">
+                        {/* breadcrumbs && rate */}
+                        <TopBreadcrumbs breadcrumbs={addVendorsBreadcrumb} />
+
                         <button
                             type="button"
                             className="btn border mb-3"
