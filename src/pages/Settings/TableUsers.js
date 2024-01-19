@@ -44,7 +44,7 @@ function GlobalFilter({
     );
   }
 
-const TableUsers = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanvas,component}) => {    
+const TableUsers = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanvas,component, loader}) => {    
     const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow, canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize, state, preGlobalFilteredRows, setGlobalFilter, state: { pageIndex, pageSize }, } = useTable({
           columns,
           data,
@@ -122,6 +122,29 @@ const TableUsers = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanva
                             </Fragment>
                         );
                         })}
+                        {page?.length === 0 && (
+                            <>   
+                                {loader ? (
+                                    <tr>
+                                        <td colSpan={headerGroups[0].headers.length} className="text-center py-5">
+                                            <div className='py-5'>
+                                                <div className="spinner-border text-primary" role="status">
+                                                    <span className="visually-hidden">Loading...</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ) : 
+                                    <tr>
+                                        <td colSpan={headerGroups[0].headers.length}>
+                                            <div className='no_table_data_found'>
+                                                <p>No Data Found. Please Adjust Your Filter. </p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }                                   
+                            </>
+                        )}
                     </tbody>
                     </Table>
                 </div>
@@ -160,57 +183,6 @@ const TableUsers = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanva
                     </div>
                 </Row>
             </div>
-            {/* <Row className="justify-content-md-end justify-content-center align-items-center">
-                <Col className="col-md-auto">
-                    <div className="d-flex gap-1">
-                        <Button
-                        color="primary"
-                        onClick={() => gotoPage(0)}
-                        disabled={!canPreviousPage}
-                        >
-                        {"<<"}
-                        </Button>
-                        <Button
-                        color="primary"
-                        onClick={previousPage}
-                        disabled={!canPreviousPage}
-                        >
-                        {"<"}
-                        </Button>
-                    </div>
-                </Col>
-                <Col className="col-md-auto d-none d-md-block">
-                    Page{" "}
-                    <strong>
-                        {pageIndex + 1} of {pageOptions.length}
-                    </strong>
-                </Col>
-                <Col className="col-md-auto">
-                    <Input
-                        type="number"
-                        min={1}
-                        style={{ width: 70 }}
-                        max={pageOptions.length}
-                        defaultValue={pageIndex + 1}
-                        onChange={onChangeInInput}
-                    />
-                </Col>
-
-                <Col className="col-md-auto">
-                    <div className="d-flex gap-1">
-                        <Button color="primary" onClick={nextPage} disabled={!canNextPage}>
-                        {">"}
-                        </Button>
-                        <Button
-                        color="primary"
-                        onClick={() => gotoPage(pageCount - 1)}
-                        disabled={!canNextPage}
-                        >
-                        {">>"}
-                        </Button>
-                    </div>
-                </Col>
-            </Row> */}
         </>
     )
 }

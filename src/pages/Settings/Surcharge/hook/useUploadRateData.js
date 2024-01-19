@@ -1,63 +1,54 @@
 import { useDispatch } from "react-redux";
-import { uploadRateDataSchema } from "../schema";
 import { getAllAddSurchargeData } from "../../../../store/Settings/actions";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export const useUploadRateData = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const navigateState = useLocation();
+  console.log(navigateState?.state?.id,"navigateState");
+  const { settings_surcharges_table_data } = useSelector((state) => state?.settings);
+  const { surchargeCategory_data, surchargeAlice_data } = useSelector((state) => state.globalReducer);
 
-  const {
-   
-    settings_all_category_data,
-    settings_surcharges_alias_table_data,
-  } = useSelector((state) => state.settings);
+  const currSurchargeData = Array.isArray(settings_surcharges_table_data.content) && settings_surcharges_table_data.content.find((item) => item.id === navigateState?.state?.id) || {};
+
   const initialValue = {
-    surchargeCode: "",
-    surchargeDesc: "",
-    surchargeCategory: "",
-    surchargeAliasCode: "",
-    surchargeAliasDesc: "",
+    surchargeCode: currSurchargeData?.code || "",
+    surchargeDesc: currSurchargeData?.description || "",
+    surchargeCategory: currSurchargeData?.surchargeCategory?.name || "",
+    surchargeAliasCode: currSurchargeData?.surchargeAlias?.name || "",
+    surchargeAliasDesc: currSurchargeData?.surchargeAlias?.description || "",
   };
-  const handleSubmit = (values,{resetForm}) => {
-    try {
-      const targetSurchargeCategory = values.surchargeCategory;
-      const foundCategory = settings_all_category_data.content.find(
-        (category) => category.name === targetSurchargeCategory
-      );
+  const handleSubmit = (values, { resetForm }) => {
+    let sCategory_data = surchargeCategory_data?.find((item) => item?.value === values?.surchargeCategory);
+    let sAlice_data = surchargeAlice_data?.find((item) => item?.value === values?.surchargeAliasCode);
 
-      const targetAliasName = values.surchargeAliasCode;
-      const foundAliasEntry = settings_surcharges_alias_table_data.content.find(
-        (entry) => entry.name === targetAliasName
-      );
-
-      const payload = {
-        code: values.surchargeCode,
-        description: values.surchargeDesc,
+    let data = {
+      ...(Object.keys(currSurchargeData).length ? { id: currSurchargeData.id, version: currSurchargeData.version } : {}),
+      code: values?.surchargeCode || '',
+      description: values?.surchargeDesc || '',
+      ...(values?.surchargeAliasCode && {
         surchargeAlias: {
-          name: values.surchargeAliasCode,
-          description: foundAliasEntry.description,
-          id: foundAliasEntry.id,
-          version: foundAliasEntry.id,
-        },
-        surchargeCategory: {
-          name: values.surchargeCategory,
-          description: foundCategory.description,
-          id: foundCategory.id,
-          version: foundCategory.id,
-        },
-      };
-
-      console.log("Final payload:", payload);
-      dispatch(getAllAddSurchargeData(payload));
-      resetForm();
-    } catch (error) {
-      console.error("An error occurred:", error);
+          version: sAlice_data && sAlice_data?.version || 0,
+          id: sAlice_data && sAlice_data?.id || '',
+        }
+      }),
+      surchargeCategory: {
+        version: sCategory_data && sCategory_data?.version || 0,
+        id: sCategory_data && sCategory_data?.id || '',
+      }
     }
+
+    console.log(data,"data");
+
+    dispatch(getAllAddSurchargeData(data));
+    resetForm();
+    navigate('/settings/surcharge');
   };
 
   return {
     initialValue,
-    uploadRateDataSchema,
     handleSubmit,
   };
 };

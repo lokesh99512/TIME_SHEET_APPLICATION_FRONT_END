@@ -3,7 +3,10 @@ import { showErrorToast, showSuccessToast } from "../../components/Common/Custom
 import { getAirConsoleTableData, getAirwaybillTableData, getLCLTableData } from "../../helpers/fakebackend_helper";
 import { getFCLDestinationData, getFCLFreightViewData, getFCLInlandFreightSer, getFCLInlandSurchargeSer, getFCLInlandTableData, getFCLSurchargeViewData, getFCLTableData, getPortLocalChargesTableData, postFclFreightUploadSer, postFclInlandFreightUploadSer, postFclInlandSurchargeUploadSer, postFclInlandUploadSer, postFclPLUploadSer, postFclSurchargeUploadSer, postFclUploadSer } from "../../helpers/services/FCLService";
 import { getAirConsoleDataFail, getAirConsoleDataSuccess, getAirwaybillDataFail, getAirwaybillDataSuccess, getFclDataFail, getFclDataSuccess, getInLandDataFail, getInLandDataSuccess, getLclDataFail, getLclDataSuccess, getPortLocalChargesDataFail, getPortLocalChargesDataSuccess } from "./actions";
-import { GET_CONSOLE_TABLE_DATA, GET_FCL_CHARGE_ID, GET_FCL_DESTINATION_DATA, GET_FCL_DESTINATION_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_DATA, GET_FCL_FREIGHT_VIEW_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_LOADER, GET_FCL_INLAND_CHARGE_ID, GET_FCL_INLAND_FREIGHT_ACTION, GET_FCL_INLAND_FREIGHT_ACTION_SUCCESS, GET_FCL_INLAND_FREIGHT_LOADER, GET_FCL_INLAND_LOADER, GET_FCL_INLAND_SURCHARGE_ACTION, GET_FCL_INLAND_SURCHARGE_ACTION_SUCCESS, GET_FCL_INLAND_SURCHARGE_LOADER, GET_FCL_INLAND_TABLE_DATA, GET_FCL_LOADER, GET_FCL_SURCHARGE_VIEW_DATA, GET_FCL_SURCHARGE_VIEW_DATA_SUCCESS, GET_FCL_SURCHARGE_VIEW_LOADER, GET_FCL_TABLE_DATA, GET_LCL_TABLE_DATA, GET_PORTLOCALCHARGES_TABLE_DATA, GET_WAYBILL_TABLE_DATA, UPDATE_FCL_ACTIVE_TAB, UPDATE_INLAND_ACTIVE_TAB, UPLOAD_FCL_CARRIER_DATA, UPLOAD_FCL_FREIGHT, UPLOAD_FCL_INLAND_CARRIER_DATA, UPLOAD_FCL_INLAND_FREIGHT_DATA, UPLOAD_FCL_INLAND_SURCHARGE_DATA, UPLOAD_FCL_PORTLOCALCHARGES, UPLOAD_FCL_SURCHARGE } from "./actiontype";
+import { FCL_FREIGHT_FAILD_DATA_TYPE, FCL_FREIGHT_FAILD_POPUP_TYPE, GET_CONSOLE_TABLE_DATA, GET_FCL_CHARGE_ID, GET_FCL_DESTINATION_DATA, GET_FCL_DESTINATION_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_DATA, GET_FCL_FREIGHT_VIEW_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_LOADER, GET_FCL_INLAND_CHARGE_ID, GET_FCL_INLAND_FREIGHT_ACTION, GET_FCL_INLAND_FREIGHT_ACTION_SUCCESS, GET_FCL_INLAND_FREIGHT_LOADER, GET_FCL_INLAND_LOADER, GET_FCL_INLAND_SURCHARGE_ACTION, GET_FCL_INLAND_SURCHARGE_ACTION_SUCCESS, GET_FCL_INLAND_SURCHARGE_LOADER, GET_FCL_INLAND_TABLE_DATA, GET_FCL_LOADER, GET_FCL_SURCHARGE_VIEW_DATA, GET_FCL_SURCHARGE_VIEW_DATA_SUCCESS, GET_FCL_SURCHARGE_VIEW_LOADER, GET_FCL_TABLE_DATA, GET_LCL_TABLE_DATA, GET_PORTLOCALCHARGES_TABLE_DATA, GET_WAYBILL_TABLE_DATA, UPDATE_FCL_ACTIVE_TAB, UPDATE_INLAND_ACTIVE_TAB, UPLOAD_FCL_CARRIER_DATA, UPLOAD_FCL_FREIGHT, UPLOAD_FCL_INLAND_CARRIER_DATA, UPLOAD_FCL_INLAND_FREIGHT_DATA, UPLOAD_FCL_INLAND_SURCHARGE_DATA, UPLOAD_FCL_PORTLOCALCHARGES, UPLOAD_FCL_SURCHARGE } from "./actiontype";
+import { GetFileSer } from "../../helpers/services/GlobalService";
+import { Get_File_URL } from "../../helpers/url_helper";
+import axios from "axios";
 
 function* fetchFclData() {
     yield put({type: GET_FCL_LOADER, payload: true});
@@ -68,17 +71,20 @@ function* postFclFreightUploadSaga({ payload: { formData, id } }) {
         yield put({type: UPDATE_FCL_ACTIVE_TAB, payload: {tab: 3}});
     } catch (error) {
         // console.log(error, "error");
-        // if(error?.response?.status === 400){
-        //     const downloadFile = error?.response?.data?.filePath;
-        //     var rest = downloadFile.substring(0, downloadFile.lastIndexOf("/") + 1);
-        //     var last = downloadFile.substring(downloadFile.lastIndexOf("/") + 1, downloadFile.length);
-        //     const base64Encoded = window.btoa(last);
-        //     // const base64Encoded = Buffer.from(imageData, 'binary').toString('base64');
-        //     if(downloadFile !== undefined && downloadFile !== ''){
-        //         const resImageData = yield call(GetFileSer, base64Encoded);
-        //         console.log(resImageData,"resImageData");
-        //     }
-        // }
+        if(error?.response?.status === 400){
+            const downloadFile = error?.response?.data?.filePath;
+            var rest = downloadFile.substring(0, downloadFile.lastIndexOf("/") + 1);
+            var last = downloadFile.substring(downloadFile.lastIndexOf("/") + 1, downloadFile.length);
+            const base64Encoded = window.btoa(last);
+            // const base64Encoded = Buffer.from(imageData, 'binary').toString('base64');
+            if(downloadFile !== undefined && downloadFile !== ''){
+                const resImageData = yield call(GetFileSer, base64Encoded);
+                console.log(resImageData,"resImageData");
+    
+                yield put({type: FCL_FREIGHT_FAILD_DATA_TYPE, payload: {data: error?.response?.data,url: `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`, file: resImageData, filename: last}});
+            }
+            yield put({type: FCL_FREIGHT_FAILD_POPUP_TYPE, payload: true});
+        }
         showErrorToast(error?.response?.data?.description);
     }
 }

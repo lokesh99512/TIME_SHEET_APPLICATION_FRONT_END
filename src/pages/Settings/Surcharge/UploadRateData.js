@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import {
   Card,
@@ -23,49 +23,21 @@ import ModalAddNewAlias from "./Modal/ModalAddNewAlias";
 import ModalAddNewCategory from "./Modal/ModalAddNewCategory";
 import TopBreadcrumbs from "./TopBreadcrumbs";
 import { useUploadRateData } from "./hook/useUploadRateData";
+import { GET_SURCHARGE_ALICE_DATA } from "../../../store/Global/actiontype";
 
 
 export default function UploadRateData() {
   const [categoryModal, setCategoryModal] = useState(false);
-  const [aliasModal, setAliasModal] = useState(false);
+  const [aliasModal, setAliasModal] = useState(false);  
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { initialValue, uploadRateDataSchema, handleSubmit } =
-    useUploadRateData();
-
-  const [surchargeCategory, setSurchargeCategoryList] = useState([]);
-
-  const [surchargeAliasCode, setSurchargeAliasCode] = useState([]);
-
-  const { settings_all_category_data, settings_surcharges_alias_table_data } =
-    useSelector((state) => state.settings);
-
-  useEffect(() => {
-    if (Array.isArray(settings_all_category_data)) {
-      const transformedData = settings_all_category_data.map((category) => ({
-        label: category.name,
-        value: category.description,
-      }));
-
-      setSurchargeCategoryList([...transformedData]);
-    }
-
-    if (Array.isArray(settings_surcharges_alias_table_data)) {
-      const transformedAliasData = settings_surcharges_alias_table_data.map(
-        (alias) => ({
-          value: alias.name,
-          label: alias.name,
-        })
-      );
-
-      setSurchargeAliasCode(transformedAliasData);
-    }
-  }, [settings_all_category_data, settings_surcharges_alias_table_data]);
+  const { initialValue, handleSubmit } = useUploadRateData();
+  
+  const { surchargeCategory_data, surchargeAlice_data, surchargeAlice_descri } = useSelector((state) => state.globalReducer);
 
   const formik = useFormik({
     initialValues: initialValue,
-    validationSchema: uploadRateDataSchema,
     onSubmit: handleSubmit,
   });
 
@@ -73,42 +45,13 @@ export default function UploadRateData() {
     dispatch(getAllTableSurchargeAlias());
     dispatch(getAllSurchargeCategoryData());
     dispatch(getAllCompanyDetailData());
+    dispatch({ type: GET_SURCHARGE_ALICE_DATA });
   }, []);
 
   const onCloseClick = () => {
     setCategoryModal(false);
     setAliasModal(false);
-  };
-
-  const optionOfSurcharge = settings_surcharges_alias_table_data?.content || [];
-
-  const surchargeAliasCodeOptions = optionOfSurcharge?.map((item) => ({
-    value: item?.name,
-    label: item?.name,
-  }));
-
-  const surchargeAliasDescOptions = optionOfSurcharge?.map((item) => {
-    return {
-      value: item?.description,
-      label: item?.description,
-    };
-  });
-
-  const optionOfSurchargeCategory = settings_all_category_data?.content || [];
-
-  const surchargeCategoryOptions = optionOfSurchargeCategory?.map((item) => ({
-    value: item?.name,
-    label: item?.name,
-  }));
-
-  const [surchargeAliasDescw, setSurchargeAliasDescw] = useState("");
-  const handleSurchargeAliasDesc = (valuesSubDec) => {
-    const targetAliasName = valuesSubDec;
-    const foundAliasEntry = settings_surcharges_alias_table_data.content.find(
-      (entry) => entry.name === targetAliasName
-    );
-    setSurchargeAliasDescw(foundAliasEntry.description || {});
-  };
+  };  
 
   return (
     <>
@@ -143,7 +86,7 @@ export default function UploadRateData() {
                               placeholder="Enter Surcharge Code"
                               invalid={formik.touched.surchargeCode && formik.errors.surchargeCode ? true : false}
                             />
-                            <FormFeedback> {formik.errors.surchargeCode} </FormFeedback>
+                            {/* <FormFeedback> {formik.errors.surchargeCode} </FormFeedback> */}
                           </div>
                         </div>
                       </div>
@@ -163,7 +106,7 @@ export default function UploadRateData() {
                               placeholder="Enter Surcharge Desc"
                               invalid={formik.touched.surchargeDesc && formik.errors.surchargeDesc ? true : false}
                             />
-                            <FormFeedback> {formik.errors.surchargeDesc} </FormFeedback>
+                            {/* <FormFeedback> {formik.errors.surchargeDesc} </FormFeedback> */}
                           </div>
                         </div>
                       </div>
@@ -175,9 +118,9 @@ export default function UploadRateData() {
                           <label className="form-label"> Surcharge Category<span className='required_star'>*</span></label>
                           <div className="">
                             <Select
-                              value={surchargeCategory ? surchargeCategory.find((option) => option.value === formik?.values?.surchargeCategory) : ""}
+                              value={surchargeCategory_data && surchargeCategory_data?.find((item) => item.value === formik?.values?.surchargeCategory) || ""}
                               name="surchargeCategory"
-                              options={[...surchargeCategoryOptions, { label: "Add New", value: "Add New" }]}
+                              options={[...surchargeCategory_data, { label: "Add New", value: "Add New" }]}
                               placeholder={"Select Surcharge Category"}
                               onChange={(e) => {
                                 if (e.label === 'Add New') {
@@ -188,7 +131,7 @@ export default function UploadRateData() {
                               classNamePrefix="select2-selection form-select"
                               invalid={formik.touched.surchargeCategory && formik.errors.surchargeCategory ? true : false}
                             />
-                            <FormFeedback> {formik.errors.surchargeCategory} </FormFeedback>
+                            {/* <FormFeedback> {formik.errors.surchargeCategory} </FormFeedback> */}
                           </div>
                         </div>
                       </div>
@@ -198,16 +141,15 @@ export default function UploadRateData() {
                           <label className="form-label"> Surcharge Alias Code </label>
                           <div className="">
                             <Select
-                              value={surchargeAliasCode ? surchargeAliasCode.find((option) => option.value === formik?.values?.surchargeAliasCode) : ""}
+                              value={surchargeAlice_data && surchargeAlice_data?.find((item) => item.value === formik?.values?.surchargeAliasCode) || ""}
                               name="surchargeAliasCode"
-                              options={[...surchargeAliasCodeOptions, { label: "Add New", value: "Add New" }]}
+                              options={[...surchargeAlice_data, { label: "Add New", value: "Add New" }]}
                               placeholder={"Select Surcharge Alias Code"}
                               onChange={(e) => {
                                 formik.setFieldValue(`surchargeAliasCode`, e.value);
                                 if (e.label === 'Add New') {
                                   setAliasModal(true);
                                 }
-                                handleSurchargeAliasDesc(e.value);
                               }}
                               classNamePrefix="select2-selection form-select"
                             />
@@ -217,23 +159,15 @@ export default function UploadRateData() {
 
                       <div className="col-md-6 col-lg-4 mb-4">
                         <div className="row">
-                          <label className="form-label">
-                            Surcharge Alias Desc
-                          </label>
+                          <label className="form-label"> Surcharge Alias Desc </label>
                           <div className="">
                             <Select
-                              value={{
-                                label: surchargeAliasDescw,
-                                value: surchargeAliasDescw,
-                              }}
+                              value={surchargeAlice_descri ? surchargeAlice_descri.find(obj => obj.value === formik?.values?.surchargeAliasCode) : ''}
                               name="surchargeAliasDesc"
-                              options={surchargeAliasDescOptions}
+                              options={surchargeAlice_descri}
                               placeholder={"Select Surcharge Alias Code"}
                               onChange={(e) => {
-                                formik.setFieldValue(
-                                  `surchargeAliasDesc`,
-                                  e.value
-                                );
+                                formik.setFieldValue(`surchargeAliasDesc`, e.value);
                               }}
                               isDisabled={true}
                               classNamePrefix="select2-selection form-select"
@@ -256,7 +190,7 @@ export default function UploadRateData() {
                           </button>
                         </div>
                         <div className="mb-3 mx-3 d-flex justify-content-end">
-                          <button className=" btn btn-primary">Cancel</button>
+                          <button className=" btn btn-primary" onClick={() => formik.resetForm()}>Cancel</button>
                         </div>
                       </div>
                     </div>

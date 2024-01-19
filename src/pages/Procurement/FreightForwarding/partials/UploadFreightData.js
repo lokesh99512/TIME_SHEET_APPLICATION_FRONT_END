@@ -10,7 +10,7 @@ import { delete_icon } from '../../../../assets/images';
 import { optionRateSource, optionRateType, optionValidityApp, optionVendorType } from '../../../../common/data/procurement';
 import { formatBytes, isAnyValueEmpty, isAnyValueEmptyInArray, isExcelFile } from '../../../../components/Common/CommonLogic';
 import { addFCLData, updateFCLActiveTab, uploadFclCarrierData, uploadFclFrightData, uploadFclSurchargeData } from '../../../../store/Procurement/actions';
-import { BLANK_FCL_CARRIER_DATA, BLANK_SURCHARGE_DATA } from '../../../../store/Procurement/actiontype';
+import { BLANK_FCL_CARRIER_DATA, BLANK_SURCHARGE_DATA, FCL_FREIGHT_FAILD_POPUP_TYPE } from '../../../../store/Procurement/actiontype';
 
 export default function UploadFreightData() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
@@ -22,7 +22,7 @@ export default function UploadFreightData() {
     const [fileError, setfileError] = useState('');
     const [AllVendorName, setAllVendorName] = useState([]);
     const [vendorName, setVendorName] = useState([]);
-    const { addFCL, fclActiveTab, fcl_charge_id, fcl_destinationData } = useSelector((state) => state?.procurement);
+    const { addFCL, fclActiveTab, fcl_charge_id, fcl_destinationData, fclfaildData, fclPopup } = useSelector((state) => state?.procurement);
     const { vendor_data, currency_data, UOM_data, surchargeCode_data } = useSelector((state) => state?.globalReducer);
     const dispatch = useDispatch();
 
@@ -90,7 +90,7 @@ export default function UploadFreightData() {
         const newSurcharge = {
             surcharges_name: '',
             destination: [],
-            uom: {label: "PER CONTAINER",value: "PER_CONTAINER",description: "PER CONTAINER",id: 2,version: 0},
+            uom: { label: "PER CONTAINER", value: "PER_CONTAINER", description: "PER CONTAINER", id: 2, version: 0 },
             gp1: '',
             gp2: '',
             hq1: '',
@@ -149,17 +149,17 @@ export default function UploadFreightData() {
         if (activeTabProgress === 3) {
             let data = addFCL?.surcharges?.map((item) => {
                 return {
-                    ...(item?.surcharges_name && {"surchargeCodeId": item?.surcharges_name?.id}),
-                    ...(item?.uom && {"uomId": item?.uom?.id}),
-                    ...(item?.destination?.length !== 0 && {"destinationIds": item?.destination?.length !== 0 ? item?.destination?.map((item) => item?.id) : []}),
-                    ...(item?.charge_currency && {"currencyId": item?.charge_currency?.id}),
+                    ...(item?.surcharges_name && { "surchargeCodeId": item?.surcharges_name?.id }),
+                    ...(item?.uom && { "uomId": item?.uom?.id }),
+                    ...(item?.destination?.length !== 0 && { "destinationIds": item?.destination?.length !== 0 ? item?.destination?.map((item) => item?.id) : [] }),
+                    ...(item?.charge_currency && { "currencyId": item?.charge_currency?.id }),
                     "containerWiseValues": {
-                        ...(item?.gp1 && {"20GP": item?.gp1}),
-                        ...(item?.gp2 && {"40GP": item?.gp2}),
-                        ...(item?.hq1 && {"40HQ": item?.hq1}),
-                        ...(item?.hq2 && {"45HQ": item?.hq2}),
-                        ...(item?.rf1 && {"20RF": item?.rf1}),
-                        ...(item?.rf2 && {"40RF": item?.rf2})
+                        ...(item?.gp1 && { "20GP": item?.gp1 }),
+                        ...(item?.gp2 && { "40GP": item?.gp2 }),
+                        ...(item?.hq1 && { "40HQ": item?.hq1 }),
+                        ...(item?.hq2 && { "45HQ": item?.hq2 }),
+                        ...(item?.rf1 && { "20RF": item?.rf1 }),
+                        ...(item?.rf2 && { "40RF": item?.rf2 })
                     }
                 }
             });
@@ -177,9 +177,9 @@ export default function UploadFreightData() {
     const uploadSaveHandler = () => {
         if (activeTabProgress === 1) {
             const data = {
-                ...(addFCL?.carrierDetails?.rate_source !== "" && {rateSource: addFCL?.carrierDetails?.rate_source?.value || ''}),
+                ...(addFCL?.carrierDetails?.rate_source !== "" && { rateSource: addFCL?.carrierDetails?.rate_source?.value || '' }),
                 rateType: addFCL?.carrierDetails?.rate_type?.value || '',
-                ...(addFCL?.carrierDetails?.validity_application !== "" && {validityApplication: addFCL?.carrierDetails?.validity_application?.value || ''}),
+                ...(addFCL?.carrierDetails?.validity_application !== "" && { validityApplication: addFCL?.carrierDetails?.validity_application?.value || '' }),
                 validFrom: addFCL?.carrierDetails?.validity_from || '',
                 validTo: addFCL?.carrierDetails?.validity_to || '',
             };
@@ -209,8 +209,8 @@ export default function UploadFreightData() {
             // formData.append('tenantVendor', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
         }
         if (activeTabProgress === 3) {
-            if(addFCL?.surcharges?.length !== 0){
-                if(!isAnyValueEmptyInArray(addFCL?.surcharges, ['gp1','gp2','hq1','hq2','rf1','rf2']) && addFCL?.surcharges[0]?.destination?.length !== 0){                              
+            if (addFCL?.surcharges?.length !== 0) {
+                if (!isAnyValueEmptyInArray(addFCL?.surcharges, ['gp1', 'gp2', 'hq1', 'hq2', 'rf1', 'rf2']) && addFCL?.surcharges[0]?.destination?.length !== 0) {
                     openSaveConfirmModal();
                 } else {
                     navigate('/freight/ocean/fcl');
@@ -222,6 +222,9 @@ export default function UploadFreightData() {
             }
         }
     }
+
+    console.log(fclfaildData,"fclfaildData");
+    console.log(fclPopup,"fclPopup");
 
     return (
         <>
@@ -588,7 +591,7 @@ export default function UploadFreightData() {
 
                                                 <li className={`d-flex`}>
                                                     <button
-                                                        className={`btn btn-primary ${activeTabProgress === 1 ? isAnyValueEmpty(addFCL?.carrierDetails, ['rate_source','validity_application']) ? "disabled" : "" : activeTabProgress === 2 ? selectedFiles?.length === 0 ? "disabled" : "" : ""}`}
+                                                        className={`btn btn-primary ${activeTabProgress === 1 ? isAnyValueEmpty(addFCL?.carrierDetails, ['rate_source', 'validity_application']) ? "disabled" : "" : activeTabProgress === 2 ? selectedFiles?.length === 0 ? "disabled" : "" : ""}`}
                                                         onClick={() => { uploadSaveHandler() }}
                                                     >{activeTabProgress !== 3 ? (<>Save <i className="bx bx-chevron-right ms-1"></i></>) : "Save & Skip"}</button>
                                                 </li>
@@ -601,8 +604,53 @@ export default function UploadFreightData() {
                     </div>
                 </Container>
             </div>
+            {console.log(fclfaildData?.data?.url,"fclfaildData?.data?.url")}
 
             {/* modal */}
+            <Modal isOpen={fclPopup} className='confirm_modal_wrap' >
+                <div className="modal-header">
+                    <button
+                        type="button"
+                        onClick={() => {
+                            dispatch({type: FCL_FREIGHT_FAILD_POPUP_TYPE, payload: false})
+                        }}
+                        className="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div className="modal-body pb-4">
+                    <div className='alert alert-danger text-center'>
+                        <i className="mdi mdi-block-helper"></i>
+                        <h2 className='text-center'>{fclfaildData?.data?.status}</h2>
+                    </div>
+                    <h6 className='text-center'>File Was Not Uploaded.</h6>
+                    <div id="bar" className="mt-4">
+                        <Progress color="success" striped animated value={Number(fclfaildData?.data?.success || 0) * 100 / Number(fclfaildData?.data?.totalUploaded || 0)} />
+                    </div>
+                    <div className='mt-4'>
+                        <p className='m-0'><b>Failed:</b> {fclfaildData?.data?.failed || 0}</p>
+                        <p className='my-1'><b>Success:</b> {fclfaildData?.data?.success || 0}</p>
+                        <p className='m-0'><b>Total Data Uploaded:</b> {fclfaildData?.data?.totalUploaded || 0}</p>
+                    </div>
+                </div>
+                <div className="modal-footer justify-content-center">
+                    <button
+                        type="button"
+                        onClick={() => {
+                            dispatch({type: FCL_FREIGHT_FAILD_POPUP_TYPE, payload: false})
+                        }}
+                        className="btn btn-secondary "
+                        data-dismiss="modal"
+                    >
+                        Close
+                    </button>
+                        
+                    <a href={fclfaildData?.url} download={fclfaildData?.filename}>Download</a>                    
+                </div>
+            </Modal>
             <Modal
                 isOpen={openSaveModal}
                 toggle={() => {

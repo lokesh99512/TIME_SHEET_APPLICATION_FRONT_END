@@ -253,7 +253,7 @@ export default function AddUserData() {
                                                         <button className=" btn btn-primary" type="submit" onClick={formik.handleSubmit} disabled={isAnyValueEmpty(formik?.values, ["lastName", "roleNames", "location"])}> Save </button>
                                                     </div>
                                                     <div className="mb-3 mx-3 d-flex justify-content-end">
-                                                        <button className=" btn btn-primary">Cancel</button>
+                                                        <button className=" btn btn-primary" type="button" onClick={() => { formik.resetForm(); }}>Cancel</button>
                                                     </div>
                                                 </div>
                                             </div>
