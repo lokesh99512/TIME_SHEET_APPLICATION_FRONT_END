@@ -9,7 +9,8 @@ import {
     Col,
     Container,
     Input,
-    Row
+    Row,
+    FormFeedback
 } from "reactstrap";
 import { getCustomersCityData, getCustomersCountryData, getCustomersPincodeData, getCustomersStateData } from "../../store/Parties/actions";
 import { getAllTenantLocationType, postTenantLocation } from "../../store/Settings/actions";
@@ -117,7 +118,7 @@ export default function AddTanentLocation() {
         setLocationType([...newLocationType, addNewItem]);
     }, [tenant_all_location_type_data]);
     const onCloseClick = () => {
-        dispatch(getAllTenantLocationType()); 
+        dispatch(getAllTenantLocationType());
         setAddTenentType(false);
     };
 
@@ -134,27 +135,28 @@ export default function AddTanentLocation() {
                                         <div className="row">
                                             <div className="col-md-6 col-lg-4 mb-4">
                                                 <div className="row">
-                                                    <label className="form-label">Location Name*</label>
+                                                    <label className="form-label">Location Name<span className='required_star'>*</span></label>
                                                     <div className="">
                                                         <Input
                                                             type="text"
                                                             name="name"
                                                             value={addLocationFormik?.values?.name}
-                                                            onChange={(e) => {
-                                                                addLocationFormik.setFieldValue("name", e.target.value);
-                                                            }}
+                                                            onChange={addLocationFormik.handleChange}
+                                                            onBlur={addLocationFormik.handleBlur}
                                                             className="form-control"
-                                                            id="Surcharge_Code"
                                                             placeholder="Enter Location Name"
+                                                            invalid={addLocationFormik.touched.name && addLocationFormik.errors.name ? true : false}
                                                         />
+                                                        {addLocationFormik.touched.name && addLocationFormik.errors.name ? (
+                                                            <FormFeedback> {addLocationFormik.errors.name} </FormFeedback>
+                                                        ) : null}
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div className="col-md-6 col-lg-4 mb-4">
                                                 <div className="row">
-                                                    <label className="form-label">Location Type*</label>
-
+                                                    <label className="form-label">Location Type<span className='required_star'>*</span></label>
                                                     <div className="">
                                                         <Select
                                                             value={addLocationFormik?.values?.tenantLocationType}
@@ -197,7 +199,7 @@ export default function AddTanentLocation() {
                                         <div className="row">
                                             <div className="col-md-6 col-lg-4 mb-4">
                                                 <div className="mb-3">
-                                                    <label className="form-label">City*</label>
+                                                    <label className="form-label">City<span className='required_star'>*</span></label>
                                                     <Input
                                                         type="text"
                                                         name="city"
@@ -217,7 +219,7 @@ export default function AddTanentLocation() {
                                                         }
                                                         }
                                                         className="form-control"
-                                                        placeholder=""
+                                                        placeholder="Select City"
                                                     />
                                                     <datalist id="cityList">
                                                         {parties_city_details && parties_city_details?.content?.map((item, i) => <option key={i} value={item.cityName} />)}
@@ -227,15 +229,16 @@ export default function AddTanentLocation() {
 
                                             <div className="col-md-6 col-lg-4 mb-4">
                                                 <div className="row">
-                                                    <label className="form-label">Country*</label>
+                                                    <label className="form-label">Country<span className='required_star'>*</span></label>
                                                     <div className="">
                                                         <Input
                                                             type="text"
                                                             name="country"
+                                                            readOnly={true}
                                                             value={addLocationFormik.values.country}
                                                             onChange={addLocationFormik.handleChange}
                                                             className="form-control"
-                                                            placeholder=""
+                                                            placeholder="Country"
                                                         />
                                                     </div>
                                                 </div>
@@ -322,7 +325,7 @@ export default function AddTanentLocation() {
                                                     <label className="form-label">Contact Email</label>
                                                     <div className="">
                                                         <Input
-                                                            type="text"
+                                                            type="email"
                                                             name="email"
                                                             value={addLocationFormik?.values?.email}
                                                             onChange={(e) => {
@@ -350,10 +353,6 @@ export default function AddTanentLocation() {
                                 </Card>
                             </Col>
                         </Row>
-                        {/* <ModalAddNewCategory
-              modal={categoryModal}
-              onCloseClick={onCloseClick}
-            /> */}
                         <AddTenantLocationType modal={tenentType} onCloseClick={onCloseClick} />
                     </div>
                 </Container>
