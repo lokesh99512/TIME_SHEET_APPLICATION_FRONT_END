@@ -33,6 +33,10 @@ import {
   POST_SETTINGS_SURCHARGE_DATA_FAIL,
   GET_ALL_SURCHARGE_CATEGORY_SUCCESS,
   GET_ALL_SURCHARGE_CATEGORY_FAIL,
+  GET_ALL_TENANT_LOCATION_SUCCESS,
+  GET_ALL_TENANT_LOCATION_TYPE_SUCCESS,
+  POST_TENANT_LOCATION_SUCCESS,
+  POST_TENANT_LOCATION_TYPE_SUCCESS,
 } from "./actiontype";
 
 const INIT_STATE = {
@@ -50,7 +54,11 @@ const INIT_STATE = {
   settings_surcharges_table_data: [],
   settings_surcharges_alias_table_data: [],
   settings_add_surcharge_data: [],
-  settings_all_category_data :[]
+  settings_all_category_data: [],
+  tenant_all_location_data: [],
+  tenant_add_location_data: [],
+  tenant_all_location_type_data: [],
+  tenant_add_location_type_data: [],
 };
 
 const settings = (state = INIT_STATE, action) => {
@@ -86,11 +94,13 @@ const settings = (state = INIT_STATE, action) => {
       };
 
     case UPDATE_USER_SWITCH:
-     { const { user_id, user_is_active } = action.payload;
-      const updatedUserItems = state.settings_users_data.map((item) =>
-        item.id === user_id ? { ...item, is_active: !user_is_active } : item
-      );
-      return { ...state, settings_users_data: updatedUserItems };}
+      {
+        const { user_id, user_is_active } = action.payload;
+        const updatedUserItems = state.settings_users_data.map((item) =>
+          item.id === user_id ? { ...item, is_active: !user_is_active } : item
+        );
+        return { ...state, settings_users_data: updatedUserItems };
+      }
 
 
     case GET_COMPANYDETAILS_BASIC_DATA_SUCCESS:
@@ -243,11 +253,11 @@ const settings = (state = INIT_STATE, action) => {
         settings_all_category_data: action.payload,
       };
 
-      case GET_ALL_SURCHARGE_CATEGORY_FAIL:
-        return {
-          ...state,
-          error: action.payload,
-        };
+    case GET_ALL_SURCHARGE_CATEGORY_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
 
     case GET_FCL_SURCHARGE_TABLE_DATA_SUCCESS:
       return {
@@ -258,6 +268,31 @@ const settings = (state = INIT_STATE, action) => {
       return {
         ...state,
         error: action.payload,
+      };
+    // tenanat location 
+    case GET_ALL_TENANT_LOCATION_SUCCESS:
+      return {
+        ...state,
+        tenant_all_location_data: action.payload,
+      };
+
+    case POST_TENANT_LOCATION_SUCCESS:
+      return {
+        ...state,
+        tenant_add_location_data: action.payload,
+      };
+    // tenant location type
+    case GET_ALL_TENANT_LOCATION_TYPE_SUCCESS:
+      console.log(action.payload);
+      return {
+        ...state,
+        tenant_all_location_type_data: action.payload,
+      };
+
+    case POST_TENANT_LOCATION_TYPE_SUCCESS:
+      return {
+        ...state,
+        tenant_add_location_type_data: action.payload,
       };
 
     default:

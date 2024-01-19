@@ -1,13 +1,12 @@
 import { useFormik } from "formik";
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { Card, CardBody, Col, Container, FormFeedback, Input, Modal, Row, } from "reactstrap";
 import { isAnyValueEmpty } from "../../components/Common/CommonLogic";
 import { GET_ROLE_TYPE } from "../../store/Global/actiontype";
-import { getUsersData } from "../../store/Settings/actions";
-import { locations } from "./constants/userInfo";
+import { getAllTenantLocationData, getUsersData } from "../../store/Settings/actions";
 import useAddUser from "./hook/useAddUser";
 import TopBreadcrumbs from "./Surcharge/TopBreadcrumbs";
 import { addUserBreadcrumb } from "../../common/data/parties";
@@ -15,14 +14,33 @@ import { addUserBreadcrumb } from "../../common/data/parties";
 export default function AddUserData() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { settings_users_data } = useSelector((state) => state.settings);
+    const { settings_users_data, tenant_all_location_data } = useSelector((state) => state.settings);
     const { roleData } = useSelector((state) => state.globalReducer);
     const navigateState = useLocation();
+    const [locations, setLocation] = useState([]);
+
 
     useEffect(() => {
         dispatch(getUsersData());
         dispatch({ type: GET_ROLE_TYPE });
+        dispatch(getAllTenantLocationData())
     }, []);
+
+
+    useEffect(() => {
+        const newLocation = tenant_all_location_data?.content?.map(location => ({
+            value: location.id,
+            label: location.name,
+            id: location.id,
+        })) || [];
+
+        const addNewItem = {
+            value: 'add_new',
+            label: 'Add New',
+        };
+        console.log(tenant_all_location_data);
+        setLocation([...newLocation, addNewItem]);
+    }, [tenant_all_location_data]);
 
     const managerInfo = Array.isArray(settings_users_data.content)
         ? settings_users_data.content.map((user) => ({
@@ -212,7 +230,13 @@ export default function AddUserData() {
                                                             name="location"
                                                             id="location"
                                                             value={locations ? locations.find((option) => option.value === formik.values.location) || "" : ""}
-                                                            onChange={(e) => { formik.setFieldValue("location", e.value); }}
+                                                            onChange={(e) => {
+                                                                if (e.label == "Add New") {
+                                                                    navigate("/Settings/AddTanentLocation")
+                                                                } else {
+                                                                    formik.setFieldValue("location", e.value);
+                                                                }
+                                                            }}
                                                             onBlur={formik.handleBlur}
                                                             options={locations}
                                                             placeholder={"Select locations"}
