@@ -33,3 +33,5 @@ export const postTenantLocation = (data) => post(url.POST_TANANT_LOCATION, data)
 // tenant location type
 export const getAllTenantLocationType = () => get (url.GET_ALL_TANANT_LOCATION_TYPE);
 export const postTenantLocationType= (data) => post (url.POST_TANANT_LOCATION_TYPE, data);
+
+export const getUploadStatus = () => get(url.Get_Upload_Status);

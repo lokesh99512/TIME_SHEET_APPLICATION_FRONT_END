@@ -4,12 +4,12 @@ import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input
 
 import { edit_icon, eye_icon } from '../../../../assets/images';
 import { consoleBreadcrumb, consoleRateData } from '../../../../common/data/procurement';
-import { getAirConsoleData, updateAirConsoleSwitchData } from '../../../../store/Procurement/actions';
+import { getAirConsoleDataById,getAirConsoleData, updateAirConsoleSwitchData } from '../../../../store/Procurement/actions';
 import FilterOffCanvasComp from '../Modal/FilterOffCanvasComp';
-import ModalFreight from '../Modal/ModalFreight';
+import ModalAirConsole from './ModalAirConsole';
 import { CargoType, CarrierName, ChargeId, DestPort, DetentionFree, OrgPort, TransitTime, ValidTill, VendorName, ViaPort } from '../partials/OceanCol';
-import TableReact from '../partials/TableReact';
 import TopBreadcrumbs from '../partials/TopBreadcrumbs';
+import TableAirwayConsoleData from './TableAirwayConsoleData'
 
 export default function AirConsoleComp() {
     document.title="Air Console || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
@@ -30,7 +30,8 @@ export default function AirConsoleComp() {
     const dispatch = useDispatch();
 
     const viewPopupHandler = (data) => {
-        if (data.is_active) {
+        if (data?.status == "ACTIVE") {
+            dispatch(getAirConsoleDataById(data?.id));
             setModal(true);
             setViewData(data);
         } else {
@@ -67,7 +68,7 @@ export default function AirConsoleComp() {
     const columns = useMemo(() => [
         {
             Header: 'Charge ID',
-            accessor: 'charge_id',
+            accessor: 'id',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -76,7 +77,7 @@ export default function AirConsoleComp() {
         },
         {
             Header: 'Carrier Name',
-            accessor: 'carrier_name',
+            accessor: (row) => `${row.tenantVendor === null ? '' : row.tenantVendor.name}`,
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -84,8 +85,8 @@ export default function AirConsoleComp() {
             }
         },
         {
-            Header: 'Vendor Name',
-            accessor: 'vendor_name',
+            Header: 'Vendor Type',
+            accessor: (row) => `${row.tenantVendor === null ? '' : row.tenantVendor.vendorType}`,
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -93,44 +94,18 @@ export default function AirConsoleComp() {
             }
         },
         {
-            Header: 'Org Airport',
-            accessor: 'org_airport',
+            Header: 'Rate Type',
+            accessor: 'rateType',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <OrgPort cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
+        
         {
-            Header: 'Dest Airport',
-            accessor: 'dest_airport',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <DestPort cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Via Airport',
-            accessor: 'via_airport',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <ViaPort cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Detention Free',
-            accessor: 'detention_free',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <DetentionFree cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Valid Till',
-            accessor: 'valid_till',
+            Header: 'Valid To',
+            accessor: 'validTo',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -138,23 +113,14 @@ export default function AirConsoleComp() {
             }
         },
         {
-            Header: 'Transit Time',
-            accessor: 'transit_time',
+            Header: 'Valid From',
+            accessor: 'validFrom',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <TransitTime cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
-        },
-        {
-            Header: 'Cargo Type',
-            accessor: 'cargo_type',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <CargoType cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
+        },  
         {
             Header: 'Action',
             Cell: (cellProps) => {
@@ -197,18 +163,18 @@ export default function AirConsoleComp() {
                         <TopBreadcrumbs breadcrumbs={consoleBreadcrumb} data={consoleRateData} />            
 
                         {/* React Table */}
-                        <TableReact
-                            columns={columns}
-                            data={consoleData}
-                            isGlobalFilter={true}
-                            isAddInvoiceList={true}
-                            customPageSize={10}
-                            toggleRightCanvas={toggleRightCanvas}
-                            component={'console'}
+                        <TableAirwayConsoleData
+                          columns={columns}
+                          data={consoleData?.content || []}
+                          isGlobalFilter={true}
+                          isAddInvoiceList={true}
+                          customPageSize={10}
+                          toggleRightCanvas={toggleRightCanvas}
+                          component={'console'}
                         />
 
                         {/* modal */}
-                        <ModalFreight modal={modal} onCloseClick={onCloseClick} viewData={viewData} modalType={'air_waybill'} />
+                        <ModalAirConsole modal={modal} onCloseClick={onCloseClick} viewData={viewData} modalType={'air_console'} />
                     </div>
                 </Container>
             </div>

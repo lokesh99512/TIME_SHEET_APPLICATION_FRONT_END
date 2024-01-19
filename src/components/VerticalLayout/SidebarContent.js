@@ -311,6 +311,11 @@ const SidebarContent = props => {
                   </Link>
                 </li>
                 <li>
+                  <Link to="/upload-status">
+                    <span>Upload Status</span>
+                  </Link>
+                </li>
+                <li>
                   <Link to="/settings/surcharge">
                     <span>Surcharge Master</span>
                   </Link>

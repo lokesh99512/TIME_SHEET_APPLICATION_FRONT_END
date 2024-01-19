@@ -43,7 +43,7 @@ function GlobalFilter({
     );
 }
 
-const TableAirwayBill = ({ columns, data, isGlobalFilter, customPageSize, toggleRightCanvas, component }) => {
+const TableAirwayConsoleData = ({ columns, data, isGlobalFilter, customPageSize, toggleRightCanvas, component }) => {
     
     const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow, canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize, state, preGlobalFilteredRows, setGlobalFilter, state: { pageIndex, pageSize }, } = useTable({
         columns,
@@ -80,7 +80,7 @@ const TableAirwayBill = ({ columns, data, isGlobalFilter, customPageSize, toggle
                         </button>
                     </div>
                     <div className="add_btn">
-                        <button className='border-0' onClick={() => { navidate(`/freight/air/upload/air-waybill`, { state: { id: component } }); }}>
+                        <button className='border-0' onClick={() => { navidate(`/freight/air/upload/console`, { state: { id: component } }); }}>
                             <i className='bx bx-plus align-middle'></i> Add
                         </button>
                     </div>
@@ -162,4 +162,4 @@ const TableAirwayBill = ({ columns, data, isGlobalFilter, customPageSize, toggle
     )
 }
 
-export default TableAirwayBill
+export default TableAirwayConsoleData

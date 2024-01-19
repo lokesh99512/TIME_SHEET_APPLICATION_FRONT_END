@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap'
 import { edit_icon, eye_icon } from '../../../../assets/images'
 import { waybillBreadcrumb, waybillRateData } from '../../../../common/data/procurement'
-import { getAirwaybillData, updateAirwaybillSwitchData } from '../../../../store/Procurement/actions'
+import { getAirwaybillData, updateAirwaybillSwitchData,getAirwaybillDataById } from '../../../../store/Procurement/actions'
 import FilterOffCanvasComp from '../Modal/FilterOffCanvasComp'
-import ModalFreight from '../Modal/ModalFreight'
-import { CargoType, CarrierName, ChargeId, DestPort, DetentionFree, OrgPort, TransitTime, ValidTill, VendorName, ViaPort } from '../partials/OceanCol'
+import ModalAir from './ModalAir'
+import {  ChargeId, CommonReplaceValue, ValidTill, VendorName, ViaPort } from '../partials/OceanCol'
 import TableAirwayBill from './TableAirwayBill'
 import TopBreadcrumbs from '../partials/TopBreadcrumbs'
 
@@ -26,10 +26,12 @@ export default function AirMasterBill() {
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
     const waybillData = useSelector((state) => state?.procurement?.waybillData);
+    const waybillFreightData = useSelector((state) => state?.procurement?.airFreightData);
     const dispatch = useDispatch();
 
     const viewPopupHandler = (data) => {
-        if (data?.is_active) {
+        if (data?.status == "ACTIVE") {
+            dispatch(getAirwaybillDataById(data?.id));  
             setModal(true);
             setViewData(data);
         } else {
@@ -68,25 +70,25 @@ export default function AirMasterBill() {
     const columns = useMemo(() => [
         {
             Header: 'Charge ID',
-            accessor: 'charge_id',
+            accessor: 'id',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <ChargeId cellProps={cellProps} viewPopupHandler={viewPopupHandler}  />
+                return <ChargeId cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
-            Header: 'Carrier Name',
-            accessor: 'carrier_name',
+            Header: 'Carrier name',
+            accessor: (row) => `${row.tenantVendor === null ? '' : row.tenantVendor.name}`,
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <CarrierName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <CommonReplaceValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
-            Header: 'Vendor Name',
-            accessor: 'vendor_name',
+            Header: 'Vendor Type',
+            accessor: (row) => `${row.tenantVendor === null ? '' : row.tenantVendor.vendorType}`,
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -94,44 +96,18 @@ export default function AirMasterBill() {
             }
         },
         {
-            Header: 'Org Airport',
-            accessor: 'org_airport',
+            Header: 'Rate Type',
+            accessor: 'rateType',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <OrgPort cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
+        
         {
-            Header: 'Dest Airport',
-            accessor: 'dest_airport',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <DestPort cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Via Airport',
-            accessor: 'via_airport',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <ViaPort cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Detention Free',
-            accessor: 'detention_free',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <DetentionFree cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Valid Till',
-            accessor: 'valid_till',
+            Header: 'Valid To',
+            accessor: 'validTo',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -139,23 +115,14 @@ export default function AirMasterBill() {
             }
         },
         {
-            Header: 'Transit Time',
-            accessor: 'transit_time',
+            Header: 'Valid From',
+            accessor: 'validFrom',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <TransitTime cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
-        },
-        {
-            Header: 'Cargo Type',
-            accessor: 'cargo_type',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <CargoType cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
+        },  
         {
             Header: 'Action',
             Cell: (cellProps) => {
@@ -165,19 +132,19 @@ export default function AirMasterBill() {
                             <i className='bx bx-dots-vertical-rounded'></i>
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-end">
-                            <DropdownItem>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
+                            <DropdownItem onClick={(e) => {e.stopPropagation(); editPopupHandler(cellProps.row.original)}}>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
                             <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem>
                             <DropdownItem onClick={(e) => e.stopPropagation()}>
-                                {cellProps.row.original?.is_active ? "Activate" : "Deactivate"} 
+                                {cellProps.row.original?.status === "ACTIVE" ? "Activate" : "Deactive"}
                                 <div className="switch_wrap">
                                     <FormGroup switch>
                                         <Input 
-                                            type="switch"
-                                            checked={cellProps.row.original?.is_active || false}
-                                            onClick={() => {
-                                                switchHandler(cellProps.row.original);
-                                            }}
-                                            readOnly
+                                        type="switch"
+                                        checked={cellProps.row.original?.status === "ACTIVE" || false}
+                                        onClick={() => {
+                                            switchHandler(cellProps.row.original);
+                                        }}
+                                        readOnly
                                         />
                                     </FormGroup>
                                 </div>
@@ -197,20 +164,23 @@ export default function AirMasterBill() {
                         {/* breadcrumbs && rate */}
                         <TopBreadcrumbs breadcrumbs={waybillBreadcrumb} data={waybillRateData} />            
 
-                        {/* React Table */}
-                        <TableAirwayBill
-                            columns={columns}
-                            data={waybillData}
-                            isGlobalFilter={true}
-                            isAddInvoiceList={true}
-                            customPageSize={10}
-                            toggleRightCanvas={toggleRightCanvas}
-                            component={'air-waybill'}
-                        />
+                        {waybillData ? (
+            <TableAirwayBill
+              columns={columns}
+              data={waybillData?.content || []}
+              isGlobalFilter={true}
+              isAddInvoiceList={true}
+              customPageSize={10}
+              toggleRightCanvas={toggleRightCanvas}
+              component={'air-waybill'}
+            />
+          ) : (
+            <p>Loading...</p>
+          )}
 
                         {/* modal */}
-                        <ModalFreight modal={modal} onCloseClick={onCloseClick} viewData={viewData} modalType={'air_waybill'} />
-                    </div>
+                        <ModalAir modal={modal} onCloseClick={onCloseClick} viewData={waybillFreightData} modalType={'air_waybill'} />
+                    </div>  
                 </Container>
             </div>
             {/* filter right sidebar */}
