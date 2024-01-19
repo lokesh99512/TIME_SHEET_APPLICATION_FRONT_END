@@ -139,6 +139,7 @@ import OceanFCLSurchargeNameAddNew from "../pages/Procurement/FreightForwarding/
 import PortLocalChargesSurchargeCodeAddNew from "../pages/Procurement/FreightForwarding/PortLocal/PortLocalChargesSurchargeCodeAddNew";
 import PortLocalFreight from "../pages/Procurement/FreightForwarding/PortLocal/PortLocalFreight";
 import UploadAirwayBillData from "../pages/Procurement/FreightForwarding/Air/UploadAirwayBillData";
+import UploadAirConsoleData from "../pages/Procurement/FreightForwarding/Air/UploadAirConsoleData";
 import UploadFreightData from "../pages/Procurement/FreightForwarding/partials/UploadFreightData";
 import UploadPortLocalChargesData from "../pages/Procurement/FreightForwarding/PortLocal/UploadPortLocalChargesData";
 // import FclSurcharge from "../pages/Rate/Surcharge/FclSurcharge";
@@ -154,9 +155,11 @@ import FclSurcharge from "../pages/Settings/Surcharge/FclSurcharge";
 import UploadRateData from "../pages/Settings/Surcharge/UploadRateData";
 import UploadFile from "../pages/Settings/Surcharge/UploadFile";
 import AddTanentLocation from "../pages/Settings/AddTanentLocation";
+import UploadStatus from "../pages/uploadstatus/uploadstatus"
 
 const userRoutes = [
   //dashboard
+  { path: "/upload-status", component: <UploadStatus/> },
   { path: "/dashboard", component: <Dashboard/> },
   { path: "/analytics", component: <AnalyticsComp/> },
 
@@ -180,6 +183,7 @@ const userRoutes = [
   { path: "/freight/air/console", component: <AirConsoleComp /> },
   { path: "/freight/air/local", component: <AirLocalFreight /> },
   { path: "/freight/air/upload/air-waybill", component: <UploadAirwayBillData /> },
+  { path: "/freight/air/upload/console", component: <UploadAirConsoleData /> },
   { path: "/freight/upload/inland", component: <FclInlandUpload /> },
   { path: "/freight/upload/:tabName", component: <UploadFreightData /> },
   { path: "/freight/ocean/upload/:tabName", component: <UploadPortLocalChargesData /> },

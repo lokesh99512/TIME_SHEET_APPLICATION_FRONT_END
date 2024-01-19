@@ -173,7 +173,7 @@ export const Get_Surcharge_Alice_Data= "/api/v1/surcharge-alias/"
 export const Get_State_ALL_URL= "/api/v1/state/"
 export const GET_ROLE_URL= "/api/v1/role/"
 export const Get_File_URL= "/api/v1/misc/download-file/"
-
+export const Get_Upload_Status = "/api/v1/misc/upload-status"
 // post
 export const Post_Surcharge_Data= "/api/v1/surcharge-code/"
 
@@ -187,6 +187,15 @@ export const Upload_FCL_Carrier_Data= "/api/v1/tenant-ocean-fcl-rp/"
 export const Upload_FCL_freight_Data= "/api/v1/tenant-ocean-fcl-rp/upload/freight/"
 export const Upload_FCL_surcharge_Data= "/api/v1/tenant-ocean-fcl-rp/update/surcharge/"
 
+//Air
+export const Post_Air_destination_Data= "/api/v1/tenant-mawb-rp/"
+export const Upload_Air_rate_data_= "/api/v1/tenant-mawb-rp/upload/"
+export const GET_AIR_MWB_DATA= "/api/v1/tenant-mawb-rp/"
+
+//Air Console
+export const Post_Air_destination_Data_Console= "/api/v1/tenant-console-rp/"
+export const Upload_Air_rate_data_Console_= "/api/v1/tenant-console-rp/upload/"
+export const GET_AIR_MWB_DATA_Console= "/api/v1/tenant-console-rp/"
 
 // FCL Port & Local Charges
 export const GET_PORTLOCALCHARGES_ALL = "/api/v1/port-and-local-charges/"
