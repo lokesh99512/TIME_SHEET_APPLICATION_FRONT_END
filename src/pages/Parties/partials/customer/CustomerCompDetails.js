@@ -216,7 +216,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
     return (
         <>
             <div className="text-center mb-4">
-                <h5>Company Details</h5>
+                <h5>Customer Details</h5>
             </div>
             <Card>
                 <CardBody>

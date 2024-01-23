@@ -544,6 +544,7 @@ export default function UploadVendorData() {
                                                             <a className="me-3"
                                                                 onClick={() => {
                                                                     toggleTabProgress(3);
+                                                                    activeTabProgress === 3?navigate('/vendors'):""
                                                                 }}
                                                                 style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
                                                             >

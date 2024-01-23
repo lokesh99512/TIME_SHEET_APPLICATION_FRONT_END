@@ -52,7 +52,7 @@ const CustomerContact = ({ toggleTabProgress }) => {
     return (
         <>
             <div className="text-center mb-4">
-                <h5>Contacts</h5>
+                <h5>Customer Contacts</h5>
             </div>
             <div>
                 <FormikProvider value={contactsFormik}>

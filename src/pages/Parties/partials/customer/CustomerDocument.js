@@ -69,13 +69,12 @@ const CustomerDocument = () => {
         documentsFormik.setFieldValue(name, e.target.files[0]);
     }
     const onClickSkip = () => {
-        toggleTabProgress(3);
-        navigate('/vendors')
+        navigate('/customers')
     }
     return (
         <>
             <div className="text-center mb-4">
-                <h5>Documents</h5>
+                <h5>Customer Documents</h5>
             </div>
             <div>
                 <FormikProvider value={documentsFormik}>
