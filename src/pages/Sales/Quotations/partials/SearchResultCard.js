@@ -23,14 +23,14 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
     const showDetailsHandler = (index, id) => {
         let newArr = [...showDetails];
         if (newArr?.length !== 0) {
-            if (newArr.some(obj => obj.id === id)) {
-                newArr.find(obj => obj.id === id).details = !newArr.find(obj => obj.id === id).details
+            if (newArr.some(obj => obj.index === index)) {
+                newArr.find(obj => obj.index === index).details = !newArr.find(obj => obj.index === index).details
             } else {
-                let newObj = { details: true, id }
+                let newObj = { details: true, index }
                 newArr.push(newObj);
             }
         } else {
-            let newObj = { details: true, id }
+            let newObj = { details: true, index }
             newArr.push(newObj);
         }
         setShowDetails(newArr);
@@ -90,7 +90,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
             {result_loader ? <ResultCardSkeleton /> : (
                 <div className="result_tab_content_wrap">  
                     {data?.length !== 0 ? data?.map((item, index) => (
-                        <div className="search_result_card_check_wrap d-flex align-items-center" key={`main_${item.carrierId}`}>
+                        <div className="search_result_card_check_wrap d-flex align-items-center" key={`main_${index}`}>
                             <div className={`form-check me-2`} onClick={(e) => quotationCheckHandler(item)}>
                                 <input
                                     className="form-check-input"
@@ -105,7 +105,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                 <div className="search_result_card_header d-flex align-items-center">
                                     <div className="card_img">
                                         <span className='d-flex align-items-center justify-content-center img mx-auto'>
-                                            <img src={item?.carrierName?.toLowerCase() === 'oocl' ? oocl_logo : item?.carrierName?.toLowerCase() === 'zim' ? zim_logo : cube_filled} alt="Logo" />
+                                            <img src={item?.carrierLogo ? item?.carrierLogo : cube_filled} alt="Logo" />
                                         </span>
                                         <span className="title d-block text-center mt-2">{item?.carrierName || '-'}</span>
                                     </div>
@@ -144,12 +144,12 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                         <p className="total_price text-center"><b>₹ {TotalQuotationCount(item)}</b></p>
                                         <div className="btn_wrap d-flex">
                                             <button type='button' className='btn text-primary view_detail_btn' onClick={() => { showDetailsHandler(index, item.carrierId); }}>
-                                                View{showDetails?.find(obj => obj.id === item.id)?.details ? 'Less' : 'Detail'}</button>
+                                                View{showDetails?.find(obj => obj.index === index)?.details ? 'Less' : 'Detail'}</button>
                                             <button type='button' className='btn btn-primary quote_now_btn' onClick={() => { QuoteModalHandler(); singleQuoteModal(item) }} disabled={quote_Selected.some(obj => obj.id === item.carrierId) || quote_Selected?.length >= 2}>Quote Now</button>
                                         </div>
                                     </div>
                                 </div>
-                                {showDetails?.find(obj => obj.id === item?.carrierId)?.details && (
+                                {showDetails?.find(obj => obj.index === index)?.details && (
                                     <div className="search_result_accordion_details">  
                                         {item?.tariffDetails?.length !== 0 && (                                    
                                             <Accordion flush open={open} toggle={toggle}>

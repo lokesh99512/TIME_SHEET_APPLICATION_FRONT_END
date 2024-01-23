@@ -1,4 +1,6 @@
+import axios from "axios";
 import { GET_INSTANT_RATE_LOCATION_FAILURE, GET_INSTANT_RATE_LOCATION_SUCCESS, ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK, GET_ALL_INCOTERM, GET_ALL_INCOTERM_SUCCESS, GET_INSTANT_SEARCH_RESULT_TYPE, UPDATE_QUOTATION_RESULT_DETAILS, CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_UPDATE, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_SELECTED, POST_INSTANT_SEARCH_LOADER } from "./actionType"
+import { Get_File_URL } from "../../helpers/url_helper";
 
 
 const INIT_STATE = {
@@ -127,8 +129,12 @@ const instantRate = (state = INIT_STATE, action) => {
                 ...state,
                 instantSearchResult: action.payload,
                 instantSearchResultCopy: action.payload.map((item) => {
+                    let url = item.carrierLogo || '';
+                    let fileName = url?.substring(url?.lastIndexOf('/') + 1,url?.length);
+                    const base64Encoded = window.btoa(fileName);
                     return {
                         ...item,
+                        carrierLogo: `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`,
                         tariffDetails: item.tariffDetails.map((item) => {
                             return {
                                 ...item,

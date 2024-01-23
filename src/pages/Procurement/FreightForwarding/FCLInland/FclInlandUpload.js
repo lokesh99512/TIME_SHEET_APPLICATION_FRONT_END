@@ -11,7 +11,7 @@ import { delete_icon } from '../../../../assets/images';
 import { optionCalculationType, optionRateSource, optionRateType, optionVendorType } from '../../../../common/data/procurement';
 import { formatBytes, isAnyValueEmpty, isAnyValueEmptyInArray, isExcelFile } from '../../../../components/Common/CommonLogic';
 import { addInlandData, updateInlandActiveTab, uploadFclInlandCarrierAction, uploadFclInlandFreightAction, uploadFclInlandSurchargeAction } from '../../../../store/Procurement/actions';
-import { BLANK_FCL_CARRIER_DATA, BLANK_SURCHARGE_DATA } from '../../../../store/Procurement/actiontype';
+import { BLANK_FCL_CARRIER_DATA, BLANK_SURCHARGE_DATA, FCL_INLAND_FAILD_POPUP_TYPE, UPDATE_INLAND_ACTIVE_TAB } from '../../../../store/Procurement/actiontype';
 
 export default function FclInlandUpload() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
@@ -24,7 +24,7 @@ export default function FclInlandUpload() {
     const [vendorName, setVendorName] = useState([]);
     const [AllVendorName, setAllVendorName] = useState([]);
     const {
-        inlandActiveTab, fcl_Inland_Charge_id, addInland
+        inlandActiveTab, fcl_Inland_Charge_id, addInland, fclinlandPopup, fclinlandfaildData
     } = useSelector((state) => state?.procurement);
     const {
         vendor_data, currency_data, UOM_data,surchargeCode_data
@@ -550,6 +550,41 @@ export default function FclInlandUpload() {
             </div>
 
             {/* modal */}
+            <Modal isOpen={fclinlandPopup} className='data_failed_popup' >                
+                <div className="modal-body pb-4">
+                    <div className='modal_icon text-center'>
+                        <i className="bx bx-error"></i>
+                        {/* <h2 className='text-center'>{fclinlandfaildData?.data?.status}</h2> */}
+                        <h2 className='text-center'>File Was Not Uploaded.</h2>
+                    </div>
+                    <div id="bar" className="mt-4">
+                        <Progress color="success" striped animated value={Number(fclinlandfaildData?.data?.success || 0) * 100 / Number(fclinlandfaildData?.data?.totalUploaded || 0)} />
+                    </div>
+                    <div className='mt-4 d-flex justify-content-between align-items-center'>
+                        <p className='m-0'><b>Failed:</b> {fclinlandfaildData?.data?.failed || 0}</p>
+                        <p className='my-1'><b>Success:</b> {fclinlandfaildData?.data?.success || 0}</p>
+                        <p className='m-0'><b>Total Data Uploaded:</b> {fclinlandfaildData?.data?.totalUploaded || 0}</p>
+                    </div>
+                </div>
+                <div className="modal-footer justify-content-center">
+                    <button
+                        type="button"
+                        onClick={() => {
+                            dispatch({type: FCL_INLAND_FAILD_POPUP_TYPE, payload: false})
+                        }}
+                        className="btn btn-secondary "
+                        data-dismiss="modal"
+                    >
+                        Close
+                    </button>
+                        
+                    <a href={fclinlandfaildData?.url} className='btn btn-primary' download={fclinlandfaildData?.filename}>Download</a>        
+                    {(fclinlandfaildData?.data?.success > 0 && fclinlandfaildData?.data?.totalUploaded !== fclinlandfaildData?.data?.failed) && (
+                        <span className='text-decoration-underline text-primary cursor_pointer' onClick={() => { dispatch({type: UPDATE_INLAND_ACTIVE_TAB, payload: {tab: 3}});dispatch({type: FCL_INLAND_FAILD_POPUP_TYPE, payload: false}); }}>Proceed with error</span>              
+                    )}            
+                </div>
+            </Modal>
+
             <Modal
                 isOpen={openSaveModal}
                 toggle={() => {
