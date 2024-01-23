@@ -128,9 +128,9 @@ export default function UploadVendorData() {
                 logo: null,
                 logoPath: image?.path || "",
                 address: value.address || null,
-                ...((!!(navigateState?.state && navigateState?.state.data)  ||  !!vendor_id) && {
-                    id: vendor_id? vendor_id.id: navigateState?.state?.data?.id || null,
-                    version: vendor_id? vendor_id.version: navigateState?.state?.data?.version || 0,
+                ...(!!(navigateState?.state && navigateState?.state.data) && {
+                    id: navigateState?.state?.data?.id || null,
+                    version: navigateState?.state?.data?.version || 0,
                     logoPath: image?.path ? image?.path : navigateState?.state?.data?.logoPath
                 }),
                 ...(pincodeVal?.length !== 0 && {
