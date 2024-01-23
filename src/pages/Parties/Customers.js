@@ -18,11 +18,14 @@ import {
 import TableCustomers from "./TableCustomers";
 import TopBreadcrumbs from "../Settings/Surcharge/TopBreadcrumbs";
 import { customersBreadcrumb } from "../../common/data/parties";
+import { Edit } from "../Settings/SettingsCol";
+import { useNavigate } from "react-router-dom";
 
 const Customers = () => {
   const [modal, setModal] = useState(false);
   const [viewData, setViewData] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const { customer_data } = useSelector((state) => state?.customer)
 
@@ -40,7 +43,15 @@ const Customers = () => {
   const switchHandler = (data) => {
     dispatch(updateCustomerSwitchData(data.id, data.is_active));
   }
-
+  const editHandler = (data) => {
+    console.log(data);
+    navigate(`/customers/add-customer`, {
+      state: {
+        id: data?.id || '',
+        data: data
+      },
+    });
+  };
   useEffect(() => {
     dispatch(getAllPartiesCustomerData())
   }, []);
@@ -154,6 +165,12 @@ const Customers = () => {
               viewPopupHandler={viewPopupHandler}
             />
           );
+        },
+      },
+      {
+        Header: "Edit",
+        Cell: (cellProps) => {
+          return <Edit cellProps={cellProps} viewPopupHandler={editHandler} />
         },
       },
     ],

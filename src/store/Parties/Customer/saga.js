@@ -2,10 +2,19 @@ import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects"
 import { showErrorToast, showSuccessToast } from "../../../components/Common/CustomToast";
 import { getCustomerDataSer, postCustomerCompanySer, postCustomerContactSer, postCustomerDocSer } from "../../../helpers/services/PartiesService";
 import { GET_CUSTOMERS_ID, GET_PARTIES_CUSTOMER_DETAILS_TYPE, GET_PARTIES_CUSTOMER_DETAILS_TYPE_SUCCESS, UPLOAD_CUSTOMER_COMPANYDATA_TYPE, UPLOAD_CUSTOMER_CONTACT_TYPE, UPLOAD_CUSTOMER_DOCUMENT_TYPE } from "./actiontype";
+import axios from "axios";
+import { Get_File_URL } from "../../../helpers/url_helper";
 
 function* fetchPartiesCustomerSaga() {
     try {
         const response = yield call(getCustomerDataSer);
+        if (response && response.content && response.content) {
+            response?.content?.forEach(element => {
+                let imageData = element.logoPath;
+                const base64Encoded = window.btoa(imageData);
+                element.logo =(!!(imageData)? `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`:'');
+            });
+        }
         console.log(response, "reponse into getAllPartiesCompanySettings");
         yield put({ type: GET_PARTIES_CUSTOMER_DETAILS_TYPE_SUCCESS, payload: response });
     } catch (error) {

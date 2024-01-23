@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { Card, CardBody, Col, Container, Modal, NavItem, NavLink, Progress, Row, TabContent, TabPane, UncontrolledTooltip } from "reactstrap";
 // import fileData from "../../assets/extra/upload_Formats.xlsx";
@@ -18,13 +18,14 @@ import TopBreadcrumbs from "../Settings/Surcharge/TopBreadcrumbs";
 import ContactDetailsForm from "./partials/vendor/ContactDetailsForm";
 import DocumentDetailsForm from "./partials/vendor/DocumentDetailsForm";
 import VenderDetails from "./partials/vendor/VenderDetails";
-
+import * as Yup from "yup";
 export default function UploadVendorData() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
     const [openSaveModal, setOpenSaveModal] = useState(false);
     const [progressValue, setProgressValue] = useState(25);
 
     const navigate = useNavigate();
+    const navigateState = useLocation();
     const [surcharges, setSurcharges] = useState([]);
     const { vendor_id, vendor_active_Tab } = useSelector((state) => state?.vendor);
     const { parties_city_details, parties_state_details, parties_country_details, parties_pincode_details } = useSelector(
@@ -38,7 +39,7 @@ export default function UploadVendorData() {
     }, []);
 
     console.log(vendor_active_Tab, "vendor_active_Tab");
-
+    console.log(navigateState?.state);
     useEffect(() => {
         setActiveTabProgress(vendor_active_Tab.tab)
         if (vendor_active_Tab.tab === 1) { setProgressValue(33) }
@@ -64,51 +65,59 @@ export default function UploadVendorData() {
                 setActiveTabProgress(tab);
 
                 if (tab === 1) {
-                    setProgressValue(25);
-                }
-                if (tab === 2) {
                     setProgressValue(50);
                 }
-                if (tab === 3) {
+                if (tab === 2) {
                     setProgressValue(75);
                 }
-                if (tab === 4) {
+                if (tab === 3) {
                     setProgressValue(100);
                 }
+                // if (tab === 4) {
+                //     setProgressValue(100);
+                // }
             }
         }
         if (tab === 5) {
             openSaveConfirmModal();
         }
     };
+    
 
     const companyDetailsFormik = useFormik({
+        enableReinitialize: true,
         initialValues: {
-            image: "",
-            companyName: "",
-            logo: "",
-            address: "",
-            city: null,
-            state: null,
-            country: null,
-            zipcode: null,
-            website: "",
-            contactName: "",
-            phoneNumber: "",
-            email: "",
-            department: "",
-            designation: "",
-            venderType: "",
-            serviceType: "",
-            CINnumber: "",
-            GSTnumber: "",
-            PANnumber: "",
-            entityType: "",
-            industryType: "",
+            image: navigateState?.state?.data?.logo || "",
+            companyName: navigateState?.state?.data?.name || "",
+            logo: navigateState?.state?.data?.logo || "",
+            address: navigateState?.state?.data?.address || "",
+            city: navigateState?.state?.data?.city?.cityName || null,
+            state: navigateState?.state?.data?.state?.id || null,
+            country: navigateState?.state?.data?.country?.countryName || null,
+            zipcode: navigateState?.state?.data?.pinCode || null,
+            website: navigateState?.state?.data?.website || "",
+            contactName: navigateState?.state?.data?.contactName || "",
+            phoneNumber: navigateState?.state?.data?.contactNo || "",
+            email: navigateState?.state?.data?.contactEmail || "",
+            department: navigateState?.state?.data?.department || "",
+            designation: navigateState?.state?.data?.designation || "",
+            venderType: navigateState?.state?.data?.vendorType || "",
+            serviceType: navigateState?.state?.data?.serviceType || "",
+            CINnumber: navigateState?.state?.data?.cin || "",
+            GSTnumber: navigateState?.state?.data?.gst || "",
+            PANnumber: navigateState?.state?.data?.pan || "",
+            entityType: navigateState?.state?.data?.entityType || "",
+            industryType: navigateState?.state?.data?.industryType || "",
         },
+        validationSchema: Yup.object({
+            companyName: Yup.string().required("Please Enter Vendor Name"),
+            city: Yup.string().nullable().required("Please Enter selected City"),
+            country: Yup.string().nullable().required("Please Enter selected country"),
+            email: Yup.string().email('Invalid email address').required('Email is required'),
+            contactName: Yup.string().required("Please Enter Your contact Name"),
+            phoneNumber: Yup.string().required("Please Enter Your Phone Number"),
+        }),
         onSubmit: async ({ image, ...value }) => {
-            // console.log("Vendor Details", value);
-
             let countryVal = parties_country_details?.content?.filter((con) => con?.countryName === value?.country) || [];
             let cityVal = parties_city_details?.content?.filter((city) => city?.cityName === value?.city) || [];
             let stateVal = parties_state_details?.content?.filter((state) => state?.stateName === value?.state) || [];
@@ -119,6 +128,11 @@ export default function UploadVendorData() {
                 logo: null,
                 logoPath: image?.path || "",
                 address: value.address || null,
+                ...(!!(navigateState?.state && navigateState?.state.data) && {
+                    id: navigateState?.state?.data?.id || null,
+                    version: navigateState?.state?.data?.version || 0,
+                    logoPath: image?.path ? image?.path : navigateState?.state?.data?.logoPath
+                }),
                 ...(pincodeVal?.length !== 0 && {
                     "pinCode": {
                         id: pincodeVal[0]?.id,
@@ -176,11 +190,11 @@ export default function UploadVendorData() {
             contacts: [
                 {
                     title: "",
-                    contactName: "",
-                    contactNo: "",
-                    contactEmail: "",
-                    department: "",
-                    designation: "",
+                    contactName: navigateState?.state?.data?.contactName || "",
+                    contactNo: navigateState?.state?.data?.contactNo || "",
+                    contactEmail: navigateState?.state?.data?.contactEmail || "",
+                    department: navigateState?.state?.data?.department || "",
+                    designation: navigateState?.state?.data?.designation || "",
                     opCode: ""
                 },
             ],
@@ -209,8 +223,8 @@ export default function UploadVendorData() {
         initialValues: {
             document: [
                 {
-                    documentType: "",
-                    uploadDocument: "",
+                    documentType: navigateState?.state?.data?.documents[0]?.documentType || "",
+                    uploadDocument: navigateState?.state?.data?.documents[0]?.documentPath || "",
                 },
             ],
         },
@@ -330,7 +344,7 @@ export default function UploadVendorData() {
                                             {/* tabs */}
                                             <ul className="twitter-bs-wizard-nav nav-justified nav nav-pills">
                                                 <NavItem>
-                                                    <NavLink className={classnames({ active: activeTabProgress === 1, })} onClick={() => { toggleTabProgress(1); }} >
+                                                    <NavLink className={classnames({ active: activeTabProgress === 1, })} /*onClick={() => { toggleTabProgress(1); }}*/ >
                                                         <div className="step-icon" data-bs-toggle="tooltip" id="CompanyDetails" >
                                                             <i className="bx bx-list-ul"></i>
                                                             <UncontrolledTooltip placement="top" target="CompanyDetails" >
@@ -340,7 +354,7 @@ export default function UploadVendorData() {
                                                     </NavLink>
                                                 </NavItem>
                                                 <NavItem>
-                                                    <NavLink className={classnames({ active: activeTabProgress === 2, })} onClick={() => { toggleTabProgress(2); }} >
+                                                    <NavLink className={classnames({ active: activeTabProgress === 2, })} /* onClick={() => { toggleTabProgress(2); }} */>
                                                         <div className="step-icon" data-bs-toggle="tooltip" id="Contacts" >
                                                             <i className="bx bx-food-menu"></i>
                                                             <UncontrolledTooltip placement="top" target="Contacts" >
@@ -350,7 +364,7 @@ export default function UploadVendorData() {
                                                     </NavLink>
                                                 </NavItem>
                                                 <NavItem>
-                                                    <NavLink className={classnames({ active: activeTabProgress === 3, })} onClick={() => { toggleTabProgress(3); }} >
+                                                    <NavLink className={classnames({ active: activeTabProgress === 3, })} /* onClick={() => { toggleTabProgress(3); }} */>
                                                         <div className="step-icon" data-bs-toggle="tooltip" id="Documents" >
                                                             <i className="bx bx-book-bookmark"></i>
                                                             <UncontrolledTooltip placement="top" target="Documents" >
@@ -360,7 +374,7 @@ export default function UploadVendorData() {
                                                     </NavLink>
                                                 </NavItem>
 
-                                                <NavItem>
+                                                {/* <NavItem>
                                                     <NavLink
                                                         className={classnames({ active: activeTabProgress === 4, })}
                                                         onClick={() => { toggleTabProgress(4); }}
@@ -379,7 +393,7 @@ export default function UploadVendorData() {
                                                             </UncontrolledTooltip>
                                                         </div>
                                                     </NavLink>
-                                                </NavItem>
+                                                </NavItem> */}
                                             </ul>
 
                                             {/* Progress Bar */}
@@ -524,33 +538,42 @@ export default function UploadVendorData() {
                                                         <i className="bx bx-chevron-left me-1"></i> Previous
                                                     </button>
                                                 </li>
-
-                                                <li
-                                                    className={`${activeTabProgress === 1 ? isAnyValueEmpty(companyDetailsFormik?.values) ? "disabled" : "" : activeTabProgress === 2 ? isAnyValueEmpty(contactsFormik?.values) ? "disabled" : "" : ""}`}
-                                                >
-                                                    <button
-                                                        type="submit"
-                                                        className={`btn btn-primary d-flex align-items-center ${activeTabProgress === 0
-                                                            ? isAnyValueEmpty(companyDetailsFormik?.values) ? "disabled" : ""
-                                                            : activeTabProgress === 2 ? isAnyValueEmpty(contactsFormik?.values) ? "disabled" : "" : ""
-                                                            }`}
-                                                        onClick={() => {
-                                                            if (activeTabProgress === 1) {
-                                                                companyDetailsFormik.submitForm();
-                                                            } else if (activeTabProgress === 2) {
-                                                                contactsFormik.submitForm();
-                                                            } else if (activeTabProgress === 3) {
-                                                                documentsFormik.submitForm();
-                                                            }
-                                                        }}
-                                                    >
-                                                        {activeTabProgress === 3 ? ("Save") : (
-                                                            <>
-                                                                Next
-                                                                <i className="bx bx-chevron-right ms-1"></i>
-                                                            </>
+                                                <li className={`${activeTabProgress === 1 ? isAnyValueEmpty(companyDetailsFormik?.values) ? "disabled" : "" : activeTabProgress === 2 ? isAnyValueEmpty(contactsFormik?.values) ? "disabled" : "" : ""}`}>
+                                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                        {(activeTabProgress === 2 ||activeTabProgress === 3 ) && (
+                                                            <a className="me-3"
+                                                                onClick={() => {
+                                                                    toggleTabProgress(3);
+                                                                }}
+                                                                style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
+                                                            >
+                                                                Skip
+                                                            </a>
                                                         )}
-                                                    </button>
+                                                        <button
+                                                            type="submit"
+                                                            className={`btn btn-primary d-flex align-items-center ${activeTabProgress === 0
+                                                                ? isAnyValueEmpty(companyDetailsFormik?.values) ? "disabled" : ""
+                                                                : activeTabProgress === 2 ? isAnyValueEmpty(contactsFormik?.values) ? "disabled" : "" : ""
+                                                                }`}
+                                                            onClick={() => {
+                                                                if (activeTabProgress === 1) {
+                                                                    companyDetailsFormik.submitForm();
+                                                                } else if (activeTabProgress === 2) {
+                                                                    contactsFormik.submitForm();
+                                                                } else if (activeTabProgress === 3) {
+                                                                    documentsFormik.submitForm();
+                                                                }
+                                                            }}
+                                                        >
+                                                            {activeTabProgress === 3 ? "Save" : (
+                                                                <>
+                                                                    Next
+                                                                    <i className="bx bx-chevron-right ms-1"></i>
+                                                                </>
+                                                            )}
+                                                        </button>
+                                                    </div>
                                                 </li>
                                             </ul>
                                         </div>
