@@ -31,7 +31,15 @@ const DocumentDetailsForm = ({ documentsFormik }) => {
                             <label className="form-label">Document Type</label>
                             <Select
                               name={`document[${index}].documentType`}
-                              value={documentsFormik?.values?.document[index]?.documentType || ''}
+                              value={
+                                optionCustomerDocumentType
+                                  ? optionCustomerDocumentType.find(
+                                    (option) =>
+                                      option.value ===
+                                      documentsFormik?.values?.document[index]?.documentType
+                                  )
+                                  : ""
+                              }
                               onChange={(e) => {
                                 documentsFormik.setFieldValue(`document[${index}].documentType`, e);
                               }}

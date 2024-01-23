@@ -10,12 +10,14 @@ import ModalVendorValue from './Modal/ModalVendorValue';
 import { getVendorListAction } from '../../store/Parties/Vendor/action';
 import TopBreadcrumbs from '../Settings/Surcharge/TopBreadcrumbs';
 import { vendorsBreadcrumb } from '../../common/data/parties';
+import { Edit } from '../Settings/SettingsCol';
+import { useNavigate } from 'react-router-dom';
 
 const Vendors = () => {
   const [modal, setModal] = useState(false);
   const [viewData, setViewData] = useState(false);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate()
   const { vendor_loader, vendors_data } = useSelector(
     (state) => state?.vendor
   );
@@ -28,7 +30,15 @@ const Vendors = () => {
   const onCloseClick = () => {
     setModal(false);
   }
-
+  const editHandler = (data) => {
+    console.log(data);
+    navigate(`/vendor/add-vendor`, {
+      state: {
+        id: data?.id || '',
+        data: data
+      },
+    });
+  };
   // const switchHandler = (data) => {
   //   dispatch(updateVendorSwitchData(data.id, data.is_active));
   // }
@@ -124,6 +134,12 @@ const Vendors = () => {
         return (
           <CreatedOn cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
         );
+      },
+    },
+    {
+      Header: "Edit",
+      Cell: (cellProps) => {
+        return <Edit cellProps={cellProps} viewPopupHandler={editHandler} />
       },
     },
   ],

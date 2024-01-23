@@ -30,7 +30,7 @@ const TabOneCustomerDetails = ({ viewData }) => {
                   </div>
                   <div className="details">
                     <span className="title">Logo:</span>
-                    <img src={viewData?.logo || doc} alt={"Logo"} width={150} height={120} />
+                    <img src={viewData?.logo}  width={170} height={120} />
                   </div>
                   <div className="details">
                     <span className="title">Company Name:</span>

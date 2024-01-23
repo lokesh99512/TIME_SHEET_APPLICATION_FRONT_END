@@ -6,30 +6,32 @@ import { optionCustdepartment, optionCustdesignation, optionCustopCode, optionCu
 import { useDispatch } from 'react-redux';
 import { postCustomerContactAction } from '../../../../store/Parties/Customer/action';
 import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 const CustomerContact = ({ toggleTabProgress }) => {
     const { customer_id } = useSelector((state) => state?.customer);
     const dispatch = useDispatch();
+    const navigateState = useLocation();
     const contactsFormik = useFormik({
         initialValues: {
             contacts: [
                 {
                     title: "",
-                    name: '',
+                    name: navigateState?.state?.data?.contactName || "",
                     opCode: "",
-                    phoneNumber: '',
-                    emailId: '',
-                    department: '',
-                    designation: '',
+                    phoneNumber: navigateState?.state?.data?.contactNo || "",
+                    emailId: navigateState?.state?.data?.contactEmail || "",
+                    department: navigateState?.state?.data?.department || "",
+                    designation: navigateState?.state?.data?.designation || "",
                 },
             ],
         },
         onSubmit: (values) => {
             let data = {
-                "id" : customer_id?.id || '',
+                "id": customer_id?.id || '',
                 "version": customer_id?.version || '',
                 contacts: values?.contacts?.map((val) => {
-                    return{
+                    return {
                         "contactName": `${val?.title || ''} ${val?.name || ''}`,
                         "contactNo": val?.phoneNumber || '',
                         "contactEmail": val?.emailId || '',
@@ -38,15 +40,19 @@ const CustomerContact = ({ toggleTabProgress }) => {
                     }
                 })
             }
-            console.log(data,"data---------------");
+            console.log(data, "data---------------");
             dispatch(postCustomerContactAction(data));
             toggleTabProgress(3);
         },
     });
+
+    const onClickSkip = () => {
+        toggleTabProgress(3);
+    }
     return (
         <>
             <div className="text-center mb-4">
-                <h5>Contacts</h5>
+                <h5>Customer Contacts</h5>
             </div>
             <div>
                 <FormikProvider value={contactsFormik}>
@@ -236,15 +242,25 @@ const CustomerContact = ({ toggleTabProgress }) => {
                 </FormikProvider>
             </div>
             <div className="d-flex justify-content-end mt-3" style={{ margin: "0 0 -62px" }}>
-                <button
-                    type="button"
-                    className="btn btn-primary d-flex align-items-center"
-                    onClick={contactsFormik.handleSubmit}
-                >
-                    Save
-                    <i className="bx bx-chevron-right ms-1"></i>
-                </button>
+                <div className="d-flex align-items-center">
+                    <a
+                        className="me-3"
+                        onClick={onClickSkip}
+                        style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
+                    >
+                        Skip
+                    </a>
+                    <button
+                        type="button"
+                        className="btn btn-primary d-flex align-items-center"
+                        onClick={contactsFormik.handleSubmit}
+                    >
+                        Save
+                        <i className="bx bx-chevron-right ms-1"></i>
+                    </button>
+                </div>
             </div>
+
         </>
     );
 }

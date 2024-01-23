@@ -2,7 +2,7 @@ import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Select from "react-select";
-import { Card, CardBody, Input } from 'reactstrap';
+import { Card, CardBody, FormFeedback, Input } from 'reactstrap';
 
 import { useDispatch } from 'react-redux';
 import { optionCustcustomerType, optionCustdepartment, optionCustdesignation, optionCustentityType, optionCustindustryType, optionCustopCode, optionCusttitle } from '../../../../common/data/settings';
@@ -17,7 +17,8 @@ import ModalAddNewIndustryType from '../../Modal/ModalAddNewIndustryType';
 import ModalAddNewKeyAccountManager from '../../Modal/ModalAddNewKeyAccountManager';
 import ModalAddNewSalesEmployee from '../../Modal/ModalAddNewSalesEmployee';
 import { postCustomerDetailsAction } from '../../../../store/Parties/Customer/action';
-
+import { useLocation } from 'react-router-dom';
+import * as Yup from "yup";
 
 const CustomerCompDetails = ({ toggleTabProgress }) => {
     const [logoFile, setLogoFile] = useState('');
@@ -33,10 +34,14 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
 
     const dispatch = useDispatch();
 
+    const navigateState = useLocation();
+
     const { parties_city_details, parties_all_details, parties_all_employee_details, parties_state_details, parties_country_details, parties_pincode_details } = useSelector(
         (state) => state?.parties
     );
-
+    const { customer_id, customer_data} = useSelector(
+        (state) => state?.customer
+    );
     const onCloseClick = () => {
         setGstModal(false);
         setDepartmentModal(false)
@@ -47,53 +52,68 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
         setIndustryTypeModal(false)
         setCustomerTypeModal(false)
     };
-
+    console.log(navigateState?.state);
+    console.log(navigateState?.state?.data?.salesUser?.firstName);
     const gstDetailsHandler = (data) => {
         setModalAllData((prev) => ([...prev, data]))
     }
 
     const companyDetailsFormik = useFormik({
         initialValues: {
-            companyName: "",
-            image: "",
-            address: "",
-            city: "",
-            state: "",
-            country: "",
-            zipcode: "",
-            website: "",
-
-            title: "",
-            contactName: "",
-            opCode: "",
-            phoneNumber: "",
-            email: "",
-            department: "",
-            designation: "",
-            salesEmployee: "",
-            keyAccountManager: "",
-
-            CINnumber: "",
-            GSTnumber: "",
-            PANnumber: "",
-            entityType: "",
-            industryType: "",
-            customerType: "",
+            image: navigateState?.state?.data?.logo || "",
+            companyName: navigateState?.state?.data?.name || "",
+            logo: navigateState?.state?.data?.logo || "",
+            address: navigateState?.state?.data?.address || "",
+            city: navigateState?.state?.data?.city?.cityName || null,
+            state: navigateState?.state?.data?.state?.stateName || null,
+            country: navigateState?.state?.data?.country?.countryName || null,
+            zipcode: navigateState?.state?.data?.pinCode || null,
+            website: navigateState?.state?.data?.website || "",
+            contactName: navigateState?.state?.data?.contactName || "",
+            phoneNumber: navigateState?.state?.data?.contactNo || "",
+            email: navigateState?.state?.data?.contactEmail || "",
+            department: navigateState?.state?.data?.department || "",
+            designation: navigateState?.state?.data?.designation || "",
+            venderType: navigateState?.state?.data?.vendorType || "",
+            serviceType: navigateState?.state?.data?.serviceType || "",
+            CINnumber: navigateState?.state?.data?.cin || "",
+            GSTnumber: navigateState?.state?.data?.gst || "",
+            PANnumber: navigateState?.state?.data?.pan || "",
+            entityType: navigateState?.state?.data?.entityType || "",
+            industryType: navigateState?.state?.data?.industryType || "",
+            title: navigateState?.state?.data?.title || "",
+            opCode: navigateState?.state?.data?.opCode || "",
+            salesEmployee: navigateState?.state?.data?.salesUser?.firstName ||"",
+            keyAccountManager: navigateState?.state?.data?.accountManager?.firstName || "",
+            customerType: navigateState?.state?.data?.type,
         },
+        validationSchema: Yup.object({
+            companyName: Yup.string().required("Please Enter Customer Name"),
+            city: Yup.string().nullable().required("Please Enter selected City"),
+            country: Yup.string().nullable().required("Please Enter selected country"),
+            email: Yup.string().email('Invalid email address').required('Email is required'),
+            contactName: Yup.string().required("Please Enter Your contact Name"),
+            phoneNumber: Yup.string().required("Please Enter Your Phone Number"),
+          }),
         onSubmit: async ({ image, ...values }) => {
             console.log("values company details", values);
             let countryVal = parties_country_details?.content?.filter((con) => con?.countryName === values?.country) || [];
             let cityVal = parties_city_details?.content?.filter((city) => city?.cityName === values?.city) || [];
             let stateVal = parties_state_details?.content?.filter((state) => state?.stateName === values?.state) || [];
             let pincodeVal = parties_pincode_details?.content?.filter((pin) => pin?.pin === values?.zipcode) || [];
-   
-            let formData = new FormData();
-
+            let salesEmployeeVal= salesEmployeeOptions.find((option) => option.value ===values?.salesEmployee)
+            let  accountManagerVal =accountManagerOptions.find( (option) =>option.value ===values?.keyAccountManager)
+            let formData = new FormData(); 
             const projectUATRequestDTO = {
                 "name": values.companyName || "",
                 "logo": null,
                 "logoPath": image?.preview || "",
                 "address": values.address || null,
+                ...((!!(navigateState?.state && navigateState?.state.data)) && {
+                    id: navigateState?.state?.data?.id || null,
+                    version:navigateState?.state?.data?.version || 0,
+                    logoPath: image?.path ? image?.path : navigateState?.state?.data?.logoPath
+                }),
                 ...(pincodeVal?.length !== 0 && {
                     "pinCode": {
                         id: pincodeVal[0]?.id,
@@ -125,12 +145,12 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                 "department": values.department || null,
                 "designation": values.designation || null,
                 "salesUser": {
-                    id: values?.salesEmployee?.id,
-                    version: values?.salesEmployee?.version
+                    id: salesEmployeeVal?.id,
+                    version: salesEmployeeVal?.version
                 },
                 "accountManager": {
-                    id: values?.keyAccountManager?.id,
-                    version: values?.keyAccountManager?.version
+                    id: accountManagerVal?.id,
+                    version: accountManagerVal?.version
                 },
                 "serviceType": "AIR",
                 "cin": values.CINnumber || null,
@@ -150,7 +170,6 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
             formData.append('tenantCustomer', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
             dispatch(postCustomerDetailsAction(formData));
             toggleTabProgress(2);
-            companyDetailsFormik.resetForm();
         },
     })
 
@@ -199,14 +218,14 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
     return (
         <>
             <div className="text-center mb-4">
-                <h5>Company Details</h5>
+                <h5>Customer Details</h5>
             </div>
             <Card>
                 <CardBody>
                     <div className="row">
                         <div className="col-12 col-md-6">
                             <div className="mb-3">
-                                <label className="form-label">Company name</label>
+                                <label className="form-label">Customer Name<span className='required_star'>*</span></label>
                                 <Input
                                     type="text"
                                     name="companyName"
@@ -214,7 +233,12 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                                     onChange={companyDetailsFormik.handleChange}
                                     className="form-control"
                                     placeholder=""
-                                />
+                                    onBlur={companyDetailsFormik.handleBlur}
+                                    invalid={companyDetailsFormik.touched.companyName && companyDetailsFormik.errors.companyName ? true : false}
+                                  />
+                                  {companyDetailsFormik.touched.companyName && companyDetailsFormik.errors.companyName ? (
+                                    <FormFeedback>{companyDetailsFormik.errors.companyName}</FormFeedback>
+                                  ) : null}
                             </div>
                         </div>
                         <div className="col-12 col-md-6">
@@ -242,7 +266,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                         </div>
                         <div className="col-12 col-md-6">
                             <div className="mb-3">
-                                <label className="form-label">City</label>
+                                <label className="form-label">City<span className='required_star'>*</span></label>
                                 <Input
                                     type="text"
                                     name="city"
@@ -264,7 +288,12 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                                     }
                                     className="form-control"
                                     placeholder=""
-                                />
+                                    onBlur={companyDetailsFormik.handleBlur}
+                                    invalid={companyDetailsFormik.touched.city && companyDetailsFormik.errors.city ? true : false}
+                                  />
+                                  {companyDetailsFormik.touched.city && companyDetailsFormik.errors.city ? (
+                                    <FormFeedback>{companyDetailsFormik.errors.city}</FormFeedback>
+                                  ) : null}
                                 <datalist id="cityList">
                                     {parties_city_details && parties_city_details?.content?.map((item, i) => <option key={i} value={item.cityName} />)}
                                 </datalist>
@@ -285,7 +314,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                         </div>
                         <div className="col-12 col-md-6">
                             <div className="mb-3">
-                                <label className="form-label">Country</label>
+                                <label className="form-label">Country<span className='required_star'>*</span></label>
                                 <Input
                                     type="text"
                                     name="country"
@@ -293,7 +322,13 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                                     onChange={companyDetailsFormik.handleChange}
                                     className="form-control"
                                     placeholder=""
-                                />
+                                    readOnly ={true}
+                                    onBlur={companyDetailsFormik.handleBlur}
+                                    invalid={companyDetailsFormik.touched.country && companyDetailsFormik.errors.country ? true : false}
+                                  />
+                                  {companyDetailsFormik.touched.country && companyDetailsFormik.errors.country ? (
+                                    <FormFeedback>{companyDetailsFormik.errors.country}</FormFeedback>
+                                  ) : null}
                             </div>
                         </div>
                         <div className="col-12 col-md-6">
@@ -338,7 +373,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                     <div className='row'>
                         <div className="col">
                             <div className="mb-3">
-                                <label className="form-label">Contact Name</label>
+                                <label className="form-label">Contact Name<span className='required_star'>*</span></label>
                                 <div className='row'>
                                     <div className='col-4 col-md-2'>
                                         <Select
@@ -371,7 +406,12 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                                             onChange={companyDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
-                                        />
+                                            onBlur={companyDetailsFormik.handleBlur}
+                                            invalid={companyDetailsFormik.touched.contactName && companyDetailsFormik.errors.contactName ? true : false}
+                                          />
+                                          {companyDetailsFormik.touched.contactName && companyDetailsFormik.errors.contactName ? (
+                                            <FormFeedback>{companyDetailsFormik.errors.contactName}</FormFeedback>
+                                          ) : null}
                                     </div>
                                 </div>
 
@@ -381,7 +421,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                     <div className='row'>
                         <div className="col-12 col-md-6">
                             <div className="mb-3">
-                                <label className="form-label">Phone Number</label>
+                                <label className="form-label">Phone Number<span className='required_star'>*</span></label>
                                 <div className='row'>
                                     <div className='col-4 col-md-3'>
                                         <Select
@@ -414,7 +454,12 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                                             onChange={companyDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
-                                        />
+                                            onBlur={companyDetailsFormik.handleBlur}
+                                            invalid={companyDetailsFormik.touched.phoneNumber && companyDetailsFormik.errors.phoneNumber ? true : false}
+                                          />
+                                          {companyDetailsFormik.touched.phoneNumber && companyDetailsFormik.errors.phoneNumber ? (
+                                            <FormFeedback>{companyDetailsFormik.errors.phoneNumber}</FormFeedback>
+                                          ) : null}
                                     </div>
                                 </div>
 
@@ -431,7 +476,12 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                                 onChange={companyDetailsFormik.handleChange}
                                 className="form-control"
                                 placeholder=""
-                            />
+                                onBlur={companyDetailsFormik.handleBlur}
+                                invalid={companyDetailsFormik.touched.email && companyDetailsFormik.errors.email ? true : false}
+                              />
+                              {companyDetailsFormik.touched.email && companyDetailsFormik.errors.email ? (
+                                <FormFeedback>{companyDetailsFormik.errors.email}</FormFeedback>
+                              ) : null}
                         </div>
                     </div>
                     <div className="row">
@@ -497,12 +547,21 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                                 <label className="form-label">Sales Employee</label>
                                 <Select
                                     name='salesEmployee'
-                                    value={companyDetailsFormik?.values?.salesEmployee || ''}
+                                    value={
+                                        salesEmployeeOptions
+                                            ? salesEmployeeOptions.find(
+                                                (option) =>
+                                                    option.value ===
+                                                    companyDetailsFormik?.values?.salesEmployee
+                                            )
+                                            : ""
+                                       }
                                     onChange={(e) => {
                                         if (e.label == "Add New") {
                                             setSalesEmployeeModal(true)
+                                        }else{
+                                               companyDetailsFormik.setFieldValue(`salesEmployee`,  e.value);
                                         }
-                                        companyDetailsFormik.setFieldValue(`salesEmployee`, e);
                                     }}
                                     options={salesEmployeeOptions}
                                     classNamePrefix="select2-selection form-select"
@@ -514,12 +573,21 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                                 <label className="form-label">Key Account Manager</label>
                                 <Select
                                     name='keyAccountManager'
-                                    value={companyDetailsFormik?.values?.keyAccountManager || ''}
+                                    value={
+                                        accountManagerOptions
+                                            ? accountManagerOptions.find(
+                                                (option) =>
+                                                    option.value ===
+                                                    companyDetailsFormik?.values?.keyAccountManager
+                                            )
+                                            : ""
+                                       }
                                     onChange={(e) => {
                                         if (e.label == "Add New") {
                                             setKeyAccountManagerModal(true)
+                                        }else{
+                                            companyDetailsFormik.setFieldValue(`keyAccountManager`, e.value);
                                         }
-                                        companyDetailsFormik.setFieldValue(`keyAccountManager`, e);
                                     }}
                                     options={accountManagerOptions}
                                     classNamePrefix="select2-selection form-select"

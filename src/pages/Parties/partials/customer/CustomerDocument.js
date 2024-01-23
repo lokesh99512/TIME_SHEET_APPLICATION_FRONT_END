@@ -6,17 +6,19 @@ import { optionCustomerDocumentType } from '../../../../common/data/parties';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { postCustomerDocumentAction } from '../../../../store/Parties/Customer/action';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const CustomerDocument = () => {
     const { customer_id } = useSelector((state) => state?.customer);
     const dispatch = useDispatch();
-
+    const navigate = useNavigate()
+    const navigateState = useLocation();
     const documentsFormik = useFormik({
         initialValues: {
             document: [
                 {
-                    documentType: "",
-                    uploadDocument: '',
+                    documentType: navigateState?.state?.data?.documents[0]?.documentType|| "",
+                    uploadDocument: navigateState?.state?.data?.documents[0]?.documentPath || "",
                 }
             ],
         },
@@ -66,11 +68,13 @@ const CustomerDocument = () => {
     const documentUploadHandler = (e, name) => {
         documentsFormik.setFieldValue(name, e.target.files[0]);
     }
-
+    const onClickSkip = () => {
+        navigate('/customers')
+    }
     return (
         <>
             <div className="text-center mb-4">
-                <h5>Documents</h5>
+                <h5>Customer Documents</h5>
             </div>
             <div>
                 <FormikProvider value={documentsFormik}>
@@ -86,7 +90,15 @@ const CustomerDocument = () => {
                                                         <label className="form-label">Document Type</label>
                                                         <Select
                                                             name={`document[${index}].documentType`}
-                                                            value={documentsFormik?.values?.document[index]?.documentType || ''}
+                                                                 value={
+                                                                    optionCustomerDocumentType
+                                                                      ? optionCustomerDocumentType.find(
+                                                                        (option) =>
+                                                                          option.value ===
+                                                                          documentsFormik?.values?.document[index]?.documentType
+                                                                      )
+                                                                      : ""
+                                                                  }
                                                             onChange={(e) => {
                                                                 documentsFormik.setFieldValue(`document[${index}].documentType`, e);
                                                             }}
@@ -146,6 +158,14 @@ const CustomerDocument = () => {
                 </FormikProvider>
             </div>
             <div className="d-flex justify-content-end mt-3" style={{ margin: "0 0 -62px" }}>
+            <div className="d-flex align-items-center">
+                    <a
+                        className="me-3"
+                        onClick={onClickSkip}
+                        style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
+                    >
+                        Skip
+                    </a>
                 <button
                     type="button"
                     className="btn btn-primary d-flex align-items-center"
@@ -154,6 +174,7 @@ const CustomerDocument = () => {
                     Save
                     <i className="bx bx-chevron-right ms-1"></i>
                 </button>
+            </div>
             </div>
         </>
     );

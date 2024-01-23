@@ -3,13 +3,21 @@ import { GET_VENDOR_DETAILS_ID, GET_VENDOR_LIST_SUCCESS, GET_VENDOR_LIST_TYPE, U
 import { getPartiesAllVendorTable } from "../../../helpers/services/AuthService";
 import { postVenderCompanySer, postVenderDocumentSer, postVenderUpload, postVendorContactSer } from "../../../helpers/services/PartiesService";
 import { showErrorToast, showSuccessToast } from "../../../components/Common/CustomToast";
-import { UPLOAD_VENDOR_DOCUMENT_URL } from "../../../helpers/url_helper";
+import { Get_File_URL, UPLOAD_VENDOR_DOCUMENT_URL } from "../../../helpers/url_helper";
+import axios from "axios";
 
 
 function* fetchVendorListSaga() {
     yield put({ type: VENDOR_LOADER_TYPE, payload: true });
     try {
         const response = yield call(getPartiesAllVendorTable);
+        if (response && response.content && response.content) {
+            response?.content?.forEach(element => {
+                let imageData = element.logoPath;
+                const base64Encoded = window.btoa(imageData);
+                element.logo =(!!(imageData)? `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`:'');
+            });
+        }
         console.log(response, "reponse into getAllPartiesCompanySettings");
         yield put({ type: GET_VENDOR_LIST_SUCCESS, payload: response });
         yield put({ type: VENDOR_LOADER_TYPE, payload: false });

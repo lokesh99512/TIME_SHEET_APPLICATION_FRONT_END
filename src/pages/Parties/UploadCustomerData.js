@@ -30,7 +30,7 @@ export default function UploadCustomerData() {
     const finalSaveButton = () => {
         setSurcharges([]);
         setActiveTabProgress(1);
-        setProgressValue(14);
+        setProgressValue(50);
         setselectedFiles([]);
         dispatch({ type: BLANK_CARRIER_DATA });
         setOpenSaveModal(false);
@@ -41,13 +41,13 @@ export default function UploadCustomerData() {
             if (tab >= 1 && tab <= 3) {
                 setActiveTabProgress(tab)
 
-                if (tab === 1) { setProgressValue(14) }
-                if (tab === 2) { setProgressValue(28) }
-                if (tab === 3) { setProgressValue(42); }
-                if (tab === 4) { setProgressValue(56); }
-                if (tab === 5) { setProgressValue(70); }
-                if (tab === 6) { setProgressValue(85); }
-                if (tab === 7) { setProgressValue(100); }
+                if (tab === 1) { setProgressValue(50) }
+                if (tab === 2) { setProgressValue(75) }
+                if (tab === 3) { setProgressValue(100); }
+                // if (tab === 4) { setProgressValue(56); }
+                // if (tab === 5) { setProgressValue(70); }
+                // if (tab === 6) { setProgressValue(85); }
+                // if (tab === 7) { setProgressValue(100); }
             }
         }
         if (tab === 4) {
@@ -120,7 +120,7 @@ export default function UploadCustomerData() {
                                         <div id="progrss-wizard" className="twitter-bs-wizard upload_freight_wrap">
                                             <ul className="twitter-bs-wizard-nav nav-justified nav nav-pills">
                                                 <NavItem>
-                                                    <NavLink className={classnames({ active: activeTabProgress === 1 })} onClick={() => { toggleTabProgress(1); }} >
+                                                    <NavLink className={classnames({ active: activeTabProgress === 1 })} /*onClick={() => { toggleTabProgress(1); }} */>
                                                         <div className="step-icon" data-bs-toggle="tooltip" id="CompanyDetails">
                                                             <i className="bx bx-list-ul"></i>
                                                             <UncontrolledTooltip placement="top" target="CompanyDetails">
@@ -130,7 +130,7 @@ export default function UploadCustomerData() {
                                                     </NavLink>
                                                 </NavItem>
                                                 <NavItem>
-                                                    <NavLink className={classnames({ active: activeTabProgress === 2 })} onClick={() => { toggleTabProgress(2); }} >
+                                                    <NavLink className={classnames({ active: activeTabProgress === 2 })} /*onClick={() => { toggleTabProgress(2); }}*/ >
                                                         <div className="step-icon" data-bs-toggle="tooltip" id="Contacts">
                                                             <i className="bx bx-food-menu"></i>
                                                             <UncontrolledTooltip placement="top" target="Contacts">
@@ -140,7 +140,7 @@ export default function UploadCustomerData() {
                                                     </NavLink>
                                                 </NavItem>
                                                 <NavItem>
-                                                    <NavLink className={classnames({ active: activeTabProgress === 3 })} onClick={() => { toggleTabProgress(3); }} >
+                                                    <NavLink className={classnames({ active: activeTabProgress === 3 })} /*onClick={() => { toggleTabProgress(3); }}*/ >
                                                         <div className="step-icon" data-bs-toggle="tooltip" id="Documents">
                                                             <i className="bx bx-book-bookmark"></i>
                                                             <UncontrolledTooltip placement="top" target="Documents">
@@ -149,7 +149,7 @@ export default function UploadCustomerData() {
                                                         </div>
                                                     </NavLink>
                                                 </NavItem>
-                                                <NavItem>
+                                                {/* <NavItem>
                                                     <NavLink className={classnames({ active: activeTabProgress === 4 }, "disabled")} onClick={() => { toggleTabProgress(4); }} >
                                                         <div className="step-icon" data-bs-toggle="tooltip" id="Rates">
                                                             <i className="bx bx-dollar-circle"></i>
@@ -188,7 +188,7 @@ export default function UploadCustomerData() {
                                                             </UncontrolledTooltip>
                                                         </div>
                                                     </NavLink>
-                                                </NavItem>
+                                                </NavItem> */}
                                             </ul>
 
                                             <div id="bar" className="mt-4">

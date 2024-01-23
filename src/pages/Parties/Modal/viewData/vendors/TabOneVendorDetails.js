@@ -30,7 +30,7 @@ const TabOneVendorDetails = ({ viewData }) => {
                   </div>
                   <div className="details">
                     <span className="title">Logo:</span>
-                    <img src={doc} alt={viewData?.uploadDocument} width={150} height={120} />
+                    <img src={viewData?.logo}  width={170} height={120} />
                   </div>
                   <div className="details">
                     <span className="title">Address:</span>

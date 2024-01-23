@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
-import { Card, CardBody, Input } from "reactstrap";
+import { Card, CardBody, FormFeedback, Input } from "reactstrap";
 import { optionVendorType } from "../../../../common/data/procurement";
 import { getCustomersCountryData, getCustomersPincodeData, getCustomersStateData } from "../../../../store/Parties/actions";
 import { getAllCompanyDetailData, getAllSurchargeCategoryData, getAllTableSurchargeAlias } from "../../../../store/Settings/actions";
@@ -36,7 +36,7 @@ const VenderDetails = ({ companyDetailsFormik }) => {
   const [serviceTypeModal, setServiceTypeModal] = useState(false);
   const dispatch = useDispatch();
 
-  const { parties_city_details, parties_all_details, parties_all_employee_details, parties_state_details,parties_country_details, parties_pincode_details } = useSelector(
+  const { parties_city_details, parties_all_details, parties_all_employee_details, parties_state_details, parties_country_details, parties_pincode_details } = useSelector(
     (state) => state?.parties
   );
 
@@ -47,7 +47,7 @@ const VenderDetails = ({ companyDetailsFormik }) => {
     if (parties_country_details && parties_country_details?.content?.length > 0) {
       companyDetailsFormik.setFieldValue("country", parties_country_details?.content[0]?.countryName)
     }
-}, [parties_state_details, parties_country_details, parties_pincode_details, parties_all_details]);
+  }, [parties_state_details, parties_country_details, parties_pincode_details, parties_all_details]);
 
   useEffect(() => {
     dispatch(getAllTableSurchargeAlias());
@@ -74,7 +74,7 @@ const VenderDetails = ({ companyDetailsFormik }) => {
   return (
     <>
       <div className="text-center mb-4">
-        <h5>Vender Details</h5>
+        <h5>Vendor Details</h5>
       </div>
 
       <Card>
@@ -83,7 +83,7 @@ const VenderDetails = ({ companyDetailsFormik }) => {
             <div className="row">
               <div className="col-12 col-md-6">
                 <div className="mb-3">
-                  <label className="form-label">Company name</label>
+                  <label className="form-label">Vendor Name<span className='required_star'>*</span></label>
                   <Input
                     type="text"
                     name="companyName"
@@ -91,7 +91,12 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                     onChange={companyDetailsFormik.handleChange}
                     className="form-control"
                     placeholder=""
+                    onBlur={companyDetailsFormik.handleBlur}
+                    invalid={companyDetailsFormik.touched.companyName && companyDetailsFormik.errors.companyName ? true : false}
                   />
+                  {companyDetailsFormik.touched.companyName && companyDetailsFormik.errors.companyName ? (
+                    <FormFeedback>{companyDetailsFormik.errors.companyName}</FormFeedback>
+                  ) : null}
                 </div>
               </div>
               <div className="col-12 col-md-6">
@@ -124,7 +129,7 @@ const VenderDetails = ({ companyDetailsFormik }) => {
               </div>
               <div className="col-12 col-md-6">
                 <div className="mb-3">
-                  <label className="form-label">City</label>
+                  <label className="form-label">City<span className='required_star'>*</span></label>
 
                   <Input
                     type="text"
@@ -146,7 +151,12 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                     }
                     className="form-control"
                     placeholder=""
+                    onBlur={companyDetailsFormik.handleBlur}
+                    invalid={companyDetailsFormik.touched.city && companyDetailsFormik.errors.city ? true : false}
                   />
+                  {companyDetailsFormik.touched.city && companyDetailsFormik.errors.city ? (
+                    <FormFeedback>{companyDetailsFormik.errors.city}</FormFeedback>
+                  ) : null}
                   <datalist id="cityList">
                     {parties_city_details &&
                       parties_city_details?.content?.map((item, i) => (
@@ -178,16 +188,22 @@ const VenderDetails = ({ companyDetailsFormik }) => {
               </div>
               <div className="col-12 col-md-6">
                 <div className="mb-3">
-                  <label className="form-label">Country</label>
+                  <label className="form-label">Country<span className='required_star'>*</span></label>
                   <Input
                     type="text"
                     name="country"
                     list="countryList"
+                    readOnly
                     value={companyDetailsFormik?.values?.country || ""}
                     onChange={companyDetailsFormik.handleChange}
                     className="form-control"
                     placeholder=""
+                    onBlur={companyDetailsFormik.handleBlur}
+                    invalid={companyDetailsFormik.touched.country && companyDetailsFormik.errors.country ? true : false}
                   />
+                  {companyDetailsFormik.touched.country && companyDetailsFormik.errors.country ? (
+                    <FormFeedback>{companyDetailsFormik.errors.country}</FormFeedback>
+                  ) : null}
                   {/* <datalist id="countryList">
                     {country_list &&
                       country_list.map((item, i) => (
@@ -243,7 +259,7 @@ const VenderDetails = ({ companyDetailsFormik }) => {
             <div className="row">
               <div className="col">
                 <div className="mb-3">
-                  <label className="form-label">Contact Name</label>
+                  <label className="form-label">Contact Name <span className='required_star'>*</span></label>
                   <div className="row">
                     <div className="col-4 col-md-2">
                       <Select
@@ -273,7 +289,12 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                         onChange={companyDetailsFormik.handleChange}
                         className="form-control"
                         placeholder=""
+                        onBlur={companyDetailsFormik.handleBlur}
+                        invalid={companyDetailsFormik.touched.email && companyDetailsFormik.errors.email ? true : false}
                       />
+                      {companyDetailsFormik.touched.email && companyDetailsFormik.errors.email ? (
+                        <FormFeedback>{companyDetailsFormik.errors.email}</FormFeedback>
+                      ) : null}
                     </div>
                   </div>
                 </div>
@@ -283,7 +304,7 @@ const VenderDetails = ({ companyDetailsFormik }) => {
             <div className="row">
               <div className="col-12 col-md-6">
                 <div className="mb-3">
-                  <label className="form-label">Phone Number</label>
+                  <label className="form-label">Phone Number<span className='required_star'>*</span></label>
                   <div className="row">
                     <div className="col-4 col-md-3">
                       <Select
@@ -313,14 +334,19 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                         onChange={companyDetailsFormik.handleChange}
                         className="form-control"
                         placeholder=""
+                        onBlur={companyDetailsFormik.handleBlur}
+                        invalid={companyDetailsFormik.touched.phoneNumber && companyDetailsFormik.errors.phoneNumber ? true : false}
                       />
+                      {companyDetailsFormik.touched.phoneNumber && companyDetailsFormik.errors.phoneNumber ? (
+                        <FormFeedback>{companyDetailsFormik.errors.phoneNumber}</FormFeedback>
+                      ) : null}
                     </div>
                   </div>
                 </div>
               </div>
               <div className="col-12 col-md-6">
                 <div className="">
-                  <label className="form-label">Email Id</label>
+                  <label className="form-label">Email Id<span className='required_star'>*</span></label>
                 </div>
                 <Input
                   type="text"
@@ -328,8 +354,14 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                   value={companyDetailsFormik.values.email}
                   onChange={companyDetailsFormik.handleChange}
                   className="form-control"
-                  placeholder=""
+                  placeholder="Enter your email address"
+                  required={true}
+                  onBlur={companyDetailsFormik.handleBlur}
+                  invalid={companyDetailsFormik.touched.email && companyDetailsFormik.errors.email ? true : false}
                 />
+                {companyDetailsFormik.touched.email && companyDetailsFormik.errors.email ? (
+                  <FormFeedback>{companyDetailsFormik.errors.email}</FormFeedback>
+                ) : null}
               </div>
             </div>
 
@@ -404,7 +436,7 @@ const VenderDetails = ({ companyDetailsFormik }) => {
             <div className="row">
               <div className="col-12 col-md-6">
                 <div className="mb-3">
-                  <label className="form-label">Vender Type</label>
+                  <label className="form-label">Vender Type<span className='required_star'>*</span></label>
                   <Select
                     name="venderType"
                     id="venderType"
@@ -415,7 +447,12 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                     options={optionVendorType}
                     // options={[...optionVendorType,{ label: "Add New", value: "Add New"}]}
                     classNamePrefix="select2-selection form-select"
+                    onBlur={companyDetailsFormik.handleBlur}
+                    invalid={companyDetailsFormik.touched.venderType || companyDetailsFormik.errors.venderType ? true : false}
                   />
+                  {companyDetailsFormik.touched.venderType || companyDetailsFormik.errors.venderType ? (
+                    <FormFeedback>{companyDetailsFormik.errors.venderType}</FormFeedback>
+                  ) : null}
                 </div>
               </div>
               <div className="col-12 col-md-6">
