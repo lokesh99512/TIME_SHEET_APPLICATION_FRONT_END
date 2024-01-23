@@ -39,7 +39,9 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
     const { parties_city_details, parties_all_details, parties_all_employee_details, parties_state_details, parties_country_details, parties_pincode_details } = useSelector(
         (state) => state?.parties
     );
-
+    const { customer_id} = useSelector(
+        (state) => state?.customer
+    );
     const onCloseClick = () => {
         setGstModal(false);
         setDepartmentModal(false)
@@ -107,10 +109,10 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                 "logo": null,
                 "logoPath": image?.preview || "",
                 "address": values.address || null,
-                ...(!!(navigateState?.state &&navigateState?.state.data) && {
-                    id: navigateState?.state?.data?.id || null,
-                    version: navigateState?.state?.data?.version || 0,
-                    logoPath:image?.path ?image?.path: navigateState?.state?.data?.logoPath
+                ...((!!(navigateState?.state && navigateState?.state.data)  ||  !!customer_id) && {
+                    id: customer_id? customer_id.id: navigateState?.state?.data?.id || null,
+                    version: customer_id? customer_id.version: navigateState?.state?.data?.version || 0,
+                    logoPath: image?.path ? image?.path : navigateState?.state?.data?.logoPath
                 }),
                 ...(pincodeVal?.length !== 0 && {
                     "pinCode": {
