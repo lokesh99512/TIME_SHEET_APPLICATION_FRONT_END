@@ -9,8 +9,8 @@ import fileData from '../../../../assets/extra/FclUplaodFormat.xlsx';
 import { delete_icon } from '../../../../assets/images';
 import { optionRateSource, optionRateType, optionValidityApp, optionVendorType } from '../../../../common/data/procurement';
 import { formatBytes, isAnyValueEmpty, isAnyValueEmptyInArray, isExcelFile } from '../../../../components/Common/CommonLogic';
-import { addFCLData, getFclDestinationAction, updateFCLActiveTab, uploadFclCarrierData, uploadFclFrightData, uploadFclSurchargeData } from '../../../../store/Procurement/actions';
-import { BLANK_FCL_CARRIER_DATA, BLANK_SURCHARGE_DATA, FCL_FREIGHT_FAILD_POPUP_TYPE, UPDATE_FCL_ACTIVE_TAB } from '../../../../store/Procurement/actiontype';
+import { addFCLData, updateFCLActiveTab, uploadFclCarrierData, uploadFclFrightData, uploadFclSurchargeData } from '../../../../store/Procurement/actions';
+import { BLANK_FCL_CARRIER_DATA, BLANK_SURCHARGE_DATA, FCL_FREIGHT_FAILD_POPUP_TYPE } from '../../../../store/Procurement/actiontype';
 
 export default function UploadFreightData() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
@@ -222,6 +222,9 @@ export default function UploadFreightData() {
             }
         }
     }
+
+    console.log(fclfaildData,"fclfaildData");
+    console.log(fclPopup,"fclPopup");
 
     return (
         <>
@@ -601,19 +604,33 @@ export default function UploadFreightData() {
                     </div>
                 </Container>
             </div>
+            {console.log(fclfaildData?.data?.url,"fclfaildData?.data?.url")}
 
             {/* modal */}
-            <Modal isOpen={fclPopup} className='data_failed_popup'>
+            <Modal isOpen={fclPopup} className='confirm_modal_wrap' >
+                <div className="modal-header">
+                    <button
+                        type="button"
+                        onClick={() => {
+                            dispatch({type: FCL_FREIGHT_FAILD_POPUP_TYPE, payload: false})
+                        }}
+                        className="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <div className="modal-body pb-4">
-                <div className='modal_icon text-center'>
-                        <i className="bx bx-error"></i>
-                        {/* <h2 className='text-center'>{fclfaildData?.data?.status}</h2> */}
-                        <h2 className='text-center'>File Was Not Uploaded.</h2>
+                    <div className='alert alert-danger text-center'>
+                        <i className="mdi mdi-block-helper"></i>
+                        <h2 className='text-center'>{fclfaildData?.data?.status}</h2>
                     </div>
+                    <h6 className='text-center'>File Was Not Uploaded.</h6>
                     <div id="bar" className="mt-4">
                         <Progress color="success" striped animated value={Number(fclfaildData?.data?.success || 0) * 100 / Number(fclfaildData?.data?.totalUploaded || 0)} />
                     </div>
-                    <div className='mt-4 d-flex justify-content-between align-items-center'>
+                    <div className='mt-4'>
                         <p className='m-0'><b>Failed:</b> {fclfaildData?.data?.failed || 0}</p>
                         <p className='my-1'><b>Success:</b> {fclfaildData?.data?.success || 0}</p>
                         <p className='m-0'><b>Total Data Uploaded:</b> {fclfaildData?.data?.totalUploaded || 0}</p>
@@ -631,11 +648,7 @@ export default function UploadFreightData() {
                         Close
                     </button>
                         
-                    <a href={fclfaildData?.url} download={fclfaildData?.filename} className='btn btn-primary'>Download</a>
-
-                    {(fclfaildData?.data?.success > 0 && fclfaildData?.data?.totalUploaded !== fclfaildData?.data?.failed) && (
-                        <span className='text-decoration-underline text-primary' onClick={() => { dispatch(getFclDestinationAction(fcl_charge_id)); dispatch({type: UPDATE_FCL_ACTIVE_TAB, payload: {tab: 3}});dispatch({type: FCL_FREIGHT_FAILD_POPUP_TYPE, payload: false}); }}>Proceed with error</span>              
-                    )}
+                    <a href={fclfaildData?.url} download={fclfaildData?.filename}>Download</a>                    
                 </div>
             </Modal>
             <Modal

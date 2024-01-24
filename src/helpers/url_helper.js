@@ -180,10 +180,8 @@ export const Post_Surcharge_Data= "/api/v1/surcharge-code/"
 
 // FCL
 export const Get_FCL_Data= "/api/v1/tenant-ocean-fcl-rp/"
-// export const Get_FCL_View_Freight_Data= "/api/v1/tenant-ocean-fcl-rp/freight-details/"
-export const Get_FCL_View_Freight_Data= "/api/v2/tenant-ocean-fcl-rp/freight-details/"
+export const Get_FCL_View_Freight_Data= "/api/v1/tenant-ocean-fcl-rp/freight-details/"
 export const Get_FCL_View_Surcharge_Data= "/api/v1/tenant-ocean-fcl-rp/freight-surcharge-details/"
-// export const Get_FCL_View_Surcharge_Data= "/api/v2/tenant-ocean-fcl-rp/freight-surcharge-details/"
 export const Get_FCL_destination_Data= "/api/v1/tenant-ocean-fcl-rp/od-details/"
 export const Upload_FCL_Carrier_Data= "/api/v1/tenant-ocean-fcl-rp/"
 export const Upload_FCL_freight_Data= "/api/v1/tenant-ocean-fcl-rp/upload/freight/"
