@@ -367,7 +367,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                                     type="number"
                                     name={`${rateId}_unit`}
                                     id={`${rateId}_unit`}
-                                    value={searchForm?.container_type?.containerArray?.length !== 0 ? searchForm?.container_type?.containerArray?.find((item) => item.label === label)?.unitNew : unitValue[rateId]}
+                                    value={searchForm?.container_type?.containerArray !== undefined ? searchForm?.container_type?.containerArray?.find((item) => item.label === label)?.unitNew : unitValue[rateId] || 0}
                                     onChange={(e) => {
                                       e.stopPropagation();
                                       handleQuantity(e, rateId, { id, value, label, version, size, rateId }, 'container_type');
@@ -633,7 +633,6 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                 <div className="icon d-flex align-items-center justify-content-center">
                   <img src={cube_filled} alt="Avatar" />
                 </div>
-                {console.log(customerName,"customerName")}
                 <div className="con">
                   <label className="form-label">Customer Name</label>
                   <Select

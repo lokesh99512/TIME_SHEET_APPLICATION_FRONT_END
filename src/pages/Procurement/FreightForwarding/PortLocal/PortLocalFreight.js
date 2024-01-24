@@ -23,7 +23,7 @@ export default function PortLocalFreight() {
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
     const dispatch = useDispatch();
-    const portLocalData = useSelector((state) => state.procurement.portLocalChargesData);
+    const {portLocalChargesData, fclplChargesLoader} = useSelector((state) => state.procurement);
 
     const viewPopupHandler = (data) => {
         setModal(true);
@@ -41,20 +41,20 @@ export default function PortLocalFreight() {
 
     const applyFilterHandler = () => {
         setIsRight(false);
-        let newArr = [...portLocalData];
-        const filteredDataArr = newArr.filter(item => {
-            const isPortNameMatch = filterDetails?.port_name?.value === '' ||
-              item?.port_name?.toLowerCase().includes(filterDetails?.port_name?.value?.toLowerCase());
+        // let newArr = [...portLocalChargesData];
+        // const filteredDataArr = newArr.filter(item => {
+        //     const isPortNameMatch = filterDetails?.port_name?.value === '' ||
+        //       item?.port_name?.toLowerCase().includes(filterDetails?.port_name?.value?.toLowerCase());
           
-            const isCarrierNameMatch = filterDetails?.carrier_name?.value === '' ||
-              item?.carrier_name?.toLowerCase().includes(filterDetails?.carrier_name?.value?.toLowerCase());
+        //     const isCarrierNameMatch = filterDetails?.carrier_name?.value === '' ||
+        //       item?.carrier_name?.toLowerCase().includes(filterDetails?.carrier_name?.value?.toLowerCase());
           
-            const isMovementMatch = filterDetails?.org_port?.value === '' ||
-              item?.movement_type?.toLowerCase().includes(filterDetails?.movement_type?.value?.toLowerCase());
+        //     const isMovementMatch = filterDetails?.org_port?.value === '' ||
+        //       item?.movement_type?.toLowerCase().includes(filterDetails?.movement_type?.value?.toLowerCase());
           
-            return isCarrierNameMatch && isPortNameMatch && isMovementMatch;
-        });
-        dispatch({type: FILTER_PORTLOCALCHARGES_DATA, payload: filteredDataArr});
+        //     return isCarrierNameMatch && isPortNameMatch && isMovementMatch;
+        // });
+        // dispatch({type: FILTER_PORTLOCALCHARGES_DATA, payload: filteredDataArr});
     }
     const clearValueHandler = () => {
         setfilterDetails(inputArr)
@@ -195,12 +195,13 @@ export default function PortLocalFreight() {
                         {/* React Table */}
                         <TableReact
                             columns={columns}
-                            data={portLocalData?.content || []}
+                            data={portLocalChargesData?.content || []}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}
                             toggleRightCanvas={toggleRightCanvas}
                             component={'PortLocalCharges'}
+                            loader={fclplChargesLoader || false}
                         />
 
                         {/* modal */}

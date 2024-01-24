@@ -87,7 +87,7 @@ export default function FclOceanFreight() {
             version: data.version,
             status: data.status === "ACTIVE" ? "INACTIVE" : "ACTIVE"
         }
-        console.log(obj,"obj");
+        console.log(obj,"obj fcl");
         dispatch(uploadFclCarrierData({ ...obj }));
     }
 

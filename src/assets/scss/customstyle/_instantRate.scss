@@ -1,5 +1,22 @@
 .instant_rate_wrapper.create_sales_wrapper {
     @include borderRadius(6px);
+    .main_tab_wrap {
+        button {
+            border-radius: 12px;
+            border: 1px solid $neutral_3;
+            background: $white;
+            @include font($font-weight-normal,14px,normal,$neutral_5);
+            gap: 10px;
+            &.active {
+                background-color: $primary_7;
+                border-color: $primary_7;
+                color: $white;
+                svg path{
+                    fill: $white;
+                }
+            }
+        }
+    }
     .card-header-tabs {
         margin: 0;
         .nav-item .nav-link{
