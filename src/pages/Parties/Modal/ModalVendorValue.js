@@ -61,11 +61,11 @@ const ModalVendorValue = ({ viewData, modal, onCloseClick }) => {
                                                 Documents
                                             </NavLink>
                                         </NavItem>
-                                        <NavItem>
+                                        {/* <NavItem>
                                             <NavLink href="#" className={classnames({ active: activeTab === "4", }, "px-3")} onClick={() => { toggleTab("4") }} >
                                                 Communications
                                             </NavLink>
-                                        </NavItem>
+                                        </NavItem> */}
                                     </Nav>
                                 </CardBody>
                             </Card>
@@ -81,7 +81,7 @@ const ModalVendorValue = ({ viewData, modal, onCloseClick }) => {
                                 <TabPane tabId="3">
                                     <TabThreeDocuments viewData={viewData} />
                                 </TabPane>
-                                <TabPane tabId="4">
+                                {/* <TabPane tabId="4">
                                     <>
                                         <Card className="m-4">
                                             <CardBody>
@@ -89,7 +89,7 @@ const ModalVendorValue = ({ viewData, modal, onCloseClick }) => {
                                             </CardBody>
                                         </Card>
                                     </>
-                                </TabPane>
+                                </TabPane> */}
                             </TabContent>
                         </div>
                     </Row>

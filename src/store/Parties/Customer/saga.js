@@ -8,14 +8,14 @@ import { Get_File_URL } from "../../../helpers/url_helper";
 function* fetchPartiesCustomerSaga() {
     try {
         const response = yield call(getCustomerDataSer);
-        if (response && response.content && response.content) {
-            response?.content?.forEach(element => {
-                let imageData = element.logoPath;
-                const base64Encoded = window.btoa(imageData);
-                element.logo =(!!(imageData)? `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`:'');
-            });
-        }
         console.log(response, "reponse into getAllPartiesCompanySettings");
+        // if (response && response.content && response.content) {
+        //     response?.content?.forEach(element => {
+        //         let imageData = element.logoPath;
+        //         const base64Encoded = window.btoa(imageData);
+        //         element.logo =(!!(imageData)? `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`:'');
+        //     });
+        // }
         yield put({ type: GET_PARTIES_CUSTOMER_DETAILS_TYPE_SUCCESS, payload: response });
     } catch (error) {
         console.log(error, "saga getAllCompanySettings api error");

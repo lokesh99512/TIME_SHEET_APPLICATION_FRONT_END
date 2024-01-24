@@ -38,8 +38,7 @@ export default function UploadVendorData() {
         dispatch(getAllCompanyDetailData());
     }, []);
 
-    console.log(vendor_active_Tab, "vendor_active_Tab");
-    console.log(navigateState?.state);
+
     useEffect(() => {
         setActiveTabProgress(vendor_active_Tab.tab)
         if (vendor_active_Tab.tab === 1) { setProgressValue(33) }
@@ -53,8 +52,8 @@ export default function UploadVendorData() {
 
     const finalSaveButton = () => {
         setSurcharges([]);
-        setActiveTabProgress(1);
-        setProgressValue(25);
+        setActiveTabProgress(3);
+        setProgressValue(100);
         dispatch({ type: BLANK_CARRIER_DATA });
         setOpenSaveModal(false);
     };
@@ -116,6 +115,7 @@ export default function UploadVendorData() {
             email: Yup.string().email('Invalid email address').required('Email is required'),
             contactName: Yup.string().required("Please Enter Your contact Name"),
             phoneNumber: Yup.string().required("Please Enter Your Phone Number"),
+            venderType: Yup.string().required("Please select vender type"),
         }),
         onSubmit: async ({ image, ...value }) => {
             let countryVal = parties_country_details?.content?.filter((con) => con?.countryName === value?.country) || [];
@@ -181,8 +181,9 @@ export default function UploadVendorData() {
 
             formData.append('file', image);
             formData.append('tenantVendor', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
-
+           
             dispatch(postVendorDetailsAction(formData));
+            console.log(vendor_id);
         },
     });
     const contactsFormik = useFormik({
@@ -228,6 +229,14 @@ export default function UploadVendorData() {
                 },
             ],
         },
+        validationSchema: Yup.object({
+            document: Yup.array().of(
+                Yup.object({
+                    documentType: Yup.string().required("Please select document type"),
+                    uploadDocument: Yup.string().required("Please select upload document"),
+                })
+            ),
+        }),
         onSubmit: (values) => {
             console.log("document submit", values);
             let data = values?.document?.map((val) => {
@@ -238,7 +247,7 @@ export default function UploadVendorData() {
                         "version": vendor_id?.version || '',
                         "documents": [
                             {
-                                "documentType": val?.documentType?.value || '',
+                                "documentType": val?.documentType || '',
                                 "document": null,
                                 "documentPath": val?.uploadDocument?.name || '',
                             }

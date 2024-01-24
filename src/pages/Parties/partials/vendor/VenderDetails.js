@@ -290,10 +290,10 @@ const VenderDetails = ({ companyDetailsFormik }) => {
                         className="form-control"
                         placeholder=""
                         onBlur={companyDetailsFormik.handleBlur}
-                        invalid={companyDetailsFormik.touched.email && companyDetailsFormik.errors.email ? true : false}
+                        invalid={companyDetailsFormik.touched.contactName && companyDetailsFormik.errors.contactName ? true : false}
                       />
-                      {companyDetailsFormik.touched.email && companyDetailsFormik.errors.email ? (
-                        <FormFeedback>{companyDetailsFormik.errors.email}</FormFeedback>
+                      {companyDetailsFormik.touched.contactName && companyDetailsFormik.errors.contactName ? (
+                        <FormFeedback>{companyDetailsFormik.errors.contactName}</FormFeedback>
                       ) : null}
                     </div>
                   </div>

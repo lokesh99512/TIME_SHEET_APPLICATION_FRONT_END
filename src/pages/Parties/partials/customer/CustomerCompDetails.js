@@ -57,7 +57,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
     const gstDetailsHandler = (data) => {
         setModalAllData((prev) => ([...prev, data]))
     }
-
+    
     const companyDetailsFormik = useFormik({
         initialValues: {
             image: navigateState?.state?.data?.logo || "",
@@ -467,7 +467,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                         </div>
                         <div className="col-12 col-md-6">
                             <div className="">
-                                <label className="form-label">Email Id</label>
+                                <label className="form-label">Email Id<span className='required_star'>*</span></label>
                             </div>
                             <Input
                                 type="text"

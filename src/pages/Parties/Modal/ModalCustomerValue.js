@@ -70,7 +70,7 @@ const ModalCustomerValue = ({ viewData, modal, onCloseClick }) => {
                                                 onClick={() => { toggleTab(`${viewData?.id}_3`) }}
                                             >Documents</NavLink>
                                         </NavItem>
-                                        <NavItem>
+                                        {/* <NavItem>
                                             <NavLink
                                                 href="#"
                                                 className={classnames({
@@ -105,7 +105,7 @@ const ModalCustomerValue = ({ viewData, modal, onCloseClick }) => {
                                                 }, "px-3")}
                                                 onClick={() => { toggleTab(`${viewData?.id}_7`) }}
                                             >Communications</NavLink>
-                                        </NavItem>
+                                        </NavItem> */}
                                     </Nav>
                                 </CardBody>
                             </Card>
@@ -126,7 +126,7 @@ const ModalCustomerValue = ({ viewData, modal, onCloseClick }) => {
                                 </TabPane>
 
                                 {/* Customer Rates */}
-                                <TabPane tabId={`${viewData?.id}_4`}>
+                                {/* <TabPane tabId={`${viewData?.id}_4`}>
                                     <>
                                         <Card className="m-4">
                                             <CardBody>
@@ -134,10 +134,10 @@ const ModalCustomerValue = ({ viewData, modal, onCloseClick }) => {
                                             </CardBody>
                                         </Card>
                                     </>
-                                </TabPane>
+                                </TabPane> */}
 
                                 {/* Customer discounts */}
-                                <TabPane tabId={`${viewData?.id}_5`}>
+                                {/* <TabPane tabId={`${viewData?.id}_5`}>
                                     <>
                                         <Card className="m-4">
                                             <CardBody>
@@ -145,10 +145,10 @@ const ModalCustomerValue = ({ viewData, modal, onCloseClick }) => {
                                             </CardBody>
                                         </Card>
                                     </>
-                                </TabPane>
+                                </TabPane> */}
 
                                 {/* Customer Invoice */}
-                                <TabPane tabId={`${viewData?.id}_6`}>
+                                {/* <TabPane tabId={`${viewData?.id}_6`}>
                                     <>
                                         <Card className="m-4">
                                             <CardBody>
@@ -156,10 +156,10 @@ const ModalCustomerValue = ({ viewData, modal, onCloseClick }) => {
                                             </CardBody>
                                         </Card>
                                     </>
-                                </TabPane>
+                                </TabPane> */}
 
                                 {/* Customer Communication */}
-                                <TabPane tabId={`${viewData?.id}_7`}>
+                                {/* <TabPane tabId={`${viewData?.id}_7`}>
                                     <>
                                         <Card className="m-4">
                                             <CardBody>
@@ -167,7 +167,7 @@ const ModalCustomerValue = ({ viewData, modal, onCloseClick }) => {
                                             </CardBody>
                                         </Card>
                                     </>
-                                </TabPane>
+                                </TabPane> */}
                             </TabContent>
                         </div>
                     </Row>
