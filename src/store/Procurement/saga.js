@@ -58,7 +58,7 @@ function* postFclUploadSaga({ payload: { dataObj } }) {
         yield put({type: GET_FCL_CHARGE_ID, payload: response?.id});
         yield put({type: UPDATE_FCL_ACTIVE_TAB, payload: {tab: 2}});
     } catch (error) {
-        showErrorToast(error?.message);
+        showErrorToast(error?.response?.data?.message);
     }
 }
 
@@ -127,7 +127,7 @@ function* postFclSurchargeUploadSaga({ payload: { data, id } }) {
         showSuccessToast("Update Successfully");
         yield put({type: UPDATE_FCL_ACTIVE_TAB, payload: {tab: 1}});
     } catch (error) {
-        showErrorToast(error?.message);
+        showErrorToast(error?.response?.data?.message);
     }
 }
 
@@ -142,15 +142,13 @@ function* fetchPLChargesData() {
     }
 }
 function* postPLChargesData({payload: { dataObj }}) {
-    console.log(dataObj, "dataObj");
     try {
         const response = yield call(postFclPLUploadSer, dataObj);        
         console.log(response, "response port local");
         // yield put({type: GET_FCL_CHARGE_ID, payload: response?.id});
         showSuccessToast("Update Successfully");
     } catch (error) {
-        console.log(error, "error port local");
-        showErrorToast(error?.message);
+        showErrorToast(error?.response?.data?.message);
     }
 }
 
@@ -197,7 +195,7 @@ function* postFCLInLandSaga({ payload: { dataObj } }) {
         showSuccessToast("Update Successfully");
     } catch (error) {
         console.log(error, "error");
-        showErrorToast(error?.message);
+        showErrorToast(error?.response?.data?.message);
     }
 }
 function* postFCLInLandFreightSaga({ payload: { formData, id } }) {
@@ -227,7 +225,7 @@ function* postFCLInLandSurchargeSaga({ payload: { data } }) {
         yield put({type: UPDATE_INLAND_ACTIVE_TAB, payload: {tab: 1}});
     } catch (error) {
         console.log(error, "error");
-        showErrorToast(error?.message);
+        showErrorToast(error?.response?.data?.message);
     }
 }
 

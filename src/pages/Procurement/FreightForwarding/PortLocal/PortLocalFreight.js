@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap'
 import { edit_icon } from '../../../../assets/images'
 import { portLocalBreadcrumb } from '../../../../common/data/procurement'
-import { getPortLocalChargesData } from '../../../../store/Procurement/actions'
+import { getPortLocalChargesData, postPortLocalChargesData } from '../../../../store/Procurement/actions'
 import { FILTER_PORTLOCALCHARGES_DATA } from '../../../../store/Procurement/actiontype'
 import FilterPortCanvasComp from '../Modal/FilterPortCanvasComp'
 import ModalSurchargeValue from '../Modal/ModalSurchargeValue'
@@ -59,6 +59,17 @@ export default function PortLocalFreight() {
     const clearValueHandler = () => {
         setfilterDetails(inputArr)
         dispatch(getPortLocalChargesData());
+    }
+
+    // Activate deactivate table data
+    const switchHandler = (data) => {
+        let obj = {
+            id: data.id,
+            version: data.version,
+            status: data.status === "ACTIVE" ? "INACTIVE" : "ACTIVE"
+        }
+        console.log(obj,"port obj");
+        dispatch(postPortLocalChargesData(obj));
     }
 
     useEffect(() => {
@@ -150,12 +161,12 @@ export default function PortLocalFreight() {
                             <DropdownItem>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
                             {/* <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem> */}
                             <DropdownItem onClick={(e) => e.stopPropagation()}>
-                                Activate
+                                {cellProps.row.original?.status === "ACTIVE" ? "Activate" : "Deactive"}
                                 <div className="switch_wrap">
                                     <FormGroup switch>
                                         <Input 
                                         type="switch"
-                                        checked={cellProps.row.original?.is_active || false}
+                                        checked={cellProps.row.original?.status === "ACTIVE" || false}
                                         onClick={() => {
                                             switchHandler(cellProps.row.original);
                                         }}

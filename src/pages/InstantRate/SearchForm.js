@@ -633,6 +633,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                 <div className="icon d-flex align-items-center justify-content-center">
                   <img src={cube_filled} alt="Avatar" />
                 </div>
+                {console.log(customerName,"customerName")}
                 <div className="con">
                   <label className="form-label">Customer Name</label>
                   <Select
@@ -641,7 +642,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                     onChange={(opt) => {
                       handleChangeHandler(opt, "customerName");
                     }}
-                    options={customerName}
+                    options={customerName?.length !== 0 ? customerName : [{label: "rajesh", value: 121, version: 1}]}
                     placeholder="Select Customer"
                     classNamePrefix="select2-selection form-select"
                     menuPlacement="auto"
