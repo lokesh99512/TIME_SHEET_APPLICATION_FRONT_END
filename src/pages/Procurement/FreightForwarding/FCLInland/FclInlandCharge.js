@@ -4,7 +4,7 @@ import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input
 
 import { edit_icon, eye_icon } from '../../../../assets/images';
 import { inLandBreadcrumb, inLandRateData } from '../../../../common/data/procurement';
-import { getInLandData, getInLandFreightAction, getInLandSurchargeAction, updateInLandSwitchData } from '../../../../store/Procurement/actions';
+import { getInLandData, getInLandFreightAction, getInLandSurchargeAction, updateInLandSwitchData, uploadFclInlandCarrierAction } from '../../../../store/Procurement/actions';
 import FilterOffCanvasComp from '../Modal/FilterOffCanvasComp';
 import ModalFclInlandCharge from '../Modal/ModalFclInlandCharge';
 import { CarrierName, ChargeId, CommonReplaceValue, CommonValue, ValidTill, VendorName } from '../partials/OceanCol';
@@ -61,7 +61,13 @@ const FclInlandCharge = () => {
 
     // Activate deactivate table data
     const switchHandler = (data) => {
-        dispatch(updateInLandSwitchData(data.id, data.is_active));
+        let obj = {
+            id: data.id,
+            version: data.version,
+            status: data.status === "ACTIVE" ? "INACTIVE" : "ACTIVE"
+        }
+        console.log(obj, "obj inland");
+        dispatch(uploadFclInlandCarrierAction(obj));
     }
 
     useEffect(() => {

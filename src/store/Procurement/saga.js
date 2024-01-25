@@ -6,9 +6,7 @@ import { getAirConsoleDataSuccessById, getAirwaybillDataByIdResponse,getAirConso
 import {POST_CARRIER_DATA_CONSOLE , GET_CONSOLE_TABLE_DATA_BY_ID,GET_UPLOAD_STATUS_SUCCESS,GET_UPLOAD_STATUS,GET_WAYBILL_TABLE_DATA_BY_ID, POST_CARRIER_DATA,FCL_FREIGHT_FAILD_DATA_TYPE, FCL_FREIGHT_FAILD_POPUP_TYPE, GET_CONSOLE_TABLE_DATA, GET_FCL_CHARGE_ID, GET_FCL_DESTINATION_DATA, GET_FCL_DESTINATION_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_DATA, GET_FCL_FREIGHT_VIEW_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_LOADER, GET_FCL_INLAND_CHARGE_ID, GET_FCL_INLAND_FREIGHT_ACTION, GET_FCL_INLAND_FREIGHT_ACTION_SUCCESS, GET_FCL_INLAND_FREIGHT_LOADER, GET_FCL_INLAND_LOADER, GET_FCL_INLAND_SURCHARGE_ACTION, GET_FCL_INLAND_SURCHARGE_ACTION_SUCCESS, GET_FCL_INLAND_SURCHARGE_LOADER, GET_FCL_INLAND_TABLE_DATA, GET_FCL_LOADER, GET_FCL_SURCHARGE_VIEW_DATA, GET_FCL_SURCHARGE_VIEW_DATA_SUCCESS, GET_FCL_SURCHARGE_VIEW_LOADER, GET_FCL_TABLE_DATA, GET_LCL_TABLE_DATA, GET_PORTLOCALCHARGES_TABLE_DATA, GET_WAYBILL_TABLE_DATA, UPDATE_FCL_ACTIVE_TAB, UPDATE_INLAND_ACTIVE_TAB, UPLOAD_FCL_CARRIER_DATA, UPLOAD_FCL_FREIGHT, UPLOAD_FCL_INLAND_CARRIER_DATA, UPLOAD_FCL_INLAND_FREIGHT_DATA, UPLOAD_FCL_INLAND_SURCHARGE_DATA, UPLOAD_FCL_PORTLOCALCHARGES, UPLOAD_FCL_SURCHARGE } from "./actiontype";
 import { GetFileSer } from "../../helpers/services/GlobalService";
 import { Get_File_URL } from "../../helpers/url_helper";
-import axios from "axios";
-import {fetcAirFreighConsoletData,fetcAirConsoleTableData,uploadConsoleAirRateData,postAirConsoleUploadService,postAirUploadService,uploadAirRateData,getAirMWBData,getAirFreightData} from  "../../helpers/services/AirService";
-import {getUploadStatus} from   "../../helpers/services/GlobalService";
+
 
 function* fetchFclData() {
     yield put({type: GET_FCL_LOADER, payload: true});
@@ -59,7 +57,7 @@ function* postFclUploadSaga({ payload: { dataObj } }) {
         yield put({type: GET_FCL_CHARGE_ID, payload: response?.id});
         yield put({type: UPDATE_FCL_ACTIVE_TAB, payload: {tab: 2}});
     } catch (error) {
-        showErrorToast(error?.message);
+        showErrorToast(error?.response?.data?.message);
     }
 }
 
@@ -132,31 +130,31 @@ function* postFclSurchargeUploadSaga({ payload: { data, id } }) {
         showSuccessToast("Update Successfully");
         yield put({type: UPDATE_FCL_ACTIVE_TAB, payload: {tab: 1}});
     } catch (error) {
-        console.log(error, "error");
-        showErrorToast(error?.message);
+        showErrorToast(error?.response?.data?.message);
     }
 }
 
 // ------------------ FCL Port & Local Charges ------------------
 function* fetchPLChargesData() {
+    yield put({type: GET_FCL_PLCHARGES_LOADER, payload: true});
     try {
         const response = yield call(getPortLocalChargesTableData);
         console.log("response", response)
         yield put(getPortLocalChargesDataSuccess(response));
+        yield put({type: GET_FCL_PLCHARGES_LOADER, payload: false});
     } catch (error) {
         yield put(getPortLocalChargesDataFail(error));
+        yield put({type: GET_FCL_PLCHARGES_LOADER, payload: false});
     }
 }
 function* postPLChargesData({payload: { dataObj }}) {
-    console.log(dataObj, "dataObj");
     try {
         const response = yield call(postFclPLUploadSer, dataObj);        
         console.log(response, "response port local");
         // yield put({type: GET_FCL_CHARGE_ID, payload: response?.id});
         showSuccessToast("Update Successfully");
     } catch (error) {
-        console.log(error, "error port local");
-        showErrorToast(error?.message);
+        showErrorToast(error?.response?.data?.message);
     }
 }
 
@@ -203,7 +201,7 @@ function* postFCLInLandSaga({ payload: { dataObj } }) {
         showSuccessToast("Update Successfully");
     } catch (error) {
         console.log(error, "error");
-        showErrorToast(error?.message);
+        showErrorToast(error?.response?.data?.message);
     }
 }
 function* postFCLInLandFreightSaga({ payload: { formData, id } }) {
@@ -225,7 +223,7 @@ function* postFCLInLandSurchargeSaga({ payload: { data } }) {
         yield put({type: UPDATE_INLAND_ACTIVE_TAB, payload: {tab: 1}});
     } catch (error) {
         console.log(error, "error");
-        showErrorToast(error?.message);
+        showErrorToast(error?.response?.data?.message);
     }
 }
 

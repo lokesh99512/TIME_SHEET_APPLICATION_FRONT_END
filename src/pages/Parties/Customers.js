@@ -176,6 +176,7 @@ const Customers = () => {
     ],
     []
   );
+  // console.log(typeof customer_data,"customer_data")
   return (
     <>
       <div className="page-content settings_users_wrapper">

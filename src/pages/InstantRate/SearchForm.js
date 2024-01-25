@@ -367,7 +367,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                                     type="number"
                                     name={`${rateId}_unit`}
                                     id={`${rateId}_unit`}
-                                    value={searchForm?.container_type?.containerArray?.length !== 0 ? searchForm?.container_type?.containerArray?.find((item) => item.label === label)?.unitNew : unitValue[rateId]}
+                                    value={searchForm?.container_type?.containerArray !== undefined ? searchForm?.container_type?.containerArray?.find((item) => item.label === label)?.unitNew : unitValue[rateId] || 0}
                                     onChange={(e) => {
                                       e.stopPropagation();
                                       handleQuantity(e, rateId, { id, value, label, version, size, rateId }, 'container_type');
@@ -641,7 +641,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                     onChange={(opt) => {
                       handleChangeHandler(opt, "customerName");
                     }}
-                    options={customerName}
+                    options={customerName?.length !== 0 ? customerName : [{label: "rajesh", value: 121, version: 1}]}
                     placeholder="Select Customer"
                     classNamePrefix="select2-selection form-select"
                     menuPlacement="auto"

@@ -309,12 +309,7 @@ const SidebarContent = props => {
                   <Link to="/settings/users">
                     <span>Users</span>
                   </Link>
-                </li>
-                <li>
-                  <Link to="/upload-status">
-                    <span>Upload Status</span>
-                  </Link>
-                </li>
+                </li>                
                 <li>
                   <Link to="/settings/surcharge">
                     <span>Surcharge Master</span>
@@ -340,6 +335,11 @@ const SidebarContent = props => {
                 <li>
                   <Link to="/vendors">
                     <span>Vendors</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/upload-status">
+                    <span>Upload Status</span>
                   </Link>
                 </li>
                 <li className="opacity-25">

@@ -170,10 +170,9 @@ export default function UploadPortLocalChargesData() {
           }
         })
       }
-
-      console.log(data, "data");
-      // dispatch(postPortLocalChargesData(data));
-      // formik.resetForm();
+      
+      dispatch(postPortLocalChargesData(data));
+      formik.resetForm();
     },
   });
 

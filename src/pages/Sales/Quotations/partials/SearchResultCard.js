@@ -105,6 +105,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                 <div className="search_result_card_header d-flex align-items-center">
                                     <div className="card_img">
                                         <span className='d-flex align-items-center justify-content-center img mx-auto'>
+                                            {/* <img src={item?.carrierLogo ? item?.carrierLogo : cube_filled} alt="Logo" /> */}
                                             <img src={item?.carrierName?.toLowerCase() === 'oocl' ? oocl_logo : item?.carrierName?.toLowerCase() === 'zim' ? zim_logo : cube_filled} alt="Logo" />
                                         </span>
                                         <span className="title d-block text-center mt-2">{item?.carrierName || '-'}</span>

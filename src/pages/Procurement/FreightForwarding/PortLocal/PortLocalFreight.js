@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap'
 import { edit_icon } from '../../../../assets/images'
 import { portLocalBreadcrumb } from '../../../../common/data/procurement'
-import { getPortLocalChargesData } from '../../../../store/Procurement/actions'
+import { getPortLocalChargesData, postPortLocalChargesData } from '../../../../store/Procurement/actions'
 import { FILTER_PORTLOCALCHARGES_DATA } from '../../../../store/Procurement/actiontype'
 import FilterPortCanvasComp from '../Modal/FilterPortCanvasComp'
 import ModalSurchargeValue from '../Modal/ModalSurchargeValue'
@@ -23,7 +23,7 @@ export default function PortLocalFreight() {
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
     const dispatch = useDispatch();
-    const portLocalData = useSelector((state) => state.procurement.portLocalChargesData);
+    const {portLocalChargesData, fclplChargesLoader} = useSelector((state) => state.procurement);
 
     const viewPopupHandler = (data) => {
         setModal(true);
@@ -41,24 +41,35 @@ export default function PortLocalFreight() {
 
     const applyFilterHandler = () => {
         setIsRight(false);
-        let newArr = [...portLocalData];
-        const filteredDataArr = newArr.filter(item => {
-            const isPortNameMatch = filterDetails?.port_name?.value === '' ||
-              item?.port_name?.toLowerCase().includes(filterDetails?.port_name?.value?.toLowerCase());
+        // let newArr = [...portLocalChargesData];
+        // const filteredDataArr = newArr.filter(item => {
+        //     const isPortNameMatch = filterDetails?.port_name?.value === '' ||
+        //       item?.port_name?.toLowerCase().includes(filterDetails?.port_name?.value?.toLowerCase());
           
-            const isCarrierNameMatch = filterDetails?.carrier_name?.value === '' ||
-              item?.carrier_name?.toLowerCase().includes(filterDetails?.carrier_name?.value?.toLowerCase());
+        //     const isCarrierNameMatch = filterDetails?.carrier_name?.value === '' ||
+        //       item?.carrier_name?.toLowerCase().includes(filterDetails?.carrier_name?.value?.toLowerCase());
           
-            const isMovementMatch = filterDetails?.org_port?.value === '' ||
-              item?.movement_type?.toLowerCase().includes(filterDetails?.movement_type?.value?.toLowerCase());
+        //     const isMovementMatch = filterDetails?.org_port?.value === '' ||
+        //       item?.movement_type?.toLowerCase().includes(filterDetails?.movement_type?.value?.toLowerCase());
           
-            return isCarrierNameMatch && isPortNameMatch && isMovementMatch;
-        });
-        dispatch({type: FILTER_PORTLOCALCHARGES_DATA, payload: filteredDataArr});
+        //     return isCarrierNameMatch && isPortNameMatch && isMovementMatch;
+        // });
+        // dispatch({type: FILTER_PORTLOCALCHARGES_DATA, payload: filteredDataArr});
     }
     const clearValueHandler = () => {
         setfilterDetails(inputArr)
         dispatch(getPortLocalChargesData());
+    }
+
+    // Activate deactivate table data
+    const switchHandler = (data) => {
+        let obj = {
+            id: data.id,
+            version: data.version,
+            status: data.status === "ACTIVE" ? "INACTIVE" : "ACTIVE"
+        }
+        console.log(obj,"port obj");
+        dispatch(postPortLocalChargesData(obj));
     }
 
     useEffect(() => {
@@ -150,12 +161,12 @@ export default function PortLocalFreight() {
                             <DropdownItem>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
                             {/* <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem> */}
                             <DropdownItem onClick={(e) => e.stopPropagation()}>
-                                Activate
+                                {cellProps.row.original?.status === "ACTIVE" ? "Activate" : "Deactive"}
                                 <div className="switch_wrap">
                                     <FormGroup switch>
                                         <Input 
                                         type="switch"
-                                        checked={cellProps.row.original?.is_active || false}
+                                        checked={cellProps.row.original?.status === "ACTIVE" || false}
                                         onClick={() => {
                                             switchHandler(cellProps.row.original);
                                         }}
@@ -184,12 +195,13 @@ export default function PortLocalFreight() {
                         {/* React Table */}
                         <TableReact
                             columns={columns}
-                            data={portLocalData?.content || []}
+                            data={portLocalChargesData?.content || []}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}
                             toggleRightCanvas={toggleRightCanvas}
                             component={'PortLocalCharges'}
+                            loader={fclplChargesLoader || false}
                         />
 
                         {/* modal */}

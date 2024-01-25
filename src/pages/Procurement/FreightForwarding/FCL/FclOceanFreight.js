@@ -4,7 +4,7 @@ import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input
 
 import { edit_icon, eye_icon } from '../../../../assets/images'
 import { fclBreadcrumb, fclRateData, fclTableData } from '../../../../common/data/procurement'
-import { getFclData, getFclFreightViewAction, getFclSurchargeViewAction, updatefclSwitchData } from '../../../../store/Procurement/actions'
+import { getFclData, getFclFreightViewAction, getFclSurchargeViewAction, updatefclSwitchData, uploadFclCarrierData } from '../../../../store/Procurement/actions'
 import { FILTER_FCL_DATA } from '../../../../store/Procurement/actiontype'
 import FilterOffCanvasComp from '../Modal/FilterOffCanvasComp'
 import { ChargeId, CommonReplaceValue, ValidTill, VendorName } from '../partials/OceanCol'
@@ -82,7 +82,13 @@ export default function FclOceanFreight() {
     
     // Activate deactivate table data
     const switchHandler = (data) => {
-        dispatch(updatefclSwitchData(data.id,data.is_active));
+        let obj = {
+            id: data.id,
+            version: data.version,
+            status: data.status === "ACTIVE" ? "INACTIVE" : "ACTIVE"
+        }
+        console.log(obj,"obj fcl");
+        dispatch(uploadFclCarrierData({ ...obj }));
     }
 
     useEffect(() => {
