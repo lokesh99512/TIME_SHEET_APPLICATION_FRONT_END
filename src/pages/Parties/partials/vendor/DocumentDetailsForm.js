@@ -4,6 +4,7 @@ import Select from "react-select";
 import {
   Card,
   CardBody,
+  FormFeedback,
   Input
 } from "reactstrap";
 import { optionCustomerDocumentType } from "../../../../common/data/parties";
@@ -15,7 +16,7 @@ const DocumentDetailsForm = ({ documentsFormik }) => {
   return (
     <>
       <div className="text-center mb-4">
-        <h5>Documents</h5>
+        <h5>Vendor Documents</h5>
       </div>
       <div>
         <FormikProvider value={documentsFormik}>
@@ -28,7 +29,7 @@ const DocumentDetailsForm = ({ documentsFormik }) => {
                       <div className="row">
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
-                            <label className="form-label">Document Type</label>
+                            <label className="form-label">Document Type<span className='required_star'>*</span></label>
                             <Select
                               name={`document[${index}].documentType`}
                               value={
@@ -41,24 +42,54 @@ const DocumentDetailsForm = ({ documentsFormik }) => {
                                   : ""
                               }
                               onChange={(e) => {
-                                documentsFormik.setFieldValue(`document[${index}].documentType`, e);
+                                documentsFormik.setFieldValue(`document[${index}].documentType`, e.value);
                               }}
                               placeholder="Select Document Type"
                               options={optionCustomerDocumentType}
                               classNamePrefix="select2-selection form-select"
+                              onBlur={documentsFormik.handleBlur}
+                              invalid={
+                                documentsFormik.touched.document &&
+                                  documentsFormik.touched.document[index] &&
+                                  documentsFormik.errors.document &&
+                                  documentsFormik.errors.document[index]?.documentType
+                                  ? true
+                                  : false
+                              }
                             />
+                            {documentsFormik.touched.document &&
+                              documentsFormik.touched.document[index] &&
+                              documentsFormik.errors.document &&
+                              documentsFormik.errors.document[index]?.documentType ? (
+                              <FormFeedback>{documentsFormik.errors.document[index]?.documentType}</FormFeedback>
+                            ) : null}
                           </div>
                         </div>
                         <div className="col-12 col-md-5">
                           <div className="mb-3">
-                            <label className="form-label"> Upload Documents </label>
+                            <label className="form-label"> Upload Documents <span className='required_star'>*</span></label>
                             <Input
                               type="file"
                               name={`document[${index}].uploadDocument`}
                               onChange={(e) => { documentUploadHandler(e, `document[${index}].uploadDocument`) }}
                               className="form-control"
                               placeholder=""
+                              onBlur={documentsFormik.handleBlur}
+                              invalid={
+                                documentsFormik.touched.document &&
+                                  documentsFormik.touched.document[index] &&
+                                  documentsFormik.errors.document &&
+                                  documentsFormik.errors.document[index]?.uploadDocument
+                                  ? true
+                                  : false
+                              }
                             />
+                            {documentsFormik.touched.document &&
+                              documentsFormik.touched.document[index] &&
+                              documentsFormik.errors.document &&
+                              documentsFormik.errors.document[index]?.uploadDocument ? (
+                              <FormFeedback>{documentsFormik.errors.document[index]?.uploadDocument}</FormFeedback>
+                            ) : null}
                           </div>
                         </div>
                         <div className="col-12 col-md-1 text-end">

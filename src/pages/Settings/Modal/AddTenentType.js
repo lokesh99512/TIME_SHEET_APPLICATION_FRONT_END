@@ -1,8 +1,9 @@
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Input, Modal, ModalBody, ModalHeader } from "reactstrap";
+import { FormFeedback, Input, Modal, ModalBody, ModalHeader } from "reactstrap";
 import { postTenantLocationType } from "../../../store/Settings/actions";
+import * as Yup from "yup";
 
 const AddTenantLocationType = ({ modal, onCloseClick }) => {
     const [open, setOpen] = useState("");
@@ -13,6 +14,9 @@ const AddTenantLocationType = ({ modal, onCloseClick }) => {
             description: "",
             typeName: ""
         },
+        validationSchema: Yup.object({
+            typeName: Yup.string().required("Please Enter Location Name"),
+        }),
         onSubmit: (values) => {
             console.log(values);
             dispatch(postTenantLocationType(values))
@@ -38,7 +42,7 @@ const AddTenantLocationType = ({ modal, onCloseClick }) => {
                         <div className="charge_details">
                             <div className="row mt-4 mb-2">
                                 <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
-                                    <label className="form-label">Enter Type Name</label>
+                                    <label className="form-label">Enter Type Name<span className='required_star'>*</span></label>
                                     <Input
                                         type="text"
                                         name="typeName"
@@ -49,7 +53,12 @@ const AddTenantLocationType = ({ modal, onCloseClick }) => {
                                         }}
                                         className="form-control"
                                         placeholder="Type Name"
+                                        onBlur={AddTenentTypeFormik.handleBlur}
+                                        invalid={AddTenentTypeFormik.touched.typeName && AddTenentTypeFormik.errors.typeName ? true : false}
                                     />
+                                    {AddTenentTypeFormik.touched.typeName && AddTenentTypeFormik.errors.typeName ? (
+                                        <FormFeedback> {AddTenentTypeFormik.errors.typeName} </FormFeedback>
+                                    ) : null}
                                 </div>
 
                                 <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
