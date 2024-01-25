@@ -18,7 +18,7 @@ const ContactDetailsForm = ({ contactsFormik }) => {
   return (
     <>
       <div className="text-center mb-4">
-        <h5>Contacts</h5>
+        <h5>Vendor Contacts</h5>
       </div>
       <div>
         <FormikProvider value={contactsFormik}>

@@ -15,6 +15,7 @@ import {
 import { getCustomersCityData, getCustomersCountryData, getCustomersPincodeData, getCustomersStateData } from "../../store/Parties/actions";
 import { getAllTenantLocationType, postTenantLocation } from "../../store/Settings/actions";
 import AddTenantLocationType from "./Modal/AddTenentType";
+import * as Yup from "yup";
 
 export default function AddTanentLocation() {
     const [tenentType, setAddTenentType] = useState(false);
@@ -50,6 +51,12 @@ export default function AddTanentLocation() {
             country: "",
             email: "",
         },
+        validationSchema: Yup.object({
+            name: Yup.string().required("Please Enter Location Name"),
+            city: Yup.string().nullable().required("Please Enter selected City"),
+            country: Yup.string().nullable().required("Please Enter selected country"),
+            tenantLocationType: Yup.string().required("Please Enter select Location type"),
+        }),
         onSubmit: (values) => {
             console.log(values, "values");
             let countryVal = parties_country_details?.content?.filter((con) => con?.countryName === values?.country) || [];
@@ -142,9 +149,9 @@ export default function AddTanentLocation() {
                                                             name="name"
                                                             value={addLocationFormik?.values?.name}
                                                             onChange={addLocationFormik.handleChange}
-                                                            onBlur={addLocationFormik.handleBlur}
                                                             className="form-control"
                                                             placeholder="Enter Location Name"
+                                                            onBlur={addLocationFormik.handleBlur}
                                                             invalid={addLocationFormik.touched.name && addLocationFormik.errors.name ? true : false}
                                                         />
                                                         {addLocationFormik.touched.name && addLocationFormik.errors.name ? (
@@ -171,7 +178,12 @@ export default function AddTanentLocation() {
                                                             options={locationType}
                                                             placeholder={"Select location type"}
                                                             classNamePrefix="select2-selection form-select"
+                                                            onBlur={addLocationFormik.handleBlur}
+                                                            invalid={addLocationFormik.touched.tenantLocationType && addLocationFormik.errors.tenantLocationType ? true : false}
                                                         />
+                                                        {addLocationFormik.touched.tenantLocationType && addLocationFormik.errors.tenantLocationType ? (
+                                                            <FormFeedback> {addLocationFormik.errors.tenantLocationType} </FormFeedback>
+                                                        ) : null}
                                                     </div>
                                                 </div>
                                             </div>
@@ -220,7 +232,12 @@ export default function AddTanentLocation() {
                                                         }
                                                         className="form-control"
                                                         placeholder="Select City"
+                                                        onBlur={addLocationFormik.handleBlur}
+                                                        invalid={addLocationFormik.touched.city && addLocationFormik.errors.city ? true : false}
                                                     />
+                                                    {addLocationFormik.touched.city && addLocationFormik.errors.city ? (
+                                                        <FormFeedback> {addLocationFormik.errors.city} </FormFeedback>
+                                                    ) : null}
                                                     <datalist id="cityList">
                                                         {parties_city_details && parties_city_details?.content?.map((item, i) => <option key={i} value={item.cityName} />)}
                                                     </datalist>
@@ -239,7 +256,12 @@ export default function AddTanentLocation() {
                                                             onChange={addLocationFormik.handleChange}
                                                             className="form-control"
                                                             placeholder="Country"
+                                                            onBlur={addLocationFormik.handleBlur}
+                                                            invalid={addLocationFormik.touched.city && addLocationFormik.errors.city ? true : false}
                                                         />
+                                                        {addLocationFormik.touched.city && addLocationFormik.errors.city ? (
+                                                            <FormFeedback> {addLocationFormik.errors.city} </FormFeedback>
+                                                        ) : null}
                                                     </div>
                                                 </div>
                                             </div>
