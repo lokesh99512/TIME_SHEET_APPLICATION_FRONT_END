@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
     Accordion,
     AccordionBody,
@@ -16,8 +16,9 @@ const ModalFclInlandCharge = ({ viewData, modal, onCloseClick }) => {
     const ref = useRef();
     const ref2 = useRef();
     const [open, setOpen] = useState("");
+    const [subopen, setSubOpen] = useState("");
     const fclInlandFreightView = useSelector((state) => state?.procurement?.fclInlandFreightView);
-    const fclInlandSurchargeView = useSelector((state) => state?.procurement?.fclInlandSurchargeView);   
+    const fclInlandSurchargeView = useSelector((state) => state?.procurement?.fclInlandSurchargeView);
     const toggle = (id) => {
         if (open === id) {
             setOpen("");
@@ -25,6 +26,13 @@ const ModalFclInlandCharge = ({ viewData, modal, onCloseClick }) => {
             setOpen(id);
         }
     };
+    const subtoggle = useCallback((id) => {
+        if (subopen === id) {
+            setSubOpen("");
+        } else {
+            setSubOpen(id);
+        }
+    }, [subopen]);
     return (
         <>
             <Modal
@@ -106,54 +114,89 @@ const ModalFclInlandCharge = ({ viewData, modal, onCloseClick }) => {
                                     </div>
                                 </AccordionBody>
                             </AccordionItem>
-                            <AccordionItem className='freigth_details_wrap'>
+                            <AccordionItem className='freigth_details_wrap view_details_wrap'>
                                 <AccordionHeader targetId={`freight_detail_${viewData?.id}`}>
                                     <h3 className="sub_modal_title">Freight Details</h3>
                                 </AccordionHeader>
                                 <AccordionBody accordionId={`freight_detail_${viewData?.id}`}>
-                                    <div className="table_view_popup_table">
-                                        <SimpleBar style={{ maxWidth: '100%' }} ref={ref2}>
-                                            <table style={{ minWidth: '800px' }}>
-                                                <thead>
-                                                    <tr>
-                                                        <th>Cargo Type</th>
-                                                        <th>Charge Type</th>
-                                                        <th>Commodity</th>
-                                                        <th>Origin</th>
-                                                        <th>Destination</th>
-                                                        <th>Transit Time</th>
-                                                        <th>Transport Mode</th>
-                                                        <th>Currency</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {fclInlandFreightView?.content && fclInlandFreightView?.content?.map((item, index) => (
-                                                        <tr key={index}>
-                                                            <td>{item?.cargoType?.type || ''}</td>
-                                                            <td>{item?.chargeType || ''}</td>
-                                                            <td>{item?.commodity?.name || ''}</td>
-                                                            <td>{item?.originCity?.cityName || ''} - {item?.originCity?.country?.countryName || ''}</td>
-                                                            <td>{item?.destinationCity !== null ? item?.destinationCity?.cityName : 
-                                                            item?.destinationOceanIcd !== null ? item?.destinationOceanIcd?.code : 
-                                                            item?.destinationOceanPort !== null ? item?.destinationOceanPort?.code : ''} - 
-                                                            {item?.destinationCity !== null ? item?.destinationCity?.country?.countryName :
-                                                            item?.destinationOceanIcd !== null ? item?.destinationOceanIcd?.country?.countryName :
-                                                            item?.destinationOceanPort !== null ? item?.destinationOceanPort?.country?.countryName
-                                                             : ''}</td>
-                                                            <td>{item?.transitTime || ''}</td>
-                                                            <td>{item?.transportMode || ''}</td>
-                                                            <td>{item?.currency?.currencyName || ''}</td>
-                                                        </tr>
-                                                    ))}
-                                                    {(fclInlandFreightView?.content?.length === 0 || fclInlandFreightView?.content === undefined) && (
-                                                        <tr>
-                                                            <td colSpan={8} className="text-center py-4"><b>No Record Found</b></td>
-                                                        </tr>
-                                                    )}
-                                                </tbody>
-                                            </table>
-                                        </SimpleBar>
-                                    </div>
+                                    {fclInlandFreightView?.content && (
+                                        <Accordion flush open={subopen} toggle={subtoggle} className='sub_accordion'>
+
+                                            {fclInlandFreightView?.content && fclInlandFreightView?.content?.map((item, index) => (
+                                                <AccordionItem key={index}>
+                                                    <AccordionHeader targetId={`freight_detail_${item?.id}`}>
+                                                        <div className="top_details">
+                                                            <div className="row">
+                                                                <div className="col-lg-3">
+                                                                    <div className="details">
+                                                                        <span className="title">Origin:</span>
+                                                                        <span className="data">{item?.originCity !== null ? item?.originCity?.cityName :
+                                                                            item?.originOceanIcd !== null ? item?.originOceanIcd?.code :
+                                                                                item?.originOceanPort !== null ? item?.originOceanPort?.code : ''}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="col-lg-3">
+                                                                    <div className="details">
+                                                                        <span className="title">Destination:</span>
+                                                                        <span className="data">
+                                                                            {item?.destinationCity !== null ? item?.destinationCity?.cityName :
+                                                                                item?.destinationOceanIcd !== null ? item?.destinationOceanIcd?.code :
+                                                                                    item?.destinationOceanPort !== null ? item?.destinationOceanPort?.code : ''}
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="col-lg-3">
+                                                                    <div className="details">
+                                                                        <span className="title">Charge Basis:</span>
+                                                                        <span className="data">{item?.unitOfMeasurement?.code?.split("_").join(" ") || '-'}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="col-lg-3">
+                                                                    <div className="details">
+                                                                        <span className="title">Currency:</span>
+                                                                        <span className="data">{item?.currency?.currencyCode || '-'}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </AccordionHeader>
+                                                    <AccordionBody accordionId={`freight_detail_${item?.id}`}>
+                                                        <div className="table_view_popup_table">
+                                                            <SimpleBar style={{ maxWidth: '100%' }} ref={ref2}>
+                                                                <table style={{ minWidth: '800px' }}>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Container Type</th>
+                                                                            <th>Cargo Type</th>
+                                                                            <th>Cargo Wt Min (MT)</th>
+                                                                            <th>Cargo Wt Max (MT)</th>
+                                                                            <th>Rate</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        {item?.inlandVendorFreightValues?.length !== 0 && item?.inlandVendorFreightValues?.map((data, index) => (
+                                                                            <tr key={index}>
+                                                                                <td>{data?.oceanContainer?.name || ''}</td>
+                                                                                <td>{item?.cargoType?.type || ''}</td>
+                                                                                <td>{data?.fromSlab || 0}</td>
+                                                                                <td>{data?.toSlab || 0} </td>
+                                                                                <td>{data?.value || 0}</td>
+                                                                            </tr>
+                                                                        ))}
+                                                                        {(item?.inlandVendorFreightValues?.length === 0 || item?.inlandVendorFreightValues === undefined) && (
+                                                                            <tr>
+                                                                                <td colSpan={5} className="text-center py-4"><b>No Record Found</b></td>
+                                                                            </tr>
+                                                                        )}
+                                                                    </tbody>
+                                                                </table>
+                                                            </SimpleBar>
+                                                        </div>
+                                                    </AccordionBody>
+                                                </AccordionItem>
+                                            ))}
+                                        </Accordion>
+                                    )}
                                 </AccordionBody>
                             </AccordionItem>
                             <AccordionItem className='charge_details'>

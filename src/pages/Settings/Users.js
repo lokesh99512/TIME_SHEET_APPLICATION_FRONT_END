@@ -149,8 +149,6 @@ const Users = () => {
     },
   ]), []);
 
-  console.log(users_loader,"users_loader");
-
   return (
     <>
       <div className="page-content settings_users_wrapper">

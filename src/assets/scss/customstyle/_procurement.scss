@@ -517,6 +517,11 @@ input[type="number"]{
                 }
             }
         }
+        .sub_accordion{
+            .accordion-item{
+                padding: 10px 15px;
+            }
+        }
     }
     .modal_no_data_wrap {
         min-height: 80px;

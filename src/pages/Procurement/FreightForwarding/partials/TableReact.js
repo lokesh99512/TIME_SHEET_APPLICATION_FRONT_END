@@ -135,7 +135,7 @@ const TableReact = ({ columns, data, isGlobalFilter, customPageSize, toggleRight
                                         <tr>
                                             <td colSpan={headerGroups[0].headers.length}>
                                                 <div className='no_table_data_found'>
-                                                    <p>No Data Found. Please Adjust Your Filter. </p>
+                                                    <p>No Data Found.</p>
                                                 </div>
                                             </td>
                                         </tr>
