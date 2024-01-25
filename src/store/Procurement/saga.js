@@ -1,12 +1,13 @@
+import axios from "axios";
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 import { showErrorToast, showSuccessToast } from "../../components/Common/CustomToast";
-import { getAirConsoleTableData, getAirwaybillTableData, getLCLTableData } from "../../helpers/fakebackend_helper";
+import { getLCLTableData } from "../../helpers/fakebackend_helper";
+import { fetcAirConsoleTableData, fetcAirFreighConsoletData, getAirFreightData, getAirMWBData, postAirConsoleUploadService, postAirUploadService, uploadAirRateData, uploadConsoleAirRateData } from "../../helpers/services/AirService";
 import { getFCLDestinationData, getFCLFreightViewData, getFCLInlandFreightSer, getFCLInlandSurchargeSer, getFCLInlandTableData, getFCLSurchargeViewData, getFCLTableData, getPortLocalChargesTableData, postFclFreightUploadSer, postFclInlandFreightUploadSer, postFclInlandSurchargeUploadSer, postFclInlandUploadSer, postFclPLUploadSer, postFclSurchargeUploadSer, postFclUploadSer } from "../../helpers/services/FCLService";
-import { getAirConsoleDataSuccessById, getAirwaybillDataByIdResponse,getAirConsoleDataFail, getAirConsoleDataSuccess, getAirwaybillDataFail, getAirwaybillDataSuccess, getFclDataFail, getFclDataSuccess, getInLandDataFail, getInLandDataSuccess, getLclDataFail, getLclDataSuccess, getPortLocalChargesDataFail, getPortLocalChargesDataSuccess } from "./actions";
-import {POST_CARRIER_DATA_CONSOLE , GET_CONSOLE_TABLE_DATA_BY_ID,GET_UPLOAD_STATUS_SUCCESS,GET_UPLOAD_STATUS,GET_WAYBILL_TABLE_DATA_BY_ID, POST_CARRIER_DATA,FCL_FREIGHT_FAILD_DATA_TYPE, FCL_FREIGHT_FAILD_POPUP_TYPE, GET_CONSOLE_TABLE_DATA, GET_FCL_CHARGE_ID, GET_FCL_DESTINATION_DATA, GET_FCL_DESTINATION_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_DATA, GET_FCL_FREIGHT_VIEW_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_LOADER, GET_FCL_INLAND_CHARGE_ID, GET_FCL_INLAND_FREIGHT_ACTION, GET_FCL_INLAND_FREIGHT_ACTION_SUCCESS, GET_FCL_INLAND_FREIGHT_LOADER, GET_FCL_INLAND_LOADER, GET_FCL_INLAND_SURCHARGE_ACTION, GET_FCL_INLAND_SURCHARGE_ACTION_SUCCESS, GET_FCL_INLAND_SURCHARGE_LOADER, GET_FCL_INLAND_TABLE_DATA, GET_FCL_LOADER, GET_FCL_SURCHARGE_VIEW_DATA, GET_FCL_SURCHARGE_VIEW_DATA_SUCCESS, GET_FCL_SURCHARGE_VIEW_LOADER, GET_FCL_TABLE_DATA, GET_LCL_TABLE_DATA, GET_PORTLOCALCHARGES_TABLE_DATA, GET_WAYBILL_TABLE_DATA, UPDATE_FCL_ACTIVE_TAB, UPDATE_INLAND_ACTIVE_TAB, UPLOAD_FCL_CARRIER_DATA, UPLOAD_FCL_FREIGHT, UPLOAD_FCL_INLAND_CARRIER_DATA, UPLOAD_FCL_INLAND_FREIGHT_DATA, UPLOAD_FCL_INLAND_SURCHARGE_DATA, UPLOAD_FCL_PORTLOCALCHARGES, UPLOAD_FCL_SURCHARGE } from "./actiontype";
-import { GetFileSer } from "../../helpers/services/GlobalService";
+import { getUploadStatus } from "../../helpers/services/GlobalService";
 import { Get_File_URL } from "../../helpers/url_helper";
-
+import { getAirConsoleDataFail, getAirConsoleDataSuccess, getAirConsoleDataSuccessById, getAirwaybillDataByIdResponse, getAirwaybillDataFail, getAirwaybillDataSuccess, getFclDataFail, getFclDataSuccess, getInLandDataFail, getInLandDataSuccess, getLclDataFail, getLclDataSuccess, getPortLocalChargesDataFail, getPortLocalChargesDataSuccess } from "./actions";
+import { FCL_FREIGHT_FAILD_DATA_TYPE, FCL_FREIGHT_FAILD_POPUP_TYPE, FCL_INLAND_FAILD_DATA_TYPE, FCL_INLAND_FAILD_POPUP_TYPE, GET_CONSOLE_TABLE_DATA, GET_CONSOLE_TABLE_DATA_BY_ID, GET_FCL_CHARGE_ID, GET_FCL_DESTINATION_DATA, GET_FCL_DESTINATION_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_DATA, GET_FCL_FREIGHT_VIEW_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_LOADER, GET_FCL_INLAND_CHARGE_ID, GET_FCL_INLAND_FREIGHT_ACTION, GET_FCL_INLAND_FREIGHT_ACTION_SUCCESS, GET_FCL_INLAND_FREIGHT_LOADER, GET_FCL_INLAND_LOADER, GET_FCL_INLAND_SURCHARGE_ACTION, GET_FCL_INLAND_SURCHARGE_ACTION_SUCCESS, GET_FCL_INLAND_SURCHARGE_LOADER, GET_FCL_INLAND_TABLE_DATA, GET_FCL_LOADER, GET_FCL_SURCHARGE_VIEW_DATA, GET_FCL_SURCHARGE_VIEW_DATA_SUCCESS, GET_FCL_SURCHARGE_VIEW_LOADER, GET_FCL_TABLE_DATA, GET_LCL_TABLE_DATA, GET_PORTLOCALCHARGES_TABLE_DATA, GET_UPLOAD_STATUS, GET_UPLOAD_STATUS_SUCCESS, GET_WAYBILL_TABLE_DATA, GET_WAYBILL_TABLE_DATA_BY_ID, POST_CARRIER_DATA, POST_CARRIER_DATA_CONSOLE, UPDATE_FCL_ACTIVE_TAB, UPDATE_INLAND_ACTIVE_TAB, UPLOAD_FCL_CARRIER_DATA, UPLOAD_FCL_FREIGHT, UPLOAD_FCL_INLAND_CARRIER_DATA, UPLOAD_FCL_INLAND_FREIGHT_DATA, UPLOAD_FCL_INLAND_SURCHARGE_DATA, UPLOAD_FCL_PORTLOCALCHARGES, UPLOAD_FCL_SURCHARGE } from "./actiontype";
 
 function* fetchFclData() {
     yield put({type: GET_FCL_LOADER, payload: true});
@@ -41,9 +42,9 @@ function* fetchFclSurchargeViewData({ payload }) {
         console.log("error", error);
     }
 }
-function* fetchFclDestinationData({ payload }) {
+function* fetchFclDestinationData({ payload: {data} }) {
     try {
-        const response = yield call(getFCLDestinationData, payload);
+        const response = yield call(getFCLDestinationData, data);
         console.log(response, "response destination data");
         yield put({type: GET_FCL_DESTINATION_DATA_SUCCESS, payload: response})
     } catch (error) {
@@ -52,7 +53,7 @@ function* fetchFclDestinationData({ payload }) {
 }
 function* postFclUploadSaga({ payload: { dataObj } }) {
     try {
-        const response = yield call(postFclUploadSer, dataObj);        
+        const response = yield call(postFclUploadSer, dataObj);    
         showSuccessToast("Update Successfully");
         yield put({type: GET_FCL_CHARGE_ID, payload: response?.id});
         yield put({type: UPDATE_FCL_ACTIVE_TAB, payload: {tab: 2}});
@@ -77,7 +78,6 @@ function* postAirUploadSaga({ payload: { dataObj } }) {
     }
 }
 
-
 function* postAirConsoleUploadSaga({ payload: { dataObj } }) {
     try {
         console.log("postAirConsoleUploadSaga");
@@ -96,31 +96,28 @@ function* postAirConsoleUploadSaga({ payload: { dataObj } }) {
 
 
 function* postFclFreightUploadSaga({ payload: { formData, id } }) {
-    console.log(formData.get("file"), "formData");
     try {
         const response = yield call(postFclFreightUploadSer, {formData, id});
-        showSuccessToast("Update Successfully");
+        console.log(response, "response fcl surcharge");
+        showSuccessToast(response?.description);
         const destRes = yield call(getFCLDestinationData, id);
-        console.log(response, "response surcharge");
         yield put({type: GET_FCL_DESTINATION_DATA_SUCCESS, payload: destRes});
         yield put({type: UPDATE_FCL_ACTIVE_TAB, payload: {tab: 3}});
     } catch (error) {
-        // console.log(error, "error");
+        showErrorToast(error?.response?.data?.description);
         if(error?.response?.status === 400){
             const downloadFile = error?.response?.data?.filePath;
             var rest = downloadFile.substring(0, downloadFile.lastIndexOf("/") + 1);
             var last = downloadFile.substring(downloadFile.lastIndexOf("/") + 1, downloadFile.length);
             const base64Encoded = window.btoa(last);
-            // const base64Encoded = Buffer.from(imageData, 'binary').toString('base64');
             if(downloadFile !== undefined && downloadFile !== ''){
-                const resImageData = yield call(GetFileSer, base64Encoded);
-                console.log(resImageData,"resImageData");
-    
-                yield put({type: FCL_FREIGHT_FAILD_DATA_TYPE, payload: {data: error?.response?.data,url: `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`, file: resImageData, filename: last}});
+                yield put({type: FCL_FREIGHT_FAILD_DATA_TYPE, payload: {data: error?.response?.data,url: `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`, filename: last}});
             }
             yield put({type: FCL_FREIGHT_FAILD_POPUP_TYPE, payload: true});
-        }
-        showErrorToast(error?.response?.data?.description);
+            if(error?.response?.data?.success > 0 && error?.response?.data?.totalUploaded !== error?.response?.data?.failed){
+                yield put({type: UPDATE_FCL_ACTIVE_TAB, payload: {tab: 3}});
+            }
+        }        
     }
 }
 function* postFclSurchargeUploadSaga({ payload: { data, id } }) {
@@ -207,12 +204,20 @@ function* postFCLInLandSaga({ payload: { dataObj } }) {
 function* postFCLInLandFreightSaga({ payload: { formData, id } }) {
     try {
         const response = yield call(postFclInlandFreightUploadSer, {formData, id});
-        console.log(response, "response inland");
-        showSuccessToast("Update Successfully");
+        showSuccessToast(response?.description);
         yield put({type: UPDATE_INLAND_ACTIVE_TAB, payload: {tab: 3}});
     } catch (error) {
-        console.log(error, "error");
-        showErrorToast(error?.message);
+        showErrorToast(error?.response?.data?.description);
+        if(error?.response?.status === 400){
+            const downloadFile = error?.response?.data?.filePath;
+            var rest = downloadFile.substring(0, downloadFile.lastIndexOf("/") + 1);
+            var last = downloadFile.substring(downloadFile.lastIndexOf("/") + 1, downloadFile.length);
+            const base64Encoded = window.btoa(last);
+            if(downloadFile !== undefined && downloadFile !== ''){
+                yield put({type: FCL_INLAND_FAILD_DATA_TYPE, payload: {data: error?.response?.data,url: `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`, filename: last}});
+            }
+            yield put({type: FCL_INLAND_FAILD_POPUP_TYPE, payload: true});
+        }  
     }
 }
 function* postFCLInLandSurchargeSaga({ payload: { data } }) {

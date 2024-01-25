@@ -10,34 +10,23 @@ const ModalFCLFreight = ({ viewData, modal, onCloseClick, modalType }) => {
     const freight_loader = useSelector((state) => state.procurement.fcl_get_freight_view_loader);
     const surcharge_loader = useSelector((state) => state.procurement.fcl_get_surcharge_view_loader);
     const [open, setOpen] = useState('');
+    const [mergeData, setMergeData] = useState([]);
     const ref = useRef();
     const ref2 = useRef();
 
-    // useEffect(() => {
-    //     const data = [
-    //         { id: 1, name: 'John', data: { age: 25 } },
-    //         { id: 2, name: 'Jane', data: { age: 30 } },
-    //         { id: 1, name: 'John', data: { city: 'New York', occupation: 'Engineer' } },
-    //         { id: 3, name: 'Bob', data: { hobby: 'Reading', gender: 'Male' } }
-    //       ];
+    useEffect(() => {
+        const newmergedData = fcl_freight_view?.reduce((acc, current) => {
+            let existingItem = acc?.find(item => (item?.originPort === current?.originPort && item?.destinationPort === current?.destinationPort));
 
-    //     // const mergedData = fcl_freight_view?.content?.reduce((acc, current) => {
-    //     //     // console.log(current,"current");
-    //     //     // console.log(acc,"acc");
-    //     //     const existingItem = acc?.find(item => item?.originPort?.code === current?.originPort?.code && item?.destinationPort?.code === current?.destinationPort?.code);
-    //     //     console.log(existingItem,"existingItem");
-          
-    //     //     if (existingItem) {
-    //     //         let obj = {name: current.oceanContainer.name, amount: current.freightAmount}
-    //     //       existingItem = { ...existingItem, obj};
-    //     //     } else {
-    //     //       acc.push(current);
-    //     //     }
-          
-    //     //     return acc;
-    //     // }, []);
-    //     // console.log(mergedData,"mergedData");
-    // }, [fcl_freight_view])
+            if (existingItem) {
+                existingItem = { ...existingItem };
+            } else {
+                acc.push(current);
+            }          
+            return acc;
+        }, []);
+        setMergeData(newmergedData);
+    }, [fcl_freight_view])
     const toggle = (id) => {
         if (open === id) {
             setOpen('');
@@ -63,7 +52,7 @@ const ModalFCLFreight = ({ viewData, modal, onCloseClick, modalType }) => {
                                             <div className="col-lg-4">
                                                 <div className="details">
                                                     <span className="title">Charge ID:</span>
-                                                    <span className="data">{viewData?.charge_id || '-'}</span>
+                                                    <span className="data">{viewData?.id || '-'}</span>
                                                 </div>
                                             </div>
                                             <div className="col-lg-4">
@@ -137,25 +126,25 @@ const ModalFCLFreight = ({ viewData, modal, onCloseClick, modalType }) => {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {fcl_freight_view?.content !== undefined && fcl_freight_view?.content?.map((item, index) => (
+                                                    {mergeData && mergeData?.map((item, index) => (
                                                         <tr key={index}>
                                                             {/* <td>{item?.oceanContainer?.name || '-'}</td> */}
-                                                            <td>{item?.cargoType?.type?.toLowerCase() === 'haz' ? `${item?.cargoType?.type}(${item?.cargoClass || '-'})` : item?.cargoType?.type || '-'}</td>
-                                                            <td>{item?.commodity?.name || '-'}</td>
-                                                            <td>{item?.originPort?.code || '-'}</td>
-                                                            <td>{item?.destinationPort?.code || '-'}</td>
-                                                            <td>{item?.viaPort?.code || '-'}</td>
+                                                            <td>{item?.cargoType?.type?.toLowerCase() === 'haz' ? `${item?.cargoType?.type}(${item?.cargoClass || '-'})` : item?.cargoType || '-'}</td>
+                                                            <td>{item?.commodity || '-'}</td>
+                                                            <td>{item?.originPort || '-'}</td>
+                                                            <td>{item?.destinationPort || '-'}</td>
+                                                            <td>{item?.viaPort || '-'}</td>
                                                             <td>{item?.transitTime || '-'}</td>
-                                                            <td>{item?.currency?.currencyName || '-'}</td>
-                                                            <td>{item?.oceanContainer?.name === '20GP' ? item?.freightAmount || '-' : '-'}</td>
-                                                            <td>{item?.oceanContainer?.name === '40GP' ? item?.freightAmount || '-' : '-'}</td>
-                                                            <td>{item?.oceanContainer?.name === '20RF' ? item?.freightAmount || '-' : '-'}</td>
-                                                            <td>{item?.oceanContainer?.name === '40RF' ? item?.freightAmount || '-' : '-'}</td>
-                                                            <td>{item?.oceanContainer?.name === '40HQ' ? item?.freightAmount || '-' : '-'}</td>
-                                                            <td>{item?.oceanContainer?.name === '45HQ' ? item?.freightAmount || '-' : '-'}</td>
+                                                            <td>{item?.currency || '-'}</td>
+                                                            <td>{item?.gp20 || '-'}</td>
+                                                            <td>{item?.gp40 || '-'}</td>
+                                                            <td>{item?.rf20 || '-'}</td>
+                                                            <td>{item?.rf40 || '-'}</td>
+                                                            <td>{item?.hq40 || '-'}</td>
+                                                            <td>{item?.hq45 || '-'}</td>
                                                         </tr>
                                                     ))}
-                                                    {(fcl_freight_view?.content?.length === 0 || fcl_freight_view?.content === undefined) && (
+                                                    {(fcl_freight_view?.length === 0) && (
                                                         <tr>
                                                             {freight_loader ? (
                                                                 <td colSpan={13} className="text-center">

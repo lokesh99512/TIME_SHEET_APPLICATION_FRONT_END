@@ -185,8 +185,8 @@ const procurement = (state = INIT_STATE, action) => {
             return{
                 ...state,
                 fclPopup: action.payload
-            }    
-        
+            }
+
 
         // fcl inland
         case GET_FCL_INLAND_TABLE_DATA_SUCCESS:
@@ -228,6 +228,16 @@ const procurement = (state = INIT_STATE, action) => {
             return{
                 ...state,
                 fcl_Inland_Charge_id: action.payload
+            }
+        case FCL_INLAND_FAILD_DATA_TYPE:
+            return {
+                ...state,
+                fclinlandfaildData: action.payload
+            }
+        case FCL_INLAND_FAILD_POPUP_TYPE:
+            return {
+                ...state,
+                fclinlandPopup: action.payload
             }
 
         // lcl
