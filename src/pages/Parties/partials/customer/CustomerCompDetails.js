@@ -39,7 +39,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
     const { parties_city_details, parties_all_details, parties_all_employee_details, parties_state_details, parties_country_details, parties_pincode_details } = useSelector(
         (state) => state?.parties
     );
-    const { customer_id, customer_data} = useSelector(
+    const { customer_id, customer_data } = useSelector(
         (state) => state?.customer
     );
     const onCloseClick = () => {
@@ -53,11 +53,10 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
         setCustomerTypeModal(false)
     };
     console.log(navigateState?.state);
-    console.log(navigateState?.state?.data?.salesUser?.firstName);
     const gstDetailsHandler = (data) => {
         setModalAllData((prev) => ([...prev, data]))
     }
-    
+
     const companyDetailsFormik = useFormik({
         initialValues: {
             image: navigateState?.state?.data?.logo || "",
@@ -83,7 +82,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
             industryType: navigateState?.state?.data?.industryType || "",
             title: navigateState?.state?.data?.title || "",
             opCode: navigateState?.state?.data?.opCode || "",
-            salesEmployee: navigateState?.state?.data?.salesUser?.firstName ||"",
+            salesEmployee: navigateState?.state?.data?.salesUser?.firstName || "",
             keyAccountManager: navigateState?.state?.data?.accountManager?.firstName || "",
             customerType: navigateState?.state?.data?.type,
         },
@@ -94,16 +93,26 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
             email: Yup.string().email('Invalid email address').required('Email is required'),
             contactName: Yup.string().required("Please Enter Your contact Name"),
             phoneNumber: Yup.string().required("Please Enter Your Phone Number"),
-          }),
+            keyAccountManager: Yup.string().required("Please select manager account"),
+            salesEmployee: Yup.string().required("Please select sales employee")
+        }),
         onSubmit: async ({ image, ...values }) => {
             console.log("values company details", values);
             let countryVal = parties_country_details?.content?.filter((con) => con?.countryName === values?.country) || [];
             let cityVal = parties_city_details?.content?.filter((city) => city?.cityName === values?.city) || [];
             let stateVal = parties_state_details?.content?.filter((state) => state?.stateName === values?.state) || [];
             let pincodeVal = parties_pincode_details?.content?.filter((pin) => pin?.pin === values?.zipcode) || [];
-            let salesEmployeeVal= salesEmployeeOptions.find((option) => option.value ===values?.salesEmployee)
-            let  accountManagerVal =accountManagerOptions.find( (option) =>option.value ===values?.keyAccountManager)
-            let formData = new FormData(); 
+            let salesEmployeeVal = salesEmployeeOptions.find((option) => option.value === values?.salesEmployee)
+            let accountManagerVal = accountManagerOptions.find((option) => option.value === values?.keyAccountManager)
+
+            const originalDocuments = navigateState?.state?.data?.documents || [];
+           const newDocuments = originalDocuments.map((document, index) => ({
+                id: document.id || "",
+                version: document.version || 0,
+                documentType: document.documentType || "",
+                uploadDocument: document.documentPath || "",
+            }));
+            let formData = new FormData();
             const projectUATRequestDTO = {
                 "name": values.companyName || "",
                 "logo": null,
@@ -111,7 +120,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                 "address": values.address || null,
                 ...((!!(navigateState?.state && navigateState?.state.data)) && {
                     id: navigateState?.state?.data?.id || null,
-                    version:navigateState?.state?.data?.version || 0,
+                    version: navigateState?.state?.data?.version || 0,
                     logoPath: image?.path ? image?.path : navigateState?.state?.data?.logoPath
                 }),
                 ...(pincodeVal?.length !== 0 && {
@@ -162,7 +171,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                 "status": "ACTIVE",
                 "addresses": [],
                 "contacts": [],
-                "documents": [],
+                documents: newDocuments
             }
 
             console.log(projectUATRequestDTO, "projectUATRequestDTO");
@@ -235,10 +244,10 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                                     placeholder=""
                                     onBlur={companyDetailsFormik.handleBlur}
                                     invalid={companyDetailsFormik.touched.companyName && companyDetailsFormik.errors.companyName ? true : false}
-                                  />
-                                  {companyDetailsFormik.touched.companyName && companyDetailsFormik.errors.companyName ? (
+                                />
+                                {companyDetailsFormik.touched.companyName && companyDetailsFormik.errors.companyName ? (
                                     <FormFeedback>{companyDetailsFormik.errors.companyName}</FormFeedback>
-                                  ) : null}
+                                ) : null}
                             </div>
                         </div>
                         <div className="col-12 col-md-6">
@@ -290,10 +299,10 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                                     placeholder=""
                                     onBlur={companyDetailsFormik.handleBlur}
                                     invalid={companyDetailsFormik.touched.city && companyDetailsFormik.errors.city ? true : false}
-                                  />
-                                  {companyDetailsFormik.touched.city && companyDetailsFormik.errors.city ? (
+                                />
+                                {companyDetailsFormik.touched.city && companyDetailsFormik.errors.city ? (
                                     <FormFeedback>{companyDetailsFormik.errors.city}</FormFeedback>
-                                  ) : null}
+                                ) : null}
                                 <datalist id="cityList">
                                     {parties_city_details && parties_city_details?.content?.map((item, i) => <option key={i} value={item.cityName} />)}
                                 </datalist>
@@ -322,13 +331,13 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                                     onChange={companyDetailsFormik.handleChange}
                                     className="form-control"
                                     placeholder=""
-                                    readOnly ={true}
+                                    readOnly={true}
                                     onBlur={companyDetailsFormik.handleBlur}
                                     invalid={companyDetailsFormik.touched.country && companyDetailsFormik.errors.country ? true : false}
-                                  />
-                                  {companyDetailsFormik.touched.country && companyDetailsFormik.errors.country ? (
+                                />
+                                {companyDetailsFormik.touched.country && companyDetailsFormik.errors.country ? (
                                     <FormFeedback>{companyDetailsFormik.errors.country}</FormFeedback>
-                                  ) : null}
+                                ) : null}
                             </div>
                         </div>
                         <div className="col-12 col-md-6">
@@ -408,10 +417,10 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                                             placeholder=""
                                             onBlur={companyDetailsFormik.handleBlur}
                                             invalid={companyDetailsFormik.touched.contactName && companyDetailsFormik.errors.contactName ? true : false}
-                                          />
-                                          {companyDetailsFormik.touched.contactName && companyDetailsFormik.errors.contactName ? (
+                                        />
+                                        {companyDetailsFormik.touched.contactName && companyDetailsFormik.errors.contactName ? (
                                             <FormFeedback>{companyDetailsFormik.errors.contactName}</FormFeedback>
-                                          ) : null}
+                                        ) : null}
                                     </div>
                                 </div>
 
@@ -456,10 +465,10 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                                             placeholder=""
                                             onBlur={companyDetailsFormik.handleBlur}
                                             invalid={companyDetailsFormik.touched.phoneNumber && companyDetailsFormik.errors.phoneNumber ? true : false}
-                                          />
-                                          {companyDetailsFormik.touched.phoneNumber && companyDetailsFormik.errors.phoneNumber ? (
+                                        />
+                                        {companyDetailsFormik.touched.phoneNumber && companyDetailsFormik.errors.phoneNumber ? (
                                             <FormFeedback>{companyDetailsFormik.errors.phoneNumber}</FormFeedback>
-                                          ) : null}
+                                        ) : null}
                                     </div>
                                 </div>
 
@@ -478,10 +487,10 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                                 placeholder=""
                                 onBlur={companyDetailsFormik.handleBlur}
                                 invalid={companyDetailsFormik.touched.email && companyDetailsFormik.errors.email ? true : false}
-                              />
-                              {companyDetailsFormik.touched.email && companyDetailsFormik.errors.email ? (
+                            />
+                            {companyDetailsFormik.touched.email && companyDetailsFormik.errors.email ? (
                                 <FormFeedback>{companyDetailsFormik.errors.email}</FormFeedback>
-                              ) : null}
+                            ) : null}
                         </div>
                     </div>
                     <div className="row">
@@ -544,7 +553,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                         </div>
                         <div className="col-12 col-md-6">
                             <div className="mb-3">
-                                <label className="form-label">Sales Employee</label>
+                                <label className="form-label">Sales Employee<span className='required_star'>*</span></label>
                                 <Select
                                     name='salesEmployee'
                                     value={
@@ -555,22 +564,27 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                                                     companyDetailsFormik?.values?.salesEmployee
                                             )
                                             : ""
-                                       }
+                                    }
                                     onChange={(e) => {
                                         if (e.label == "Add New") {
                                             setSalesEmployeeModal(true)
-                                        }else{
-                                               companyDetailsFormik.setFieldValue(`salesEmployee`,  e.value);
+                                        } else {
+                                            companyDetailsFormik.setFieldValue(`salesEmployee`, e.value);
                                         }
                                     }}
                                     options={salesEmployeeOptions}
                                     classNamePrefix="select2-selection form-select"
+                                    onBlur={companyDetailsFormik.handleBlur}
+                                    invalid={companyDetailsFormik.touched.salesEmployee && companyDetailsFormik.errors.salesEmployee ? true : false}
                                 />
+                                {companyDetailsFormik.touched.salesEmployee && companyDetailsFormik.errors.salesEmployee ? (
+                                    <FormFeedback>{companyDetailsFormik.errors.salesEmployee}</FormFeedback>
+                                ) : null}
                             </div>
                         </div>
                         <div className="col-12 col-md-6">
                             <div className="mb-3">
-                                <label className="form-label">Key Account Manager</label>
+                                <label className="form-label">Key Account Manager<span className='required_star'>*</span></label>
                                 <Select
                                     name='keyAccountManager'
                                     value={
@@ -581,17 +595,22 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                                                     companyDetailsFormik?.values?.keyAccountManager
                                             )
                                             : ""
-                                       }
+                                    }
                                     onChange={(e) => {
                                         if (e.label == "Add New") {
                                             setKeyAccountManagerModal(true)
-                                        }else{
+                                        } else {
                                             companyDetailsFormik.setFieldValue(`keyAccountManager`, e.value);
                                         }
                                     }}
                                     options={accountManagerOptions}
                                     classNamePrefix="select2-selection form-select"
+                                    onBlur={companyDetailsFormik.handleBlur}
+                                    invalid={companyDetailsFormik.touched.keyAccountManager && companyDetailsFormik.errors.keyAccountManager ? true : false}
                                 />
+                                {companyDetailsFormik.touched.keyAccountManager && companyDetailsFormik.errors.keyAccountManager ? (
+                                    <FormFeedback>{companyDetailsFormik.errors.keyAccountManager}</FormFeedback>
+                                ) : null}
                             </div>
                         </div>
                     </div>

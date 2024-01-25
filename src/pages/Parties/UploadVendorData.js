@@ -81,7 +81,6 @@ export default function UploadVendorData() {
             openSaveConfirmModal();
         }
     };
-    
 
     const companyDetailsFormik = useFormik({
         enableReinitialize: true,
@@ -122,7 +121,13 @@ export default function UploadVendorData() {
             let cityVal = parties_city_details?.content?.filter((city) => city?.cityName === value?.city) || [];
             let stateVal = parties_state_details?.content?.filter((state) => state?.stateName === value?.state) || [];
             let pincodeVal = parties_pincode_details?.content?.filter((pin) => pin?.pin === value?.zipcode) || [];
-
+            const originalDocuments = navigateState?.state?.data?.documents || [];
+            const newDocuments = originalDocuments.map((document, index) => ({
+                id: document.id || "",
+                version: document.version || 0,
+                documentType: document.documentType || "",
+                uploadDocument: document.documentPath || "",
+            }));
             const projectUATRequestDTO = {
                 name: value.companyName || "",
                 logo: null,
@@ -172,7 +177,7 @@ export default function UploadVendorData() {
                 industryType: value?.industryType || null,
                 addresses: [],
                 contacts: [],
-                documents: [],
+                documents: newDocuments,
             };
 
             console.log(projectUATRequestDTO, "projectUATRequestDTO");
