@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_INSTANT_RATE_LOCATION_FAILURE, GET_INSTANT_RATE_LOCATION_SUCCESS, ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK, GET_ALL_INCOTERM, GET_ALL_INCOTERM_SUCCESS, GET_INSTANT_SEARCH_RESULT_TYPE, UPDATE_QUOTATION_RESULT_DETAILS, CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_UPDATE, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_SELECTED, POST_INSTANT_SEARCH_LOADER } from "./actionType"
+import { GET_INSTANT_RATE_LOCATION_FAILURE, GET_INSTANT_RATE_LOCATION_SUCCESS, ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK, GET_ALL_INCOTERM, GET_ALL_INCOTERM_SUCCESS, GET_INSTANT_SEARCH_RESULT_TYPE, UPDATE_QUOTATION_RESULT_DETAILS, CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_UPDATE, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_SELECTED, POST_INSTANT_SEARCH_LOADER, BLANK_INSTANT_SEARCH } from "./actionType"
 import { Get_File_URL } from "../../helpers/url_helper";
 
 
@@ -9,11 +9,11 @@ const INIT_STATE = {
         // service_type: '',
         // shipping_by: '',
         // cargo_weight: { weight: "MT",value: ''},
-        cargo_type: { value: "GENERAL",label: "GENERAL", id: 1, version: 0 },
-        cargo_value: { currency: { label: 'INR', value: 'rupee',currencyCode: "INR", id: 2, version: 0 }, value: '' },
+        cargo_type: { value: "GENERAL", label: "GENERAL", id: 1, version: 0 },
+        cargo_value: { currency: { label: 'INR', value: 'rupee', currencyCode: "INR", id: 2, version: 0 }, value: '' },
         // incoterm: '',
         customerName: '',
-        container_type: { cargo_weight: { weight: {value: "MT",label: "MT", id: 7, version: 2}, value: '' } },
+        container_type: { cargo_weight: { weight: { value: "MT", label: "MT", id: 7, version: 2 }, value: '' } },
         // shipment_details: "",
         cargo_date: '',
         location_from: '',
@@ -66,6 +66,20 @@ const instantRate = (state = INIT_STATE, action) => {
                 searchForm: {
                     ...state.searchForm,
                     [action.payload]: ''
+                }
+            }
+        case BLANK_INSTANT_SEARCH:
+            return {
+                ...state,
+                searchForm: {
+                    cargo_type: { value: "GENERAL", label: "GENERAL", id: 1, version: 0 },
+                    cargo_value: { currency: { label: 'INR', value: 'rupee', currencyCode: "INR", id: 2, version: 0 }, value: '' },
+                    customerName: '',
+                    container_type: { cargo_weight: { weight: { value: "MT", label: "MT", id: 7, version: 2 }, value: '' } },
+                    cargo_date: '',
+                    location_from: '',
+                    location_to: '',
+                    alternate_route: false
                 }
             }
 
@@ -122,7 +136,7 @@ const instantRate = (state = INIT_STATE, action) => {
                     }
                 }
             };
-        
+
         // ------------------ search Result
         case GET_INSTANT_SEARCH_RESULT_TYPE:
             return {
@@ -130,7 +144,7 @@ const instantRate = (state = INIT_STATE, action) => {
                 instantSearchResult: action.payload,
                 instantSearchResultCopy: action.payload.map((item) => {
                     let url = item.carrierLogo || '';
-                    let fileName = url?.substring(url?.lastIndexOf('/') + 1,url?.length);
+                    let fileName = url?.substring(url?.lastIndexOf('/') + 1, url?.length);
                     const base64Encoded = window.btoa(fileName);
                     return {
                         ...item,
@@ -168,7 +182,7 @@ const instantRate = (state = INIT_STATE, action) => {
         case QUOTATION_RESULT_SELECTED:
             return {
                 ...state,
-                quote_selected_data: action.payload 
+                quote_selected_data: action.payload
             }
 
         case QUOTATION_RESULT_UPDATE:
@@ -177,44 +191,44 @@ const instantRate = (state = INIT_STATE, action) => {
             let updatedItem = {
                 ...newArray[existingIndex],
                 tariffDetails: newArray[existingIndex].tariffDetails.map((item, innerIndex) => {
-                  if (innerIndex === action.payload.index) {
-                    return {
-                      ...item,
-                      tariffBreakDowns: item.tariffBreakDowns.map((subItem, subInnerIndex) => {
-                        if (subInnerIndex === action.payload.subindex) {
-                          if (action.payload.name === 'markup_val') {
-                            return {
-                              ...subItem,
-                              margin_value: action.payload.marginVal,
-                              total_sale_cost: action.payload.sales_cost,
-                              [action.payload.name]: action.payload.value,
-                            };
-                          } else {
-                            return {
-                              ...subItem,
-                              [action.payload.name]: action.payload.value
-                            };
-                          }
-                        }
-                        return subItem;
-                      })
-                    };
-                  }
-                  return item;
+                    if (innerIndex === action.payload.index) {
+                        return {
+                            ...item,
+                            tariffBreakDowns: item.tariffBreakDowns.map((subItem, subInnerIndex) => {
+                                if (subInnerIndex === action.payload.subindex) {
+                                    if (action.payload.name === 'markup_val') {
+                                        return {
+                                            ...subItem,
+                                            margin_value: action.payload.marginVal,
+                                            total_sale_cost: action.payload.sales_cost,
+                                            [action.payload.name]: action.payload.value,
+                                        };
+                                    } else {
+                                        return {
+                                            ...subItem,
+                                            [action.payload.name]: action.payload.value
+                                        };
+                                    }
+                                }
+                                return subItem;
+                            })
+                        };
+                    }
+                    return item;
                 })
-              };
+            };
             newArray[existingIndex] = updatedItem;
 
             return {
                 ...state,
                 quote_selected_data: newArray
             };
-    
+
         case CONFIRM_PREVIEW_DATA:
             return {
                 ...state,
                 quote_selected_data: action.payload
-            } 
+            }
 
         case QUOTATION_RESULT_SELECTED_BLANK:
             return { ...state, quote_selected_data: [] }

@@ -7,8 +7,9 @@ import { Row, Table } from 'reactstrap';
 import { filter_icon, upload_icon } from '../../../../assets/images';
 import { DefaultColumnFilter, Filter } from '../../../../components/Common/filters';
 import { updateFCLActiveTab } from '../../../../store/Procurement/actions';
-import { BLANK_CARRIER_DATA } from '../../../../store/Procurement/actiontype';
+import { BLANK_CARRIER_DATA, BLANK_FCL_CARRIER_DATA, BLANK_SURCHARGE_DATA } from '../../../../store/Procurement/actiontype';
 import TableCommonSkeleton from '../../../Skeleton/TableCommonSkeleton';
+import { useSelector } from 'react-redux';
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -61,6 +62,18 @@ const TableReact = ({ columns, data, isGlobalFilter, customPageSize, toggleRight
         usePagination,);
     const navidate = useNavigate();
     const dispatch = useDispatch();
+    const { addFCL, addInland} = useSelector((state) => state?.procurement);
+
+    const blankDataHandler = () => {
+        console.log(component,"component");
+        if(component === 'fcl'){
+            dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addFCL', data: { ...addFCL, surcharges: [] } } });
+        } else if (component === 'inland') {
+            dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addInland', data: { ...addInland, surcharges: [] } } });
+        }
+        navidate(`/freight/upload/${component}`, { state: { id: component } }); 
+        dispatch(updateFCLActiveTab(1));
+    }
 
     return (
         <>
@@ -85,7 +98,7 @@ const TableReact = ({ columns, data, isGlobalFilter, customPageSize, toggleRight
                     </div>
                     <div className="add_btn">
                         {/* <button className='border-0' onClick={() => {navidate(`/freight/upload/${component}`);}}> */}
-                        <button className='border-0' onClick={() => { navidate(`/freight/upload/${component}`, { state: { id: component } }); dispatch(updateFCLActiveTab(1)); dispatch({ type: BLANK_CARRIER_DATA }) }}>
+                        <button className='border-0' onClick={() => { blankDataHandler(); }}>
                             <i className='bx bx-plus align-middle'></i> Add
                         </button>
                     </div>

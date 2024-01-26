@@ -3,14 +3,13 @@ import Flatpickr from "react-flatpickr";
 import { useDispatch, useSelector } from "react-redux";
 import Select from 'react-select';
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap';
-import SimpleBar from "simplebar-react"
 
 import { calendar_filled, cube_filled, delete_icon, filter_img, location_filled, swap_arrow } from '../../assets/images';
-import { cargoWeightUnitOption, optionCargoType, optionContainerType, optionContainerTypeRefrigerated, optionContainerTypeWithoutRefri, optionCurrency, optionIncoterm, optionPortList, weightUnitOption } from "../../common/data/sales";
+import { weightUnitOption } from "../../common/data/sales";
 import { isAnyValueEmpty, useOutsideClick } from "../../components/Common/CommonLogic";
-import { UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK } from "../../store/InstantRate/actionType";
-import { getAllPartiesCustomerData } from "../../store/Parties/Customer/action";
+import { BLANK_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK } from "../../store/InstantRate/actionType";
 import { getAllIncoTerms, getInstantRateLocation } from "../../store/InstantRate/actions";
+import { getAllPartiesCustomerData } from "../../store/Parties/Customer/action";
 const SearchForm = ({ activeTab, searchQuoteHandler }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubOpen, setIsSubOpen] = useState(false);
@@ -52,6 +51,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
     dispatch(getInstantRateLocation());
     dispatch(getAllPartiesCustomerData());
     dispatch(getAllIncoTerms());
+    dispatch({ type: BLANK_INSTANT_SEARCH });
   }, []);
 
   const locationOptions = instantRateLocation.map(location => ({
