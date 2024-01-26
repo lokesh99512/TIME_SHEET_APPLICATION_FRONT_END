@@ -19,8 +19,6 @@ import ContactDetailsForm from "./partials/vendor/ContactDetailsForm";
 import DocumentDetailsForm from "./partials/vendor/DocumentDetailsForm";
 import VenderDetails from "./partials/vendor/VenderDetails";
 import * as Yup from "yup";
-import axios from "axios";
-import { Get_File_URL } from "../../helpers/url_helper";
 export default function UploadVendorData() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
     const [openSaveModal, setOpenSaveModal] = useState(false);
@@ -36,14 +34,14 @@ export default function UploadVendorData() {
     const dispatch = useDispatch();
 
 
-    if (!!(navigateState?.state?.data)) {
-        navigateState?.state?.data?.documents?.forEach(element => {
-            let imageData = element.documentPath;
-            const base64Encoded = window.btoa(imageData);
-            element.logo =(!!(imageData)? `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`:'');
-            console.log(element.logo);
-        });
-    }
+    // if (!!(navigateState?.state?.data)) {
+    //     navigateState?.state?.data?.documents?.forEach(element => {
+    //         let imageData = element.documentPath;
+    //         const base64Encoded = window.btoa(imageData);
+    //         element.logo =(!!(imageData)? `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`:'');
+    //         console.log(element.logo);
+    //     });
+    // }
 
     useEffect(() => {
         dispatch(getCustomersCityData());
