@@ -19,6 +19,8 @@ import ContactDetailsForm from "./partials/vendor/ContactDetailsForm";
 import DocumentDetailsForm from "./partials/vendor/DocumentDetailsForm";
 import VenderDetails from "./partials/vendor/VenderDetails";
 import * as Yup from "yup";
+import axios from "axios";
+import { Get_File_URL } from "../../helpers/url_helper";
 export default function UploadVendorData() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
     const [openSaveModal, setOpenSaveModal] = useState(false);
@@ -32,6 +34,16 @@ export default function UploadVendorData() {
         (state) => state?.parties
     );
     const dispatch = useDispatch();
+
+
+    if (!!(navigateState?.state?.data)) {
+        navigateState?.state?.data?.documents?.forEach(element => {
+            let imageData = element.documentPath;
+            const base64Encoded = window.btoa(imageData);
+            element.logo =(!!(imageData)? `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`:'');
+            console.log(element.logo);
+        });
+    }
 
     useEffect(() => {
         dispatch(getCustomersCityData());
@@ -129,55 +141,57 @@ export default function UploadVendorData() {
                 uploadDocument: document.documentPath || "",
             }));
             const projectUATRequestDTO = {
-                name: value.companyName || "",
-                logo: null,
-                logoPath: image?.path || "",
-                address: value.address || null,
-                ...(!!(navigateState?.state && navigateState?.state.data) && {
-                    id: navigateState?.state?.data?.id || null,
-                    version: navigateState?.state?.data?.version || 0,
-                    logoPath: image?.path ? image?.path : navigateState?.state?.data?.logoPath
-                }),
-                ...(pincodeVal?.length !== 0 && {
-                    "pinCode": {
-                        id: pincodeVal[0]?.id,
-                        version: pincodeVal[0]?.version
-                    },
-                }),
-                ...(cityVal?.length !== 0 && {
-                    "city": {
-                        id: cityVal[0]?.id,
-                        version: cityVal[0]?.version
-                    },
-                }),
-                ...(stateVal?.length !== 0 && {
-                    "state": {
-                        id: stateVal[0]?.id,
-                        version: stateVal[0]?.version
-                    },
-                }),
-                ...(countryVal?.length !== 0 && {
-                    "country": {
-                        id: countryVal[0]?.id,
-                        version: countryVal[0]?.version
-                    },
-                }),
-                website: value?.website || null,
-                contactName: value?.contactName || null,
-                contactNo: value?.phoneNumber || null,
-                contactEmail: value?.email || null,
-                department: value?.department || null,
-                designation: value?.designation || null,
-                vendorType: value?.venderType || null,
-                serviceType: value?.serviceType || null,
-                cin: value?.CINnumber || null,
-                gst: value?.GSTnumber || null,
-                pan: value?.PANnumber || null,
-                entityType: value?.entityType || null,
-                industryType: value?.industryType || null,
-                addresses: [],
-                contacts: [],
-                documents: newDocuments,
+                ...Object.fromEntries(Object.entries({
+                    name: value.companyName || null,
+                    logo: null,
+                    logoPath: image?.path || null,
+                    address: value.address || null,
+                    ...(!!(navigateState?.state && navigateState?.state.data) && {
+                        id: navigateState?.state?.data?.id || null,
+                        version: navigateState?.state?.data?.version || 0,
+                        logoPath: image?.path ? image?.path : navigateState?.state?.data?.logoPath
+                    }),
+                    ...(pincodeVal?.length !== 0 && {
+                        "pinCode": {
+                            id: pincodeVal[0]?.id,
+                            version: pincodeVal[0]?.version
+                        },
+                    }),
+                    ...(cityVal?.length !== 0 && {
+                        "city": {
+                            id: cityVal[0]?.id,
+                            version: cityVal[0]?.version
+                        },
+                    }),
+                    ...(stateVal?.length !== 0 && {
+                        "state": {
+                            id: stateVal[0]?.id,
+                            version: stateVal[0]?.version
+                        },
+                    }),
+                    ...(countryVal?.length !== 0 && {
+                        "country": {
+                            id: countryVal[0]?.id,
+                            version: countryVal[0]?.version
+                        },
+                    }),
+                    website: value?.website || null,
+                    contactName: value?.contactName || null,
+                    contactNo: value?.phoneNumber || null,
+                    contactEmail: value?.email || null,
+                    department: value?.department || null,
+                    designation: value?.designation || null,
+                    vendorType: value?.venderType || null,
+                    serviceType: value?.serviceType || null,
+                    cin: value?.CINnumber || null,
+                    gst: value?.GSTnumber || null,
+                    pan: value?.PANnumber || null,
+                    entityType: value?.entityType || null,
+                    industryType: value?.industryType || null,
+                    addresses: [],
+                    contacts: [],
+                    documents: newDocuments,
+                }).filter(([_, value]) => value !== null)),
             };
 
             console.log(projectUATRequestDTO, "projectUATRequestDTO");
@@ -186,7 +200,7 @@ export default function UploadVendorData() {
 
             formData.append('file', image);
             formData.append('tenantVendor', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
-           
+
             dispatch(postVendorDetailsAction(formData));
             console.log(vendor_id);
         },
@@ -205,22 +219,34 @@ export default function UploadVendorData() {
                 },
             ],
         },
-        onSubmit: (values) => {
-            // console.log("contact page", values);
-            let data = {
-                "id": 85,
-                "version": 0,
-                contacts: values?.contacts?.map((val) => {
-                    return {
-                        "contactName": `${val?.title || ''} ${val?.contactName || ''}`,
-                        "contactNo": val?.contactNo || '',
-                        "contactEmail": val?.contactEmail || '',
-                        "department": val?.department || '',
-                        "designation": val?.designation || '',
-                    }
+        validationSchema: Yup.object({
+            contacts: Yup.array().of(
+                Yup.object({
+                    contactName: Yup.string().required("Please Enter vendor Name"),
+                    contactEmail: Yup.string().email('Invalid email address').required('Email is required'),
+                    contactNo: Yup.string().required("Please Enter Your Phone Number")
                 })
+            ),
+        }),
+        onSubmit: (values) => {
+            console.log(values);
+            let data = {
+                ...Object.fromEntries(Object.entries({
+                    "id": navigateState?.state?.data?.id || null,
+                    "version": navigateState?.state?.data?.version || 0,
+                    contacts: values?.contacts?.map((val) => {
+                        return {
+                            ...Object.fromEntries(Object.entries({
+                                "contactName": val?.contactName || null,
+                                "contactNo": val?.contactNo || null,
+                                "contactEmail": val?.contactEmail || null,
+                                "department": val?.department || null,
+                                "designation": val?.designation || null,
+                            }).filter(([_, value]) => value !== null)),
+                        }
+                    })
+                }).filter(([_, value]) => value !== null)),
             }
-
             console.log(data, "vendor contact");
             dispatch(postVendorContactAction(data));
         },
@@ -248,15 +274,19 @@ export default function UploadVendorData() {
                 return {
                     docfile: val?.uploadDocument || '',
                     docdata: {
-                        "id": vendor_id?.id || '',
-                        "version": vendor_id?.version || '',
-                        "documents": [
-                            {
-                                "documentType": val?.documentType || '',
-                                "document": null,
-                                "documentPath": val?.uploadDocument?.name || '',
-                            }
-                        ]
+                        ...Object.fromEntries(Object.entries({
+                            "id": navigateState?.state?.data?.id || '',
+                            "version": navigateState?.state?.data?.version || '',
+                            "documents": [
+                                {
+                                    ...Object.fromEntries(Object.entries({
+                                        "documentType": val?.documentType || '',
+                                        "document": null,
+                                        "documentPath": val?.uploadDocument?.name || '',
+                                    }).filter(([_, value]) => value !== null)),
+                                }
+                            ]
+                        }).filter(([_, value]) => value !== null)),
                     }
                 }
             });
@@ -554,11 +584,11 @@ export default function UploadVendorData() {
                                                 </li>
                                                 <li className={`${activeTabProgress === 1 ? isAnyValueEmpty(companyDetailsFormik?.values) ? "disabled" : "" : activeTabProgress === 2 ? isAnyValueEmpty(contactsFormik?.values) ? "disabled" : "" : ""}`}>
                                                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                        {(activeTabProgress === 2 ||activeTabProgress === 3 ) && (
+                                                        {(activeTabProgress === 2 || activeTabProgress === 3 || navigateState?.state?.data) && (
                                                             <a className="me-3"
                                                                 onClick={() => {
-                                                                    toggleTabProgress(3);
-                                                                    activeTabProgress === 3?navigate('/vendors'):""
+                                                                    toggleTabProgress(((activeTabProgress === 1 && (navigateState?.state?.data)) ? 2 : 3));
+                                                                    activeTabProgress === 3 ? navigate('/vendors') : ""
                                                                 }}
                                                                 style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
                                                             >

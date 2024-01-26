@@ -1,13 +1,13 @@
 import { FieldArray, FormikProvider, useFormik } from 'formik';
 import React from 'react';
 import Select from 'react-select';
-import { Card, CardBody, Input } from 'reactstrap';
+import { Card, CardBody, FormFeedback, Input } from 'reactstrap';
 import { optionCustdepartment, optionCustdesignation, optionCustopCode, optionCusttitle } from '../../../../common/data/settings';
 import { useDispatch } from 'react-redux';
 import { postCustomerContactAction } from '../../../../store/Parties/Customer/action';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-
+import * as Yup from "yup";
 const CustomerContact = ({ toggleTabProgress }) => {
     const { customer_id } = useSelector((state) => state?.customer);
     const dispatch = useDispatch();
@@ -26,19 +26,32 @@ const CustomerContact = ({ toggleTabProgress }) => {
                 },
             ],
         },
+        validationSchema: Yup.object({
+            contacts: Yup.array().of(
+                Yup.object({
+                    name: Yup.string().required("Please Enter Customer Name"),
+                    emailId: Yup.string().email('Invalid email address').required('Email is required'),
+                    phoneNumber: Yup.string().required("Please Enter Your Phone Number")
+                })
+            ),
+        }),
         onSubmit: (values) => {
             let data = {
-                "id": customer_id?.id || '',
-                "version": customer_id?.version || '',
-                contacts: values?.contacts?.map((val) => {
-                    return {
-                        "contactName": `${val?.title || ''} ${val?.name || ''}`,
-                        "contactNo": val?.phoneNumber || '',
-                        "contactEmail": val?.emailId || '',
-                        "department": val?.department || '',
-                        "designation": val?.designation || '',
-                    }
-                })
+                ...Object.fromEntries(Object.entries({
+                    "id": navigateState?.state?.data?.id || null,
+                    "version": navigateState?.state?.data?.version || 0,
+                    contacts: values?.contacts?.map((val) => {
+                        return {
+                            ...Object.fromEntries(Object.entries({
+                                "contactName": val?.name || null,
+                                "contactNo": val?.phoneNumber || null,
+                                "contactEmail": val?.emailId || null,
+                                "department": val?.department || null,
+                                "designation": val?.designation || null,
+                            }).filter(([_, value]) => value !== null)),
+                        }
+                    })
+                }).filter(([_, value]) => value !== null)),
             }
             console.log(data, "data---------------");
             dispatch(postCustomerContactAction(data));
@@ -65,7 +78,7 @@ const CustomerContact = ({ toggleTabProgress }) => {
                                             <div className='row'>
                                                 <div className="col-10 col-md-11">
                                                     <div className="mb-3">
-                                                        <label className="form-label">Contact Name</label>
+                                                        <label className="form-label">Contact Name <span className='required_star'>*</span></label>
                                                         <div className='row'>
                                                             <div className='col-4 col-md-2'>
                                                                 <Select
@@ -89,7 +102,22 @@ const CustomerContact = ({ toggleTabProgress }) => {
                                                                     onChange={contactsFormik.handleChange}
                                                                     className="form-control"
                                                                     placeholder=""
+                                                                    onBlur={contactsFormik.handleBlur}
+                                                                    invalid={
+                                                                        contactsFormik.touched.contacts &&
+                                                                            contactsFormik.touched.contacts[index] &&
+                                                                            contactsFormik.errors.contacts &&
+                                                                            contactsFormik.errors.contacts[index]?.name
+                                                                            ? true
+                                                                            : false
+                                                                    }
                                                                 />
+                                                                {contactsFormik.touched.contacts &&
+                                                                    contactsFormik.touched.contacts[index] &&
+                                                                    contactsFormik.errors.contacts &&
+                                                                    contactsFormik.errors.contacts[index]?.name ? (
+                                                                    <FormFeedback>{contactsFormik.errors.contacts[index]?.name}</FormFeedback>
+                                                                ) : null}
                                                             </div>
                                                         </div>
 
@@ -111,7 +139,7 @@ const CustomerContact = ({ toggleTabProgress }) => {
                                             <div className='row'>
                                                 <div className="col-12 col-md-6">
                                                     <div className="mb-3">
-                                                        <label className="form-label">Phone Number</label>
+                                                        <label className="form-label">Phone Number<span className='required_star'>*</span></label>
                                                         <div className='row'>
                                                             <div className='col-4 col-md-3'>
                                                                 <Select
@@ -145,7 +173,22 @@ const CustomerContact = ({ toggleTabProgress }) => {
                                                                     onChange={contactsFormik.handleChange}
                                                                     className="form-control"
                                                                     placeholder=""
+                                                                    onBlur={contactsFormik.handleBlur}
+                                                                    invalid={
+                                                                        contactsFormik.touched.contacts &&
+                                                                            contactsFormik.touched.contacts[index] &&
+                                                                            contactsFormik.errors.contacts &&
+                                                                            contactsFormik.errors.contacts[index]?.phoneNumber
+                                                                            ? true
+                                                                            : false
+                                                                    }
                                                                 />
+                                                                {contactsFormik.touched.contacts &&
+                                                                    contactsFormik.touched.contacts[index] &&
+                                                                    contactsFormik.errors.contacts &&
+                                                                    contactsFormik.errors.contacts[index]?.phoneNumber ? (
+                                                                    <FormFeedback>{contactsFormik.errors.contacts[index]?.phoneNumber}</FormFeedback>
+                                                                ) : null}
                                                             </div>
                                                         </div>
 
@@ -153,7 +196,7 @@ const CustomerContact = ({ toggleTabProgress }) => {
                                                 </div>
                                                 <div className="col-12 col-md-6">
                                                     <div className="">
-                                                        <label className="form-label">Email Id</label>
+                                                        <label className="form-label">Email Id<span className='required_star'>*</span></label>
                                                     </div>
                                                     <Input
                                                         type="text"
@@ -162,7 +205,22 @@ const CustomerContact = ({ toggleTabProgress }) => {
                                                         onChange={contactsFormik.handleChange}
                                                         className="form-control"
                                                         placeholder=""
+                                                        onBlur={contactsFormik.handleBlur}
+                                                        invalid={
+                                                            contactsFormik.touched.contacts &&
+                                                                contactsFormik.touched.contacts[index] &&
+                                                                contactsFormik.errors.contacts &&
+                                                                contactsFormik.errors.contacts[index]?.emailId
+                                                                ? true
+                                                                : false
+                                                        }
                                                     />
+                                                    {contactsFormik.touched.contacts &&
+                                                        contactsFormik.touched.contacts[index] &&
+                                                        contactsFormik.errors.contacts &&
+                                                        contactsFormik.errors.contacts[index]?.emailId ? (
+                                                        <FormFeedback>{contactsFormik.errors.contacts[index]?.emailId}</FormFeedback>
+                                                    ) : null}
                                                 </div>
                                             </div>
 

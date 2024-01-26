@@ -46,17 +46,21 @@ const CustomerDocument = () => {
             // }
             let data = values?.document?.map((val) => {
                 return {
-                    docfile: val?.uploadDocument || '',
+                    docfile: val?.uploadDocument || null,
                     docdata: {
-                        "id": customer_id?.id || '',
-                        "version": customer_id?.version || '',
-                        "documents": [
-                            {
-                                "documentType": val?.documentType || '',
-                                "document": '',
-                                "documentPath": val?.uploadDocument?.name || '',
-                            }
-                        ]
+                        ...Object.fromEntries(Object.entries({
+                            "id": navigateState?.state?.data?.id || null,
+                            "version": navigateState?.state?.data?.version || null,
+                            "documents": [
+                                {
+                                    ...Object.fromEntries(Object.entries({
+                                        "documentType": val?.documentType || null,
+                                        "document": null,
+                                        "documentPath": val?.uploadDocument?.name || null,
+                                    }).filter(([_, value]) => value !== null)),
+                                }
+                            ]
+                        }).filter(([_, value]) => value !== null)),
                     }
                 }
             })

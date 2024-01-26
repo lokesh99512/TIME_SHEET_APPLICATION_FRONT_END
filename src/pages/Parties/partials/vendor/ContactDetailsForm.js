@@ -1,7 +1,7 @@
 import { FieldArray, FormikProvider } from "formik";
 import React from "react";
 import Select from "react-select";
-import { Card, CardBody, Input } from "reactstrap";
+import { Card, CardBody, FormFeedback, Input } from "reactstrap";
 import { department, designation, } from "../../constants/venderEnumList";
 const opCode = [{ label: "+91", value: "+91" }];
 
@@ -46,7 +46,7 @@ const ContactDetailsForm = ({ contactsFormik }) => {
                                   options={title}
                                   placeholder="Mr"
                                   classNamePrefix="select2-selection form-select"
-                                />
+                                /> 
                               </div>
                               <div className="col-8 col-md-6">
                                 <Input
@@ -58,7 +58,22 @@ const ContactDetailsForm = ({ contactsFormik }) => {
                                   onChange={contactsFormik.handleChange}
                                   className="form-control"
                                   placeholder=""
-                                />
+                                  onBlur={contactsFormik.handleBlur}
+                                  invalid={
+                                      contactsFormik.touched.contacts &&
+                                          contactsFormik.touched.contacts[index] &&
+                                          contactsFormik.errors.contacts&&
+                                          contactsFormik.errors.contacts[index]?.contactName
+                                          ? true
+                                          : false
+                                  }
+                              />
+                              {contactsFormik.touched.contacts &&
+                                  contactsFormik.touched.contacts[index] &&
+                                  contactsFormik.errors.contacts &&
+                                  contactsFormik.errors.contacts[index]?.contactName ? (
+                                  <FormFeedback>{contactsFormik.errors.contacts[index]?.contactName}</FormFeedback>
+                              ) : null}
                               </div>
                             </div>
                           </div>
@@ -115,7 +130,22 @@ const ContactDetailsForm = ({ contactsFormik }) => {
                                   onChange={contactsFormik.handleChange}
                                   className="form-control"
                                   placeholder=""
-                                />
+                                  onBlur={contactsFormik.handleBlur}
+                                  invalid={
+                                      contactsFormik.touched.contacts &&
+                                          contactsFormik.touched.contacts[index] &&
+                                          contactsFormik.errors.contacts&&
+                                          contactsFormik.errors.contacts[index]?.contactNo
+                                          ? true
+                                          : false
+                                  }
+                              />
+                              {contactsFormik.touched.contacts &&
+                                  contactsFormik.touched.contacts[index] &&
+                                  contactsFormik.errors.contacts &&
+                                  contactsFormik.errors.contacts[index]?.contactNo ? (
+                                  <FormFeedback>{contactsFormik.errors.contacts[index]?.contactNo}</FormFeedback>
+                              ) : null}
                               </div>
                             </div>
                           </div>
@@ -133,7 +163,21 @@ const ContactDetailsForm = ({ contactsFormik }) => {
                             onChange={contactsFormik.handleChange}
                             className="form-control"
                             placeholder=""
-                          />
+                            invalid={
+                              contactsFormik.touched.contacts &&
+                                  contactsFormik.touched.contacts[index] &&
+                                  contactsFormik.errors.contacts&&
+                                  contactsFormik.errors.contacts[index]?.contactEmail
+                                  ? true
+                                  : false
+                          }
+                      />
+                      {contactsFormik.touched.contacts &&
+                          contactsFormik.touched.contacts[index] &&
+                          contactsFormik.errors.contacts &&
+                          contactsFormik.errors.contacts[index]?.contactEmail ? (
+                          <FormFeedback>{contactsFormik.errors.contacts[index]?.contactEmail}</FormFeedback>
+                      ) : null}
                         </div>
                       </div>
 

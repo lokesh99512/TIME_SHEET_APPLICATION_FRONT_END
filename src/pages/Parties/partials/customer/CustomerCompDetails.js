@@ -52,7 +52,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
         setIndustryTypeModal(false)
         setCustomerTypeModal(false)
     };
-    console.log(navigateState?.state);
+
     const gstDetailsHandler = (data) => {
         setModalAllData((prev) => ([...prev, data]))
     }
@@ -114,64 +114,66 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
             }));
             let formData = new FormData();
             const projectUATRequestDTO = {
-                "name": values.companyName || "",
-                "logo": null,
-                "logoPath": image?.preview || "",
-                "address": values.address || null,
-                ...((!!(navigateState?.state && navigateState?.state.data)) && {
-                    id: navigateState?.state?.data?.id || null,
-                    version: navigateState?.state?.data?.version || 0,
-                    logoPath: image?.path ? image?.path : navigateState?.state?.data?.logoPath
-                }),
-                ...(pincodeVal?.length !== 0 && {
-                    "pinCode": {
-                        id: pincodeVal[0]?.id,
-                        version: pincodeVal[0]?.version
+                ...Object.fromEntries(Object.entries({
+                    "name": values.companyName || null,
+                    "logo": null,
+                    "logoPath": image?.preview || null,
+                    "address": values.address || null,
+                    ...((!!(navigateState?.state && navigateState?.state.data)) && {
+                        id: navigateState?.state?.data?.id || null,
+                        version: navigateState?.state?.data?.version || 0,
+                        logoPath: image?.path ? image?.path : navigateState?.state?.data?.logoPath
+                    }),
+                    ...(pincodeVal?.length !== 0 && {
+                        "pinCode": {
+                            id: pincodeVal[0]?.id,
+                            version: pincodeVal[0]?.version
+                        },
+                    }),
+                    ...(cityVal?.length !== 0 && {
+                        "city": {
+                            id: cityVal[0]?.id,
+                            version: cityVal[0]?.version
+                        },
+                    }),
+                    ...(stateVal?.length !== 0 && {
+                        "state": {
+                            id: stateVal[0]?.id,
+                            version: stateVal[0]?.version
+                        },
+                    }),
+                    ...(countryVal?.length !== 0 && {
+                        "country": {
+                            id: countryVal[0]?.id,
+                            version: countryVal[0]?.version
+                        },
+                    }),
+                    "website": values.website || null,
+                    "contactName": values.contactName || null,
+                    "contactNo": values.phoneNumber || null,
+                    "contactEmail": values.email || null,
+                    "department": values.department || null,
+                    "designation": values.designation || null,
+                    "salesUser": {
+                        id: salesEmployeeVal?.id,
+                        version: salesEmployeeVal?.version
                     },
-                }),
-                ...(cityVal?.length !== 0 && {
-                    "city": {
-                        id: cityVal[0]?.id,
-                        version: cityVal[0]?.version
+                    "accountManager": {
+                        id: accountManagerVal?.id,
+                        version: accountManagerVal?.version
                     },
-                }),
-                ...(stateVal?.length !== 0 && {
-                    "state": {
-                        id: stateVal[0]?.id,
-                        version: stateVal[0]?.version
-                    },
-                }),
-                ...(countryVal?.length !== 0 && {
-                    "country": {
-                        id: countryVal[0]?.id,
-                        version: countryVal[0]?.version
-                    },
-                }),
-                "website": values.website || null,
-                "contactName": values.contactName || null,
-                "contactNo": values.phoneNumber || null,
-                "contactEmail": values.email || null,
-                "department": values.department || null,
-                "designation": values.designation || null,
-                "salesUser": {
-                    id: salesEmployeeVal?.id,
-                    version: salesEmployeeVal?.version
-                },
-                "accountManager": {
-                    id: accountManagerVal?.id,
-                    version: accountManagerVal?.version
-                },
-                "serviceType": "AIR",
-                "cin": values.CINnumber || null,
-                "gst": values.GSTnumber || null,
-                "pan": values.PANnumber || null,
-                "entityType": values.entityType || null,
-                "industryType": values.industryType || null,
-                "type": values.customerType || null,
-                "status": "ACTIVE",
-                "addresses": [],
-                "contacts": [],
-                documents: newDocuments
+                    "serviceType": "AIR",
+                    "cin": values.CINnumber || null,
+                    "gst": values.GSTnumber || null,
+                    "pan": values.PANnumber || null,
+                    "entityType": values.entityType || null,
+                    "industryType": values.industryType || null,
+                    "type": values.customerType || null,
+                    "status": "ACTIVE",
+                    "addresses": [],
+                    "contacts": [],
+                    documents: newDocuments,
+                }).filter(([_, value]) => value !== null)),
             }
 
             console.log(projectUATRequestDTO, "projectUATRequestDTO");
@@ -208,7 +210,9 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
             version: item?.version
         }
     })
-
+    const onClickSkip = () => {
+        toggleTabProgress(2);
+    }
     const onUploadChange = (file) => {
         console.log(file.name, "file")
         if (file) {
@@ -655,7 +659,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                         <div className="col-2 col-md-1">
                             <button
                                 className="btn btn-primary mt-4"
-                                onClick={() => setGstModal(true)}
+                                // onClick={() => setGstModal(true)}
                             >
                                 <i className="bx bx-plus"></i>
                             </button>
@@ -762,14 +766,26 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
             </Card>
 
             <div className="d-flex justify-content-end" style={{ margin: "0 0 -62px" }}>
-                <button
-                    type="button"
-                    className="btn btn-primary d-flex align-items-center"
-                    onClick={companyDetailsFormik.handleSubmit}
-                >
-                    Save
-                    <i className="bx bx-chevron-right ms-1"></i>
-                </button>
+
+                <div className="d-flex align-items-center">
+                    {!!(navigateState?.state?.data) && (
+                        <a
+                            className="me-3"
+                            onClick={onClickSkip}
+                            style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
+                        >
+                            Skip
+                        </a>
+                    )}
+                    <button
+                        type="button"
+                        className="btn btn-primary d-flex align-items-center"
+                        onClick={companyDetailsFormik.handleSubmit}
+                    >
+                        Save
+                        <i className="bx bx-chevron-right ms-1"></i>
+                    </button>
+                </div>
             </div>
 
             {/* onSubmitHandler={gstDetailsHandler} */}
