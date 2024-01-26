@@ -27,7 +27,7 @@ const Customers = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
-  const { customer_data } = useSelector((state) => state?.customer)
+  const { customer_data, customer_loader } = useSelector((state) => state?.customer)
 
   console.log(customer_data, "--customer_data");
 
@@ -194,6 +194,7 @@ const Customers = () => {
               customPageSize={10}
               //   toggleRightCanvas={toggleRightCanvas}
               component={"Customers"}
+              loader={customer_loader || false}
             />
 
             {/* modal */}

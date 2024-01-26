@@ -15,10 +15,12 @@ export const LastName = ({cellProps,viewPopupHandler}) => {
     return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value ? cellProps.value : '-'}</span>;
 }
 export const Role = ({cellProps,viewPopupHandler, roleData}) => {
-    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{cellProps.value.length > 0 ? (
-    <>
-        {cellProps.value.map((item,index) => index !== 0 ? ', ' + roleData.find(obj => obj.id === item)?.label?.toLowerCase() : roleData.find(obj => obj.id === item)?.label.toLowerCase())}
-    </>) : '-'}</span>;
+    return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{
+        (roleData?.length !== 0 && cellProps.value.length > 0) ? (
+        <>
+            {cellProps.value.map((item,index) => index !== 0 ? ', ' + roleData.find(obj => obj.id === item)?.label?.toLowerCase() : roleData.find(obj => obj.id === item)?.label.toLowerCase())}
+        </>) : '-'}
+    </span>;
 }
 export const LastActive = ({cellProps,viewPopupHandler}) => {
     const {value} = cellProps;

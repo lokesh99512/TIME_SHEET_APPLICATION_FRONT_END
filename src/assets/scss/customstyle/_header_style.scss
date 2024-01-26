@@ -176,12 +176,6 @@ body[data-sidebar-size=sm] {
                 }
                 > ul{
                     top: 0;
-                    // li {
-                    //     ul{
-                    //         margin: 0 !important;
-                    //         top: 0;
-                    //     }
-                    // }
                 }
             }
         }
@@ -231,4 +225,11 @@ body[data-sidebar-size=sm] {
             }
         }
     }
+}
+
+#sidebar-menu ul.metismenu > li > a.mm-active {
+    color: var(--bs-sidebar-menu-item-active-color) !important;
+}
+#sidebar-menu ul.metismenu > li > a.mm-active > svg path{
+    fill: var(--bs-sidebar-menu-item-active-color) !important;
 }

@@ -8,6 +8,7 @@ import ModalResetPassword from "./Modal/ModalResetPassword";
 import { Edit, FirstName, LastActive, LastName, Role, UserName } from "./SettingsCol";
 import TopBreadcrumbs from "./Surcharge/TopBreadcrumbs";
 import TableUsers from "./TableUsers";
+import { GET_ROLE_TYPE } from "../../store/Global/actiontype";
 
 const Users = () => {
   const [resetModal, setResetModal] = useState(false);
@@ -41,8 +42,9 @@ const Users = () => {
   }
 
   useEffect(() => {
-    dispatch(getUsersData());    
-  }, []);
+    dispatch(getUsersData()); 
+    dispatch({ type: GET_ROLE_TYPE });   
+  }, [dispatch]);
 
   const columns = useMemo(() => ([
     {
@@ -147,7 +149,7 @@ const Users = () => {
         return <Edit cellProps={cellProps} viewPopupHandler={editHandler} />
       },
     },
-  ]), []);
+  ]), [roleData]);
 
   return (
     <>

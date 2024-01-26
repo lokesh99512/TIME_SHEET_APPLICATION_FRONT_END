@@ -5,24 +5,25 @@ import { useAsyncDebounce, useExpanded, useFilters, useGlobalFilter, usePaginati
 import { Row, Table } from 'reactstrap';
 import { filter_icon, upload_icon } from "../../assets/images";
 import { DefaultColumnFilter, Filter } from '../../components/Common/filters';
+import TableCommonSkeleton from '../Skeleton/TableCommonSkeleton';
 
 // Define a default UI for filtering
 function GlobalFilter({
     preGlobalFilteredRows,
     globalFilter,
     setGlobalFilter,
-  }) {
+}) {
     const count = preGlobalFilteredRows.length;
     const [value, setValue] = React.useState(globalFilter);
     const onChange = useAsyncDebounce(value => {
-      setGlobalFilter(value || undefined);
+        setGlobalFilter(value || undefined);
     }, 200);
-  
+
     return (
         <div className="search_form">
             <form>
                 <div className="position-relative">
-                    <input 
+                    <input
                         type="search"
                         onChange={e => {
                             e.preventDefault();
@@ -30,8 +31,8 @@ function GlobalFilter({
                             onChange(e.target.value);
                             return false;
                         }}
-                        className="form-control" 
-                        placeholder="Search" 
+                        className="form-control"
+                        placeholder="Search"
                         value={value || ""}
                     />
                     <button className="btn" type="button">
@@ -41,22 +42,22 @@ function GlobalFilter({
             </form>
         </div>
     );
-  }
+}
 
-const TableVenders = ({columns,data,isGlobalFilter,customPageSize,toggleRightCanvas,component, loader}) => {    
+const TableVenders = ({ columns, data, isGlobalFilter, customPageSize, toggleRightCanvas, component, loader }) => {
     const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow, canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize, state, preGlobalFilteredRows, setGlobalFilter, state: { pageIndex, pageSize }, } = useTable({
-          columns,
-          data,
-          defaultColumn: { Filter: DefaultColumnFilter },
-          initialState: { pageIndex: 0, pageSize: customPageSize },
-        },
+        columns,
+        data,
+        defaultColumn: { Filter: DefaultColumnFilter },
+        initialState: { pageIndex: 0, pageSize: customPageSize },
+    },
         useGlobalFilter,
         useFilters,
         useSortBy,
         useExpanded,
         usePagination,);
     const navidate = useNavigate();
-    
+
     return (
         <>
             <div className="freight_filter_wrap d-flex align-items-center">
@@ -79,7 +80,7 @@ const TableVenders = ({columns,data,isGlobalFilter,customPageSize,toggleRightCan
                         </button>
                     </div> */}
                     <div className="add_btn">
-                    <button className='border-0' onClick={() => {navidate(`/vendor/add-vendor`);}}>
+                        <button className='border-0' onClick={() => { navidate(`/vendor/add-vendor`); }}>
                             <i className='bx bx-plus align-middle'></i> Add
                         </button>
                     </div>
@@ -88,63 +89,55 @@ const TableVenders = ({columns,data,isGlobalFilter,customPageSize,toggleRightCan
             <div className="table_pagination_wrap">
                 <div className="table-responsive table_wrap">
                     <Table hover {...getTableProps()} className={'test'}>
-                    <thead className="table-light table-nowrap">
-                        {headerGroups.map(headerGroup => (
-                        <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
-                            {headerGroup.headers.map(column => (
-                            <th key={column.id}>
-                                <span className='d-flex align-items-center' {...column.getSortByToggleProps()}>
-                                {column.render("Header")}
-                                <i className='fas fa-sort'></i>
-                                </span>
-                                <Filter column={column} />
-                            </th>
+                        <thead className="table-light table-nowrap">
+                            {headerGroups.map(headerGroup => (
+                                <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
+                                    {headerGroup.headers.map(column => (
+                                        <th key={column.id}>
+                                            <span className='d-flex align-items-center' {...column.getSortByToggleProps()}>
+                                                {column.render("Header")}
+                                                <i className='fas fa-sort'></i>
+                                            </span>
+                                            <Filter column={column} />
+                                        </th>
+                                    ))}
+                                </tr>
                             ))}
-                        </tr>
-                        ))}
-                    </thead>
+                        </thead>
 
-                    <tbody {...getTableBodyProps()}>
-                        {page.map(row => {
-                        prepareRow(row);
-                        return (
-                            <Fragment key={row.getRowProps().key}>
-                            <tr>
-                                {row.cells.map(cell => {
+                        <tbody {...getTableBodyProps()}>
+                            {page.map(row => {
+                                prepareRow(row);
                                 return (
-                                    <td key={cell.id} {...cell.getCellProps()}>
-                                    {cell.render("Cell")}
-                                    </td>
+                                    <Fragment key={row.getRowProps().key}>
+                                        <tr>
+                                            {row.cells.map(cell => {
+                                                return (
+                                                    <td key={cell.id} {...cell.getCellProps()}>
+                                                        {cell.render("Cell")}
+                                                    </td>
+                                                );
+                                            })}
+                                        </tr>
+                                    </Fragment>
                                 );
-                                })}
-                            </tr>
-                            </Fragment>
-                        );
-                        })}
-                        {page?.length === 0 && (
-                            <>   
-                                {loader ? (
-                                    <tr>
-                                        <td colSpan={headerGroups[0].headers.length} className="text-center py-5">
-                                            <div className='py-5'>
-                                                <div className="spinner-border text-primary" role="status">
-                                                    <span className="visually-hidden">Loading...</span>
+                            })}
+                            {page?.length === 0 && (
+                                <>
+                                    {loader ? (
+                                        <TableCommonSkeleton tdCount={headerGroups[0].headers.length} />
+                                    ) :
+                                        <tr>
+                                            <td colSpan={headerGroups[0].headers.length}>
+                                                <div className='no_table_data_found'>
+                                                    <p>No Data Found.</p>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ) : 
-                                    <tr>
-                                        <td colSpan={headerGroups[0].headers.length}>
-                                            <div className='no_table_data_found'>
-                                                <p>No Data Found. </p>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                }                                   
-                            </>
-                        )}
-                    </tbody>
+                                            </td>
+                                        </tr>
+                                    }
+                                </>
+                            )}
+                        </tbody>
                     </Table>
                 </div>
                 <Row className="align-items-center g-3 text-center text-sm-start pagination_wrap">
@@ -172,7 +165,7 @@ const TableVenders = ({columns,data,isGlobalFilter,customPageSize,toggleRightCan
                             <ReactPaginate
                                 breakLabel="..."
                                 nextLabel="next"
-                                onPageChange={(item) => {gotoPage(item.selected)}}
+                                onPageChange={(item) => { gotoPage(item.selected) }}
                                 pageRangeDisplayed={3}
                                 pageCount={pageOptions.length}
                                 previousLabel="previous"
@@ -182,7 +175,7 @@ const TableVenders = ({columns,data,isGlobalFilter,customPageSize,toggleRightCan
                     </div>
                 </Row>
             </div>
-            
+
         </>
     )
 }

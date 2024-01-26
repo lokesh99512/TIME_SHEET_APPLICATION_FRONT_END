@@ -159,8 +159,6 @@ export default function FclInlandUpload() {
                 }
             });
 
-            console.log(data,"data");
-
             dispatch(uploadFclInlandSurchargeAction(data));
             setSurcharges([]);
             dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addInland', data: { ...addInland, surcharges: [] } } });
@@ -169,6 +167,7 @@ export default function FclInlandUpload() {
         setselectedFiles([]);
         setOpenSaveModal(false);
     }
+    
     const uploadSaveHandler = () => {
         if (activeTabProgress === 1) {
             console.log(addInland?.carrierDetails, 'addInland?.carrierDetails');

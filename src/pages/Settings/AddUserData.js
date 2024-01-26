@@ -22,7 +22,7 @@ export default function AddUserData() {
 
     useEffect(() => {
         dispatch(getUsersData());
-        dispatch({ type: GET_ROLE_TYPE });
+        // dispatch({ type: GET_ROLE_TYPE });
         dispatch(getAllTenantLocationData())
     }, []);
 

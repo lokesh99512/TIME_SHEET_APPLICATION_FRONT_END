@@ -39,9 +39,6 @@ const Vendors = () => {
       },
     });
   };
-  // const switchHandler = (data) => {
-  //   dispatch(updateVendorSwitchData(data.id, data.is_active));
-  // }
 
   useEffect(() => {
     dispatch(getVendorListAction());
@@ -162,7 +159,7 @@ const Vendors = () => {
               customPageSize={10}
               //   toggleRightCanvas={toggleRightCanvas}
               component={"Customers"}
-              loader={vendor_loader}
+              loader={vendor_loader || false}
             />
 
             {/* modal */}

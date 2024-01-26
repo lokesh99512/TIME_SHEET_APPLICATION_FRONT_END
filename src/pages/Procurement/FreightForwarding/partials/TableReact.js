@@ -65,7 +65,6 @@ const TableReact = ({ columns, data, isGlobalFilter, customPageSize, toggleRight
     const { addFCL, addInland} = useSelector((state) => state?.procurement);
 
     const blankDataHandler = () => {
-        console.log(component,"component");
         if(component === 'fcl'){
             dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addFCL', data: { ...addFCL, surcharges: [] } } });
         } else if (component === 'inland') {

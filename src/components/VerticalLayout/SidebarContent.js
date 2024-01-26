@@ -169,14 +169,6 @@ const SidebarContent = props => {
                     <span>{props.t("Dashboard")}</span>
                   </Link>
                 </li>
-                {/* <li>
-                  <Link to="/analytics">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
-                      <path d="M5 3.5C3.89543 3.5 3 4.39543 3 5.5V15.5C3 16.6046 3.89543 17.5 5 17.5H15C16.1046 17.5 17 16.6046 17 15.5V5.5C17 4.39543 16.1046 3.5 15 3.5H5ZM10 10.5C10.2761 10.5 10.5 10.7239 10.5 11V14C10.5 14.2761 10.2761 14.5 10 14.5C9.72386 14.5 9.5 14.2761 9.5 14V11C9.5 10.7239 9.72386 10.5 10 10.5ZM6 9C6 8.72386 6.22386 8.5 6.5 8.5C6.77614 8.5 7 8.72386 7 9V14C7 14.2761 6.77614 14.5 6.5 14.5C6.22386 14.5 6 14.2761 6 14V9ZM13.5 6.5C13.7761 6.5 14 6.72386 14 7V14C14 14.2761 13.7761 14.5 13.5 14.5C13.2239 14.5 13 14.2761 13 14V7C13 6.72386 13.2239 6.5 13.5 6.5Z" fill="#6264A0" />
-                    </svg>
-                    <span>Analytics</span>
-                  </Link>
-                </li> */}
               </ul>
             </li>
             <li>
@@ -285,7 +277,7 @@ const SidebarContent = props => {
               </ul>
             </li>
             <li>
-              <Link to="#" className="has-arrow">
+              <Link to="/#" className="has-arrow">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
                   <path d="M12.5 5C12.5 6.38071 11.3807 7.5 10 7.5C8.61929 7.5 7.5 6.38071 7.5 5C7.5 3.61929 8.61929 2.5 10 2.5C11.3807 2.5 12.5 3.61929 12.5 5ZM17.5 5.5C17.5 6.60457 16.6046 7.5 15.5 7.5C14.3954 7.5 13.5 6.60457 13.5 5.5C13.5 4.39543 14.3954 3.5 15.5 3.5C16.6046 3.5 17.5 4.39543 17.5 5.5ZM4.5 7.5C5.60457 7.5 6.5 6.60457 6.5 5.5C6.5 4.39543 5.60457 3.5 4.5 3.5C3.39543 3.5 2.5 4.39543 2.5 5.5C2.5 6.60457 3.39543 7.5 4.5 7.5ZM6 9.75C6 9.05964 6.55964 8.5 7.25 8.5H12.75C13.4404 8.5 14 9.05964 14 9.75V14.5C14 16.7091 12.2091 18.5 10 18.5C7.79086 18.5 6 16.7091 6 14.5V9.75ZM5 9.75C5 9.28746 5.13957 8.85752 5.37889 8.5H3.25C2.55964 8.5 2 9.05964 2 9.75V13.5C2 15.1569 3.34315 16.5 5 16.5C5.13712 16.5 5.27209 16.4908 5.40434 16.473C5.14412 15.8677 5 15.2007 5 14.5V9.75ZM15 14.5C15 15.2007 14.8559 15.8677 14.5957 16.473C14.7279 16.4908 14.8629 16.5 15 16.5C16.6569 16.5 18 15.1569 18 13.5V9.75C18 9.05964 17.4404 8.5 16.75 8.5H14.6211C14.8604 8.85752 15 9.28746 15 9.75V14.5Z" fill="#6264A0" />
                 </svg>
@@ -298,11 +290,11 @@ const SidebarContent = props => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="#">
+                  <Link to="/#">
                     <span>Customer Rates</span>
                   </Link>
-                </li>  
-                </ul> 
+                </li>
+              </ul>
             </li>
             <li>
               <Link to="/#" className="has-arrow">
@@ -321,28 +313,11 @@ const SidebarContent = props => {
                   <Link to="/settings/users">
                     <span>Users</span>
                   </Link>
-                </li>                
+                </li>
                 <li>
                   <Link to="/settings/surcharge">
                     <span>Surcharge Master</span>
                   </Link>
-                  {/* <ul className="sub-menu">
-                    <li>
-                      <Link to="/settings/surcharge">
-                        <span>Ocean Surcharges</span>
-                      </Link>
-                    </li>
-                    <li className="opacity-25">
-                      <Link to="#">
-                        <span>Air Surcharges</span>
-                      </Link>
-                    </li>
-                    <li className="opacity-25">
-                      <Link to="#">
-                        <span>Inland Surcharges</span>
-                      </Link>
-                    </li>
-                  </ul> */}
                 </li>
                 <li>
                   <Link to="/vendors">
