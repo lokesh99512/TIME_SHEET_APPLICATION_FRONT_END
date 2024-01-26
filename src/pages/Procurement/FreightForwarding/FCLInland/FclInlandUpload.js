@@ -49,6 +49,10 @@ export default function FclInlandUpload() {
     }, [vendor_data]);
 
     useEffect(() => {
+        dispatch({ type: BLANK_FCL_CARRIER_DATA, payload: { name: 'addInland', data: { ...addInland, carrierDetails: carrierObj } } });
+    }, [])
+
+    useEffect(() => {
         console.log(inlandActiveTab,"inlandActiveTab")
         setActiveTabProgress(inlandActiveTab)
         if (inlandActiveTab === 1) { setProgressValue(33) }
@@ -161,12 +165,15 @@ export default function FclInlandUpload() {
             setSurcharges([]);
             dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addInland', data: { ...addInland, surcharges: [] } } });
         }
+        dispatch({ type: BLANK_FCL_CARRIER_DATA, payload: { name: 'addInland', data: { ...addInland, carrierDetails: carrierObj } } });
+        setselectedFiles([]);
         setOpenSaveModal(false);
     }
     const uploadSaveHandler = () => {
         if (activeTabProgress === 1) {
             console.log(addInland?.carrierDetails, 'addInland?.carrierDetails');
             const data = {
+                ...(fcl_Inland_Charge_id && {id: fcl_Inland_Charge_id?.id, version: fcl_Inland_Charge_id?.version}),
                 ...(addInland?.carrierDetails?.rate_source &&{rateSource: addInland?.carrierDetails?.rate_source?.value || ''}),
                 rateType: addInland?.carrierDetails?.rate_type?.value || '',
                 validFrom: addInland?.carrierDetails?.validity_from || '',
@@ -184,14 +191,13 @@ export default function FclInlandUpload() {
             };
             console.log(newData, 'newData');
             dispatch(uploadFclInlandCarrierAction({ ...newData }));
-            dispatch({ type: BLANK_FCL_CARRIER_DATA, payload: { name: 'addInland', data: { ...addInland, carrierDetails: carrierObj } } });
+            
         } else if (activeTabProgress === 2) {
             let xlxsfile = selectedFiles[0]
             const formData = new FormData();
             formData.append('file', xlxsfile);
 
-            dispatch(uploadFclInlandFreightAction(formData, fcl_Inland_Charge_id?.id));
-            setselectedFiles([]);
+            dispatch(uploadFclInlandFreightAction(formData, fcl_Inland_Charge_id?.id));            
         }
         if (activeTabProgress === 3) {
             if(addInland?.surcharges?.length !== 0){

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects";
 import { showErrorToast, showSuccessToast } from "../../components/Common/CustomToast";
 import { getLCLTableData } from "../../helpers/fakebackend_helper";
 import { fetcAirConsoleTableData, fetcAirFreighConsoletData, getAirFreightData, getAirMWBData, postAirConsoleUploadService, postAirUploadService, uploadAirRateData, uploadConsoleAirRateData } from "../../helpers/services/AirService";
@@ -55,7 +55,7 @@ function* postFclUploadSaga({ payload: { dataObj } }) {
     try {
         const response = yield call(postFclUploadSer, dataObj);    
         showSuccessToast("Update Successfully");
-        yield put({type: GET_FCL_CHARGE_ID, payload: response?.id});
+        yield put({type: GET_FCL_CHARGE_ID, payload: {id: response?.id, version: response?.version}});
         yield put({type: UPDATE_FCL_ACTIVE_TAB, payload: {tab: 2}});
     } catch (error) {
         showErrorToast(error?.response?.data?.message);
@@ -100,22 +100,21 @@ function* postFclFreightUploadSaga({ payload: { formData, id } }) {
         const response = yield call(postFclFreightUploadSer, {formData, id});
         console.log(response, "response fcl surcharge");
         showSuccessToast(response?.description);
+        console.log(id,"saga id");
         const destRes = yield call(getFCLDestinationData, id);
         yield put({type: GET_FCL_DESTINATION_DATA_SUCCESS, payload: destRes});
         yield put({type: UPDATE_FCL_ACTIVE_TAB, payload: {tab: 3}});
     } catch (error) {
-        showErrorToast(error?.response?.data?.description);
+        console.log(error,"saga error");
+        showErrorToast(error?.response?.data?.description || error?.response?.data?.detail);
         if(error?.response?.status === 400){
             const downloadFile = error?.response?.data?.filePath;
-            var rest = downloadFile.substring(0, downloadFile.lastIndexOf("/") + 1);
-            var last = downloadFile.substring(downloadFile.lastIndexOf("/") + 1, downloadFile.length);
-            const base64Encoded = window.btoa(last);
             if(downloadFile !== undefined && downloadFile !== ''){
+                var rest = downloadFile?.substring(0, downloadFile.lastIndexOf("/") + 1);
+                var last = downloadFile?.substring(downloadFile.lastIndexOf("/") + 1, downloadFile.length);
+                const base64Encoded = window.btoa(last);
                 yield put({type: FCL_FREIGHT_FAILD_DATA_TYPE, payload: {data: error?.response?.data,url: `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`, filename: last}});
-            }
-            yield put({type: FCL_FREIGHT_FAILD_POPUP_TYPE, payload: true});
-            if(error?.response?.data?.success > 0 && error?.response?.data?.totalUploaded !== error?.response?.data?.failed){
-                yield put({type: UPDATE_FCL_ACTIVE_TAB, payload: {tab: 3}});
+                yield put({type: FCL_FREIGHT_FAILD_POPUP_TYPE, payload: true});
             }
         }        
     }
@@ -126,6 +125,7 @@ function* postFclSurchargeUploadSaga({ payload: { data, id } }) {
         console.log(response, "response surcharge");
         showSuccessToast("Update Successfully");
         yield put({type: UPDATE_FCL_ACTIVE_TAB, payload: {tab: 1}});
+        yield put({type: GET_FCL_CHARGE_ID, payload: ''});
     } catch (error) {
         showErrorToast(error?.response?.data?.message);
     }
@@ -226,6 +226,7 @@ function* postFCLInLandSurchargeSaga({ payload: { data } }) {
         console.log(response, "response inland");
         showSuccessToast("Update Successfully");
         yield put({type: UPDATE_INLAND_ACTIVE_TAB, payload: {tab: 1}});
+        yield put({type: GET_FCL_INLAND_CHARGE_ID, payload: ''});
     } catch (error) {
         console.log(error, "error");
         showErrorToast(error?.response?.data?.message);
@@ -297,9 +298,9 @@ export function* watchGetProcureData() {
     yield takeEvery(GET_FCL_FREIGHT_VIEW_DATA, fetchFclFreightViewData);
     yield takeEvery(GET_FCL_SURCHARGE_VIEW_DATA, fetchFclSurchargeViewData);
     yield takeEvery(GET_FCL_DESTINATION_DATA, fetchFclDestinationData);
-    yield takeEvery(UPLOAD_FCL_CARRIER_DATA, postFclUploadSaga);
-    yield takeEvery(UPLOAD_FCL_FREIGHT, postFclFreightUploadSaga);
-    yield takeEvery(UPLOAD_FCL_SURCHARGE, postFclSurchargeUploadSaga);
+    yield takeLatest(UPLOAD_FCL_CARRIER_DATA, postFclUploadSaga);
+    yield takeLatest(UPLOAD_FCL_FREIGHT, postFclFreightUploadSaga);
+    yield takeLatest(UPLOAD_FCL_SURCHARGE, postFclSurchargeUploadSaga);
 
     yield takeEvery(UPLOAD_FCL_PORTLOCALCHARGES, postPLChargesData);
     yield takeEvery(GET_PORTLOCALCHARGES_TABLE_DATA, fetchPLChargesData);

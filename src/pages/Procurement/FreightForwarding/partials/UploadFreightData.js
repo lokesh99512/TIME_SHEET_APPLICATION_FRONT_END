@@ -26,6 +26,10 @@ export default function UploadFreightData() {
     const { vendor_data, currency_data, UOM_data, surchargeCode_data } = useSelector((state) => state?.globalReducer);
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch({ type: BLANK_FCL_CARRIER_DATA, payload: { name: 'addFCL', data: { ...addFCL, carrierDetails: carrierObj } } });
+    },[]);
+
     let carrierObj = {
         rate_type: '',
         rate_source: '',
@@ -166,17 +170,19 @@ export default function UploadFreightData() {
 
             console.log(JSON.stringify(data), "data");
 
-            dispatch(uploadFclSurchargeData(data, fcl_charge_id));
+            dispatch(uploadFclSurchargeData(data, fcl_charge_id?.id));
             dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addFCL', data: { ...addFCL, surcharges: [] } } });
 
             setSurcharges([]);
-            // toggleTabProgress(1);
         }
+        dispatch({ type: BLANK_FCL_CARRIER_DATA, payload: { name: 'addFCL', data: { ...addFCL, carrierDetails: carrierObj } } });
+        setselectedFiles([]);
         setOpenSaveModal(false);
     }
-    const uploadSaveHandler = () => {
+    const uploadSaveHandler = () => {        
         if (activeTabProgress === 1) {
             const data = {
+                ...(fcl_charge_id && { id: fcl_charge_id?.id, version: fcl_charge_id?.version}),
                 ...(addFCL?.carrierDetails?.rate_source !== "" && { rateSource: addFCL?.carrierDetails?.rate_source?.value || '' }),
                 rateType: addFCL?.carrierDetails?.rate_type?.value || '',
                 ...(addFCL?.carrierDetails?.validity_application !== "" && { validityApplication: addFCL?.carrierDetails?.validity_application?.value || '' }),
@@ -193,20 +199,15 @@ export default function UploadFreightData() {
                 ...data,
                 [addFCL?.carrierDetails?.vendor_type?.value === 'CARRIER' ? 'tenantCarrierVendor' : 'tenantVendor']: vendorInfo,
             };
-
+            
             dispatch(uploadFclCarrierData({ ...newData }));
-            dispatch({ type: BLANK_FCL_CARRIER_DATA, payload: { name: 'addFCL', data: { ...addFCL, carrierDetails: carrierObj } } });
-            // toggleTabProgress(2);
+            
         } else if (activeTabProgress === 2) {
             let xlxsfile = selectedFiles[0]
             const formData = new FormData();
             formData.append('file', xlxsfile);
 
-            dispatch(uploadFclFrightData(formData, fcl_charge_id));
-
-            setselectedFiles([]);
-            // toggleTabProgress(3);
-            // formData.append('tenantVendor', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
+            dispatch(uploadFclFrightData(formData, fcl_charge_id?.id));            
         }
         if (activeTabProgress === 3) {
             if (addFCL?.surcharges?.length !== 0) {
@@ -281,7 +282,7 @@ export default function UploadFreightData() {
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Rate Type<span className='required_star'>*</span></label>
                                                                     <Select
-                                                                        value={addFCL?.carrierDetails?.rate_type}
+                                                                        value={addFCL?.carrierDetails?.rate_type || ""}
                                                                         name='rate_type'
                                                                         onChange={(opt) => {
                                                                             handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, rate_type: opt });
@@ -295,7 +296,7 @@ export default function UploadFreightData() {
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Rate Source</label>
                                                                     <Select
-                                                                        value={addFCL?.carrierDetails?.rate_source}
+                                                                        value={addFCL?.carrierDetails?.rate_source || ""}
                                                                         name='rate_source'
                                                                         onChange={(opt) => {
                                                                             handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, rate_source: opt });
@@ -312,7 +313,7 @@ export default function UploadFreightData() {
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Vendor Type<span className='required_star'>*</span></label>
                                                                     <Select
-                                                                        value={addFCL?.carrierDetails?.vendor_type}
+                                                                        value={addFCL?.carrierDetails?.vendor_type || ""}
                                                                         name='vendor_type'
                                                                         onChange={(opt) => {
                                                                             handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, vendor_name: "", vendor_type: opt });
@@ -574,7 +575,7 @@ export default function UploadFreightData() {
                                                     </div>
                                                 </TabPane>
                                             </TabContent>
-                                            <ul className="pager wizard twitter-bs-wizard-pager-link d-flex align-items-center justify-content-between">
+                                            <ul className="pager wizard twitter-bs-wizard-pager-link d-flex align-items-center justify-content-between">                                                                        
                                                 <li className={`previous ${activeTabProgress === 1 ? "disabled" : ""}`}>
                                                     <button
                                                         className={`d-flex align-items-center ${activeTabProgress === 1 ? "btn btn-primary disabled" : "btn btn-primary"}`}
@@ -634,7 +635,7 @@ export default function UploadFreightData() {
                     <a href={fclfaildData?.url} download={fclfaildData?.filename} className='btn btn-primary'>Download</a>
 
                     {(fclfaildData?.data?.success > 0 && fclfaildData?.data?.totalUploaded !== fclfaildData?.data?.failed) && (
-                        <span className='text-decoration-underline text-primary' onClick={() => { dispatch(getFclDestinationAction(fcl_charge_id)); dispatch({type: UPDATE_FCL_ACTIVE_TAB, payload: {tab: 3}});dispatch({type: FCL_FREIGHT_FAILD_POPUP_TYPE, payload: false}); }}>Proceed with error</span>              
+                        <span className='text-decoration-underline text-primary' onClick={() => { dispatch(getFclDestinationAction(fcl_charge_id?.id)); dispatch({type: UPDATE_FCL_ACTIVE_TAB, payload: {tab: 3}});dispatch({type: FCL_FREIGHT_FAILD_POPUP_TYPE, payload: false}); }}>Proceed with error</span>              
                     )}
                 </div>
             </Modal>

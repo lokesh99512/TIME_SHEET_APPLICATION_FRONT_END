@@ -359,6 +359,7 @@ const procurement = (state = INIT_STATE, action) => {
                     }
                 }   
         case BLANK_CARRIER_DATA:
+            console.log("reducer");
             return{
                 ...state, 
                 addFCL: {
@@ -368,7 +369,6 @@ const procurement = (state = INIT_STATE, action) => {
                         rate_source: '',
                         vendor_type: '',
                         vendor_name: '',
-                        // carrier_name: '',
                         validity_application: '',
                         validity_from: '',
                         validity_to: '' 
@@ -376,6 +376,7 @@ const procurement = (state = INIT_STATE, action) => {
                 }  
             } 
         case BLANK_FCL_CARRIER_DATA:
+            console.log(action.payload.data,"action.payload.data");
             return{
                 ...state, 
                 [action.payload.name]: action.payload.data
