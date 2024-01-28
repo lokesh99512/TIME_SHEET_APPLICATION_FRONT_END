@@ -11,6 +11,7 @@ const TabThreeDocuments = ({ viewData }) => {
       setOpen(id);
     }
   };
+  console.log(viewData);
   return (
     <div>
       <div className="table_view_data_wrap">
@@ -32,8 +33,8 @@ const TabThreeDocuments = ({ viewData }) => {
                     </div>
                     <div className="details">
                       <span className="title">Uploaded Document:</span>
-                      {/* <span className="data">{viewData?.uploadDocument || "-"}</span> */}
-                      <img src={doc} alt={data?.uploadDocument} width={150} height={120} />
+                      <span className="data">{data?.documentPath || "-"}</span>
+                      {/* <img src={doc} alt={data?.uploadDocument} width={150} height={120} /> */}
                     </div>
                   </div>
                 </div>

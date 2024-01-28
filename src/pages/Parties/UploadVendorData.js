@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
-import { Card, CardBody, Col, Container, Modal, NavItem, NavLink, Progress, Row, TabContent, TabPane, UncontrolledTooltip } from "reactstrap";
+import { Card, CardBody, Col, Container, Input, Modal, Nav, NavItem, NavLink, Progress, Row, TabContent, TabPane, UncontrolledTooltip } from "reactstrap";
 // import fileData from "../../assets/extra/upload_Formats.xlsx";
 import { useFormik } from "formik";
 import { delete_icon } from "../../assets/images";
@@ -19,11 +19,12 @@ import ContactDetailsForm from "./partials/vendor/ContactDetailsForm";
 import DocumentDetailsForm from "./partials/vendor/DocumentDetailsForm";
 import VenderDetails from "./partials/vendor/VenderDetails";
 import * as Yup from "yup";
+import { marginType } from "../../common/data/settings";
 export default function UploadVendorData() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
     const [openSaveModal, setOpenSaveModal] = useState(false);
     const [progressValue, setProgressValue] = useState(25);
-
+    const [activeTab, toggleTab] = useState("1");
     const navigate = useNavigate();
     const navigateState = useLocation();
     const [surcharges, setSurcharges] = useState([]);
@@ -74,17 +75,17 @@ export default function UploadVendorData() {
                 setActiveTabProgress(tab);
 
                 if (tab === 1) {
-                    setProgressValue(50);
+                    setProgressValue(25);
                 }
                 if (tab === 2) {
-                    setProgressValue(75);
+                    setProgressValue(50);
                 }
                 if (tab === 3) {
+                    setProgressValue(75);
+                }
+                if (tab === 4) {
                     setProgressValue(100);
                 }
-                // if (tab === 4) {
-                //     setProgressValue(100);
-                // }
             }
         }
         if (tab === 5) {
@@ -230,8 +231,8 @@ export default function UploadVendorData() {
             console.log(values);
             let data = {
                 ...Object.fromEntries(Object.entries({
-                    "id": navigateState?.state?.data?.id || null,
-                    "version": navigateState?.state?.data?.version || 0,
+                    "id": (navigateState?.state?.data?.id) ? navigateState?.state?.data?.id : customer_id.id || null,
+                    "version": (navigateState?.state?.data?.version) ? navigateState?.state?.data?.version : customer_id.version || 0,
                     contacts: values?.contacts?.map((val) => {
                         return {
                             ...Object.fromEntries(Object.entries({
@@ -273,14 +274,14 @@ export default function UploadVendorData() {
                     docfile: val?.uploadDocument || '',
                     docdata: {
                         ...Object.fromEntries(Object.entries({
-                            "id": navigateState?.state?.data?.id || '',
-                            "version": navigateState?.state?.data?.version || '',
+                            "id": (navigateState?.state?.data?.id) ? navigateState?.state?.data?.id : customer_id.id || null,
+                            "version": (navigateState?.state?.data?.version) ? navigateState?.state?.data?.version : customer_id.version || 0,
                             "documents": [
                                 {
                                     ...Object.fromEntries(Object.entries({
                                         "documentType": val?.documentType || '',
                                         "document": null,
-                                        "documentPath": val?.uploadDocument?.name || '',
+                                        "documentPath": null || '',
                                     }).filter(([_, value]) => value !== null)),
                                 }
                             ]
@@ -416,7 +417,7 @@ export default function UploadVendorData() {
                                                     </NavLink>
                                                 </NavItem>
 
-                                                {/* <NavItem>
+                                                <NavItem>
                                                     <NavLink
                                                         className={classnames({ active: activeTabProgress === 4, })}
                                                         onClick={() => { toggleTabProgress(4); }}
@@ -424,18 +425,18 @@ export default function UploadVendorData() {
                                                         <div
                                                             className="step-icon"
                                                             data-bs-toggle="tooltip"
-                                                            id="Communications"
+                                                            id="carriercommission"
                                                         >
                                                             <i className="bx bx-chat"></i>
                                                             <UncontrolledTooltip
                                                                 placement="top"
-                                                                target="Communications"
+                                                                target="carriercommission"
                                                             >
-                                                                Communications
+                                                                Carrier commission
                                                             </UncontrolledTooltip>
                                                         </div>
                                                     </NavLink>
-                                                </NavItem> */}
+                                                </NavItem>
                                             </ul>
 
                                             {/* Progress Bar */}
@@ -464,9 +465,193 @@ export default function UploadVendorData() {
                                                 <TabPane tabId={4}>
                                                     <div>
                                                         <div className="text-center mb-4">
-                                                            <h5>Communications</h5>
+                                                            <h5>Carrier commission</h5>
                                                         </div>
-                                                        <form>
+
+                                                        <div className="col">
+                                                            <Card>
+                                                                <CardBody>
+                                                                    <Nav className="nav-tabs-custom card-header-tabs justify-content-around">
+                                                                        <NavItem>
+                                                                            <NavLink href="#" className={classnames({ active: activeTab === "1", }, "px-3")} onClick={() => { toggleTab("1") }}>
+                                                                                FCL
+                                                                            </NavLink>
+                                                                        </NavItem>
+                                                                        <NavItem>
+                                                                            <NavLink href="#" className={classnames({ active: activeTab === "2", }, "px-3")} onClick={() => { toggleTab("2") }} >
+                                                                                LCL
+                                                                            </NavLink>
+                                                                        </NavItem>
+                                                                        <NavItem>
+                                                                            <NavLink href="#" className={classnames({ active: activeTab === "3", }, "px-3")} onClick={() => { toggleTab("3") }} >
+                                                                                AIR
+                                                                            </NavLink>
+                                                                        </NavItem>
+                                                                    </Nav>
+                                                                </CardBody>
+                                                            </Card>
+                                                            <TabContent activeTab={activeTab}>
+                                                                <TabPane tabId="1">
+                                                                    <Card>
+                                                                        <CardBody>
+                                                                            <div className="mb-4">
+                                                                                <h5>FCL Freight</h5>
+                                                                            </div>
+                                                                            <div className="row">
+                                                                                <div className="col-12 col-md-6">
+                                                                                    <div className="mb-3">
+                                                                                        <label className="form-label">Margin Type</label>
+                                                                                        <Select
+                                                                                            name='marginType'
+                                                                                            options={marginType}
+                                                                                            classNamePrefix="select2-selection form-select"
+                                                                                        />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="mb-4">
+                                                                                <h5>FCL Port & Local charges</h5>
+                                                                            </div>
+                                                                            <div className="row">
+                                                                                <div className="col-12 col-md-6">
+                                                                                    <div className="mb-3">
+                                                                                        <label className="form-label">Margin Type</label>
+                                                                                        <Select
+                                                                                            name='marginType'
+                                                                                            options={marginType}
+                                                                                            classNamePrefix="select2-selection form-select"
+                                                                                        />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="mb-4">
+                                                                                <h5>Fcl InLand Charges</h5>
+                                                                            </div>
+                                                                            <div className="row">
+                                                                                <div className="col-12 col-md-6">
+                                                                                    <div className="mb-2">
+                                                                                        <label className="form-label">Margin Type</label>
+                                                                                        <Select
+                                                                                            name='marginType'
+                                                                                            placeholder=""
+                                                                                            options={marginType}
+                                                                                            classNamePrefix="select2-selection form-select"
+                                                                                        />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </CardBody>
+                                                                    </Card>
+                                                                </TabPane>
+                                                                <TabPane tabId="2">
+                                                                    <Card>
+                                                                        <CardBody>
+                                                                            <div className="mb-4">
+                                                                                <h5>LCL Freight</h5>
+                                                                            </div>
+                                                                            <div className="row">
+                                                                                <div className="col-12 col-md-6">
+                                                                                    <div className="mb-3">
+                                                                                        <label className="form-label">Margin Type</label>
+                                                                                        <Select
+                                                                                            name='marginType'
+                                                                                            options={marginType}
+                                                                                            classNamePrefix="select2-selection form-select"
+                                                                                        />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="mb-4">
+                                                                                <h5>LCL Port & Local charges</h5>
+                                                                            </div>
+                                                                            <div className="row">
+                                                                                <div className="col-12 col-md-6">
+                                                                                    <div className="mb-3">
+                                                                                        <label className="form-label">Margin Type</label>
+                                                                                        <Select
+                                                                                            name='marginType'
+                                                                                            options={marginType}
+                                                                                            classNamePrefix="select2-selection form-select"
+                                                                                        />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="mb-4">
+                                                                                <h5>LCL InLand Charges</h5>
+                                                                            </div>
+                                                                            <div className="row">
+                                                                                <div className="col-12 col-md-6">
+                                                                                    <div className="mb-2">
+                                                                                        <label className="form-label">Margin Type</label>
+                                                                                        <Select
+                                                                                            name='marginType'
+                                                                                            options={marginType}
+                                                                                            placeholder=""
+                                                                                            classNamePrefix="select2-selection form-select"
+                                                                                        />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </CardBody>
+                                                                    </Card>
+                                                                </TabPane>
+                                                                <TabPane tabId="3">
+                                                                    <Card>
+                                                                        <CardBody>
+                                                                            <div className="mb-4">
+                                                                                <h5>AIR Freight</h5>
+                                                                            </div>
+                                                                            <div className="row">
+                                                                                <div className="col-12 col-md-6">
+                                                                                    <div className="mb-3">
+                                                                                        <label className="form-label">Margin Type</label>
+                                                                                        <Select
+                                                                                            name='marginType'
+                                                                                            options={marginType}
+                                                                                            classNamePrefix="select2-selection form-select"
+                                                                                        />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="mb-4">
+                                                                                <h5>AIR Port & Local charges</h5>
+                                                                            </div>
+                                                                            <div className="row">
+                                                                                <div className="col-12 col-md-6">
+                                                                                    <div className="mb-3">
+                                                                                        <label className="form-label">Margin Type</label>
+                                                                                        <Select
+                                                                                            name='marginType'
+                                                                                            options={marginType}
+                                                                                            classNamePrefix="select2-selection form-select"
+                                                                                        />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="mb-4">
+                                                                                <h5>AIR InLand Charges</h5>
+                                                                            </div>
+                                                                            <div className="row">
+                                                                                <div className="col-12 col-md-6">
+                                                                                    <div className="mb-3">
+                                                                                        <label className="form-label">Margin Type</label>
+                                                                                        <Select
+                                                                                            name='customerType'
+                                                                                            placeholder=""
+                                                                                            options={marginType}
+                                                                                            classNamePrefix="select2-selection form-select"
+                                                                                        />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </CardBody>
+                                                                    </Card>
+                                                                </TabPane>
+
+                                                            </TabContent>
+                                                        </div>
+
+                                                        {/* <form>
                                                             {surcharges?.map((item, index) => (
                                                                 <div
                                                                     key={index}
@@ -562,7 +747,7 @@ export default function UploadVendorData() {
                                                                     </button>
                                                                 </div>
                                                             </div>
-                                                        </form>
+                                                        </form> */}
                                                     </div>
                                                 </TabPane>
                                             </TabContent>

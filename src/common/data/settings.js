@@ -1123,3 +1123,8 @@ export const optionCustkeyAccountManager = [
   { label: "Mahes", value: "Mahes" },
   { label: "Add New", value: "Add New" },
 ]
+
+export const marginType = [
+  {label:"percentage"},
+  {label:"FLAT"}
+  ];

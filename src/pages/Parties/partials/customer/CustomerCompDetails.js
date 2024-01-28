@@ -2,10 +2,10 @@ import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Select from "react-select";
-import { Card, CardBody, FormFeedback, Input } from 'reactstrap';
-
+import { Card, CardBody, FormFeedback, Input, Nav, NavItem, Row, TabContent, TabPane, NavLink } from 'reactstrap';
+import classnames from "classnames";
 import { useDispatch } from 'react-redux';
-import { optionCustcustomerType, optionCustdepartment, optionCustdesignation, optionCustentityType, optionCustindustryType, optionCustopCode, optionCusttitle } from '../../../../common/data/settings';
+import { optionCustcustomerType, optionCustdepartment, optionCustdesignation, optionCustentityType, optionCustindustryType, optionCustopCode, optionCusttitle,marginType } from '../../../../common/data/settings';
 import { getAllCustomerDetailsData, getCustomersCountryData, getCustomersPincodeData, getCustomersStateData } from '../../../../store/Parties/actions';
 import FileUpload from '../../FileUpload';
 import ModalAddGST from '../../Modal/ModalAddGST';
@@ -31,7 +31,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
     const [industryTypeModal, setIndustryTypeModal] = useState(false);
     const [customerTypeModal, setCustomerTypeModal] = useState(false);
     const [modalAlldata, setModalAllData] = useState([]);
-
+    const [activeTab, toggleTab] = useState("1");
     const dispatch = useDispatch();
 
     const navigateState = useLocation();
@@ -106,7 +106,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
             let accountManagerVal = accountManagerOptions.find((option) => option.value === values?.keyAccountManager)
 
             const originalDocuments = navigateState?.state?.data?.documents || [];
-           const newDocuments = originalDocuments.map((document, index) => ({
+            const newDocuments = originalDocuments.map((document, index) => ({
                 id: document.id || "",
                 version: document.version || 0,
                 documentType: document.documentType || "",
@@ -659,7 +659,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                         <div className="col-2 col-md-1">
                             <button
                                 className="btn btn-primary mt-4"
-                                // onClick={() => setGstModal(true)}
+                            // onClick={() => setGstModal(true)}
                             >
                                 <i className="bx bx-plus"></i>
                             </button>
@@ -764,6 +764,327 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                     </div>
                 </CardBody>
             </Card>
+            <div className="text-center mb-4">
+                <h5>Customer Rate</h5>
+            </div>
+            <div className="col">
+                <Card>
+                    <CardBody>
+                        <Nav className="nav-tabs-custom card-header-tabs justify-content-around">
+                            <NavItem>
+                                <NavLink href="#" className={classnames({ active: activeTab === "1", }, "px-3")} onClick={() => { toggleTab("1") }}>
+                                    FCL
+                                </NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink href="#" className={classnames({ active: activeTab === "2", }, "px-3")} onClick={() => { toggleTab("2") }} >
+                                    LCL
+                                </NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink href="#" className={classnames({ active: activeTab === "3", }, "px-3")} onClick={() => { toggleTab("3") }} >
+                                    AIR
+                                </NavLink>
+                            </NavItem>
+                        </Nav>
+                    </CardBody>
+                </Card>
+                <TabContent activeTab={activeTab}>
+                    <TabPane tabId="1">
+                        <Card>
+                            <CardBody>
+                                <div className="mb-4">
+                                    <h5>FCL Freight</h5>
+                                </div>
+                                <div className="row">
+                                    <div className="col-12 col-md-6">
+                                        <div className="mb-3">
+                                            <label className="form-label">Margin Type</label>
+                                            <Select
+                                                name='marginType'
+                                                options={marginType}
+                                                classNamePrefix="select2-selection form-select"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="col-12 col-md-6">
+                                        <div className="mb-3">
+                                            <label className="form-label">Margin</label>
+                                            <Input
+                                                type="number"
+                                                name="margin"
+                                                className="form-control"
+                                                placeholder=""
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="mb-4">
+                                    <h5>FCL Port & Local charges</h5>
+                                </div>
+                                <div className="row">
+                                    <div className="col-12 col-md-6">
+                                        <div className="mb-3">
+                                            <label className="form-label">Margin Type</label>
+                                            <Select
+                                                name='marginType'
+                                                options={marginType}
+                                                classNamePrefix="select2-selection form-select"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-12 col-md-6">
+                                        <div className="mb-3">
+                                            <label className="form-label">Margin</label>
+                                            <Input
+                                                type="number"
+                                                name="PANnumber"
+                                                className="form-control"
+                                                placeholder=""
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="mb-4">
+                                    <h5>Fcl InLand Charges</h5>
+                                </div>
+                                <div className="row">
+                                    <div className="col-8 col-md-4">
+                                        <div className="mb-2">
+                                            <label className="form-label">Margin Type</label>
+                                            <Select
+                                                name='marginType'
+                                                placeholder=""
+                                                options={marginType}
+                                                classNamePrefix="select2-selection form-select"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-8 col-md-4">
+
+                                        <div className="mb-2">
+                                            <label className="form-label">Currency</label>
+                                            <Select
+                                                name='marginType'
+                                                placeholder="Currency"
+                                                classNamePrefix="select2-selection form-select"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-8 col-md-4">
+                                        <div className="mb-2">
+                                            <label className="form-label">Margin</label>
+                                            <Input
+                                                type="text"
+                                                name="number"
+                                                className="form-control"
+                                                placeholder=""
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </CardBody>
+                        </Card>
+                    </TabPane>
+                    <TabPane tabId="2">
+                        <Card>
+                            <CardBody>
+                                <div className="mb-4">
+                                    <h5>LCL Freight</h5>
+                                </div>
+                                <div className="row">
+                                    <div className="col-12 col-md-6">
+                                        <div className="mb-3">
+                                            <label className="form-label">Margin Type</label>
+                                            <Select
+                                                name='marginType'
+                                                options={marginType}
+                                                classNamePrefix="select2-selection form-select"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="col-12 col-md-6">
+                                        <div className="mb-3">
+                                            <label className="form-label">Margin</label>
+                                            <Input
+                                                type="number"
+                                                name="margin"
+                                                className="form-control"
+                                                placeholder=""
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="mb-4">
+                                    <h5>LCL Port & Local charges</h5>
+                                </div>
+                                <div className="row">
+                                    <div className="col-12 col-md-6">
+                                        <div className="mb-3">
+                                            <label className="form-label">Margin Type</label>
+                                            <Select
+                                                name='marginType'
+                                                options={marginType}
+                                                classNamePrefix="select2-selection form-select"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-12 col-md-6">
+                                        <div className="mb-3">
+                                            <label className="form-label">Margin</label>
+                                            <Input
+                                                type="number"
+                                                name="PANnumber"
+                                                className="form-control"
+                                                placeholder=""
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="mb-4">
+                                    <h5>LCL InLand Charges</h5>
+                                </div>
+                                <div className="row">
+                                    <div className="col-8 col-md-4">
+                                        <div className="mb-2">
+                                            <label className="form-label">Margin Type</label>
+                                            <Select
+                                                name='marginType'
+                                                options={marginType}
+                                                placeholder=""
+                                                classNamePrefix="select2-selection form-select"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-8 col-md-4">
+
+                                        <div className="mb-2">
+                                            <label className="form-label">Currency</label>
+                                            <Select
+                                                name='customerType'
+                                                placeholder="Currency"
+                                                classNamePrefix="select2-selection form-select"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-8 col-md-4">
+                                        <div className="mb-2">
+                                            <label className="form-label">Margin</label>
+                                            <Input
+                                                type="text"
+                                                name="number"
+                                                className="form-control"
+                                                placeholder=""
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </CardBody>
+                        </Card>
+                    </TabPane>
+                    <TabPane tabId="3">
+                        <Card>
+                            <CardBody>
+                                <div className="mb-4">
+                                    <h5>AIR Freight</h5>
+                                </div>
+                                <div className="row">
+                                    <div className="col-12 col-md-6">
+                                        <div className="mb-3">
+                                            <label className="form-label">Margin Type</label>
+                                            <Select
+                                                name='marginType'
+                                                options={marginType}
+                                                classNamePrefix="select2-selection form-select"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="col-12 col-md-6">
+                                        <div className="mb-3">
+                                            <label className="form-label">Margin</label>
+                                            <Input
+                                                type="number"
+                                                name="margin"
+                                                className="form-control"
+                                                placeholder=""
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="mb-4">
+                                    <h5>AIR Port & Local charges</h5>
+                                </div>
+                                <div className="row">
+                                    <div className="col-12 col-md-6">
+                                        <div className="mb-3">
+                                            <label className="form-label">Margin Type</label>
+                                            <Select
+                                                name='marginType'
+                                                options={marginType}
+                                                classNamePrefix="select2-selection form-select"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-12 col-md-6">
+                                        <div className="mb-3">
+                                            <label className="form-label">Margin</label>
+                                            <Input
+                                                type="number"
+                                                name="PANnumber"
+                                                className="form-control"
+                                                placeholder=""
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="mb-4">
+                                    <h5>AIR InLand Charges</h5>
+                                </div>
+                                <div className="row">
+                                    <div className="col-12 col-md-4">
+                                        <div className="mb-2">
+                                            <label className="form-label">Margin Type</label>
+                                            <Select
+                                                name='customerType'
+                                                placeholder=""
+                                                options={marginType}
+                                                classNamePrefix="select2-selection form-select"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-12 col-md-4">
+
+                                        <div className="mb-2">
+                                            <label className="form-label">Currency</label>
+                                            <Select
+                                                name='currency'
+                                                placeholder="Currency"
+                                                classNamePrefix="select2-selection form-select"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-12 col-md-4">
+                                        <div className="mb-2">
+                                            <label className="form-label">Margin</label>
+                                            <Input
+                                                type="number"
+                                                name="number"
+                                                className="form-control"
+                                                placeholder=""
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </CardBody>
+                        </Card>
+                    </TabPane>
+
+                </TabContent>
+            </div>
 
             <div className="d-flex justify-content-end" style={{ margin: "0 0 -62px" }}>
 
