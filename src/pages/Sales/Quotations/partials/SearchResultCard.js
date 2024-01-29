@@ -46,19 +46,19 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
         const maxSelection = 3;
 
         if (quote_Selected.length < maxSelection) {
-            const isItemSelected = quote_Selected.some(selectedItem => selectedItem.carrierId === item.carrierId);
+            const isItemSelected = quote_Selected.some(selectedItem => selectedItem.quote_id === item.quote_id);
 
             if (isItemSelected) {
-                const updatedSelection = quote_Selected.filter(selectedItem => selectedItem.carrierId !== item.carrierId);
+                const updatedSelection = quote_Selected.filter(selectedItem => selectedItem.quote_id !== item.quote_id);
                 dispatch({ type: QUOTATION_RESULT_SELECTED, payload: updatedSelection });
             } else {
                 const updatedSelection = [...quote_Selected, item];
                 dispatch({ type: QUOTATION_RESULT_SELECTED, payload: updatedSelection });
             }
         } else {
-            const isItemSelected = quote_Selected.some(selectedItem => selectedItem.carrierId === item.carrierId);
+            const isItemSelected = quote_Selected.some(selectedItem => selectedItem.quote_id === item.quote_id);
             if (isItemSelected) {
-                const updatedSelection = quote_Selected.filter(selectedItem => selectedItem.carrierId !== item.carrierId);
+                const updatedSelection = quote_Selected.filter(selectedItem => selectedItem.quote_id !== item.quote_id);
                 dispatch({ type: QUOTATION_RESULT_SELECTED, payload: updatedSelection });
             }
             console.log("You can select a maximum of 3 items.");
@@ -97,7 +97,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                     type="checkbox"
                                     id={`result_card_${index}`}
                                     name={`result_card_${index}`}
-                                    checked={quote_Selected.some(obj => obj.carrierId === item.carrierId)}
+                                    checked={quote_Selected.some(obj => obj.quote_id === item.quote_id)}
                                     readOnly
                                 />
                             </div>
@@ -144,9 +144,9 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                     <div className="total_wrap">
                                         <p className="total_price text-center"><b>₹ {TotalQuotationCount(item)}</b></p>
                                         <div className="btn_wrap d-flex">
-                                            <button type='button' className='btn text-primary view_detail_btn' onClick={() => { showDetailsHandler(index, item.carrierId); }}>
+                                            <button type='button' className='btn text-primary view_detail_btn' onClick={() => { showDetailsHandler(index, item.quote_id); }}>
                                                 View{showDetails?.find(obj => obj.index === index)?.details ? 'Less' : 'Detail'}</button>
-                                            <button type='button' className='btn btn-primary quote_now_btn' onClick={() => { QuoteModalHandler(); singleQuoteModal(item) }} disabled={quote_Selected.some(obj => obj.id === item.carrierId) || quote_Selected?.length >= 2}>Quote Now</button>
+                                            <button type='button' className='btn btn-primary quote_now_btn' onClick={() => { QuoteModalHandler(); singleQuoteModal(item) }} disabled={quote_Selected.some(obj => obj.id === item.quote_id) || quote_Selected?.length >= 2}>Quote Now</button>
                                         </div>
                                     </div>
                                 </div>
@@ -154,11 +154,11 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                     <div className="search_result_accordion_details">  
                                         {item?.tariffDetails?.length !== 0 && (                                    
                                             <Accordion flush open={open} toggle={toggle}>
-                                                {item?.tariffDetails?.map((data, index) => (                                            
-                                                    <AccordionItem key={index}>
-                                                        <AccordionHeader targetId={`detail_${index}`}>
+                                                {item?.tariffDetails?.map((data, i) => (                                            
+                                                    <AccordionItem key={i}>
+                                                        <AccordionHeader targetId={`${data?.header}_${index}${i}`}>
                                                             <div className="left_lable d-flex align-items-center">
-                                                                <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!data?.selected, data?.header,index,item?.carrierId); }}>
+                                                                <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!data?.selected, data?.header,index,item?.quote_id); }}>
                                                                     <input
                                                                         className="form-check-input"
                                                                         type="checkbox"
@@ -177,11 +177,11 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                                 <span className='text-primary'>{'₹'} {innerTotalHandler(data?.tariffBreakDowns || [])}</span>
                                                             </div>
                                                         </AccordionHeader>
-                                                        <AccordionBody accordionId={`detail_${index}`}>
+                                                        <AccordionBody accordionId={`${data?.header}_${index}${i}`}>
                                                             <div className="price_details_wrap ps-5">
-                                                                {data?.tariffBreakDowns?.length !== 0 && data?.tariffBreakDowns?.map((val,index) => (
-                                                                    <div className="details d-flex justify-content-between" key={`key_${index}`}>
-                                                                        <p className='me-2'>{val?.component || 'Pickup'}</p>
+                                                                {data?.tariffBreakDowns?.length !== 0 && data?.tariffBreakDowns?.map((val,ind) => (
+                                                                    <div className="details d-flex justify-content-between" key={`key_${ind}`}>
+                                                                        <p className='me-2'>{val?.component || ''}</p>
                                                                         <span className='text-primary'>{val?.currencyCode || '₹'} {val?.amount || '0'}</span>
                                                                     </div>
                                                                 ))}

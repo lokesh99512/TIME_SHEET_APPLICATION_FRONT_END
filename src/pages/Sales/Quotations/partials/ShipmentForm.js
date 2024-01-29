@@ -18,8 +18,8 @@ const ShipmentForm = () => {
             cargo_value: shipmentDetails?.cargo_value?.value || '-',
             incoterms: shipmentDetails?.incoterm?.label || '-',
 
-            container_type: shipmentDetails?.container_type?.containerArray[0]?.label || '',
-            quantity: shipmentDetails?.container_type?.containerArray[0]?.unitNew || '',
+            container_type: shipmentDetails?.container_type?.containerArray?.[0]?.label || '',
+            quantity: shipmentDetails?.container_type?.containerArray?.[0]?.unitNew || '',
             length: "",
             width: "",
             height: "",

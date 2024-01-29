@@ -182,32 +182,32 @@ const ModalFCLFreight = ({ viewData, modal, onCloseClick, modalType }) => {
                                                         <th>Currency</th>
                                                         <th>20 GP</th>
                                                         <th>40 GP</th>
-                                                        <th>20 RF</th>
-                                                        <th>40 RF</th>
                                                         <th>40 HQ</th>
                                                         <th>45 HQ</th>
+                                                        <th>20 RF</th>
+                                                        <th>40 RF</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {fcl_surcharge_view?.content !== undefined && fcl_surcharge_view?.content?.map((item, index) => (
+                                                    {fcl_surcharge_view?.length !== 0 && fcl_surcharge_view?.map((item, index) => (
                                                         <tr key={index}>
-                                                            <td>{item?.surchargeCode?.code}</td>
-                                                            <td>{item?.surchargeCode?.surchargeAlias?.name || '-'}</td>
-                                                            <td>{item?.destinationPort?.code || '-'}</td>
-                                                            <td>{item?.unitOfMeasurement?.code?.split('_').join(' ') || '-'}</td>
-                                                            <td>{item?.currency?.currencyName || '-'}</td>
-                                                            <td>{item?.oceanContainer?.name === '20GP' ? item?.surchargeValue || '-' : '-'}</td>
-                                                            <td>{item?.oceanContainer?.name === '40GP' ? item?.surchargeValue || '-' : '-'}</td>
-                                                            <td>{item?.oceanContainer?.name === '20RF' ? item?.surchargeValue || '-' : '-'}</td>
-                                                            <td>{item?.oceanContainer?.name === '40RF' ? item?.surchargeValue || '-' : '-'}</td>
-                                                            <td>{item?.oceanContainer?.name === '40HQ' ? item?.surchargeValue || '-' : '-'}</td>
-                                                            <td>{item?.oceanContainer?.name === '45HQ' ? item?.surchargeValue || '-' : '-'}</td>
+                                                            <td>{item?.surchargeName}</td>
+                                                            <td>{item?.surchargeCode || '-'}</td>
+                                                            <td>{item?.destinationPort || '-'}</td>
+                                                            <td>{item?.uomCode?.split('_').join(' ') || '-'}</td>
+                                                            <td>{item?.currency || '-'}</td>
+                                                            <td>{item?.gp20 || '-'}</td>
+                                                            <td>{item?.gp40 || '-'}</td>
+                                                            <td>{item?.hq40 || '-'}</td>
+                                                            <td>{item?.hq45 || '-'}</td>
+                                                            <td>{item?.rf20 || '-'}</td>
+                                                            <td>{item?.rf40 || '-'}</td>
                                                         </tr>
                                                     ))}
-                                                    {(fcl_surcharge_view?.content?.length === 0 || fcl_surcharge_view?.content === undefined) && (
+                                                    {fcl_surcharge_view?.length === 0 && (
                                                         <tr>
                                                             {surcharge_loader ? (
-                                                                <td colSpan={13} className="text-center">
+                                                                <td colSpan={11} className="text-center">
                                                                     <div className='py-5'>
                                                                         <div className="spinner-border text-primary" role="status">
                                                                             <span className="visually-hidden">Loading...</span>
@@ -215,7 +215,7 @@ const ModalFCLFreight = ({ viewData, modal, onCloseClick, modalType }) => {
                                                                     </div>
                                                                 </td>
                                                             ) : (
-                                                                <td colSpan={13} className="text-center py-4"><b>No Record Found</b></td>
+                                                                <td colSpan={11} className="text-center py-4"><b>No Record Found</b></td>
                                                             )}
                                                         </tr>
                                                     )}

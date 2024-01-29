@@ -71,8 +71,8 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         dispatch({ type: UPDATE_QUOTE_MODAL_CHARGES, payload: { charge_name, id: objId, value, name, index, sales_cost, newVal } })
     }
 
-    const removeInputFields = (index, id, charge_name) => {
-        dispatch({ type: REMOVE_QUOTE_MODAL_CHARGES, payload: { index, id, charge_name } })
+    const removeInputFields = (index, id, header) => {
+        dispatch({ type: REMOVE_QUOTE_MODAL_CHARGES, payload: { index, id, header } })
     }
 
     const existingHandleChange = (value, name, subindex, charge_name, objId, index, sales_cost, marginVal) => {
@@ -120,11 +120,11 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
 
     // ---------------- SubTotal / Total and Tax ------------------------------
     const innerTotalHandler = (array, newArray) => {
-        return array?.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost), charge.currency), 0) + (newArray !== undefined ? newArray?.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost), charge.currency), 0) : 0);
+        return array?.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost) || (Number(charge.amount + (charge?.taxDetail?.value || 0))), charge.currencyCode), 0) + (newArray !== undefined ? newArray?.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost), charge.currencyCode), 0) : 0);
     }
 
     const subTotalHandler = (quoteObject) => {
-        let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.carrierId) || [];
+        let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.quote_id) || [];
         // console.log(mainChargeCurr, "mainChargeCurr")
 
         const totalSum = quoteObject?.tariffDetails?.reduce((accOuter, currentOuter) => {
@@ -167,7 +167,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
 
     const totalTaxHandler = (quoteObject) => {
 
-        let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.carrierId) || [];
+        let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.quote_id) || [];
         const totalTax = quoteObject?.tariffDetails?.reduce((accOuter, currentOuter) => {
             let innerSum = 0;
             if (currentOuter?.selected) {
@@ -190,7 +190,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
 
     const overAllMarginHandler = (quoteObject, subtotalvalue) => {
 
-        let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.carrierId) || [];
+        let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.quote_id) || [];
 
         const totalMarginSum = quoteObject?.tariffDetails?.reduce((accOuter, currentOuter) => {
             let innerSum = 0;
@@ -311,18 +311,18 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                             {!viewData && (
                                 <>
                                     <AccordionItem>
-                                        <AccordionHeader targetId={`customerdetails_${quoteData?.carrierId}`}>
+                                        <AccordionHeader targetId={`customerdetails`}>
                                             Company Details
                                         </AccordionHeader>
-                                        <AccordionBody accordionId={`customerdetails_${quoteData?.carrierId}`}>
+                                        <AccordionBody accordionId={`customerdetails`}>
                                             <CompanyForm />
                                         </AccordionBody>
                                     </AccordionItem>
                                     <AccordionItem>
-                                        <AccordionHeader targetId={`shipmentdetails_${quoteData?.carrierId}`}>
+                                        <AccordionHeader targetId={`shipmentdetails`}>
                                             Shipment Details
                                         </AccordionHeader>
-                                        <AccordionBody accordionId={`shipmentdetails_${quoteData?.carrierId}`}>
+                                        <AccordionBody accordionId={`shipmentdetails`}>
                                             <ShipmentForm />
                                         </AccordionBody>
                                     </AccordionItem>
@@ -330,7 +330,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                             )}
 
                             {quoteData.map((item, mainindex) => (
-                                <AccordionItem key={item.carrierId}>
+                                <AccordionItem key={item.quote_id}>
                                     <AccordionHeader targetId={`main_${mainindex}`}>
                                         <div className="card_img d-flex align-items-center">
                                             <span className='d-flex align-items-center justify-content-center img me-2'>
@@ -358,7 +358,9 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                             <AccordionHeader targetId={`subacco_${index}`}>
                                                                 {data?.header?.split('_').join(" ") || '-'}
                                                                 <div className="right_con ms-auto">
-                                                                    {/* <span className="price text-primary">{'₹'} {innerTotalHandler((item?.pickup_quote_charge || []), (mainChargeObj?.find(obj => obj.carrierId === item.carrierId)?.pickup_quote_charge || []))}</span> */}
+                                                                    {/* <span className="price text-primary">{'₹'} {innerTotalHandler((item?.pickup_quote_charge || []), (mainChargeObj?.find(obj => obj.quote_id === item.quote_id)?.pickup_quote_charge || []))}</span> */}
+                                                                    <span className="price text-primary">{'₹'} {innerTotalHandler((data?.tariffBreakDowns || []), (mainChargeObj?.find(obj => obj.id === item.quote_id)?.tariffDetails?.find(obj => obj.header === data?.header)?.tariffBreakDowns || []))}</span>
+                                                                    
                                                                 </div>
                                                             </AccordionHeader>
                                                             <AccordionBody accordionId={`subacco_${index}`}>
@@ -368,7 +370,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                             <div className="col-2">
                                                                                 <div className="field_wrap">
                                                                                     {subindex === 0 && <label className='form-label' htmlFor="charges_name">Charge Name</label>}
-                                                                                    <input type="text" value={subData?.component || ''} name="charges_name" id="charges_name" placeholder='Freight' readOnly disabled={viewData} />
+                                                                                    <input type="text" value={`${subData?.component || ''}${subData?.containerDetail && '_' + subData?.containerDetail}`} name="charges_name" id="charges_name" placeholder='Freight' readOnly disabled={viewData} />
                                                                                 </div>
                                                                             </div>
                                                                             <div className="col-1">
@@ -402,7 +404,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                         value={optionMarkupType ? optionMarkupType.find(obj => obj.value === subData?.markup_type) : ''}
                                                                                         name='markup_type'
                                                                                         onChange={(opt) => {
-                                                                                            existingHandleChange(opt.value, 'markup_type', subindex, `${data?.header}`, item.carrierId, index);
+                                                                                            existingHandleChange(opt.value, 'markup_type', subindex, `${data?.header}`, item.quote_id, index);
                                                                                         }}
                                                                                         options={optionMarkupType}
                                                                                         isDisabled={viewData}
@@ -415,9 +417,9 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                 <div className="field_wrap">
                                                                                     {subindex === 0 && <label className='form-label' htmlFor="markup_val">Markup Value</label>}
                                                                                     <input type="text" name="markup_val" id="markup_val"
-                                                                                        // value={subData?.markup_val || ''}
+                                                                                        value={subData?.markup_val || ''}
                                                                                         onChange={(e) => {
-                                                                                            existingHandleChangeMargin(subData, e, 'markup_val', subindex, `${data?.header}`, item.carrierId, index);
+                                                                                            existingHandleChangeMargin(subData, e, 'markup_val', subindex, `${data?.header}`, item.quote_id, index);
                                                                                         }}
                                                                                         placeholder='Enter value' disabled={viewData} />
                                                                                 </div>
@@ -438,12 +440,12 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                     </div>
                                                                 ))}
                                                                 {/* {console.log(mainChargeObj,"mainChargeObj")} */}
-                                                                {mainChargeObj?.find(obj => obj.id === item.carrierId)?.tariffDetails?.find(obj => obj.header === data?.header)?.tariffBreakDowns?.map((newdata, i) => (
+                                                                {mainChargeObj?.find(obj => obj.id === item.quote_id)?.tariffDetails?.find(obj => obj.header === data?.header)?.tariffBreakDowns?.map((newdata, i) => (
                                                                     <div className="charges_wrap mt-3" key={i}>
                                                                         <div className="label_delete_wwrap d-flex justify-content-between">
                                                                             <label className="form-label">Select Charge</label>
                                                                             <div className="btn_wrap">
-                                                                                <button type='button' onClick={() => { removeInputFields(i, item.carrierId, `${data?.header}`) }} className="btn p-0"><img src={delete_icon} alt="Delete" /></button>
+                                                                                <button type='button' onClick={() => { removeInputFields(i, item.quote_id, `${data?.header}`) }} className="btn p-0"><img src={delete_icon} alt="Delete" /></button>
                                                                             </div>
                                                                         </div>
                                                                         <div className="row">
@@ -453,7 +455,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                         value={newdata?.component || ''}
                                                                                         name='component'
                                                                                         onChange={(opt) => {
-                                                                                            handleChange(opt, 'component', i, `${data?.header}`, item.carrierId);
+                                                                                            handleChange(opt, 'component', i, `${data?.header}`, item.quote_id);
                                                                                         }}
                                                                                         options={surchargeCode_data}
                                                                                         classNamePrefix="select2-selection form-select"
@@ -467,7 +469,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                         value={newdata?.uomCode || ''}
                                                                                         name='uomCode'
                                                                                         onChange={(opt) => {
-                                                                                            handleChange(opt, 'uomCode', i, `${data?.header}`, item.carrierId);
+                                                                                            handleChange(opt, 'uomCode', i, `${data?.header}`, item.quote_id);
                                                                                         }}
                                                                                         options={UOM_data}
                                                                                         placeholder='Select'
@@ -478,7 +480,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                             </div>
                                                                             <div className="col-1">
                                                                                 <div className="field_wrap">
-                                                                                    <input type="text" name="unit" id="unit" value={newdata?.unit || 1} onChange={(e) => handleChange(e.target.value, 'unit', i, `${data?.header}`, item.carrierId)} placeholder='Enter quantity' />
+                                                                                    <input type="text" name="unit" id="unit" value={newdata?.unit || 1} onChange={(e) => handleChange(e.target.value, 'unit', i, `${data?.header}`, item.quote_id)} placeholder='Enter quantity' />
                                                                                 </div>
                                                                             </div>
                                                                             <div className="col-1">
@@ -487,7 +489,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                         value={currency_data ? currency_data.find(obj => obj.value === newdata?.currencyCode) : ''}
                                                                                         name='currencyCode'
                                                                                         onChange={(opt) => {
-                                                                                            handleChange(opt?.currencyCode, 'currencyCode', i, `${data?.header}`, item.carrierId);
+                                                                                            handleChange(opt?.currencyCode, 'currencyCode', i, `${data?.header}`, item.quote_id);
                                                                                         }}
                                                                                         options={currency_data}
                                                                                         classNamePrefix="select2-selection form-select"
@@ -497,7 +499,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                             </div>
                                                                             <div className="col-1">
                                                                                 <div className="field_wrap">
-                                                                                    <input type="text" name="unitPerPrice" id="unitPerPrice" value={newdata?.unitPerPrice || ''} onChange={(e) => handleChange(e.target.value, 'unitPerPrice', i, `${data?.header}`, item.carrierId)} placeholder='Enter cost' />
+                                                                                    <input type="text" name="unitPerPrice" id="unitPerPrice" value={newdata?.unitPerPrice || ''} onChange={(e) => handleChange(e.target.value, 'unitPerPrice', i, `${data?.header}`, item.quote_id)} placeholder='Enter cost' />
                                                                                 </div>
                                                                             </div>
                                                                             <div className="col-2">
@@ -506,7 +508,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                         value={optionMarkupType ? optionMarkupType.find(obj => obj.value === newdata?.markup_type) : ''}
                                                                                         name='markup_type'
                                                                                         onChange={(opt) => {
-                                                                                            handleChange(opt?.value, 'markup_type', i, `${data?.header}`, item.carrierId);
+                                                                                            handleChange(opt?.value, 'markup_type', i, `${data?.header}`, item.quote_id);
                                                                                         }}
                                                                                         options={optionMarkupType}
                                                                                         classNamePrefix="select2-selection form-select"
@@ -519,7 +521,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                     <input type="text" name={`markup_val`} id="markup_val"
                                                                                         value={newdata?.markup_val || ''}
                                                                                         onChange={(e) => {
-                                                                                            handleChangeAndCalculate(newdata, e, 'markup_val', i, `${data?.header}`, item.carrierId);
+                                                                                            handleChangeAndCalculate(newdata, e, 'markup_val', i, `${data?.header}`, item.quote_id);
                                                                                         }}
                                                                                         placeholder='Enter value' />
                                                                                 </div>
@@ -529,7 +531,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                     <input type="text" name="taxPercentage" id="taxPercentage"
                                                                                         value={newdata?.taxDetail?.taxPercentage || ''}
                                                                                         onChange={(e) => {
-                                                                                            handleChangeAndCalculate(newdata, e, 'taxPercentage', i, `${data?.header}`, item.carrierId);
+                                                                                            handleChangeAndCalculate(newdata, e, 'taxPercentage', i, `${data?.header}`, item.quote_id);
                                                                                         }}
                                                                                         placeholder='Enter tax'
                                                                                     />
@@ -546,7 +548,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                 {!viewData && (
                                                                     <div className="add_btn_box mt-3">
                                                                         <div className="add_btn_wrap">
-                                                                            <button type='button' className="btn btn-primary add_btn d-flex align-items-center" onClick={() => { addHandler(`${data?.header}`, item?.carrierId); }}> <i className='bx bx-plus me-2'></i> Add Charges</button>
+                                                                            <button type='button' className="btn btn-primary add_btn d-flex align-items-center" onClick={() => { addHandler(`${data?.header}`, item?.quote_id); }}> <i className='bx bx-plus me-2'></i> Add Charges</button>
                                                                         </div>
                                                                     </div>
                                                                 )}

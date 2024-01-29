@@ -13,7 +13,7 @@ const INIT_STATE = {
         cargo_value: { currency: { label: 'INR', value: 'rupee', currencyCode: "INR", id: 2, version: 0 }, value: '' },
         // incoterm: '',
         customerName: '',
-        container_type: { cargo_weight: { weight: { value: "MT", label: "MT", id: 7, version: 2 }, value: '' } },
+        container_type: {},
         // shipment_details: "",
         cargo_date: '',
         location_from: '',
@@ -75,7 +75,7 @@ const instantRate = (state = INIT_STATE, action) => {
                     cargo_type: { value: "GENERAL", label: "GENERAL", id: 1, version: 0 },
                     cargo_value: { currency: { label: 'INR', value: 'rupee', currencyCode: "INR", id: 2, version: 0 }, value: '' },
                     customerName: '',
-                    container_type: { cargo_weight: { weight: { value: "MT", label: "MT", id: 7, version: 2 }, value: '' } },
+                    container_type: {},
                     cargo_date: '',
                     location_from: '',
                     location_to: '',
@@ -142,12 +142,13 @@ const instantRate = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 instantSearchResult: action.payload,
-                instantSearchResultCopy: action.payload.map((item) => {
+                instantSearchResultCopy: action.payload.map((item, index) => {
                     let url = item.carrierLogo || '';
                     let fileName = url?.substring(url?.lastIndexOf('/') + 1, url?.length);
                     const base64Encoded = window.btoa(fileName);
                     return {
                         ...item,
+                        quote_id: `quote_${index}`,
                         carrierLogo: `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`,
                         tariffDetails: item.tariffDetails.map((item) => {
                             return {
@@ -162,7 +163,7 @@ const instantRate = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 instantSearchResultCopy: state.instantSearchResultCopy.map((item, index) => {
-                    if (item.carrierId === action.payload.id) {
+                    if (item.quote_id === action.payload.id) {
                         return {
                             ...item,
                             tariffDetails: item.tariffDetails.map((item, index) => {
@@ -187,7 +188,7 @@ const instantRate = (state = INIT_STATE, action) => {
 
         case QUOTATION_RESULT_UPDATE:
             const newArray = [...state.quote_selected_data];
-            const existingIndex = newArray.findIndex(obj => obj.carrierId === action.payload.id);
+            const existingIndex = newArray.findIndex(obj => obj.quote_id === action.payload.id);
             let updatedItem = {
                 ...newArray[existingIndex],
                 tariffDetails: newArray[existingIndex].tariffDetails.map((item, innerIndex) => {

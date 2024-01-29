@@ -124,62 +124,7 @@ const quotation = (state = INIT_STATE, action) => {
                         return item;
                     }
                 })
-                // tariffDetails: newArray[existingIndex]?.tariffDetails?.find(item => item.header === action.payload.charge_name).tariffBreakDowns?.map((item, subindex) => {
-                //     if (subindex === action.payload.index) {
-                //         if(action.payload.name === 'markup_val'){
-                //             return {
-                //                 ...item,
-                //                 [action.payload.name]: action.payload.value,
-                //                 'margin_value': action.payload.newVal,
-                //                 total_sale_cost: action.payload.sales_cost
-                //             };
-                //         } else if (action.payload.name === 'taxPercentage'){
-                //             return {
-                //                 ...item,
-                //                 taxDetail: {
-                //                     [action.payload.name]: action.payload.value,
-                //                     value: action.payload.newVal,
-                //                 },
-                //                 total_sale_cost: action.payload.sales_cost
-                //             };
-                //         } else {
-                //             return {
-                //                 ...item,
-                //                 [action.payload.name]: action.payload.value
-                //             };
-                //         }
-                //     }
-                // })
-            }
-      
-            // const updatedItem = {
-            //     ...newArray[existingIndex],
-            //     [action.payload.charge_name]: newArray[existingIndex][action.payload.charge_name].map((item, index) => {
-            //         if (index === action.payload.index) {
-            //             if(action.payload.name === 'markup_val'){
-            //                 return {
-            //                     ...item,
-            //                     [action.payload.name]: action.payload.value,
-            //                     'margin_value': action.payload.newVal,
-            //                     total_sale_cost: action.payload.sales_cost
-            //                 };
-            //             } else if (action.payload.name === 'tax'){
-            //                 return {
-            //                     ...item,
-            //                     [action.payload.name]: action.payload.value,
-            //                     'tax_amount': action.payload.newVal,
-            //                     total_sale_cost: action.payload.sales_cost
-            //                 };
-            //             } else {
-            //                 return {
-            //                     ...item,
-            //                     [action.payload.name]: action.payload.value
-            //                 };
-            //             }
-            //         }
-            //         return item;
-            //     })
-            // };
+            }      
             newArray[existingIndex] = updatedItem;
 
             return {
@@ -192,7 +137,16 @@ const quotation = (state = INIT_STATE, action) => {
             const removeexistingIndex = removeArray.findIndex(obj => obj.id === action.payload.id);
             const removeupdatedItem = {
                 ...removeArray[removeexistingIndex],
-                [action.payload.charge_name]: removeArray[removeexistingIndex][action.payload.charge_name].filter((item,index) => index !== action.payload.index)
+                tariffDetails: removeArray[removeexistingIndex].tariffDetails.map((item, index) => {
+                    if (item.header === action.payload.header) {
+                        return {
+                            ...item,
+                            tariffBreakDowns: item.tariffBreakDowns.filter((subItem, subindex) => subindex !== action.payload.index)
+                        }
+                    } else {
+                        return item;
+                    }
+                })
             };
             removeArray[removeexistingIndex] = removeupdatedItem;
 

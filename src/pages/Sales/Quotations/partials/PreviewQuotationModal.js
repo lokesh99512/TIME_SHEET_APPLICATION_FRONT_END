@@ -8,6 +8,7 @@ import { BLANK_MODAL_CHARGE } from '../../../../store/Sales/Quotation/actiontype
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_SELECTED_BLANK } from '../../../../store/InstantRate/actionType';
+import { formatDate } from '../../../../components/Common/CommonLogic';
 
 export default function PreviewQuotationModal({ previewModal, previewModalHand, setPreviewModal, QuoteModalHandler }) {
     const ref = useRef();
@@ -76,7 +77,7 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
                     <div className="common_bg_wrap preview_top_details ">
                         <div className="preview_top_details d-flex justify-content-between align-items-center mb-3 mt-4">
                             <div className="left_details">
-                                <p className='mb-2'><b className='me-1'>Issue Date:</b> 15 August 2023</p>
+                                <p className='mb-2'><b className='me-1'>Issue Date:</b> {formatDate(new Date())}</p>
                                 <p><b className='me-1'>Quotation:</b> #Q12345678</p>
                             </div>
                             <div className="right_logo">
@@ -183,7 +184,7 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
                         </div>
 
                         <PreviewCommonTable  />
-                        {quoteData?.length !== 0 ? quoteData?.map((data) => (<PreviewCommonTable data={data} key={data.carrierId} newData={mainChargeObj.find(obj => obj.id === data.carrierId) || []} />)) : null}
+                        {quoteData?.length !== 0 ? quoteData?.map((data) => (<PreviewCommonTable data={data} key={data.quote_id} newData={mainChargeObj.find(obj => obj.id === data.quote_id) || []} />)) : null}
                         {/* {preferData?.length !== 0 ? preferData?.map((data) => (<PreviewCommonTable data={data} key={data.id} newData={mainChargeObj.find(obj => obj.id === data.id)} />)) : null}
                         <span style={{pageBreakAfter: 'always'}}></span>
                         {cheaperData?.length !== 0 ? cheaperData?.map((data) => (<PreviewCommonTable data={data} key={data.id} newData={mainChargeObj.find(obj => obj.id === data.id)} />)) : null}
