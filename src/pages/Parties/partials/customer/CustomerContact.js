@@ -38,8 +38,8 @@ const CustomerContact = ({ toggleTabProgress }) => {
         onSubmit: (values) => {
             let data = {
                 ...Object.fromEntries(Object.entries({
-                    "id": navigateState?.state?.data?.id || null,
-                    "version": navigateState?.state?.data?.version || 0,
+                    "id": (navigateState?.state?.data?.id) ?  navigateState?.state?.data?.id :customer_id.id || null,
+                    "version": (navigateState?.state?.data?.version) ? navigateState?.state?.data?.version:customer_id.version || 0,
                     contacts: values?.contacts?.map((val) => {
                         return {
                             ...Object.fromEntries(Object.entries({

@@ -49,14 +49,14 @@ const CustomerDocument = () => {
                     docfile: val?.uploadDocument || null,
                     docdata: {
                         ...Object.fromEntries(Object.entries({
-                            "id": navigateState?.state?.data?.id || null,
-                            "version": navigateState?.state?.data?.version || null,
+                            "id": (navigateState?.state?.data?.id) ?  navigateState?.state?.data?.id :customer_id.id || null,
+                            "version": (navigateState?.state?.data?.version) ? navigateState?.state?.data?.version:customer_id.version || 0,
                             "documents": [
                                 {
                                     ...Object.fromEntries(Object.entries({
                                         "documentType": val?.documentType || null,
                                         "document": null,
-                                        "documentPath": val?.uploadDocument?.name || null,
+                                        "documentPath":  null,
                                     }).filter(([_, value]) => value !== null)),
                                 }
                             ]
