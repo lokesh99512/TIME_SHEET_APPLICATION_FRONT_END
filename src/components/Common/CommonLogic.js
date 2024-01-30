@@ -91,7 +91,7 @@ export const isAnyValueEmpty = (obj, removeKey) => {
     return false;
 };
 
-export const isAnyValueEmptyInArray = (arr, removeKey) => {
+export const isAnyValueEmptyInArray = (arr, removeKey) => {    
     for (const obj of arr) {
         let updatedObj = { ...obj };
 

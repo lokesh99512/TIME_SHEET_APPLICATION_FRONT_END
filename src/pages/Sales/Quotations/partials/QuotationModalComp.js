@@ -376,7 +376,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                             <div className="col-1">
                                                                                 <div className="field_wrap">
                                                                                     {subindex === 0 && <label className='form-label' htmlFor="uom">Charge Basis</label>}
-                                                                                    <input type="text" value={subData?.uomCode || ''} name="uom" id="uom" readOnly disabled={viewData} />
+                                                                                    <input type="text" value={subData?.uomCode?.split('_').join(' ') || ''} name="uom" id="uom" readOnly disabled={viewData} />
                                                                                 </div>
                                                                             </div>
                                                                             <div className="col-1">

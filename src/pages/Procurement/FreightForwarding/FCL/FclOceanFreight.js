@@ -3,17 +3,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap'
 
 import { edit_icon, eye_icon } from '../../../../assets/images'
-import { fclBreadcrumb, fclRateData, fclTableData } from '../../../../common/data/procurement'
-import { getFclData, getFclFreightViewAction, getFclSurchargeViewAction, updatefclSwitchData, uploadFclCarrierData } from '../../../../store/Procurement/actions'
+import { fclBreadcrumb, fclTableData } from '../../../../common/data/procurement'
+import TfBreadcrumbs from '../../../../components/Common/TfBreadcrumbs'
+import { getFclData, getFclFreightViewAction, getFclSurchargeViewAction, uploadFclCarrierData } from '../../../../store/Procurement/actions'
 import { FILTER_FCL_DATA } from '../../../../store/Procurement/actiontype'
 import FilterOffCanvasComp from '../Modal/FilterOffCanvasComp'
 import { ChargeId, CommonReplaceValue, ValidTill, VendorName } from '../partials/OceanCol'
 import TableReact from '../partials/TableReact'
-import TopBreadcrumbs from '../partials/TopBreadcrumbs'
 import ModalFCLFreight from './ModalFCLFreight'
 
 export default function FclOceanFreight() {
-    document.title="FCL || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
+    document.title = "FCL || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
     const fclData = useSelector((state) => state.procurement.fcl_data);
     const fcl_loader = useSelector((state) => state.procurement.fcl_get_loader);
     const [modal, setModal] = useState(false);
@@ -29,21 +29,21 @@ export default function FclOceanFreight() {
         cargo_type: '',
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
-    const dispatch = useDispatch();     
+    const dispatch = useDispatch();
 
     const viewPopupHandler = (data) => {
         if (data?.status === "ACTIVE") {
             setModal(true);
             setViewData(data);
             dispatch(getFclFreightViewAction(data?.id));
-            dispatch(getFclSurchargeViewAction(data?.id));            
+            dispatch(getFclSurchargeViewAction(data?.id));
         } else {
             console.log("Cannot view details for inactive data");
         }
     }
 
     const editPopupHandler = (data) => {
-        console.log(data,"data");
+        console.log(data, "data");
         // navigate('/freight/ocean/fcl', { state: { data: data?.id } });
     }
 
@@ -62,24 +62,24 @@ export default function FclOceanFreight() {
         let newArr = [...fclTableData];
         const filteredDataArr = newArr.filter(item => {
             const isCarrierNameMatch = filterDetails?.carrier_name?.value === '' ||
-              item?.carrier_name?.toLowerCase().includes(filterDetails?.carrier_name?.value?.toLowerCase());
-          
+                item?.carrier_name?.toLowerCase().includes(filterDetails?.carrier_name?.value?.toLowerCase());
+
             const isDestPortMatch = filterDetails?.dest_port?.value === '' ||
-              item?.dest_port?.toLowerCase().includes(filterDetails?.dest_port?.value?.toLowerCase());
-          
+                item?.dest_port?.toLowerCase().includes(filterDetails?.dest_port?.value?.toLowerCase());
+
             const isOrgPortMatch = filterDetails?.org_port?.value === '' ||
-              item?.org_port?.toLowerCase().includes(filterDetails?.org_port?.value?.toLowerCase());
-          
+                item?.org_port?.toLowerCase().includes(filterDetails?.org_port?.value?.toLowerCase());
+
             return isCarrierNameMatch && isDestPortMatch && isOrgPortMatch;
         });
-        dispatch({type: FILTER_FCL_DATA, payload: filteredDataArr});
+        dispatch({ type: FILTER_FCL_DATA, payload: filteredDataArr });
 
     }
     const clearValueHandler = () => {
         dispatch(getFclData());
         setfilterDetails(inputArr)
     }
-    
+
     // Activate deactivate table data
     const switchHandler = (data) => {
         let obj = {
@@ -87,12 +87,12 @@ export default function FclOceanFreight() {
             version: data.version,
             status: data.status === "ACTIVE" ? "INACTIVE" : "ACTIVE"
         }
-        console.log(obj,"obj fcl");
+        console.log(obj, "obj fcl");
         dispatch(uploadFclCarrierData({ ...obj }));
     }
 
     useEffect(() => {
-        dispatch(getFclData());        
+        dispatch(getFclData());
     }, [dispatch]);
 
     const columns = useMemo(() => [
@@ -158,7 +158,7 @@ export default function FclOceanFreight() {
             Cell: (cellProps) => {
                 return <CommonReplaceValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
-        },   
+        },
         {
             Header: 'Action',
             Cell: (cellProps) => {
@@ -168,19 +168,19 @@ export default function FclOceanFreight() {
                             <i className='bx bx-dots-vertical-rounded'></i>
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-end">
-                            <DropdownItem onClick={(e) => {e.stopPropagation(); editPopupHandler(cellProps.row.original)}}>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
-                            <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem>
+                            <DropdownItem onClick={(e) => { e.stopPropagation(); editPopupHandler(cellProps.row.original) }}>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
+                            <DropdownItem onClick={(e) => { e.stopPropagation(); viewPopupHandler(cellProps.row.original) }}>View <img src={eye_icon} alt="Eye" /></DropdownItem>
                             <DropdownItem onClick={(e) => e.stopPropagation()}>
                                 {cellProps.row.original?.status === "ACTIVE" ? "Activate" : "Deactive"}
                                 <div className="switch_wrap">
                                     <FormGroup switch>
-                                        <Input 
-                                        type="switch"
-                                        checked={cellProps.row.original?.status === "ACTIVE" || false}
-                                        onClick={() => {
-                                            switchHandler(cellProps.row.original);
-                                        }}
-                                        readOnly
+                                        <Input
+                                            type="switch"
+                                            checked={cellProps.row.original?.status === "ACTIVE" || false}
+                                            onClick={() => {
+                                                switchHandler(cellProps.row.original);
+                                            }}
+                                            readOnly
                                         />
                                     </FormGroup>
                                 </div>
@@ -190,8 +190,8 @@ export default function FclOceanFreight() {
                 )
             }
         },
-    ]); 
-  
+    ]);
+
     return (
         <>
             <div className="page-content">
@@ -199,7 +199,10 @@ export default function FclOceanFreight() {
                     <div className="main_freight_wrapper">
 
                         {/* breadcrumbs && rate */}
-                        <TopBreadcrumbs breadcrumbs={fclBreadcrumb} data={fclRateData} />
+                        <div className="tf_top_breadcrumb_rate_wrap">
+                            <TfBreadcrumbs breadcrumb={fclBreadcrumb} />
+                        </div>
+                        {/* <TopBreadcrumbs breadcrumbs={fclBreadcrumb} data={fclRateData} /> */}
 
                         {/* React Table */}
                         <TableReact

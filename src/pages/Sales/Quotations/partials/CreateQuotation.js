@@ -38,18 +38,18 @@ export default function CreateQuotation() {
         if(!isAnyValueEmpty(searchData)){
             setSearchResult(true);
             setSearchView(false);
-            if(searchData.location_from.address.value === "INMAA" && searchData.location_to.address.value === "BDDAC"){
-                console.log("search1")
-                dispatch(getSalesQuotationResultData1());
-            } else if (searchData.location_from.address.value === "BLRICD" && searchData.location_to.address.value === "DHAKAICD"){
-                console.log("search2")
-                dispatch(getSalesQuotationResultData2());
-            } else if (searchData.location_from.address.value === "BLRICD" && searchData.location_to.address.value === "JAKARTAICD"){
-                console.log("search3")
-                dispatch(getSalesQuotationResultData3());
-            } else {
-                dispatch(getSalesQuotationResultData());
-            }
+            // if(searchData.location_from.address.value === "INMAA" && searchData.location_to.address.value === "BDDAC"){
+            //     console.log("search1")
+            //     dispatch(getSalesQuotationResultData1());
+            // } else if (searchData.location_from.address.value === "BLRICD" && searchData.location_to.address.value === "DHAKAICD"){
+            //     console.log("search2")
+            //     dispatch(getSalesQuotationResultData2());
+            // } else if (searchData.location_from.address.value === "BLRICD" && searchData.location_to.address.value === "JAKARTAICD"){
+            //     console.log("search3")
+            //     dispatch(getSalesQuotationResultData3());
+            // } else {
+            //     dispatch(getSalesQuotationResultData());
+            // }
         }
     }
 

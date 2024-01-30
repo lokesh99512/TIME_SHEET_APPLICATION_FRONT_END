@@ -10,6 +10,7 @@ import ModalFclInlandCharge from '../Modal/ModalFclInlandCharge';
 import { CarrierName, ChargeId, CommonReplaceValue, CommonValue, ValidTill, VendorName } from '../partials/OceanCol';
 import TableReact from '../partials/TableReact';
 import TopBreadcrumbs from '../partials/TopBreadcrumbs';
+import TfBreadcrumbs from '../../../../components/Common/TfBreadcrumbs';
 
 const FclInlandCharge = () => {
     document.title = "Inland Charges || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
@@ -168,7 +169,10 @@ const FclInlandCharge = () => {
                 <Container fluid>
                     <div className="main_freight_wrapper">
                         {/* breadcrumbs && rate */}
-                        <TopBreadcrumbs breadcrumbs={inLandBreadcrumb} data={inLandRateData} />
+                        <div className="tf_top_breadcrumb_rate_wrap">
+                            <TfBreadcrumbs breadcrumb={inLandBreadcrumb} />
+                        </div>
+                        {/* <TopBreadcrumbs breadcrumbs={inLandBreadcrumb} data={inLandRateData} /> */}
 
                         {/* React Table */}
                         <TableReact

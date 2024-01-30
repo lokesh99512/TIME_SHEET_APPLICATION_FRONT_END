@@ -23,6 +23,7 @@ export const GetFileSer = (base64Encoded) => getWithOutAuth(url.Get_File_URL + b
 
 // instant rate search droup downs
 export const getInstantRateLocation = () => get(url.GET_INSTANT_RATE_LOCATION);
+export const getAirLocation = () => get(url.GET_AIR_LOCATION_URL);
 
 export const getAllIncoTerms = () => get (url.GET_ALL_INCOTERM)
 

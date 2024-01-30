@@ -25,7 +25,6 @@ import {
   fclTableData,
   groups,
   importantmails,
-  inLandTableData,
   inboxmails,
   inquiryTableData,
   invoiceList,
@@ -38,9 +37,8 @@ import {
   novTopSellingData,
   octEarningData,
   octTopSellingData,
-  plChargesTableData,
   projects,
-  quotationTableData, searchQuotationResult,
+  quotationTableData,
   sentmails,
   starredmails,
   tasks,
@@ -51,7 +49,6 @@ import {
 } from "../../common/data"
 import { PartiesCustomersData, PartiesVendorsData } from "../../common/data/parties"
 import { fclSurchargeTableData } from "../../common/data/rate"
-import { searchQuotationResult1, searchQuotationResult2, searchQuotationResult3 } from "../../common/data/sales"
 import { companyDetailsData, settingsUsersData } from "../../common/data/settings"
 import accessToken from "../jwt-token-access/accessToken"
 import * as url from "../url_helper"
@@ -884,18 +881,6 @@ const fakeBackend = () => {
     })
   })
 
-  // mock.onGet(url.GET_PORTLOCALCHARGES).reply(() => {
-  //   return new Promise((resolve, reject) => {
-  //     setTimeout(() => {
-  //       if(plChargesTableData){
-  //         resolve([200, plChargesTableData]);
-  //       } else {
-  //         reject([400, "Cannot get Port Local Charges Data"])
-  //       }
-  //     });
-  //   })
-  // })
-
   mock.onGet(url.GET_WAYBILL).reply(() => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -920,18 +905,6 @@ const fakeBackend = () => {
     })
   })
 
-  // mock.onGet(url.GET_INLAND).reply(() => {
-  //   return new Promise((resolve, reject) => {
-  //     setTimeout(() => {
-  //       if(inLandTableData) {
-  //         resolve([200, inLandTableData]);
-  //       } else {
-  //         reject([400, 'Cannot get InLand Data']);
-  //       }
-  //     });
-  //   })
-  // })
-
   mock.onGet(url.GET_QUOTATION).reply(() => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -944,50 +917,6 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onGet(url.GET_QUOTATION_SEARCH_RESULT).reply(() => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if(searchQuotationResult) {
-          resolve([200, searchQuotationResult]);
-        } else {
-          reject([400, 'Cannot get Quotation Result Data']);
-        }
-      });
-    })
-  })
-  mock.onGet(url.GET_QUOTATION_SEARCH_RESULT1).reply(() => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if(searchQuotationResult1) {
-          resolve([200, searchQuotationResult1]);
-        } else {
-          reject([400, 'Cannot get Quotation Result Data']);
-        }
-      });
-    })
-  })
-  mock.onGet(url.GET_QUOTATION_SEARCH_RESULT2).reply(() => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if(searchQuotationResult2) {
-          resolve([200, searchQuotationResult2]);
-        } else {
-          reject([400, 'Cannot get Quotation Result Data']);
-        }
-      });
-    })
-  })
-  mock.onGet(url.GET_QUOTATION_SEARCH_RESULT3).reply(() => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if(searchQuotationResult3) {
-          resolve([200, searchQuotationResult3]);
-        } else {
-          reject([400, 'Cannot get Quotation Result Data']);
-        }
-      });
-    })
-  })
   mock.onGet(url.GET_quote_exchange_rate).reply(() => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {

@@ -11,6 +11,7 @@ import {
   Input,
   Row
 } from "reactstrap";
+import { isAnyValueEmpty } from "../../../../components/Common/CommonLogic";
 import { postSurchargeCodeAction } from "../../../../store/Global/actions";
 import { GET_SURCHARGE_ALICE_DATA } from "../../../../store/Global/actiontype";
 import ModalFCLAddNewAlias from "../Modal/ModalFCLAddNewAlias";
@@ -204,7 +205,7 @@ export default function OceanFCLSurchargeNameAddNew() {
                     <div className="row">
                       <div className="d-flex justify-content-center">
                         <div className="mb-3 mx-3 d-flex justify-content-end">
-                          <button className=" btn btn-primary" onClick={() => surchargeFormik.handleSubmit()} disabled={isAnyValueEmpty(formik.values, ['surchargeAliasDesc', 'surchargeAliasCode'])}>Save</button>
+                          <button className=" btn btn-primary" onClick={() => surchargeFormik.handleSubmit()} disabled={isAnyValueEmpty(surchargeFormik.values, ['surchargeAliasDesc', 'surchargeAliasCode'])}>Save</button>
                         </div>
                         <div className="mb-3 mx-3 d-flex justify-content-end">
                           <button className=" btn btn-primary" onClick={() => surchargeFormik.resetForm()}>Cancel</button>

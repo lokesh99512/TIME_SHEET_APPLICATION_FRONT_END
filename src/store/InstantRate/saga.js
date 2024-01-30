@@ -1,6 +1,6 @@
 // saga.js
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
-import { getAllIncoTerms, getInstantRateLocation } from "../../helpers/services/GlobalService";
+import { getAirLocation, getAllIncoTerms, getInstantRateLocation } from "../../helpers/services/GlobalService";
 import {
   GET_INSTANT_RATE_LOCATION,
   GET_INSTANT_RATE_LOCATION_SUCCESS,
@@ -10,6 +10,8 @@ import {
   POST_INSTANT_SEARCH_DATA_TYPE,
   GET_INSTANT_SEARCH_RESULT_TYPE,
   POST_INSTANT_SEARCH_LOADER,
+  GET_AIR_LOCATION_TYPE,
+  GET_AIR_LOCATION_TYPE_SUCCESS,
 } from "./actionType"
 import { showErrorToast, showSuccessToast } from "../../components/Common/CustomToast";
 import { postInstantRateSer } from "../../helpers/services/InstantRateService";
@@ -22,6 +24,15 @@ function* fetchInstantRateLocation() {
   } catch (error) {
     console.log(error, "location error-----------");
     yield put({ type: GET_INSTANT_RATE_LOCATION_FAILURE, payload: error.message });
+  }
+}
+function* fetchAirLocation() {
+  try {
+    const response = yield call(getAirLocation);
+    console.log("response air location===============");
+    yield put({ type: GET_AIR_LOCATION_TYPE_SUCCESS, payload: response });
+  } catch (error) {
+    console.log(error, "Air location error-----------");
   }
 }
 
@@ -49,6 +60,7 @@ function* postInstantSearchSaga({payload: { data }}) {
 
 function* watchGetInstantRate() {
   yield takeEvery(GET_INSTANT_RATE_LOCATION, fetchInstantRateLocation);
+  yield takeEvery(GET_AIR_LOCATION_TYPE, fetchAirLocation);
   yield takeEvery(GET_ALL_INCOTERM, fetchAllIncoterm)
   yield takeEvery(POST_INSTANT_SEARCH_DATA_TYPE, postInstantSearchSaga);
 }

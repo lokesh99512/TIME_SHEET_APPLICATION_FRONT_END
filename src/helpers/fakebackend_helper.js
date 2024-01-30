@@ -299,12 +299,9 @@ export const getInvestedData = (data) =>
   get(`${url.GET_Invested_Overview}/${data}`, { params: { data } });
 
 // -------------- Procurement ---------------------------------------
-// export const getFCLTableData = () => get(url.GET_FCL);
 export const getLCLTableData = () => get(url.GET_LCL);
-// export const getPortLocalChargesTableData = () => get(url.GET_PORTLOCALCHARGES);
 export const getAirwaybillTableData = () => get(url.GET_WAYBILL);
 export const getAirConsoleTableData = () => get(url.GET_CONSOLE);
-// export const getInlandTableData = () => get(url.GET_INLAND);
 
 // -------------- Rate Management ---------------------------------------
 export const getFCLSurcharge = () => get(url.GET_FCL_SURCHARGE);
@@ -313,16 +310,8 @@ export const getFCLSurcharge = () => get(url.GET_FCL_SURCHARGE);
 export const getSettingsUsers = () => get(url.GET_SETTINGS_USERS);
 export const getCompanyDetails = () => get(url.GET_SETTINGS_COMPANYDETAILS);
 
-// ------------ Parties -------------
-// export const getPartiesCustomers = () => get(url.GET_PARTIES_CUSTOMERS);
-// export const getPartiesVendors = () => get(url.GET_PARTIES_VENDORS);
-
 // ---------------- sales ----------------------------------------
 export const getSalesQuotTableData = () => get(url.GET_QUOTATION);
-export const getSearchResultData = () => get(url.GET_QUOTATION_SEARCH_RESULT);
-export const getSearchResultData1 = () => get(url.GET_QUOTATION_SEARCH_RESULT1);
-export const getSearchResultData2 = () => get(url.GET_QUOTATION_SEARCH_RESULT2);
-export const getSearchResultData3 = () => get(url.GET_QUOTATION_SEARCH_RESULT3);
 export const getExchangeRate = () => get(url.GET_quote_exchange_rate);
 
 export const getSalesInquiryTableData = () => get(url.GET_INQUIRY_TABLE);

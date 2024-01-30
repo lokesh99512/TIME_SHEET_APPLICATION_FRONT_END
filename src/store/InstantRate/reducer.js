@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_INSTANT_RATE_LOCATION_FAILURE, GET_INSTANT_RATE_LOCATION_SUCCESS, ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK, GET_ALL_INCOTERM, GET_ALL_INCOTERM_SUCCESS, GET_INSTANT_SEARCH_RESULT_TYPE, UPDATE_QUOTATION_RESULT_DETAILS, CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_UPDATE, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_SELECTED, POST_INSTANT_SEARCH_LOADER, BLANK_INSTANT_SEARCH } from "./actionType"
+import { GET_INSTANT_RATE_LOCATION_FAILURE, GET_INSTANT_RATE_LOCATION_SUCCESS, ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK, GET_ALL_INCOTERM, GET_ALL_INCOTERM_SUCCESS, GET_INSTANT_SEARCH_RESULT_TYPE, UPDATE_QUOTATION_RESULT_DETAILS, CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_UPDATE, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_SELECTED, POST_INSTANT_SEARCH_LOADER, BLANK_INSTANT_SEARCH, GET_AIR_LOCATION_TYPE_SUCCESS } from "./actionType"
 import { Get_File_URL } from "../../helpers/url_helper";
 
 
@@ -22,6 +22,8 @@ const INIT_STATE = {
     },
     instantRateLocation: [],
     incoterm: [],
+    airLocation: [],
+
     instantSearchResult: [],
     instantSearchResultCopy: [],
     quote_selected_data: [],
@@ -103,6 +105,8 @@ const instantRate = (state = INIT_STATE, action) => {
                 }
             }
             return state = newObj
+
+        // Fetch all dropdown api
         case GET_INSTANT_RATE_LOCATION_SUCCESS:
             return {
                 ...state,
@@ -136,6 +140,19 @@ const instantRate = (state = INIT_STATE, action) => {
                     }
                 }
             };
+
+        case GET_AIR_LOCATION_TYPE_SUCCESS:
+            return { 
+                ...state, 
+                airLocation: action.payload.content?.map((item, index) => {
+                    return {
+                        value: item.id,
+                        label: item.name,
+                        id: item.id,
+                        version: item.version,
+                    }
+                }) 
+            }
 
         // ------------------ search Result
         case GET_INSTANT_SEARCH_RESULT_TYPE:
