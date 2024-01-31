@@ -1,45 +1,17 @@
-import React from "react";
-import { Input, Label, Modal, ModalBody, ModalHeader } from "reactstrap";
-import Select from "react-select";
 import { useFormik } from "formik";
-import { optionIsStandard, optionPaymentType, optionServiceType } from "../../../../common/data/procurement";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Select from "react-select";
+import { Modal, ModalBody, ModalHeader } from "reactstrap";
+import { optionIsStandard, optionPaymentType } from "../../../../common/data/procurement";
+import { getAllIncoTerms } from "../../../../store/InstantRate/actions";
 
-const incoTerm = [
-  { label: "Carraige Paid To", value: "Carraige Paid To" },
-  { label: "COST & FREIGHT", value: "COST & FREIGHT" },
-  { label: "Cost Insurance and Freight", value: "Cost Insurance and Freight" },
-  {
-    label: "Carraige and Insurance Paid To",
-    value: "Carraige and Insurance Paid To",
-  },
-  { label: "Delivery at Place", value: "Delivery at Place" },
-  { label: "DELIVERY AT TERMINAL", value: "DELIVERY AT TERMINAL" },
-  { label: "DELIVERY DUTY UNPAID", value: "DELIVERY DUTY UNPAID" },
-  {
-    label: "Delivered At place Unloaded",
-    value: "Delivered At place Unloaded",
-  },
-  { label: "EX WORKS", value: "EX WORKS" },
-  { label: "FREE ALONGSIDE SHIP", value: "FREE ALONGSIDE SHIP" },
-  { label: "FREE CARRIAGE", value: "FREE CARRIAGE" },
-  { label: "FREE ON BOARD", value: "FREE ON BOARD" },
-];
-const isStandard = [
-  { label: "Standard Charge", value: "standard_charge" },
-  { label: "Incidental", value: "incidental" },
-];
 const commodity = [
   { label: "General", value: "General" },
   { label: "Electronics", value: "Electronics" },
   { label: "Perishable", value: "Perishable" },
   { label: "Fruits", value: "Fruits" },
   { label: "Pulses", value: "Pulses" },
-];
-const serviceType = [
-  { label: "Door To Door", value: "Door To Door" },
-  { label: "Door To Port", value: "Door To Port" },
-  { label: "Port To Door", value: "Port To Door" },
-  { label: "Port To Port", value: "Port To Port" },
 ];
 
 const initialValue = {
@@ -51,9 +23,11 @@ const initialValue = {
 };
 
 const ModalAddTerm = ({ modal, onCloseClick, setTermHandler }) => {
+  const { incoterm } = useSelector((state) => state.instantRate);
+  const dispatch = useDispatch();
   const changeHandler = (name, value) => {
-    const selectedValues = value.map((option) => option.value);
-    formik.setFieldValue(name, selectedValues);
+    // const selectedValues = value.map((option) => option.value);
+    formik.setFieldValue(name, value);
   };
 
   const formik = useFormik({
@@ -65,17 +39,15 @@ const ModalAddTerm = ({ modal, onCloseClick, setTermHandler }) => {
       resetForm();
     },
   });
+
+  useEffect(() => {
+    dispatch(getAllIncoTerms());
+  }, [dispatch]);
+
   return (
     <>
-      <Modal
-        isOpen={modal.isOpen}
-        toggle={onCloseClick}
-        className="table_view_modal"
-      >
-        <ModalHeader tag="h4">
-          Add Terms
-          <span className="close" onClick={onCloseClick}></span>
-        </ModalHeader>
+      <Modal isOpen={modal.isOpen} toggle={onCloseClick} className="table_view_modal" >
+        <ModalHeader tag="h4"> Add Terms <span className="close" onClick={onCloseClick}></span> </ModalHeader>
         <ModalBody>
           <div className="table_view_data_wrap">
             <div className="charge_details">
@@ -96,15 +68,15 @@ const ModalAddTerm = ({ modal, onCloseClick, setTermHandler }) => {
 
                 {/* Inco Term */}
                 <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
-                  <label className="form-label">Inco Term</label>
+                  <label className="form-label">Incoterm</label>
                   <Select
                     name="incoTerm"
                     isMulti
-                    value={incoTerm ? incoTerm.find((option) => option.value === formik.values.incoTerm) : ""}
+                    value={incoterm ? incoterm.find((option) => option.value === formik.values.incoterm) : ""}
                     onChange={(e) => {
                       changeHandler(`incoTerm`, e);
                     }}
-                    options={incoTerm}
+                    options={incoterm}
                     classNamePrefix="select2-selection form-select"
                   />
                 </div>
@@ -114,7 +86,7 @@ const ModalAddTerm = ({ modal, onCloseClick, setTermHandler }) => {
                   <label className="form-label">Is Standard</label>
                   <Select
                     name="isStandard"
-                    value={ optionIsStandard ? optionIsStandard.find( (option) => option.value === formik.values.isStandard ) : "" }
+                    value={optionIsStandard ? optionIsStandard.find((option) => option.value === formik.values.isStandard) : ""}
                     onChange={(e) => {
                       formik.setFieldValue(`isStandard`, e.value);
                     }}
@@ -129,7 +101,7 @@ const ModalAddTerm = ({ modal, onCloseClick, setTermHandler }) => {
                   <Select
                     name="commodity"
                     isMulti
-                    value={ commodity ? commodity.find( (option) => option.value === formik.values.commodity ) : "" }
+                    value={commodity ? commodity.find((option) => option.value === formik.values.commodity) : ""}
                     onChange={(e) => {
                       changeHandler(`commodity`, e);
                     }}

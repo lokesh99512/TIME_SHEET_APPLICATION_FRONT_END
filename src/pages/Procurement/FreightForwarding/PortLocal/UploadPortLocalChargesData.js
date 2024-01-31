@@ -3,19 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
-import {
-  Card,
-  CardBody,
-  Col,
-  Container,
-  Input,
-  Row
-} from "reactstrap";
+import { Card, CardBody, Col, Container, Input, Row } from "reactstrap";
+
 import { optionCalculationType, optionMovementType } from "../../../../common/data/procurement";
+import { isAnyValueEmpty, isAnyValueEmptyInArray } from "../../../../components/Common/CommonLogic";
 import { GET_CARGO_TYPE_DATA, GET_CONTAINER_DATA } from "../../../../store/Global/actiontype";
 import { postPortLocalChargesData } from "../../../../store/Procurement/actions";
 import ModalAddTerm from "../Modal/ModalAddTerm";
-import { isAnyValueEmpty, isAnyValueEmptyInArray } from "../../../../components/Common/CommonLogic";
 
 const terminalName = [];
 
@@ -33,7 +27,7 @@ const initialValue = {
     {
       chargeCode: "",
       chargeBasis: "",
-      calculationType: { label: "FLAT", value: "FLAT" },
+      calculationType: "FLAT",
       // slabBasis: "",
       currency: "",
       minValue: "",
@@ -61,6 +55,8 @@ export default function UploadPortLocalChargesData() {
   const [addTermsModal, setAddTermsModal] = useState({ isOpen: false, id: "" });
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  let generalContainerOpt = container_data?.filter((item) => item.value !== "20RF" && item.value !== "40RF");
+  let refrigeContainerOpt = container_data?.filter((item) => item.value === "20RF" || item.value === "40RF");
 
   useEffect(() => {
     let vendorlist = vendor_data?.content?.map((item) => {
@@ -83,23 +79,98 @@ export default function UploadPortLocalChargesData() {
   const formik = useFormik({
     initialValues: initialValue,
     onSubmit: (value) => {
-      console.log(value, "main value ");
+      // console.log(value, "main value ");
+
+      let surchargeValuesArray = value?.mainBox?.map((item) => {
+        let newData = item?.subBox?.map((subItem, subIndex) => {
+          const mapContainerData = (containerOption) => containerOption?.map((sub, index) => {
+            return {
+              ...(subItem?.cargoType && {
+                "cargoType": {
+                  "id": subItem?.cargoType?.id || '',
+                  "version": subItem?.cargoType?.version || 0
+                }
+              }),
+              ...(subItem?.containerType && {
+                "oceanContainer": {
+                  "id": sub?.id || '',
+                  "version": sub?.version || 0
+                }
+              }),
+              ...(item?.currency && {
+                "currency": {
+                  "id": item?.currency?.id || '',
+                  "version": item?.currency?.version || 0
+                }
+              }),
+              ...(subItem?.fromSlab && { "fromSlab": subItem?.fromSlab || 0 }),
+              ...(subItem?.toSlab && { "toSlab": subItem?.toSlab || 0 }),
+              ...(subItem?.rate && { "value": subItem?.rate || 0 })
+            }
+          })
+
+          if (subItem?.containerType?.value === 'all') {
+            if (subItem?.cargoType?.value === "GENERAL") {
+              return mapContainerData(generalContainerOpt);
+            } else if (subItem?.cargoType?.value === "REFRIGERATED") {
+              return mapContainerData(refrigeContainerOpt);
+            } else {
+              return mapContainerData(container_data);
+            }
+          } else {
+            let obj = {
+              ...(subItem?.cargoType && {
+                "cargoType": {
+                  "id": subItem?.cargoType?.id || '',
+                  "version": subItem?.cargoType?.version || 0
+                }
+              }),
+              ...(subItem?.containerType && {
+                "oceanContainer": {
+                  "id": subItem?.containerType?.id || '',
+                  "version": subItem?.containerType?.version || 0
+                }
+              }),
+              ...(item?.currency && {
+                "currency": {
+                  "id": item?.currency?.id || '',
+                  "version": item?.currency?.version || 0
+                }
+              }),
+              ...(subItem?.fromSlab && { "fromSlab": subItem?.fromSlab || 0 }),
+              ...(subItem?.toSlab && { "toSlab": subItem?.toSlab || 0 }),
+              ...(subItem?.rate && { "value": subItem?.rate || 0 })
+            }
+            return obj
+          }
+        });
+        return newData
+      });
+
+      let spreadSurArray = surchargeValuesArray?.map((item) => {
+        return item.flat(Infinity)
+      });
+
       let data = {
-        "surchargeCategory": {
-          "id": value?.chargeCategory?.id || 0,
-          "version": value?.chargeCategory?.version || 0
-        },
-        "oceanPort": {
-          "id": value?.portName?.id || 0,
-          "version": value?.portName?.version || 0
-        },
+        ...(value?.chargeCategory && {
+          "surchargeCategory": {
+            "id": value?.chargeCategory?.id || 0,
+            "version": value?.chargeCategory?.version || 0
+          }
+        }),
+        ...(value?.portName && {
+          "oceanPort": {
+            "id": value?.portName?.id || 0,
+            "version": value?.portName?.version || 0
+          }
+        }),
         ...(value?.terminalName && {
           "oceanPortTerminal": {
             "id": 1,
             "version": 0
           },
         }),
-        "movementType": value?.movementType?.value || "IMPORT",
+        ...(value?.movementType && { "movementType": value?.movementType?.value || "IMPORT" }),
         ...(value?.carrierName && {
           "tenantCarrier": {
             "id": value?.carrierName?.id || '',
@@ -112,65 +183,55 @@ export default function UploadPortLocalChargesData() {
             "version": value?.vendorName?.version || 0
           },
         }),
-        "validFrom": value?.validityFrom || 0,
-        "validTo": value?.validityTo || 0,
-        "tenantVendorFCLSurchargeCategoryTerminals": [],
-        "tenantVendorFCLSurchargeDetails": value?.mainBox?.map((item) => {
+        ...(value?.validityFrom && { "validFrom": value?.validityFrom || 0 }),
+        ...(value?.validityTo && { "validTo": value?.validityTo || 0 }),
+        // "tenantVendorFCLSurchargeCategoryTerminals": [],
+        "tenantVendorFCLSurchargeDetails": value?.mainBox?.map((item, mainindex) => {
           return {
-            "surchargeCode": {
-              "id": item?.chargeCode?.id || '',
-              "version": item?.chargeCode?.version || 0
-            },
-            "unitOfMeasurement": {
-              "id": item?.chargeBasis?.id || '',
-              "version": item?.chargeBasis?.version || 0
-            },
-            ...(item?.addTerms?.paymentTerm && {"paymentTerm": item?.addTerms?.paymentTerm || "PREPAID"}),
-            ...(item?.addTerms?.isStandard && {"standard": item?.addTerms?.isStandard === 'incidental' ? false : true }),            
-            "calculationType": item?.calculationType || "FLAT",
-            "minimumValue": item?.minValue || 0,
-            "applicableTax": item?.tax || 0,
-            "tenantVendorFCLSurchargeValues": item?.subBox?.map((subItem) => {
-              return {
-                ...(subItem?.cargoType && {
-                  "cargoType": {
-                    "id": subItem?.cargoType?.id || '',
-                    "version": subItem?.cargoType?.version || 0
-                  }
-                }),
-                "oceanContainer": {
-                  "id": subItem?.containerType?.id || '',
-                  "version": subItem?.containerType?.version || 0
-                },
-                "currency": {
-                  "id": item?.currency?.id || '',
-                  "version": item?.currency?.version || 0
-                },
-                ...(subItem?.fromSlab && {"fromSlab": subItem?.fromSlab || 0}),
-                ...(subItem?.toSlab && {"toSlab": subItem?.toSlab || 0}),
-                "value": subItem?.rate || 0
+            ...(item?.chargeCode && {
+              "surchargeCode": {
+                "id": item?.chargeCode?.id || '',
+                "version": item?.chargeCode?.version || 0
               }
             }),
-            ...(item?.addTerms?.incoTerm?.length !== 0 && {"tenantVendorFCLSurchargeDetailIncoterms": item?.addTerms?.incoTerm?.map((incoterm, index) => {
-              return {
-                "incoterm": {
-                  "id": incoterm?.id || (index + 1),
-                  "version": incoterm?.version || 0
-                }
+            ...(item?.chargeBasis && {
+              "unitOfMeasurement": {
+                "id": item?.chargeBasis?.id || '',
+                "version": item?.chargeBasis?.version || 0
               }
-            })}),
-            ...(item?.addTerms?.commodity?.length !== 0 && {"tenantVendorFCLSurchargeDetailCommodities": item?.addTerms?.commodity?.map((commodity, index) => {
-              return {
-                "commodity": {
-                  "id": commodity?.id || (index + 1),
-                  "version": commodity?.version || 0
+            }),
+            ...(item?.addTerms?.paymentTerm && { "paymentTerm": item?.addTerms?.paymentTerm || "PREPAID" }),
+            ...(item?.addTerms?.isStandard && { "standard": item?.addTerms?.isStandard === 'incidental' ? false : true }),
+            ...(item?.calculationType && { "calculationType": item?.calculationType || "FLAT" }),
+            ...(item?.minValue && { "minimumValue": item?.minValue || 0 }),
+            ...(item?.tax && { "applicableTax": item?.tax || 0 }),
+
+            "tenantVendorFCLSurchargeValues": spreadSurArray?.[mainindex],
+
+            ...(item?.addTerms?.incoTerm?.length !== 0 && {
+              "tenantVendorFCLSurchargeDetailIncoterms": item?.addTerms?.incoTerm?.map((incoterm, index) => {
+                return {
+                  "incoterm": {
+                    "id": incoterm?.value,
+                    "version": incoterm?.version
+                  }
                 }
-              }
-            })})
+              })
+            }),
+            ...(item?.addTerms?.commodity?.length !== 0 && {
+              "tenantVendorFCLSurchargeDetailCommodities": item?.addTerms?.commodity?.map((commodity, index) => {
+                return {
+                  "commodity": {
+                    "id": commodity?.id || (index + 1),
+                    "version": commodity?.version || 0
+                  }
+                }
+              })
+            })
           }
         })
       }
-      
+
       dispatch(postPortLocalChargesData(data));
       formik.resetForm();
     },
@@ -234,7 +295,6 @@ export default function UploadPortLocalChargesData() {
                       <div className="col-md-6 col-lg-4 mb-4">
                         <label className="form-label">Terminal Name</label>
                         <Select
-                          // value={addDetails.surchargeAliasDesc}
                           name="terminalName"
                           value={terminalName ? terminalName.find((option) => option.value === formik.values.terminalName) : ""}
                           onChange={(e) => {
@@ -324,9 +384,9 @@ export default function UploadPortLocalChargesData() {
                     {/* Field Array started------------------------------------------------- */}
                     <FormikProvider value={formik}>
                       <FieldArray name="mainBox">
-                        {(arrayHelpers) => {
+                        {(arrayHelpers, i) => {
                           return (
-                            <>
+                            <React.Fragment key={i}>
                               {formik.values.mainBox.length > 0 &&
                                 formik.values.mainBox.map((item, index) => (
                                   <Card key={index} className={`sub_field_wrap ${isAnyValueEmpty(formik.values, ['terminalName', 'vendorName']) ? 'disabled' : ''}`}>
@@ -432,7 +492,7 @@ export default function UploadPortLocalChargesData() {
                                         {/* Min Value */}
                                         <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
                                           <div className="mb-3">
-                                            <label className="form-label"> Min Value<span className='required_star'>*</span></label>
+                                            <label className="form-label"> Min Value </label>
                                             <Input
                                               type="text"
                                               name={`mainBox[${index}].minValue`}
@@ -493,108 +553,104 @@ export default function UploadPortLocalChargesData() {
                                             return (
                                               <Card key={i}>
                                                 <CardBody>
-                                                  {item.subBox.length >
-                                                    0 &&
-                                                    item.subBox.map((subItem, subIndex) => {
-                                                      return (
-                                                        <>
-                                                          {/* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
-                                                          {formik.values.mainBox[index].calculationType && (
-                                                            <div className="row mb-3">
-                                                              {/* Cargo Type */}
-                                                              {(formik.values.mainBox[index].calculationType === "FLAT" || formik.values.mainBox[index].calculationType === "PERCENTAGE") && (
-                                                                <div className="col-md-3 mb-2">
-                                                                  <label className="form-label"> Cargo Type<span className='required_star'>*</span></label>
-                                                                  <Select
-                                                                    name={`mainBox[${index}].subBox[${subIndex}].cargoType`}
-                                                                    value={formik.values.mainBox[index].subBox[subIndex].cargoType || ""}
-                                                                    onChange={(e) => {
-                                                                      formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].cargoType`, e);
-                                                                    }}
-                                                                    options={cargoType_data}
-                                                                    classNamePrefix="select2-selection form-select"
-                                                                  />
-                                                                </div>
-                                                              )}
-
-                                                              {/* Container Type */}
+                                                  {item.subBox.length > 0 && item.subBox.map((subItem, subIndex) => {
+                                                    return (
+                                                      <React.Fragment key={subIndex}>
+                                                        {formik.values.mainBox[index].calculationType && (
+                                                          <div className="row mb-3">
+                                                            {/* Cargo Type */}
+                                                            {(formik.values.mainBox[index].calculationType === "FLAT" || formik.values.mainBox[index].calculationType === "PERCENTAGE") && (
                                                               <div className="col-md-3 mb-2">
-                                                                <label className="form-label"> Container Type<span className='required_star'>*</span></label>
+                                                                <label className="form-label"> Cargo Type<span className='required_star'>*</span></label>
                                                                 <Select
-                                                                  name={`mainBox[${index}].subBox[${subIndex}].containerType`}
-                                                                  value={formik.values.mainBox[index].subBox[subIndex].containerType || ""}
+                                                                  name={`mainBox[${index}].subBox[${subIndex}].cargoType`}
+                                                                  value={formik.values.mainBox[index].subBox[subIndex].cargoType || ""}
                                                                   onChange={(e) => {
-                                                                    formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].containerType`, e);
+                                                                    formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].cargoType`, e);
                                                                   }}
-                                                                  options={container_data}
+                                                                  options={[...cargoType_data]}
                                                                   classNamePrefix="select2-selection form-select"
                                                                 />
                                                               </div>
+                                                            )}
+                                                            {/* Container Type */}
+                                                            <div className="col-md-3 mb-2">
+                                                              <label className="form-label"> Container Type<span className='required_star'>*</span></label>
+                                                              <Select
+                                                                name={`mainBox[${index}].subBox[${subIndex}].containerType`}
+                                                                value={formik.values.mainBox[index].subBox[subIndex].containerType || ""}
+                                                                onChange={(e) => {
+                                                                  formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].containerType`, e);
+                                                                }}
+                                                                options={subItem?.cargoType?.value === "GENERAL" ? [...generalContainerOpt, { label: "ALL", value: "all" }] : subItem?.cargoType?.value === "REFRIGERATED" ? [...refrigeContainerOpt, { label: "ALL", value: "all" }] : [...container_data, { label: "ALL", value: "all" }]}
+                                                                classNamePrefix="select2-selection form-select"
+                                                              />
+                                                            </div>
 
-                                                              {/* From Slab */}
-                                                              {formik.values.mainBox[index].calculationType === "SLAB" && (
-                                                                <div className="col-md-2 mb-2">
-                                                                  <label className="form-label"> From Slab<span className='required_star'>*</span></label>
-                                                                  <Input
-                                                                    type="text"
-                                                                    name={`mainBox[${index}].subBox[${subIndex}].fromSlab`}
-                                                                    value={formik.values.mainBox[index].subBox[subIndex].fromSlab || ''}
-                                                                    onChange={
-                                                                      formik.handleChange
-                                                                    }
-                                                                  />
-                                                                </div>
-                                                              )}
-
-                                                              {/* To Slab */}
-                                                              {formik.values.mainBox[index].calculationType === "SLAB" && (
-                                                                <div className="col-md-2 mb-2">
-                                                                  <label className="form-label"> To Slab<span className='required_star'>*</span></label>
-                                                                  <Input
-                                                                    type="text"
-                                                                    name={`mainBox[${index}].subBox[${subIndex}].toSlab`}
-                                                                    value={formik.values.mainBox[index].subBox[subIndex].toSlab || ''}
-                                                                    onChange={
-                                                                      formik.handleChange
-                                                                    }
-                                                                  />
-                                                                </div>
-                                                              )}
-
-                                                              {/* Rate */}
+                                                            {/* From Slab */}
+                                                            {formik.values.mainBox[index].calculationType === "SLAB" && (
                                                               <div className="col-md-2 mb-2">
-                                                                <label className="form-label"> Rate<span className='required_star'>*</span></label>
+                                                                <label className="form-label"> From Slab<span className='required_star'>*</span></label>
                                                                 <Input
                                                                   type="text"
-                                                                  name={`mainBox[${index}].subBox[${subIndex}].rate`}
-                                                                  value={formik.values.mainBox[index].subBox[subIndex].rate || ''}
+                                                                  name={`mainBox[${index}].subBox[${subIndex}].fromSlab`}
+                                                                  value={formik.values.mainBox[index].subBox[subIndex].fromSlab || ''}
                                                                   onChange={
                                                                     formik.handleChange
                                                                   }
                                                                 />
                                                               </div>
+                                                            )}
 
-                                                              {/* Add remove  */}
-                                                              <div className="col-md-3 mt-2 d-flex justify-content-end align-items-center">
-                                                                <div>
-                                                                  {formik.values.mainBox[index].subBox.length > 1 && (
-                                                                    <button
-                                                                      className="btn border"
-                                                                      onClick={() => {
-                                                                        arrayHelpersTwo.remove(subIndex);
-                                                                      }}
-                                                                    >
-                                                                      <i className="bx bx-trash fs-5 align-middle text-danger"></i>
-                                                                    </button>
-                                                                  )}
-                                                                </div>
+                                                            {/* To Slab */}
+                                                            {formik.values.mainBox[index].calculationType === "SLAB" && (
+                                                              <div className="col-md-2 mb-2">
+                                                                <label className="form-label"> To Slab<span className='required_star'>*</span></label>
+                                                                <Input
+                                                                  type="text"
+                                                                  name={`mainBox[${index}].subBox[${subIndex}].toSlab`}
+                                                                  value={formik.values.mainBox[index].subBox[subIndex].toSlab || ''}
+                                                                  onChange={
+                                                                    formik.handleChange
+                                                                  }
+                                                                />
+                                                              </div>
+                                                            )}
+
+                                                            {/* Rate */}
+                                                            <div className="col-md-2 mb-2">
+                                                              <label className="form-label"> Rate<span className='required_star'>*</span></label>
+                                                              <Input
+                                                                type="text"
+                                                                name={`mainBox[${index}].subBox[${subIndex}].rate`}
+                                                                value={formik.values.mainBox[index].subBox[subIndex].rate || ''}
+                                                                onChange={
+                                                                  formik.handleChange
+                                                                }
+                                                              />
+                                                            </div>
+
+                                                            {/* Add remove  */}
+                                                            <div className="col-md-3 mt-2 d-flex justify-content-end align-items-center">
+                                                              <div>
+                                                                {formik.values.mainBox[index].subBox.length > 1 && (
+                                                                  <button
+                                                                    className="btn border"
+                                                                    onClick={() => {
+                                                                      arrayHelpersTwo.remove(subIndex);
+                                                                    }}
+                                                                  >
+                                                                    <i className="bx bx-trash fs-5 align-middle text-danger"></i>
+                                                                  </button>
+                                                                )}
                                                               </div>
                                                             </div>
-                                                          )}
-                                                        </>
-                                                      );
-                                                    }
-                                                    )}
+                                                          </div>
+                                                        )}
+                                                      </React.Fragment>
+                                                    );
+                                                  }
+                                                  )}
 
                                                   <div>
                                                     <button
@@ -634,7 +690,7 @@ export default function UploadPortLocalChargesData() {
                                     arrayHelpers.push({
                                       chargeCode: "",
                                       chargeBasis: "",
-                                      calculationType: "",
+                                      calculationType: "FLAT",
                                       slabBasis: "",
                                       currency: "",
                                       minValue: "",
@@ -655,23 +711,24 @@ export default function UploadPortLocalChargesData() {
                                   <i className="bx bx-plus align-middle me-1"></i> Add
                                 </button>
                               </div>
-                            </>
+                            </React.Fragment>
                           );
                         }}
                       </FieldArray>
                     </FormikProvider>
 
-                    {console.log(formik.values,"formik")}
-
                     <ModalAddTerm
                       modal={addTermsModal}
                       onCloseClick={onCloseClick}
                       setTermHandler={setTermHandler}
-                    />
+                    />     
+                    {/* {console.log(isAnyValueEmptyInArray(formik.values.mainBox, ['addTerms', 'minValue', 'subBox']), "port")}
+                    {console.log(isAnyValueEmptyInArray(formik.values.mainBox[0].subBox, ['fromSlab','toSlab']), "port")}                */}
                     <div className="row">
                       <div className="d-flex justify-content-center">
                         <div className="mt-3 mx-3 d-flex justify-content-end">
                           <button className=" btn btn-primary" onClick={formik.handleSubmit}> Save </button>
+                          {/* <button className=" btn btn-primary" onClick={formik.handleSubmit} disabled={!(!isAnyValueEmpty(formik.values.mainBox, ['minValue','addTerms']) && !isAnyValueEmptyInArray(formik.values.mainBox[0].subBox))}> Save </button> */}
                         </div>
                         <div className="mt-3 mx-3 d-flex justify-content-end">
                           <button
