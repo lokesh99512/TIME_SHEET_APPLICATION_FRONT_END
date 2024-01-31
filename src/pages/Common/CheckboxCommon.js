@@ -4,6 +4,7 @@ export default function CheckboxCommon({
     label,id,name,className,array,setArray
 }) {
     const handleChange = (e, name) => {
+        console.log(name, e.target.checked, array)
         let newObj = {...array, [name]: e.target.checked}
         setArray(newObj);
     }
@@ -16,7 +17,7 @@ export default function CheckboxCommon({
                     id={id}
                     name={name}
                     onChange={(e) => handleChange(e, name)}
-                    checked={array[name]}
+                    checked={array[name] || false}
                 />
                 <label className="form-check-label" htmlFor={id}>
                     {label}

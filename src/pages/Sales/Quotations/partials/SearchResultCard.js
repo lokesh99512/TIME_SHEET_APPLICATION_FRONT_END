@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from 'reactstrap';
 import { cube_filled, oocl_logo, ship_filled, truck_outline, zim_logo } from '../../../../assets/images';
@@ -9,6 +9,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
     const [showDetails, setShowDetails] = useState([]);
     const dispatch = useDispatch();
     const [open, setOpen] = useState('');
+    const [resultRoute, setResultRoute] = useState([]);
     const quote_Selected = useSelector((state) => state.instantRate.quote_selected_data);
     const { instantRateLocation, result_loader } = useSelector((state) => state.instantRate);
 
@@ -85,6 +86,26 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
         }, 0);
         return totalSum;
     }
+
+    useEffect(() => {        
+        let routeArray= data?.map((item, index) => {
+            let newArray = [];
+            item.tariffDetails?.map((charge) => {
+                if(charge.from !== undefined){
+                    newArray= [...newArray, charge.from, charge.to];
+                }
+            })
+            return newArray
+        })
+
+        let uniqueArray = routeArray?.map((item) => {
+            let newitem = item.filter((value, index, self) => self.indexOf(value) === index);
+            return newitem
+        })
+
+        setResultRoute(uniqueArray);
+    },[data]);
+
     return (
         <div>
             {result_loader ? <ResultCardSkeleton /> : (
@@ -113,28 +134,12 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                     <div className="middle_content">
                                         {/* {console.log(instantRateLocation,"instantRateLocation")} */}
                                         <span className="duration text-center d-block">Duration <b>{item.oceanTransitTime || 0} days</b></span>
-                                        <div className="from_to_wrap mt-2 mb-3 d-flex justify-content-between">
-                                            <span className="from_loc">{item?.originName || '-'}</span>
+                                        <div className="from_to_wrap multi_route mt-2 mb-3 d-flex justify-content-between">
                                             <span className="icon d-flex align-items-center justify-content-center"><img src={ship_filled} alt="Shipping" /></span>
-                                            <span className="to_loc">{item?.destinationName || '-'}</span>
+                                            {resultRoute?.length > 0 && resultRoute?.[index] ? resultRoute?.[index]?.map((item, index) => {
+                                                return (<span className="from_loc" key={index}>{item}</span>)
+                                            }) : null}
                                         </div>
-                                        {/* <div className="from_to_wrap mt-2 mb-3 d-flex justify-content-between">
-                                            {item.location_route.length === 4 ? (
-                                                <>
-                                                    <span className="from_loc">{item?.location_route[0]}</span>
-                                                    <span className="from_loc text-center">{item?.location_route[1]}</span>
-                                                    <span className="icon d-flex align-items-center justify-content-center"><img src={ship_filled} alt="Shipping" /></span>
-                                                    <span className="to_loc text-center">{item?.location_route[2]}</span>
-                                                    <span className="to_loc">{item?.location_route[3]}</span>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <span className="from_loc">{item?.location_route[0]}</span>
-                                                    <span className="icon d-flex align-items-center justify-content-center"><img src={ship_filled} alt="Shipping" /></span>
-                                                    <span className="to_loc">{item?.location_route[1]}</span>
-                                                </>
-                                            )}
-                                        </div> */}
                                         <div className="row">
                                             <div className="col-lg-6 text-left"><span>Valid: <b>{item?.validTo || '-'}</b></span></div>
                                             {/* <div className="col-lg-4 text-center"><span>Id: <b>{item.id || '-'}</b></span></div> */}
@@ -158,7 +163,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                     <AccordionItem key={i}>
                                                         <AccordionHeader targetId={`${data?.header}_${index}${i}`}>
                                                             <div className="left_lable d-flex align-items-center">
-                                                                <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!data?.selected, data?.header,index,item?.quote_id); }}>
+                                                                <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!data?.selected, data?.header,i,item?.quote_id); }}>
                                                                     <input
                                                                         className="form-check-input"
                                                                         type="checkbox"

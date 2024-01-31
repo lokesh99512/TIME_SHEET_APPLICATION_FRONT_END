@@ -6,23 +6,21 @@ import { filter_icon } from "../../../../assets/images";
 import FilterSalesComp from "../../partials/FilterSalesComp";
 import SearchResultCard from './SearchResultCard';
 import ResultCardSkeleton from "../../../Skeleton/ResultCardSkeleton";
+import FilterSearchResult from "../../partials/FilterSearchResult";
 
 const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
     const [activeTab, setactiveTab] = useState("all");
     const [isRight, setIsRight] = useState(false);
     const inputArr = {
-        priceRange: [],
-        expiration_date: [],
-        containerradio: '',
-        destport: '',
-        vendorradio: '',
-        pickup: false,
-        port_origin: false,
-        ocean_freight: false,
-        port_discharge: false,
-        delivery: false,
-        shipping_cma: false,
-        shipping_msc: false,
+        carriers: [],
+        agents: [],
+        validity: [],
+        charge_currency: '',
+        origin_inland_charges: true,
+        origin_local_port_charges: true,
+        freight_charges: true,
+        dest_local_port_charges: true,
+        dest_inland_charges: true,
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
     const resultData = useSelector((state) => state?.sales?.quotation_result_data);
@@ -116,7 +114,7 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
                 )}
             </div>
             {/* Filter Modal */}
-            <FilterSalesComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} />
+            <FilterSearchResult isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} />            
         </>
     )
 }

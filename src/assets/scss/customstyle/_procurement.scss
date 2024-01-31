@@ -1511,6 +1511,15 @@ input[type="number"]{
                         margin: 0 auto;
                     }
                 }
+                &.multi_route{
+                    .icon{
+                        position: absolute;
+                        left: 0;
+                        right: 0;
+                        margin: 0 auto;
+                        top: 0;
+                    }
+                }
             }
         }
         .total_wrap {

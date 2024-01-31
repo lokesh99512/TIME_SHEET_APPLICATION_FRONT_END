@@ -661,7 +661,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                     onChange={(opt) => {
                       handleChangeHandler(opt, "customerName");
                     }}
-                    options={customerName?.length !== 0 ? customerName : [{ label: "rajesh", value: 121, version: 1 }]}
+                    options={customerName?.length !== 0 ? customerName : []}
                     placeholder="Select Customer"
                     classNamePrefix="select2-selection form-select"
                     menuPlacement="auto"

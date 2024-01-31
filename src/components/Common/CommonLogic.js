@@ -151,7 +151,6 @@ export const isExcelFile = (fileName) => {
 export const handleClickOutside = (event, wrapperRef, setOpenPop) => {
     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         if (event.target.id !== 'more_menu') {
-            console.log("test................");
             setOpenPop(false);
         }
     }
