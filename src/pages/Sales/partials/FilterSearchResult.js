@@ -5,12 +5,13 @@ import { useSelector } from 'react-redux';
 import Select from "react-select";
 import { Offcanvas, OffcanvasBody, OffcanvasHeader } from 'reactstrap';
 import CheckboxCommon from '../../Common/CheckboxCommon';
+import Flatpickr from "react-flatpickr";
 
-export default function FilterSearchResult({ isRight, toggleRightCanvas, filterDetails, setfilterDetails, applyFilterHandler, clearValueHandler }) {
-    const [rangeValues, setRangeValues] = useState([45, 2500]); // Initial values for the range slider
-    const [dateRange, setDateRange] = useState([new Date(2024, 0, 1), new Date(2024, 5, 9)]);
+export default function FilterSearchResult({ isRight,filterLoader, toggleRightCanvas, filterDetails, setfilterDetails, applyFilterHandler, clearValueHandler }) {
     const [AllVendors, setAllVendors] = useState([]);
+    const [carriersList, setCarriersList] = useState([]);
     const { vendor_data, currency_data } = useSelector((state) => state?.globalReducer);
+    const {instantSearchResultCopy} = useSelector((state) => state.instantRate);
 
     useEffect(() => {
         const vendorMap = new Map();
@@ -33,41 +34,43 @@ export default function FilterSearchResult({ isRight, toggleRightCanvas, filterD
         }
     }, [vendor_data]);
 
+    useEffect(() => {
+        let data = instantSearchResultCopy?.map((item) => {
+            return item.carrierName
+        })
+
+        let uniqueArray = data.filter((value, index, self) => self.indexOf(value) === index);
+        setCarriersList(uniqueArray);        
+    },[instantSearchResultCopy]);
+
     const formatDate = (date) => {
         // Format date as needed (e.g., "MM/DD/YYYY")
         const options = { year: 'numeric', month: 'short', day: '2-digit' };
         return date.toLocaleDateString('en-GB', options);
     };
 
-    const handleRangeChange = (values, handle) => {
+    const handleDateChnage = (arr, value, target) => {
         let newObj = {
             ...filterDetails,
-            quote_value: values
+            validity: arr
         }
-        setRangeValues(values);
         setfilterDetails(newObj);
-    };
-
-    const handleDateChange = (values, handle) => {
-        let newDate = values.map((value) => new Date(Number(value)));
-        setDateRange(newDate);
+    }
+    const handleCheckbox = (name, check, parentName) => {
+        let arr = filterDetails?.[parentName] || [];
+        if(check){
+            arr.push(name);
+        } else {
+            arr = arr.filter(item => item !== name);
+        }
         let newObj = {
             ...filterDetails,
-            validity: newDate
+            [parentName]: arr
         }
         setfilterDetails(newObj);
-    };
+    }
 
     const handleSelectGroup = useCallback((name, opt) => {
-        let newObj = {
-            ...filterDetails,
-            [name]: opt
-        }
-        setfilterDetails(newObj);
-    }, [filterDetails]);
-
-    const handleMultiSelectChange = useCallback((opt, name, options) => {
-
         let newObj = {
             ...filterDetails,
             [name]: opt
@@ -91,15 +94,9 @@ export default function FilterSearchResult({ isRight, toggleRightCanvas, filterD
                                 <div className="col-lg-12">
                                     <div className="mb-3">
                                         <label htmlFor='carriers' className="form-label">Carriers</label>
-                                        <Select
-                                            value={filterDetails.carriers}
-                                            name='carriers'
-                                            isMulti
-                                            options={Array.from(AllVendors)?.filter(([key]) => key === "CARRIER").flatMap(([, values]) => values) || []}
-                                            onChange={(opt) => { handleMultiSelectChange(opt, 'carriers', Array.from(AllVendors)?.filter(([key]) => key === "CARRIER").flatMap(([, values]) => values) || []) }}
-                                            className="basic-multi-select"
-                                            classNamePrefix="select2-selection form-select"
-                                        />
+                                        {carriersList && carriersList?.map((item, index) => (
+                                            <CheckboxCommon label={item} id={item} name={item} className={'mb-3'} handleCheckbox={handleCheckbox} values={filterDetails.carriers} parentName={'carriers'} key={index} />                                            
+                                        ))}
                                     </div>
                                 </div>
                                 <div className="col-lg-12">
@@ -109,9 +106,10 @@ export default function FilterSearchResult({ isRight, toggleRightCanvas, filterD
                                         name='agents'
                                         isMulti
                                         options={Array.from(AllVendors)?.filter(([key]) => key !== "CARRIER").flatMap(([, values]) => values) || []}
-                                        onChange={(opt) => { handleMultiSelectChange(opt, 'agents', Array.from(AllVendors)?.filter(([key]) => key !== "CARRIER").flatMap(([, values]) => values) || []) }}
+                                        onChange={(opt) => { handleSelectGroup('agents', opt, Array.from(AllVendors)?.filter(([key]) => key !== "CARRIER").flatMap(([, values]) => values) || []) }}
                                         className="basic-multi-select"
                                         classNamePrefix="select2-selection form-select"
+                                        isDisabled={true}
                                     />
                                 </div>
                                 <div className="col-lg-12">
@@ -120,11 +118,11 @@ export default function FilterSearchResult({ isRight, toggleRightCanvas, filterD
                                 <div className="col-lg-12">
                                     <p className="form-label">Charges</p>
                                     <div className="checkbox_wrap">
-                                        <CheckboxCommon label={'Origin Inland Charges'} id={'origin_inland_charges'} name={'origin_inland_charges'} className={'mb-3'} array={filterDetails} setArray={setfilterDetails} />
-                                        <CheckboxCommon label={'Origin Local Port Charges'} id={'origin_local_port_charges'} name={'origin_local_port_charges'} className={'mb-3'} array={filterDetails} setArray={setfilterDetails} />
-                                        <CheckboxCommon label={'Freight Charges'} id={'freight_charges'} name={'freight_charges'} className={'mb-3'} array={filterDetails} setArray={setfilterDetails} />
-                                        <CheckboxCommon label={'Destination Local Port Charges'} id={'dest_local_port_charges'} name={'dest_local_port_charges'} className={'mb-3'} array={filterDetails} setArray={setfilterDetails} />
-                                        <CheckboxCommon label={'Destination Inland Charges'} id={'dest_inland_charges'} name={'dest_inland_charges'} array={filterDetails} setArray={setfilterDetails} />
+                                        <CheckboxCommon label={'Origin Inland Charges'} id={'ORIGIN_INLAND_CHARGES'} name={'ORIGIN_INLAND_CHARGES'} className={'mb-3'} handleCheckbox={handleCheckbox} values={filterDetails.charges} parentName={'charges'} />
+                                        <CheckboxCommon label={'Origin Local Port Charges'} id={'ORIGIN_LOCAL_PORT_CHARGES'} name={'ORIGIN_LOCAL_PORT_CHARGES'} className={'mb-3'} handleCheckbox={handleCheckbox} values={filterDetails.charges} parentName={'charges'}  />
+                                        <CheckboxCommon label={'Freight Charges'} id={'FREIGHT_CHARGES'} name={'FREIGHT_CHARGES'} className={'mb-3'} handleCheckbox={handleCheckbox} isDisabled={true} values={filterDetails.charges} parentName={'charges'}  />
+                                        <CheckboxCommon label={'Destination Local Port Charges'} id={'DESTINATION_LOCAL_PORT_CHARGES'} name={'DESTINATION_LOCAL_PORT_CHARGES'} className={'mb-3'} handleCheckbox={handleCheckbox} values={filterDetails.charges} parentName={'charges'}  />
+                                        <CheckboxCommon label={'Destination Inland Charges'} id={'DESTINATION_INLAND_CHARGES'} name={'DESTINATION_INLAND_CHARGES'} handleCheckbox={handleCheckbox} values={filterDetails.charges} parentName={'charges'} />
                                     </div>
                                 </div>
                                 <div className="col-lg-12">
@@ -132,29 +130,16 @@ export default function FilterSearchResult({ isRight, toggleRightCanvas, filterD
                                 </div>
                                 <div className="col-lg-12">
                                     <p className="form-label">Validity</p>
-                                    <Nouislider
-                                        range={{
-                                            min: new Date(2024, 0, 1).getTime(),
-                                            max: new Date(2024, 11, 31).getTime(),
+                                    <Flatpickr
+                                        value={filterDetails?.validity}
+                                        className="form-control d-block"
+                                        placeholder="Select Date"
+                                        options={{
+                                            mode: "range",
+                                            dateFormat: "Y-m-d",
                                         }}
-                                        start={dateRange.map((date) => date.getTime())}
-                                        step={24 * 60 * 60 * 1000}
-                                        connect={true}
-                                        tooltips={[
-                                            {
-                                                to: (value) => formatDate(new Date(value)),
-                                                from: (value) => formatDate(new Date(value)),
-                                            },
-                                            {
-                                                to: (value) => formatDate(new Date(value)),
-                                                from: (value) => formatDate(new Date(value)),
-                                            },
-                                        ]}
-                                        onChange={handleDateChange}
+                                        onChange={handleDateChnage}
                                     />
-                                    <div className='range_label'>
-                                        {formatDate(dateRange[0])} - {formatDate(dateRange[1])}
-                                    </div>
                                 </div>
                                 <div className="col-lg-12">
                                     <span className="divider"></span>
@@ -163,20 +148,21 @@ export default function FilterSearchResult({ isRight, toggleRightCanvas, filterD
                                     <div className="mb-3">
                                         <label htmlFor='charge_currency' className="form-label">Currency</label>
                                         <Select
-                                            value={filterDetails?.charge_currency || ''}
+                                            value={currency_data ? currency_data?.find(obj => obj.currencyCode === filterDetails?.charge_currency) : ''}
                                             name='charge_currency'
                                             onChange={(opt) => {
                                                 handleSelectGroup('charge_currency', opt);
                                             }}
                                             options={currency_data}
                                             classNamePrefix="select2-selection form-select"
+                                            isDisabled={true}
                                         />
                                     </div>
                                 </div>
                             </div>
                             <div className="btn_wrap d-flex mt-auto">
-                                <button className='btn border' type='button' onClick={() => { setRangeValues([45, 2500]); setDateRange([new Date(2023, 0, 1), new Date(2023, 10, 5)]); clearValueHandler(); }}>Clear</button>
-                                <button className='btn btn-primary' type='button' onClick={applyFilterHandler}>Apply Filter</button>
+                                <button className={`btn border ${filterLoader ? 'btn_loader btn_blue_loader' : ''}`} type='button' onClick={() => { clearValueHandler(); }}>Clear</button>
+                                <button className={`btn btn-primary ${filterLoader ? 'btn_loader btn_blue_loader' : ''}`} type='button' onClick={applyFilterHandler}>Apply Filter</button>
                             </div>
                         </div>
                     </form>

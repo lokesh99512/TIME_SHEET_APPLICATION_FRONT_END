@@ -1,13 +1,8 @@
 import React from 'react'
 
 export default function CheckboxCommon({
-    label,id,name,className,array,setArray
+    label,id,name,className,isDisabled,handleCheckbox, values, parentName
 }) {
-    const handleChange = (e, name) => {
-        console.log(name, e.target.checked, array)
-        let newObj = {...array, [name]: e.target.checked}
-        setArray(newObj);
-    }
     return (
         <>
             <div className={`form-check ${className || ''}`}>
@@ -16,8 +11,9 @@ export default function CheckboxCommon({
                     type="checkbox"
                     id={id}
                     name={name}
-                    onChange={(e) => handleChange(e, name)}
-                    checked={array[name] || false}
+                    onChange={(e) => handleCheckbox(name, e.target.checked, parentName)}
+                    checked={values?.includes(name) || false}
+                    disabled={isDisabled || false}
                 />
                 <label className="form-check-label" htmlFor={id}>
                     {label}

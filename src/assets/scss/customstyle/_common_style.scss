@@ -485,3 +485,25 @@ nav.breadcrumb_wrap {
         }
     }
 }
+
+//  loader
+// .btn_loader{
+//     position: relative;
+//     &::before{
+//         content: "";
+//         position: absolute;
+//         top: 0;
+//         border: 0;
+//         left: 0;
+//         right: 0;
+//         width: 20px;
+//         height: 20px;
+//         background: url("../../images/icons/white_btn_loader.gif") no-repeat;
+//         margin: 0 auto;
+//     }
+//     &.btn_blue_loader{
+//         &::before{            
+//             background-image: url("../../images/icons/blue_btn_loader.gif");
+//         }
+//     }
+// }

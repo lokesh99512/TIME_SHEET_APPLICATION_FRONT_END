@@ -6,13 +6,14 @@ import { Card, CardBody, Input } from 'reactstrap';
 
 const ShipmentForm = () => {
     const shipmentDetails = useSelector((state) => state?.instantRate?.searchForm);
+    console.log(shipmentDetails,"shipmentDetails");
     const shipmentDetailsFormik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            origin_city: shipmentDetails?.location_from?.locationType === "CITY" && shipmentDetails?.location_from?.code || '-',
-            destination_city: shipmentDetails?.location_to?.locationType === "CITY" && shipmentDetails?.location_to?.code || '-',
-            origin_port: shipmentDetails?.location_from?.locationType === "PORT" && shipmentDetails?.location_from?.code || '-',
-            destination_port: shipmentDetails?.location_to?.locationType === "PORT" && shipmentDetails?.location_to?.code || '-',
+            origin_city: shipmentDetails?.location_from?.locationType === "CITY" && shipmentDetails?.location_from?.label || '-',
+            destination_city: shipmentDetails?.location_to?.locationType === "CITY" && shipmentDetails?.location_to?.label || '-',
+            origin_port: shipmentDetails?.location_from?.locationType === "PORT" && shipmentDetails?.location_from?.label || '-',
+            destination_port: shipmentDetails?.location_to?.locationType === "PORT" && shipmentDetails?.location_to?.label || '-',
             cargo_type: shipmentDetails?.cargo_type?.value || '-',
             commodity: "",
             cargo_value: shipmentDetails?.cargo_value?.value || '-',

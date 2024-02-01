@@ -7,26 +7,25 @@ import FilterSalesComp from "../../partials/FilterSalesComp";
 import SearchResultCard from './SearchResultCard';
 import ResultCardSkeleton from "../../../Skeleton/ResultCardSkeleton";
 import FilterSearchResult from "../../partials/FilterSearchResult";
+import { useDispatch } from "react-redux";
+import { CLEAR_SEARCH_RESULT_FILTER, SEARCH_RESULT_FILTER_UPDATE } from "../../../../store/InstantRate/actionType";
 
 const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
     const [activeTab, setactiveTab] = useState("all");
     const [isRight, setIsRight] = useState(false);
+    const [filterLoader, setFilterLoader] = useState(false);
     const inputArr = {
         carriers: [],
         agents: [],
         validity: [],
-        charge_currency: '',
-        origin_inland_charges: true,
-        origin_local_port_charges: true,
-        freight_charges: true,
-        dest_local_port_charges: true,
-        dest_inland_charges: true,
+        charge_currency: "INR",
+        charges: ['ORIGIN_INLAND_CHARGES', 'ORIGIN_LOCAL_PORT_CHARGES', 'FREIGHT_CHARGES', 'DESTINATION_LOCAL_PORT_CHARGES', 'DESTINATION_INLAND_CHARGES'],
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
     const resultData = useSelector((state) => state?.sales?.quotation_result_data);
     // const quote_Selected = useSelector((state) => state.instantRate.quote_selected_data);
-    const {quote_selected_data,result_loader,instantSearchResultCopy} = useSelector((state) => state.instantRate);
-    console.log(instantSearchResultCopy, "instantSearchResultCopy");
+    const { quote_selected_data, result_loader, instantSearchResultCopy } = useSelector((state) => state.instantRate);
+    const dispatch = useDispatch();
 
     const navToggle = (tab) => {
         if (activeTab !== tab) {
@@ -40,17 +39,27 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
     };
 
     const applyFilterHandler = () => {
-        setIsRight(false);
         console.log(filterDetails, "filterDetails Quotation Result-----------------------");
+        setFilterLoader(true);
+        // setTimeout(() => {
+            setIsRight(false);
+            setFilterLoader(false);            
+            dispatch({ type: SEARCH_RESULT_FILTER_UPDATE, payload: { obj: filterDetails?.charges } });
+        // }, 5000);
     }
 
     const clearValueHandler = () => {
-        setfilterDetails(inputArr)
+        setFilterLoader(true);
+        // setTimeout(() => {
+            setFilterLoader(false);            
+            setfilterDetails(inputArr)
+            dispatch({ type: CLEAR_SEARCH_RESULT_FILTER });
+        // }, 5000);
     }
 
     const getResultCount = () => {
         let filteredResults = instantSearchResultCopy || [];
-      
+
         // if (activeTab === 'preferred') {
         //   filteredResults = resultData?.filter(item => item?.quote_type === 'preffered');
         // } else if (activeTab === 'cheaper') {
@@ -58,7 +67,7 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
         // } else if (activeTab === 'faster') {
         //   filteredResults = resultData?.filter(item => item?.quote_type === 'faster');
         // }
-      
+
         return filteredResults?.length || 0;
     };
 
@@ -67,9 +76,9 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
             <div className="search_result_wrap">
                 <div className="length_wrap">
                     <span>{getResultCount()} Search Results</span>
-                    
-                    {searchResult && <button type="button" className='btn btn-primary ms-auto quote_btn' onClick={QuoteModalHandler} 
-                             disabled={quote_selected_data?.length === 0}>Quote Now</button>}
+
+                    {searchResult && <button type="button" className='btn btn-primary ms-auto quote_btn' onClick={QuoteModalHandler}
+                        disabled={quote_selected_data?.length === 0}>Quote Now</button>}
                 </div>
                 <div className="result_tab_wrap">
                     <Nav pills className="navtab-bg nav-justified">
@@ -113,7 +122,7 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
                 )}
             </div>
             {/* Filter Modal */}
-            <FilterSearchResult isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} />            
+            <FilterSearchResult isRight={isRight} filterLoader={filterLoader} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} />
         </>
     )
 }

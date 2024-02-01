@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_INSTANT_RATE_LOCATION_FAILURE, GET_INSTANT_RATE_LOCATION_SUCCESS, ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK, GET_ALL_INCOTERM, GET_ALL_INCOTERM_SUCCESS, GET_INSTANT_SEARCH_RESULT_TYPE, UPDATE_QUOTATION_RESULT_DETAILS, CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_UPDATE, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_SELECTED, POST_INSTANT_SEARCH_LOADER, BLANK_INSTANT_SEARCH, GET_AIR_LOCATION_TYPE_SUCCESS } from "./actionType"
+import { GET_INSTANT_RATE_LOCATION_FAILURE, GET_INSTANT_RATE_LOCATION_SUCCESS, ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK, GET_ALL_INCOTERM, GET_ALL_INCOTERM_SUCCESS, GET_INSTANT_SEARCH_RESULT_TYPE, UPDATE_QUOTATION_RESULT_DETAILS, CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_UPDATE, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_SELECTED, POST_INSTANT_SEARCH_LOADER, BLANK_INSTANT_SEARCH, GET_AIR_LOCATION_TYPE_SUCCESS, SEARCH_RESULT_FILTER_UPDATE, CLEAR_SEARCH_RESULT_FILTER } from "./actionType"
 import { Get_File_URL } from "../../helpers/url_helper";
 
 
@@ -142,8 +142,8 @@ const instantRate = (state = INIT_STATE, action) => {
             };
 
         case GET_AIR_LOCATION_TYPE_SUCCESS:
-            return { 
-                ...state, 
+            return {
+                ...state,
                 airLocation: action.payload.content?.map((item, index) => {
                     return {
                         value: item.id,
@@ -151,7 +151,7 @@ const instantRate = (state = INIT_STATE, action) => {
                         id: item.id,
                         version: item.version,
                     }
-                }) 
+                })
             }
 
         // ------------------ search Result
@@ -196,6 +196,40 @@ const instantRate = (state = INIT_STATE, action) => {
                     }
                     return item;
                 }),
+            }
+        case SEARCH_RESULT_FILTER_UPDATE:
+            return {
+                ...state,
+                instantSearchResultCopy: state.instantSearchResultCopy.map((item, index) => {
+                    return {
+                        ...item,
+                        tariffDetails: item.tariffDetails.map((subitem, i) => {
+                            if (action.payload.obj?.includes(subitem.header)) {
+                                return {
+                                    ...subitem,
+                                    selected: true
+                                }
+                            } else if (!action.payload.obj?.includes(subitem.header)) {
+                                return {
+                                    ...subitem,
+                                    selected: false
+                                }
+                            }
+                            return subitem
+                        })
+                    }
+                })
+            }
+        case CLEAR_SEARCH_RESULT_FILTER:
+            return {
+                ...state,
+                instantSearchResultCopy: state.instantSearchResultCopy.map((item, index) => ({
+                    ...item,
+                    tariffDetails: item.tariffDetails.map((subitem, i) => ({
+                        ...subitem,
+                        selected: true
+                    }))
+                }))
             }
         case QUOTATION_RESULT_SELECTED:
             return {

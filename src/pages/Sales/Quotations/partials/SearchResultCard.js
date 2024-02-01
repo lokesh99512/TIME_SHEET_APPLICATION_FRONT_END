@@ -167,7 +167,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                                     <input
                                                                         className="form-check-input"
                                                                         type="checkbox"
-                                                                        id={`${data?.header}`}
+                                                                        id={`${data?.header}${item.quote_id}`}
                                                                         name={`${data?.header}`}
                                                                         checked={data?.selected || false}
                                                                         readOnly

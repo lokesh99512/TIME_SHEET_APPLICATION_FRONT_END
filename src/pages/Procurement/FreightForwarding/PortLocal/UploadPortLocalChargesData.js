@@ -506,7 +506,7 @@ export default function UploadPortLocalChargesData() {
                                         {/* Tax Value */}
                                         <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
                                           <div className="mb-3">
-                                            <label className="form-label"> Tax<span className='required_star'>*</span></label>
+                                            <label className="form-label"> Tax </label>
                                             <Input
                                               type="text"
                                               name={`mainBox[${index}].tax`}
@@ -707,6 +707,7 @@ export default function UploadPortLocalChargesData() {
                                       ],
                                     });
                                   }}
+                                  disabled={isAnyValueEmpty(formik.values, ['terminalName', 'vendorName'])}
                                 >
                                   <i className="bx bx-plus align-middle me-1"></i> Add
                                 </button>
@@ -727,7 +728,7 @@ export default function UploadPortLocalChargesData() {
                     <div className="row">
                       <div className="d-flex justify-content-center">
                         <div className="mt-3 mx-3 d-flex justify-content-end">
-                          <button className=" btn btn-primary" onClick={formik.handleSubmit}> Save </button>
+                          <button className=" btn btn-primary" onClick={formik.handleSubmit} disabled={isAnyValueEmpty(formik.values, ['terminalName', 'vendorName'])}> Save </button>
                           {/* <button className=" btn btn-primary" onClick={formik.handleSubmit} disabled={!(!isAnyValueEmpty(formik.values.mainBox, ['minValue','addTerms']) && !isAnyValueEmptyInArray(formik.values.mainBox[0].subBox))}> Save </button> */}
                         </div>
                         <div className="mt-3 mx-3 d-flex justify-content-end">

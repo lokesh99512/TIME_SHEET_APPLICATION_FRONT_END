@@ -125,7 +125,6 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
 
     const subTotalHandler = (quoteObject) => {
         let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.quote_id) || [];
-        // console.log(mainChargeCurr, "mainChargeCurr")
 
         const totalSum = quoteObject?.tariffDetails?.reduce((accOuter, currentOuter) => {
             let innerSum = 0;
@@ -159,8 +158,6 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
             }, 0);
             return accOuter + innerSum;
         }, 0) : 0;
-
-        // console.log(totalSum, totalMarginSum, newSubTotal, totalNewMarginSum, "subtotal");
 
         return totalSum + newSubTotal + totalMarginSum + totalNewMarginSum;
     }
