@@ -58,12 +58,12 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
       dispatch({type: GET_AIR_LOCATION_TYPE});
     }
     dispatch(getAllPartiesCustomerData());
-    dispatch({ type: BLANK_INSTANT_SEARCH });
-    setContainerData({ containerArray: [],cargo_weight:{
-      weight: { value: "MT", label: "MT", id: 7, version: 2 }
-    }});
-    setUnitValue(unitobj);
-    setShipmentDetails(shipmentObj);
+    // dispatch({ type: BLANK_INSTANT_SEARCH });
+    // setContainerData({ containerArray: [],cargo_weight:{
+    //   weight: { value: "MT", label: "MT", id: 7, version: 2 }
+    // }});
+    // setUnitValue(unitobj);
+    // setShipmentDetails(shipmentObj);
   }, [dispatch,activeTab]);
 
   const locationOptions = instantRateLocation.map(location => ({

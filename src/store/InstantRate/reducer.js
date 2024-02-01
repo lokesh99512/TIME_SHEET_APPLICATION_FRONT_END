@@ -159,7 +159,7 @@ const instantRate = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 instantSearchResult: action.payload,
-                instantSearchResultCopy: action.payload.map((item, index) => {
+                instantSearchResultCopy: action.payload.fclInquiryResults.map((item, index) => {
                     let url = item.carrierLogo || '';
                     let fileName = url?.substring(url?.lastIndexOf('/') + 1, url?.length);
                     const base64Encoded = window.btoa(fileName);

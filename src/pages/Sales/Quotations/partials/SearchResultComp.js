@@ -26,7 +26,6 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
     const resultData = useSelector((state) => state?.sales?.quotation_result_data);
     // const quote_Selected = useSelector((state) => state.instantRate.quote_selected_data);
     const {quote_selected_data,result_loader,instantSearchResultCopy} = useSelector((state) => state.instantRate);
-    // const {instantSearchResult, instantSearchResultCopy} = useSelector((state) => state?.instantRate);
     console.log(instantSearchResultCopy, "instantSearchResultCopy");
 
     const navToggle = (tab) => {
