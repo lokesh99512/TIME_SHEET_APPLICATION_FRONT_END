@@ -1,6 +1,6 @@
 // actions.js
 
-import { GET_ALL_INCOTERM, GET_ALL_INCOTERM_SUCCESS, GET_INSTANT_RATE_LOCATION, GET_INSTANT_RATE_LOCATION_FAILURE, GET_INSTANT_RATE_LOCATION_SUCCESS, POST_INSTANT_SEARCH_DATA_TYPE } from "./actionType";
+import { FILTER_INSTANT_SEARCH_DATA_TYPE, GET_ALL_INCOTERM, GET_ALL_INCOTERM_SUCCESS, GET_INSTANT_RATE_LOCATION, GET_INSTANT_RATE_LOCATION_FAILURE, GET_INSTANT_RATE_LOCATION_SUCCESS, POST_INSTANT_SEARCH_DATA_TYPE } from "./actionType";
 
   
   export const getInstantRateLocation = () => ({
@@ -29,5 +29,9 @@ import { GET_ALL_INCOTERM, GET_ALL_INCOTERM_SUCCESS, GET_INSTANT_RATE_LOCATION, 
   export const postInstantSearchAction = (data) => ({
     type: POST_INSTANT_SEARCH_DATA_TYPE,
     payload: { data }
+  })
+  export const filterInstantSearchAction = (url) => ({
+    type: FILTER_INSTANT_SEARCH_DATA_TYPE,
+    payload: { url }
   })
   

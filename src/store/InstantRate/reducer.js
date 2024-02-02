@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_INSTANT_RATE_LOCATION_FAILURE, GET_INSTANT_RATE_LOCATION_SUCCESS, ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK, GET_ALL_INCOTERM, GET_ALL_INCOTERM_SUCCESS, GET_INSTANT_SEARCH_RESULT_TYPE, UPDATE_QUOTATION_RESULT_DETAILS, CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_UPDATE, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_SELECTED, POST_INSTANT_SEARCH_LOADER, BLANK_INSTANT_SEARCH, GET_AIR_LOCATION_TYPE_SUCCESS, SEARCH_RESULT_FILTER_UPDATE, CLEAR_SEARCH_RESULT_FILTER } from "./actionType"
+import { GET_INSTANT_RATE_LOCATION_FAILURE, GET_INSTANT_RATE_LOCATION_SUCCESS, ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK, GET_ALL_INCOTERM, GET_ALL_INCOTERM_SUCCESS, GET_INSTANT_SEARCH_RESULT_TYPE, UPDATE_QUOTATION_RESULT_DETAILS, CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_UPDATE, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_SELECTED, POST_INSTANT_SEARCH_LOADER, BLANK_INSTANT_SEARCH, GET_AIR_LOCATION_TYPE_SUCCESS, SEARCH_RESULT_FILTER_UPDATE, CLEAR_SEARCH_RESULT_FILTER, GET_INSTANT_SEARCH_RESULT_ID } from "./actionType"
 import { Get_File_URL } from "../../helpers/url_helper";
 
 
@@ -24,6 +24,7 @@ const INIT_STATE = {
     incoterm: [],
     airLocation: [],
 
+    instantInquiryId: '',
     instantSearchResult: [],
     instantSearchResultCopy: [],
     quote_selected_data: [],
@@ -155,11 +156,23 @@ const instantRate = (state = INIT_STATE, action) => {
             }
 
         // ------------------ search Result
+        case GET_INSTANT_SEARCH_RESULT_ID:
+            return {
+                ...state,
+                instantInquiryId: action.payload,
+            }
+
         case GET_INSTANT_SEARCH_RESULT_TYPE:
+            let newResultArray = [];
+            if(action.payload.fclInquiryResults !== undefined){
+                newResultArray = action.payload.fclInquiryResults;
+            } else {
+                newResultArray = action.payload;
+            }
             return {
                 ...state,
                 instantSearchResult: action.payload,
-                instantSearchResultCopy: action.payload.fclInquiryResults.map((item, index) => {
+                instantSearchResultCopy: newResultArray?.map((item, index) => {
                     let url = item.carrierLogo || '';
                     let fileName = url?.substring(url?.lastIndexOf('/') + 1, url?.length);
                     const base64Encoded = window.btoa(fileName);

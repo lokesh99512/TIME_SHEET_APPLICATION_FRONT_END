@@ -1,13 +1,10 @@
 import React, { Fragment } from 'react';
-import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
+import { useNavigate } from 'react-router-dom';
 import { useAsyncDebounce, useExpanded, useFilters, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
 import { Row, Table } from 'reactstrap';
-import { filter_icon, upload_icon } from '../../../assets/images';
-import { DefaultColumnFilter, Filter } from '../../../components/Common/filters';
-import { SEARCH_QUOTATION_BLANK } from '../../../store/Sales/actiontype';
-import { QUOTATION_RESULT_SELECTED_BLANK } from '../../../store/InstantRate/actionType';
-import ReactPaginate from 'react-paginate';
+import { filter_icon, upload_icon } from '../../../../../../assets/images';
+import { DefaultColumnFilter, Filter } from '../../../../../../components/Common/filters';
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -47,7 +44,7 @@ function GlobalFilter({
     );
 }
 
-const SalesCommonTable = ({ columns, data, isGlobalFilter, customPageSize, toggleRightCanvas, component }) => {
+const AirPortLocalTableReact = ({ columns, data, isGlobalFilter, customPageSize, toggleRightCanvas, component }) => {
     const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow, canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize, state, preGlobalFilteredRows, setGlobalFilter, state: { pageIndex, pageSize }, } = useTable({
         columns,
         data,
@@ -60,7 +57,7 @@ const SalesCommonTable = ({ columns, data, isGlobalFilter, customPageSize, toggl
         useExpanded,
         usePagination,);
     const navidate = useNavigate();
-    const dispatch = useDispatch();
+
     return (
         <>
             <div className="freight_filter_wrap d-flex align-items-center">
@@ -77,27 +74,16 @@ const SalesCommonTable = ({ columns, data, isGlobalFilter, customPageSize, toggl
                     <div className="filter_wrap">
                         <button className='bg-transparent' onClick={toggleRightCanvas}><img src={filter_icon} alt="filter" /></button>
                     </div>
-                    {component !== 'inquiry' && (
-                        <>                        
-                            <div className="upload_wrap">
-                                <button className='bg-transparent'>
-                                    <img src={upload_icon} alt="Upload" />Upload file
-                                </button>
-                            </div>
-                            {/* <div className="add_btn">
-                                <button className='border-0' onClick={() => {navidate('/sales/create');dispatch({type: SEARCH_QUOTATION_BLANK});dispatch({type: QUOTATION_RESULT_SELECTED_BLANK});}}>
-                                    <i className='bx bx-plus align-middle'></i> Instant Rate
-                                </button>
-                            </div> */}
-                        </>
-                    )}
-                    {/* {component === 'inquiry' && ( */}
-                        <div className="add_btn">
-                            <button className='border-0' onClick={() => {navidate('/instant-rate/search-rate');dispatch({type: SEARCH_QUOTATION_BLANK});dispatch({type: QUOTATION_RESULT_SELECTED_BLANK});}}>
-                                <i className='bx bx-plus align-middle'></i> Instant Rate
-                            </button>
-                        </div>
-                    {/* )} */}
+                    {/* <div className="upload_wrap">
+                        <button className='bg-transparent' onClick={() => { navidate(`/freight/upload/${component}`); }}>
+                            <img src={upload_icon} alt="Upload" />Upload file
+                        </button>
+                    </div> */}
+                    <div className="add_btn">
+                        <button className='border-0' onClick={() => { navidate(`/air/port-local/upload`); }}>
+                            <i className='bx bx-plus align-middle'></i> Add
+                        </button>
+                    </div>
                 </div>
             </div>
             <div className="table_pagination_wrap">
@@ -136,6 +122,20 @@ const SalesCommonTable = ({ columns, data, isGlobalFilter, customPageSize, toggl
                                     </Fragment>
                                 );
                             })}
+
+                            {page?.length === 0 && (
+                                <>
+                                    {headerGroups.map(headerGroup => (
+                                        <tr key={`nodata_${headerGroup.id}`}>
+                                            <td colSpan={headerGroup.headers.length}>
+                                                <div className='no_table_data_found'>
+                                                    <p>No Data Found. Please Adjust Your Filter. </p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </>
+                            )}
                         </tbody>
                     </Table>
                 </div>
@@ -163,4 +163,4 @@ const SalesCommonTable = ({ columns, data, isGlobalFilter, customPageSize, toggl
     )
 }
 
-export default SalesCommonTable
+export default AirPortLocalTableReact

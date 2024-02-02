@@ -75,13 +75,13 @@ const TableReact = ({ columns, data, isGlobalFilter, customPageSize, toggleRight
                     <div className="filter_wrap">
                         <button className='bg-transparent' onClick={toggleRightCanvas}><img src={filter_icon} alt="filter" /></button>
                     </div>
-                    <div className="upload_wrap">
+                    {/* <div className="upload_wrap">
                         <button className='bg-transparent' onClick={() => { navidate(`/freight/upload/${component}`); }}>
                             <img src={upload_icon} alt="Upload" />Upload file
                         </button>
-                    </div>
+                    </div> */}
                     <div className="add_btn">
-                        <button className='border-0' onClick={() => { navidate(`/freight/ocean/upload/${component}`); }}>
+                        <button className='border-0' onClick={() => { navidate(`/fcl/port-local/upload`); }}>
                             <i className='bx bx-plus align-middle'></i> Add
                         </button>
                     </div>

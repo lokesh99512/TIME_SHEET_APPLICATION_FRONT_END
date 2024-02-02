@@ -12,7 +12,7 @@ import { FILTER_INQUIRY_DATA, GET_INQUIRY_DATA_SUCCESS } from '../../../store/Sa
 import { useLocation } from 'react-router-dom'
 
 export default function QueriesComp() {
-    document.title = "Sales || Navigating Freight Costs with Precision||Ultimate Rate Management platform"   
+    document.title = "Inquiry || Navigating Freight Costs with Precision||Ultimate Rate Management platform"   
     
     const inquiryData = useSelector((state) => state?.sales?.inquiry_data);
     const [isRight, setIsRight] = useState(false);

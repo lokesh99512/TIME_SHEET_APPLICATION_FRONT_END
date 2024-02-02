@@ -219,6 +219,11 @@ export const UPLOAD_VENDOR_DETAIL_URL = "/api/v1/tenant/vendor/update-basic-deta
 export const UPLOAD_VENDOR_CONTACT_URL = "/api/v1/tenant/vendor/update-contact-details"
 export const UPLOAD_VENDOR_DOCUMENT_URL = "/api/v1/tenant/vendor/update-document-details"
 
+// INstant Rate ---------------------------------------
+export const GET_AIR_LOCATION_URL = "/api/v1/air-port/"
+export const POST_INSTANT_RATE_URL = "/api/v1/fcl-inquiry-detail/"
+export const FILTER_INSTANT_RATE_URL = "/api/v1/fcl-inquiry-detail/filter"
+
 
 // --------------------------------------------------------- Kunal ---------------------------------------------------------
 
@@ -271,12 +276,6 @@ export const GET_INSTANT_RATE_LOCATION= "/api/v1/global/misc/fcl-location"
 
 // get all incoterm
 export const GET_ALL_INCOTERM ="/api/v1/incoterm/"
-
-
-// INstant Rate ---------------------------------------
-export const GET_AIR_LOCATION_URL = "/api/v1/air-port/"
-export const POST_INSTANT_RATE_URL = "/api/v1/fcl-inquiry-detail/"
-
 
 //tanant locaton --------------------------------
 export const GET_ALL_TANANT_LOCATION = "/api/v1/tenant-location/"

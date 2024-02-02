@@ -84,9 +84,9 @@ export default function Quotations() {
         dispatch(getSalesQuotationData());
     }
 
-    useEffect(() => {
-        dispatch(getSalesQuotationData());
-    }, [dispatch]);
+    // useEffect(() => {
+    //     dispatch(getSalesQuotationData());
+    // }, [dispatch]);
 
     const columns = useMemo(() => [
         {

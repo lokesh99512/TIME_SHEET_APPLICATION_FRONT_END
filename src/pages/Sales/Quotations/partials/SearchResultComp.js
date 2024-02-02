@@ -1,35 +1,47 @@
 import classnames from "classnames";
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import moment from "moment";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Nav, NavItem, NavLink } from 'reactstrap';
 import { filter_icon } from "../../../../assets/images";
-import FilterSalesComp from "../../partials/FilterSalesComp";
-import SearchResultCard from './SearchResultCard';
-import ResultCardSkeleton from "../../../Skeleton/ResultCardSkeleton";
-import FilterSearchResult from "../../partials/FilterSearchResult";
-import { useDispatch } from "react-redux";
 import { CLEAR_SEARCH_RESULT_FILTER, SEARCH_RESULT_FILTER_UPDATE } from "../../../../store/InstantRate/actionType";
+import { filterInstantSearchAction } from "../../../../store/InstantRate/actions";
+import FilterSearchResult from "../../partials/FilterSearchResult";
+import SearchResultCard from './SearchResultCard';
 
 const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
     const [activeTab, setactiveTab] = useState("all");
     const [isRight, setIsRight] = useState(false);
     const [filterLoader, setFilterLoader] = useState(false);
+    const [carriersList, setCarriersList] = useState([]);
     const inputArr = {
         carriers: [],
         agents: [],
-        validity: [],
+        validity: '',
         charge_currency: "INR",
         charges: ['ORIGIN_INLAND_CHARGES', 'ORIGIN_LOCAL_PORT_CHARGES', 'FREIGHT_CHARGES', 'DESTINATION_LOCAL_PORT_CHARGES', 'DESTINATION_INLAND_CHARGES'],
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
-    const resultData = useSelector((state) => state?.sales?.quotation_result_data);
-    // const quote_Selected = useSelector((state) => state.instantRate.quote_selected_data);
-    const { quote_selected_data, result_loader, instantSearchResultCopy } = useSelector((state) => state.instantRate);
+    const { quote_selected_data, instantSearchResultCopy, instantInquiryId } = useSelector((state) => state.instantRate);
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        let data = instantSearchResultCopy?.map((item) => {
+            return item.carrierName
+        })
+
+        let uniqueArray = data.filter((value, index, self) => self.indexOf(value) === index);
+        setCarriersList(uniqueArray);
+        setfilterDetails({ ...filterDetails, carriers: uniqueArray });
+    }, [instantSearchResultCopy]);
     const navToggle = (tab) => {
         if (activeTab !== tab) {
             setactiveTab(tab);
+        }
+        if (instantInquiryId !== '') {
+            let url = `?ordering=${tab === 'preferred' ? 'PREFERRED' : tab === 'cheaper' ? 'CHEAPEST' : tab === 'faster' ? 'FASTEST' : 'DEFAULT'}&fclInquiryDetailId=${instantInquiryId}`;
+            console.log(url);
+            dispatch(filterInstantSearchAction(url));
         }
     };
 
@@ -39,43 +51,66 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
     };
 
     const applyFilterHandler = () => {
-        console.log(filterDetails, "filterDetails Quotation Result-----------------------");
-        setFilterLoader(true);
-        // setTimeout(() => {
-            setIsRight(false);
-            setFilterLoader(false);            
+        let carrierIds = instantSearchResultCopy?.map((item) => {
+            if (filterDetails?.carriers?.includes(item.carrierName)) {
+                return item.carrierId
+            }
+        }).filter(Boolean);
+        let uniqueCarrierId = carrierIds.filter((value, index, self) => self.indexOf(value) === index);
+
+        let startDate = filterDetails?.validity[0] !== undefined ? moment(filterDetails?.validity[0]).format('YYYY-MM-DD') : '';
+        let endDate = filterDetails?.validity[1] !== undefined ? moment(filterDetails?.validity[1]).format('YYYY-MM-DD') : '';
+
+        let url = '?'
+        if (uniqueCarrierId.length > 0 || startDate || endDate || activeTab) {
+            if (uniqueCarrierId.length > 0) {
+                url += `carriers=${uniqueCarrierId}&`;
+            }
+            if (startDate !== '') {
+                url += `startDate=${startDate}&`;
+            }
+            if (endDate !== '') {
+                url += `endDate=${endDate}&`;
+            }
+            if (activeTab !== '') {
+                url += `ordering=${activeTab === 'preferred' ? 'PREFERRED' : activeTab === 'cheaper' ? 'CHEAPEST' : activeTab === 'faster' ? 'FASTEST' : 'DEFAULT'}&`;
+            }
+
+            url += `fclInquiryDetailId=${instantInquiryId}`;
+        }
+        // let url = `?startDate=2024-01-23&endDate=2024-02-28&ordering=CHEAPEST&fclInquiryDetailId=1041&carriers=2`
+        dispatch(filterInstantSearchAction(url));
+
+        setTimeout(() => {
             dispatch({ type: SEARCH_RESULT_FILTER_UPDATE, payload: { obj: filterDetails?.charges } });
-        // }, 5000);
+            setIsRight(false);
+        }, 1000);
     }
 
     const clearValueHandler = () => {
-        setFilterLoader(true);
-        // setTimeout(() => {
-            setFilterLoader(false);            
-            setfilterDetails(inputArr)
+        // setFilterLoader(true);
+        setfilterDetails(inputArr);
+        let url = '?'
+        if (activeTab) {
+            if (activeTab !== '') {
+                url += `ordering=${activeTab === 'preferred' ? 'PREFERRED' : activeTab === 'cheaper' ? 'CHEAPEST' : activeTab === 'faster' ? 'FASTEST' : 'DEFAULT'}&`;
+            }
+            url += `fclInquiryDetailId=${instantInquiryId}`;
+        }
+        console.log(url, "clear url");
+        dispatch(filterInstantSearchAction(url));
+        setTimeout(() => {
             dispatch({ type: CLEAR_SEARCH_RESULT_FILTER });
-        // }, 5000);
+            setIsRight(false);
+        }, 1000);
     }
 
-    const getResultCount = () => {
-        let filteredResults = instantSearchResultCopy || [];
-
-        // if (activeTab === 'preferred') {
-        //   filteredResults = resultData?.filter(item => item?.quote_type === 'preffered');
-        // } else if (activeTab === 'cheaper') {
-        //   filteredResults = resultData?.filter(item => item?.quote_type === 'cheaper');
-        // } else if (activeTab === 'faster') {
-        //   filteredResults = resultData?.filter(item => item?.quote_type === 'faster');
-        // }
-
-        return filteredResults?.length || 0;
-    };
 
     return (
         <>
             <div className="search_result_wrap">
                 <div className="length_wrap">
-                    <span>{getResultCount()} Search Results</span>
+                    <span>{instantSearchResultCopy?.length || 0} Search Results</span>
 
                     {searchResult && <button type="button" className='btn btn-primary ms-auto quote_btn' onClick={QuoteModalHandler}
                         disabled={quote_selected_data?.length === 0}>Quote Now</button>}
@@ -122,7 +157,7 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
                 )}
             </div>
             {/* Filter Modal */}
-            <FilterSearchResult isRight={isRight} filterLoader={filterLoader} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} />
+            <FilterSearchResult isRight={isRight} filterLoader={filterLoader} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} carriersList={carriersList} />
         </>
     )
 }

@@ -17,8 +17,6 @@ const INIT_STATE = {
         location_from: '',
         location_to: '',
     },
-    quotation_result_data: [],
-    quotation_result_error: [],
 
     inquiry_data: [],
     inquiry_error: [],
@@ -33,14 +31,6 @@ const sales = (state = INIT_STATE, action) => {
 
         case GET_QUOTATION_DATA_FAIL:
             return { ...state, quotation_error: action.payload }
-
-        case GET_QUOTATION_RESULT_SUCCESS:
-            return {
-                ...state,
-                quotation_result_data: action.payload
-            };
-        case GET_QUOTATION_RESULT_FAIL:
-            return { ...state, quotation_result_error: action.payload }
 
         case UPDATE_SEARCH_QUOTATION_DATA:
             const { item, name } = action.payload

@@ -7,9 +7,9 @@ import { Offcanvas, OffcanvasBody, OffcanvasHeader } from 'reactstrap';
 import CheckboxCommon from '../../Common/CheckboxCommon';
 import Flatpickr from "react-flatpickr";
 
-export default function FilterSearchResult({ isRight,filterLoader, toggleRightCanvas, filterDetails, setfilterDetails, applyFilterHandler, clearValueHandler }) {
+export default function FilterSearchResult({ isRight,filterLoader, toggleRightCanvas, filterDetails, setfilterDetails, applyFilterHandler, clearValueHandler,carriersList }) {
     const [AllVendors, setAllVendors] = useState([]);
-    const [carriersList, setCarriersList] = useState([]);
+    // const [carriersList, setCarriersList] = useState([]);
     const { vendor_data, currency_data } = useSelector((state) => state?.globalReducer);
     const {instantSearchResultCopy} = useSelector((state) => state.instantRate);
 
@@ -34,14 +34,14 @@ export default function FilterSearchResult({ isRight,filterLoader, toggleRightCa
         }
     }, [vendor_data]);
 
-    useEffect(() => {
-        let data = instantSearchResultCopy?.map((item) => {
-            return item.carrierName
-        })
+    // useEffect(() => {
+    //     let data = instantSearchResultCopy?.map((item) => {
+    //         return item.carrierName
+    //     })
 
-        let uniqueArray = data.filter((value, index, self) => self.indexOf(value) === index);
-        setCarriersList(uniqueArray);        
-    },[instantSearchResultCopy]);
+    //     let uniqueArray = data.filter((value, index, self) => self.indexOf(value) === index);
+    //     setCarriersList(uniqueArray);        
+    // },[instantSearchResultCopy]);
 
     const formatDate = (date) => {
         // Format date as needed (e.g., "MM/DD/YYYY")
@@ -131,7 +131,7 @@ export default function FilterSearchResult({ isRight,filterLoader, toggleRightCa
                                 <div className="col-lg-12">
                                     <p className="form-label">Validity</p>
                                     <Flatpickr
-                                        value={filterDetails?.validity}
+                                        value={filterDetails?.validity || ''}
                                         className="form-control d-block"
                                         placeholder="Select Date"
                                         options={{

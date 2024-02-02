@@ -51,6 +51,23 @@ const portLocalBreadcrumb = [
         active: true
     },
 ]
+const airPortLocalBreadcrumb = [   
+    {
+        label: 'Procurement',
+        link: '/#',
+        active: false
+    },
+    {
+        label: 'Air Freight',
+        link: '/#',
+        active: false
+    },
+    {
+        label: 'Port & Local Charges',
+        link: '/#',
+        active: true
+    },
+]
 const waybillBreadcrumb = [
     {
         label: 'Procurement',
@@ -7026,5 +7043,5 @@ export {
     optionRateType, optionRateSource, optionVendorType, optionVendorName, optionCarrierName, optionValidityApp, optionSurchargesName, optionMultiDestination, optionPaymentType,
     waybillBreadcrumb, waybillRateData, waybillTableData, consoleBreadcrumb, consoleRateData, consoleTableData, inLandBreadcrumb, inLandRateData, inLandTableData, fclSurchargeBreadcrumb, fclSurchargeRateData,
     optcurrency, optionOrgPort, optionDestPort, optionCargoType, optionMovementType, optionPortlocalOrgPort,
-    optionChargeBasis, optionCalculationType, optionContainerType, optionServiceType, optionIsStandard,instantRateBreadcrumb
+    optionChargeBasis, optionCalculationType, optionContainerType, optionServiceType, optionIsStandard,instantRateBreadcrumb,airPortLocalBreadcrumb
 };

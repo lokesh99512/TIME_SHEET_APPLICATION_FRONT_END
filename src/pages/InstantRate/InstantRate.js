@@ -99,7 +99,7 @@ const InstantRate = () => {
         dispatch(getAllCompanyDetailData());
         dispatch({ type: BLANK_MODAL_CHARGE, payload: {} });
         dispatch({ type: QUOTATION_RESULT_SELECTED_BLANK, payload: {} });
-        dispatch({ type: REMOVE_OBJECT_INSTANT_SEARCH });
+        dispatch({ type: BLANK_INSTANT_SEARCH });
     }, []);
 
     return (

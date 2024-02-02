@@ -12,9 +12,11 @@ import {
   POST_INSTANT_SEARCH_LOADER,
   GET_AIR_LOCATION_TYPE,
   GET_AIR_LOCATION_TYPE_SUCCESS,
+  GET_INSTANT_SEARCH_RESULT_ID,
+  FILTER_INSTANT_SEARCH_DATA_TYPE,
 } from "./actionType"
 import { showErrorToast, showSuccessToast } from "../../components/Common/CustomToast";
-import { postInstantRateSer } from "../../helpers/services/InstantRateService";
+import { filterInstantRateSer, postInstantRateSer } from "../../helpers/services/InstantRateService";
 
 function* fetchInstantRateLocation() {
   try {
@@ -50,7 +52,21 @@ function* postInstantSearchSaga({payload: { data }}) {
   try {
     const response = yield call(postInstantRateSer, data);
     console.log(response, "instant===============");   
-    yield put({ type: GET_INSTANT_SEARCH_RESULT_TYPE, payload: response });
+    yield put({ type: GET_INSTANT_SEARCH_RESULT_TYPE, payload: response});
+    yield put({ type: GET_INSTANT_SEARCH_RESULT_ID, payload: response?.id });
+    yield put({ type: POST_INSTANT_SEARCH_LOADER, payload: false });
+  } catch (error) {
+    yield put({ type: POST_INSTANT_SEARCH_LOADER, payload: false });
+    showErrorToast(error?.response?.data?.message);
+  }
+}
+function* filterInstantSearchSaga({payload: { url }}) {  
+  console.log(url,"saga url");
+  yield put({ type: POST_INSTANT_SEARCH_LOADER, payload: true });
+  try {
+    const response = yield call(filterInstantRateSer, url);
+    console.log(response, "filter instant===============");   
+    yield put({ type: GET_INSTANT_SEARCH_RESULT_TYPE, payload: response});
     yield put({ type: POST_INSTANT_SEARCH_LOADER, payload: false });
   } catch (error) {
     yield put({ type: POST_INSTANT_SEARCH_LOADER, payload: false });
@@ -63,6 +79,7 @@ function* watchGetInstantRate() {
   yield takeEvery(GET_AIR_LOCATION_TYPE, fetchAirLocation);
   yield takeEvery(GET_ALL_INCOTERM, fetchAllIncoterm)
   yield takeEvery(POST_INSTANT_SEARCH_DATA_TYPE, postInstantSearchSaga);
+  yield takeEvery(FILTER_INSTANT_SEARCH_DATA_TYPE, filterInstantSearchSaga);
 }
 
 function* instantRateSaga() {

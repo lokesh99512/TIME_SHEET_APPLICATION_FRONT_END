@@ -128,7 +128,6 @@ import UploadCustomerData from "../pages/Parties/UploadCustomerData";
 import UploadVendorData from "../pages/Parties/UploadVendorData";
 import Vendors from "../pages/Parties/Vendors";
 import AirConsoleComp from "../pages/Procurement/FreightForwarding/Air/AirConsoleComp";
-import AirLocalFreight from "../pages/Procurement/FreightForwarding/Air/AirLocalFreight";
 import AirMasterBill from "../pages/Procurement/FreightForwarding/Air/AirMasterBill";
 import FclInlandCharge from "../pages/Procurement/FreightForwarding/FCLInland/FclInlandCharge";
 import FclInlandUpload from "../pages/Procurement/FreightForwarding/FCLInland/FclInlandUpload";
@@ -156,6 +155,8 @@ import UploadRateData from "../pages/Settings/Surcharge/UploadRateData";
 import UploadFile from "../pages/Settings/Surcharge/UploadFile";
 import AddTanentLocation from "../pages/Settings/AddTanentLocation";
 import UploadStatus from "../pages/uploadstatus/uploadstatus"
+import AirPortLocal from "../pages/Procurement/FreightForwarding/Air/AirPortLocal/AirPortLocal";
+import UploadAirPortLocalChargesData from "../pages/Procurement/FreightForwarding/Air/AirPortLocal/partials/UploadAirPortLocalChargesData";
 
 const userRoutes = [
   //dashboard
@@ -181,12 +182,13 @@ const userRoutes = [
   { path: "/freight/ocean/portlocal", component: <PortLocalFreight /> },
   { path: "/freight/air/masterbill", component: <AirMasterBill /> },
   { path: "/freight/air/console", component: <AirConsoleComp /> },
-  { path: "/freight/air/local", component: <AirLocalFreight /> },
+  { path: "/freight/air/local", component: <AirPortLocal /> },
   { path: "/freight/air/upload/air-waybill", component: <UploadAirwayBillData /> },
   { path: "/freight/air/upload/console", component: <UploadAirConsoleData /> },
   { path: "/freight/upload/inland", component: <FclInlandUpload /> },
   { path: "/freight/upload/:tabName", component: <UploadFreightData /> },
-  { path: "/freight/ocean/upload/:tabName", component: <UploadPortLocalChargesData /> },
+  { path: "/fcl/port-local/upload", component: <UploadPortLocalChargesData /> },
+  { path: "/air/port-local/upload", component: <UploadAirPortLocalChargesData /> },
   { path: "/freight/upload/fcl/add-new", component: <OceanFCLSurchargeNameAddNew /> },
   { path: "/freight/upload/inland/add-new", component: <OceanFCLSurchargeNameAddNew /> },
   // { path: "/freight/upload/inland/add-new", component: <OceanInlandSurchargeNameAddNew /> },
