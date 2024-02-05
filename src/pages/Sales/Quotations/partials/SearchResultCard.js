@@ -87,12 +87,14 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
         return totalSum;
     }
 
-    useEffect(() => {        
+    useEffect(() => { 
         let routeArray= data?.map((item, index) => {
             let newArray = [];
             item.tariffDetails?.map((charge) => {
-                if(charge.from !== undefined){
-                    newArray= [...newArray, charge.from, charge.to];
+                if(charge?.selected){                    
+                    if(charge.from !== undefined){
+                        newArray= [...newArray, charge.from, charge.to];
+                    }
                 }
             })
             return newArray
