@@ -294,7 +294,7 @@ const SidebarContent = props => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/#">
+                  <Link to="/customerRates">
                     <span>Customer Rates</span>
                   </Link>
                 </li>

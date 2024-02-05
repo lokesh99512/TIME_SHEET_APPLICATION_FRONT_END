@@ -4,7 +4,7 @@ import { Container } from 'reactstrap'
 import { salesEnquiryData } from '../../../common/data/dashboard'
 import { inquiryBreadcrumb } from '../../../common/data/sales'
 import TfBreadcrumbs from '../../../components/Common/TfBreadcrumbs'
-import { getSalesInquiryData } from '../../../store/Sales/actions'
+import { getInquirySummeryData, getSalesInquiryData } from '../../../store/Sales/actions'
 import { QueriesColVal } from "../partials/SalesCol"
 import SalesCommonTable from '../partials/SalesCommonTable'
 import FilterSalesInquiryComp from '../partials/FilterSalesInquiryComp'
@@ -16,6 +16,8 @@ export default function QueriesComp() {
     
     const inquiryData = useSelector((state) => state?.sales?.inquiry_data);
     const [isRight, setIsRight] = useState(false);
+    const  { inquiry_summary_data}= useSelector((state) => state?.sales);
+
     const dispatch = useDispatch();
     const inputArr = {
         org_port: '',
@@ -57,8 +59,22 @@ export default function QueriesComp() {
 
     useEffect(() => {
         dispatch(getSalesInquiryData());
+        dispatch(getInquirySummeryData());
     },[]);
 
+    const salesEnquiryData = Object.entries(inquiry_summary_data).map(([key, value], index) => {
+        let rate_type = 'up';
+        if (index === 3) { 
+            rate_type = 'down';
+        }
+        return {
+            id: index + 1,
+            title: index==0?"Total Inquires":index==1?"Enquires Actioned":index==2?"Pending Enquires":index==3?"SLA breached":"",
+            rate: value.toString(),
+            compare_rate: (index + 1) * 3, 
+            rate_type: rate_type
+        };
+    });
     const columns = useMemo(() => [
         {
             Header: 'Inquiry ID',

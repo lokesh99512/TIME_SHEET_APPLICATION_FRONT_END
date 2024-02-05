@@ -23,7 +23,7 @@ import { marginType } from "../../common/data/settings";
 export default function UploadVendorData() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
     const [openSaveModal, setOpenSaveModal] = useState(false);
-    const [progressValue, setProgressValue] = useState(25);
+    const [progressValue, setProgressValue] = useState(40);
     const [activeTab, toggleTab] = useState("1");
     const navigate = useNavigate();
     const navigateState = useLocation();
@@ -75,17 +75,17 @@ export default function UploadVendorData() {
                 setActiveTabProgress(tab);
 
                 if (tab === 1) {
-                    setProgressValue(25);
+                    setProgressValue(40);
                 }
                 if (tab === 2) {
-                    setProgressValue(50);
+                    setProgressValue(70);
                 }
                 if (tab === 3) {
-                    setProgressValue(75);
-                }
-                if (tab === 4) {
                     setProgressValue(100);
                 }
+                // if (tab === 4) {
+                //     setProgressValue(100);
+                // }
             }
         }
         if (tab === 5) {
@@ -417,7 +417,7 @@ export default function UploadVendorData() {
                                                     </NavLink>
                                                 </NavItem>
 
-                                                <NavItem>
+                                                {/* <NavItem>
                                                     <NavLink
                                                         className={classnames({ active: activeTabProgress === 4, })}
                                                         onClick={() => { toggleTabProgress(4); }}
@@ -436,7 +436,7 @@ export default function UploadVendorData() {
                                                             </UncontrolledTooltip>
                                                         </div>
                                                     </NavLink>
-                                                </NavItem>
+                                                </NavItem> */}
                                             </ul>
 
                                             {/* Progress Bar */}
@@ -464,11 +464,11 @@ export default function UploadVendorData() {
 
                                                 <TabPane tabId={4}>
                                                     <div>
-                                                        <div className="text-center mb-4">
+                                                        {/* <div className="text-center mb-4">
                                                             <h5>Carrier commission</h5>
-                                                        </div>
+                                                        </div> */}
 
-                                                        <div className="col">
+                                                        {/* <div className="col">
                                                             <Card>
                                                                 <CardBody>
                                                                     <Nav className="nav-tabs-custom card-header-tabs justify-content-around">
@@ -649,7 +649,7 @@ export default function UploadVendorData() {
                                                                 </TabPane>
 
                                                             </TabContent>
-                                                        </div>
+                                                        </div> */}
 
                                                         {/* <form>
                                                             {surcharges?.map((item, index) => (

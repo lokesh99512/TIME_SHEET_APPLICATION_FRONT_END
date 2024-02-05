@@ -148,7 +148,11 @@ export const GET_PARTIES_VENDORS = "/get-parties-vendors"
 export const GET_QUOTATION = "get-quotation"
 export const GET_quote_exchange_rate = "get-exchangerate"
 export const GET_INQUIRY_TABLE = "/api/v1/fcl-inquiry-detail/"
-
+export const GET_INQUIRY_EXPORT_SUMMARY = "/api/v1/fcl-inquiry-detail/export-summary"
+export const GET_INQUIRY_IMPORT_SUMMARY = "/api/v1/fcl-inquiry-detail/import-summary"
+export const GET_INQUIRY_CUSTOMER_SUMMARY = "/api/v1/fcl-inquiry-detail/customer-summary"
+export const GET_INQUIRY_SALES_CUSTOMER_SUMMARY = "/api/v1/fcl-inquiry-detail/sales-customer-summary"
+export const GET_INQUIRY_SUMMARY= "/api/v1/fcl-inquiry-detail/inquiry-summary"
 // -------------------- original Url Helper
 
 // Auth

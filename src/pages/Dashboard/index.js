@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 
 //import Breadcrumbs
@@ -12,14 +12,15 @@ import {
 /** import Mini Widget data */
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { exportSumData, impColumnData, impExColumnData, importSumData, inquiryColumnData, inquirySumData, quotSumData, salesColumnData, salesEnquiryData, salesPerformData } from "../../common/data/dashboard";
+import { exportSumData, impColumnData, impExColumnData, importSumData, inquiryColumnData, inquirySumData, quotSumData, salesColumnData, salesPerformData } from "../../common/data/dashboard";
 import { customSort } from '../../components/Common/CommonLogic';
 import AnimatedCounter from './Partials/AnimatedCounter';
 import CommonTable from './Partials/CommonTable';
 import ContainerTrackChart from './Partials/ContainerTrackChart';
 import MainDnd from './Partials/MainDnd';
 import RevenueChart from './Partials/RevenueChart';
-
+import { getInquiryCustomerSummeryData, getInquiryExportSummeryData, getInquiryImportSummeryData, getInquirySalesCustomerSummeryData, getInquirySummeryData } from '../../store/Sales/actions';
+import { useDispatch } from 'react-redux';
 const Dashboard = () => {
     const [tableData, setTableData] = useState(exportSumData);
     const [tableData2, setTableData2] = useState(importSumData);
@@ -27,9 +28,32 @@ const Dashboard = () => {
     const [tableData4, setTableData4] = useState(salesPerformData);
     const navigate = useNavigate();
     const loginData = useSelector(state => state?.Login?.login_user_data);
+    const  { inquiry_export_data , inquiry_import_data, inquiry_customer_data,inquiry_summary_data, inquiry_sales_customer_data}= useSelector((state) => state?.sales);
     console.log(loginData,"loginData------------");
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getInquirySummeryData());
+        dispatch(getInquiryCustomerSummeryData());
+        dispatch(getInquirySalesCustomerSummeryData());
+        dispatch(getInquiryImportSummeryData());
+        dispatch(getInquiryExportSummeryData());
+    }, []);
 
-    //meta title
+    const salesEnquiryData = Object.entries(inquiry_summary_data).map(([key, value], index) => {
+        let rate_type = 'up';
+        if (index === 3) { 
+            rate_type = 'down';
+        }
+        console.log(index);
+        return {
+            id: index + 1,
+            title: index==0?"Total Inquires":index==1?"Enquires Actioned":index==2?"Pending Enquires":index==3?"SLA breached":"",
+            rate: value.toString(),
+            compare_rate: (index + 1) * 3, 
+            rate_type: rate_type
+        };
+    });
+
     document.title = "Dashboard || Navigating Freight Costs with Precision||Ultimate Rate Management platform";
 
     const handleSorting = (sortField, sortOrder, type) => {
@@ -133,7 +157,7 @@ const Dashboard = () => {
                             <Col lg={6}>
                                 <div className="sh_summary_table_wrap">
                                     <h3 className="sub_title">Export Summary</h3>
-                                    <CommonTable column={impExColumnData} data={tableData} handleSorting={handleSorting} type={'export_sum'} />
+                                    <CommonTable column={impExColumnData} data={inquiry_export_data} handleSorting={handleSorting} type={'export_sum'} />
                                 </div>
                             </Col>
 
@@ -141,7 +165,7 @@ const Dashboard = () => {
                             <Col lg={6}>
                                 <div className="sh_summary_table_wrap">
                                     <h3 className="sub_title">Import Summary</h3>
-                                    <CommonTable column={impColumnData} data={tableData2} handleSorting={handleSorting} type={'import_sum'} />
+                                    <CommonTable column={impColumnData} data={inquiry_import_data} handleSorting={handleSorting} type={'import_sum'} />
                                 </div>
                             </Col>
 
@@ -149,7 +173,7 @@ const Dashboard = () => {
                             <Col lg={6}>
                                 <div className="sh_summary_table_wrap">
                                     <h3 className="sub_title">Inquiry Summary</h3>
-                                    <CommonTable column={inquiryColumnData} data={tableData3} handleSorting={handleSorting} type={'equiry_sum'} />
+                                    <CommonTable column={inquiryColumnData} data={inquiry_customer_data} handleSorting={handleSorting} type={'equiry_sum'} />
                                 </div>
                             </Col>
 
@@ -157,7 +181,7 @@ const Dashboard = () => {
                             <Col lg={6}>
                                 <div className="sh_summary_table_wrap">
                                     <h3 className="sub_title">Sales Performance</h3>
-                                    <CommonTable column={salesColumnData} data={tableData4} handleSorting={handleSorting} type={'salesPerformance'} />
+                                    <CommonTable column={salesColumnData} data={inquiry_sales_customer_data} handleSorting={handleSorting} type={'salesPerformance'} />
                                 </div>
                             </Col>
                         </Row>

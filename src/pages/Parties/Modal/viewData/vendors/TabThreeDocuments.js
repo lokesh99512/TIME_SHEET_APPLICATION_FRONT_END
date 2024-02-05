@@ -11,7 +11,6 @@ const TabThreeDocuments = ({ viewData }) => {
       setOpen(id);
     }
   };
-  console.log(viewData);
   return (
     <div>
       <div className="table_view_data_wrap">

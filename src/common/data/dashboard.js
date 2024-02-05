@@ -195,27 +195,27 @@ const quotSumData = [
 
 // -------------------------- Table Data --------------------------------------------------
 const impExColumnData = [
-    { label: "Port",accessor: "port" },
-    { label: "Total Inquires",accessor: "total_equiry" },
+    { label: "Port",accessor: "portCode" },
+    { label: "Total Inquires",accessor: "totalInquiries" },
     { label: "Conversion Ratio", accessor: "ratio" },
     { label: "Trend", accessor: "trend" },
 ]
 
 const impColumnData = [
-    { label: "Port",accessor: "port" },
-    { label: "Total Inquires",accessor: "total_equiry" },
+    { label: "Port",accessor: "portCode" },
+    { label: "Total Inquires",accessor: "totalInquiries" },
     { label: "Conversion Ratio", accessor: "ratio" },
     { label: "Trend", accessor: "trend" },
 ]
 const inquiryColumnData = [
-    { label: "Customer",accessor: "customer" },
-    { label: "Total Inquires", accessor: "total_equiry" },
+    { label: "Customer",accessor: "customerName" },
+    { label: "Total Inquires", accessor: "totalInquiries" },
     { label: "Conversion Ratio", accessor: "ratio" },
     { label: "Trend",accessor: "trend" },
 ]
 const salesColumnData = [
-    { label: "Employee",accessor: "employee" },
-    { label: "Total Inquires",accessor: "total_equiry" },
+    { label: "Employee",accessor: "customerName" },
+    { label: "Total Inquires",accessor: "totalInquiries" },
     { label: "Conversion Ratio", accessor: "ratio" },
     { label: "Trend", accessor: "trend" },
 ]
