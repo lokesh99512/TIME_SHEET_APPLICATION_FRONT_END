@@ -12,7 +12,7 @@ import {
 /** import Mini Widget data */
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { exportSumData, impColumnData, impExColumnData, importSumData, inquiryColumnData, inquirySumData, quotSumData, salesColumnData, salesPerformData } from "../../common/data/dashboard";
+import { exportSumData, impColumnData, impExColumnData, importSumData, inquiryColumnData, inquirySumData, quotSumData, salesColumnData, salesEnquiryData, salesPerformData } from "../../common/data/dashboard";
 import { customSort } from '../../components/Common/CommonLogic';
 import AnimatedCounter from './Partials/AnimatedCounter';
 import CommonTable from './Partials/CommonTable';
@@ -39,7 +39,7 @@ const Dashboard = () => {
         dispatch(getInquiryExportSummeryData());
     }, []);
 
-    const salesEnquiryData = Object.entries(inquiry_summary_data).map(([key, value], index) => {
+    const salesEnquirySummary = Object.entries(inquiry_summary_data).map(([key, value], index) => {
         let rate_type = 'up';
         if (index === 3) { 
             rate_type = 'down';
@@ -96,7 +96,7 @@ const Dashboard = () => {
                                 <div className="sh_inquiry_wrap">
                                     <h3 className="sub_title">Sales Inquires</h3>
                                     <div className="sh_box_wrap">
-                                        {(salesEnquiryData || [])?.map(item => (
+                                        {(salesEnquirySummary.length>0?salesEnquirySummary: salesEnquiryData)?.map(item => (
                                             <div className="sh_box" key={item?.id}>
                                                 <p className="box_title" onClick={() => navigate('/sales/inquiry', { state: { id: item?.title } })}>{item?.title}</p>
                                                 <div className="sh_inquiry_rate justify-content-between align-items-center">

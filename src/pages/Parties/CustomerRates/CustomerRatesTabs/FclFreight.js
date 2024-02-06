@@ -10,14 +10,17 @@ import DatePicker from 'react-datepicker';
 import * as Yup from "yup";
 const CustomerFclFreight = () => {
     const { customer_id } = useSelector((state) => state?.customer);
+    // const {
+    //     surchargeCategory_data, oceanPort_data, vendor_data, surchargeCode_data, UOM_data, currency_data, cargoType_data, container_data,
+    //   } = useSelector(state => state?.globalReducer)
     const dispatch = useDispatch();
     const navigateState = useLocation();
     const [AllVendorName, setAllVendorName] = useState([]);
     const {
-        vendor_data
+        vendor_data, container_data
     } = useSelector((state) => state?.globalReducer);
 
-    console.log(vendor_data);
+    console.log(container_data,"container");
 
     useEffect(() => {
         let vendorlist = vendor_data?.content?.map((item) => {
@@ -138,7 +141,7 @@ const CustomerFclFreight = () => {
                                                                 <label className="form-label">Select Carrier/Vendor</label>
                                                                 <Select
                                                                     name='customerType'
-                                                                    placeholder=""
+                                                                    placeholder="Select Carrier/Vendor"
                                                                     options={AllVendorName}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
@@ -148,8 +151,9 @@ const CustomerFclFreight = () => {
                                                             <div className="mb-2">
                                                                 <label className="form-label">Container Type</label>
                                                                 <Select
-                                                                    name='currency'
-                                                                    placeholder="Currency"
+                                                                      name='containerType'
+                                                                      placeholder="Select Container Type"
+                                                                      options={container_data}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
                                                             </div>
@@ -158,8 +162,8 @@ const CustomerFclFreight = () => {
                                                             <div className="mb-2">
                                                                 <label className="form-label">Margin Type</label>
                                                                 <Select
-                                                                    name='currency'
-                                                                    placeholder="Currency"
+                                                                     name='marginType'
+                                                                     placeholder="Margin Type"
                                                                     options={marginType}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
@@ -225,7 +229,7 @@ const CustomerFclFreight = () => {
                                                                 <label className="form-label">Select Carrier/Vendor</label>
                                                                 <Select
                                                                     name='customerType'
-                                                                    placeholder=""
+                                                                    placeholder="Select Carrier/Vendor"
                                                                     options={AllVendorName}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
@@ -235,8 +239,9 @@ const CustomerFclFreight = () => {
                                                             <div className="mb-2">
                                                                 <label className="form-label">Container Type</label>
                                                                 <Select
-                                                                    name='currency'
-                                                                    placeholder="Currency"
+                                                                    name='containerType'
+                                                                    placeholder="Select Container Type"
+                                                                    options={container_data}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
                                                             </div>
@@ -245,8 +250,8 @@ const CustomerFclFreight = () => {
                                                             <div className="mb-2">
                                                                 <label className="form-label">Margin Type</label>
                                                                 <Select
-                                                                    name='currency'
-                                                                    placeholder="Currency"
+                                                                    name='marginType'
+                                                                    placeholder="Margin Type"
                                                                     options={marginType}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
@@ -301,7 +306,7 @@ const CustomerFclFreight = () => {
                     </>
                 </FormikProvider>
             </div>
-            <div className="d-flex justify-content-end mb-4 mt-3" style={{ margin: "0 0 -62px" }}>
+            <div className="d-flex justify-content-center mb-4 mt-3" style={{ margin: "0 0 -62px" }}>
                 <div className="d-flex align-items-center">
                     <button
                         type="button"

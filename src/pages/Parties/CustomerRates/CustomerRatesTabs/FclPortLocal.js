@@ -8,13 +8,14 @@ import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import * as Yup from "yup";
+import { optionSurchargesName } from '../../../../common/data/procurement';
 const CustomerFclPortLocal = () => {
     const { customer_id } = useSelector((state) => state?.customer);
     const dispatch = useDispatch();
     const navigateState = useLocation();
     const [AllVendorName, setAllVendorName] = useState([]);
     const {
-        vendor_data
+        vendor_data,container_data,oceanPort_data
     } = useSelector((state) => state?.globalReducer);
 
     console.log(vendor_data);
@@ -138,7 +139,7 @@ const CustomerFclPortLocal = () => {
                                                                 <label className="form-label">Select Carrier/Vendor</label>
                                                                 <Select
                                                                     name='customerType'
-                                                                    placeholder=""
+                                                                    placeholder="Select Carrier/Vendor"
                                                                     options={AllVendorName}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
@@ -148,9 +149,9 @@ const CustomerFclPortLocal = () => {
                                                             <div className="mb-2">
                                                                 <label className="form-label">Select Port</label>
                                                                 <Select
-                                                                    name='customerType'
-                                                                    placeholder=""
-                                                                    options={AllVendorName}
+                                                                    name='Port'
+                                                                    placeholder="Select Port"
+                                                                    options={oceanPort_data}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
                                                             </div>
@@ -159,9 +160,9 @@ const CustomerFclPortLocal = () => {
                                                             <div className="mb-2">
                                                                 <label className="form-label">Surcharge Type</label>
                                                                 <Select
-                                                                    name='currency'
-                                                                    placeholder="Currency"
-                                                                    options={marginType}
+                                                                    name='surchargeType'
+                                                                    placeholder="Surcharge Type"
+                                                                    options={optionSurchargesName}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
                                                             </div>
@@ -170,8 +171,9 @@ const CustomerFclPortLocal = () => {
                                                             <div className="mb-2">
                                                                 <label className="form-label">Container Type</label>
                                                                 <Select
-                                                                    name='currency'
-                                                                    placeholder="Currency"
+                                                                   name='containerType'
+                                                                   placeholder="Select Container Type"
+                                                                   options={container_data}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
                                                             </div>
@@ -180,8 +182,8 @@ const CustomerFclPortLocal = () => {
                                                             <div className="mb-2">
                                                                 <label className="form-label">Margin Type</label>
                                                                 <Select
-                                                                    name='currency'
-                                                                    placeholder="Currency"
+                                                                    name='marginType'
+                                                                    placeholder="Margin Type"
                                                                     options={marginType}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
@@ -233,7 +235,7 @@ const CustomerFclPortLocal = () => {
                     </>
                 </FormikProvider>
             </div>
-            <div className="d-flex justify-content-end mb-2" style={{ margin: "0 0 -62px" }}>
+            <div className="d-flex justify-content-center mb-2" style={{ margin: "0 0 -62px" }}>
                 <div className="d-flex align-items-center">
                     <button
                         type="button"

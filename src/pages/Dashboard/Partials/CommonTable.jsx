@@ -65,11 +65,11 @@ const CommonTable = ({ column, data, type, handleSorting }) => {
                             ))}
                         </tbody>
                     </Table>
-                    <div className="text-center mt-2">
+                    {/* <div className="text-center mt-2">
                         <button onClick={handleExpandClick} className="btn btn-primary btn-sm ms-2">
                             {showAll ? "Collapse" : "Expand to show all"}
                         </button>
-                    </div>
+                    </div> */}
                 </SimpleBar>
             </div>
         </>

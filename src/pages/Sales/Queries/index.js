@@ -62,7 +62,7 @@ export default function QueriesComp() {
         dispatch(getInquirySummeryData());
     },[]);
 
-    const salesEnquiryData = Object.entries(inquiry_summary_data).map(([key, value], index) => {
+    const salesEnquirySummery = Object.entries(inquiry_summary_data).map(([key, value], index) => {
         let rate_type = 'up';
         if (index === 3) { 
             rate_type = 'down';
@@ -213,7 +213,7 @@ export default function QueriesComp() {
                         <div className="tf_top_breadcrumb_rate_wrap">
                             <TfBreadcrumbs breadcrumb={inquiryBreadcrumb} />
                             <div className="tf_box_wrap d-flex">
-                                {(salesEnquiryData || []).map((item) => (
+                                {(salesEnquirySummery.length>0?salesEnquirySummery:salesEnquiryData).map((item) => (
                                     <div className="sh_box flex-grow-1" key={item?.id}>
                                         <p className="box_title">{item?.title}</p>
                                         <div className="sh_inquiry_rate">{item?.rate}

@@ -1125,6 +1125,6 @@ export const optionCustkeyAccountManager = [
 ]
 
 export const marginType = [
-  {label:"percentage"},
+  {label:"PERCENTAGE"},
   {label:"FLAT"}
   ];
