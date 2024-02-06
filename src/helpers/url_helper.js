@@ -173,8 +173,11 @@ export const Get_State_ALL_URL= "/api/v1/state/"
 export const GET_ROLE_URL= "/api/v1/role/"
 export const Get_File_URL= "/api/v1/misc/download-file/"
 export const Get_Upload_Status = "/api/v1/misc/upload-status"
+
 // post
 export const Post_Surcharge_Data= "/api/v1/surcharge-code/"
+export const POST_SURCHARGE_CATE_URL = "/api/v1/surcharge-category/"
+export const POST_SURCHARGE_ALISE_URL = "/api/v1/surcharge-alias/"
 
 
 // FCL

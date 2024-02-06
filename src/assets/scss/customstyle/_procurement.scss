@@ -1609,6 +1609,68 @@ input[type="number"]{
             }
         }
     }
+
+    // Air freight card
+    .air_freight_result_card{
+        padding: 30px 46px 0px;
+        .search_card_top{
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid $neutral_2;
+            .icon{
+                width: 50px;
+                height: 50px;
+                border-radius: 100%;
+                overflow: hidden;
+                margin-right: 15px;
+                img{
+                    max-width: 100%;
+                    height: 100%;
+                    display: block;
+                }
+            }
+            .con{
+                p{
+                    @include font($font-weight-medium,14px,normal,$neutral_8);
+                    margin: 0;
+                    &.flight_name{
+                        font-size: 16px;
+                        font-weight: 600;
+                        margin-bottom: 5px;
+                    }
+                }
+            }
+            .carrier_name{
+                @include font($font-weight-bold,16px,normal,$neutral_8);
+                margin-left: 36px;
+            }
+        }
+        .search_card_middle{
+            margin: 0 0 12px;
+            p{
+                @include font($font-weight-normal,14px,normal,$neutral_8);
+                margin: 0;
+                &.time{
+                    margin: 5px 0;
+                    font-weight: $font-weight-semibold;
+                }
+            }
+            .destination_details{
+                p{
+                    text-align: right;
+                }
+            }
+        }
+        .middle_content{
+            width: 100%;
+            padding: 0;
+            .from_to_wrap {
+                .from_loc{
+                    text-align: center;
+                }
+            }
+        }
+    }
 }
 
 // ---------------- quotation modal---------------------

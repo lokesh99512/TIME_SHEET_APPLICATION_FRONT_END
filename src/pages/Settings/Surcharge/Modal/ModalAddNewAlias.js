@@ -1,73 +1,74 @@
+import { useFormik } from "formik";
 import React from "react";
-import { Input, Label, Modal, ModalBody, ModalHeader } from "reactstrap";
+import { useDispatch } from "react-redux";
+import { Input, Modal, ModalBody, ModalHeader } from "reactstrap";
+import { postSurchargeAliseAction } from "../../../../store/Global/actions";
 
 const ModalAddNewAlias = ({ modal, onCloseClick }) => {
+  const dispatch = useDispatch();
+  const surAliseFormik = useFormik({
+    initialValues: {
+      name: '',
+      description: ''
+    },
+    onSubmit: (values) => {
+      const data = {
+        ...values
+      }
+      dispatch(postSurchargeAliseAction(data));
+      surAliseFormik.resetForm();
+    }
+  })
   return (
     <>
       <Modal isOpen={modal} toggle={onCloseClick} className="table_view_modal">
         <ModalHeader tag="h4">
-          Add New
+          Add Surchare Alise Code
           <span className="close" onClick={onCloseClick}></span>
         </ModalHeader>
         <ModalBody>
           <div className="table_view_data_wrap">
             <div className="charge_details">
-              {/* <div className="view_data_wrap"> */}
-              {/* //// */}
               <div className="row mt-4 mb-2">
                 <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
-                  {/* <div className="row"> */}
                     <label className="form-label">Surcharge Alias Code</label>
-                    {/* <div className="col-9"> */}
                       <Input
                         type="text"
-                        //   name="surchargeCode"
-                        //   value={addDetails.surchargeCode}
-                        //   onChange={(e) => {
-                        //     handleSelectGroup("surchargeCode", e.target.value);
-                        //   }}
-                        // id="Surcharge_Code"
+                        name="name"
+                        value={surAliseFormik.values.name}
+                        onChange={surAliseFormik.handleChange}
+                        id="name"
                         className="form-control"
                         placeholder="Enter Surcharge Code"
                       />
-                    {/* </div> */}
-                  {/* </div> */}
                 </div>
 
                 <div className="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
-                  {/* <div className="row"> */}
                     <label className="form-label">Alias Desc</label>
-                    {/* <div className="col-9"> */}
                       <Input
                         type="text"
-                        //   name="surchargeDesc"
-                        //   value={addDetails.surchargeDesc}
-                        //   onChange={(e) => {
-                        //     handleSelectGroup("surchargeDesc", e.target.value);
-                        //   }}
-                        // id="Surcharge_Desc"
+                        name="description"
+                        value={surAliseFormik.values.description}
+                        onChange={surAliseFormik.handleChange}
+                        id="description"
                         className="form-control"
                         placeholder="Enter Surcharge Desc"
                       />
-                    {/* </div> */}
-                  {/* </div> */}
                 </div>
               </div>
 
               <div className="row">
                 <div className="d-flex justify-content-center">
                   <div className="mb-3 mx-3 d-flex justify-content-end">
-                    <button className=" btn btn-primary">Save</button>
+                    <button className=" btn btn-primary" onClick={surAliseFormik.handleSubmit}>Save</button>
                   </div>
                   <div className="mb-3 mx-3 d-flex justify-content-end">
-                    <button className=" btn btn-primary" onClick={onCloseClick}>
+                    <button className=" btn btn-primary" onClick={() => { onCloseClick(); surAliseFormik.resetForm(); }}>
                       Cancel
                     </button>
                   </div>
                 </div>
               </div>
-              {/* //// */}
-              {/* </div> */}
             </div>
           </div>
         </ModalBody>

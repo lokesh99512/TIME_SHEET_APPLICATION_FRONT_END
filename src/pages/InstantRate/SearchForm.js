@@ -331,7 +331,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                   </div>
                   <div className="con">
                     <label className="form-label">Container Type</label>
-                    <span className={`value ${searchForm?.container_type?.length !== 0 ? "value_focus" : ""}`} >
+                    <span className={`value ${Object.keys(searchForm?.container_type).length !== 0 ? "value_focus" : ""}`} >
                       {Object.keys(searchForm?.container_type).length !== 0 ? (
                         <>
                           { searchForm?.container_type?.containerArray?.map((item, index) => (
@@ -471,7 +471,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                           {searchForm?.shipment_details[0]?.weight_unit}
                         </>
                       ) : (
-                        "Select Container Type"
+                        "Shipment Details"
                       )}
                     </span>
                   </div>

@@ -31,7 +31,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
     const [industryTypeModal, setIndustryTypeModal] = useState(false);
     const [customerTypeModal, setCustomerTypeModal] = useState(false);
     const [modalAlldata, setModalAllData] = useState([]);
-    const [activeTab, toggleTab] = useState("1");o
+    const [activeTab, toggleTab] = useState("1");
     const dispatch = useDispatch();
 
     const navigateState = useLocation();

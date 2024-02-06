@@ -16,6 +16,8 @@ export const getSurchargeCodeData = () => get(url.Get_surcharge_code_Data);
 export const getSurchargeCategoryData = () => get(url.Get_surcharge_category_Data);
 export const getSurchargeAliceSer = () => get(url.Get_Surcharge_Alice_Data);
 export const postSurchargeCodeSer = (data) => post(url.Post_Surcharge_Data, data);
+export const postSurchargeCateSer = (data) => post(url.POST_SURCHARGE_CATE_URL, data);
+export const postSurchargeAliseSer = (data) => post(url.POST_SURCHARGE_ALISE_URL, data);
 
 // Image Download
 export const GetFileSer = (base64Encoded) => getWithOutAuth(url.Get_File_URL + base64Encoded);
@@ -24,7 +26,6 @@ export const GetFileSer = (base64Encoded) => getWithOutAuth(url.Get_File_URL + b
 // instant rate search droup downs
 export const getInstantRateLocation = () => get(url.GET_INSTANT_RATE_LOCATION);
 export const getAirLocation = () => get(url.GET_AIR_LOCATION_URL);
-
 export const getAllIncoTerms = () => get (url.GET_ALL_INCOTERM)
 
 // tenant location
