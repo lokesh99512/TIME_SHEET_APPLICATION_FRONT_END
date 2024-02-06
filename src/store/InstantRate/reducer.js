@@ -164,6 +164,7 @@ const instantRate = (state = INIT_STATE, action) => {
 
         case GET_INSTANT_SEARCH_RESULT_TYPE:
             let newResultArray = [];
+            let isPortToPort = (state.searchForm?.location_from.locationType === 'PORT' && state.searchForm?.location_to.locationType === 'PORT');
             if(action.payload.fclInquiryResults !== undefined){
                 newResultArray = action.payload.fclInquiryResults;
             } else {
@@ -181,9 +182,23 @@ const instantRate = (state = INIT_STATE, action) => {
                         quote_id: `quote_${index}`,
                         carrierLogo: `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`,
                         tariffDetails: item.tariffDetails.map((item) => {
-                            return {
-                                ...item,
-                                selected: true
+                            if(isPortToPort){
+                                if(item.header === 'ORIGIN_INLAND_CHARGES' || item.header === 'DESTINATION_INLAND_CHARGES'){
+                                    return {
+                                        ...item,
+                                        selected: false
+                                    } 
+                                } else {
+                                    return {
+                                        ...item,
+                                        selected: true
+                                    }
+                                }
+                            } else {
+                                return {
+                                    ...item,
+                                    selected: true
+                                }
                             }
                         })
                     }
@@ -234,14 +249,31 @@ const instantRate = (state = INIT_STATE, action) => {
                 })
             }
         case CLEAR_SEARCH_RESULT_FILTER:
+            let isClearPortToPort = (state.searchForm?.location_from.locationType === 'PORT' && state.searchForm?.location_to.locationType === 'PORT');
             return {
                 ...state,
                 instantSearchResultCopy: state.instantSearchResultCopy.map((item, index) => ({
                     ...item,
-                    tariffDetails: item.tariffDetails.map((subitem, i) => ({
-                        ...subitem,
-                        selected: true
-                    }))
+                    tariffDetails: item.tariffDetails.map((subitem, i) => {
+                        if(isClearPortToPort){
+                            if(subitem.header === 'ORIGIN_INLAND_CHARGES' || subitem.header === 'DESTINATION_INLAND_CHARGES'){
+                                return {
+                                    ...subitem,
+                                    selected: false
+                                } 
+                            } else {
+                                return {
+                                    ...subitem,
+                                    selected: true
+                                }
+                            }
+                        } else {
+                            return {
+                                ...subitem,
+                                selected: true
+                            }
+                        }
+                    })
                 }))
             }
         case QUOTATION_RESULT_SELECTED:

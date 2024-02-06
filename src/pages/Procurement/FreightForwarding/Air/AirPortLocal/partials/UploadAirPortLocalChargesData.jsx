@@ -9,12 +9,6 @@ import { isAnyValueEmpty } from "../../../../../../components/Common/CommonLogic
 import { GET_CARGO_TYPE_DATA, GET_CONTAINER_DATA } from "../../../../../../store/Global/actiontype";
 import ModalAddTerm from "../../../Modal/ModalAddTerm";
 
-// import { optionCalculationType, optionMovementType } from "../../../../common/data/procurement";
-// import { isAnyValueEmpty, isAnyValueEmptyInArray } from "../../../../components/Common/CommonLogic";
-// import { GET_CARGO_TYPE_DATA, GET_CONTAINER_DATA } from "../../../../store/Global/actiontype";
-// import { postPortLocalChargesData } from "../../../../store/Procurement/actions";
-// import ModalAddTerm from "../Modal/ModalAddTerm";
-
 const terminalName = [];
 
 const initialValue = {
@@ -26,26 +20,20 @@ const initialValue = {
     vendorName: "",
     validityFrom: "",
     validityTo: "",
-
     mainBox: [
         {
             chargeCode: "",
             chargeBasis: "",
-            calculationType: "FLAT",
-            // slabBasis: "",
             currency: "",
             minValue: "",
-            tax: "",
+            mainrate: "",
+            isSlab: false,
             addTerms: {},
-            subBox: [
-                {
-                    cargoType: "",
-                    containerType: "",
-                    fromSlab: "",
-                    toSlab: "",
-                    rate: "",
-                },
-            ],
+            subBox: [{
+                fromSlab: "",
+                toSlab: "",
+                rate: "",
+            }],
         },
     ],
 };
@@ -189,7 +177,6 @@ export default function UploadAirPortLocalChargesData() {
                 }),
                 ...(value?.validityFrom && { "validFrom": value?.validityFrom || 0 }),
                 ...(value?.validityTo && { "validTo": value?.validityTo || 0 }),
-                // "tenantVendorFCLSurchargeCategoryTerminals": [],
                 "tenantVendorFCLSurchargeDetails": value?.mainBox?.map((item, mainindex) => {
                     return {
                         ...(item?.chargeCode && {
@@ -282,7 +269,7 @@ export default function UploadAirPortLocalChargesData() {
 
                                             {/* Port Name */}
                                             <div className="col-md-6 col-lg-4 mb-4">
-                                                <label className="form-label">Port Name<span className='required_star'>*</span></label>
+                                                <label className="form-label">AirPort Name<span className='required_star'>*</span></label>
                                                 <Select
                                                     name="portName"
                                                     value={formik.values.portName || ""}
@@ -342,7 +329,7 @@ export default function UploadAirPortLocalChargesData() {
 
                                             {/* Vendor Name */}
                                             <div className="col-md-6 col-lg-4 mb-4">
-                                                <label className="form-label">Vendor Name</label>
+                                                <label className="form-label">Agent Name</label>
                                                 <Select
                                                     name="vendorName"
                                                     value={formik.values.vendorName || ""}
@@ -395,115 +382,138 @@ export default function UploadAirPortLocalChargesData() {
                                                                 formik.values.mainBox.map((item, index) => (
                                                                     <Card key={index} className={`sub_field_wrap`}>
                                                                         <CardBody>
-                                                                            <div className="row mb-3" key={index}>
+                                                                            <div className="row" key={index}>
                                                                                 {/* Charge Code */}
                                                                                 <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
-                                                                                    <div className="mb-3">
-                                                                                        <label className="form-label"> Surcharge Code<span className='required_star'>*</span></label>
-                                                                                        <Select
-                                                                                            name={`mainBox[${index}].chargeCode`}
-                                                                                            value={formik.values.mainBox[index].chargeCode || ""}
-                                                                                            onChange={(e) => {
-                                                                                                if (e.label == "Add New") {
-                                                                                                    navigate("/freight/ocean/upload/fcl-pl/add-new", { state: { id: 'fcl-pl' } })
+                                                                                    <label className="form-label"> Surcharge Code<span className='required_star'>*</span></label>
+                                                                                    <Select
+                                                                                        name={`mainBox[${index}].chargeCode`}
+                                                                                        value={formik.values.mainBox[index].chargeCode || ""}
+                                                                                        onChange={(e) => {
+                                                                                            if (e.label == "Add New") {
+                                                                                                navigate("/freight/ocean/upload/fcl-pl/add-new", { state: { id: 'fcl-pl' } })
+                                                                                            }
+                                                                                            formik.setFieldValue(`mainBox[${index}].chargeCode`, e);
+                                                                                        }}
+                                                                                        options={[
+                                                                                            ...(surchargeCode_data?.filter((item) => {
+                                                                                                if (formik.values.chargeCategory?.value === "LOCAL SURCHARGE" || formik.values.chargeCategory?.value === "PORT SURCHARGE") {
+                                                                                                    return item?.value === "SEAL" || item?.value === "THC" || item?.surchargeCategory === formik.values.chargeCategory?.value;
+                                                                                                } else {
+                                                                                                    return item?.surchargeCategory === formik.values.chargeCategory?.value;
                                                                                                 }
-                                                                                                formik.setFieldValue(`mainBox[${index}].chargeCode`, e);
-                                                                                            }}
-                                                                                            options={[
-                                                                                                ...(surchargeCode_data?.filter((item) => {
-                                                                                                    if (formik.values.chargeCategory?.value === "LOCAL SURCHARGE" || formik.values.chargeCategory?.value === "PORT SURCHARGE") {
-                                                                                                        return item?.value === "SEAL" || item?.value === "THC" || item?.surchargeCategory === formik.values.chargeCategory?.value;
-                                                                                                    } else {
-                                                                                                        return item?.surchargeCategory === formik.values.chargeCategory?.value;
-                                                                                                    }
-                                                                                                })),
-                                                                                                { label: "Add New", value: "Add New" }
-                                                                                            ]}
-                                                                                            classNamePrefix="select2-selection form-select"
-                                                                                        />
-                                                                                    </div>
+                                                                                            })),
+                                                                                            { label: "Add New", value: "Add New" }
+                                                                                        ]}
+                                                                                        classNamePrefix="select2-selection form-select"
+                                                                                    />
                                                                                 </div>
 
                                                                                 {/* Charge Basis */}
                                                                                 <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
-                                                                                    <div className="mb-3">
-                                                                                        <label className="form-label"> Surcharge Basis<span className='required_star'>*</span></label>
-                                                                                        <Select
-                                                                                            name={`mainBox[${index}].chargeBasis`}
-                                                                                            value={formik.values.mainBox[index].chargeBasis || ""}
-                                                                                            onChange={(e) => {
-                                                                                                formik.setFieldValue(`mainBox[${index}].chargeBasis`, e);
-                                                                                            }}
-                                                                                            options={UOM_data}
-                                                                                            classNamePrefix="select2-selection form-select"
-                                                                                        />
-                                                                                    </div>
+                                                                                    <label className="form-label"> Surcharge Basis<span className='required_star'>*</span></label>
+                                                                                    <Select
+                                                                                        name={`mainBox[${index}].chargeBasis`}
+                                                                                        value={formik.values.mainBox[index].chargeBasis || ""}
+                                                                                        onChange={(e) => {
+                                                                                            formik.setFieldValue(`mainBox[${index}].chargeBasis`, e);
+                                                                                        }}
+                                                                                        options={UOM_data}
+                                                                                        classNamePrefix="select2-selection form-select"
+                                                                                    />
                                                                                 </div>
 
                                                                                 {/* Currency */}
                                                                                 <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
-                                                                                    <div className="mb-3">
-                                                                                        <label className="form-label"> Currency<span className='required_star'>*</span></label>
-                                                                                        <Select
-                                                                                            name={`mainBox[${index}].currency`}
-                                                                                            value={formik.values.mainBox[index].currency || ""}
-                                                                                            onChange={(e) => {
-                                                                                                formik.setFieldValue(`mainBox[${index}].currency`, e);
-                                                                                            }}
-                                                                                            options={currency_data}
-                                                                                            classNamePrefix="select2-selection form-select"
-                                                                                        />
-                                                                                    </div>
+                                                                                    <label className="form-label"> Currency<span className='required_star'>*</span></label>
+                                                                                    <Select
+                                                                                        name={`mainBox[${index}].currency`}
+                                                                                        value={formik.values.mainBox[index].currency || ""}
+                                                                                        onChange={(e) => {
+                                                                                            formik.setFieldValue(`mainBox[${index}].currency`, e);
+                                                                                        }}
+                                                                                        options={currency_data}
+                                                                                        classNamePrefix="select2-selection form-select"
+                                                                                    />
                                                                                 </div>
 
                                                                                 {/* Min Value */}
                                                                                 <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
-                                                                                    <div className="mb-3">
-                                                                                        <label className="form-label"> Min Value </label>
-                                                                                        <Input
-                                                                                            type="text"
-                                                                                            name={`mainBox[${index}].minValue`}
-                                                                                            placeholder="Enter minvalue"
-                                                                                            value={formik.values.mainBox[index].minValue}
-                                                                                            onChange={formik.handleChange}
-                                                                                        />
-                                                                                    </div>
+                                                                                    <label className="form-label"> Min Value </label>
+                                                                                    <Input
+                                                                                        type="text"
+                                                                                        name={`mainBox[${index}].minValue`}
+                                                                                        placeholder="Enter minvalue"
+                                                                                        value={formik.values.mainBox[index].minValue}
+                                                                                        onChange={formik.handleChange}
+                                                                                    />
                                                                                 </div>
 
-                                                                                {/* Tax Value */}
+                                                                                {/* Rate Value */}
                                                                                 <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
-                                                                                    <div className="mb-3">
-                                                                                        <label className="form-label"> Tax </label>
-                                                                                        <Input
-                                                                                            type="text"
-                                                                                            name={`mainBox[${index}].tax`}
-                                                                                            placeholder="Enter tax"
-                                                                                            value={formik.values.mainBox[index].tax}
-                                                                                            onChange={formik.handleChange}
-                                                                                        />
-                                                                                    </div>
+                                                                                    <label className="form-label"> Rate<span className='required_star'>*</span></label>
+                                                                                    <Input
+                                                                                        type="text"
+                                                                                        name={`mainBox[${index}].mainrate`}
+                                                                                        value={formik.values.mainBox[index].mainrate || ''}
+                                                                                        onChange={formik.handleChange}
+                                                                                        disabled={formik.values.mainBox[index].isSlab}
+                                                                                    />
                                                                                 </div>
 
                                                                                 {/* checkbox */}
-                                                                                <div className="col-lg-12 d-flex align-items-center justify-content-between">
+                                                                                <div className="col-lg-6 col-md-4 col-sm-6 col-12 d-flex align-items-center justify-content-between">
                                                                                     <div>
                                                                                         <div className="form-check">
-                                                                                            <span className="fw-bold text-decoration-underline text-primary" >
-                                                                                                Add Slabs (Optional)
-                                                                                            </span>
+                                                                                            <input className="form-check-input" type="checkbox" id="add_slab"
+                                                                                                name={`mainBox[${index}].isSlab`}
+                                                                                                onChange={() => {
+                                                                                                    formik.setFieldValue(`mainBox[${index}].mainrate`, '');
+                                                                                                    formik.setFieldValue(`mainBox[${index}].isSlab`, !formik.values.mainBox[index].isSlab);
+                                                                                                }}
+                                                                                            />
+                                                                                            <label className="form-check-label" htmlFor="add_slab">
+                                                                                                Add Slab (Optional)
+                                                                                            </label>
                                                                                         </div>
                                                                                         <div className="form-check">
-                                                                                            <span
-                                                                                                className="fw-bold text-decoration-underline text-primary"
-                                                                                                onClick={(e) => {
-                                                                                                    setAddTermsModal({
-                                                                                                        isOpen: true,
-                                                                                                        id: index,
-                                                                                                    });
+                                                                                            <input className="form-check-input" type="checkbox" id="add_rules"
+                                                                                                onChange={(e) => {
+                                                                                                    if (e.target.checked) {
+                                                                                                        setAddTermsModal({
+                                                                                                            isOpen: true,
+                                                                                                            id: index,
+                                                                                                        });
+                                                                                                    }
                                                                                                 }}
-                                                                                            >
+                                                                                            />
+                                                                                            <label className="form-check-label" htmlFor="add_rules">
                                                                                                 Add Rules (Optional)
-                                                                                            </span>
+                                                                                            </label>
+                                                                                        </div>
+                                                                                        <div className="form-check">
+                                                                                            <input className="form-check-input" type="checkbox" id="add_slab"
+                                                                                                // name={`mainBox[${index}].isSlab`}
+                                                                                                // onChange={() => {
+                                                                                                //     formik.setFieldValue(`mainBox[${index}].mainrate`, '');
+                                                                                                //     formik.setFieldValue(`mainBox[${index}].isSlab`, !formik.values.mainBox[index].isSlab);
+                                                                                                // }}
+                                                                                            />
+                                                                                            <label className="form-check-label" htmlFor="add_slab">
+                                                                                                Add Sector (Optional)
+                                                                                            </label>
+                                                                                        </div>
+                                                                                        <div className="form-check">
+                                                                                            <input className="form-check-input" type="checkbox" id="add_slab"
+                                                                                                // name={`mainBox[${index}].isSlab`}
+                                                                                                // onChange={() => {
+                                                                                                //     formik.setFieldValue(`mainBox[${index}].mainrate`, '');
+                                                                                                //     formik.setFieldValue(`mainBox[${index}].isSlab`, !formik.values.mainBox[index].isSlab);
+                                                                                                // }}
+                                                                                            />
+                                                                                            <label className="form-check-label" htmlFor="add_slab">
+                                                                                                Add Commodity (Optional)
+                                                                                            </label>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div>
@@ -530,66 +540,33 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                     {item.subBox.length > 0 && item.subBox.map((subItem, subIndex) => {
                                                                                                         return (
                                                                                                             <React.Fragment key={subIndex}>
-                                                                                                                {formik.values.mainBox[index].calculationType && (
+                                                                                                                {formik.values.mainBox[index].isSlab && (
                                                                                                                     <div className="row mb-3">
-                                                                                                                        {/* Cargo Type */}
-                                                                                                                        {(formik.values.mainBox[index].calculationType === "FLAT" || formik.values.mainBox[index].calculationType === "PERCENTAGE") && (
-                                                                                                                            <div className="col-md-3 mb-2">
-                                                                                                                                <label className="form-label"> Cargo Type<span className='required_star'>*</span></label>
-                                                                                                                                <Select
-                                                                                                                                    name={`mainBox[${index}].subBox[${subIndex}].cargoType`}
-                                                                                                                                    value={formik.values.mainBox[index].subBox[subIndex].cargoType || ""}
-                                                                                                                                    onChange={(e) => {
-                                                                                                                                        formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].cargoType`, e);
-                                                                                                                                    }}
-                                                                                                                                    options={[...cargoType_data]}
-                                                                                                                                    classNamePrefix="select2-selection form-select"
-                                                                                                                                />
-                                                                                                                            </div>
-                                                                                                                        )}
-                                                                                                                        {/* Container Type */}
-                                                                                                                        <div className="col-md-3 mb-2">
-                                                                                                                            <label className="form-label"> Container Type<span className='required_star'>*</span></label>
-                                                                                                                            <Select
-                                                                                                                                name={`mainBox[${index}].subBox[${subIndex}].containerType`}
-                                                                                                                                value={formik.values.mainBox[index].subBox[subIndex].containerType || ""}
-                                                                                                                                onChange={(e) => {
-                                                                                                                                    formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].containerType`, e);
-                                                                                                                                }}
-                                                                                                                                options={subItem?.cargoType?.value === "GENERAL" ? [...generalContainerOpt, { label: "ALL", value: "all" }] : subItem?.cargoType?.value === "REFRIGERATED" ? [...refrigeContainerOpt, { label: "ALL", value: "all" }] : [...container_data, { label: "ALL", value: "all" }]}
-                                                                                                                                classNamePrefix="select2-selection form-select"
+                                                                                                                        {/* From Slab */}
+                                                                                                                        <div className="col-md-2 mb-2">
+                                                                                                                            <label className="form-label"> From Slab<span className='required_star'>*</span></label>
+                                                                                                                            <Input
+                                                                                                                                type="text"
+                                                                                                                                name={`mainBox[${index}].subBox[${subIndex}].fromSlab`}
+                                                                                                                                value={formik.values.mainBox[index].subBox[subIndex].fromSlab || ''}
+                                                                                                                                onChange={
+                                                                                                                                    formik.handleChange
+                                                                                                                                }
                                                                                                                             />
                                                                                                                         </div>
 
-                                                                                                                        {/* From Slab */}
-                                                                                                                        {formik.values.mainBox[index].calculationType === "SLAB" && (
-                                                                                                                            <div className="col-md-2 mb-2">
-                                                                                                                                <label className="form-label"> From Slab<span className='required_star'>*</span></label>
-                                                                                                                                <Input
-                                                                                                                                    type="text"
-                                                                                                                                    name={`mainBox[${index}].subBox[${subIndex}].fromSlab`}
-                                                                                                                                    value={formik.values.mainBox[index].subBox[subIndex].fromSlab || ''}
-                                                                                                                                    onChange={
-                                                                                                                                        formik.handleChange
-                                                                                                                                    }
-                                                                                                                                />
-                                                                                                                            </div>
-                                                                                                                        )}
-
                                                                                                                         {/* To Slab */}
-                                                                                                                        {formik.values.mainBox[index].calculationType === "SLAB" && (
-                                                                                                                            <div className="col-md-2 mb-2">
-                                                                                                                                <label className="form-label"> To Slab<span className='required_star'>*</span></label>
-                                                                                                                                <Input
-                                                                                                                                    type="text"
-                                                                                                                                    name={`mainBox[${index}].subBox[${subIndex}].toSlab`}
-                                                                                                                                    value={formik.values.mainBox[index].subBox[subIndex].toSlab || ''}
-                                                                                                                                    onChange={
-                                                                                                                                        formik.handleChange
-                                                                                                                                    }
-                                                                                                                                />
-                                                                                                                            </div>
-                                                                                                                        )}
+                                                                                                                        <div className="col-md-2 mb-2">
+                                                                                                                            <label className="form-label"> To Slab<span className='required_star'>*</span></label>
+                                                                                                                            <Input
+                                                                                                                                type="text"
+                                                                                                                                name={`mainBox[${index}].subBox[${subIndex}].toSlab`}
+                                                                                                                                value={formik.values.mainBox[index].subBox[subIndex].toSlab || ''}
+                                                                                                                                onChange={
+                                                                                                                                    formik.handleChange
+                                                                                                                                }
+                                                                                                                            />
+                                                                                                                        </div>
 
                                                                                                                         {/* Rate */}
                                                                                                                         <div className="col-md-2 mb-2">
@@ -632,9 +609,6 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                             onClick={() => {
                                                                                                                 arrayHelpersTwo.push(
                                                                                                                     {
-                                                                                                                        cargoType: "",
-                                                                                                                        containerType:
-                                                                                                                            "",
                                                                                                                         fromSlab: "",
                                                                                                                         toSlab: "",
                                                                                                                         rate: "",
@@ -667,16 +641,14 @@ export default function UploadAirPortLocalChargesData() {
                                                                             slabBasis: "",
                                                                             currency: "",
                                                                             minValue: "",
-                                                                            tax: "",
-                                                                            addTerms: false,
+                                                                            mainrate: "",
                                                                             isSlab: false,
-                                                                            subBox: [
-                                                                                {
-                                                                                    fromSlab: "",
-                                                                                    toSlab: "",
-                                                                                    rate: null,
-                                                                                },
-                                                                            ],
+                                                                            addTerms: false,
+                                                                            subBox: [{
+                                                                                fromSlab: "",
+                                                                                toSlab: "",
+                                                                                rate: "",
+                                                                            }],
                                                                         });
                                                                     }}
                                                                     disabled={isAnyValueEmpty(formik.values, ['terminalName', 'vendorName'])}
@@ -716,8 +688,8 @@ export default function UploadAirPortLocalChargesData() {
                             </Col>
                         </Row>
                     </div>
-                </Container>
-            </div>
+                </Container >
+            </div >
         </>
     );
 }

@@ -19,10 +19,9 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
         agents: [],
         validity: '',
         charge_currency: "INR",
-        charges: ['ORIGIN_INLAND_CHARGES', 'ORIGIN_LOCAL_PORT_CHARGES', 'FREIGHT_CHARGES', 'DESTINATION_LOCAL_PORT_CHARGES', 'DESTINATION_INLAND_CHARGES'],
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
-    const { quote_selected_data, instantSearchResultCopy, instantInquiryId } = useSelector((state) => state.instantRate);
+    const { quote_selected_data, instantSearchResultCopy, instantInquiryId, searchForm } = useSelector((state) => state.instantRate);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -32,7 +31,17 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
 
         let uniqueArray = data.filter((value, index, self) => self.indexOf(value) === index);
         setCarriersList(uniqueArray);
-        setfilterDetails({ ...filterDetails, carriers: uniqueArray });
+
+
+        let isPortToPort = (searchForm?.location_from.locationType === 'PORT' && searchForm?.location_to.locationType === 'PORT');
+        let charges = [];
+        if(isPortToPort){
+            charges= ['ORIGIN_LOCAL_PORT_CHARGES', 'FREIGHT_CHARGES', 'DESTINATION_LOCAL_PORT_CHARGES'];
+        } else {
+            charges= ['ORIGIN_INLAND_CHARGES', 'ORIGIN_LOCAL_PORT_CHARGES', 'FREIGHT_CHARGES', 'DESTINATION_LOCAL_PORT_CHARGES', 'DESTINATION_INLAND_CHARGES'];
+        }
+
+        setfilterDetails({ ...filterDetails, carriers: uniqueArray, charges });
     }, [instantSearchResultCopy]);
     const navToggle = (tab) => {
         if (activeTab !== tab) {
@@ -78,7 +87,6 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
 
             url += `fclInquiryDetailId=${instantInquiryId}`;
         }
-        // let url = `?startDate=2024-01-23&endDate=2024-02-28&ordering=CHEAPEST&fclInquiryDetailId=1041&carriers=2`
         dispatch(filterInstantSearchAction(url));
 
         setTimeout(() => {
@@ -105,7 +113,7 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
         }, 1000);
     }
 
-
+    console.log(filterDetails,"filterDetails");
     return (
         <>
             <div className="search_result_wrap">

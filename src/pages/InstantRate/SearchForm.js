@@ -618,7 +618,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                 ) : null}
               </div>
             </div>}
-
+            {console.log(searchForm, "searchForm")}
           {/* Cargo Ready Date */}
           <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
             <div className="prof_wrap calendar_field_wrap d-flex">
