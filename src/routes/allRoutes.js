@@ -157,6 +157,7 @@ import AddTanentLocation from "../pages/Settings/AddTanentLocation";
 import UploadStatus from "../pages/uploadstatus/uploadstatus"
 import AirPortLocal from "../pages/Procurement/FreightForwarding/Air/AirPortLocal/AirPortLocal";
 import UploadAirPortLocalChargesData from "../pages/Procurement/FreightForwarding/Air/AirPortLocal/partials/UploadAirPortLocalChargesData";
+import CustomerRates from "../pages/Parties/CustomerRates/CustomerRates";
 
 const userRoutes = [
   //dashboard
@@ -214,6 +215,7 @@ const userRoutes = [
   { path: "/Settings/AddTanentLocation", component: <AddTanentLocation /> },
   // Parties
   { path: "/customers", component: <Customers /> }, 
+  { path: "/customerRates", component: <CustomerRates /> },
   { path: "/customers/add-customer", component: <UploadCustomerData /> }, 
   { path: "/vendors", component: <Vendors /> }, 
   { path: "/vendor/add-vendor", component: <UploadVendorData /> }, 

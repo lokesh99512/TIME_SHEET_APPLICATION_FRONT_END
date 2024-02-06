@@ -135,29 +135,29 @@ const salesEnquiryData = [
     {
         id: 1,
         title: 'Total Inquires',
-        rate: '8',
-        compare_rate: '21',
+        rate: '0',
+        compare_rate: '0',
         rate_type: 'up'
     },
     {
         id: 2,
-        title: 'Pending Enquires',
-        rate: '2',
-        compare_rate: '4',
+        title: 'Pending Inquires',
+        rate: '0',
+        compare_rate: '0',
         rate_type: 'up'
     },
     {
         id: 3,
-        title: 'Enquires Actioned',
-        rate: '5',
-        compare_rate: '3',
+        title: 'Inquires Actioned',
+        rate: '0',
+        compare_rate: '0',
         rate_type: 'up'
     },
     {
         id: 4,
         title: 'SLA breached',
-        rate: '1',
-        compare_rate: '6',
+        rate: '0',
+        compare_rate: '0',
         rate_type: 'down'
     },
 ]
@@ -195,27 +195,27 @@ const quotSumData = [
 
 // -------------------------- Table Data --------------------------------------------------
 const impExColumnData = [
-    { label: "Port",accessor: "port" },
-    { label: "Total Inquires",accessor: "total_equiry" },
+    { label: "Port",accessor: "portCode" },
+    { label: "Total Inquires",accessor: "totalInquiries" },
     { label: "Conversion Ratio", accessor: "ratio" },
     { label: "Trend", accessor: "trend" },
 ]
 
 const impColumnData = [
-    { label: "Port",accessor: "port" },
-    { label: "Total Inquires",accessor: "total_equiry" },
+    { label: "Port",accessor: "portCode" },
+    { label: "Total Inquires",accessor: "totalInquiries" },
     { label: "Conversion Ratio", accessor: "ratio" },
     { label: "Trend", accessor: "trend" },
 ]
 const inquiryColumnData = [
-    { label: "Customer",accessor: "customer" },
-    { label: "Total Inquires", accessor: "total_equiry" },
+    { label: "Customer",accessor: "customerName" },
+    { label: "Total Inquires", accessor: "totalInquiries" },
     { label: "Conversion Ratio", accessor: "ratio" },
     { label: "Trend",accessor: "trend" },
 ]
 const salesColumnData = [
-    { label: "Employee",accessor: "employee" },
-    { label: "Total Inquires",accessor: "total_equiry" },
+    { label: "Employee",accessor: "customerName" },
+    { label: "Total Inquires",accessor: "totalInquiries" },
     { label: "Conversion Ratio", accessor: "ratio" },
     { label: "Trend", accessor: "trend" },
 ]

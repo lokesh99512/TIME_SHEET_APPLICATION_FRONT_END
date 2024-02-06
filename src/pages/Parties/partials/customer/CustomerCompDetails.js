@@ -31,7 +31,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
     const [industryTypeModal, setIndustryTypeModal] = useState(false);
     const [customerTypeModal, setCustomerTypeModal] = useState(false);
     const [modalAlldata, setModalAllData] = useState([]);
-    const [activeTab, toggleTab] = useState("1");
+    const [activeTab, toggleTab] = useState("1");o
     const dispatch = useDispatch();
 
     const navigateState = useLocation();
@@ -764,7 +764,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                     </div>
                 </CardBody>
             </Card>
-            <div className="text-center mb-4">
+            {/* <div className="text-center mb-4">
                 <h5>Customer Rate</h5>
             </div>
             <div className="col">
@@ -1084,7 +1084,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                     </TabPane>
 
                 </TabContent>
-            </div>
+            </div> */}
 
             <div className="d-flex justify-content-end" style={{ margin: "0 0 -62px" }}>
 
