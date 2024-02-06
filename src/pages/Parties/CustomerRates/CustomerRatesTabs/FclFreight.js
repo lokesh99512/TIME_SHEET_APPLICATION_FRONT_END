@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import * as Yup from "yup";
+import { GET_CONTAINER_DATA } from '../../../../store/Global/actiontype';
 const CustomerFclFreight = () => {
     const { customer_id } = useSelector((state) => state?.customer);
     // const {
@@ -20,8 +21,7 @@ const CustomerFclFreight = () => {
         vendor_data, container_data
     } = useSelector((state) => state?.globalReducer);
 
-    console.log(container_data,"container");
-
+    
     useEffect(() => {
         let vendorlist = vendor_data?.content?.map((item) => {
             return { label: item?.name, value: item?.name, version: item?.version, id: item?.id, type: item?.vendorType }
@@ -29,8 +29,11 @@ const CustomerFclFreight = () => {
         setAllVendorName(vendorlist);
         console.log(vendor_data);
     }, [vendor_data]);
-
-
+    
+    useEffect(() => {
+        dispatch({ type: GET_CONTAINER_DATA });
+    },[])
+    console.log(container_data, "container");
     const contactsFormik = useFormik({
         initialValues: {
             contacts: [
@@ -151,9 +154,9 @@ const CustomerFclFreight = () => {
                                                             <div className="mb-2">
                                                                 <label className="form-label">Container Type</label>
                                                                 <Select
-                                                                      name='containerType'
-                                                                      placeholder="Select Container Type"
-                                                                      options={container_data}
+                                                                    name='containerType'
+                                                                    placeholder="Select Container Type"
+                                                                    options={container_data}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
                                                             </div>
@@ -162,8 +165,8 @@ const CustomerFclFreight = () => {
                                                             <div className="mb-2">
                                                                 <label className="form-label">Margin Type</label>
                                                                 <Select
-                                                                     name='marginType'
-                                                                     placeholder="Margin Type"
+                                                                    name='marginType'
+                                                                    placeholder="Margin Type"
                                                                     options={marginType}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
