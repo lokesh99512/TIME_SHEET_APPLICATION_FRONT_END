@@ -748,7 +748,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                         onChange={(opt) => {
                           handleChangeHandler(opt, "incoterm");
                         }}
-                        options={incoterm}
+                        options={incoterm || []}
                         placeholder="Select Incoterm"
                         classNamePrefix="select2-selection form-select"
                         menuPlacement="auto"
@@ -783,7 +783,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                       <Select
                         id="more_menu"
                         value={searchForm?.cargo_value?.currency}
-                        options={currency_data.map(({ value, currencyCode, id, version }) => ({ value, label: currencyCode, currencyCode, id, version })) || []}
+                        options={currency_data ? currency_data?.map(({ value, currencyCode, id, version }) => ({ value, label: currencyCode, currencyCode, id, version })) : []}
                         // options={optionCurrency.map(({ value, name, code }) => ({ value, label: name, code }))}
                         onChange={(selectedOption) => {
                           handleChangeHandler({ ...searchForm?.cargo_value, currency: selectedOption }, "cargo_value");

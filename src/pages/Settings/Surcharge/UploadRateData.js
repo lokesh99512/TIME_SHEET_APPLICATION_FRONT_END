@@ -120,7 +120,7 @@ export default function UploadRateData() {
                             <Select
                               value={surchargeCategory_data && surchargeCategory_data?.find((item) => item.value === formik?.values?.surchargeCategory) || ""}
                               name="surchargeCategory"
-                              options={[...surchargeCategory_data, { label: "Add New", value: "Add New" }]}
+                              options={surchargeCategory_data ? [...surchargeCategory_data, { label: "Add New", value: "Add New" }] : [{ label: "Add New", value: "Add New" }]}
                               placeholder={"Select Surcharge Category"}
                               onChange={(e) => {
                                 if (e.label === 'Add New') {
@@ -143,7 +143,7 @@ export default function UploadRateData() {
                             <Select
                               value={surchargeAlice_data && surchargeAlice_data?.find((item) => item.value === formik?.values?.surchargeAliasCode) || ""}
                               name="surchargeAliasCode"
-                              options={[...surchargeAlice_data, { label: "Add New", value: "Add New" }]}
+                              options={surchargeAlice_data ? [...surchargeAlice_data, { label: "Add New", value: "Add New" }] : [{ label: "Add New", value: "Add New" }]}
                               placeholder={"Select Surcharge Alias Code"}
                               onChange={(e) => {
                                 formik.setFieldValue(`surchargeAliasCode`, e.value);
@@ -164,7 +164,7 @@ export default function UploadRateData() {
                             <Select
                               value={surchargeAlice_descri ? surchargeAlice_descri.find(obj => obj.value === formik?.values?.surchargeAliasCode) : ''}
                               name="surchargeAliasDesc"
-                              options={surchargeAlice_descri}
+                              options={surchargeAlice_descri || []}
                               placeholder={"Select Surcharge Alias Code"}
                               onChange={(e) => {
                                 formik.setFieldValue(`surchargeAliasDesc`, e.value);

@@ -405,7 +405,7 @@ export default function UploadPortLocalChargesData() {
                                                 }
                                                 formik.setFieldValue(`mainBox[${index}].chargeCode`, e);
                                               }}
-                                              options={[
+                                              options={surchargeCode_data ? [
                                                 ...(surchargeCode_data?.filter((item) => {
                                                   if (formik.values.chargeCategory?.value === "LOCAL SURCHARGE" || formik.values.chargeCategory?.value === "PORT SURCHARGE") {
                                                     return item?.value === "SEAL" || item?.value === "THC" || item?.surchargeCategory === formik.values.chargeCategory?.value;
@@ -414,7 +414,7 @@ export default function UploadPortLocalChargesData() {
                                                   }
                                                 })),
                                                 { label: "Add New", value: "Add New" }
-                                              ]}
+                                              ] : [{ label: "Add New", value: "Add New" }]}
                                               classNamePrefix="select2-selection form-select"
                                             />
                                           </div>

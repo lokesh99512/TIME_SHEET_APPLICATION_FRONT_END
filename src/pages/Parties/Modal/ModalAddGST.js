@@ -229,7 +229,7 @@ useEffect(() => {
                         //     handleSelectGroup('rate_type', opt);
                         // }}
                         placeholder="Mr"
-                        options={gen}
+                        options={gen || []}
                         classNamePrefix="select2-selection form-select"
                       />
                     </div>
@@ -257,7 +257,7 @@ useEffect(() => {
                         //     handleSelectGroup('rate_type', opt);
                         // }}
                         placeholder="+91"
-                        options={phone}
+                        options={phone || []}
                         classNamePrefix="select2-selection form-select"
                       />
                     </div>
@@ -297,7 +297,7 @@ useEffect(() => {
                           //   e.value
                           // );
                         }}
-                      options={addressType}
+                      options={addressType || []}
                       classNamePrefix="select2-selection form-select"
                       // isDisabled={carrierData?.vendor_type?.value === 'carrier'}
                     />

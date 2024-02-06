@@ -145,7 +145,7 @@ const CustomerFclFreight = () => {
                                                                 <Select
                                                                     name='customerType'
                                                                     placeholder="Select Carrier/Vendor"
-                                                                    options={AllVendorName}
+                                                                    options={AllVendorName || []}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
                                                             </div>
@@ -156,7 +156,7 @@ const CustomerFclFreight = () => {
                                                                 <Select
                                                                     name='containerType'
                                                                     placeholder="Select Container Type"
-                                                                    options={container_data}
+                                                                    options={container_data || []}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
                                                             </div>
@@ -167,7 +167,7 @@ const CustomerFclFreight = () => {
                                                                 <Select
                                                                     name='marginType'
                                                                     placeholder="Margin Type"
-                                                                    options={marginType}
+                                                                    options={marginType || []}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
                                                             </div>
@@ -233,7 +233,7 @@ const CustomerFclFreight = () => {
                                                                 <Select
                                                                     name='customerType'
                                                                     placeholder="Select Carrier/Vendor"
-                                                                    options={AllVendorName}
+                                                                    options={AllVendorName || []}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
                                                             </div>
@@ -244,7 +244,7 @@ const CustomerFclFreight = () => {
                                                                 <Select
                                                                     name='containerType'
                                                                     placeholder="Select Container Type"
-                                                                    options={container_data}
+                                                                    options={container_data || []}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
                                                             </div>
@@ -255,7 +255,7 @@ const CustomerFclFreight = () => {
                                                                 <Select
                                                                     name='marginType'
                                                                     placeholder="Margin Type"
-                                                                    options={marginType}
+                                                                    options={marginType || []}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
                                                             </div>
