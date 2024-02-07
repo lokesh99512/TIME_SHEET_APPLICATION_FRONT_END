@@ -51,7 +51,7 @@ const INIT_STATE = {
   settings_companyPincode_data: [],
   settings_companyTaxes_data: {},
   settings_business_data: [],
-  settings_company_settings_all_data: [],
+  tenant_info: [],
   fcl_surcharge_data: [],
   settings_surcharges_table_data: [],
   settings_surcharges_alias_table_data: [],
@@ -203,7 +203,7 @@ const settings = (state = INIT_STATE, action) => {
     case GET_ALL_COMPANY_SETTINGS_SUCCESS:
       return {
         ...state,
-        settings_company_settings_all_data: action.payload,
+        tenant_info: action.payload,
       };
 
     case GET_ALL_COMPANY_SETTINGS_FAIL:

@@ -18,7 +18,7 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
     const cheaperData = quoteData?.filter(obj => obj.quote_type === 'cheaper');
     const fasterData = quoteData?.filter(obj => obj.quote_type === 'faster');
     const shipmentDetails = useSelector((state) => state?.instantRate?.searchForm);
-    const {settings_company_settings_all_data} = useSelector((state) => state?.settings);
+    const {tenant_info} = useSelector((state) => state?.settings);
     const dispatch = useDispatch();
     const confirmHandler = () => {
         // const mergedArray = [...quoteData];
@@ -92,19 +92,19 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
                                         <div className="col-lg-4">
                                             <div className="details">
                                                 <span>Name/Company</span>
-                                                <p>{settings_company_settings_all_data?.content[0].name || '-'}</p>
+                                                <p>{tenant_info.name || '-'}</p>
                                             </div>
                                         </div>
                                         <div className="col-lg-4">
                                             <div className="details">
                                                 <span>Primary Contact</span>
-                                                <p>{settings_company_settings_all_data?.content[0].contactName || '-'}</p>
+                                                <p>{tenant_info.contactName || '-'}</p>
                                             </div>
                                         </div>
                                         <div className="col-lg-4">
                                             <div className="details">
                                                 <span>Email Address</span>
-                                                <p>{settings_company_settings_all_data?.content[0].email || '-'}</p>
+                                                <p>{tenant_info.email || '-'}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -115,19 +115,19 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
                                         <div className="col-lg-4">
                                             <div className="details">
                                                 <span>Name/Company</span>
-                                                <p>{settings_company_settings_all_data?.content[0].name || '-'}</p>
+                                                <p>{tenant_info.name || '-'}</p>
                                             </div>
                                         </div>
                                         <div className="col-lg-4">
                                             <div className="details">
                                                 <span>Primary Contact</span>
-                                                <p>{settings_company_settings_all_data?.content[0].contactName || '-'}</p>
+                                                <p>{tenant_info.contactName || '-'}</p>
                                             </div>
                                         </div>
                                         <div className="col-lg-4">
                                             <div className="details">
                                                 <span>Email Address</span>
-                                                <p>{settings_company_settings_all_data?.content[0].email || '-'}</p>
+                                                <p>{tenant_info.email || '-'}</p>
                                             </div>
                                         </div>
                                     </div>

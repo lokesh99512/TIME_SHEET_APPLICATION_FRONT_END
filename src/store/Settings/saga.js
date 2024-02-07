@@ -210,19 +210,25 @@ function* getCompanyBusinessDeatilsData({ payload }) {
 // get all company settings
 function* getAllCompanySettings() {
   try {
-    const response = yield call(CompanyAllDetails);
-    // logo
-    let imageData = response?.content?.[0]?.logoPath;
-    
-    const base64Encoded = window.btoa(imageData);
+    let authuserData = localStorage.getItem('authUser');
+    let userId = JSON.parse(authuserData)?.userId
+    console.log(userId,"userId")
+    if(userId !== undefined){
+      
+      const response = yield call(CompanyAllDetails, userId);
 
-    const resImageData = yield call(GetFileSer, base64Encoded);
-
-    if (response && response.content && response.content[0]) {
-      response.content[0].logo = `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`;
+      // logo
+      let imageData = response?.logoPath;      
+      const base64Encoded = window.btoa(imageData);
+      // const resImageData = yield call(GetFileSer, base64Encoded);
+  
+      if (response !== undefined) {
+        response.logo = `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`;
+      }
+  
+      yield put({ type: GET_ALL_COMPANY_SETTINGS_SUCCESS, payload: { ...response } });
+      // yield put({ type: GET_ALL_COMPANY_SETTINGS_SUCCESS, payload: { ...response, imageData: resImageData } });
     }
-
-    yield put({ type: GET_ALL_COMPANY_SETTINGS_SUCCESS, payload: { ...response, imageData: resImageData } });
   } catch (error) {
     console.log(error, "saga getAllCompanySettings api error");
   }

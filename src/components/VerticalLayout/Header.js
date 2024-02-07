@@ -38,14 +38,13 @@ import {
   changelayoutMode
 } from "../../store/actions";
 import { message_Icon } from '../../assets/images';
-import { getAllCompanyDetailData } from '../../store/Settings/actions';
 
 const Header = props => {
   const dispatch = useDispatch();
   const { showRightSidebar } = useSelector((state) => ({
     showRightSidebar: state.Layout.ShowRightSidebar
   }));
-  const {settings_company_settings_all_data } = useSelector((state) => state?.settings);
+  const {tenant_info } = useSelector((state) => state?.settings);
   const { onChangeLayoutMode } = props;
   const [search, setsearch] = useState(false);
   const [socialDrp, setsocialDrp] = useState(false);
@@ -63,11 +62,7 @@ const Header = props => {
       document.body.setAttribute('data-sidebar-size', 'lg');
     }
   }
-
-  useEffect(() => {
-  dispatch(getAllCompanyDetailData())
-}, []);
-   
+  console.log(tenant_info,"tenant_info");
   return (
     <React.Fragment>
       <header id="page-topbar">
@@ -76,19 +71,19 @@ const Header = props => {
             <div className="navbar-brand-box">
               <Link to="/dashboard" className="logo logo-dark">
                 <span className="logo-sm">
-                  <img src={settings_company_settings_all_data&& settings_company_settings_all_data?.content?.length > 0? settings_company_settings_all_data?.content[0]?.logo || "":logoSvg || ""} alt="Logo" height="50" />
+                  <img src={tenant_info ? tenant_info?.logo || "":logoSvg || ""} alt="Logo" height="50" />
                 </span>
                 <span className="logo-lg">
-                  <img src={settings_company_settings_all_data&& settings_company_settings_all_data?.content?.length > 0? settings_company_settings_all_data?.content[0]?.logo || "":logoSvg || ""} alt="Logo" height="50" />
+                  <img src={tenant_info ? tenant_info?.logo || "":logoSvg || ""} alt="Logo" height="50" />
                 </span>
               </Link>
 
               <Link to="/dashboard" className="logo logo-light">
                 <span className="logo-sm">
-                  <img src={settings_company_settings_all_data&& settings_company_settings_all_data?.content?.length > 0? settings_company_settings_all_data?.content[0]?.logo || "":logoSvg || ""} alt="Logo" height="50" />
+                  <img src={tenant_info ? tenant_info?.logo || "":logoSvg || ""} alt="Logo" height="50" />
                 </span>
                 <span className="logo-lg">
-                  <img src={settings_company_settings_all_data&& settings_company_settings_all_data?.content?.length > 0? settings_company_settings_all_data?.content[0]?.logo || "":logoSvg || ""} alt="Logo" height="50" width="64" />
+                  <img src={tenant_info ? tenant_info?.logo || "":logoSvg || ""} alt="Logo" height="50" width="64" />
                 </span>
               </Link>
             </div>

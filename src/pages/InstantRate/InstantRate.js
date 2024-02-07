@@ -8,7 +8,6 @@ import { GET_CARGO_TYPE_DATA, GET_CONTAINER_DATA, GET_UOM_WEIGHT_DATA } from "..
 import { ADD_OBJECT_INSTANT_SEARCH, BLANK_INSTANT_SEARCH, QUOTATION_RESULT_SELECTED_BLANK, REMOVE_OBJECT_INSTANT_SEARCH } from "../../store/InstantRate/actionType";
 import { postInstantSearchAction } from "../../store/InstantRate/actions";
 import { BLANK_MODAL_CHARGE } from "../../store/Sales/Quotation/actiontype";
-import { getAllCompanyDetailData } from "../../store/Settings/actions";
 import PreviewQuotationModal from "../Sales/Quotations/partials/PreviewQuotationModal";
 import QuotationModalComp from "../Sales/Quotations/partials/QuotationModalComp";
 import SearchResultComp from "../Sales/Quotations/partials/SearchResultComp";
@@ -39,7 +38,7 @@ const InstantRate = () => {
         let dateFrom = moment(searchData?.cargo_date?.[0]).format("YYYY-MM-DD");
         let dateTo = moment(searchData?.cargo_date?.[1]).format("YYYY-MM-DD");
         let data = {
-            fclInquiryField: {
+            inquiryField: {
                 customerId: searchData?.customerName?.value || null,
                 findAlternativeRoute: searchData?.alternate_route,
                 originLocationTypeId: searchData?.location_from?.locationType || null,
@@ -66,7 +65,7 @@ const InstantRate = () => {
                 cargoTypeId: searchData?.cargo_type?.id || null,
                 cargoValue: searchData?.cargo_value?.value || 0,
                 cargoWeight: searchData?.container_type?.cargo_weight?.value || 0,
-                cargoWeightUOMId: searchData?.container_type?.cargo_weight?.weight?.id || null,
+                ...(searchData?.container_type?.cargo_weight?.weight && {cargoWeightUOMId: searchData?.container_type?.cargo_weight?.weight?.id || null}),
                 intercomId: searchData?.incoterm?.value || null,
                 containerDetails: (searchData?.container_type?.containerArray || [])
                     .map((data) => (
@@ -98,7 +97,7 @@ const InstantRate = () => {
         dispatch({ type: GET_CARGO_TYPE_DATA });
         dispatch({ type: GET_CONTAINER_DATA });
         dispatch({ type: GET_UOM_WEIGHT_DATA });
-        dispatch(getAllCompanyDetailData());
+        // dispatch(getTenantInfoData());
         dispatch({ type: BLANK_MODAL_CHARGE, payload: {} });
         dispatch({ type: QUOTATION_RESULT_SELECTED_BLANK, payload: {} });
         dispatch({ type: BLANK_INSTANT_SEARCH });
@@ -182,7 +181,7 @@ const InstantRate = () => {
                         {searchResult && (
                             <>
                                 {mainactiveTab === "air_freight" ? (
-                                    <AirFreightResultComp QuoteModalHandler={QuoteModalHandler} searchResult={searchResult} />
+                                    <AirFreightResultComp QuoteModalHandler={QuoteModalHandler} searchResult={searchResult} mainTab={activeTab} />
                                 ) : (
                                     <SearchResultComp QuoteModalHandler={QuoteModalHandler} searchResult={searchResult} />
                                 )}

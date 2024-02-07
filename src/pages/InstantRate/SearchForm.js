@@ -268,6 +268,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                       <div className="icon me-3 d-flex align-items-center justify-content-center">
                         <img className="location_img" src={location_filled} alt="Location" />
                       </div>
+                      {console.log(airLocation,"airLocation")}
                       <div className="con">
                         <label className="form-label">From</label>
                         <Select

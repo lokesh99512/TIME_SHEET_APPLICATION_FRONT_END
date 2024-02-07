@@ -8,7 +8,7 @@ import { isAnyValueEmpty } from "../../../components/Common/CommonLogic";
 
 const CompanyDetailsForm = ({ companyDetailsFormik }) => {
   const dispatch = useDispatch();
-  const { settings_companyCity_data, settings_companyState_data,settings_company_settings_all_data, settings_companyCountry_data, settings_companyPincode_data, } = useSelector((state) => state?.settings);
+  const { settings_companyCity_data, settings_companyState_data,tenant_info, settings_companyCountry_data, settings_companyPincode_data, } = useSelector((state) => state?.settings);
   const onUploadChange = (file) => {
     // if (file) {
     //   const reader = new FileReader();
@@ -44,7 +44,7 @@ const CompanyDetailsForm = ({ companyDetailsFormik }) => {
                 iconName="img"
                 name="image"
                 onUpload={onUploadChange}
-                src={settings_company_settings_all_data&& settings_company_settings_all_data?.content?.length > 0? settings_company_settings_all_data?.content[0]?.logo || "":companyDetailsFormik?.values?.image || ""}
+                src={tenant_info ? tenant_info?.logo || "": companyDetailsFormik?.values?.image || ""}
                 className="form-control"
               />
             </div>

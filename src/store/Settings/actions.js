@@ -107,7 +107,7 @@ export const getBusinessData = (data) => {
 }
 
 // ALl get company details
-export const getAllCompanyDetailData = (data) => {
+export const getTenantInfoData = (data) => {
     return {
         type: GET_ALL_COMPANY_SETTINGS,
         payload: data,

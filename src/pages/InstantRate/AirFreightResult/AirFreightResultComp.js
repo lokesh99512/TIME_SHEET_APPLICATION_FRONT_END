@@ -7,7 +7,7 @@ import { filter_icon } from '../../../assets/images';
 import FilterSearchResult from '../../Sales/partials/FilterSearchResult';
 import AirFreightCard from "./AirFreightCard";
 
-const AirFreightResultComp = ({ QuoteModalHandler, searchResult }) => {
+const AirFreightResultComp = ({ QuoteModalHandler, searchResult,mainTab }) => {
     const [activeTab, setactiveTab] = useState("all");
     const [isRight, setIsRight] = useState(false);
     const [filterLoader, setFilterLoader] = useState(false);
@@ -154,13 +154,13 @@ const AirFreightResultComp = ({ QuoteModalHandler, searchResult }) => {
                 </div>
 
                 {activeTab === 'all' ? (
-                    <AirFreightCard data={airResult} QuoteModalHandler={QuoteModalHandler} />
-                ) : activeTab === 'preferred' ? (
-                    <AirFreightCard data={airResult} QuoteModalHandler={QuoteModalHandler} />
-                ) : activeTab === "cheaper" ? (
-                    <AirFreightCard data={airResult} QuoteModalHandler={QuoteModalHandler} />
+                    <AirFreightCard data={airResult} QuoteModalHandler={QuoteModalHandler} mainTab={mainTab} />
+                ) : mainTab === 'preferred' ? (
+                    <AirFreightCard data={airResult} QuoteModalHandler={QuoteModalHandler} mainTab={mainTab} />
+                ) : mainTab === "cheaper" ? (
+                    <AirFreightCard data={airResult} QuoteModalHandler={QuoteModalHandler} mainTab={mainTab} />
                 ) : (
-                    <AirFreightCard data={airResult} QuoteModalHandler={QuoteModalHandler} />
+                    <AirFreightCard data={airResult} QuoteModalHandler={QuoteModalHandler} mainTab={mainTab} />
                 )}
             </div>
             {/* Filter Modal */}

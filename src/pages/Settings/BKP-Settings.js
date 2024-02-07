@@ -7,9 +7,10 @@ import { Card, CardBody, Container, FormFeedback, Input, Row } from "reactstrap"
 import SimpleBar from "simplebar-react";
 import { country_list, entityType, industryType, placeOfSupply, state_list } from "../../common/data/settings";
 import { isAnyValueEmpty } from "../../components/Common/CommonLogic";
-import { getAllCompanyDetailData, getBusinessData, getCompanyCityData, getCompanyCountryData, getCompanyDetailsData, getCompanyPincodeData, getCompanyStateData, getTaxDetailsData } from "../../store/Settings/actions";
+import { getBusinessData, getCompanyCityData, getCompanyCountryData, getCompanyDetailsData, getCompanyPincodeData, getCompanyStateData, getTaxDetailsData } from "../../store/Settings/actions";
 import FileUpload from "./FileUpload";
 import ModalAddGST from "./Modal/ModalAddGST";
+import { getTenantInfoData } from "../../store/Parties/Customer/action";
 
 const companyDetailsInitialValue = {
   image: "",
@@ -69,7 +70,7 @@ const Settings = () => {
 
   useEffect(() => {
     dispatch(getCompanyCityData())
-    dispatch(getAllCompanyDetailData())
+    dispatch(getTenantInfoData())
     // dispatch(getCompanyDetailsData())
     // dispatch(getCompanyDetailsData())
   }, [])

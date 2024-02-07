@@ -14,8 +14,7 @@ import {
 } from "reactstrap";
 import { addSurchargeSettingsBreadcrumb } from "../../../common/data/parties";
 import { isAnyValueEmpty } from "../../../components/Common/CommonLogic";
-import {
-  getAllCompanyDetailData,
+import {  
   getAllSurchargeCategoryData,
   getAllTableSurchargeAlias,
 } from "../../../store/Settings/actions";
@@ -44,7 +43,7 @@ export default function UploadRateData() {
   useEffect(() => {
     dispatch(getAllTableSurchargeAlias());
     dispatch(getAllSurchargeCategoryData());
-    dispatch(getAllCompanyDetailData());
+    // dispatch(getTenantInfoData());
     dispatch({ type: GET_SURCHARGE_ALICE_DATA });
   }, []);
 

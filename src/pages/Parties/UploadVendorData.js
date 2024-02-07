@@ -13,7 +13,6 @@ import { isAnyValueEmpty } from "../../components/Common/CommonLogic";
 import { postVendorContactAction, postVendorDetailsAction, postVendorDocumentAction } from "../../store/Parties/Vendor/action";
 import { getCustomersCityData } from "../../store/Parties/actions";
 import { BLANK_CARRIER_DATA } from "../../store/Procurement/actiontype";
-import { getAllCompanyDetailData } from "../../store/Settings/actions";
 import TopBreadcrumbs from "../Settings/Surcharge/TopBreadcrumbs";
 import ContactDetailsForm from "./partials/vendor/ContactDetailsForm";
 import DocumentDetailsForm from "./partials/vendor/DocumentDetailsForm";
@@ -46,7 +45,7 @@ export default function UploadVendorData() {
 
     useEffect(() => {
         dispatch(getCustomersCityData());
-        dispatch(getAllCompanyDetailData());
+        // dispatch(getTenantInfoData());
     }, []);
 
 

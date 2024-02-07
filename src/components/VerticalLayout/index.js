@@ -19,6 +19,7 @@ import Sidebar from "./Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastWrapper } from "../Common/CustomToast";
 import { GET_CURRENCY_DETAIL, GET_OCEAEN_PORT_DATA, GET_SURCHARGE_CATEGORY_DATA, GET_SURCHARGE_CODE_DATA, GET_UOM_DATA, GET_VENDOR_DETAILS } from "../../store/Global/actiontype";
+import { getTenantInfoData } from "../../store/Settings/actions";
 const Layout = props => {
   const dispatch = useDispatch();
 
@@ -141,6 +142,9 @@ const Layout = props => {
     dispatch({type: GET_SURCHARGE_CODE_DATA});
     dispatch({type: GET_SURCHARGE_CATEGORY_DATA});
     dispatch({type: GET_OCEAEN_PORT_DATA});
+    
+    // get tenant info
+    dispatch(getTenantInfoData())
   },[]);
 
   return (

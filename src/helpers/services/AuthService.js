@@ -40,7 +40,7 @@ export const CompanyBusinessDetails = (data) => post(url.COMPANY_BUSINESS_DETAIL
 
 
 // GET ALL company settings
-export const CompanyAllDetails = () => get(url.COMPANY_GET_ALL_DETAILS)
+export const CompanyAllDetails = (userId) => get(url.COMPANY_GET_ALL_DETAILS + userId);
 
 export const getPartiesAllTable = () => {
     return get((url.GET_ALL_PARTIES_TABLE), {

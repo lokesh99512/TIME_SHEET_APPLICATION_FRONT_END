@@ -3,8 +3,9 @@ import ResultCardSkeleton from '../../Skeleton/ResultCardSkeleton';
 import { airplane_filled, cube_filled, indigo_img, ship_filled } from '../../../assets/images';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 
-const AirFreightCard = ({ data, QuoteModalHandler }) => {
+const AirFreightCard = ({ data, QuoteModalHandler, mainTab }) => {
     const [showDetails, setShowDetails] = useState([]);
     const dispatch = useDispatch();
     const [open, setOpen] = useState('');
@@ -106,6 +107,12 @@ const AirFreightCard = ({ data, QuoteModalHandler }) => {
 
         setResultRoute(uniqueArray);
     }, [data]);
+
+
+    const bookNowHandler = () => {
+        console.log("bookNowHandler");
+    }
+
     return (
         <div>
             {result_loader ? <ResultCardSkeleton /> : (
@@ -124,7 +131,7 @@ const AirFreightCard = ({ data, QuoteModalHandler }) => {
                             />
                         </div>
                         <div className="search_result_card air_freight_result_card">
-                            <div className="search_card_top d-flex align-items-center justify-content-between">
+                            {/* <div className="search_card_top d-flex align-items-center justify-content-between">
                                 <div className="left_details d-flex align-items-center">
                                     <div className="icon"><img src={indigo_img} alt="indigo_img" /></div>
                                     <div className="con">
@@ -140,6 +147,57 @@ const AirFreightCard = ({ data, QuoteModalHandler }) => {
                                             View Detail</button>
                                     <button type='button' className='btn btn-primary quote_now_btn'>Quote Now</button>
                                 </div>
+                            </div>                            
+                            <div className="middle_content">
+                                <span className="duration text-center d-block"><b>5 hrs</b></span>
+                                <div className="from_to_wrap multi_route mt-2 mb-3 d-flex justify-content-between">
+                                    <span className="icon d-flex align-items-center justify-content-center"><img src={airplane_filled} alt="Shipping" /></span>
+                                    <span className="from_loc">BLR</span>
+                                    <span className="from_loc">BOM</span>
+                                </div>
+                            </div> */}
+                            <div className="card_corder-label"><span>Mode Type</span></div>
+                            <div className="search_result_card_header d-flex align-items-center">
+                                <div className="card_img">
+                                    <span className='d-flex align-items-center justify-content-center img mx-auto'>
+                                        <img src={indigo_img} alt="Logo" />
+                                    </span>
+                                    <div className='mt-2 text-center'>
+                                        <span className="flight_name d-block">INDIGO</span>
+                                        <p className="flight_num">32W/6E-6779</p>
+                                    </div>
+                                </div>
+                                <div className="middle_content">
+                                    <span className="duration text-center d-block"><b>5 hrs</b></span>
+                                    <div className="from_to_wrap multi_route mt-2 mb-3 d-flex justify-content-between">
+                                        <span className="icon d-flex align-items-center justify-content-center"><img src={airplane_filled} alt="Shipping" /></span>
+                                        <span className="from_loc">test</span>
+                                        <span className="from_loc">test</span>
+                                    </div>
+                                </div>
+                                <div className="total_wrap">
+                                    <p className="total_price text-center"><b>₹ 100</b></p>
+                                    <div className="btn_wrap d-flex">
+                                        <button type='button' className='btn text-primary view_detail_btn'>View Detail</button>
+                                        {mainTab === 'dom_air' ? (
+                                            <UncontrolledDropdown>
+                                                <DropdownToggle className="shadow-none prof_wrap1 btn btn-primary w-100 d-flex justify-space-between" tag="div">
+                                                    See More
+                                                </DropdownToggle>
+                                                <DropdownMenu className="dropdown-menu-end quantity_drop_wrap">
+                                                        <DropdownItem tag="div">
+                                                            <button type='button' className='btn btn-primary quote_now_btn w-100' onClick={() => bookNowHandler()}>Book Now</button>
+                                                        </DropdownItem>
+                                                        <DropdownItem tag="div">
+                                                            <button type='button' className='btn btn-primary quote_now_btn w-100'>Quote Now</button>
+                                                        </DropdownItem>
+                                                </DropdownMenu>
+                                            </UncontrolledDropdown>
+                                        ) : (
+                                            <button type='button' className='btn btn-primary quote_now_btn'>Quote Now</button>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
                             <div className="search_card_middle d-flex justify-content-between">
                                 <div className="origin_details">
@@ -153,48 +211,10 @@ const AirFreightCard = ({ data, QuoteModalHandler }) => {
                                     <p className="date">Mon, 12 February, 2024</p>
                                 </div>
                             </div>
-                            <div className="middle_content">
-                                <span className="duration text-center d-block"><b>5 hrs</b></span>
-                                <div className="from_to_wrap multi_route mt-2 mb-3 d-flex justify-content-between">
-                                    <span className="icon d-flex align-items-center justify-content-center"><img src={airplane_filled} alt="Shipping" /></span>
-                                    <span className="from_loc">BLR</span>
-                                    <span className="from_loc">BOM</span>
-                                    {/* {resultRoute?.length > 0 && resultRoute?.[index] ? resultRoute?.[index]?.map((item, index) => {
-                                                return (<span className="from_loc" key={index}>{item}</span>)
-                                            }) : null} */}
-                                </div>
+                            <div className="search_card_bottom d-flex justify-content-between">
+                                <p className='mb-0'><b>Carrier Name:</b> GCR</p>
+                                <p className='mb-0'><b>Agent Name:</b> Test</p>
                             </div>
-
-                            {/* <div className="search_result_card_header d-flex align-items-center">
-                                <div className="card_img">
-                                    <span className='d-flex align-items-center justify-content-center img mx-auto'>
-                                        <img src={cube_filled} alt="Logo" />
-                                    </span>
-                                    <span className="title d-block text-center mt-2">GCR</span>
-                                </div>
-                                <div className="middle_content">
-                                    <span className="duration text-center d-block"><b>5 hrs</b></span>
-                                    <div className="from_to_wrap multi_route mt-2 mb-3 d-flex justify-content-between">
-                                        <span className="icon d-flex align-items-center justify-content-center"><img src={ship_filled} alt="Shipping" /></span>
-                                        <span className="from_loc">test</span>
-                                        <span className="from_loc">test</span>
-                                        <span className="from_loc">test</span>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-lg-6 text-left"><span>Valid: <b>2000-01-01</b></span></div>
-                                        <div className="col-lg-4 text-center"><span>Id: <b>125</b></span></div>
-                                        <div className="col-lg-6 text-end"><span>CO2: <b>123</b></span></div>
-                                    </div>
-                                </div>
-                                <div className="total_wrap">
-                                    <p className="total_price text-center"><b>₹ 100</b></p>
-                                    <div className="btn_wrap d-flex">
-                                        <button type='button' className='btn text-primary view_detail_btn'>
-                                            View Detail</button>
-                                        <button type='button' className='btn btn-primary quote_now_btn'>Quote Now</button>
-                                    </div>
-                                </div>
-                            </div> */}
                             {/* {showDetails?.find(obj => obj.index === index)?.details && (
                                     <div className="search_result_accordion_details">
                                         {item?.tariffDetails?.length !== 0 && (

@@ -4,7 +4,7 @@ import Select from "react-select";
 import { Card, CardBody, FormFeedback, Input } from "reactstrap";
 import { optionVendorType } from "../../../../common/data/procurement";
 import { getCustomersCountryData, getCustomersPincodeData, getCustomersStateData } from "../../../../store/Parties/actions";
-import { getAllCompanyDetailData, getAllSurchargeCategoryData, getAllTableSurchargeAlias } from "../../../../store/Settings/actions";
+import { getAllSurchargeCategoryData, getAllTableSurchargeAlias } from "../../../../store/Settings/actions";
 import FileUpload from "../../FileUpload";
 import ModalAddNewDepartment from "../../Modal/ModalAddNewDepartment";
 import ModalAddNewDesignation from "../../Modal/ModalAddNewDesignation";
@@ -52,7 +52,7 @@ const VenderDetails = ({ companyDetailsFormik }) => {
   useEffect(() => {
     dispatch(getAllTableSurchargeAlias());
     dispatch(getAllSurchargeCategoryData());
-    dispatch(getAllCompanyDetailData());
+    // dispatch(getTenantInfoData());
   }, []);
 
   const onUploadChange = (file) => {

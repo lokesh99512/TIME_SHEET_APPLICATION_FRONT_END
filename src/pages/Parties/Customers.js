@@ -176,7 +176,7 @@ const Customers = () => {
     ],
     []
   );
-  // console.log(typeof customer_data,"customer_data")
+
   return (
     <>
       <div className="page-content settings_users_wrapper">
@@ -192,7 +192,8 @@ const Customers = () => {
               isGlobalFilter={true}
               isAddInvoiceList={true}
               customPageSize={10}
-              //   toggleRightCanvas={toggleRightCanvas}
+              totalPages={customer_data?.totalElements/10 || 0}
+              // toggleRightCanvas={toggleRightCanvas}
               component={"Customers"}
               loader={customer_loader || false}
             />

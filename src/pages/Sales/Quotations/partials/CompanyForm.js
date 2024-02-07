@@ -5,22 +5,22 @@ import Select from "react-select";
 import { Card, CardBody, Input } from 'reactstrap';
 import { optionQuoteContactCode, optionQuoteContacttitle } from '../../../../common/data/sales';
 const CompanyForm = () => {
-    const { settings_company_settings_all_data } = useSelector((state) => state?.settings);
+    const { tenant_info } = useSelector((state) => state?.settings);
 
     const companyDetailsFormik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            customerName: settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.name || '-',
-            address: settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.address || '-',
-            city: settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.city?.cityName || '-',
-            state: settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.state?.stateName || '-',
-            country: settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.country?.countryName || '-',
-            zipcode: settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.pinCode?.pin || '-',
+            customerName: tenant_info && tenant_info?.name || '-',
+            address: tenant_info && tenant_info?.address || '-',
+            city: tenant_info && tenant_info?.city?.cityName || '-',
+            state: tenant_info && tenant_info?.state?.stateName || '-',
+            country: tenant_info && tenant_info?.country?.countryName || '-',
+            zipcode: tenant_info && tenant_info?.pinCode?.pin || '-',
             title: "Mr",
-            contactName: settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.contactName,
+            contactName: tenant_info && tenant_info?.contactName,
             opCode: "+91",
-            phoneNumber: settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.contactNumber || '-',
-            email: settings_company_settings_all_data && settings_company_settings_all_data?.content[0]?.email || '-',
+            phoneNumber: tenant_info && tenant_info?.contactNumber || '-',
+            email: tenant_info && tenant_info?.email || '-',
         }
     })
     return (

@@ -17,8 +17,7 @@ import {
     placeOfSupply
 } from "../../common/data/settings";
 import { isAnyValueEmpty } from "../../components/Common/CommonLogic";
-import {
-    getAllCompanyDetailData,
+import {    
     getBusinessData,
     getCompanyCityData,
     getCompanyDetailsData,
@@ -43,7 +42,7 @@ const Settings = () => {
     const {
         settings_companydetails_data,
         settings_companyCity_data,
-        settings_company_settings_all_data,
+        tenant_info,
         settings_companyState_data,
         settings_companyCountry_data,
         settings_companyPincode_data,
@@ -51,7 +50,7 @@ const Settings = () => {
 
     useEffect(() => {
         dispatch(getCompanyCityData());
-        dispatch(getAllCompanyDetailData());
+        // dispatch(getTenantInfoData());
         dispatch({ type: GET_STATE_ALL_TYPE });
     }, []);
 
@@ -59,14 +58,14 @@ const Settings = () => {
         enableReinitialize: true,
         initialValues: {
             image: "",
-            companyName: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.name || "",
-            contactNumber: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.contactNumber || "",
-            email: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.email || "",
-            companyAddress: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.address || "",
-            city: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.city?.cityName || "",
-            state: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.state?.stateName || "",
-            zipcode: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.pinCode?.pin || "",
-            country: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.country?.countryName || "",
+            companyName: tenant_info !== undefined && tenant_info?.name || "",
+            contactNumber: tenant_info !== undefined && tenant_info?.contactNumber || "",
+            email: tenant_info !== undefined && tenant_info?.email || "",
+            companyAddress: tenant_info !== undefined && tenant_info?.address || "",
+            city: tenant_info !== undefined && tenant_info?.city?.cityName || "",
+            state: tenant_info !== undefined && tenant_info?.state?.stateName || "",
+            zipcode: tenant_info !== undefined && tenant_info?.pinCode?.pin || "",
+            country: tenant_info !== undefined && tenant_info?.country?.countryName || "",
         },
         validationSchema: comapanySchema,
 
@@ -75,7 +74,14 @@ const Settings = () => {
             const cityData = settings_companyCity_data?.content?.find((city) => city.cityName === value.city) || [];
             const stateData = settings_companyState_data?.content?.find((state) => state.stateName === value.state) || [];
             const countryData = settings_companyCountry_data?.content?.find((con) => con.countryName === value.country) || [];
+
+            console.log(tenant_info,"userId settings")
+
             const projectUATRequestDTO = {
+                ...(tenant_info && {
+                    id: tenant_info?.id,
+                    version: tenant_info?.version
+                }),
                 name: value.companyName || "",
                 address: value.companyAddress || null,
                 ...(pincodeData?.length !== 0 && {
@@ -126,12 +132,12 @@ const Settings = () => {
     const taxDetailsFormik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            pan: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.pan || "",
-            cin: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.cin || "",
-            transporterId: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.transporterId || "",
-            no: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.tenantGSTS[0]?.no || "",
-            placeOfService: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.tenantGSTS[0]?.placeOfService || "",
-            moreGstNumbers: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.tenantGSTS?.slice(1).map((item) => ({
+            pan: tenant_info !== undefined && tenant_info?.pan || "",
+            cin: tenant_info !== undefined && tenant_info?.cin || "",
+            transporterId: tenant_info !== undefined && tenant_info?.transporterId || "",
+            no: tenant_info !== undefined && tenant_info?.tenantGSTS?.[0]?.no || "",
+            placeOfService: tenant_info !== undefined && tenant_info?.tenantGSTS?.[0]?.placeOfService || "",
+            moreGstNumbers: tenant_info !== undefined && tenant_info?.tenantGSTS?.slice(1)?.map((item) => ({
                 no: item?.no,
                 placeOfService: item?.placeOfService,
                 address: item?.address,
@@ -146,8 +152,8 @@ const Settings = () => {
             let mergeArray = [...values?.moreGstNumbers, ...modalAlldata, ...singleVal];
 
             const payload = {
-                id: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.id || null,
-                version: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.version || null,
+                id: tenant_info !== undefined && tenant_info?.id || null,
+                version: tenant_info !== undefined && tenant_info?.version || null,
                 cin: values.cin || null,
                 pan: values.pan || null,
                 transporterId: values.transporterId || null,
@@ -163,13 +169,13 @@ const Settings = () => {
     const bussinessTypeFormik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            industryType: settings_company_settings_all_data?.content !== undefined ? settings_company_settings_all_data?.content[0]?.industryType : industryType.find((item) => item.value === 'TRANSPORTATION').value,
-            entityType: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.entityType || entityType.find((item) => item.value === 'PRIVATE_LTD').value,
+            industryType: tenant_info !== undefined ? tenant_info?.industryType : industryType.find((item) => item.value === 'TRANSPORTATION').value,
+            entityType: tenant_info !== undefined && tenant_info?.entityType || entityType.find((item) => item.value === 'PRIVATE_LTD').value,
         },
         onSubmit: (value) => {
             const projectUATRequestDTO = {
-                id: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.id || null,
-                version: settings_company_settings_all_data?.content !== undefined && settings_company_settings_all_data?.content[0]?.version || null,
+                id: tenant_info !== undefined && tenant_info?.id || null,
+                version: tenant_info !== undefined && tenant_info?.version || null,
                 entityType: value.entityType || null,
                 industryType: value.industryType || null,
             };

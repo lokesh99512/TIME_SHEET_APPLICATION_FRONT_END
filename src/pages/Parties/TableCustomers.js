@@ -6,6 +6,8 @@ import { Row, Table } from 'reactstrap';
 import { filter_icon, upload_icon } from "../../assets/images";
 import { DefaultColumnFilter, Filter } from '../../components/Common/filters';
 import TableCommonSkeleton from '../Skeleton/TableCommonSkeleton';
+import { useDispatch } from 'react-redux';
+import { getAllPartiesCustomerData } from '../../store/Parties/Customer/action';
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -44,7 +46,7 @@ function GlobalFilter({
     );
 }
 
-const TableCustomers = ({ columns, data, isGlobalFilter, customPageSize, toggleRightCanvas, component, loader }) => {
+const TableCustomers = ({ columns, data, isGlobalFilter, customPageSize, toggleRightCanvas, component, loader, totalPages }) => {
     const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow, canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize, state, preGlobalFilteredRows, setGlobalFilter, state: { pageIndex, pageSize }, } = useTable({
         columns,
         data,
@@ -57,6 +59,7 @@ const TableCustomers = ({ columns, data, isGlobalFilter, customPageSize, toggleR
         useExpanded,
         usePagination,);
     const navidate = useNavigate();
+    const dispatch = useDispatch();
 
     return (
         <>
@@ -150,9 +153,14 @@ const TableCustomers = ({ columns, data, isGlobalFilter, customPageSize, toggleR
                             <ReactPaginate
                                 breakLabel="..."
                                 nextLabel="next"
-                                onPageChange={(item) => { gotoPage(item.selected) }}
+                                onPageChange={(item) => { 
+                                    // let url = `?page=${item.selected}&size=${customPageSize}`;
+                                    // dispatch(getAllPartiesCustomerData(url));
+                                    gotoPage(item.selected) 
+                                }}
+                                // onPageChange={(item) => { console.log(item);gotoPage(item.selected) }}
                                 pageRangeDisplayed={3}
-                                pageCount={pageOptions.length}
+                                pageCount={totalPages}
                                 previousLabel="previous"
                                 renderOnZeroPageCount={null}
                             />
