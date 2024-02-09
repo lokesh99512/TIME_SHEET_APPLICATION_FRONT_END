@@ -309,15 +309,24 @@ const CustomerFclFreight = () => {
                     </>
                 </FormikProvider>
             </div>
-            <div className="d-flex justify-content-center mb-4 mt-3" style={{ margin: "0 0 -62px" }}>
-                <div className="d-flex align-items-center">
-                    <button
-                        type="button"
-                        className="btn btn-primary d-flex align-items-center"
-                        onClick={contactsFormik.handleSubmit}
-                    >
-                        Save
-                    </button>
+            <div className="row">
+                <div className="d-flex justify-content-center">
+                    <div className="mb-3 mx-3 d-flex justify-content-end">
+                        <button
+                            onClick={contactsFormik.handleSubmit}
+                            className=" btn btn-primary"
+                        >
+                            Save
+                        </button>
+                    </div>
+                    <div className="mb-3 mx-3 d-flex justify-content-end">
+                        <button
+                           onClick={() => contactsFormik.resetForm()}
+                            className=" btn btn-primary"
+                        >
+                            Cancel
+                        </button>
+                    </div>
                 </div>
             </div>
 

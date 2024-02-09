@@ -32,6 +32,7 @@ export default function UploadVendorData() {
         (state) => state?.parties
     );
     const dispatch = useDispatch();
+    const [isNewVendor, setIsNewVendor] = useState(false)
 
 
     // if (!!(navigateState?.state?.data)) {
@@ -144,9 +145,9 @@ export default function UploadVendorData() {
                     logo: null,
                     logoPath: image?.path || null,
                     address: value.address || null,
+                    id: !!(navigateState?.state && navigateState?.state.data) ? navigateState?.state?.data?.id : isNewVendor ? vendor_id.id : null || null,
+                    version: !!(navigateState?.state && navigateState?.state.data) ? navigateState?.state?.data?.version : isNewVendor ? vendor_id.version : null || 0,
                     ...(!!(navigateState?.state && navigateState?.state.data) && {
-                        id: navigateState?.state?.data?.id || null,
-                        version: navigateState?.state?.data?.version || 0,
                         logoPath: image?.path ? image?.path : navigateState?.state?.data?.logoPath
                     }),
                     ...(pincodeVal?.length !== 0 && {
@@ -192,15 +193,12 @@ export default function UploadVendorData() {
                 }).filter(([_, value]) => value !== null)),
             };
 
-            console.log(projectUATRequestDTO, "projectUATRequestDTO");
-
             const formData = new FormData();
 
             formData.append('file', image);
             formData.append('tenantVendor', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
-
+            setIsNewVendor(true);
             dispatch(postVendorDetailsAction(formData));
-            console.log(vendor_id);
         },
     });
     const contactsFormik = useFormik({
@@ -227,11 +225,10 @@ export default function UploadVendorData() {
             ),
         }),
         onSubmit: (values) => {
-            console.log(values);
             let data = {
                 ...Object.fromEntries(Object.entries({
-                    "id": (navigateState?.state?.data?.id) ? navigateState?.state?.data?.id : customer_id.id || null,
-                    "version": (navigateState?.state?.data?.version) ? navigateState?.state?.data?.version : customer_id.version || 0,
+                    "id": (navigateState?.state?.data?.id) ? navigateState?.state?.data?.id : vendor_id.id || null,
+                    "version": (navigateState?.state?.data?.version) ? navigateState?.state?.data?.version : vendor_id.version || 0,
                     contacts: values?.contacts?.map((val) => {
                         return {
                             ...Object.fromEntries(Object.entries({
@@ -245,7 +242,6 @@ export default function UploadVendorData() {
                     })
                 }).filter(([_, value]) => value !== null)),
             }
-            console.log(data, "vendor contact");
             dispatch(postVendorContactAction(data));
         },
     });
@@ -273,8 +269,8 @@ export default function UploadVendorData() {
                     docfile: val?.uploadDocument || '',
                     docdata: {
                         ...Object.fromEntries(Object.entries({
-                            "id": (navigateState?.state?.data?.id) ? navigateState?.state?.data?.id : customer_id.id || null,
-                            "version": (navigateState?.state?.data?.version) ? navigateState?.state?.data?.version : customer_id.version || 0,
+                            "id": (navigateState?.state?.data?.id) ? navigateState?.state?.data?.id : vendor_id.id || null,
+                            "version": (navigateState?.state?.data?.version) ? navigateState?.state?.data?.version : vendor_id.version || 0,
                             "documents": [
                                 {
                                     ...Object.fromEntries(Object.entries({

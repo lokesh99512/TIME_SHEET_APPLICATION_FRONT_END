@@ -1,11 +1,7 @@
 import classnames from "classnames";
-import moment from "moment";
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
-
-
-import { ADD_OBJECT_INSTANT_SEARCH, BLANK_INSTANT_SEARCH, QUOTATION_RESULT_SELECTED_BLANK, REMOVE_OBJECT_INSTANT_SEARCH } from "../../../store/InstantRate/actionType";
 import CustomerFclFreight from "./CustomerRatesTabs/FclFreight";
 import CustomerFclPortLocal from "./CustomerRatesTabs/FclPortLocal";
 import CustomerFclInaland from "./CustomerRatesTabs/FclInalnd";
@@ -15,20 +11,9 @@ import { getAllPartiesCustomerData } from "../../../store/Parties/Customer/actio
 const CustomerRates = () => {
     const [mainactiveTab, setMainactiveTab] = useState("ocean_freight");
     const [activeTab, toggleTab] = useState("FCL_FREIGHT");
-    const [quoteModal, setQuoteModal] = useState(false);
-    const [previewModal, setPreviewModal] = useState(false);
     const dispatch = useDispatch();
     const { customer_data } = useSelector((state) => state?.customer)
 
-    function removeBodyCss() {
-        document.body.classList.add("no_padding");
-    }
-
-    function QuoteModalHandler() {
-        setQuoteModal(!quoteModal);
-        removeBodyCss();
-    }
-   
     useEffect(()=>{
         dispatch(getAllPartiesCustomerData());
     },[])
@@ -38,9 +23,7 @@ const CustomerRates = () => {
         label: customer.contactName,
         version: customer.version
     })) || [];
-    const previewModalHand = () => {
-        setPreviewModal(!previewModal);
-    }
+
     return (
         <>
             <div className="page-content">
@@ -89,9 +72,6 @@ const CustomerRates = () => {
                             </div>
                         </div>
 
-
-
-                        {/* --------------------------tabs------------------------------- */}
                         <Nav className="nav-tabs-custom card-header-tabs border-bottom mb-3">
                             {mainactiveTab === "ocean_freight" ? (
                                 <React.Fragment>
