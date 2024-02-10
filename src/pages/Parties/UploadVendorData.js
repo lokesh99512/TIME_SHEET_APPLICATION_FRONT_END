@@ -19,6 +19,7 @@ import DocumentDetailsForm from "./partials/vendor/DocumentDetailsForm";
 import VenderDetails from "./partials/vendor/VenderDetails";
 import * as Yup from "yup";
 import { marginType } from "../../common/data/settings";
+import { GET_VENDOR_DETAILS_ID } from "../../store/Parties/Vendor/actiontype";
 export default function UploadVendorData() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
     const [openSaveModal, setOpenSaveModal] = useState(false);
@@ -47,6 +48,9 @@ export default function UploadVendorData() {
     useEffect(() => {
         dispatch(getCustomersCityData());
         // dispatch(getTenantInfoData());
+        if(!!(navigateState?.state && navigateState?.state.data)){
+        dispatch({ type: GET_VENDOR_DETAILS_ID, payload: { id: navigateState?.state?.data?.id, version: navigateState?.state?.data?.version } });
+        }
     }, []);
 
 
@@ -92,7 +96,7 @@ export default function UploadVendorData() {
             openSaveConfirmModal();
         }
     };
-
+         console.log(vendor_id);
     const companyDetailsFormik = useFormik({
         enableReinitialize: true,
         initialValues: {
@@ -146,7 +150,7 @@ export default function UploadVendorData() {
                     logoPath: image?.path || null,
                     address: value.address || null,
                     id: !!(navigateState?.state && navigateState?.state.data) ? navigateState?.state?.data?.id : isNewVendor ? vendor_id.id : null || null,
-                    version: !!(navigateState?.state && navigateState?.state.data) ? navigateState?.state?.data?.version : isNewVendor ? vendor_id.version : null || 0,
+                    version: !!(navigateState?.state && navigateState?.state.data) ? !!vendor_id?vendor_id.version:navigateState?.state?.data?.version : isNewVendor ? vendor_id.version : null || 0,
                     ...(!!(navigateState?.state && navigateState?.state.data) && {
                         logoPath: image?.path ? image?.path : navigateState?.state?.data?.logoPath
                     }),
