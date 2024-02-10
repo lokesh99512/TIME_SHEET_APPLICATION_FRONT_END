@@ -27,9 +27,7 @@ const Dashboard = () => {
     const [tableData3, setTableData3] = useState(inquirySumData);
     const [tableData4, setTableData4] = useState(salesPerformData);
     const navigate = useNavigate();
-    const loginData = useSelector(state => state?.Login?.login_user_data);
-    const  { inquiry_export_data , inquiry_import_data, inquiry_customer_data,inquiry_summary_data, inquiry_sales_customer_data}= useSelector((state) => state?.sales);
-    console.log(loginData,"loginData------------");
+    const  { inquiry_export_data , inquiry_import_data, inquiry_customer_data,inquiry_summary_data, inquiry_sales_customer_data}= useSelector((state) => state?.sales);    
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getInquirySummeryData());
@@ -44,7 +42,6 @@ const Dashboard = () => {
         if (index === 3) { 
             rate_type = 'down';
         }
-        console.log(index);
         return {
             id: index + 1,
             title: index==0?"Total Inquires":index==1?"Enquires Actioned":index==2?"Pending Enquires":index==3?"SLA breached":"",

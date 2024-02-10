@@ -148,7 +148,7 @@ const instantRate = (state = INIT_STATE, action) => {
                 airLocation: action.payload.content?.map((item, index) => {
                     return {
                         value: item.id,
-                        label: item.name,
+                        label: `${item.code} - ${item.name}`,
                         id: item.id,
                         version: item.version,
                     }

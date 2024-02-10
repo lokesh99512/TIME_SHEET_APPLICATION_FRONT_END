@@ -614,6 +614,9 @@ input[type="number"]{
     border: 1px solid $neutral_2;
     background: $white;
     padding: 18px;
+    .create_sales_wrapper_inner {
+        min-height: 600px;
+    }
     .create_quote_top_back{
         .back_wrap{
             button{
@@ -1246,6 +1249,9 @@ input[type="number"]{
     &.currency_field_wrap{
         width: 125px
     }
+    &.shipment_details_wrap .searchform {
+        width: 340px;
+    }
     @media only screen and (max-height: 750px) {        
         &.bottom_drop_field{
             .common_dropdown_wrap{
@@ -1261,7 +1267,19 @@ input[type="number"]{
                 bottom: 100%;
             }
         }
+        &.shipment_details_wrap .searchform {
+            width: 100%;
+        }
     }
+    @media only screen and (max-width: 420px) { 
+        &.shipment_details_wrap .searchform {
+            .dimention_field {
+                .input_field_wrap{
+                    flex-wrap: wrap;
+                }
+            }
+        }
+    }    
 }
 
 .common_dropdown_wrap.container_drop_wrap {
@@ -1362,7 +1380,7 @@ input[type="number"]{
         padding-top: 16px;
         margin-top: 16px;
         gap: 16px;
-    }
+    }    
 }
 
 // ---------------- search result
@@ -1612,12 +1630,12 @@ input[type="number"]{
 
     // Air freight card
     .air_freight_result_card{
-        padding: 20px 25px 20px;
+        padding: 15px 25px 15px;
         width: calc(100% - 29px);
         .search_card_top{
-            padding-bottom: 10px;
-            margin-bottom: 10px;
-            border-bottom: 1px solid $neutral_2;
+            // padding-bottom: 10px;
+            // margin-bottom: 10px;
+            // border-bottom: 1px solid $neutral_2;
             .icon{
                 width: 50px;
                 height: 50px;
@@ -1643,30 +1661,71 @@ input[type="number"]{
             }
             .carrier_name{
                 @include font($font-weight-bold,16px,normal,$neutral_8);
-                margin-left: 36px;
+                margin: 0 20px 0 0;
             }
         }
-        .search_card_middle{
-            margin: 12px 0;
-            padding: 12px 0;
+        .search_card_middle_wrap{
+            margin: 12px 0 0;
+            padding: 8px 0 0;
             border-top: 1px solid #E5E7EB;
-            border-bottom: 1px solid #E5E7EB;
+            position: relative;            
             p{
-                @include font($font-weight-normal,14px,normal,$neutral_8);
+                @include font($font-weight-normal,13px,normal,$neutral_8);
                 margin: 0;
                 &.time{
                     margin: 5px 0;
                     font-weight: $font-weight-semibold;
                 }
             }
-            .destination_details{
-                p{
-                    text-align: right;
+            .icon_wrap{
+                width: 28px;
+                height: 28px;
+                border-radius: 99px;
+                border: 1px solid #D1D5DB;
+                background: #F9FAFB;
+                margin-left: 8px;
+            }
+
+            // new
+            .search_card_middle {
+                position: relative;
+                &::before{
+                    content: "";
+                    position: absolute;
+                    left: 85px;
+                    right: 85px;
+                    height: 1px;
+                    border-bottom: 1px dashed #D1D5DB;
+                    top: -3px;
+                    // bottom: 0;
+                    // margin: auto;
+                }                
+                & > div {
+                    padding: 10px;
+                    background: $white;
+                    box-shadow: 0 0 15px rgba(0,0,0,0.05);
+                    border-radius: 10px;
+                    text-align: center;
+                    position: relative;
+                    max-width: 172px;
+                    min-width: 172px;
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        top: -7px;
+                        left: 0;
+                        right: 0;
+                        width: 10px;
+                        height: 10px;
+                        background: $primary_7;
+                        border-radius: 100%;
+                        margin: 0 auto;
+                    }
                 }
             }
         }
         .middle_content{
-            // width: 100%;
+            width: 100%;
             padding: 0;
             .from_to_wrap {
                 .from_loc{
@@ -1691,27 +1750,62 @@ input[type="number"]{
             overflow: hidden;
             position: absolute;
             top: 0px;
-            left: 0px;
+            right: 0px;
+            pointer-events: none;
             span {
                 position: absolute;
                 display: block;
                 width: 165px;
-                padding: 8px 0;
+                padding: 4px 0;
                 background-color: $primary_8;
                 box-shadow: 0 5px 10px rgba(0,0,0,.1);
                 color: $white;
                 text-shadow: 0 1px 1px rgba(0,0,0,.2);
                 text-transform: uppercase;
                 text-align: center;
-                // left: 35px;
-                // top: 18px;
-                // transform: rotate(45deg);
-                left: -52px;
-                top: 15px;
-                transform: rotate(-45deg);
+                left: 38px;
+                top: 13px;
+                transform: rotate(45deg);
+                // left: -52px;
+                // top: 15px;
+                // transform: rotate(-45deg);
                 font-size: 10px;
-                background: $danger_8;                
+                background: $danger_8;  
+                height: 37px;
+                display: flex;
+                align-items: center;
+                b{
+                    max-width: 62px;
+                    display: table;
+                    margin: 0 auto;
+                }              
             }
+        }
+        .search_card_bottom{
+            padding-right: 20px;
+            .dropdown-menu{
+                background: $white;
+                padding: 0;
+                .dropdown-item{
+                    padding: 0;
+                    button{
+                        border-radius: 0; 
+                        border: 0;
+                        border-bottom: 1px solid $neutral_2;                       
+                        &:hover{
+                            color: $white;
+                            background: $primary_7;
+                        }
+                    }
+                }
+            }
+        }
+        .total_wrap{
+            padding: 0 40px 0 20px;
+            .total_price {
+                margin-bottom: 0px;
+                cursor: pointer;
+            }            
         }
     }
 }

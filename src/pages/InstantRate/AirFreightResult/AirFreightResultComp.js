@@ -118,7 +118,7 @@ const AirFreightResultComp = ({ QuoteModalHandler, searchResult,mainTab }) => {
         <>
             <div className="search_result_wrap">
                 <div className="length_wrap">
-                    <span>{airResult?.length || 0} Search Results</span>
+                    <span>{airResult?.length || 1} Search Results</span>
 
                     {searchResult && <button type="button" className='btn btn-primary ms-auto quote_btn' onClick={QuoteModalHandler}
                         disabled={quote_selected_data?.length === 0}>Quote Now</button>}

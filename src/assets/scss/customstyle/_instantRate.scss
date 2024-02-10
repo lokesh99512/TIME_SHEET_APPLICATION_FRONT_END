@@ -197,7 +197,14 @@
     }
     .location_img {
         width: 25px;
-    }  
+    } 
+    
+    .air_cargo_date, .ocean_cargo_date{
+        display: none !important;
+        &.active{
+            display: block !important;
+        }
+    }
 }
 
 // -------------------------
