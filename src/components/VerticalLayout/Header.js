@@ -62,7 +62,6 @@ const Header = props => {
       document.body.setAttribute('data-sidebar-size', 'lg');
     }
   }
-  console.log(tenant_info,"tenant_info");
   return (
     <React.Fragment>
       <header id="page-topbar">

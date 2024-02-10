@@ -211,11 +211,10 @@ function* getCompanyBusinessDeatilsData({ payload }) {
 function* getAllCompanySettings() {
   try {
     let authuserData = localStorage.getItem('authUser');
-    let userId = JSON.parse(authuserData)?.userId
-    console.log(userId,"userId")
-    if(userId !== undefined){
+    let tenantId = JSON.parse(authuserData)?.tenantId
+    if(tenantId !== undefined){
       
-      const response = yield call(CompanyAllDetails, userId);
+      const response = yield call(CompanyAllDetails, tenantId);
 
       // logo
       let imageData = response?.logoPath;      

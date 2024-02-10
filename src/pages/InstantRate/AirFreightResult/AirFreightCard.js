@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import ResultCardSkeleton from '../../Skeleton/ResultCardSkeleton';
-import { airplane_filled, cube_filled, indigo_img, ship_filled } from '../../../assets/images';
+import { airasia_logo, airplane_filled, cube_filled, indigo_img, ship_filled, vistara_logo } from '../../../assets/images';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 
 const AirFreightCard = ({ data, QuoteModalHandler, mainTab }) => {
+    const [currentButton, setCurrentButton] = useState('Book Now');
     const [showDetails, setShowDetails] = useState([]);
     const dispatch = useDispatch();
     const [open, setOpen] = useState('');
@@ -22,19 +23,20 @@ const AirFreightCard = ({ data, QuoteModalHandler, mainTab }) => {
     };
 
     const showDetailsHandler = (index, id) => {
-        let newArr = [...showDetails];
-        if (newArr?.length !== 0) {
-            if (newArr.some(obj => obj.index === index)) {
-                newArr.find(obj => obj.index === index).details = !newArr.find(obj => obj.index === index).details
-            } else {
-                let newObj = { details: true, index }
-                newArr.push(newObj);
-            }
-        } else {
-            let newObj = { details: true, index }
-            newArr.push(newObj);
-        }
-        setShowDetails(newArr);
+        console.log("show details");
+        // let newArr = [...showDetails];
+        // if (newArr?.length !== 0) {
+        //     if (newArr.some(obj => obj.index === index)) {
+        //         newArr.find(obj => obj.index === index).details = !newArr.find(obj => obj.index === index).details
+        //     } else {
+        //         let newObj = { details: true, index }
+        //         newArr.push(newObj);
+        //     }
+        // } else {
+        //     let newObj = { details: true, index }
+        //     newArr.push(newObj);
+        // }
+        // setShowDetails(newArr);
     }
 
     const handleChange = (val, name, index, id) => {
@@ -131,7 +133,7 @@ const AirFreightCard = ({ data, QuoteModalHandler, mainTab }) => {
                             />
                         </div>
                         <div className="search_result_card air_freight_result_card">
-                            {/* <div className="search_card_top d-flex align-items-center justify-content-between">
+                            <div className="search_card_top d-flex align-items-center justify-content-between">
                                 <div className="left_details d-flex align-items-center">
                                     <div className="icon"><img src={indigo_img} alt="indigo_img" /></div>
                                     <div className="con">
@@ -143,77 +145,63 @@ const AirFreightCard = ({ data, QuoteModalHandler, mainTab }) => {
                                     <span className="carrier_name">GCR</span>
                                 </div>
                                 <div className="right_details">
-                                    <button type='button' className='btn text-primary view_detail_btn'>
-                                            View Detail</button>
-                                    <button type='button' className='btn btn-primary quote_now_btn'>Quote Now</button>
-                                </div>
-                            </div>                            
-                            <div className="middle_content">
-                                <span className="duration text-center d-block"><b>5 hrs</b></span>
-                                <div className="from_to_wrap multi_route mt-2 mb-3 d-flex justify-content-between">
-                                    <span className="icon d-flex align-items-center justify-content-center"><img src={airplane_filled} alt="Shipping" /></span>
-                                    <span className="from_loc">BLR</span>
-                                    <span className="from_loc">BOM</span>
-                                </div>
-                            </div> */}
-                            <div className="card_corder-label"><span>Mode Type</span></div>
-                            <div className="search_result_card_header d-flex align-items-center">
-                                <div className="card_img">
-                                    <span className='d-flex align-items-center justify-content-center img mx-auto'>
-                                        <img src={indigo_img} alt="Logo" />
-                                    </span>
-                                    <div className='mt-2 text-center'>
-                                        <span className="flight_name d-block">INDIGO</span>
-                                        <p className="flight_num">32W/6E-6779</p>
-                                    </div>
-                                </div>
-                                <div className="middle_content">
-                                    <span className="duration text-center d-block"><b>5 hrs</b></span>
-                                    <div className="from_to_wrap multi_route mt-2 mb-3 d-flex justify-content-between">
-                                        <span className="icon d-flex align-items-center justify-content-center"><img src={airplane_filled} alt="Shipping" /></span>
-                                        <span className="from_loc">test</span>
-                                        <span className="from_loc">test</span>
-                                    </div>
-                                </div>
-                                <div className="total_wrap">
-                                    <p className="total_price text-center"><b>₹ 100</b></p>
-                                    <div className="btn_wrap d-flex">
-                                        <button type='button' className='btn text-primary view_detail_btn'>View Detail</button>
-                                        {mainTab === 'dom_air' ? (
-                                            <UncontrolledDropdown>
-                                                <DropdownToggle className="shadow-none prof_wrap1 btn btn-primary w-100 d-flex justify-space-between" tag="div">
-                                                    See More
-                                                </DropdownToggle>
-                                                <DropdownMenu className="dropdown-menu-end quantity_drop_wrap">
-                                                        <DropdownItem tag="div">
-                                                            <button type='button' className='btn btn-primary quote_now_btn w-100' onClick={() => bookNowHandler()}>Book Now</button>
-                                                        </DropdownItem>
-                                                        <DropdownItem tag="div">
-                                                            <button type='button' className='btn btn-primary quote_now_btn w-100'>Quote Now</button>
-                                                        </DropdownItem>
-                                                </DropdownMenu>
-                                            </UncontrolledDropdown>
-                                        ) : (
-                                            <button type='button' className='btn btn-primary quote_now_btn'>Quote Now</button>
-                                        )}
+                                    <div className="total_wrap">
+                                        <p className="total_price text-center" onClick={() => showDetailsHandler()}><b>₹ 525120</b></p>
                                     </div>
                                 </div>
                             </div>
-                            <div className="search_card_middle d-flex justify-content-between">
-                                <div className="origin_details">
-                                    <p>Bengaluru</p>
-                                    <p className="time">02:40</p>
-                                    <p className="date">Mon, 12 February, 2024</p>
-                                </div>
-                                <div className="destination_details">
-                                    <p>Chatrapati Shivaji</p>
-                                    <p className="time">04:40</p>
-                                    <p className="date">Mon, 12 February, 2024</p>
+                            <div className="search_card_bottom d-flex justify-content-between align-items-center">
+                                <p className='mb-0'><b>Agent Name:</b> ABC</p>
+                                {console.log(currentButton,"currentButton")}
+                                <div className="btn_wrap d-flex">
+                                    <UncontrolledDropdown>
+                                        <DropdownToggle className="shadow-none prof_wrap1 btn btn-primary w-100 d-flex justify-space-between" tag="div">
+                                            {currentButton || 'Book Now'}  <i className="mdi mdi-chevron-down"></i>
+                                        </DropdownToggle>
+                                        <DropdownMenu className="dropdown-menu-end quantity_drop_wrap">
+                                            {/* {mainTab === 'dom_air' && ( */}
+                                                <DropdownItem tag="div">
+                                                    <button type='button' className={`btn quote_now_btn w-100 ${currentButton === 'Book Now' ? 'active' : ''}`} onClick={() => {setCurrentButton('Book Now');bookNowHandler();}}>Book Now</button>
+                                                </DropdownItem>
+                                            {/* )} */}
+                                            <DropdownItem tag="div">
+                                                <button type='button' className={`btn quote_now_btn w-100 ${currentButton === 'Quote Now' ? 'active' : ''}`} onClick={() => {setCurrentButton('Quote Now');bookNowHandler();}}>Quote Now</button>
+                                            </DropdownItem>
+                                            {/* <DropdownItem tag="div">
+                                                        <button type='button' className='btn quote_now_btn w-100'>View Detail</button>
+                                                    </DropdownItem> */}
+                                        </DropdownMenu>
+                                    </UncontrolledDropdown>
                                 </div>
                             </div>
-                            <div className="search_card_bottom d-flex justify-content-between">
-                                <p className='mb-0'><b>Carrier Name:</b> GCR</p>
-                                <p className='mb-0'><b>Agent Name:</b> Test</p>
+                            <div className="card_corder-label"><span><b>Master Air waybill</b></span></div>
+                            <div className="search_card_middle_wrap">
+                                <div className="d-flex justify-content-center align-items-center mb-2">
+                                    <span><b>5 hrs</b></span>
+                                    <span className="icon d-flex align-items-center justify-content-center icon_wrap"><img src={airplane_filled} alt="Shipping" /></span>
+                                </div>
+                                <div className="search_card_middle d-flex justify-content-between">
+                                    <div className="origin_details">
+                                        <p>Chatrapati Shivaji</p>
+                                        <p className="time">02:40</p>
+                                        <p className="date">Mon, 12 February, 2024</p>
+                                    </div>
+                                    <div className="origin_details">
+                                        <p>Chatrapati Shivaji</p>
+                                        <p className="time">02:40</p>
+                                        <p className="date">Mon, 12 February, 2024</p>
+                                    </div>
+                                    <div className="destination_details">
+                                        <p>Bengaluru</p>
+                                        <p className="time">04:40</p>
+                                        <p className="date">Mon, 12 February, 2024</p>
+                                    </div>
+                                    <div className="destination_details">
+                                        <p>Bengaluru</p>
+                                        <p className="time">04:40</p>
+                                        <p className="date">Mon, 12 February, 2024</p>
+                                    </div>
+                                </div>
                             </div>
                             {/* {showDetails?.find(obj => obj.index === index)?.details && (
                                     <div className="search_result_accordion_details">
@@ -257,6 +245,156 @@ const AirFreightCard = ({ data, QuoteModalHandler, mainTab }) => {
                                         )}
                                     </div>
                                 )} */}
+                        </div>
+                    </div>
+                    <div className="search_result_card_check_wrap d-flex align-items-center">
+                        <div className={`form-check me-2`} >
+                            {/* onClick={(e) => quotationCheckHandler(item)} */}
+                            <input
+                                className="form-check-input"
+                                type="checkbox"
+                                // id={`result_card_${index}`}
+                                // name={`result_card_${index}`}
+                                // checked={quote_Selected.some(obj => obj.quote_id === item.quote_id)}
+                                readOnly
+                            />
+                        </div>
+                        <div className="search_result_card air_freight_result_card">
+                            <div className="search_card_top d-flex align-items-center justify-content-between">
+                                <div className="left_details d-flex align-items-center">
+                                    <div className="icon"><img src={airasia_logo} alt="indigo_img" /></div>
+                                    <div className="con">
+                                        <p className='flight_name'>Air Asia</p>
+                                        <p className="flight_num">32W/6E-6780</p>
+                                    </div>
+                                </div>
+                                <div className="center_details">
+                                    <span className="carrier_name">GCR</span>
+                                </div>
+                                <div className="right_details">
+                                    <div className="total_wrap">
+                                        <p className="total_price text-center" onClick={() => showDetailsHandler()}><b>₹ 525120</b></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="search_card_bottom d-flex justify-content-between align-items-center">
+                                <p className='mb-0'><b>Agent Name:</b> ABC</p>
+                                {console.log(currentButton,"currentButton")}
+                                <div className="btn_wrap d-flex">
+                                    <UncontrolledDropdown>
+                                        <DropdownToggle className="shadow-none prof_wrap1 btn btn-primary w-100 d-flex justify-space-between" tag="div">
+                                            {currentButton || 'Book Now'}  <i className="mdi mdi-chevron-down"></i>
+                                        </DropdownToggle>
+                                        <DropdownMenu className="dropdown-menu-end quantity_drop_wrap">
+                                            {/* {mainTab === 'dom_air' && ( */}
+                                                <DropdownItem tag="div">
+                                                    <button type='button' className={`btn quote_now_btn w-100 ${currentButton === 'Book Now' ? 'active' : ''}`} onClick={() => {setCurrentButton('Book Now');bookNowHandler();}}>Book Now</button>
+                                                </DropdownItem>
+                                            {/* )} */}
+                                            <DropdownItem tag="div">
+                                                <button type='button' className={`btn quote_now_btn w-100 ${currentButton === 'Quote Now' ? 'active' : ''}`} onClick={() => {setCurrentButton('Quote Now');bookNowHandler();}}>Quote Now</button>
+                                            </DropdownItem>
+                                            {/* <DropdownItem tag="div">
+                                                        <button type='button' className='btn quote_now_btn w-100'>View Detail</button>
+                                                    </DropdownItem> */}
+                                        </DropdownMenu>
+                                    </UncontrolledDropdown>
+                                </div>
+                            </div>
+                            <div className="card_corder-label"><span><b>Console</b></span></div>
+                            <div className="search_card_middle_wrap">
+                                <div className="d-flex justify-content-center align-items-center mb-2">
+                                    <span><b>05 h 15 m</b></span>
+                                    <span className="icon d-flex align-items-center justify-content-center icon_wrap"><img src={airplane_filled} alt="Shipping" /></span>
+                                </div>
+                                <div className="search_card_middle d-flex justify-content-between">
+                                    <div className="origin_details">
+                                        <p>Chatrapati Shivaji</p>
+                                        <p className="time">02:40</p>
+                                        <p className="date">Mon, 12 February, 2024</p>
+                                    </div>
+                                    <div className="destination_details">
+                                        <p>Bengaluru</p>
+                                        <p className="time">04:40</p>
+                                        <p className="date">Mon, 12 February, 2024</p>
+                                    </div>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                    <div className="search_result_card_check_wrap d-flex align-items-center">
+                        <div className={`form-check me-2`} >
+                            {/* onClick={(e) => quotationCheckHandler(item)} */}
+                            <input
+                                className="form-check-input"
+                                type="checkbox"
+                                // id={`result_card_${index}`}
+                                // name={`result_card_${index}`}
+                                // checked={quote_Selected.some(obj => obj.quote_id === item.quote_id)}
+                                readOnly
+                            />
+                        </div>
+                        <div className="search_result_card air_freight_result_card">
+                            <div className="search_card_top d-flex align-items-center justify-content-between">
+                                <div className="left_details d-flex align-items-center">
+                                    <div className="icon"><img src={vistara_logo} alt="indigo_img" /></div>
+                                    <div className="con">
+                                        <p className='flight_name'>Vistara</p>
+                                        <p className="flight_num">UK 983</p>
+                                    </div>
+                                </div>
+                                <div className="center_details">
+                                    <span className="carrier_name">GCR</span>
+                                </div>
+                                <div className="right_details">
+                                    <div className="total_wrap">
+                                        <p className="total_price text-center" onClick={() => showDetailsHandler()}><b>₹ 525120</b></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="search_card_bottom d-flex justify-content-between align-items-center">
+                                <p className='mb-0'><b>Agent Name:</b> ABC</p>
+                                {console.log(currentButton,"currentButton")}
+                                <div className="btn_wrap d-flex">
+                                    <UncontrolledDropdown>
+                                        <DropdownToggle className="shadow-none prof_wrap1 btn btn-primary w-100 d-flex justify-space-between" tag="div">
+                                            {currentButton || 'Book Now'}  <i className="mdi mdi-chevron-down"></i>
+                                        </DropdownToggle>
+                                        <DropdownMenu className="dropdown-menu-end quantity_drop_wrap">
+                                            {/* {mainTab === 'dom_air' && ( */}
+                                                <DropdownItem tag="div">
+                                                    <button type='button' className={`btn quote_now_btn w-100 ${currentButton === 'Book Now' ? 'active' : ''}`} onClick={() => {setCurrentButton('Book Now');bookNowHandler();}}>Book Now</button>
+                                                </DropdownItem>
+                                            {/* )} */}
+                                            <DropdownItem tag="div">
+                                                <button type='button' className={`btn quote_now_btn w-100 ${currentButton === 'Quote Now' ? 'active' : ''}`} onClick={() => {setCurrentButton('Quote Now');bookNowHandler();}}>Quote Now</button>
+                                            </DropdownItem>
+                                            {/* <DropdownItem tag="div">
+                                                        <button type='button' className='btn quote_now_btn w-100'>View Detail</button>
+                                                    </DropdownItem> */}
+                                        </DropdownMenu>
+                                    </UncontrolledDropdown>
+                                </div>
+                            </div>
+                            <div className="card_corder-label"><span><b>Master Air waybill</b></span></div>
+                            <div className="search_card_middle_wrap">
+                                <div className="d-flex justify-content-center align-items-center mb-2">
+                                    <span><b>02 h 15 m</b></span>
+                                    <span className="icon d-flex align-items-center justify-content-center icon_wrap"><img src={airplane_filled} alt="Shipping" /></span>
+                                </div>
+                                <div className="search_card_middle d-flex justify-content-between">
+                                    <div className="origin_details">
+                                        <p>Mumbai, India</p>
+                                        <p className="time">08:50</p>
+                                        <p className="date">Sun, 11 Feb 24</p>
+                                    </div>
+                                    <div className="destination_details">
+                                        <p>New Delhi, India</p>
+                                        <p className="time">11:10</p>
+                                        <p className="date">Sun, 11 Feb 24</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     {/* )) : (

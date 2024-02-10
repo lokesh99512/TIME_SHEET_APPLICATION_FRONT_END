@@ -10,7 +10,7 @@ import { isAnyValueEmpty, useOutsideClick } from "../../components/Common/Common
 import { BLANK_INSTANT_SEARCH, GET_AIR_LOCATION_TYPE, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK } from "../../store/InstantRate/actionType";
 import { getAllIncoTerms, getInstantRateLocation } from "../../store/InstantRate/actions";
 import { getAllPartiesCustomerData } from "../../store/Parties/Customer/action";
-const SearchForm = ({ activeTab, searchQuoteHandler }) => {
+const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
   let unitobj = {
     _standard1: 0,
     _standard2: 0,
@@ -20,24 +20,26 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
     _refrigerated2: 0,
   }
   let shipmentObj = [{
-      no_unit: '',
-      weight: '',
-      weight_unit: 'KG',
-      dimensions_l: '',
-      dimensions_w: '',
-      dimensions_h: '',
-      dimensions_unit: '',
+    no_unit: '',
+    weight: '',
+    weight_unit: 'KG',
+    dimensions_l: '',
+    dimensions_w: '',
+    dimensions_h: '',
+    dimensions_unit: 'CM',
   }]
   const [isOpen, setIsOpen] = useState(false);
   const [isSubOpen, setIsSubOpen] = useState(false);
   const [dropId, setDropId] = useState(false);
   const [subDropId, setSubDropId] = useState(false);
   const [advanceSearch, setAdvanceSearch] = useState(false);
-  const [containerData, setContainerData] = useState({ containerArray: [],cargo_weight:{
-    weight: { value: "MT", label: "MT", id: 7, version: 2 }
-  }});
+  const [containerData, setContainerData] = useState({
+    containerArray: [], cargo_weight: {
+      weight: { value: "MT", label: "MT", id: 7, version: 2 }
+    }
+  });
   const [calculateVal, setCalculateVal] = useState({});
-  const [classHazardous, setClassHazardous] = useState(0);  
+  const [classHazardous, setClassHazardous] = useState(0);
   const [unitValue, setUnitValue] = useState(unitobj);
   const [open, setOpen] = useState('1');
   const dropdownRef = useRef(null);
@@ -50,12 +52,12 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
   const ref = useRef();
 
   useEffect(() => {
-    if(activeTab === "FCL"){
+    if (activeTab === "FCL") {
       dispatch(getInstantRateLocation());
-      dispatch(getAllIncoTerms());      
-    } 
-    if(["dom_air","intl_Air"].includes(activeTab)){
-      dispatch({type: GET_AIR_LOCATION_TYPE});
+      dispatch(getAllIncoTerms());
+    }
+    if (["dom_air", "intl_Air"].includes(activeTab)) {
+      dispatch({ type: GET_AIR_LOCATION_TYPE });
     }
     dispatch(getAllPartiesCustomerData());
     // dispatch({ type: BLANK_INSTANT_SEARCH });
@@ -64,7 +66,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
     // }});
     // setUnitValue(unitobj);
     // setShipmentDetails(shipmentObj);
-  }, [dispatch,activeTab]);
+  }, [dispatch, activeTab]);
 
   const locationOptions = instantRateLocation.map(location => ({
     value: location.id,
@@ -107,6 +109,10 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
     } else {
       dispatch({ type: UPDATE_VALUE_BLANK, payload: 'cargo_date' })
     }
+  }
+  const handleSingleDateChange = (arr, value, target) => {
+    let arrItem = arr;
+    dispatch({ type: UPDATE_SEARCH_INSTANT_RATE_DATE, payload: { arrItem } });
   }
 
   // container handle 
@@ -158,11 +164,11 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
       handleContainerChangeHandler(newReduxObj, name);
     }
 
-    if(newcount === 0){
+    if (newcount === 0) {
       let newArray = [...containerData?.containerArray];
       let updatedArray = newArray.filter((obj) => obj.id !== item.id);
       setContainerData(prev => ({ ...prev, containerArray: updatedArray }));
-    }    
+    }
   }
 
   const handleQuantity = (e, rateId, item, name) => {
@@ -180,7 +186,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
   }
 
   const containerConfirmHandler = () => {
-    console.log(containerData,"containerData");
+    console.log(containerData, "containerData");
     dispatch({ type: UPDATE_SEARCH_INSTANT_RATE_DATA, payload: { name: "container_type", item: { ...containerData } } });
     setIsOpen(false);
   }
@@ -205,7 +211,12 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
   const shipmentDetailsValHandler = (val, name, index) => {
     const list = [...shipmentDetails];
     if (name === 'weight_unit') {
-      list[index].dimensions_unit = ''
+      if(val === 'KG'){
+        list[index].dimensions_unit = 'CM'
+      }
+      if(val === 'Lbs'){
+        list[index].dimensions_unit = 'IN'
+      }
     }
     list[index][name] = val;
     setShipmentDetails(list);
@@ -268,7 +279,6 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                       <div className="icon me-3 d-flex align-items-center justify-content-center">
                         <img className="location_img" src={location_filled} alt="Location" />
                       </div>
-                      {console.log(airLocation,"airLocation")}
                       <div className="con">
                         <label className="form-label">From</label>
                         <Select
@@ -277,7 +287,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                           onChange={(opt) => {
                             handleChangeHandler(opt, "location_from");
                           }}
-                          options={activeTab === "FCL" ? locationOptions : ['dom_air','intl_Air'].includes(activeTab) ? airLocation : []}
+                          options={activeTab === "FCL" ? locationOptions : ['dom_air', 'intl_Air'].includes(activeTab) ? airLocation : []}
                           isOptionDisabled={(option) => option.value === searchForm?.location_to?.value}
                           placeholder="Select Location"
                           menuPlacement="auto"
@@ -308,7 +318,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                           onChange={(opt) => {
                             handleChangeHandler(opt, "location_to");
                           }}
-                          options={activeTab === "FCL" ? locationOptions : ['dom_air','intl_Air'].includes(activeTab) ? airLocation : []}
+                          options={activeTab === "FCL" ? locationOptions : ['dom_air', 'intl_Air'].includes(activeTab) ? airLocation : []}
                           placeholder="Select Location"
                           isOptionDisabled={(option) => option.value === searchForm?.location_from?.value}
                           classNamePrefix="select2-selection form-select"
@@ -335,17 +345,17 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                     <span className={`value ${Object.keys(searchForm?.container_type).length !== 0 ? "value_focus" : ""}`} >
                       {Object.keys(searchForm?.container_type).length !== 0 ? (
                         <>
-                          { searchForm?.container_type?.containerArray?.map((item, index) => (
-                              <span key={item.id}>
-                                {item?.unitNew !== 0 ? ` ${item?.label},` : null}
-                                {/* {item?.unitNew !== 0 ? ` ${item?.label}, unit: "${item?.unitNew}",` : null} */}
-                              </span>
-                            ))
+                          {searchForm?.container_type?.containerArray?.map((item, index) => (
+                            <span key={item.id}>
+                              {item?.unitNew !== 0 ? ` ${item?.label},` : null}
+                              {/* {item?.unitNew !== 0 ? ` ${item?.label}, unit: "${item?.unitNew}",` : null} */}
+                            </span>
+                          ))
                           }
                           {searchForm?.container_type?.cargo_weight?.value !== undefined && searchForm?.container_type?.cargo_weight?.value !== '' ? ` weight: ${searchForm?.container_type?.cargo_weight?.value} ${searchForm?.container_type?.cargo_weight?.weight?.value || ''}` : ''
                           }
                         </>
-                      ) : "Container Details"}                      
+                      ) : "Container Details"}
                     </span>
                   </div>
                   <i className="mdi mdi-chevron-down" />
@@ -455,7 +465,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
           {/* Shipment Details */}
           {["LCL", "intl_Air", "Land", "dom_air"].includes(activeTab) &&
             <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
-              <div className="common_dropdwon_btn_wrap container_combine_drop_wrap">
+              <div className="common_dropdwon_btn_wrap container_combine_drop_wrap shipment_details_wrap">
                 <div id="more_menu" className={`prof_wrap d-flex`} onClick={() => { toggleDropdown(11); }} >
                   <div className="icon d-flex align-items-center justify-content-center">
                     <img src={cube_filled} alt="Avatar" />
@@ -619,9 +629,29 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                 ) : null}
               </div>
             </div>}
-            {console.log(searchForm, "searchForm")}
+
           {/* Cargo Ready Date */}
-          <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
+          <div className={`col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2 air_cargo_date ${mainactiveTab === "air_freight" ? "active" : ""}`}>
+            <div className="prof_wrap calendar_field_wrap d-flex">
+              <div className="icon d-flex align-items-center justify-content-center">
+                <img src={calendar_filled} alt="Avatar" />
+              </div>
+              <div className="con">
+                <label className="form-label">Cargo Ready Date</label>
+                <Flatpickr
+                  value={searchForm?.cargo_date}
+                  className="form-control d-block"
+                  placeholder="Select Date"
+                  options={{
+                    altFormat: "F j, Y",
+                    dateFormat: "Y-m-d"
+                  }}
+                  onChange={handleSingleDateChange}
+                />
+              </div>
+            </div>
+          </div>
+          <div className={`col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2 ocean_cargo_date ${mainactiveTab === "ocean_freight" ? "active" : ""}`}>
             <div className="prof_wrap calendar_field_wrap d-flex">
               <div className="icon d-flex align-items-center justify-content-center">
                 <img src={calendar_filled} alt="Avatar" />
@@ -642,40 +672,72 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
             </div>
           </div>
 
-
           {/* Customer Name */}
-          <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
-            <div className="common_dropdwon_btn_wrap bottom_drop_field incoterm_field_wrap">
-              <div
-                id="more_menu"
-                className={`prof_wrap d-flex justify-content-between ${isOpen && dropId === 6 ? "openmenu" : ""}`}
-                onClick={() => { toggleDropdown(6); }}
-              >
-                <div className="icon d-flex align-items-center justify-content-center">
-                  <img src={cube_filled} alt="Avatar" />
+          {mainactiveTab === "ocean_freight" && (
+            <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
+              <div className="common_dropdwon_btn_wrap bottom_drop_field incoterm_field_wrap">
+                <div
+                  id="more_menu"
+                  className={`prof_wrap d-flex justify-content-between ${isOpen && dropId === 6 ? "openmenu" : ""}`}
+                  onClick={() => { toggleDropdown(6); }}
+                >
+                  <div className="icon d-flex align-items-center justify-content-center">
+                    <img src={cube_filled} alt="Avatar" />
+                  </div>
+                  <div className="con">
+                    <label className="form-label">Customer Name</label>
+                    <Select
+                      value={searchForm?.customerName || ""}
+                      name="customerName"
+                      onChange={(opt) => {
+                        handleChangeHandler(opt, "customerName");
+                      }}
+                      options={customerName?.length !== 0 ? customerName : []}
+                      placeholder="Select Customer"
+                      classNamePrefix="select2-selection form-select"
+                      menuPlacement="auto"
+                    />
+                  </div>
+                  <i className="mdi mdi-chevron-down" />
                 </div>
-                <div className="con">
-                  <label className="form-label">Customer Name</label>
-                  <Select
-                    value={searchForm?.customerName || ""}
-                    name="customerName"
-                    onChange={(opt) => {
-                      handleChangeHandler(opt, "customerName");
-                    }}
-                    options={customerName?.length !== 0 ? customerName : []}
-                    placeholder="Select Customer"
-                    classNamePrefix="select2-selection form-select"
-                    menuPlacement="auto"
-                  />
-                </div>
-                <i className="mdi mdi-chevron-down" />
               </div>
             </div>
-          </div>
+          )}
 
           {/* Advanced Search */}
           {advanceSearch && (
             <>
+              {mainactiveTab === "air_freight" && (
+                <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
+                  <div className="common_dropdwon_btn_wrap bottom_drop_field incoterm_field_wrap">
+                    <div
+                      id="more_menu"
+                      className={`prof_wrap d-flex justify-content-between ${isOpen && dropId === 6 ? "openmenu" : ""}`}
+                      onClick={() => { toggleDropdown(6); }}
+                    >
+                      <div className="icon d-flex align-items-center justify-content-center">
+                        <img src={cube_filled} alt="Avatar" />
+                      </div>
+                      <div className="con">
+                        <label className="form-label">Customer Name</label>
+                        <Select
+                          value={searchForm?.customerName || ""}
+                          name="customerName"
+                          onChange={(opt) => {
+                            handleChangeHandler(opt, "customerName");
+                          }}
+                          options={customerName?.length !== 0 ? customerName : []}
+                          placeholder="Select Customer"
+                          classNamePrefix="select2-selection form-select"
+                          menuPlacement="auto"
+                        />
+                      </div>
+                      <i className="mdi mdi-chevron-down" />
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* cargo type */}
               <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
                 <div className="common_dropdwon_btn_wrap bottom_drop_field">
@@ -807,35 +869,37 @@ const SearchForm = ({ activeTab, searchQuoteHandler }) => {
                           }),
                         }}
                       />
-                    </div>                    
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* Alternate */}
-              <div className="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-2 mt-2">
-                <div className="d-flex py-2">
-                  <span className="me-2">Show Alternate Route</span>
-                  <div className="switch_wrap">
-                    <FormGroup switch>
-                      <Input
-                        type="switch"
-                        checked={searchForm?.alternate_route || false}
-                        onChange={(e) => {
-                          handleChangeHandler(!searchForm?.alternate_route, "alternate_route");
-                        }}
-                      />
-                    </FormGroup>
+              {mainactiveTab === "ocean_freight" && (
+                <div className="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-2 mt-2">
+                  <div className="d-flex py-2">
+                    <span className="me-2">Show Alternate Route</span>
+                    <div className="switch_wrap">
+                      <FormGroup switch>
+                        <Input
+                          type="switch"
+                          checked={searchForm?.alternate_route || false}
+                          onChange={(e) => {
+                            handleChangeHandler(!searchForm?.alternate_route, "alternate_route");
+                          }}
+                        />
+                      </FormGroup>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </>
           )}
 
           <div className="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mt-2 align-self-center">
             <button className="btn p-0 me-3 border-0" onClick={() => { setAdvanceSearch(!advanceSearch) }}><img src={filter_img} alt="filter" width={'20px'} height={'20px'} /></button>
             <button type="button" className='btn btn-primary mt-0' onClick={() => { searchQuoteHandler(); }}
-              disabled={!(!isAnyValueEmpty(searchForm))}>Search</button>
+              disabled={mainactiveTab === "air_freight" ? isAnyValueEmpty(searchForm, ['customerName']) : !(!isAnyValueEmpty(searchForm))}>Search</button>
           </div>
         </div>
       </div>
