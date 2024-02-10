@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { getAllTableVendor, getCustomersData, getVendorsData, updateCustomerSwitchData, updateVendorSwitchData } from '../../store/Parties/actions';
+import { getAllTableVendor, getCustomersCityData, getCustomersData, getVendorsData, updateCustomerSwitchData, updateVendorSwitchData } from '../../store/Parties/actions';
 import { useSelector } from 'react-redux';
 import TableVenders from './TableVenders';
 import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap';
@@ -43,6 +43,7 @@ const Vendors = () => {
 
   useEffect(() => {
     dispatch(getVendorListAction());
+    dispatch(getCustomersCityData())
     dispatch({type: VENDOR_TAB_ACTIVE_TYPE, payload: { tab: 1, details: 'pending', contact: 'pending', document: 'pending' }})
   }, []);
 

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import { Card, CardBody, FormFeedback, Input } from "reactstrap";
 import { optionVendorType } from "../../../../common/data/procurement";
-import { getCustomersCountryData, getCustomersPincodeData, getCustomersStateData } from "../../../../store/Parties/actions";
+import { getCustomersCityData, getCustomersCountryData, getCustomersPincodeData, getCustomersStateData } from "../../../../store/Parties/actions";
 import { getAllSurchargeCategoryData, getAllTableSurchargeAlias } from "../../../../store/Settings/actions";
 import FileUpload from "../../FileUpload";
 import ModalAddNewDepartment from "../../Modal/ModalAddNewDepartment";
@@ -50,7 +50,6 @@ const VenderDetails = ({ companyDetailsFormik }) => {
   }, [parties_state_details, parties_country_details, parties_pincode_details, parties_all_details]);
   
 
-   console.log(companyDetailsFormik.values.city);
   useEffect(() => {
     dispatch(getAllTableSurchargeAlias());
     dispatch(getAllSurchargeCategoryData());
