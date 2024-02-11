@@ -193,7 +193,7 @@ export default function UploadVendorData() {
                     industryType: value?.industryType || null,
                     addresses: [],
                     contacts: [],
-                    documents: newDocuments,
+                    documents: [],
                 }).filter(([_, value]) => value !== null)),
             };
 

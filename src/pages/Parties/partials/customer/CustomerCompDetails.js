@@ -187,7 +187,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                     "status": "ACTIVE",
                     "addresses": [],
                     "contacts": [],
-                    documents: newDocuments,
+                    documents: [],
                 }).filter(([_, value]) => value !== null)),
             }
 
