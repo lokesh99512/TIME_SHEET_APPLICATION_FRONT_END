@@ -151,8 +151,7 @@ const AirFreightCard = ({ data, QuoteModalHandler, mainTab }) => {
                                 </div>
                             </div>
                             <div className="search_card_bottom d-flex justify-content-between align-items-center">
-                                <p className='mb-0'><b>Agent Name:</b> ABC</p>
-                                {console.log(currentButton,"currentButton")}
+                                <p className='mb-0'><b>Agent Name:</b> ABC</p>                             
                                 <div className="btn_wrap d-flex">
                                     <UncontrolledDropdown>
                                         <DropdownToggle className="shadow-none prof_wrap1 btn btn-primary w-100 d-flex justify-space-between" tag="div">
@@ -273,13 +272,12 @@ const AirFreightCard = ({ data, QuoteModalHandler, mainTab }) => {
                                 </div>
                                 <div className="right_details">
                                     <div className="total_wrap">
-                                        <p className="total_price text-center" onClick={() => showDetailsHandler()}><b>₹ 525120</b></p>
+                                        <p className="total_price text-center" onClick={() => showDetailsHandler()}><b>₹ 425120</b></p>
                                     </div>
                                 </div>
                             </div>
                             <div className="search_card_bottom d-flex justify-content-between align-items-center">
                                 <p className='mb-0'><b>Agent Name:</b> ABC</p>
-                                {console.log(currentButton,"currentButton")}
                                 <div className="btn_wrap d-flex">
                                     <UncontrolledDropdown>
                                         <DropdownToggle className="shadow-none prof_wrap1 btn btn-primary w-100 d-flex justify-space-between" tag="div">
@@ -348,13 +346,12 @@ const AirFreightCard = ({ data, QuoteModalHandler, mainTab }) => {
                                 </div>
                                 <div className="right_details">
                                     <div className="total_wrap">
-                                        <p className="total_price text-center" onClick={() => showDetailsHandler()}><b>₹ 525120</b></p>
+                                        <p className="total_price text-center" onClick={() => showDetailsHandler()}><b>₹ 325120</b></p>
                                     </div>
                                 </div>
                             </div>
                             <div className="search_card_bottom d-flex justify-content-between align-items-center">
                                 <p className='mb-0'><b>Agent Name:</b> ABC</p>
-                                {console.log(currentButton,"currentButton")}
                                 <div className="btn_wrap d-flex">
                                     <UncontrolledDropdown>
                                         <DropdownToggle className="shadow-none prof_wrap1 btn btn-primary w-100 d-flex justify-space-between" tag="div">

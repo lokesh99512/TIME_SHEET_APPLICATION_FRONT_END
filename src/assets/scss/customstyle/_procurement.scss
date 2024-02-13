@@ -605,6 +605,39 @@ input[type="number"]{
     .form-select__menu {
         z-index: 99;
     }
+    .custom_checkbox_wrap {
+        display: flex;
+        gap: 10px;
+        .checkbox {
+            margin: 0;
+            border: 1px solid $neutral_2;
+            border-radius: 5px;
+            padding: 5px;
+            position: relative;
+            flex: 0 0 23%;
+            max-width: 23%;
+            cursor: pointer;
+            &.active{
+                background: $primary_7;
+                .checkmark{
+                    color: $white;
+                }
+            }
+            .icon{
+                width: 44px;
+                height: 44px;
+                margin: 0 auto 12px;
+                img{
+                    max-width: 100%;
+                }
+            }
+            .checkmark {
+                display: block;
+                text-align: center;
+                @include font($font-weight-medium,11px,normal,$neutral_8);
+            }
+        }
+    }
 }
 
 // ---------- create sales --------------------------------------
@@ -1307,34 +1340,34 @@ input[type="number"]{
             }
         }
     }
-    .accordion-body{
-        padding-top: 0;
-        .field_wrap {
-            display: flex;
-            gap: 12px;
-            .input_field {
-                width: 100%;
+    .field_wrap {
+        display: flex;
+        gap: 12px;
+        .input_field {
+            width: 100%;
+        }
+        .field_dropdown {
+            position: relative;
+            input[type="number"]{
+                padding-right: 60px;
             }
-            .field_dropdown {
-                position: relative;
-                input[type="number"]{
-                    padding-right: 60px;
-                }
-                .dropdown {
-                    position: absolute;
-                    right: 1px;
-                    bottom: 1px;
-                    & > a {
-                        @include font($font-weight-normal,14px,36px,$neutral_8);
-                        padding: 0;
-                        height: 36px;
-                        padding-right: 10px;
-                        background: $white;
-                        @include borderRadius(8px);
-                    }
+            .dropdown {
+                position: absolute;
+                right: 1px;
+                bottom: 1px;
+                & > a {
+                    @include font($font-weight-normal,14px,36px,$neutral_8);
+                    padding: 0;
+                    height: 36px;
+                    padding-right: 10px;
+                    background: $white;
+                    @include borderRadius(8px);
                 }
             }
         }
+    }
+    .accordion-body{
+        padding-top: 0;
     }    
     .dimention_field{
         .form-label{
