@@ -1,10 +1,9 @@
 import classnames from "classnames";
-import moment from "moment";
 import { default as React, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { Nav, NavItem, NavLink } from 'reactstrap';
 import { filter_icon } from '../../../assets/images';
-import FilterSearchResult from '../../Sales/partials/FilterSearchResult';
+import AirFilterSearch from "./AirFilterSearch";
 import AirFreightCard from "./AirFreightCard";
 
 const AirFreightResultComp = ({ QuoteModalHandler, searchResult,mainTab }) => {
@@ -18,6 +17,8 @@ const AirFreightResultComp = ({ QuoteModalHandler, searchResult,mainTab }) => {
         validity: '',
         charge_currency: "INR",
         charges: [],
+        d_timeSlot: [],
+        a_timeSlot: [],
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
     const { quote_selected_data, instantSearchResultCopy, instantInquiryId, searchForm } = useSelector((state) => state.instantRate);
@@ -118,7 +119,7 @@ const AirFreightResultComp = ({ QuoteModalHandler, searchResult,mainTab }) => {
         <>
             <div className="search_result_wrap">
                 <div className="length_wrap">
-                    <span>{airResult?.length || 1} Search Results</span>
+                    <span>{airResult?.length || 3} Search Results</span>
 
                     {searchResult && <button type="button" className='btn btn-primary ms-auto quote_btn' onClick={QuoteModalHandler}
                         disabled={quote_selected_data?.length === 0}>Quote Now</button>}
@@ -164,7 +165,7 @@ const AirFreightResultComp = ({ QuoteModalHandler, searchResult,mainTab }) => {
                 )}
             </div>
             {/* Filter Modal */}
-            <FilterSearchResult isRight={isRight} filterLoader={filterLoader} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} carriersList={carriersList} />
+            <AirFilterSearch isRight={isRight} filterLoader={filterLoader} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} carriersList={carriersList} />
         </>
     );
 }

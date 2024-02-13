@@ -2383,13 +2383,21 @@ const optionChargeBasis = [
     { label: "Per Ton", value: "per_ton" },
     { label: "Per Ton/Per Container", value: "per_ton_container" },
     { label: "Per CBM", value: "per_cbm" },
-  ];
+];
+
+const optionFlightMode = [
+    { label: "Prime", value: "prime" },
+    { label: "GCR", value: "GCR" },    
+    { label: "Lean", value: "lean" },    
+]
+
 
 export {
     quotationBreadcrumb,quotationTableData,optionCustomerName,optionServiceType,optionTransportBy,optionContainerType,optionIncoterm,optionCargoType,optionCurrency,
     optionlocationType,countryList,optionPortList,optionLandTransportBy,searchQuotationResult,weightUnitOption,optionContainerTypeWithoutRefri,optionContainerTypeRefrigerated,
     optionPickupCharge,optionMarkupType,optionCurrencyCharges,optionOriginQuote,optionModeQuote,optionDestQuote,optionStatusQuote,optionQuoteValueQuote,searchQuotationResult1,searchQuotationResult2,searchQuotationResult3,
     cargoWeightUnitOption,optionOriginPortCharge,optionOceanCharge,optionPortDischargeCharge,optionQuoteContacttitle,optionQuoteContactCode,inquiryBreadcrumb,
+    optionFlightMode,
 
     inquiryTableData,optionStatusInquiry,optionChargeBasis
 }
