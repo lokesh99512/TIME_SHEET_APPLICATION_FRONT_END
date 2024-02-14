@@ -1,13 +1,12 @@
 import { FieldArray, FormikProvider, useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
-import Select from 'react-select';
-import { Card, CardBody, FormFeedback, Input } from 'reactstrap';
-import { marginType, optionCustdepartment, optionCustdesignation, optionCustopCode, optionCusttitle } from '../../../../common/data/settings';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import Flatpickr from "react-flatpickr";
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import DatePicker from 'react-datepicker';
-import * as Yup from "yup";
+import Select from 'react-select';
+import { Card, CardBody, Input } from 'reactstrap';
+import { optionMarkupType } from '../../../../common/data/common';
+import { marginType } from '../../../../common/data/settings';
 import { GET_CONTAINER_DATA } from '../../../../store/Global/actiontype';
 const CustomerFclFreight = () => {
     const { customer_id } = useSelector((state) => state?.customer);
@@ -21,7 +20,7 @@ const CustomerFclFreight = () => {
         vendor_data, container_data
     } = useSelector((state) => state?.globalReducer);
 
-    
+
     useEffect(() => {
         let vendorlist = vendor_data?.content?.map((item) => {
             return { label: item?.name, value: item?.name, version: item?.version, id: item?.id, type: item?.vendorType }
@@ -29,61 +28,35 @@ const CustomerFclFreight = () => {
         setAllVendorName(vendorlist);
         console.log(vendor_data);
     }, [vendor_data]);
-    
+
     useEffect(() => {
         dispatch({ type: GET_CONTAINER_DATA });
-    },[])
-    console.log(container_data, "container");
-    const contactsFormik = useFormik({
+    }, [])
+
+    const fclFreightRateFormik = useFormik({
         initialValues: {
-            contacts: [
+            from_date: "",
+            to_date: "",
+            freight_rate: [
                 {
-                    title: "",
-                    name: navigateState?.state?.data?.contactName || "",
-                    opCode: "",
-                    phoneNumber: navigateState?.state?.data?.contactNo || "",
+                    carrier: "",
+                    container: { label: "ALL", value: "all" },
+                    margin_type: { label: "Percentage", value: "PERCENTAGE" },
+                    margin: 10,
                 },
             ],
-            surcharge: [
+            surcharge_rate: [
                 {
-                    title: "",
-                    name: navigateState?.state?.data?.contactName || "",
-                    opCode: "",
-                    phoneNumber: navigateState?.state?.data?.contactNo || "",
+                    carrier: "",
+                    container: { label: "ALL", value: "all" },
+                    margin_type: { label: "Percentage", value: "PERCENTAGE" },
+                    margin: 10,
                 },
             ],
         },
-        // validationSchema: Yup.object({
-        //     contacts: Yup.array().of(
-        //         Yup.object({
-        //             name: Yup.string().required("Please Enter Customer Name"),
-        //             emailId: Yup.string().email('Invalid email address').required('Email is required'),
-        //             phoneNumber: Yup.string().required("Please Enter Your Phone Number")
-        //         })
-        //     ),
-        // }),
-        // onSubmit: (values) => {
-        //     let data = {
-        //         ...Object.fromEntries(Object.entries({
-        //             "id": (navigateState?.state?.data?.id) ? navigateState?.state?.data?.id : customer_id.id || null,
-        //             "version": (navigateState?.state?.data?.version) ? navigateState?.state?.data?.version : customer_id.version || 0,
-        //             contacts: values?.contacts?.map((val) => {
-        //                 return {
-        //                     ...Object.fromEntries(Object.entries({
-        //                         "contactName": val?.name || null,
-        //                         "contactNo": val?.phoneNumber || null,
-        //                         "contactEmail": val?.emailId || null,
-        //                         "department": val?.department || null,
-        //                         "designation": val?.designation || null,
-        //                     }).filter(([_, value]) => value !== null)),
-        //                 }
-        //             })
-        //         }).filter(([_, value]) => value !== null)),
-        //     }
-        //     console.log(data, "data---------------");
-        //     //  dispatch(postCustomerContactAction(data));
-        //     // toggleTabProgress(3);
-        // },
+        onSubmit: (values) => {
+            console.log(values, "values");
+        },
     });
 
     const onClickSkip = () => {
@@ -92,7 +65,7 @@ const CustomerFclFreight = () => {
     return (
         <>
             <div>
-                <FormikProvider value={contactsFormik}>
+                <FormikProvider value={fclFreightRateFormik}>
                     <>
                         <div className="mb-1">
                             <h5>Rate EffectCtive Date</h5>
@@ -103,24 +76,32 @@ const CustomerFclFreight = () => {
                                     <div className="col-12 col-md-4">
                                         <div className="mb-2">
                                             <label className="form-label">From Date</label>
-                                            <DatePicker
-                                                // selected={fromDate}
-                                                // onChange={(date) => setFromDate(date)}
-                                                placeholderText="Select From Date"
-                                                className="form-control"
-                                                dateFormat="yyyy-MM-dd"
+                                            <Flatpickr
+                                                // value={fclFreightRateFormik?.values?.from_date}
+                                                name='from_date'
+                                                className="form-control d-block"
+                                                placeholder="Select From Date"
+                                                options={{
+                                                    altFormat: "F j, Y",
+                                                    dateFormat: "Y-m-d"
+                                                }}
+                                                // onChange={fclFreightRateFormik.handleChange}
                                             />
                                         </div>
                                     </div>
                                     <div className="col-12 col-md-4">
                                         <div>
                                             <label className="form-label">To Date</label>
-                                            <DatePicker
-                                                // selected={toDate}
-                                                // onChange={(date) => setToDate(date)}
-                                                placeholderText="Select To Date"
-                                                className="form-control"
-                                                dateFormat="yyyy-MM-dd"
+                                            <Flatpickr
+                                                // value={fclFreightRateFormik?.values?.to_date}
+                                                name='to_date'
+                                                className="form-control d-block"
+                                                placeholder="Select From Date"
+                                                options={{
+                                                    altFormat: "F j, Y",
+                                                    dateFormat: "Y-m-d"
+                                                }}
+                                                // onChange={fclFreightRateFormik.handleChange}
                                             />
                                         </div>
                                     </div>
@@ -131,11 +112,11 @@ const CustomerFclFreight = () => {
                         <div className="mb-1">
                             <h5>Add Freight Rates</h5>
                         </div>
-                        <FieldArray name="contacts" validateOnChange={false}>
+                        <FieldArray name="freight_rate" validateOnChange={false}>
                             {(arrayHelpers) => (
                                 <Card >
                                     <CardBody>
-                                        {contactsFormik?.values?.contacts?.map((contact, index) => (
+                                        {fclFreightRateFormik?.values?.freight_rate?.map((val, index) => (
                                             <div key={index}>
                                                 <div className='row'>
                                                     <div className="row align-items-end">
@@ -143,9 +124,13 @@ const CustomerFclFreight = () => {
                                                             <div className="mb-2">
                                                                 <label className="form-label">Select Carrier/Vendor</label>
                                                                 <Select
-                                                                    name='customerType'
+                                                                    name={`freight_rate[${index}].carrier`}
+                                                                    value={val.carrier || ''}
                                                                     placeholder="Select Carrier/Vendor"
-                                                                    options={AllVendorName || []}
+                                                                    onChange={(e) => {
+                                                                        fclFreightRateFormik.setFieldValue(`freight_rate[${index}].carrier`, e);
+                                                                    }}
+                                                                    options={AllVendorName ? [...AllVendorName, { label: "ALL", value: "all" }] : []}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
                                                             </div>
@@ -154,9 +139,13 @@ const CustomerFclFreight = () => {
                                                             <div className="mb-2">
                                                                 <label className="form-label">Container Type</label>
                                                                 <Select
-                                                                    name='containerType'
+                                                                    value={val.container || ''}
+                                                                    name={`freight_rate[${index}].container`}
                                                                     placeholder="Select Container Type"
-                                                                    options={container_data || []}
+                                                                    onChange={(e) => {
+                                                                        fclFreightRateFormik.setFieldValue(`freight_rate[${index}].container`, e);
+                                                                    }}
+                                                                    options={container_data ? [...container_data, { label: "ALL", value: "all" }] : []}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
                                                             </div>
@@ -165,9 +154,13 @@ const CustomerFclFreight = () => {
                                                             <div className="mb-2">
                                                                 <label className="form-label">Margin Type</label>
                                                                 <Select
-                                                                    name='marginType'
+                                                                    value={val.margin_type || ''}
+                                                                    name={`freight_rate[${index}].margin_type`}
                                                                     placeholder="Margin Type"
-                                                                    options={marginType || []}
+                                                                    onChange={(e) => {
+                                                                        fclFreightRateFormik.setFieldValue(`freight_rate[${index}].margin_type`, e);
+                                                                    }}
+                                                                    options={optionMarkupType || []}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
                                                             </div>
@@ -176,15 +169,17 @@ const CustomerFclFreight = () => {
                                                             <div className="mb-2">
                                                                 <label className="form-label">Margin</label>
                                                                 <Input
+                                                                    value={val.margin || ''}
                                                                     type="number"
-                                                                    name="number"
+                                                                    name={`freight_rate[${index}].margin`}
+                                                                    onChange={fclFreightRateFormik.handleChange}
                                                                     className="form-control"
                                                                     placeholder=""
                                                                 />
                                                             </div>
                                                         </div>
                                                         <div className="col-12 col-md-1">
-                                                            {contactsFormik.values.contacts.length >
+                                                            {fclFreightRateFormik.values.freight_rate.length >
                                                                 1 && (
                                                                     <button
                                                                         className="btn m-2 border"
@@ -203,11 +198,13 @@ const CustomerFclFreight = () => {
                                         <div>
                                             <button type="button" className='btn btn-primary'
                                                 onClick={() => arrayHelpers.push({
-                                                    title: "",
-                                                    name: '',
-                                                    opCode: "",
-                                                    phoneNumber: '',
-                                                })}>
+                                                    carrier: "",
+                                                    container: { label: "ALL", value: "all" },
+                                                    margin_type: { label: "Percentage", value: "PERCENTAGE" },
+                                                    margin: 10,
+                                                })}
+                                                disabled={fclFreightRateFormik?.values?.freight_rate?.[0]?.carrier?.value === "all" || false}
+                                                >
                                                 Add
                                             </button>
                                         </div>
@@ -219,11 +216,12 @@ const CustomerFclFreight = () => {
                         <div className="mb-1">
                             <h5>Add Ocean Surcharge Rates</h5>
                         </div>
-                        <FieldArray name="surcharge" validateOnChange={false}>
+                        {console.log(fclFreightRateFormik?.values,"values")}
+                        <FieldArray name="surcharge_rate" validateOnChange={false}>
                             {(arrayHelpers) => (
                                 <Card >
                                     <CardBody>
-                                        {contactsFormik?.values?.surcharge?.map((contact, index) => (
+                                        {fclFreightRateFormik?.values?.surcharge_rate?.map((val, index) => (
                                             <div key={index}>
                                                 <div className='row'>
                                                     <div className="row align-items-end">
@@ -231,9 +229,13 @@ const CustomerFclFreight = () => {
                                                             <div className="mb-2">
                                                                 <label className="form-label">Select Carrier/Vendor</label>
                                                                 <Select
-                                                                    name='customerType'
+                                                                    name={`surcharge_rate[${index}].carrier`}
+                                                                    value={val.carrier || ''}
                                                                     placeholder="Select Carrier/Vendor"
-                                                                    options={AllVendorName || []}
+                                                                    onChange={(e) => {
+                                                                        fclFreightRateFormik.setFieldValue(`surcharge_rate[${index}].carrier`, e);
+                                                                    }}
+                                                                    options={AllVendorName ? [...AllVendorName, { label: "ALL", value: "all" }] : []}                                                                    
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
                                                             </div>
@@ -242,9 +244,13 @@ const CustomerFclFreight = () => {
                                                             <div className="mb-2">
                                                                 <label className="form-label">Container Type</label>
                                                                 <Select
-                                                                    name='containerType'
+                                                                    value={val.container || ''}
+                                                                    name={`surcharge_rate[${index}].container`}
                                                                     placeholder="Select Container Type"
-                                                                    options={container_data || []}
+                                                                    onChange={(e) => {
+                                                                        fclFreightRateFormik.setFieldValue(`surcharge_rate[${index}].container`, e);
+                                                                    }}
+                                                                    options={container_data ? [...container_data, { label: "ALL", value: "all" }] : []}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
                                                             </div>
@@ -253,9 +259,13 @@ const CustomerFclFreight = () => {
                                                             <div className="mb-2">
                                                                 <label className="form-label">Margin Type</label>
                                                                 <Select
-                                                                    name='marginType'
+                                                                    value={val.margin_type || ''}
+                                                                    name={`surcharge_rate[${index}].margin_type`}
                                                                     placeholder="Margin Type"
-                                                                    options={marginType || []}
+                                                                    onChange={(e) => {
+                                                                        fclFreightRateFormik.setFieldValue(`surcharge_rate[${index}].margin_type`, e);
+                                                                    }}
+                                                                    options={optionMarkupType || []}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
                                                             </div>
@@ -264,15 +274,17 @@ const CustomerFclFreight = () => {
                                                             <div className="mb-2">
                                                                 <label className="form-label">Margin</label>
                                                                 <Input
+                                                                    value={val.margin || ''}
                                                                     type="number"
-                                                                    name="number"
+                                                                    name={`surcharge_rate[${index}].margin`}
+                                                                    onChange={fclFreightRateFormik.handleChange}
                                                                     className="form-control"
                                                                     placeholder=""
                                                                 />
                                                             </div>
                                                         </div>
                                                         <div className="col-12 col-md-1">
-                                                            {contactsFormik.values.surcharge.length >
+                                                            {fclFreightRateFormik.values.surcharge_rate.length >
                                                                 1 && (
                                                                     <button
                                                                         className="btn m-2 border"
@@ -291,14 +303,13 @@ const CustomerFclFreight = () => {
                                         <div>
                                             <button type="button" className='mb-1 btn btn-primary'
                                                 onClick={() => arrayHelpers.push({
-                                                    title: "",
-                                                    name: '',
-                                                    opCode: "",
-                                                    phoneNumber: '',
-                                                    emailId: '',
-                                                    department: '',
-                                                    designation: '',
-                                                })}>
+                                                    carrier: "",
+                                                    container: { label: "ALL", value: "all" },
+                                                    margin_type: { label: "Percentage", value: "PERCENTAGE" },
+                                                    margin: 10,
+                                                })}
+                                                disabled={fclFreightRateFormik?.values?.surcharge_rate?.[0]?.carrier?.value === "all" || false}
+                                                >
                                                 Add
                                             </button>
                                         </div>
@@ -314,7 +325,7 @@ const CustomerFclFreight = () => {
                     <button
                         type="button"
                         className="btn btn-primary d-flex align-items-center"
-                        onClick={contactsFormik.handleSubmit}
+                        onClick={fclFreightRateFormik.handleSubmit}
                     >
                         Save
                     </button>

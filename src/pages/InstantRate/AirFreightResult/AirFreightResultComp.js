@@ -15,10 +15,12 @@ const AirFreightResultComp = ({ QuoteModalHandler, searchResult,mainTab }) => {
         carriers: [],
         agents: [],
         validity: '',
+        commodity: '',
         charge_currency: "INR",
         charges: [],
         d_timeSlot: [],
         a_timeSlot: [],
+        stops_from: [],
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
     const { quote_selected_data, instantSearchResultCopy, instantInquiryId, searchForm } = useSelector((state) => state.instantRate);

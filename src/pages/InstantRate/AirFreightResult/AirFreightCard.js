@@ -185,16 +185,16 @@ const AirFreightCard = ({ data, QuoteModalHandler, mainTab }) => {
                                         <p className="time">02:40</p>
                                         <p className="date">Mon, 12 February, 2024</p>
                                     </div>
-                                    <div className="origin_details">
+                                    {/* <div className="origin_details">
                                         <p>Chatrapati Shivaji</p>
                                         <p className="time">02:40</p>
                                         <p className="date">Mon, 12 February, 2024</p>
-                                    </div>
-                                    <div className="destination_details">
+                                    </div> */}
+                                    {/* <div className="destination_details">
                                         <p>Bengaluru</p>
                                         <p className="time">04:40</p>
                                         <p className="date">Mon, 12 February, 2024</p>
-                                    </div>
+                                    </div> */}
                                     <div className="destination_details">
                                         <p>Bengaluru</p>
                                         <p className="time">04:40</p>

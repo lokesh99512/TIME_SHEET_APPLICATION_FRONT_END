@@ -582,7 +582,11 @@ export default function UploadPortLocalChargesData() {
                                                                 onChange={(e) => {
                                                                   formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].containerType`, e);
                                                                 }}
-                                                                options={subItem?.cargoType?.value === "GENERAL" ? [...generalContainerOpt, { label: "ALL", value: "all" }] : subItem?.cargoType?.value === "REFRIGERATED" ? [...refrigeContainerOpt, { label: "ALL", value: "all" }] : [...container_data, { label: "ALL", value: "all" }]}
+                                                                options={container_data ? 
+                                                                  subItem?.cargoType?.value === "GENERAL" ? [...generalContainerOpt, { label: "ALL", value: "all" }] : 
+                                                                  subItem?.cargoType?.value === "REFRIGERATED" ? [...refrigeContainerOpt, { label: "ALL", value: "all" }] : 
+                                                                  [...container_data, { label: "ALL", value: "all" }] : []
+                                                                }
                                                                 classNamePrefix="select2-selection form-select"
                                                               />
                                                             </div>

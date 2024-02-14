@@ -2326,10 +2326,6 @@ const optionPortDischargeCharge = [
     { label: "CIC", value: "CIC" }
 ];
 
-const optionMarkupType = [
-    { label: "FLAT", value: "FLAT" },
-    { label: "Percentage", value: "PERCENTAGE" },
-];
 const optionCurrencyCharges = [
     {value: "gbp", label: "Pound", code: '£'},
     {value: "$", label: "USD", code: '$'},
@@ -2391,13 +2387,20 @@ const optionFlightMode = [
     { label: "Lean", value: "lean" },    
 ]
 
+const optionCommodity = [
+    { label: "General", value: "general" },
+    { label: "SCR", value: "SCR" },    
+    { label: "Hazardous", value: "hazardous" },    
+    { label: "Perishable", value: "perishable" },    
+]
+
 
 export {
     quotationBreadcrumb,quotationTableData,optionCustomerName,optionServiceType,optionTransportBy,optionContainerType,optionIncoterm,optionCargoType,optionCurrency,
     optionlocationType,countryList,optionPortList,optionLandTransportBy,searchQuotationResult,weightUnitOption,optionContainerTypeWithoutRefri,optionContainerTypeRefrigerated,
-    optionPickupCharge,optionMarkupType,optionCurrencyCharges,optionOriginQuote,optionModeQuote,optionDestQuote,optionStatusQuote,optionQuoteValueQuote,searchQuotationResult1,searchQuotationResult2,searchQuotationResult3,
+    optionPickupCharge,optionCurrencyCharges,optionOriginQuote,optionModeQuote,optionDestQuote,optionStatusQuote,optionQuoteValueQuote,searchQuotationResult1,searchQuotationResult2,searchQuotationResult3,
     cargoWeightUnitOption,optionOriginPortCharge,optionOceanCharge,optionPortDischargeCharge,optionQuoteContacttitle,optionQuoteContactCode,inquiryBreadcrumb,
-    optionFlightMode,
+    optionFlightMode,optionCommodity,
 
     inquiryTableData,optionStatusInquiry,optionChargeBasis
 }
