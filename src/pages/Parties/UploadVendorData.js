@@ -96,7 +96,7 @@ export default function UploadVendorData() {
             openSaveConfirmModal();
         }
     };
-         console.log(vendor_id);
+    console.log(vendor_id);
     const companyDetailsFormik = useFormik({
         enableReinitialize: true,
         initialValues: {
@@ -209,26 +209,26 @@ export default function UploadVendorData() {
     const contactsFormik = useFormik({
         initialValues: {
             ...(!!(navigateState?.state?.data?.contacts && navigateState?.state?.data?.contacts.length > 0) && {
-            contacts: navigateState?.state?.data?.contacts.map(contact => ({
-                title: "",
-                contactName: contact.contactName || "",
-                contactNo: contact.contactNo || "",
-                contactEmail: contact.contactEmail || "",
-                department: contact.department || "",
-                designation: contact.designation || "",
-                opCode: ""
-            })),
-        })|| {
-            contacts: [
-                {
-                    contactName: navigateState?.state?.data?.contactName || "",
-                    contactNo: navigateState?.state?.data?.contactNo || "",
-                    contactEmail: navigateState?.state?.data?.contactEmail || "",
-                    department: navigateState?.state?.data?.department || "",
-                    designation: navigateState?.state?.data?.designation || "",
-                }
-            ]
-        }
+                contacts: navigateState?.state?.data?.contacts.map(contact => ({
+                    title: "",
+                    contactName: contact.contactName || "",
+                    contactNo: contact.contactNo || "",
+                    contactEmail: contact.contactEmail || "",
+                    department: contact.department || "",
+                    designation: contact.designation || "",
+                    opCode: ""
+                })),
+            }) || {
+                contacts: [
+                    {
+                        contactName: navigateState?.state?.data?.contactName || "",
+                        contactNo: navigateState?.state?.data?.contactNo || "",
+                        contactEmail: navigateState?.state?.data?.contactEmail || "",
+                        department: navigateState?.state?.data?.department || "",
+                        designation: navigateState?.state?.data?.designation || "",
+                    }
+                ]
+            }
         },
         validationSchema: Yup.object({
             contacts: Yup.array().of(
@@ -264,10 +264,13 @@ export default function UploadVendorData() {
         initialValues: {
             ...(!!(navigateState?.state?.data?.documents && navigateState?.state?.data?.documents.length > 0) && {
                 document:
-                    navigateState?.state?.data?.documents.map(document => ({
+                    navigateState?.state?.data?.documents.map((document, index, array) => ({
                         documentType: document?.documentType || "",
-                        uploadDocument: document?.documentPath || "",
-                    })),
+                        uploadDocument: index === array.length - 1 ? "" : document?.documentPath || "",
+                        documentPath: document?.documentPath || "",
+                        id: document?.id || "",
+                        version: document?.version || 0,
+                    }))
             }) || {
                 document: [{
                     documentType: document?.documentType || "",
@@ -298,14 +301,16 @@ export default function UploadVendorData() {
                                     ...Object.fromEntries(Object.entries({
                                         "documentType": val?.documentType || '',
                                         "document": null,
-                                        "documentPath": null || '',
+                                        "documentPath": val?.documentPath || '',
+                                        "id": val?.id || null,
+                                        "version": val?.version || 0
                                     }).filter(([_, value]) => value !== null)),
                                 }
                             ]
                         }).filter(([_, value]) => value !== null)),
                     }
                 }
-            }); 
+            });
             const allDocData = data.reduce((accumulator, currentValue) => {
                 return accumulator.concat(currentValue.docdata.documents);
             }, []);
@@ -316,8 +321,8 @@ export default function UploadVendorData() {
             };
             const formDataArray = data?.map((document) => {
                 const formData = new FormData();
-                formData.append('file', document.docfile); 
-                formData.append('tenantVendor', new Blob([JSON.stringify(newDocData)], { type: "application/json" })); 
+                formData.append('file', document.docfile);
+                formData.append('tenantVendor', new Blob([JSON.stringify(newDocData)], { type: "application/json" }));
                 return formData;
             });
 

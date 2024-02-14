@@ -38,10 +38,28 @@ const TabThreeDocuments = ({ viewData }) => {
                         <span className="data">{viewData?.documentType || "-"}</span>
                       </div>
                       <div className="details">
-                        <span className="title">Uploaded Document:</span>
-                        <span className="data">{viewData?.documentPath || "-"}</span>
-                        {/* <img src={doc} alt={viewData?.uploadDocument} width={150} height={120} /> */}
-                      </div>
+                      <span className="title">Uploaded Document:</span>
+                      <span className="data">{viewData?.documentPath || "-"}</span>
+                      {viewData?.documentPath && (
+                        <>
+                          {viewData?.documentPath.endsWith(".jpg") ||viewData?.documentPath.endsWith(".JPG") || viewData?.documentPath.endsWith(".jpeg")||viewData?.documentPath.endsWith(".JPEG") || viewData?.documentPath.endsWith(".png") || viewData?.documentPath.endsWith(".PNG")? (
+                            <img src={viewData?.logo} alt={viewData?.uploadDocument} width={150} height={120} />
+                          ) : viewData?.documentPath.endsWith(".pdf") ? (
+                            <a href={viewData?.logo} download>
+                              <span>Download PDF</span>
+                            </a>
+                          ) : viewData?.documentPath.endsWith(".xlsx") || viewData?.documentPath.endsWith(".xls") ? (
+                            <a href={viewData?.logo} download>
+                              <span>Download Excel</span>
+                            </a>
+                          ) : (
+                            <a href={viewData?.logo} download>
+                            <span>Download</span>
+                          </a>
+                          )}
+                        </>
+                      )}
+                    </div>
                     </div>
                   </div>
                 )
