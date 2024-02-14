@@ -5,6 +5,7 @@ import Select from "react-select";
 import { Offcanvas, OffcanvasBody, OffcanvasHeader } from 'reactstrap';
 import CheckboxCommon from '../../Common/CheckboxCommon';
 import { evening_active, evening_inactive, morning_active, morning_inactive, noon_active, noon_inactive } from '../../../assets/images';
+import { optionCommodity } from '../../../common/data/sales';
 
 const AirFilterSearch = ({ isRight,filterLoader, toggleRightCanvas, filterDetails, setfilterDetails, applyFilterHandler, clearValueHandler,carriersList }) => {
     const [AllVendors, setAllVendors] = useState([]);
@@ -101,7 +102,7 @@ const AirFilterSearch = ({ isRight,filterLoader, toggleRightCanvas, filterDetail
                                 <div className="col-lg-12">
                                     <label htmlFor='agents' className="form-label">Agents</label>
                                     <Select
-                                        value={filterDetails.agents}
+                                        value={filterDetails.agents || ''}
                                         name='agents'
                                         isMulti
                                         options={Array.from(AllVendors)?.filter(([key]) => key !== "CARRIER").flatMap(([, values]) => values) || []}
@@ -124,84 +125,121 @@ const AirFilterSearch = ({ isRight,filterLoader, toggleRightCanvas, filterDetail
                                         <CheckboxCommon label={'Delivery Charges'} id={'DESTINATION_INLAND_CHARGES'} name={'DESTINATION_INLAND_CHARGES'} handleCheckbox={handleCheckbox} values={filterDetails.charges} parentName={'charges'} />
                                     </div>
                                 </div>
+                                {searchForm?.location_from?.label && (
+                                    <>                                    
+                                    <div className="col-lg-12">
+                                        <span className="divider"></span>
+                                    </div>
+                                    <div className="col-lg-12">
+                                        <p className="form-label">Stops From {searchForm?.location_from?.value}</p>
+                                        <div className="checkbox_wrap">
+                                            <CheckboxCommon label={'Non Stop'} id={'non_stop'} name={'non_stop'} className={'mb-3'} handleCheckbox={handleCheckbox} values={filterDetails.stops_from} parentName={'stops_from'} />
+                                            <CheckboxCommon label={'1 Stop'} id={'1_stop'} name={'1_stop'} className={'mb-3'} handleCheckbox={handleCheckbox} values={filterDetails.stops_from} parentName={'stops_from'}  />
+                                            <CheckboxCommon label={'1+ Stop'} id={'more_stop'} name={'more_stop'} handleCheckbox={handleCheckbox} values={filterDetails.stops_from} parentName={'stops_from'}  />
+                                        </div>
+                                    </div>
+                                    </>                                    
+                                )}
+                                {searchForm?.location_from?.label && (
+                                    <>                                    
+                                        <div className="col-lg-12">
+                                            <span className="divider"></span>
+                                        </div>
+                                        <div className="col-lg-12">
+                                            <p className="form-label">Departure From {searchForm?.location_from?.value}</p>
+                                            <div className="custom_checkbox_wrap">
+                                                <div className={`checkbox c_morning ${filterDetails?.d_timeSlot?.includes('morning') ? 'active' : ''}`} onClick={() => { handleCheckbox('morning', !filterDetails?.d_timeSlot?.includes('morning'), 'd_timeSlot') }}>
+                                                    <p className="icon">
+                                                        <img src={filterDetails?.d_timeSlot?.includes('morning') ? morning_active : morning_inactive} alt="morning" />
+                                                    </p>
+                                                    <span className="checkmark">Before 6 AM</span>
+                                                </div>
+                                                <div className={`checkbox c_noon ${filterDetails?.d_timeSlot?.includes('noon') ? 'active' : ''}`}
+                                                    onClick={() => { handleCheckbox('noon', !filterDetails?.d_timeSlot?.includes('noon'), 'd_timeSlot') }}
+                                                >
+                                                    <p className="icon">
+                                                        <img src={filterDetails?.d_timeSlot?.includes('noon') ? noon_active : noon_inactive} alt="noon" />
+                                                    </p>
+                                                    <span className="checkmark">6 AM - 12 PM</span>
+                                                </div>
+                                                <div className={`checkbox c_evening ${filterDetails?.d_timeSlot?.includes('evening') ? 'active' : ''}`}
+                                                    onClick={() => { handleCheckbox('evening', !filterDetails?.d_timeSlot?.includes('evening'), 'd_timeSlot') }}
+                                                >
+                                                    <p className="icon">
+                                                        <img src={filterDetails?.d_timeSlot?.includes('evening') ? evening_active : evening_inactive} alt="evening" />
+                                                    </p>
+                                                    <span className="checkmark">12 AM - 6 PM</span>
+                                                </div>
+                                                <div className={`checkbox c_night ${filterDetails?.d_timeSlot?.includes('night') ? 'active' : ''}`}
+                                                    onClick={() => { handleCheckbox('night', !filterDetails?.d_timeSlot?.includes('night'), 'd_timeSlot') }}
+                                                >
+                                                    <p className="icon">
+                                                        <img src={filterDetails?.d_timeSlot?.includes('night') ? noon_active : noon_inactive} alt="night" />
+                                                    </p>
+                                                    <span className="checkmark">After 6 PM</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+                                {searchForm?.location_to?.label && (
+                                    <>                                    
+                                        <div className="col-lg-12">
+                                            <span className="divider"></span>
+                                        </div>
+                                        <div className="col-lg-12">
+                                            <p className="form-label">Arrival at {searchForm?.location_to?.value}</p>
+                                            <div className="custom_checkbox_wrap">
+                                                <div 
+                                                    className={`checkbox c_morning ${filterDetails?.a_timeSlot?.includes('morning') ? 'active' : ''}`} 
+                                                    onClick={() => { handleCheckbox('morning', !filterDetails?.a_timeSlot?.includes('morning'), 'a_timeSlot') }}
+                                                >
+                                                    <p className="icon">
+                                                        <img src={filterDetails?.a_timeSlot?.includes('morning') ? morning_active : morning_inactive} alt="morning" />
+                                                    </p>
+                                                    <span className="checkmark">Before 6 AM</span>
+                                                </div>
+                                                <div className={`checkbox c_noon ${filterDetails?.a_timeSlot?.includes('noon') ? 'active' : ''}`}
+                                                    onClick={() => { handleCheckbox('noon', !filterDetails?.a_timeSlot?.includes('noon'), 'a_timeSlot') }}
+                                                >
+                                                    <p className="icon">
+                                                        <img src={filterDetails?.a_timeSlot?.includes('noon') ? noon_active : noon_inactive} alt="noon" />
+                                                    </p>
+                                                    <span className="checkmark">6 AM - 12 PM</span>
+                                                </div>
+                                                <div className={`checkbox c_evening ${filterDetails?.a_timeSlot?.includes('evening') ? 'active' : ''}`}
+                                                    onClick={() => { handleCheckbox('evening', !filterDetails?.a_timeSlot?.includes('evening'), 'a_timeSlot') }}
+                                                >
+                                                    <p className="icon">
+                                                        <img src={filterDetails?.a_timeSlot?.includes('evening') ? evening_active : evening_inactive} alt="evening" />
+                                                    </p>
+                                                    <span className="checkmark">12 AM - 6 PM</span>
+                                                </div>
+                                                <div className={`checkbox c_night ${filterDetails?.a_timeSlot?.includes('night') ? 'active' : ''}`}
+                                                    onClick={() => { handleCheckbox('night', !filterDetails?.a_timeSlot?.includes('night'), 'a_timeSlot') }}
+                                                >
+                                                    <p className="icon">
+                                                        <img src={filterDetails?.a_timeSlot?.includes('night') ? noon_active : noon_inactive} alt="night" />
+                                                    </p>
+                                                    <span className="checkmark">After 6 PM</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                )} 
                                 <div className="col-lg-12">
                                     <span className="divider"></span>
                                 </div>
                                 <div className="col-lg-12">
-                                    <p className="form-label">Departure From New Delhi</p>
-                                    <div className="custom_checkbox_wrap">
-                                        <div className={`checkbox c_morning ${filterDetails?.d_timeSlot?.includes('morning') ? 'active' : ''}`} onClick={() => { handleCheckbox('morning', !filterDetails?.d_timeSlot?.includes('morning'), 'd_timeSlot') }}>
-                                            <p className="icon">
-                                                <img src={filterDetails?.d_timeSlot?.includes('morning') ? morning_active : morning_inactive} alt="morning" />
-                                            </p>
-                                            <span className="checkmark">Before 6 AM</span>
-                                        </div>
-                                        <div className={`checkbox c_noon ${filterDetails?.d_timeSlot?.includes('noon') ? 'active' : ''}`}
-                                            onClick={() => { handleCheckbox('noon', !filterDetails?.d_timeSlot?.includes('noon'), 'd_timeSlot') }}
-                                        >
-                                            <p className="icon">
-                                                <img src={filterDetails?.d_timeSlot?.includes('noon') ? noon_active : noon_inactive} alt="noon" />
-                                            </p>
-                                            <span className="checkmark">6 AM - 12 PM</span>
-                                        </div>
-                                        <div className={`checkbox c_evening ${filterDetails?.d_timeSlot?.includes('evening') ? 'active' : ''}`}
-                                            onClick={() => { handleCheckbox('evening', !filterDetails?.d_timeSlot?.includes('evening'), 'd_timeSlot') }}
-                                        >
-                                            <p className="icon">
-                                                <img src={filterDetails?.d_timeSlot?.includes('evening') ? evening_active : evening_inactive} alt="evening" />
-                                            </p>
-                                            <span className="checkmark">12 AM - 6 PM</span>
-                                        </div>
-                                        <div className={`checkbox c_night ${filterDetails?.d_timeSlot?.includes('night') ? 'active' : ''}`}
-                                            onClick={() => { handleCheckbox('night', !filterDetails?.d_timeSlot?.includes('night'), 'd_timeSlot') }}
-                                        >
-                                            <p className="icon">
-                                                <img src={filterDetails?.d_timeSlot?.includes('night') ? noon_active : noon_inactive} alt="night" />
-                                            </p>
-                                            <span className="checkmark">After 6 PM</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-lg-12">
-                                    <span className="divider"></span>
-                                </div>
-                                <div className="col-lg-12">
-                                    <p className="form-label">Arrival at New Delhi</p>
-                                    <div className="custom_checkbox_wrap">
-                                        <div 
-                                            className={`checkbox c_morning ${filterDetails?.a_timeSlot?.includes('morning') ? 'active' : ''}`} 
-                                            onClick={() => { handleCheckbox('morning', !filterDetails?.a_timeSlot?.includes('morning'), 'a_timeSlot') }}
-                                        >
-                                            <p className="icon">
-                                                <img src={filterDetails?.a_timeSlot?.includes('morning') ? morning_active : morning_inactive} alt="morning" />
-                                            </p>
-                                            <span className="checkmark">Before 6 AM</span>
-                                        </div>
-                                        <div className={`checkbox c_noon ${filterDetails?.a_timeSlot?.includes('noon') ? 'active' : ''}`}
-                                            onClick={() => { handleCheckbox('noon', !filterDetails?.a_timeSlot?.includes('noon'), 'a_timeSlot') }}
-                                        >
-                                            <p className="icon">
-                                                <img src={filterDetails?.a_timeSlot?.includes('noon') ? noon_active : noon_inactive} alt="noon" />
-                                            </p>
-                                            <span className="checkmark">6 AM - 12 PM</span>
-                                        </div>
-                                        <div className={`checkbox c_evening ${filterDetails?.a_timeSlot?.includes('evening') ? 'active' : ''}`}
-                                            onClick={() => { handleCheckbox('evening', !filterDetails?.a_timeSlot?.includes('evening'), 'a_timeSlot') }}
-                                        >
-                                            <p className="icon">
-                                                <img src={filterDetails?.a_timeSlot?.includes('evening') ? evening_active : evening_inactive} alt="evening" />
-                                            </p>
-                                            <span className="checkmark">12 AM - 6 PM</span>
-                                        </div>
-                                        <div className={`checkbox c_night ${filterDetails?.a_timeSlot?.includes('night') ? 'active' : ''}`}
-                                            onClick={() => { handleCheckbox('night', !filterDetails?.a_timeSlot?.includes('night'), 'a_timeSlot') }}
-                                        >
-                                            <p className="icon">
-                                                <img src={filterDetails?.a_timeSlot?.includes('night') ? noon_active : noon_inactive} alt="night" />
-                                            </p>
-                                            <span className="checkmark">After 6 PM</span>
-                                        </div>
-                                    </div>
+                                    <label htmlFor='agents' className="form-label">Commodity</label>
+                                    <Select
+                                        value={filterDetails?.commodity || ''}
+                                        name='commodity'
+                                        options={optionCommodity || []}
+                                        onChange={(opt) => { handleSelectGroup('commodity', opt)}}
+                                        className="basic-multi-select"
+                                        classNamePrefix="select2-selection form-select"
+                                    />
                                 </div>
                                 {/* <div className="col-lg-12">
                                     <p className="form-label">Validity</p>

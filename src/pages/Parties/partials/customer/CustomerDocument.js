@@ -16,12 +16,19 @@ const CustomerDocument = () => {
     const navigateState = useLocation();
     const documentsFormik = useFormik({
         initialValues: {
-            document: [
-                {
-                    documentType: navigateState?.state?.data?.documents[0]?.documentType || "",
-                    uploadDocument: navigateState?.state?.data?.documents[0]?.documentPath || "",
+            ...(!!(navigateState?.state?.data?.documents && navigateState?.state?.data?.documents.length > 0) && {
+                document:
+                    navigateState?.state?.data?.documents.map(document => ({
+                        documentType: document?.documentType || "",
+                        uploadDocument: document?.documentPath || "",
+                    })),
+            }) || {
+                document: [{
+                    documentType: document?.documentType || "",
+                    uploadDocument: document?.documentPath || "",
                 }
-            ],
+                ]
+            }
         },
         validationSchema: Yup.object({
             document: Yup.array().of(
@@ -67,8 +74,8 @@ const CustomerDocument = () => {
 
             const formDataArray = data?.map((document) => {
                 const formData = new FormData();
-                formData.append('file', document.docfile); // Adjust the field name as needed
-                formData.append('tenantCustomer', new Blob([JSON.stringify(document.docdata)], { type: "application/json" })); // Include other fields as needed
+                formData.append('file', document.docfile); 
+                formData.append('tenantCustomer', new Blob([JSON.stringify(document.docdata)], { type: "application/json" })); 
                 return formData;
             });
 

@@ -2,7 +2,6 @@ import axios from "axios";
 import { GET_INSTANT_RATE_LOCATION_FAILURE, GET_INSTANT_RATE_LOCATION_SUCCESS, ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK, GET_ALL_INCOTERM, GET_ALL_INCOTERM_SUCCESS, GET_INSTANT_SEARCH_RESULT_TYPE, UPDATE_QUOTATION_RESULT_DETAILS, CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_UPDATE, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_SELECTED, POST_INSTANT_SEARCH_LOADER, BLANK_INSTANT_SEARCH, GET_AIR_LOCATION_TYPE_SUCCESS, SEARCH_RESULT_FILTER_UPDATE, CLEAR_SEARCH_RESULT_FILTER, GET_INSTANT_SEARCH_RESULT_ID } from "./actionType"
 import { Get_File_URL } from "../../helpers/url_helper";
 
-
 const INIT_STATE = {
     searchForm: {
         // customer_name: '',
@@ -11,6 +10,7 @@ const INIT_STATE = {
         // cargo_weight: { weight: "MT",value: ''},
         cargo_type: { value: "GENERAL", label: "GENERAL", id: 1, version: 0 },
         cargo_value: { currency: { label: 'INR', value: 'rupee', currencyCode: "INR", id: 2, version: 0 }, value: '' },
+        flight_mode: { label: "GCR", value: "GCR" },
         // incoterm: '',
         customerName: '',
         container_type: {},
@@ -31,7 +31,6 @@ const INIT_STATE = {
     result_loader: false,
     error: null,
 };
-
 
 const instantRate = (state = INIT_STATE, action) => {
     switch (action.type) {
@@ -82,6 +81,7 @@ const instantRate = (state = INIT_STATE, action) => {
                     cargo_date: '',
                     location_from: '',
                     location_to: '',
+                    flight_mode: { label: "GCR", value: "GCR" },
                     alternate_route: false
                 }
             }
@@ -147,7 +147,7 @@ const instantRate = (state = INIT_STATE, action) => {
                 ...state,
                 airLocation: action.payload.content?.map((item, index) => {
                     return {
-                        value: item.id,
+                        value: item.name,
                         label: `${item.code} - ${item.name}`,
                         id: item.id,
                         version: item.version,

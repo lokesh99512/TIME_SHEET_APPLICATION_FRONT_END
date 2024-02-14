@@ -48,8 +48,8 @@ export default function UploadVendorData() {
     useEffect(() => {
         dispatch(getCustomersCityData());
         // dispatch(getTenantInfoData());
-        if(!!(navigateState?.state && navigateState?.state.data)){
-        dispatch({ type: GET_VENDOR_DETAILS_ID, payload: { id: navigateState?.state?.data?.id, version: navigateState?.state?.data?.version } });
+        if (!!(navigateState?.state && navigateState?.state.data)) {
+            dispatch({ type: GET_VENDOR_DETAILS_ID, payload: { id: navigateState?.state?.data?.id, version: navigateState?.state?.data?.version } });
         }
     }, []);
 
@@ -137,6 +137,7 @@ export default function UploadVendorData() {
             let stateVal = parties_state_details?.content?.filter((state) => state?.stateName === value?.state) || [];
             let pincodeVal = parties_pincode_details?.content?.filter((pin) => pin?.pin === value?.zipcode) || [];
             const originalDocuments = navigateState?.state?.data?.documents || [];
+            console.log(originalDocuments);
             const newDocuments = originalDocuments.map((document, index) => ({
                 id: document.id || "",
                 version: document.version || 0,
@@ -150,7 +151,7 @@ export default function UploadVendorData() {
                     logoPath: image?.path || null,
                     address: value.address || null,
                     id: !!(navigateState?.state && navigateState?.state.data) ? navigateState?.state?.data?.id : isNewVendor ? vendor_id.id : null || null,
-                    version: !!(navigateState?.state && navigateState?.state.data) ? !!vendor_id?vendor_id.version:navigateState?.state?.data?.version : isNewVendor ? vendor_id.version : null || 0,
+                    version: !!(navigateState?.state && navigateState?.state.data) ? !!vendor_id ? vendor_id.version : navigateState?.state?.data?.version : isNewVendor ? vendor_id.version : null || 0,
                     ...(!!(navigateState?.state && navigateState?.state.data) && {
                         logoPath: image?.path ? image?.path : navigateState?.state?.data?.logoPath
                     }),
@@ -207,17 +208,27 @@ export default function UploadVendorData() {
     });
     const contactsFormik = useFormik({
         initialValues: {
+            ...(!!(navigateState?.state?.data?.contacts && navigateState?.state?.data?.contacts.length > 0) && {
+            contacts: navigateState?.state?.data?.contacts.map(contact => ({
+                title: "",
+                contactName: contact.contactName || "",
+                contactNo: contact.contactNo || "",
+                contactEmail: contact.contactEmail || "",
+                department: contact.department || "",
+                designation: contact.designation || "",
+                opCode: ""
+            })),
+        })|| {
             contacts: [
                 {
-                    title: "",
                     contactName: navigateState?.state?.data?.contactName || "",
                     contactNo: navigateState?.state?.data?.contactNo || "",
                     contactEmail: navigateState?.state?.data?.contactEmail || "",
                     department: navigateState?.state?.data?.department || "",
                     designation: navigateState?.state?.data?.designation || "",
-                    opCode: ""
-                },
-            ],
+                }
+            ]
+        }
         },
         validationSchema: Yup.object({
             contacts: Yup.array().of(
@@ -251,12 +262,19 @@ export default function UploadVendorData() {
     });
     const documentsFormik = useFormik({
         initialValues: {
-            document: [
-                {
-                    documentType: navigateState?.state?.data?.documents[0]?.documentType || "",
-                    uploadDocument: navigateState?.state?.data?.documents[0]?.documentPath || "",
-                },
-            ],
+            ...(!!(navigateState?.state?.data?.documents && navigateState?.state?.data?.documents.length > 0) && {
+                document:
+                    navigateState?.state?.data?.documents.map(document => ({
+                        documentType: document?.documentType || "",
+                        uploadDocument: document?.documentPath || "",
+                    })),
+            }) || {
+                document: [{
+                    documentType: document?.documentType || "",
+                    uploadDocument: document?.documentPath || "",
+                }
+                ]
+            }
         },
         validationSchema: Yup.object({
             document: Yup.array().of(
@@ -287,12 +305,19 @@ export default function UploadVendorData() {
                         }).filter(([_, value]) => value !== null)),
                     }
                 }
-            });
-
+            }); 
+            const allDocData = data.reduce((accumulator, currentValue) => {
+                return accumulator.concat(currentValue.docdata.documents);
+            }, []);
+            let newDocData = {
+                "id": (navigateState?.state?.data?.id) ? navigateState?.state?.data?.id : vendor_id.id || null,
+                "version": (navigateState?.state?.data?.version) ? navigateState?.state?.data?.version : vendor_id.version || 0,
+                "documents": allDocData
+            };
             const formDataArray = data?.map((document) => {
                 const formData = new FormData();
-                formData.append('file', document.docfile); // Adjust the field name as needed
-                formData.append('tenantVendor', new Blob([JSON.stringify(document.docdata)], { type: "application/json" })); // Include other fields as needed
+                formData.append('file', document.docfile); 
+                formData.append('tenantVendor', new Blob([JSON.stringify(newDocData)], { type: "application/json" })); 
                 return formData;
             });
 

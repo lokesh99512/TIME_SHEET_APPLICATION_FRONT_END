@@ -1,17 +1,16 @@
 import { useFormik } from 'formik';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from "react-select";
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem, Modal } from 'reactstrap';
-import { cma_logo, cube_filled, delete_icon, oocl_logo, zim_logo } from '../../../../assets/images';
-import { optionChargeBasis, optionCurrency, optionCurrencyCharges, optionCustomerName, optionMarkupType, optionOceanCharge, optionOriginPortCharge, optionPickupCharge, optionPortDischargeCharge, optionQuoteContactCode, optionQuoteContacttitle } from '../../../../common/data/sales';
+import { cube_filled, delete_icon, oocl_logo, zim_logo } from '../../../../assets/images';
 import { convertToINR, useOutsideClick } from '../../../../components/Common/CommonLogic';
 import { ADD_QUOTE_MODAL_CHARGES, BLANK_MODAL_CHARGE, REMOVE_QUOTE_MODAL_CHARGES, UPDATE_QUOTE_MODAL_CHARGES } from '../../../../store/Sales/Quotation/actiontype';
-import { getCurrencyExchangeRate } from '../../../../store/Sales/actions';
 // import { QUOTATION_RESULT_UPDATE } from '../../../../store/Sales/actiontype';
-import ShipmentForm from './ShipmentForm';
-import CompanyForm from './CompanyForm';
+import { optionMarkupType } from '../../../../common/data/common';
 import { QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_UPDATE } from '../../../../store/InstantRate/actionType';
+import CompanyForm from './CompanyForm';
+import ShipmentForm from './ShipmentForm';
 
 const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setPreviewModal, viewData }) => {
     const [isOpen, setIsOpen] = useState(false);

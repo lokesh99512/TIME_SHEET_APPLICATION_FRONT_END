@@ -207,4 +207,10 @@
     }
 }
 
+.customer_rate_wrapper{
+    h5{
+        @include font($font-weight-semibold,16px,normal,$neutral_8);
+    }
+}
+
 // -------------------------
