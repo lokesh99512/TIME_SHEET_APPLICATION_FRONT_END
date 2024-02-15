@@ -30,7 +30,6 @@ const Dashboard = () => {
     const  { inquiry_export_data , inquiry_import_data, inquiry_customer_data,inquiry_summary_data, inquiry_sales_customer_data}= useSelector((state) => state?.sales);    
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(getInquirySummeryData());
         dispatch(getInquiryCustomerSummeryData());
         dispatch(getInquirySalesCustomerSummeryData());
         dispatch(getInquiryImportSummeryData());
