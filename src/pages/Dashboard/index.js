@@ -30,6 +30,7 @@ const Dashboard = () => {
     const  { inquiry_export_data , inquiry_import_data, inquiry_customer_data,inquiry_summary_data, inquiry_sales_customer_data}= useSelector((state) => state?.sales);    
     const dispatch = useDispatch();
     useEffect(() => {
+        dispatch(getInquirySummeryData());
         dispatch(getInquiryCustomerSummeryData());
         dispatch(getInquirySalesCustomerSummeryData());
         dispatch(getInquiryImportSummeryData());
@@ -92,7 +93,7 @@ const Dashboard = () => {
                                 <div className="sh_inquiry_wrap">
                                     <h3 className="sub_title">Sales Inquires</h3>
                                     <div className="sh_box_wrap">
-                                        {(salesEnquirySummary.length>0?salesEnquirySummary: salesEnquiryData)?.map(item => (
+                                        {((inquiry_summary_data)?salesEnquirySummary: salesEnquiryData)?.map(item => (
                                             <div className="sh_box" key={item?.id}>
                                                 <p className="box_title" onClick={() => navigate('/sales/inquiry', { state: { id: item?.title } })}>{item?.title}</p>
                                                 <div className="sh_inquiry_rate justify-content-between align-items-center">
