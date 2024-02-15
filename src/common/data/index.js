@@ -32,7 +32,7 @@ import {
   PieChart6MData, PieChart1YData, InvestedOverviewMay, InvestedOverviewApril, InvestedOverviewMarch, InvestedOverviewFeb, InvestedOverviewJan, InvestedOverviewDec
 } from "./dashboard"
 import { consoleTableData, fclTableData, inLandTableData, lclTableData,plChargesTableData, waybillTableData } from "./procurement";
-import { inquiryTableData, quotationTableData, searchQuotationResult } from "./sales"
+import { inquiryTableData, quotationTableData } from "./sales"
 
 export {
   events,
@@ -77,5 +77,5 @@ export {
   InvestedOverviewFeb,
   InvestedOverviewJan,
   InvestedOverviewDec,
-  fclTableData, lclTableData,plChargesTableData,waybillTableData,consoleTableData,inLandTableData,quotationTableData,searchQuotationResult,inquiryTableData
+  fclTableData, lclTableData,plChargesTableData,waybillTableData,consoleTableData,inLandTableData,quotationTableData,inquiryTableData
 }

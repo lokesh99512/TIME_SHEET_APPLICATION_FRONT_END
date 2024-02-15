@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_INSTANT_RATE_LOCATION_FAILURE, GET_INSTANT_RATE_LOCATION_SUCCESS, ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK, GET_ALL_INCOTERM, GET_ALL_INCOTERM_SUCCESS, GET_INSTANT_SEARCH_RESULT_TYPE, UPDATE_QUOTATION_RESULT_DETAILS, CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_UPDATE, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_SELECTED, POST_INSTANT_SEARCH_LOADER, BLANK_INSTANT_SEARCH, GET_AIR_LOCATION_TYPE_SUCCESS, SEARCH_RESULT_FILTER_UPDATE, CLEAR_SEARCH_RESULT_FILTER, GET_INSTANT_SEARCH_RESULT_ID } from "./actionType"
+import { GET_INSTANT_RATE_LOCATION_FAILURE, GET_INSTANT_RATE_LOCATION_SUCCESS, ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK, GET_ALL_INCOTERM, GET_ALL_INCOTERM_SUCCESS, GET_INSTANT_SEARCH_RESULT_TYPE, UPDATE_QUOTATION_RESULT_DETAILS, CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_UPDATE, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_SELECTED, POST_INSTANT_SEARCH_LOADER, BLANK_INSTANT_SEARCH, GET_AIR_LOCATION_TYPE_SUCCESS, SEARCH_RESULT_FILTER_UPDATE, CLEAR_SEARCH_RESULT_FILTER, GET_INSTANT_SEARCH_RESULT_ID, GET_INSTANT_AIR_SEARCH_RESULT_DETAILS } from "./actionType"
 import { Get_File_URL } from "../../helpers/url_helper";
 
 const INIT_STATE = {
@@ -165,7 +165,7 @@ const instantRate = (state = INIT_STATE, action) => {
         case GET_INSTANT_SEARCH_RESULT_TYPE:
             let newResultArray = [];
             let isPortToPort = (state.searchForm?.location_from.locationType === 'PORT' && state.searchForm?.location_to.locationType === 'PORT');
-            if(action.payload.fclInquiryResults !== undefined){
+            if (action.payload.fclInquiryResults !== undefined) {
                 newResultArray = action.payload.fclInquiryResults;
             } else {
                 newResultArray = action.payload;
@@ -182,12 +182,12 @@ const instantRate = (state = INIT_STATE, action) => {
                         quote_id: `quote_${index}`,
                         carrierLogo: `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`,
                         tariffDetails: item.tariffDetails.map((item) => {
-                            if(isPortToPort){
-                                if(item.header === 'ORIGIN_INLAND_CHARGES' || item.header === 'DESTINATION_INLAND_CHARGES'){
+                            if (isPortToPort) {
+                                if (item.header === 'ORIGIN_INLAND_CHARGES' || item.header === 'DESTINATION_INLAND_CHARGES') {
                                     return {
                                         ...item,
                                         selected: false
-                                    } 
+                                    }
                                 } else {
                                     return {
                                         ...item,
@@ -204,6 +204,7 @@ const instantRate = (state = INIT_STATE, action) => {
                     }
                 }),
             }
+
         case UPDATE_QUOTATION_RESULT_DETAILS:
             return {
                 ...state,
@@ -255,12 +256,12 @@ const instantRate = (state = INIT_STATE, action) => {
                 instantSearchResultCopy: state.instantSearchResultCopy.map((item, index) => ({
                     ...item,
                     tariffDetails: item.tariffDetails.map((subitem, i) => {
-                        if(isClearPortToPort){
-                            if(subitem.header === 'ORIGIN_INLAND_CHARGES' || subitem.header === 'DESTINATION_INLAND_CHARGES'){
+                        if (isClearPortToPort) {
+                            if (subitem.header === 'ORIGIN_INLAND_CHARGES' || subitem.header === 'DESTINATION_INLAND_CHARGES') {
                                 return {
                                     ...subitem,
                                     selected: false
-                                } 
+                                }
                             } else {
                                 return {
                                     ...subitem,
@@ -331,6 +332,20 @@ const instantRate = (state = INIT_STATE, action) => {
             return { ...state, quote_selected_data: [] }
         case POST_INSTANT_SEARCH_LOADER:
             return { ...state, result_loader: action.payload }
+
+        // DOM Air
+        case GET_INSTANT_AIR_SEARCH_RESULT_DETAILS:
+            return {
+                ...state,
+                instantSearchResult: action.payload,
+                instantSearchResultCopy: action.payload?.fclInquiryResults.map((item, index) => ({
+                    ...item,
+                    tariffDetails: item.tariffDetails.map((item) => ({
+                        ...item,
+                        selected: true
+                    }))
+                })),
+            }
 
         default:
             return state;

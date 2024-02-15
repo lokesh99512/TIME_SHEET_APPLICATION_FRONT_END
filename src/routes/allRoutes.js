@@ -144,7 +144,7 @@ import UploadPortLocalChargesData from "../pages/Procurement/FreightForwarding/P
 // import FclSurcharge from "../pages/Rate/Surcharge/FclSurcharge";
 // import UploadFile from "../pages/Rate/Surcharge/UploadFile";
 // import UploadRateData from "../pages/Rate/Surcharge/UploadRateData";
-import CreateQuotation from "../pages/Sales/Quotations/partials/CreateQuotation";
+// import CreateQuotation from "../pages/Sales/Quotations/partials/CreateQuotation";
 import AddUserData from "../pages/Settings/AddUserData";
 import EditUserData from "../pages/Settings/EditUserData";
 import Settings from "../pages/Settings/Settings";
@@ -170,7 +170,7 @@ const userRoutes = [
   { path: "/sales/inquiry", component: <QueriesComp /> },
   // Quotations
   { path: "/sales/quotation", component: <QuotationComp /> },
-  { path: "/sales/create", component: <CreateQuotation /> },
+  // { path: "/sales/create", component: <CreateQuotation /> },
   
   // Instant Rate
   { path: "/instant-rate/search-rate", component: <InstantRate /> },
