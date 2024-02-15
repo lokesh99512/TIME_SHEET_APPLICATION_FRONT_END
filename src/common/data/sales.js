@@ -1,5 +1,5 @@
 import React from "react"
-import { australia, azerbaijan, cma_logo, india, memoji, pickup_icon, pickup_icon2, pickup_icon3, pickup_icon4, pickup_icon5, pickup_icon6, unitedkingdom, unitedstates } from "../../assets/images"
+import { airasia_logo, australia, azerbaijan, cma_logo, india, indigo_img, memoji, pickup_icon, pickup_icon2, pickup_icon3, pickup_icon4, pickup_icon5, pickup_icon6, unitedkingdom, unitedstates, vistara_logo } from "../../assets/images"
 
 // --------- breadcrumbs -----------------------------
 const quotationBreadcrumb = [
@@ -854,1183 +854,519 @@ const quotationTableData = [
         delivery_quote_charge:[]
     },
 ]
-const searchQuotationResult = []
-const searchQuotationResult1 = [
-    {
-        id: '1234567890',
-        logo: cma_logo,
-        name: 'CMA CGM',
-        carrier_name: 'Online Network',
-        location_route: ['INMAA','BDDAC'],
-        location_from: 'INMAA',
-        location_to: 'BDDAC',
-        duration: '28',
-        valid_from: '16 Sep 2023',
-        valid_to: '30 Dec 2023',
-        co_two: '7213.27 kg CO2',
-        total_cost: '4025.74',
-        pickup_co: '',
-        pickup: false,
-        pickup_val: '',
-        truck: false,
-        rail: false,
-        pickup: true,
-        origin_port: true,
-        ocean_freight: true,
-        pickport_discharge: true,
-        delivery: true,
-        // truck_day: '1',
-        // truck_km: '4.68',
-        // truck_charge: '0',
-        // rail_charge: '0',
-        origin_port_co: '',
-        // origin_port_total: '20630',
-        origin_port_currency: '₹',
-        ocean_freight_co: '',
-        // ocean_freight_charge: '',
-        ocean_freight_charge_currency: '$',
-        port_discharge_co: '',
-        port_discharge_currency: 'BDT',
-        // port_discharge_charge_total: '2000',        
-        delivery_co: '',
-        // delivery_charge: '0',
-        quote_type: 'preffered',
-        pickup_quote_charge: [],
-        originport_quote_charge: [
-            {
-                charges_name: 'OTHC',
-                uom: 'per container',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 13600,
-                tax: '18',
-                total_sale_cost: '16048'
+
+export const airSearchData = {
+    "id": 3091,
+    "fclInquiryResults": [
+        {
+            "quote_id": 'air_1',
+            "flightname": "INDIGO",
+            "flightno": "32W/6E-6779",
+            "agentname": 'ABC',
+            "carrierLogo": indigo_img,                
+            "originDetails": {
+                "portname": "Chatrapati Shivaji",
+                "time": "02:40",
+                "date": "Mon, 12 February, 2024"
             },
-            {
-                charges_name: 'BL FEE',
-                uom: 'per BL',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 5700,
-                tax: '18',
-                total_sale_cost: '6726'
+            "destinationDetails": {
+                "portname": "Bengaluru",
+                "time": "04:40",
+                "date": "Mon, 12 February, 2024"
             },
-            {
-                charges_name: 'CERTIFICATE FEE',
-                uom: 'per BL',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 650,
-                tax: '18',
-                total_sale_cost: '767'
+            "freightMode": "Master Air Waybill",
+            "cargoType": "GCR",
+            "oceanTransitTime": "5 hrs",
+            "tariffDetails": [
+                {
+                    "header": "Pickup_Charges",
+                    "tariffBreakDowns": [
+                        {
+                            "component": "TRAIN",
+                            "uomCode": "PER_CONTAINER",
+                            "uomDescription": "PER CONTAINER",
+                            "currencyCode": "INR",
+                            "unit": 5,
+                            "unitPerPrice": 38000,
+                            "amount": 190000,
+                            "originId": 2,
+                            "originName": "CHENNAI",
+                            "destinationId": 3,
+                            "destinationName": "PORT OF CHENNAI",
+                            "transitTime": 1,
+                            "containerDetail": "20GP"
+                        },
+                        {
+                            "component": "FSC",
+                            "componentDescription": "Fuel Surcharge",
+                            "uomCode": "PER_CONTAINER",
+                            "uomDescription": "PER CONTAINER",
+                            "currencyCode": "USD",
+                            "unit": 5,
+                            "unitPerPrice": 15100,
+                            "amount": 75500,
+                            "taxDetail": {
+                                "taxPercentage": 18,
+                                "value": 13590
+                            }
+                        }
+                    ]
+                },
+                {
+                    "header": "Origin_Airport_Charges",
+                    "tariffBreakDowns": [
+                        {
+                            "component": "TSP Charges",
+                            "uomCode": "PER_CONTAINER",
+                            "uomDescription": "PER CONTAINER",
+                            "currencyCode": "USD",
+                            "unit": 5,
+                            "unitPerPrice": 50,
+                            "amount": 250,
+                            "portName": "PORT OF CHENNAI",
+                            "containerDetail": "20GP",
+                            "taxDetail": {
+                                "taxPercentage": 0,
+                                "value": 0
+                            }
+                        },
+                        {
+                            "component": "Xray Charges",
+                            "uomCode": "PER_CONTAINER",
+                            "uomDescription": "PER CONTAINER",
+                            "currencyCode": "USD",
+                            "unit": 5,
+                            "unitPerPrice": 100,
+                            "amount": 500,
+                            "portName": "PORT OF CHENNAI",
+                            "containerDetail": "20GP",
+                            "taxDetail": {
+                                "taxPercentage": 0,
+                                "value": 0
+                            }
+                        }
+                    ]
+                },
+                {
+                    "header": "Air_Freight_Charges",
+                    "tariffBreakDowns": [
+                        {
+                            "component": "Air Freight",
+                            "uomCode": "PER_CONTAINER",
+                            "uomDescription": "PER CONTAINER",
+                            "currencyCode": "USD",
+                            "unit": 5,
+                            "unitPerPrice": 278,
+                            "amount": 1390,
+                            "originId": 3,
+                            "originName": "PORT OF CHENNAI",
+                            "destinationId": 7,
+                            "destinationName": "PORT OF DHAKA",
+                            "transitTime": 15,
+                            "containerDetail": "20GP",
+                            "taxDetail": {
+                                "taxPercentage": 5,
+                                "value": 69.5
+                            }
+                        },
+                        {
+                            "component": "Air way bill Charges",
+                            "componentDescription": "CURRENCY ADJUSTMENT FACTOR",
+                            "uomCode": "PER_KG",
+                            "uomDescription": "PER KILOGRAM",
+                            "currencyCode": "USD",
+                            "unit": 5,
+                            "unitPerPrice": 350,
+                            "amount": 350,
+                            "containerDetail": "20GP",
+                            "taxDetail": {
+                                "taxPercentage": 5,
+                                "value": 17.5
+                            }
+                        },
+                        {
+                            "component": "DO Charges",
+                            "componentDescription": "WAR RISK SURCHARGE",
+                            "uomCode": "PER_CONTAINER",
+                            "uomDescription": "PER CONTAINER",
+                            "currencyCode": "TTD",
+                            "unit": 5,
+                            "unitPerPrice": 500,
+                            "amount": 2500,
+                            "containerDetail": "20GP",
+                            "taxDetail": {
+                                "taxPercentage": 5,
+                                "value": 125
+                            }
+                        }
+                    ]
+                },
+                {
+                    "header": "Destination_Airport_Charges",
+                    "tariffBreakDowns": [
+                        {
+                            "component": "TSP Charges",
+                            "componentDescription": "SEAL FEE",
+                            "uomCode": "PER_BL",
+                            "uomDescription": "PER BL",
+                            "currencyCode": "USD",
+                            "unit": 5,
+                            "unitPerPrice": 120,
+                            "amount": 120,
+                            "portName": "PORT OF DHAKA",
+                            "containerDetail": "20GP",
+                            "taxDetail": {
+                                "taxPercentage": 0,
+                                "value": 12.5
+                            }
+                        },
+                        {
+                            "component": "Xray Charges",
+                            "uomCode": "PER_CONTAINER",
+                            "uomDescription": "PER CONTAINER",
+                            "currencyCode": "USD",
+                            "unit": 5,
+                            "unitPerPrice": 100,
+                            "amount": 500,
+                            "portName": "PORT OF CHENNAI",
+                            "containerDetail": "20GP",
+                            "taxDetail": {
+                                "taxPercentage": 0,
+                                "value": 0
+                            }
+                        }
+                    ]
+                },
+                {
+                    "header": "Delivery_Charges",
+                    "tariffBreakDowns": [
+                        {
+                            "component": "TRAIN",
+                            "uomCode": "PER_CONTAINER",
+                            "uomDescription": "PER CONTAINER",
+                            "currencyCode": "BDT",
+                            "unit": 5,
+                            "unitPerPrice": 38000,
+                            "amount": 190000,
+                            "originId": 7,
+                            "originName": "PORT OF DHAKA",
+                            "destinationId": 5,
+                            "destinationName": "DHAKA",
+                            "transitTime": 15,
+                            "containerDetail": "20GP"
+                        },
+                        {
+                            "component": "FSC",
+                            "componentDescription": "Fuel Surcharge",
+                            "uomCode": "PER_CONTAINER",
+                            "uomDescription": "PER CONTAINER",
+                            "currencyCode": "USD",
+                            "unit": 5,
+                            "unitPerPrice": 10,
+                            "amount": 50,
+                            "taxDetail": {
+                                "taxPercentage": 5,
+                                "value": 2.5
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "quote_id": 'air_2',
+            "flightname": "Air Asia",
+            "flightno": "32W/6E-6780",
+            "agentname": 'ABC',
+            "carrierLogo": airasia_logo,                
+            "originDetails": {
+                "portname": "Chatrapati Shivaji",
+                "time": "02:40",
+                "date": "Mon, 12 February, 2024"
             },
-            {
-                charges_name: 'EMPTY CONTAINER LIFT FEE',
-                uom: 'per container',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 680,
-                tax: '18',
-                total_sale_cost: '802.4'
+            "destinationDetails": {
+                "portname": "Bengaluru",
+                "time": "04:55",
+                "date": "Mon, 12 February, 2024"
             },
-        ],
-        ocean_quote_charge: [
-            {
-                charges_name: '',
-                uom: 'per container',
-                quantity: '',
-                currency: '$',
-                buy_cost: 3756,
-                tax: '0',
-                total_sale_cost: '3756'
+            "freightMode": "Console",
+            "cargoType": "GCR",
+            "oceanTransitTime": "5 h 15m",
+            "tariffDetails": [
+                {
+                    "header": "Pickup_Charges",
+                    "tariffBreakDowns": []
+                },
+                {
+                    "header": "Origin_Airport_Charges",
+                    "tariffBreakDowns": []
+                },
+                {
+                    "header": "Air_Freight_Charges",
+                    "tariffBreakDowns": [
+                        {
+                            "component": "Freight Charges",
+                            "uomCode": "PER_CONTAINER",
+                            "uomDescription": "PER CONTAINER",
+                            "currencyCode": "USD",
+                            "unit": 5,
+                            "unitPerPrice": 278,
+                            "amount": 1390,
+                            "originId": 3,
+                            "originName": "PORT OF CHENNAI",
+                            "destinationId": 7,
+                            "destinationName": "PORT OF DHAKA",
+                            "transitTime": 15,
+                            "containerDetail": "20GP",
+                            "taxDetail": {
+                                "taxPercentage": 5,
+                                "value": 69.5
+                            }
+                        },
+                        {
+                            "component": "CD Charges",
+                            "componentDescription": "CURRENCY ADJUSTMENT FACTOR",
+                            "uomCode": "PER_KG",
+                            "uomDescription": "PER KILOGRAM",
+                            "currencyCode": "USD",
+                            "unit": 5,
+                            "unitPerPrice": 350,
+                            "amount": 350,
+                            "containerDetail": "20GP",
+                            "taxDetail": {
+                                "taxPercentage": 5,
+                                "value": 17.5
+                            }
+                        }
+                    ]
+                },
+                {
+                    "header": "Destination_Airport_Charges",
+                    "tariffBreakDowns": []
+                },
+                {
+                    "header": "Delivery_Charges",
+                    "tariffBreakDowns": []
+                }
+            ]
+        },
+        {
+            "quote_id": 'air_3',
+            "flightname": "Vistara",
+            "flightno": "UK 983",
+            "agentname": 'ABC',
+            "carrierLogo": vistara_logo,                
+            "originDetails": {
+                "portname": "Mumbai, India",
+                "time": "8:50",
+                "date": "Sun, 25 Feb 24"
             },
-        ],    
-        port_discharge_charges: [
-            {
-                charges_name: 'DOC',
-                uom: 'per BL',
-                quantity: '2',
-                currency: 'BDT',
-                buy_cost: 1500,
-                tax: '0',
-                total_sale_cost: '1500'
+            "destinationDetails": {
+                "portname": "New Delhi, India",
+                "time": "11:10",
+                "date": "Sun, 25 Feb 24"
             },
-            {
-                charges_name: 'Cleaning Charges',
-                uom: 'per container',
-                quantity: '2',
-                currency: 'BDT',
-                buy_cost: 500,
-                tax: '0',
-                total_sale_cost: '500'
-            },
-        ],    
-        delivery_quote_charge:[]
-    },
-    {
-        id: '1234567891',
-        logo: cma_logo,
-        name: 'CMA CGM',
-        carrier_name: 'ZIM',
-        location_route: ['INMAA','BDDAC'],
-        location_from: 'INMAA',
-        location_to: 'BDDAC',
-        duration: '20',
-        valid_from: '16 Sep 2023',
-        valid_to: '30 Dec 2023',
-        co_two: '7213.27 kg CO2',
-        total_cost: '6045.98',
-        pickup_co: '',
-        pickup: false,
-        pickup_val: 'truck',
-        truck: false,
-        rail: false,
-        pickup: true,
-        origin_port: true,
-        ocean_freight: true,
-        pickport_discharge: true,
-        delivery: true,
-        // truck_day: '1',
-        // truck_km: '4.68',
-        // truck_charge: '0',
-        // rail_charge: '0',
-        origin_port_co: '',
-        // origin_port_total: '11150',
-        origin_port_currency: '₹',
-        ocean_freight_co: '',
-        // ocean_freight_charge: '5912',
-        ocean_freight_charge_currency: '$',
-        port_discharge_co: '',
-        port_discharge_currency: 'BDT',
-        // port_discharge_charge_total: '2000',        
-        delivery_co: '',
-        // delivery_charge: '0',
-        quote_type: 'faster',
-        pickup_quote_charge: [],
-        originport_quote_charge: [
-            {
-                charges_name: 'OTHC',
-                uom: 'per container',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 11150,
-                tax: '18',
-                total_sale_cost: '13157'
-            },            
-        ],
-        ocean_quote_charge: [
-            {
-                charges_name: '',
-                uom: 'per container',
-                quantity: '',
-                currency: '$',
-                buy_cost: 5912,
-                tax: '0',
-                total_sale_cost: '5912'
-            },
-        ],    
-        port_discharge_charges: [
-            {
-                charges_name: 'DOC',
-                uom: 'per BL',
-                quantity: '2',
-                currency: 'BDT',
-                buy_cost: 1500,
-                tax: '0',
-                total_sale_cost: '1500'
-            },
-            {
-                charges_name: 'Cleaning Charges',
-                uom: 'per container',
-                quantity: '2',
-                currency: 'BDT',
-                buy_cost: 500,
-                tax: '0',
-                total_sale_cost: '500'
-            },
-        ],   
-        delivery_quote_charge:[] 
-    },
-    {
-        id: '1234567892',
-        logo: cma_logo,
-        name: 'CMA CGM',
-        carrier_name: 'OOCL',
-        location_route: ['INMAA','BDDAC'],
-        location_from: 'INMAA',
-        location_to: 'BDDAC',
-        duration: '40',
-        valid_from: '16 Sep 2023',
-        valid_to: '30 Dec 2023',
-        co_two: '7213.27 kg CO2',
-        total_cost: '2044.48',
-        pickup_co: '',
-        pickup: false,
-        pickup_val: '',
-        truck: false,
-        rail: false,
-        pickup: true,
-        origin_port: true,
-        ocean_freight: true,
-        pickport_discharge: true,
-        delivery: true,
-        // truck_day: '1',
-        // truck_km: '4.68',
-        // truck_charge: '0',
-        // rail_charge: '0',
-        origin_port_co: '',
-        // origin_port_total: '229.63',
-        origin_port_currency: '$',
-        ocean_freight_co: '',
-        // ocean_freight_charge: '1800',
-        ocean_freight_charge_currency: '$',
-        port_discharge_co: '',
-        port_discharge_currency: 'BDT',
-        // port_discharge_charge_total: '2000',        
-        delivery_co: '',
-        // delivery_charge: '0',
-        quote_type: 'cheaper',
-        pickup_quote_charge: [],
-        originport_quote_charge: [
-            {
-                charges_name: 'OTHC',
-                uom: 'per container',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 12000,
-                tax: '18',
-                total_sale_cost: '14160'
-            },   
-            {
-                charges_name: 'BL FEE',
-                uom: 'per BL',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 3500,
-                tax: '18',
-                total_sale_cost: '4130'
-            },
-            {
-                charges_name: 'CERTIFICATE FEE',
-                uom: 'per BL',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 750,
-                tax: '18',
-                total_sale_cost: '885'
-            },
-            {
-                charges_name: 'SEAL FEE',
-                uom: 'per BL',
-                quantity: '2',
-                currency: '$',
-                buy_cost: 5,
-                tax: '18',
-                total_sale_cost: '5.90'
-            },
-            {
-                charges_name: 'GATE IN FEE',
-                uom: 'per BL',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 170,
-                tax: '18',
-                total_sale_cost: '200.6'
-            },
-            {
-                charges_name: 'EMPTY CONTAINER LIFT FEE',
-                uom: 'per container',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 2000,
-                tax: '18',
-                total_sale_cost: '2360'
-            },         
-        ],
-        ocean_quote_charge: [
-            {
-                charges_name: '',
-                uom: 'per container',
-                quantity: '',
-                currency: '$',
-                buy_cost: 1800,
-                tax: '0',
-                total_sale_cost: '1800'
-            },
-        ],    
-        port_discharge_charges: [
-            {
-                charges_name: 'DOC',
-                uom: 'per BL',
-                quantity: '2',
-                currency: 'BDT',
-                buy_cost: 1500,
-                tax: '0',
-                total_sale_cost: '1500'
-            },
-            {
-                charges_name: 'Cleaning Charges',
-                uom: 'per container',
-                quantity: '2',
-                currency: 'BDT',
-                buy_cost: 500,
-                tax: '0',
-                total_sale_cost: '500'
-            },
-        ], 
-        delivery_quote_charge:[]   
-    },
-]
-const searchQuotationResult2 = [
-    {
-        id: '1234567890',
-        logo: cma_logo,
-        name: 'CMA CGM',
-        carrier_name: 'Online Network',
-        location_route: ['BLR ICD','INMAA','BDDAC','DHAKA ICD'],
-        location_from: 'INMAA',
-        location_to: 'BDDAC',
-        duration: '28',
-        valid_from: '16 Sep 2023',
-        valid_to: '30 Dec 2023',
-        co_two: '7213.27 kg CO2',
-        total_cost: '4025.74',
-        pickup_co: '',
-        pickup: true,
-        pickup_val: 'rail',
-        truck: false,
-        rail: true,
-        pickup: true,
-        origin_port: true,
-        ocean_freight: true,
-        pickport_discharge: true,
-        delivery: true,
-        // truck_day: '1',
-        // truck_km: '4.68',
-        // truck_charge: '0',
-        // rail_charge: '41860',
-        origin_port_co: '',
-        // origin_port_total: '20630',
-        origin_port_currency: '₹',
-        ocean_freight_co: '',
-        // ocean_freight_charge: '',
-        ocean_freight_charge_currency: '$',
-        port_discharge_co: '',
-        port_discharge_currency: 'BDT',
-        // port_discharge_charge_total: '2000',        
-        delivery_co: '',
-        // delivery_charge: '25000',
-        // delivery_currency: 'BDT',
-        // delivery_val: 'road',
-        // road: true,
-        // road_charge: '25000',
-        quote_type: 'preffered',
-        pickup_quote_charge: [
-            {
-                charges_name: 'Rail',
-                uom: 'per container',
-                quantity: '',
-                currency: '₹',
-                buy_cost: 41860,
-                tax: '',
-                total_sale_cost: '41860'
-            }
-        ],
-        originport_quote_charge: [
-            {
-                charges_name: 'OTHC',
-                uom: 'per container',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 13600,
-                tax: '18',
-                total_sale_cost: '16048'
-            },
-            {
-                charges_name: 'BL FEE',
-                uom: 'per BL',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 5700,
-                tax: '18',
-                total_sale_cost: '6726'
-            },
-            {
-                charges_name: 'CERTIFICATE FEE',
-                uom: 'per BL',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 650,
-                tax: '18',
-                total_sale_cost: '767'
-            },
-            {
-                charges_name: 'EMPTY CONTAINER LIFT FEE',
-                uom: 'per container',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 680,
-                tax: '18',
-                total_sale_cost: '802.4'
-            },
-        ],
-        ocean_quote_charge: [
-            {
-                charges_name: '',
-                uom: 'per container',
-                quantity: '',
-                currency: '$',
-                buy_cost: 3756,
-                tax: '0',
-                total_sale_cost: '3756'
-            },
-        ],  
-        port_discharge_charges: [
-            {
-                charges_name: 'DOC',
-                uom: 'per BL',
-                quantity: '2',
-                currency: 'BDT',
-                buy_cost: 1500,
-                tax: '0',
-                total_sale_cost: '1500'
-            },
-            {
-                charges_name: 'Cleaning Charges',
-                uom: 'per container',
-                quantity: '2',
-                currency: 'BDT',
-                buy_cost: 500,
-                tax: '0',
-                total_sale_cost: '500'
-            },
-        ],  
-        delivery_quote_charge:[
-            {
-                charges_name: 'Road',
-                uom: 'per container',
-                quantity: '',
-                currency: 'BDT',
-                buy_cost: 25000,
-                tax: '',
-                total_sale_cost: '25000'
-            }
-        ]  
-    },
-    {
-        id: '1234567891',
-        logo: cma_logo,
-        name: 'CMA CGM',
-        carrier_name: 'ZIM',
-        location_route: ['BLR ICD','INMAA','BDDAC','DHAKA ICD'],
-        location_from: 'INMAA',
-        location_to: 'BDDAC',
-        duration: '20',
-        valid_from: '16 Sep 2023',
-        valid_to: '30 Dec 2023',
-        co_two: '7213.27 kg CO2',
-        total_cost: '6045.98',
-        pickup_co: '',
-        pickup: true,
-        pickup_val: 'rail',
-        truck: false,
-        rail: true,
-        pickup: true,
-        origin_port: true,
-        ocean_freight: true,
-        pickport_discharge: true,
-        delivery: true,
-        // truck_day: '1',
-        // truck_km: '4.68',
-        // truck_charge: '0',
-        // rail_charge: '48860',
-        origin_port_co: '',
-        // origin_port_total: '11150',
-        origin_port_currency: '₹',
-        ocean_freight_co: '',
-        // ocean_freight_charge: '5912',
-        ocean_freight_charge_currency: '$',
-        port_discharge_co: '',
-        port_discharge_currency: 'BDT',
-        // port_discharge_charge_total: '2000',        
-        delivery_co: '',
-        // delivery_charge: '27000',
-        // delivery_currency: 'BDT',
-        // delivery_val: 'road',
-        // road: true,
-        // road_charge: '27000',
-        quote_type: 'faster',
-        pickup_quote_charge: [
-            {
-                charges_name: 'Rail',
-                uom: 'per container',
-                quantity: '',
-                currency: '₹',
-                buy_cost: 48860,
-                tax: '',
-                total_sale_cost: '48860'
-            }
-        ],
-        originport_quote_charge: [
-            {
-                charges_name: 'OTHC',
-                uom: 'per container',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 11150,
-                tax: '18',
-                total_sale_cost: '13157'
-            },            
-        ],
-        ocean_quote_charge: [
-            {
-                charges_name: '',
-                uom: 'per container',
-                quantity: '',
-                currency: '$',
-                buy_cost: 5912,
-                tax: '0',
-                total_sale_cost: '5912'
-            },
-        ],   
-        port_discharge_charges: [
-            {
-                charges_name: 'DOC',
-                uom: 'per BL',
-                quantity: '2',
-                currency: 'BDT',
-                buy_cost: 1500,
-                tax: '0',
-                total_sale_cost: '1500'
-            },
-            {
-                charges_name: 'Cleaning Charges',
-                uom: 'per BL',
-                quantity: '2',
-                currency: 'BDT',
-                buy_cost: 500,
-                tax: '0',
-                total_sale_cost: '500'
-            },
-        ], 
-        delivery_quote_charge:[
-            {
-                charges_name: 'Road',
-                uom: 'per container',
-                quantity: '',
-                currency: 'BDT',
-                buy_cost: 27000,
-                tax: '',
-                total_sale_cost: '27000'
-            }
-        ]   
-    },
-    {
-        id: '1234567892',
-        logo: cma_logo,
-        name: 'CMA CGM',
-        carrier_name: 'OOCL',
-        location_route: ['BLR ICD','INMAA','BDDAC','DHAKA ICD'],
-        location_from: 'INMAA',
-        location_to: 'BDDAC',
-        duration: '40',
-        valid_from: '16 Sep 2023',
-        valid_to: '30 Dec 2023',
-        co_two: '7213.27 kg CO2',
-        total_cost: '2044.48',
-        pickup_co: '',
-        pickup: true,
-        pickup_val: 'rail',
-        truck: false,
-        rail: true,
-        pickup: true,
-        origin_port: true,
-        ocean_freight: true,
-        pickport_discharge: true,
-        delivery: true,
-        // truck_day: '1',
-        // truck_km: '4.68',
-        // truck_charge: '0',
-        // rail_charge: '35860',
-        origin_port_co: '',
-        // origin_port_total: '18830',
-        origin_port_currency: '₹',
-        ocean_freight_co: '',
-        // ocean_freight_charge: '1800',
-        ocean_freight_charge_currency: '$',
-        port_discharge_co: '',
-        port_discharge_currency: 'BDT',
-        // port_discharge_charge_total: '2000',        
-        delivery_co: '',
-        // delivery_charge: '20000',
-        // delivery_currency: 'BDT',
-        // delivery_val: 'road',
-        // road: true,
-        // road_charge: '20000',
-        quote_type: 'cheaper',
-        pickup_quote_charge: [
-            {
-                charges_name: 'Rail',
-                uom: 'per container',
-                quantity: '',
-                currency: '₹',
-                buy_cost: 35860,
-                tax: '',
-                total_sale_cost: '35860'
-            }
-        ],
-        originport_quote_charge: [
-            {
-                charges_name: 'OTHC',
-                uom: 'per container',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 12000,
-                tax: '18',
-                total_sale_cost: '14160'
-            },   
-            {
-                charges_name: 'BL FEE',
-                uom: 'per BL',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 3500,
-                tax: '18',
-                total_sale_cost: '4130'
-            },
-            {
-                charges_name: 'CERTIFICATE FEE',
-                uom: 'per BL',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 750,
-                tax: '18',
-                total_sale_cost: '885'
-            },
-            {
-                charges_name: 'SEAL FEE',
-                uom: 'per BL',
-                quantity: '2',
-                currency: '$',
-                buy_cost: 5,
-                tax: '18',
-                total_sale_cost: '5.90'
-            },
-            {
-                charges_name: 'GATE IN FEE',
-                uom: 'per BL',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 170,
-                tax: '18',
-                total_sale_cost: '200.6'
-            },
-            {
-                charges_name: 'EMPTY CONTAINER LIFT FEE',
-                uom: 'per container',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 2000,
-                tax: '18',
-                total_sale_cost: '2360'
-            },         
-        ],
-        ocean_quote_charge: [
-            {
-                charges_name: '',
-                uom: 'per container',
-                quantity: '',
-                currency: '$',
-                buy_cost: 1800,
-                tax: '0',
-                total_sale_cost: '1800'
-            },
-        ],   
-        port_discharge_charges: [
-            {
-                charges_name: 'DOC',
-                uom: 'per BL',
-                quantity: '2',
-                currency: 'BDT',
-                buy_cost: 1500,
-                tax: '0',
-                total_sale_cost: '1500'
-            },
-            {
-                charges_name: 'Cleaning Charges',
-                uom: 'per container',
-                quantity: '2',
-                currency: 'BDT',
-                buy_cost: 500,
-                tax: '0',
-                total_sale_cost: '500'
-            },
-        ],    
-        delivery_quote_charge:[
-            {
-                charges_name: 'Road',
-                uom: 'per container',
-                quantity: '',
-                currency: 'BDT',
-                buy_cost: 20000,
-                tax: '',
-                total_sale_cost: '20000'
-            }
-        ]
-    },
-]
-const searchQuotationResult3 = [
-    {
-        id: '1234567890',
-        logo: cma_logo,
-        name: 'CMA CGM',
-        carrier_name: 'Online Network',
-        location_route: ['BLR ICD','INKTP','IDSUB','JAKARTA ICD'],
-        location_from: 'INMAA',
-        location_to: 'BDDAC',
-        duration: '28',
-        valid_from: '16 Sep 2023',
-        valid_to: '30 Dec 2023',
-        co_two: '7213.27 kg CO2',
-        total_cost: '4025.74',
-        pickup_co: '',
-        pickup: true,
-        pickup_val: 'rail',
-        truck: false,
-        rail: true,
-        pickup: true,
-        origin_port: true,
-        ocean_freight: true,
-        pickport_discharge: true,
-        delivery: true,
-        // truck_day: '1',
-        // truck_km: '4.68',
-        // truck_charge: '0',
-        // rail_charge: '41860',
-        origin_port_co: '',
-        // origin_port_total: '20630',
-        origin_port_currency: '₹',
-        ocean_freight_co: '',
-        // ocean_freight_charge: '240',
-        ocean_freight_charge_currency: '$',
-        port_discharge_co: '',
-        port_discharge_currency: '$',
-        // port_discharge_charge_total: '222.21',        
-        delivery_co: '',
-        // delivery_charge: '4663359.44',
-        // delivery_currency: 'IDR',
-        // delivery_val: 'road',
-        // road: true,
-        // road_charge: '4663359.44',
-        quote_type: 'preffered',
-        pickup_quote_charge: [
-            {
-                charges_name: 'Rail',
-                uom: 'per container',
-                quantity: '',
-                currency: '₹',
-                buy_cost: 41860,
-                tax: '',
-                total_sale_cost: '41860'
-            }
-        ],
-        originport_quote_charge: [
-            {
-                charges_name: 'OTHC',
-                uom: 'per container',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 13600,
-                tax: '18',
-                total_sale_cost: '16048'
-            },
-            {
-                charges_name: 'BL FEE',
-                uom: 'per BL',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 5700,
-                tax: '18',
-                total_sale_cost: '6726'
-            },
-            {
-                charges_name: 'CERTIFICATE FEE',
-                uom: 'per BL',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 650,
-                tax: '18',
-                total_sale_cost: '767'
-            },
-            {
-                charges_name: 'EMPTY CONTAINER LIFT FEE',
-                uom: 'per container',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 680,
-                tax: '18',
-                total_sale_cost: '802.4'
-            },
-        ],
-        ocean_quote_charge: [
-            {
-                charges_name: '',
-                uom: 'per container',
-                quantity: '',
-                currency: '$',
-                buy_cost: 240,
-                tax: '0',
-                total_sale_cost: '240'
-            },
-        ],     
-        port_discharge_charges: [
-            {
-                charges_name: 'DTHC',
-                uom: 'per container',
-                quantity: '2',
-                currency: '$',
-                buy_cost: 190,
-                tax: '0',
-                total_sale_cost: '190'
-            },
-            {
-                charges_name: 'DOC',
-                uom: 'per BL',
-                quantity: '2',
-                currency: 'IDR',
-                buy_cost: 100000,
-                tax: '0',
-                total_sale_cost: '100000'
-            },
-            {
-                charges_name: 'MPC',
-                uom: 'per BL',
-                quantity: '2',
-                currency: 'IDR',
-                buy_cost: 300000,
-                tax: '0',
-                total_sale_cost: '300000'
-            },
-            {
-                charges_name: 'CIC',
-                uom: 'per BL',
-                quantity: '2',
-                currency: 'IDR',
-                buy_cost: 100000,
-                tax: '0',
-                total_sale_cost: '100000'
-            },
-        ],    
-        delivery_quote_charge:[
-            {
-                charges_name: 'Road',
-                uom: 'per container',
-                quantity: '',
-                currency: 'IDR',
-                buy_cost: 4663359.44,
-                tax: '',
-                total_sale_cost: '4663359.44'
-            }
-        ]
-    },
-    {
-        id: '1234567891',
-        logo: cma_logo,
-        name: 'CMA CGM',
-        carrier_name: 'ZIM',
-        location_route: ['BLR ICD','INKTP','IDSUB','JAKARTA ICD'],
-        location_from: 'INMAA',
-        location_to: 'BDDAC',
-        duration: '20',
-        valid_from: '16 Sep 2023',
-        valid_to: '30 Dec 2023',
-        co_two: '7213.27 kg CO2',
-        total_cost: '6045.98',
-        pickup_co: '',
-        pickup: true,
-        pickup_val: 'rail',
-        truck: false,
-        rail: true,
-        pickup: true,
-        origin_port: true,
-        ocean_freight: true,
-        pickport_discharge: true,
-        delivery: true,
-        // truck_day: '1',
-        // truck_km: '4.68',
-        // truck_charge: '0',
-        // rail_charge: '48860',
-        origin_port_co: '',
-        // origin_port_total: '11150',
-        origin_port_currency: '₹',
-        ocean_freight_co: '',
-        // ocean_freight_charge: '440',
-        ocean_freight_charge_currency: '$',
-        port_discharge_co: '',
-        port_discharge_currency: '$',
-        // port_discharge_charge_total: '237.50',        
-        delivery_co: '',
-        // delivery_charge: '4663359.44',
-        // delivery_currency: 'IDR',
-        // delivery_val: 'road',
-        // road: true,
-        // road_charge: '4663359.44',
-        quote_type: 'faster',
-        pickup_quote_charge: [
-            {
-                charges_name: 'Rail',
-                uom: 'per container',
-                quantity: '',
-                currency: '₹',
-                buy_cost: 48860,
-                tax: '',
-                total_sale_cost: '48860'
-            }
-        ],
-        originport_quote_charge: [
-            {
-                charges_name: 'OTHC',
-                uom: 'per container',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 11150,
-                tax: '18',
-                total_sale_cost: '13157'
-            },            
-        ],
-        ocean_quote_charge: [
-            {
-                charges_name: '',
-                uom: 'per container',
-                quantity: '',
-                currency: '$',
-                buy_cost: 440,
-                tax: '0',
-                total_sale_cost: '440'
-            },
-        ],   
-        port_discharge_charges: [
-            {
-                charges_name: 'DTHC',
-                uom: 'per container',
-                quantity: '2',
-                currency: '$',
-                buy_cost: 240,
-                tax: '0',
-                total_sale_cost: '240'
-            },
-            {
-                charges_name: 'DOC',
-                uom: 'per BL',
-                quantity: '2',
-                currency: 'IDR',
-                buy_cost: 110000,
-                tax: '0',
-                total_sale_cost: '110000'
-            },
-            {
-                charges_name: 'MPC',
-                uom: 'per BL',
-                quantity: '2',
-                currency: 'IDR',
-                buy_cost: 300000,
-                tax: '0',
-                total_sale_cost: '300000'
-            },
-            {
-                charges_name: 'CIC',
-                uom: 'per BL',
-                quantity: '2',
-                currency: 'IDR',
-                buy_cost: 110000,
-                tax: '0',
-                total_sale_cost: '110000'
-            },
-        ],
-        delivery_quote_charge:[
-            {
-                charges_name: 'Road',
-                uom: '-',
-                quantity: '',
-                currency: 'IDR',
-                buy_cost: 4663359.44,
-                tax: '',
-                total_sale_cost: '4663359.44'
-            }
-        ]     
-    },
-    {
-        id: '1234567892',
-        logo: cma_logo,
-        name: 'CMA CGM',
-        carrier_name: 'OOCL',
-        location_route: ['BLR ICD','INKTP','IDSUB','JAKARTA ICD'],
-        location_from: 'INMAA',
-        location_to: 'BDDAC',
-        duration: '40',
-        valid_from: '16 Sep 2023',
-        valid_to: '30 Dec 2023',
-        co_two: '7213.27 kg CO2',
-        total_cost: '2044.48',
-        pickup_co: '',
-        pickup: true,
-        pickup_val: 'rail',
-        truck: false,
-        rail: true,
-        pickup: true,
-        origin_port: true,
-        ocean_freight: true,
-        pickport_discharge: true,
-        delivery: true,
-        // truck_day: '1',
-        // truck_km: '4.68',
-        // truck_charge: '0',
-        // rail_charge: '35860',
-        origin_port_co: '',
-        // origin_port_total: '18830',
-        origin_port_currency: '₹',
-        ocean_freight_co: '',
-        // ocean_freight_charge: '200',
-        ocean_freight_charge_currency: '$',
-        port_discharge_co: '',
-        port_discharge_currency: '$',
-        // port_discharge_charge_total: '238.70',        
-        delivery_co: '',
-        // delivery_charge: '4663359.44',
-        // delivery_currency: 'IDR',
-        // delivery_val: 'road',
-        // road: true,
-        // road_charge: '4663359.44',
-        quote_type: 'cheaper',
-        pickup_quote_charge: [
-            {
-                charges_name: 'Rail',
-                uom: 'per container',
-                quantity: '',
-                currency: '₹',
-                buy_cost: 35860,
-                tax: '',
-                total_sale_cost: '35860'
-            }
-        ],
-        originport_quote_charge: [
-            {
-                charges_name: 'OTHC',
-                uom: 'per container',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 12000,
-                tax: '18',
-                total_sale_cost: '14160'
-            },   
-            {
-                charges_name: 'BL FEE',
-                uom: 'per BL',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 3500,
-                tax: '18',
-                total_sale_cost: '4130'
-            },
-            {
-                charges_name: 'CERTIFICATE FEE',
-                uom: 'per BL',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 750,
-                tax: '18',
-                total_sale_cost: '885'
-            },
-            {
-                charges_name: 'SEAL FEE',
-                uom: 'per BL',
-                quantity: '2',
-                currency: '$',
-                buy_cost: 5,
-                tax: '18',
-                total_sale_cost: '5.90'
-            },
-            {
-                charges_name: 'GATE IN FEE',
-                uom: 'per BL',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 170,
-                tax: '18',
-                total_sale_cost: '200.6'
-            },
-            {
-                charges_name: 'EMPTY CONTAINER LIFT FEE',
-                uom: 'per container',
-                quantity: '2',
-                currency: '₹',
-                buy_cost: 2000,
-                tax: '18',
-                total_sale_cost: '2360'
-            },         
-        ],
-        ocean_quote_charge: [
-            {
-                charges_name: '',
-                uom: 'per container',
-                quantity: '',
-                currency: '$',
-                buy_cost: 200,
-                tax: '0',
-                total_sale_cost: '200'
-            },
-        ],    
-        port_discharge_charges: [
-            {
-                charges_name: 'DTHC',
-                uom: 'per BL',
-                quantity: '2',
-                currency: '$',
-                buy_cost: 200,
-                tax: '0',
-                total_sale_cost: '200'
-            },
-            {
-                charges_name: 'DOC',
-                uom: 'per BL',
-                quantity: '2',
-                currency: 'IDR',
-                buy_cost: 120000,
-                tax: '0',
-                total_sale_cost: '120000'
-            },
-            {
-                charges_name: 'MPC',
-                uom: 'per BL',
-                quantity: '2',
-                currency: 'IDR',
-                buy_cost: 300000,
-                tax: '0',
-                total_sale_cost: '300000'
-            },
-            {
-                charges_name: 'CIC',
-                uom: 'per BL',
-                quantity: '2',
-                currency: 'IDR',
-                buy_cost: 120000,
-                tax: '0',
-                total_sale_cost: '120000'
-            },
-        ],    
-        delivery_quote_charge:[
-            {
-                charges_name: 'Road',
-                uom: 'per container',
-                quantity: '',
-                currency: 'IDR',
-                buy_cost: 4663359.44,
-                tax: '',
-                total_sale_cost: '4663359.44'
-            }
-        ] 
-    },
-]
+            "freightMode": "Master Air Waybill",
+            "cargoType": "GCR",
+            "oceanTransitTime": "2 h 15 m",
+            "tariffDetails": [
+                {
+                    "header": "Pickup_Charges",
+                    "tariffBreakDowns": [
+                        {
+                            "component": "TRAIN",
+                            "uomCode": "PER_CONTAINER",
+                            "uomDescription": "PER CONTAINER",
+                            "currencyCode": "INR",
+                            "unit": 5,
+                            "unitPerPrice": 38000,
+                            "amount": 190000,
+                            "originId": 2,
+                            "originName": "CHENNAI",
+                            "destinationId": 3,
+                            "destinationName": "PORT OF CHENNAI",
+                            "transitTime": 1,
+                            "containerDetail": "20GP"
+                        },
+                        {
+                            "component": "FSC",
+                            "componentDescription": "Fuel Surcharge",
+                            "uomCode": "PER_CONTAINER",
+                            "uomDescription": "PER CONTAINER",
+                            "currencyCode": "USD",
+                            "unit": 5,
+                            "unitPerPrice": 15100,
+                            "amount": 75500,
+                            "taxDetail": {
+                                "taxPercentage": 18,
+                                "value": 13590
+                            }
+                        }
+                    ]
+                },
+                {
+                    "header": "Origin_Airport_Charges",
+                    "tariffBreakDowns": [
+                        {
+                            "component": "TSP Charges",
+                            "uomCode": "PER_CONTAINER",
+                            "uomDescription": "PER CONTAINER",
+                            "currencyCode": "USD",
+                            "unit": 5,
+                            "unitPerPrice": 50,
+                            "amount": 250,
+                            "portName": "PORT OF CHENNAI",
+                            "containerDetail": "20GP",
+                            "taxDetail": {
+                                "taxPercentage": 0,
+                                "value": 0
+                            }
+                        },
+                        {
+                            "component": "Xray Charges",
+                            "uomCode": "PER_CONTAINER",
+                            "uomDescription": "PER CONTAINER",
+                            "currencyCode": "USD",
+                            "unit": 5,
+                            "unitPerPrice": 100,
+                            "amount": 500,
+                            "portName": "PORT OF CHENNAI",
+                            "containerDetail": "20GP",
+                            "taxDetail": {
+                                "taxPercentage": 0,
+                                "value": 0
+                            }
+                        }
+                    ]
+                },
+                {
+                    "header": "Air_Freight_Charges",
+                    "tariffBreakDowns": [
+                        {
+                            "component": "Air Freight",
+                            "uomCode": "PER_CONTAINER",
+                            "uomDescription": "PER CONTAINER",
+                            "currencyCode": "USD",
+                            "unit": 5,
+                            "unitPerPrice": 278,
+                            "amount": 1390,
+                            "originId": 3,
+                            "originName": "PORT OF CHENNAI",
+                            "destinationId": 7,
+                            "destinationName": "PORT OF DHAKA",
+                            "transitTime": 15,
+                            "containerDetail": "20GP",
+                            "taxDetail": {
+                                "taxPercentage": 5,
+                                "value": 69.5
+                            }
+                        },
+                        {
+                            "component": "Air way bill Charges",
+                            "componentDescription": "CURRENCY ADJUSTMENT FACTOR",
+                            "uomCode": "PER_KG",
+                            "uomDescription": "PER KILOGRAM",
+                            "currencyCode": "USD",
+                            "unit": 5,
+                            "unitPerPrice": 350,
+                            "amount": 350,
+                            "containerDetail": "20GP",
+                            "taxDetail": {
+                                "taxPercentage": 5,
+                                "value": 17.5
+                            }
+                        },
+                        {
+                            "component": "DO Charges",
+                            "componentDescription": "WAR RISK SURCHARGE",
+                            "uomCode": "PER_CONTAINER",
+                            "uomDescription": "PER CONTAINER",
+                            "currencyCode": "TTD",
+                            "unit": 5,
+                            "unitPerPrice": 500,
+                            "amount": 2500,
+                            "containerDetail": "20GP",
+                            "taxDetail": {
+                                "taxPercentage": 5,
+                                "value": 125
+                            }
+                        }
+                    ]
+                },
+                {
+                    "header": "Destination_Airport_Charges",
+                    "tariffBreakDowns": [
+                        {
+                            "component": "TSP Charges",
+                            "componentDescription": "SEAL FEE",
+                            "uomCode": "PER_BL",
+                            "uomDescription": "PER BL",
+                            "currencyCode": "USD",
+                            "unit": 5,
+                            "unitPerPrice": 120,
+                            "amount": 120,
+                            "portName": "PORT OF DHAKA",
+                            "containerDetail": "20GP",
+                            "taxDetail": {
+                                "taxPercentage": 0,
+                                "value": 12.5
+                            }
+                        },
+                        {
+                            "component": "Xray Charges",
+                            "uomCode": "PER_CONTAINER",
+                            "uomDescription": "PER CONTAINER",
+                            "currencyCode": "USD",
+                            "unit": 5,
+                            "unitPerPrice": 100,
+                            "amount": 500,
+                            "portName": "PORT OF CHENNAI",
+                            "containerDetail": "20GP",
+                            "taxDetail": {
+                                "taxPercentage": 0,
+                                "value": 0
+                            }
+                        }
+                    ]
+                },
+                {
+                    "header": "Delivery_Charges",
+                    "tariffBreakDowns": [
+                        {
+                            "component": "TRAIN",
+                            "uomCode": "PER_CONTAINER",
+                            "uomDescription": "PER CONTAINER",
+                            "currencyCode": "BDT",
+                            "unit": 5,
+                            "unitPerPrice": 38000,
+                            "amount": 190000,
+                            "originId": 7,
+                            "originName": "PORT OF DHAKA",
+                            "destinationId": 5,
+                            "destinationName": "DHAKA",
+                            "transitTime": 15,
+                            "containerDetail": "20GP"
+                        },
+                        {
+                            "component": "FSC",
+                            "componentDescription": "Fuel Surcharge",
+                            "uomCode": "PER_CONTAINER",
+                            "uomDescription": "PER CONTAINER",
+                            "currencyCode": "USD",
+                            "unit": 5,
+                            "unitPerPrice": 10,
+                            "amount": 50,
+                            "taxDetail": {
+                                "taxPercentage": 5,
+                                "value": 2.5
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+    ]
+}
 
 // ------------ inquiry
 const inquiryTableData = [
@@ -2383,7 +1719,7 @@ const optionChargeBasis = [
 
 const optionFlightMode = [
     { label: "Prime", value: "prime" },
-    { label: "GCR", value: "GCR" },    
+    { label: "General", value: "general" },    
     { label: "Lean", value: "lean" },    
 ]
 
@@ -2397,8 +1733,8 @@ const optionCommodity = [
 
 export {
     quotationBreadcrumb,quotationTableData,optionCustomerName,optionServiceType,optionTransportBy,optionContainerType,optionIncoterm,optionCargoType,optionCurrency,
-    optionlocationType,countryList,optionPortList,optionLandTransportBy,searchQuotationResult,weightUnitOption,optionContainerTypeWithoutRefri,optionContainerTypeRefrigerated,
-    optionPickupCharge,optionCurrencyCharges,optionOriginQuote,optionModeQuote,optionDestQuote,optionStatusQuote,optionQuoteValueQuote,searchQuotationResult1,searchQuotationResult2,searchQuotationResult3,
+    optionlocationType,countryList,optionPortList,optionLandTransportBy,weightUnitOption,optionContainerTypeWithoutRefri,optionContainerTypeRefrigerated,
+    optionPickupCharge,optionCurrencyCharges,optionOriginQuote,optionModeQuote,optionDestQuote,optionStatusQuote,optionQuoteValueQuote,
     cargoWeightUnitOption,optionOriginPortCharge,optionOceanCharge,optionPortDischargeCharge,optionQuoteContacttitle,optionQuoteContactCode,inquiryBreadcrumb,
     optionFlightMode,optionCommodity,
 

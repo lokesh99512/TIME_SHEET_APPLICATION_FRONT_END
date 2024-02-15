@@ -1350,6 +1350,9 @@ input[type="number"]{
             position: relative;
             input[type="number"]{
                 padding-right: 60px;
+                &:disabled + .dropdown > a.btn{
+                    background: transparent;
+                }
             }
             .dropdown {
                 position: absolute;

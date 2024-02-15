@@ -237,71 +237,41 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
   }
 
   const confirmHandler = () => {
-    let arrayList = [...shipmentDetails.array];
-    for (let index = 0; index < arrayList.length; index++) {
-      let lval = Number(arrayList[index].dimensions_l);
-      let wval = Number(arrayList[index].dimensions_w);
-      let hval = Number(arrayList[index].dimensions_h);
-      if (shipmentDetails.weight_unit === 'KG') {
-        if (arrayList[index].dimensions_unit === 'MM') {
-          let amount = (lval * wval * hval) / 100000
-          let cbmAmount = (amount / 6000) * Number(arrayList[index].no_unit)
-          arrayList[index].amount = cbmAmount.toFixed(2);
-          arrayList[index].mesure = 'cbm'
-        } else {
-          let amount = (lval * wval * hval)
-          let cbmAmount = (amount / 6000) * Number(arrayList[index].no_unit)
-          arrayList[index].amount = cbmAmount.toFixed(2);
-          arrayList[index].mesure = 'cbm'
-        }
-      } else {
-        let lvalFeet = lval / 12  //convert inches into feet
-        let wvalFeet = wval / 12  //convert inches into feet
-        let hvalFeet = hval / 12  //convert inches into feet
-        let cftAmount = (lvalFeet * wvalFeet * hvalFeet) * Number(arrayList[index].no_unit)
-
-        arrayList[index].amount = cftAmount.toFixed(2);
-        arrayList[index].mesure = 'cft'
-      }
-    }
-    console.log(arrayList, "arrayList");
-    setShipmentDetails({ ...shipmentDetails, array: arrayList });
-
+    calculateCBM();
     dispatch({ type: UPDATE_SEARCH_INSTANT_RATE_DATA, payload: { name: 'shipment_details', item: shipmentDetails } });
     setIsOpen(false);
   }
 
-  const calculateCBM = (data) => {
-    let arrayList = [...data?.array];
-    console.log(arrayList,"arrayList"); 
+  const calculateCBM = () => {
+    let arrayList = [...shipmentDetails?.array];
     if(arrayList.length === 0) return 0
-
-    if(arrayList.length !== undefined){
-      let lval = Number(arrayList[0]?.dimensions_l);
-      let wval = Number(arrayList[0]?.dimensions_w);
-      let hval = Number(arrayList[0]?.dimensions_h);
-  
-      if (shipmentDetails?.weight_unit === 'KG') {
-        if (arrayList[0]?.dimensions_unit === 'MM') {
-          let amount = (lval * wval * hval) / 100000
-          let cbmAmount = (amount / 6000) * Number(arrayList[0]?.no_unit)
-          return cbmAmount.toFixed(2);
-  
+    if(arrayList !== undefined){
+      for (let index = 0; index < arrayList.length; index++) {
+        let lval = Number(arrayList[index]?.dimensions_l);
+        let wval = Number(arrayList[index]?.dimensions_w);
+        let hval = Number(arrayList[index]?.dimensions_h);
+    
+        if (shipmentDetails?.weight_unit === 'KG') {
+          if (arrayList[index]?.dimensions_unit === 'MM') {
+            let amount = (lval * wval * hval) / 100000
+            let cbmAmount = (amount / 6000) * Number(arrayList[index]?.no_unit)
+            arrayList[index].amount = cbmAmount.toFixed(2);            
+    
+          } else {
+            let amount = (lval * wval * hval)
+            let cbmAmount = (amount / 6000) * Number(arrayList[index]?.no_unit)            
+            arrayList[index].amount = cbmAmount.toFixed(2);
+          }
         } else {
-          let amount = (lval * wval * hval)
-          let cbmAmount = (amount / 6000) * Number(arrayList[0]?.no_unit)
-          console.log(cbmAmount, "cbmAmount")
-          return cbmAmount.toFixed(2);
+          let lvalFeet = lval / 12  //convert inches into feet
+          let wvalFeet = wval / 12  //convert inches into feet
+          let hvalFeet = hval / 12  //convert inches into feet
+          let cftAmount = (lvalFeet * wvalFeet * hvalFeet) * Number(arrayList[index]?.no_unit)
+          arrayList[index].amount = cftAmount.toFixed(2);
         }
-      } else {
-        let lvalFeet = lval / 12  //convert inches into feet
-        let wvalFeet = wval / 12  //convert inches into feet
-        let hvalFeet = hval / 12  //convert inches into feet
-        let cftAmount = (lvalFeet * wvalFeet * hvalFeet) * Number(arrayList[0]?.no_unit)
-
-        return cftAmount.toFixed(2);
       }
     }
+    setShipmentDetails({ ...shipmentDetails, array: arrayList });
   }
 
   const removeInputFields = (index) => {
@@ -530,15 +500,15 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                   </div>
                   <div className="con">
                     <label className="form-label">Shipment Details</label>
-                    <span className={`value ${Object.keys(searchForm?.shipment_details)?.length !== 0 ? "value_focus" : ""}`} >
-                      {Object.keys(searchForm?.shipment_details)?.length !== 0 ? (
+                    <span className={`value ${Object.keys(searchForm?.shipment_details || {})?.length !== 0 ? "value_focus" : ""}`} >
+                      {Object.keys(searchForm?.shipment_details || {})?.length !== 0 ? (
                         <>
                           {searchForm?.shipment_details.array[0]?.no_unit} Pieces |{" "}
-                          {/* {calculateVal ? `${calculateVal?.amount?.toFixed(4)} ${calculateVal?.mesure} |` : ""} */}
                           {Number(searchForm?.shipment_details?.weight)}{" "}
+                          {searchForm?.shipment_details?.weight_unit}
+                          {` | ${shipmentDetails?.array?.reduce((a, b) => a + Number(b?.amount), 0)} cbm` || ""}
                           {/* {Number(searchForm?.shipment_details[0]?.no_unit) *
                             Number(searchForm?.shipment_details[0]?.weight)}{" "} */}
-                          {searchForm?.shipment_details?.weight_unit}
                         </>
                       ) : (
                         "Shipment Details"
@@ -583,11 +553,12 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                           </DropdownMenu>
                         </UncontrolledDropdown>
                       </div>
+                      {console.log(shipmentDetails, "shipmentDetails")}
                       <div className="input_field field_dropdown">
                         <label htmlFor={`v_weight`} className="form-label" >Vol. weight </label>
                         <input
                           type="number"
-                          value={calculateCBM(shipmentDetails) || ""}
+                          value={shipmentDetails?.array?.reduce((a, b) => a + Number(b?.amount), 0) || 0}
                           className="form-control"
                           id={`v_weight`}
                           disabled
@@ -711,7 +682,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                       </Accordion>
                     )}
                     <div className="btn_wrap d-flex justify-content-end">
-                      <button type="button" className="btn border_btn" onClick={AddLoadHandler} > Add Another Load </button>
+                      <button type="button" className="btn border_btn" onClick={() => {calculateCBM(); AddLoadHandler();}} > Add Another Load </button>
                       <button type="button" className="btn btn-primary" onClick={confirmHandler} > Confirm </button>
                     </div>
                   </div>
@@ -927,7 +898,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                       </div>
                       {console.log(searchForm,"searchForm")}
                       <div className="con">
-                        <label className="form-label">Flight Mode</label>
+                        <label className="form-label">Flight Type</label>
                         <Select
                           value={searchForm?.flight_mode || ''}
                           name="flight_mode"

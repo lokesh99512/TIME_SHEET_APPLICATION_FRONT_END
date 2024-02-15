@@ -23,29 +23,12 @@ const AirFreightResultComp = ({ QuoteModalHandler, searchResult,mainTab }) => {
         stops_from: [],
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
-    const { quote_selected_data, instantSearchResultCopy, instantInquiryId, searchForm } = useSelector((state) => state.instantRate);
+    const { quote_selected_data, instantSearchResultCopy, instantInquiryId, instantSearchResult } = useSelector((state) => state.instantRate);
     const airResult = [];
     const dispatch = useDispatch();
 
-    // useEffect(() => {
-    //     let data = instantSearchResultCopy?.map((item) => {
-    //         return item.carrierName
-    //     })
+    console.log(instantSearchResultCopy,"instantSearchResultCopy");
 
-    //     let uniqueArray = data.filter((value, index, self) => self.indexOf(value) === index);
-    //     setCarriersList(uniqueArray);
-
-
-    //     let isPortToPort = (searchForm?.location_from.locationType === 'PORT' && searchForm?.location_to.locationType === 'PORT');
-    //     let charges = [];
-    //     if (isPortToPort) {
-    //         charges = ['ORIGIN_LOCAL_PORT_CHARGES', 'FREIGHT_CHARGES', 'DESTINATION_LOCAL_PORT_CHARGES'];
-    //     } else {
-    //         charges = ['ORIGIN_INLAND_CHARGES', 'ORIGIN_LOCAL_PORT_CHARGES', 'FREIGHT_CHARGES', 'DESTINATION_LOCAL_PORT_CHARGES', 'DESTINATION_INLAND_CHARGES'];
-    //     }
-
-    //     setfilterDetails({ ...filterDetails, carriers: uniqueArray, charges });
-    // }, [instantSearchResultCopy]);
     const navToggle = (tab) => {
         if (activeTab !== tab) {
             setactiveTab(tab);
@@ -157,13 +140,13 @@ const AirFreightResultComp = ({ QuoteModalHandler, searchResult,mainTab }) => {
                 </div>
 
                 {activeTab === 'all' ? (
-                    <AirFreightCard data={airResult} QuoteModalHandler={QuoteModalHandler} mainTab={mainTab} />
+                    <AirFreightCard data={instantSearchResultCopy} QuoteModalHandler={QuoteModalHandler} mainTab={mainTab} />
                 ) : mainTab === 'preferred' ? (
-                    <AirFreightCard data={airResult} QuoteModalHandler={QuoteModalHandler} mainTab={mainTab} />
+                    <AirFreightCard data={instantSearchResultCopy} QuoteModalHandler={QuoteModalHandler} mainTab={mainTab} />
                 ) : mainTab === "cheaper" ? (
-                    <AirFreightCard data={airResult} QuoteModalHandler={QuoteModalHandler} mainTab={mainTab} />
+                    <AirFreightCard data={instantSearchResultCopy} QuoteModalHandler={QuoteModalHandler} mainTab={mainTab} />
                 ) : (
-                    <AirFreightCard data={airResult} QuoteModalHandler={QuoteModalHandler} mainTab={mainTab} />
+                    <AirFreightCard data={instantSearchResultCopy} QuoteModalHandler={QuoteModalHandler} mainTab={mainTab} />
                 )}
             </div>
             {/* Filter Modal */}
