@@ -6,7 +6,7 @@ import { filter_icon } from '../../../assets/images';
 import AirFilterSearch from "./AirFilterSearch";
 import AirFreightCard from "./AirFreightCard";
 
-const AirFreightResultComp = ({ QuoteModalHandler, searchResult,mainTab }) => {
+const AirFreightResultComp = ({ QuoteModalHandler, searchResult,mainTab, bookModalHandler }) => {
     const [activeTab, setactiveTab] = useState("all");
     const [isRight, setIsRight] = useState(false);
     const [filterLoader, setFilterLoader] = useState(false);
@@ -140,13 +140,13 @@ const AirFreightResultComp = ({ QuoteModalHandler, searchResult,mainTab }) => {
                 </div>
 
                 {activeTab === 'all' ? (
-                    <AirFreightCard data={instantSearchResultCopy} QuoteModalHandler={QuoteModalHandler} mainTab={mainTab} />
+                    <AirFreightCard data={instantSearchResultCopy} QuoteModalHandler={QuoteModalHandler} mainTab={mainTab} bookModalHandler={bookModalHandler} />
                 ) : mainTab === 'preferred' ? (
-                    <AirFreightCard data={instantSearchResultCopy} QuoteModalHandler={QuoteModalHandler} mainTab={mainTab} />
+                    <AirFreightCard data={instantSearchResultCopy} QuoteModalHandler={QuoteModalHandler} mainTab={mainTab} bookModalHandler={bookModalHandler} />
                 ) : mainTab === "cheaper" ? (
-                    <AirFreightCard data={instantSearchResultCopy} QuoteModalHandler={QuoteModalHandler} mainTab={mainTab} />
+                    <AirFreightCard data={instantSearchResultCopy} QuoteModalHandler={QuoteModalHandler} mainTab={mainTab} bookModalHandler={bookModalHandler} />
                 ) : (
-                    <AirFreightCard data={instantSearchResultCopy} QuoteModalHandler={QuoteModalHandler} mainTab={mainTab} />
+                    <AirFreightCard data={instantSearchResultCopy} QuoteModalHandler={QuoteModalHandler} mainTab={mainTab} bookModalHandler={bookModalHandler} />
                 )}
             </div>
             {/* Filter Modal */}

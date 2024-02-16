@@ -1,28 +1,27 @@
-import { useFormik } from 'formik';
 import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from "react-select";
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem, Modal } from 'reactstrap';
-import { cube_filled, delete_icon, oocl_logo, zim_logo } from '../../../../assets/images';
-import { convertToINR, useOutsideClick } from '../../../../components/Common/CommonLogic';
-import { ADD_QUOTE_MODAL_CHARGES, BLANK_MODAL_CHARGE, REMOVE_QUOTE_MODAL_CHARGES, UPDATE_QUOTE_MODAL_CHARGES } from '../../../../store/Sales/Quotation/actiontype';
-// import { QUOTATION_RESULT_UPDATE } from '../../../../store/Sales/actiontype';
-import { optionMarkupType } from '../../../../common/data/common';
-import { QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_UPDATE } from '../../../../store/InstantRate/actionType';
-import CompanyForm from './CompanyForm';
-import ShipmentForm from './ShipmentForm';
 
-const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setPreviewModal, viewData }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [dropId, setDropId] = useState(false);
-    const dropdownRef = useRef(null);
+import { cube_filled, delete_icon, oocl_logo, zim_logo } from '../../../assets/images';
+import { optionMarkupType } from '../../../common/data/common';
+import { convertToINR, useOutsideClick } from '../../../components/Common/CommonLogic';
+import { QUOTATION_RESULT_SELECTED_BLANK } from '../../../store/InstantRate/actionType';
+import { BLANK_MODAL_CHARGE, REMOVE_QUOTE_MODAL_CHARGES, UPDATE_QUOTE_MODAL_CHARGES } from '../../../store/Sales/Quotation/actiontype';
+import CompanyForm from '../partials/CompanyForm';
+import ShipmentForm from '../partials/ShipmentForm';
+import AirConsigneeForm from './AirConsigneeForm';
+
+const AirBookQuoteModal = ({ bookModal, setBookModal, QuoteModalHandler, viewData }) => {
     const [open, setOpen] = useState('');
     const [openInner, setOpenInner] = useState('');
     const quoteData = useSelector((state) => state.instantRate.quote_selected_data);
-    const exchangedata = useSelector((state) => state?.quotation?.currency_ExchangeRate);
+    const { $instantActiveTab } = useSelector((state) => state.instantRate);
     const mainChargeObj = useSelector((state) => state?.quotation?.mainChargeObj);
     const { surchargeCode_data, UOM_data, currency_data } = useSelector((state) => state?.globalReducer);
     const dispatch = useDispatch();
+
+    console.log($instantActiveTab,"$instantActiveTab");
 
     const toggle = (id) => {
         if (open === id) {
@@ -38,33 +37,12 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
             setOpenInner(id);
         }
     };
-
-    // useEffect(() => {
-    //     dispatch(getCurrencyExchangeRate());
-    // }, [])
-
-    const formik = useFormik({
-        enableReinitialize: true,
-        initialValues: {
-            currencyVal: 'rupee',
-            exchangeRate: ''
-        },
-        onSubmit: (value) => {
-            console.log(value, "value");
-        }
-    })
-
     const blankFieldHandle = () => {
         dispatch({ type: BLANK_MODAL_CHARGE, payload: {} });
         dispatch({ type: QUOTATION_RESULT_SELECTED_BLANK, payload: {} });
     }
 
     // ------------- dynamic field ------------------------
-
-    const addHandler = (charge_name, id) => {
-        dispatch({ type: ADD_QUOTE_MODAL_CHARGES, payload: { id, charge_name } })
-    }
-
     const handleChange = (value, name, index, charge_name, objId, sales_cost, newVal) => {
         console.log(charge_name, "charge_name")
         dispatch({ type: UPDATE_QUOTE_MODAL_CHARGES, payload: { charge_name, id: objId, value, name, index, sales_cost, newVal } })
@@ -73,23 +51,6 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
     const removeInputFields = (index, id, header) => {
         dispatch({ type: REMOVE_QUOTE_MODAL_CHARGES, payload: { index, id, header } })
     }
-
-    const existingHandleChange = (value, name, subindex, charge_name, objId, index, sales_cost, marginVal) => {
-        dispatch({ type: QUOTATION_RESULT_UPDATE, payload: { value, name, subindex, charge_name, id: objId, index, sales_cost, marginVal } })
-    }
-
-    const existingHandleChangeMargin = (data, e, name, subindex, charge_name, objId, index) => {
-        let sale_cost = 0;
-        let marginValue = 0;
-
-        if (e?.target?.name === 'markup_val') {
-            marginValue = calculateMarkupVal(data.markup_type, Number(data.amount), Number(e.target.value));
-            sale_cost = Number(data.amount) + marginValue + (data?.taxDetail && data?.taxDetail?.value || 0);
-        }
-
-        existingHandleChange(e.target.value, name, subindex, charge_name, objId, index, sale_cost, marginValue);
-    }
-
     const calculateMarkupVal = (type, buycost, value) => {
         if (type === 'PERCENTAGE') {
             return (buycost * value / 100)
@@ -184,113 +145,25 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         return totalTax + totalNewTax
     }
 
-    const overAllMarginHandler = (quoteObject, subtotalvalue) => {
-
-        let mainChargeCurr = mainChargeObj?.find(obj => obj.id === quoteObject.quote_id) || [];
-
-        const totalMarginSum = quoteObject?.tariffDetails?.reduce((accOuter, currentOuter) => {
-            let innerSum = 0;
-            if (currentOuter?.selected) {
-                innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
-                    return accInner + (convertToINR(currentInner?.margin_value !== undefined ? Number(currentInner.margin_value || 0) : 0, currentInner.currencyCode) || 0);
-                }, 0);
-            }
-            return accOuter + innerSum;
-        }, 0);
-
-        const totalNewMarginSum = mainChargeCurr?.tariffDetails !== undefined ? mainChargeCurr?.tariffDetails?.reduce((accOuter, currentOuter) => {
-            let innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
-                return accInner + (convertToINR(currentInner?.margin_value !== undefined ? Number(currentInner.margin_value || 0) : 0, currentInner.currencyCode) || 0);
-            }, 0);
-            return accOuter + innerSum;
-        }, 0) : 0;
-
-        // console.log(totalMarginSum, totalNewMarginSum);
-
-        let totalMargin = totalMarginSum + totalNewMarginSum;
-        let buyvalue = subtotalvalue - totalMargin
-
-        return (totalMargin * 100 / buyvalue).toFixed(2)
-    }
-
     // ----------------- preview quotation -------------------
     const previewQuotationHandler = () => {
         console.log(quoteData, "quoteData");
         console.log(mainChargeObj, "mainChargeObj");
-        setPreviewModal(true);
+        // setPreviewModal(true);
         QuoteModalHandler();
     }
-
-    // ------------ custom dropdown -------------------
-    const toggleDropdown = (id) => {
-        setIsOpen(!isOpen);
-        setDropId(id);
-    };
-    useOutsideClick(dropdownRef, setIsOpen);
-    // ------------ custom dropdown ------------------- ")
     return (
         <>
-            <Modal size="xl" isOpen={quoteModal} toggle={() => { QuoteModalHandler(); }} className='quotation_modal_wrap' >
+            <Modal size="xl" isOpen={bookModal} toggle={() => { QuoteModalHandler(); }} className='quotation_modal_wrap' >
                 <div className="modal-header">
                     <h5 className="modal-title mt-0" id="myExtraLargeModalLabel" >
-                        Quotations
+                        Book Now
                     </h5>
                     <div className="right_wrap">
-                        <div className="exchange_currency_wrap d-flex">
-                            <div className="common_dropdwon_btn_wrap bottom_drop_field currency_field_wrap">
-                                <Select
-                                    value={formik?.values?.currencyVal}
-                                    options={currency_data.map(({ value, currencyCode, id, version }) => ({ value, label: currencyCode, currencyCode, id, version })) || []}
-                                    onChange={(selectedOption) => {
-                                        formik.setFieldValue('currencyVal', selectedOption);
-                                        // formik.setFieldValue('exchangeRate', (item.value !== 'rupee' ? exchangedata[item.value]?.rate : '-'))
-                                    }}
-                                    isSearchable
-                                    placeholder={"Select Currency"}
-                                    styles={{
-                                        control: (provided) => ({
-                                            ...provided,
-                                            maxWidth: '150px',
-                                            whiteSpace: 'nowrap',
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                        }),
-                                    }}
-                                />
-                            </div>
-                            {/* <div className="common_dropdwon_btn_wrap">
-                                <div
-                                    id='more_menu'
-                                    className={`d-flex align-items-center ${isOpen && dropId === 8 ? 'openmenu' : ''} ${viewData ? 'disable' : ''}`}
-                                    onClick={() => { toggleDropdown(8) }}
-                                >
-                                    {optionCurrency ? `${optionCurrency.find(obj => obj.value === formik.values.currencyVal).code} ${optionCurrency.find(obj => obj.value === formik.values.currencyVal).name}` : ''}
-                                    <i className="mdi mdi-chevron-down" />
-                                </div>
-                                {isOpen && dropId === 8 ?
-                                    <ul className="common_dropdown_wrap quantity_drop_wrap" ref={dropdownRef}>
-                                        {(optionCurrency || '')?.map((item, index) => (
-                                            <li
-                                                className={`${item.value === formik.values.currencyVal ? 'active' : ''}`} key={index}
-                                                onClick={() => {
-                                                    setIsOpen(false);
-                                                    formik.setFieldValue('currencyVal', item.value);
-                                                    formik.setFieldValue('exchangeRate', (item.value !== 'rupee' ? exchangedata[item.value]?.rate : '-'))
-                                                }}>
-                                                <span>{item?.code} &nbsp; {item?.name}</span>
-                                            </li>
-                                        ))}
-                                    </ul> : null
-                                }
-                            </div> */}
-                            <span className='exchange_rate'>Exchange Rate:
-                                <input type="number" name="exchangeRate" id="exchange_rate" placeholder='-' value={formik.values.exchangeRate}
-                                    onChange={(e) => { formik.setFieldValue('exchangeRate', e.target.value) }} disabled={viewData} /></span>
-                        </div>
                         <button
                             onClick={() => {
                                 blankFieldHandle();
-                                setQuoteModal(false);
+                                setBookModal(false);
                             }}
                             type="button"
                             className="close"
@@ -308,10 +181,18 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                 <>
                                     <AccordionItem>
                                         <AccordionHeader targetId={`customerdetails`}>
-                                            Company Details
+                                            Shipper Details
                                         </AccordionHeader>
                                         <AccordionBody accordionId={`customerdetails`}>
                                             <CompanyForm />
+                                        </AccordionBody>
+                                    </AccordionItem>
+                                    <AccordionItem>
+                                        <AccordionHeader targetId={`consigneedetails`}>
+                                            Consignee Details
+                                        </AccordionHeader>
+                                        <AccordionBody accordionId={`consigneedetails`}>
+                                            <AirConsigneeForm />
                                         </AccordionBody>
                                     </AccordionItem>
                                     <AccordionItem>
@@ -330,19 +211,13 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                     <AccordionHeader targetId={`main_${mainindex}`}>
                                         <div className="card_img d-flex align-items-center">
                                             <span className='d-flex align-items-center justify-content-center img me-2'>
-                                                <img src={item?.carrierName?.toLowerCase() === 'oocl' ? oocl_logo : item?.carrierName?.toLowerCase() === 'zim' ? zim_logo : cube_filled} alt="Logo" />
+                                                <img src={$instantActiveTab?.sub === "dom_air" ? item?.carrierLogo : item?.carrierName?.toLowerCase() === 'oocl' ? oocl_logo : item?.carrierName?.toLowerCase() === 'zim' ? zim_logo : cube_filled} alt="Logo" />
                                             </span>
                                             <div className="con d-flex align-items-center">
-                                                <span className="title d-block text-center me-2">{item.carrierName || '-'}</span>
-                                                {/* <span className={`tag ${item.quote_type || 'preferred'}`}>{item.quote_type || '-'}</span> */}
+                                                <span className="title d-block text-center me-2">
+                                                    {$instantActiveTab?.sub === "dom_air" ? item?.flightname || '-' : item.carrierName || '-'}
+                                                </span>
                                             </div>
-                                        </div>
-                                        <div className="right_con d-flex ms-auto">
-                                            <div className="margin_wrap">Margin Value: <b>{overAllMarginHandler(item, subTotalHandler(item))}%</b></div>
-                                            {/* <span className='text-primary'>
-                                                {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '}
-                                                {formik.values.currencyVal !== 'rupee' ? ((subTotalHandler(item) + totalTaxHandler(item)) * Number(formik.values.exchangeRate)).toFixed(2) : (subTotalHandler(item) + totalTaxHandler(item))}
-                                            </span> */}
                                         </div>
                                     </AccordionHeader>
                                     <AccordionBody accordionId={`main_${mainindex}`}>
@@ -354,9 +229,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                             <AccordionHeader targetId={`subacco_${index}`}>
                                                                 {data?.header?.split('_').join(" ") || '-'}
                                                                 <div className="right_con ms-auto">
-                                                                    {/* <span className="price text-primary">{'₹'} {innerTotalHandler((item?.pickup_quote_charge || []), (mainChargeObj?.find(obj => obj.quote_id === item.quote_id)?.pickup_quote_charge || []))}</span> */}
-                                                                    <span className="price text-primary">{'₹'} {innerTotalHandler((data?.tariffBreakDowns || []), (mainChargeObj?.find(obj => obj.id === item.quote_id)?.tariffDetails?.find(obj => obj.header === data?.header)?.tariffBreakDowns || []))}</span>
-                                                                    
+                                                                    <span className="price text-primary">{'₹'} {innerTotalHandler((data?.tariffBreakDowns || []), (mainChargeObj?.find(obj => obj.id === item.quote_id)?.tariffDetails?.find(obj => obj.header === data?.header)?.tariffBreakDowns || []))}</span>                                                                    
                                                                 </div>
                                                             </AccordionHeader>
                                                             <AccordionBody accordionId={`subacco_${index}`}>
@@ -369,7 +242,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                     <input type="text" value={`${subData?.component || ''}${subData?.containerDetail ? '- ' + subData?.containerDetail : ''}`} name="charges_name" id="charges_name" placeholder='Freight' readOnly disabled={viewData} />
                                                                                 </div>
                                                                             </div>
-                                                                            <div className="col-1">
+                                                                            <div className="col-2">
                                                                                 <div className="field_wrap">
                                                                                     {subindex === 0 && <label className='form-label' htmlFor="uom">Charge Basis</label>}
                                                                                     <input type="text" value={subData?.uomCode?.split('_').join(' ') || ''} name="uom" id="uom" readOnly disabled={viewData} />
@@ -381,13 +254,13 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                     <input type="text" value={subData?.unit || 1} name="quantity" id="quantity" readOnly disabled={viewData} />
                                                                                 </div>
                                                                             </div>
-                                                                            <div className="col-1">
+                                                                            <div className="col-2">
                                                                                 <div className="field_wrap">
                                                                                     {subindex === 0 && <label className='form-label' htmlFor="buy_currency">Buy Currency</label>}
                                                                                     <input type="text" value={subData?.currencyCode || ''} name="buy_currency" id="buy_currency" placeholder='USD' readOnly disabled={viewData} />
                                                                                 </div>
                                                                             </div>
-                                                                            <div className="col-1">
+                                                                            {/* <div className="col-1">
                                                                                 <div className="field_wrap">
                                                                                     {subindex === 0 && <label className='form-label' htmlFor="buy_cost">Total Buy Cost</label>}
                                                                                     <input type="text" value={parseInt(subData?.unitPerPrice, 10) || ''} name="buy_cost" id="buy_cost" readOnly disabled={viewData} />
@@ -419,7 +292,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                         }}
                                                                                         placeholder='Enter value' disabled={viewData} />
                                                                                 </div>
-                                                                            </div>
+                                                                            </div> */}
                                                                             <div className="col-1">
                                                                                 <div className="field_wrap">
                                                                                     {subindex === 0 && <label className='form-label' htmlFor="tax">Tax</label>}
@@ -435,7 +308,6 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                         </div>
                                                                     </div>
                                                                 ))}
-                                                                {/* {console.log(mainChargeObj,"mainChargeObj")} */}
                                                                 {mainChargeObj?.find(obj => obj.id === item.quote_id)?.tariffDetails?.find(obj => obj.header === data?.header)?.tariffBreakDowns?.map((newdata, i) => (
                                                                     <div className="charges_wrap mt-3" key={i}>
                                                                         <div className="label_delete_wwrap d-flex justify-content-between">
@@ -541,13 +413,6 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                         </div>
                                                                     </div>
                                                                 ))}
-                                                                {!viewData && (
-                                                                    <div className="add_btn_box mt-3">
-                                                                        <div className="add_btn_wrap">
-                                                                            <button type='button' className="btn btn-primary add_btn d-flex align-items-center" onClick={() => { addHandler(`${data?.header}`, item?.quote_id); }}> <i className='bx bx-plus me-2'></i> Add Charges</button>
-                                                                        </div>
-                                                                    </div>
-                                                                )}
                                                             </AccordionBody>
                                                         </AccordionItem>
                                                     )
@@ -559,9 +424,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                 <span>Sub Total:</span>
                                                 <span>
                                                     <b>
-                                                        {/* {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '} */}
-                                                        {/* {formik.values.currencyVal !== 'rupee' ? (subTotalHandler(item) * Number(formik.values.exchangeRate)).toFixed(2) : subTotalHandler(item)} */}
-                                                        {subTotalHandler(item)}
+                                                        ₹ {subTotalHandler(item)}
                                                     </b>
                                                 </span>
                                             </div>
@@ -569,9 +432,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                 <span>Tax:</span>
                                                 <span>
                                                     <b>
-                                                        {/* {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '} */}
-                                                        {/* {formik.values.currencyVal !== 'rupee' ? (totalTaxHandler(item) * Number(formik.values.exchangeRate)).toFixed(2) : totalTaxHandler(item)} */}
-                                                        {totalTaxHandler(item)}
+                                                        ₹ {totalTaxHandler(item)}
                                                     </b>
                                                 </span>
                                             </div>
@@ -579,9 +440,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                 <span>Total Amount:</span>
                                                 <span>
                                                     <b className='h5'>
-                                                        {/* {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '} */}
-                                                        {/* {formik.values.currencyVal !== 'rupee' ? ((subTotalHandler(item) + totalTaxHandler(item)) * Number(formik.values.exchangeRate)).toFixed(2) : (subTotalHandler(item) + totalTaxHandler(item))} */}
-                                                        {(subTotalHandler(item) + totalTaxHandler(item))}
+                                                        ₹ {(subTotalHandler(item) + totalTaxHandler(item))}
                                                     </b>
                                                 </span>
                                             </div>
@@ -597,9 +456,10 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                         <div className="btn_wrap">
                             <button type="button" className='btn border_btn' onClick={() => {
                                 blankFieldHandle();
-                                setQuoteModal(false);
+                                setBookModal(false);
                             }}>Cancel</button>
-                            <button type="button" className='btn btn-primary ms-2' onClick={() => { previewQuotationHandler() }}>Preview Quotation</button>
+                            <button type="button" className='btn btn-primary ms-2' onClick={() => { previewQuotationHandler() }}>Book Now</button>
+                            {/* <button type="button" className='btn btn-primary ms-2' onClick={() => { previewQuotationHandler() }}>Preview Quotation</button> */}
                         </div>
                     </div>
                 )}
@@ -608,4 +468,4 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
     )
 }
 
-export default QuotationModalComp
+export default AirBookQuoteModal

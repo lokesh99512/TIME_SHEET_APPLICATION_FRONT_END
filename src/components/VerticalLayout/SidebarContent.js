@@ -18,7 +18,7 @@ import withRouter from "../Common/withRouter"
 //i18n
 import { withTranslation } from "react-i18next"
 import { BLANK_MODAL_CHARGE } from "../../store/Sales/Quotation/actiontype";
-import { BLANK_INSTANT_SEARCH, QUOTATION_RESULT_SELECTED_BLANK } from "../../store/InstantRate/actionType";
+import { BLANK_INSTANT_SEARCH, INSTANT_RATE_ACTIVE_TAB_TYPE, QUOTATION_RESULT_SELECTED_BLANK } from "../../store/InstantRate/actionType";
 import { useDispatch } from "react-redux";
 
 const option = [
@@ -175,7 +175,7 @@ const SidebarContent = props => {
                 </li>
               </ul>
             </li>
-            <li onClick={() => {dispatch({ type: BLANK_MODAL_CHARGE, payload: {} }); dispatch({ type: QUOTATION_RESULT_SELECTED_BLANK, payload: {} }); dispatch({ type: BLANK_INSTANT_SEARCH });}}>
+            <li onClick={() => {dispatch({ type: BLANK_MODAL_CHARGE, payload: {} }); dispatch({ type: QUOTATION_RESULT_SELECTED_BLANK, payload: {} }); dispatch({ type: BLANK_INSTANT_SEARCH }); dispatch({type: INSTANT_RATE_ACTIVE_TAB_TYPE, payload: { main: "ocean_freight", sub: "FCL"}});}}>
               <Link to="/instant-rate/search-rate" className="has-arrow">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
                   <path d="M4.5 4.25C4.5 3.83579 4.16421 3.5 3.75 3.5C3.33579 3.5 3 3.83579 3 4.25V14.75C3 16.2688 4.23122 17.5 5.75 17.5H16.25C16.6642 17.5 17 17.1642 17 16.75C17 16.3358 16.6642 16 16.25 16H5.75C5.05964 16 4.5 15.4404 4.5 14.75V4.25ZM12.75 5.5C12.3358 5.5 12 5.83579 12 6.25C12 6.66421 12.3358 7 12.75 7H14.4393L11 10.4393L9.53033 8.96967C9.38968 8.82902 9.19892 8.75 9 8.75C8.80109 8.75 8.61032 8.82902 8.46967 8.96967L5.71967 11.7197C5.42678 12.0126 5.42678 12.4874 5.71967 12.7803C6.01256 13.0732 6.48744 13.0732 6.78033 12.7803L9 10.5607L10.4696 12.0303C10.6103 12.171 10.8011 12.25 11 12.25C11.1989 12.25 11.3896 12.171 11.5303 12.0303L15.5 8.06063V9.75C15.5 10.1642 15.8358 10.5 16.25 10.5C16.6642 10.5 17 10.1642 17 9.75V6.25C17 5.83579 16.6642 5.5 16.25 5.5H12.75Z" fill="#6264A0" />

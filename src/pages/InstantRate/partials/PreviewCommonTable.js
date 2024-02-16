@@ -1,5 +1,5 @@
 import React from 'react'
-import { convertToINR } from '../../../../components/Common/CommonLogic';
+import { convertToINR } from '../../../components/Common/CommonLogic';
 
 export default function PreviewCommonTable({ data, newData }) {
     const subtotalCount = () => {
@@ -36,7 +36,7 @@ export default function PreviewCommonTable({ data, newData }) {
             return accOuter + innerSum;
         }, 0) : 0;
 
-        console.log(buyValue, marginValue, newSubTotal, totalNewMarginSum, "buyValue");
+        // console.log(buyValue, marginValue, newSubTotal, totalNewMarginSum, "buyValue");
 
         return buyValue + marginValue + newSubTotal + totalNewMarginSum;
     }
@@ -59,7 +59,7 @@ export default function PreviewCommonTable({ data, newData }) {
             return accOuter + innerSum;
         }, 0) : 0;
 
-        console.log(totalTax, totalNewTax, subTotal, "Total preview");
+        // console.log(totalTax, totalNewTax, subTotal, "Total preview");
 
         return subTotal + totalTax + totalNewTax;
     }

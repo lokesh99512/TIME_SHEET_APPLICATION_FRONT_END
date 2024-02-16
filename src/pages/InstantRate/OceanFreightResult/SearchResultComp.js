@@ -3,10 +3,10 @@ import moment from "moment";
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Nav, NavItem, NavLink } from 'reactstrap';
-import { filter_icon } from "../../../../assets/images";
-import { CLEAR_SEARCH_RESULT_FILTER, SEARCH_RESULT_FILTER_UPDATE } from "../../../../store/InstantRate/actionType";
-import { filterInstantSearchAction } from "../../../../store/InstantRate/actions";
-import FilterSearchResult from "../../partials/FilterSearchResult";
+import { filter_icon } from "../../../assets/images";
+import { CLEAR_SEARCH_RESULT_FILTER, SEARCH_RESULT_FILTER_UPDATE } from "../../../store/InstantRate/actionType";
+import { filterInstantSearchAction } from "../../../store/InstantRate/actions";
+import FilterSearchResult from "../../Sales/partials/FilterSearchResult";
 import SearchResultCard from './SearchResultCard';
 
 const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {

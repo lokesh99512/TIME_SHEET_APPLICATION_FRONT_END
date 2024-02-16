@@ -7,7 +7,7 @@ import { Accordion, AccordionBody, AccordionHeader, AccordionItem, DropdownItem,
 import { calendar_filled, cube_filled, delete_icon, filter_img, location_filled, swap_arrow } from '../../assets/images';
 import { optionFlightMode, weightUnitOption } from "../../common/data/sales";
 import { isAnyValueEmpty, useOutsideClick } from "../../components/Common/CommonLogic";
-import { BLANK_INSTANT_SEARCH, GET_AIR_LOCATION_TYPE, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK } from "../../store/InstantRate/actionType";
+import { GET_AIR_LOCATION_TYPE, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK } from "../../store/InstantRate/actionType";
 import { getAllIncoTerms, getInstantRateLocation } from "../../store/InstantRate/actions";
 import { getAllPartiesCustomerData } from "../../store/Parties/Customer/action";
 const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
@@ -45,18 +45,16 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
       weight: { value: "MT", label: "MT", id: 7, version: 2 }
     }
   });
-  const [calculateVal, setCalculateVal] = useState({});
   const [classHazardous, setClassHazardous] = useState(0);
   const [unitValue, setUnitValue] = useState(unitobj);
   const [open, setOpen] = useState('1');
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
-  const instantRateState = useSelector((state) => state.instantRate);
+
   const { customer_data } = useSelector((state) => state?.customer)
   const { cargoType_data, container_data, UOM_weight_data, currency_data } = useSelector((state) => state?.globalReducer)
-  const { searchForm, instantRateLocation, error, incoterm, airLocation } = instantRateState;
+  const { searchForm, instantRateLocation, incoterm, airLocation } = useSelector((state) => state.instantRate);
   const [shipmentDetails, setShipmentDetails] = useState(shipmentObj);
-  const ref = useRef();
 
   useEffect(() => {
     if (activeTab === "FCL") {
@@ -67,12 +65,6 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
       dispatch({ type: GET_AIR_LOCATION_TYPE });
     }
     dispatch(getAllPartiesCustomerData());
-    // dispatch({ type: BLANK_INSTANT_SEARCH });
-    // setContainerData({ containerArray: [],cargo_weight:{
-    //   weight: { value: "MT", label: "MT", id: 7, version: 2 }
-    // }});
-    // setUnitValue(unitobj);
-    // setShipmentDetails(shipmentObj);
   }, [dispatch, activeTab]);
 
   const locationOptions = instantRateLocation.map(location => ({
@@ -108,7 +100,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
     dispatch({ type: UPDATE_INSTANT_RATE_SWAP })
   }
 
-  const handleDateChnage = (arr, value, target) => {
+  const handleDateChnage = (arr) => {
     let arrItem = "";
     if (arr?.length > 1) {
       arrItem = arr
@@ -117,13 +109,13 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
       dispatch({ type: UPDATE_VALUE_BLANK, payload: 'cargo_date' })
     }
   }
-  const handleSingleDateChange = (arr, value, target) => {
+  const handleSingleDateChange = (arr) => {
     let arrItem = arr;
     dispatch({ type: UPDATE_SEARCH_INSTANT_RATE_DATE, payload: { arrItem } });
   }
 
   // container handle 
-  const handleContainerChangeHandler = (item, name) => {
+  const handleContainerChangeHandler = (item) => {
     let newArray = [...containerData?.containerArray];
     if (containerData?.containerArray?.some((obj) => obj?.id === item.id)) {
       let index = newArray.findIndex((obj) => obj.id === item.id);
@@ -236,12 +228,6 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
     }
   }
 
-  const confirmHandler = () => {
-    calculateCBM();
-    dispatch({ type: UPDATE_SEARCH_INSTANT_RATE_DATA, payload: { name: 'shipment_details', item: shipmentDetails } });
-    setIsOpen(false);
-  }
-
   const calculateCBM = () => {
     let arrayList = [...shipmentDetails?.array];
     if(arrayList.length === 0) return 0
@@ -269,11 +255,17 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
           let cftAmount = (lvalFeet * wvalFeet * hvalFeet) * Number(arrayList[index]?.no_unit)
           arrayList[index].amount = cftAmount.toFixed(2);
         }
-      }
+      }      
     }
-    setShipmentDetails({ ...shipmentDetails, array: arrayList });
-  }
+    let totalVw = arrayList?.reduce((a, b) => a + Number(b?.amount), 0)
 
+    setShipmentDetails({ ...shipmentDetails, v_weight: totalVw, array: arrayList });
+  }
+  const confirmHandler = () => {
+    calculateCBM();
+    dispatch({ type: UPDATE_SEARCH_INSTANT_RATE_DATA, payload: { name: 'shipment_details', item: shipmentDetails } });
+    setIsOpen(false);
+  }
   const removeInputFields = (index) => {
     const rows = [...shipmentDetails.array];
     rows.splice(index, 1);
@@ -308,10 +300,11 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                         <img className="location_img" src={location_filled} alt="Location" />
                       </div>
                       <div className="con">
-                        <label className="form-label">From</label>
+                        <label className="form-label" htmlFor="location_from">From</label>
                         <Select
                           value={searchForm?.location_from}
                           name="address"
+                          id="location_from"
                           onChange={(opt) => {
                             handleChangeHandler(opt, "location_from");
                           }}
@@ -361,7 +354,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
           </div>
 
           {/* container details */}
-          {activeTab == "FCL" &&
+          {activeTab === "FCL" &&
             <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
               <div className="common_dropdwon_btn_wrap">
                 <div id="more_menu" className={`prof_wrap d-flex justify-content-between`} onClick={() => { toggleDropdown(11); }} >
@@ -398,7 +391,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                           <div className="con">
                             <span className={`value ${containerData?.containerArray?.length !== 0 ? "value_focus" : ""}`} >
                               {containerData?.containerArray?.length !== 0
-                                ? containerData?.containerArray?.map((item, index) => (
+                                ? containerData?.containerArray?.map((item) => (
                                   <span key={item.id}>
                                     {item?.unitNew !== 0 ? ` ${item?.label}, unit: "${item?.unitNew}",` : null}
                                   </span>
@@ -409,12 +402,13 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                           <i className="mdi mdi-chevron-down" />
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-end quantity_drop_wrap">
-                          {(container_data || []).slice(0).reverse().map(({ id, value, label, version, size, unit, rateId }, index) => (
-                            <DropdownItem key={index} className={`${searchForm?.container_type?.containerArray?.value === value ? "active" : ""}`} tag="div">
+                          {(container_data || []).slice(0).reverse().map(({ id, value, label, version, size, rateId }) => (
+                            <DropdownItem key={id} className={`${searchForm?.container_type?.containerArray?.value === value ? "active" : ""}`} tag="div">
                               <div className="custom-option">
                                 <p>{label}</p>
                                 <div className="quantity_wrap">
                                   <button
+                                    type="button"
                                     className="minus"
                                     onClick={(e) => {
                                       countMinusHandler(e, rateId, { id, value, label, version, size, rateId }, 'container_type');
@@ -433,6 +427,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                                     }}
                                   />
                                   <button
+                                    type="button"
                                     className="plus"
                                     onClick={(e) => {
                                       countPlusHandler(e, rateId, { id, value, label, version, size, rateId }, 'container_type');
@@ -553,7 +548,6 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                           </DropdownMenu>
                         </UncontrolledDropdown>
                       </div>
-                      {console.log(shipmentDetails, "shipmentDetails")}
                       <div className="input_field field_dropdown">
                         <label htmlFor={`v_weight`} className="form-label" >Vol. weight </label>
                         <input
@@ -896,7 +890,6 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                       <div className="icon d-flex align-items-center justify-content-center">
                         <img src={cube_filled} alt="Avatar" />
                       </div>
-                      {console.log(searchForm,"searchForm")}
                       <div className="con">
                         <label className="form-label">Flight Type</label>
                         <Select
