@@ -3,24 +3,24 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import Select from "react-select";
 import { Card, CardBody, Input } from 'reactstrap';
-import { optionQuoteContactCode, optionQuoteContacttitle } from '../../../../common/data/sales';
-const CompanyForm = () => {
+import { optionQuoteContactCode, optionQuoteContacttitle } from '../../../common/data/sales';
+const AirConsigneeForm = () => {
     const { tenant_info } = useSelector((state) => state?.settings);
 
-    const companyDetailsFormik = useFormik({
+    const consigneeDetailsFormik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            customerName: tenant_info && tenant_info?.name || '-',
-            address: tenant_info && tenant_info?.address || '-',
-            city: tenant_info && tenant_info?.city?.cityName || '-',
-            state: tenant_info && tenant_info?.state?.stateName || '-',
-            country: tenant_info && tenant_info?.country?.countryName || '-',
-            zipcode: tenant_info && tenant_info?.pinCode?.pin || '-',
+            customerName: '-',
+            address: '-',
+            city: '-',
+            state: '-',
+            country: '-',
+            zipcode: '-',
             title: "Mr",
-            contactName: tenant_info && tenant_info?.contactName,
+            contactName: '-',
             opCode: "+91",
-            phoneNumber: tenant_info && tenant_info?.contactNumber || '-',
-            email: tenant_info && tenant_info?.email || '-',
+            phoneNumber: '-',
+            email: '-',
         }
     })
     return (
@@ -36,8 +36,8 @@ const CompanyForm = () => {
                                         <Input
                                             type="text"
                                             name="companyName"
-                                            value={companyDetailsFormik?.values?.customerName}
-                                            onChange={companyDetailsFormik.handleChange}
+                                            value={consigneeDetailsFormik?.values?.customerName}
+                                            onChange={consigneeDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
                                             readOnly
@@ -50,8 +50,8 @@ const CompanyForm = () => {
                                         <Input
                                             type="text"
                                             name="address"
-                                            value={companyDetailsFormik.values.address}
-                                            onChange={companyDetailsFormik.handleChange}
+                                            value={consigneeDetailsFormik.values.address}
+                                            onChange={consigneeDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
                                             readOnly
@@ -64,8 +64,8 @@ const CompanyForm = () => {
                                         <Input
                                             type="text"
                                             name="city"
-                                            value={companyDetailsFormik.values.city}
-                                            onChange={companyDetailsFormik.handleChange}
+                                            value={consigneeDetailsFormik.values.city}
+                                            onChange={consigneeDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
                                             readOnly
@@ -78,8 +78,8 @@ const CompanyForm = () => {
                                         <Input
                                             type="text"
                                             name="state"
-                                            value={companyDetailsFormik.values.state}
-                                            onChange={companyDetailsFormik.handleChange}
+                                            value={consigneeDetailsFormik.values.state}
+                                            onChange={consigneeDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
                                             readOnly
@@ -92,8 +92,8 @@ const CompanyForm = () => {
                                         <Input
                                             type="text"
                                             name="country"
-                                            value={companyDetailsFormik.values.country}
-                                            onChange={companyDetailsFormik.handleChange}
+                                            value={consigneeDetailsFormik.values.country}
+                                            onChange={consigneeDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
                                             readOnly
@@ -106,8 +106,8 @@ const CompanyForm = () => {
                                         <Input
                                             type="text"
                                             name="zipcode"
-                                            value={companyDetailsFormik.values.zipcode}
-                                            onChange={companyDetailsFormik.handleChange}
+                                            value={consigneeDetailsFormik.values.zipcode}
+                                            onChange={consigneeDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
                                             readOnly
@@ -124,10 +124,10 @@ const CompanyForm = () => {
                                                 <Select
                                                     name='title'
                                                     value={
-                                                        optionQuoteContacttitle ? optionQuoteContacttitle.find((option) => option.value === companyDetailsFormik?.values?.title) : ""
+                                                        optionQuoteContacttitle ? optionQuoteContacttitle.find((option) => option.value === consigneeDetailsFormik?.values?.title) : ""
                                                     }
                                                     onChange={(e) => {
-                                                        companyDetailsFormik.setFieldValue(`title`, e.value);
+                                                        consigneeDetailsFormik.setFieldValue(`title`, e.value);
                                                     }}
                                                     placeholder="Mr"
                                                     options={optionQuoteContacttitle}
@@ -138,8 +138,8 @@ const CompanyForm = () => {
                                                 <Input
                                                     type="text"
                                                     name="contactName"
-                                                    value={companyDetailsFormik.values.contactName}
-                                                    onChange={companyDetailsFormik.handleChange}
+                                                    value={consigneeDetailsFormik.values.contactName}
+                                                    onChange={consigneeDetailsFormik.handleChange}
                                                     className="form-control"
                                                     placeholder=""
                                                     readOnly
@@ -159,9 +159,9 @@ const CompanyForm = () => {
                                             <div className='col-4 col-md-3'>
                                                 <Select
                                                     name='opCode'
-                                                    value={optionQuoteContactCode ? optionQuoteContactCode.find((option) => option.value === companyDetailsFormik?.values?.opCode) : ""}
+                                                    value={optionQuoteContactCode ? optionQuoteContactCode.find((option) => option.value === consigneeDetailsFormik?.values?.opCode) : ""}
                                                     onChange={(e) => {
-                                                        companyDetailsFormik.setFieldValue(`opCode`, e.value);
+                                                        consigneeDetailsFormik.setFieldValue(`opCode`, e.value);
                                                     }}
                                                     placeholder="+91"
                                                     options={optionQuoteContactCode}
@@ -172,8 +172,8 @@ const CompanyForm = () => {
                                                 <Input
                                                     type="text"
                                                     name="phoneNumber"
-                                                    value={companyDetailsFormik.values.phoneNumber}
-                                                    onChange={companyDetailsFormik.handleChange}
+                                                    value={consigneeDetailsFormik.values.phoneNumber}
+                                                    onChange={consigneeDetailsFormik.handleChange}
                                                     className="form-control"
                                                     placeholder=""
                                                     readOnly
@@ -188,8 +188,8 @@ const CompanyForm = () => {
                                         <Input
                                             type="text"
                                             name="email"
-                                            value={companyDetailsFormik.values.email}
-                                            onChange={companyDetailsFormik.handleChange}
+                                            value={consigneeDetailsFormik.values.email}
+                                            onChange={consigneeDetailsFormik.handleChange}
                                             className="form-control"
                                             placeholder=""
                                             readOnly
@@ -205,4 +205,4 @@ const CompanyForm = () => {
     );
 }
 
-export default CompanyForm;
+export default AirConsigneeForm;

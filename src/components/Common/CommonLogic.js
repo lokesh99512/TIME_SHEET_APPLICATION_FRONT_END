@@ -73,6 +73,8 @@ export function formatBytes(bytes, decimals = 2) {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
 }
 
+
+/** * Checks if any value is empty */
 export const isAnyValueEmpty = (obj, removeKey) => {
     let updatedObj = { ...obj };
     if(removeKey !== undefined && removeKey?.length > 0){
@@ -113,6 +115,7 @@ export const isAnyValueEmptyInArray = (arr, removeKey) => {
     return false;
 };
 
+/* Custom sort function */
 export function customSort(array, sortField, sortOrder) {
     return [...array].sort((a, b) => {
         if (a[sortField] === null) return 1;
@@ -130,21 +133,22 @@ export const isExcelFile = (fileName) => {
     return fileName.endsWith(".xls") || fileName.endsWith(".xlsx");
 };
 
-// const downloadFormateHandler = async () => {
-//     const fileName = "example.xlsx"; 
-//     const xlsxFileData = '../../../../assets/extra/upload_Formats.xlsx';
-//     // const blob = new Blob([xlsxFileData], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+/* --------------------- common logic -------------------------------------------*/
+export const commonFunc = (array, index, params,seArray) => {
+    if (array?.length !== 0) {
+        if (array.some(obj => obj.index === index)) {
+            array.find(obj => obj.index === index)[params] = !array.find(obj => obj.index === index)[params]
+        } else {
+            let newObj = { [params]: true, index }
+            array.push(newObj);
+        }
+    } else {
+        let newObj = { [params]: true, index }
+        array.push(newObj);
+    }
+    seArray(array);
+}
 
-//     // const url = URL.createObjectURL(blob);
-//     const url = xlsxFileData;
-//     const element = document.createElement("a");
-//     element.href = url;
-//     element.download = fileName;
-//     document.body.appendChild(element);
-//     element.click();
-//     // document.body.removeChild(element);
-//     // URL.revokeObjectURL(url);
-// }
 
 
 // -------------------- outside click

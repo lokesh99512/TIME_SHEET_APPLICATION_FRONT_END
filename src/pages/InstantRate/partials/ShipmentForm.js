@@ -5,27 +5,26 @@ import Select from "react-select";
 import { Card, CardBody, Input } from 'reactstrap';
 
 const ShipmentForm = () => {
-    const shipmentDetails = useSelector((state) => state?.instantRate?.searchForm);
-    console.log(shipmentDetails,"shipmentDetails");
+    const { searchForm, $instantActiveTab } = useSelector((state) => state?.instantRate);
     const shipmentDetailsFormik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            origin_city: shipmentDetails?.location_from?.locationType === "CITY" && shipmentDetails?.location_from?.label || '-',
-            destination_city: shipmentDetails?.location_to?.locationType === "CITY" && shipmentDetails?.location_to?.label || '-',
-            origin_port: shipmentDetails?.location_from?.locationType === "PORT" && shipmentDetails?.location_from?.label || '-',
-            destination_port: shipmentDetails?.location_to?.locationType === "PORT" && shipmentDetails?.location_to?.label || '-',
-            cargo_type: shipmentDetails?.cargo_type?.value || '-',
+            origin_city: searchForm?.location_from?.locationType === "CITY" && searchForm?.location_from?.label || '-',
+            destination_city: searchForm?.location_to?.locationType === "CITY" && searchForm?.location_to?.label || '-',
+            origin_port: $instantActiveTab?.sub === 'dom_air' ? searchForm?.location_from?.label : searchForm?.location_from?.locationType === "PORT" && searchForm?.location_from?.label || '-',
+            destination_port: $instantActiveTab?.sub === 'dom_air' ? searchForm?.location_to?.label : searchForm?.location_to?.locationType === "PORT" && searchForm?.location_to?.label || '-',
+            cargo_type: searchForm?.cargo_type?.value || '-',
             commodity: "",
-            cargo_value: shipmentDetails?.cargo_value?.value || '-',
-            incoterms: shipmentDetails?.incoterm?.label || '-',
+            cargo_value: searchForm?.cargo_value?.value || '-',
+            incoterms: searchForm?.incoterm?.label || '-',
 
-            container_type: shipmentDetails?.container_type?.containerArray?.[0]?.label || '',
-            quantity: shipmentDetails?.container_type?.containerArray?.[0]?.unitNew || '',
+            container_type: searchForm?.container_type?.containerArray?.[0]?.label || '',
+            quantity: searchForm?.container_type?.containerArray?.[0]?.unitNew || '',
             length: "",
             width: "",
             height: "",
-            gross_weight: (shipmentDetails?.container_type?.cargo_weight?.value || '') +" "+ (shipmentDetails?.container_type?.cargo_weight?.weight?.value || ''),
-            volumentric_wt: "",
+            gross_weight: $instantActiveTab?.sub === 'dom_air' ? searchForm?.shipment_details?.weight || '' : (searchForm?.container_type?.cargo_weight?.value || '') +" "+ (searchForm?.container_type?.cargo_weight?.weight?.value || ''),
+            volumentric_wt: searchForm?.shipment_details?.v_weight || '',
         },
         onSubmit: (values) => {
             console.log(values);
@@ -45,7 +44,6 @@ const ShipmentForm = () => {
                                         <Input
                                             type="text"
                                             name="origin_city"
-                                            // value={shipmentDetails.location_from.address.value}
                                             value={shipmentDetailsFormik.values.origin_city}
                                             onChange={shipmentDetailsFormik.handleChange}
                                             className="form-control"

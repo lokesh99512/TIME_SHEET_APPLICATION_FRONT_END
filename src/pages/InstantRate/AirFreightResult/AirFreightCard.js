@@ -5,11 +5,11 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import { QUOTATION_RESULT_SELECTED, UPDATE_QUOTATION_RESULT_DETAILS } from '../../../store/InstantRate/actionType';
-import { convertToINR } from '../../../components/Common/CommonLogic';
+import { commonFunc, convertToINR } from '../../../components/Common/CommonLogic';
 
-const AirFreightCard = ({ data, QuoteModalHandler, mainTab }) => {
-    const [currentButton, setCurrentButton] = useState('Book Now');
+const AirFreightCard = ({ data, QuoteModalHandler, mainTab, bookModalHandler }) => {
     const [showDetails, setShowDetails] = useState([]);
+    const [showButton, setShowButton] = useState([]);
     const dispatch = useDispatch();
     const [open, setOpen] = useState('');
     const [resultRoute, setResultRoute] = useState([]);
@@ -23,27 +23,6 @@ const AirFreightCard = ({ data, QuoteModalHandler, mainTab }) => {
             setOpen(id);
         }
     };
-
-    const commonFunc = (array, index, params,seArray) => {
-        if (array?.length !== 0) {
-            if (array.some(obj => obj.index === index)) {
-                array.find(obj => obj.index === index)[params] = !array.find(obj => obj.index === index)[params]
-            } else {
-                let newObj = { params: true, index }
-                array.push(newObj);
-            }
-        } else {
-            let newObj = { params: true, index }
-            array.push(newObj);
-        }
-        seArray(array);
-    }
-
-    const showDetailsHandler = (index, id) => {
-        console.log("show details");
-        let newArr = [...showDetails];
-        commonFunc(newArr, index, 'details',setShowDetails);
-    }
 
     const handleChange = (val, name, index, id) => {
         dispatch({ type: UPDATE_QUOTATION_RESULT_DETAILS, payload: { name, value: val, id, index } })
@@ -76,6 +55,33 @@ const AirFreightCard = ({ data, QuoteModalHandler, mainTab }) => {
     const singleQuoteModal = (item) => {
         let newArry = [item]
         dispatch({ type: QUOTATION_RESULT_SELECTED, payload: newArry })
+    }
+    const showDetailsHandler = (index, id) => {
+        console.log("show details");
+        let newArr = [...showDetails];
+        commonFunc(newArr, index, 'details',setShowDetails);
+    }
+    const showButtonHandler = (id, btn) => {
+        let newArr = [...showButton];
+        if(newArr?.length !== 0){
+            if(newArr.some(obj => obj.id === id)){
+                newArr.find(obj => obj.id === id).button = btn
+            } else {
+                newArr.push({id: id, button: btn});
+            }
+        } else {
+            newArr.push({id: id, button: btn});
+        }
+        setShowButton(newArr);
+    }
+    const cardNowBtnHandler = (type, item) => {
+        console.log(type,"type");
+        singleQuoteModal(item);
+        if(type === "quote_now"){
+            QuoteModalHandler();
+        } else {
+            bookModalHandler();
+        }
     }
 
     // Total & SubTotal ----------------------------------     
@@ -120,7 +126,6 @@ const AirFreightCard = ({ data, QuoteModalHandler, mainTab }) => {
         <div>
             {result_loader ? <ResultCardSkeleton /> : (
                 <div className="result_tab_content_wrap air_freight_result_wrap">
-                    {console.log(data, "data")}
                     {data?.length !== 0 ? data?.map((item, index) => (
                         <div className="search_result_card_check_wrap d-flex align-items-center" key={`main_${index}`}>
                             <div className={`form-check me-2`} onClick={(e) => quotationCheckHandler(item)}>
@@ -147,24 +152,35 @@ const AirFreightCard = ({ data, QuoteModalHandler, mainTab }) => {
                                     </div>
                                     <div className="right_details">
                                         <div className="total_wrap">
-                                            <p className="total_price text-center" onClick={() => showDetailsHandler(index,item?.quote_id)}><b>₹ {TotalQuotationCount(item)}</b></p>
+                                            <p className="total_price text-center text-primary" onClick={() => showDetailsHandler(index,item?.quote_id)}><b>₹ {TotalQuotationCount(item)}</b><i className='mdi mdi-chevron-double-right'></i></p>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="search_card_bottom d-flex justify-content-between align-items-center">
                                     <p className='mb-0'><b>Agent Name:</b> {item?.agentname || ''}</p>
                                     <div className="btn_wrap d-flex">
-                                        <button type="button" className="btn btn-primary d-flex align-items-center" onClick={() => { console.log(currentButton, "test") }}>{currentButton || 'Book Now'}
+                                        <button type="button" 
+                                            className="btn btn-primary d-flex align-items-center" 
+                                            onClick={() => { cardNowBtnHandler(showButton?.find(obj => obj.id === item?.quote_id)?.button || 'book_now', item) }}
+                                            disabled={quote_Selected.some(obj => obj.id === item.quote_id) || quote_Selected?.length >= 2}
+                                        >
+                                            {showButton?.find(obj => obj.id === item?.quote_id)?.button === 'quote_now' ? 'Quote Now' : 'Book Now' || 'Book Now'}
                                             <UncontrolledDropdown>
                                                 <DropdownToggle className="shadow-none prof_wrap1" tag="a" onClick={e => e.stopPropagation()}>
-                                                    <i className="mdi mdi-chevron-down"></i>
+                                                    <i className="mdi mdi-chevron-down text-white"></i>
                                                 </DropdownToggle>
                                                 <DropdownMenu className="dropdown-menu-end quantity_drop_wrap">
                                                     <DropdownItem tag="div">
-                                                        <button type='button' className={`btn quote_now_btn w-100 ${currentButton === 'Book Now' ? 'active' : ''}`} onClick={() => { setCurrentButton('Book Now'); }}>Book Now</button>
+                                                        <span 
+                                                            className={`btn quote_now_btn w-100 ${showButton && showButton?.find(obj => obj.id === item?.quote_id)?.button !== 'quote_now' ? 'active' : ''}`} 
+                                                            onClick={(e) => { e.stopPropagation(); showButtonHandler(item?.quote_id, 'book_now'); }}
+                                                        >Book Now</span>
                                                     </DropdownItem>
                                                     <DropdownItem tag="div">
-                                                        <button type='button' className={`btn quote_now_btn w-100 ${currentButton === 'Quote Now' ? 'active' : ''}`} onClick={() => { setCurrentButton('Quote Now'); }}>Quote Now</button>
+                                                        <span 
+                                                            className={`btn quote_now_btn w-100 ${showButton && showButton?.find(obj => obj.id === item?.quote_id)?.button === 'quote_now' ? 'active' : ''}`} 
+                                                            onClick={(e) => { e.preventDefault(); showButtonHandler(item?.quote_id, 'quote_now'); }}
+                                                        >Quote Now</span>
                                                     </DropdownItem>
                                                 </DropdownMenu>
                                             </UncontrolledDropdown>

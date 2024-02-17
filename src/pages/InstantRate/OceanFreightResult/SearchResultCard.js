@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from 'reactstrap';
-import { cube_filled, oocl_logo, ship_filled, truck_outline, zim_logo } from '../../../../assets/images';
-import { convertToINR } from '../../../../components/Common/CommonLogic';
-import { QUOTATION_RESULT_SELECTED, UPDATE_QUOTATION_RESULT_DETAILS } from '../../../../store/InstantRate/actionType';
-import ResultCardSkeleton from '../../../Skeleton/ResultCardSkeleton';
+import { cube_filled, oocl_logo, ship_filled, truck_outline, zim_logo } from '../../../assets/images';
+import { convertToINR } from '../../../components/Common/CommonLogic';
+import { QUOTATION_RESULT_SELECTED, UPDATE_QUOTATION_RESULT_DETAILS } from '../../../store/InstantRate/actionType';
+import ResultCardSkeleton from '../../Skeleton/ResultCardSkeleton';
 const SearchResultCard = ({ data, QuoteModalHandler }) => {
     const [showDetails, setShowDetails] = useState([]);
     const dispatch = useDispatch();

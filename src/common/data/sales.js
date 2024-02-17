@@ -866,17 +866,17 @@ export const airSearchData = {
             "carrierLogo": indigo_img,                
             "originDetails": {
                 "portname": "Chatrapati Shivaji",
-                "time": "02:40",
-                "date": "Mon, 12 February, 2024"
+                "time": "21:45",
+                "date": "Mon, 19 February, 2024"
             },
             "destinationDetails": {
                 "portname": "Bengaluru",
-                "time": "04:40",
-                "date": "Mon, 12 February, 2024"
+                "time": "23:55",
+                "date": "Mon, 19 February, 2024"
             },
             "freightMode": "Master Air Waybill",
             "cargoType": "GCR",
-            "oceanTransitTime": "5 hrs",
+            "oceanTransitTime": "2 h 10m",
             "tariffDetails": [
                 {
                     "header": "Pickup_Charges",
@@ -1081,17 +1081,17 @@ export const airSearchData = {
             "carrierLogo": airasia_logo,                
             "originDetails": {
                 "portname": "Chatrapati Shivaji",
-                "time": "02:40",
-                "date": "Mon, 12 February, 2024"
+                "time": "19:55",
+                "date": "Mon, 19 February, 2024"
             },
             "destinationDetails": {
                 "portname": "Bengaluru",
-                "time": "04:55",
-                "date": "Mon, 12 February, 2024"
+                "time": "22:00",
+                "date": "Mon, 19 February, 2024"
             },
             "freightMode": "Console",
             "cargoType": "GCR",
-            "oceanTransitTime": "5 h 15m",
+            "oceanTransitTime": "2 h 05m",
             "tariffDetails": [
                 {
                     "header": "Pickup_Charges",
@@ -1157,18 +1157,18 @@ export const airSearchData = {
             "agentname": 'ABC',
             "carrierLogo": vistara_logo,                
             "originDetails": {
-                "portname": "Mumbai, India",
-                "time": "8:50",
-                "date": "Sun, 25 Feb 24"
+                "portname": "Surat, India",
+                "time": "21:30",
+                "date": "Mon, 19 February, 2024"
             },
             "destinationDetails": {
-                "portname": "New Delhi, India",
-                "time": "11:10",
-                "date": "Sun, 25 Feb 24"
+                "portname": "Bengaluru, India",
+                "time": "23:30",
+                "date": "Mon, 19 February, 2024"
             },
             "freightMode": "Master Air Waybill",
             "cargoType": "GCR",
-            "oceanTransitTime": "2 h 15 m",
+            "oceanTransitTime": "02 h",
             "tariffDetails": [
                 {
                     "header": "Pickup_Charges",

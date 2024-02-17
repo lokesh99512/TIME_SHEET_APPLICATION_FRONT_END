@@ -1,14 +1,14 @@
 import React, { useRef } from 'react'
 import { Modal } from 'reactstrap'
-import { edit_icon, sitelogo } from '../../../../assets/images';
+import { edit_icon, sitelogo } from '../../../assets/images';
 import { useSelector } from 'react-redux';
 import PreviewCommonTable from './PreviewCommonTable';
 import { useDispatch } from 'react-redux';
-import { BLANK_MODAL_CHARGE } from '../../../../store/Sales/Quotation/actiontype';
+import { BLANK_MODAL_CHARGE } from '../../../store/Sales/Quotation/actiontype';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_SELECTED_BLANK } from '../../../../store/InstantRate/actionType';
-import { formatDate } from '../../../../components/Common/CommonLogic';
+import { CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_SELECTED_BLANK } from '../../../store/InstantRate/actionType';
+import { formatDate } from '../../../components/Common/CommonLogic';
 
 export default function PreviewQuotationModal({ previewModal, previewModalHand, setPreviewModal, QuoteModalHandler }) {
     const ref = useRef();
@@ -17,7 +17,7 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
     const preferData = quoteData?.filter(obj => obj.quote_type === 'preffered');
     const cheaperData = quoteData?.filter(obj => obj.quote_type === 'cheaper');
     const fasterData = quoteData?.filter(obj => obj.quote_type === 'faster');
-    const shipmentDetails = useSelector((state) => state?.instantRate?.searchForm);
+    const {searchForm, $instantActiveTab} = useSelector((state) => state?.instantRate);
     const {tenant_info} = useSelector((state) => state?.settings);
     const dispatch = useDispatch();
     const confirmHandler = () => {
@@ -142,14 +142,14 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
                                     </div>
                                     <div className="details">
                                         <span>Port</span>
-                                        <p>{shipmentDetails?.location_from?.label || '-'}</p>
+                                        <p>{searchForm?.location_from?.label || '-'}</p>
                                     </div>
                                 </div>
                                 <div className="half_box white_box">
                                     <p className="title">Destination:</p>
                                     <div className="details">
                                         <span>Port</span>
-                                        <p>{shipmentDetails?.location_to?.label || '-'}</p>
+                                        <p>{searchForm?.location_to?.label || '-'}</p>
                                     </div>
                                     <div className="details">
                                         <span>Drop</span>
@@ -173,8 +173,8 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
                                     <tr>
                                         <td>Commodities</td>
                                         <td>-</td>
-                                        <td>{shipmentDetails?.container_type?.cargo_weight?.value || 0} {shipmentDetails?.container_type?.cargo_weight?.weight?.value || ''}</td>
-                                        <td>-</td>
+                                        <td>{$instantActiveTab?.sub === "dom_air" ? searchForm?.shipment_details?.weight || 0 : searchForm?.container_type?.cargo_weight?.value || 0} {$instantActiveTab?.sub === "dom_air" ? searchForm?.shipment_details?.weight_unit : searchForm?.container_type?.cargo_weight?.weight?.value || ''}</td>
+                                        <td>{$instantActiveTab?.sub === "dom_air" ? searchForm?.shipment_details?.v_weight || 0 : 0}</td>
                                         {/* <td>100xBox(s)(40x40x40 CM)</td>
                                         <td>12,000 KG</td>
                                         <td>6.4</td> */}
