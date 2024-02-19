@@ -132,17 +132,17 @@ export default function UploadAirConsoleData() {
     },[addAirConsole])
 
     const handleSelectGroup = useCallback((name, opt) => {
-        if (name == 'vendor_type' && AllVendors){
-            let vendors = AllVendors.get(opt?.value);
-            setFilteredValue(vendors);
-        }
+        // if (name == 'vendor_type' && AllVendors){
+        //     let vendors = AllVendors.get(opt?.value);
+        //     setFilteredValue(vendors);
+        // }
   
-        dispatch(updateconsoleCarrierDetails(name, opt));
-        if (consoleCarrierDetails?.vendor_type?.value === 'agent') {
-            setRemoveValue('carrier_name');
-        } else {
-            setRemoveValue('vendor_name');
-        }
+        // dispatch(updateconsoleCarrierDetails(name, opt));
+        // if (consoleCarrierDetails?.vendor_type?.value === 'agent') {
+        //     setRemoveValue('carrier_name');
+        // } else {
+        //     setRemoveValue('vendor_name');
+        // }
     }, [consoleCarrierDetails]);
     const handleSelectGroup2 = useCallback((opt, name, index) => {
         const list = [...surcharges];
@@ -216,7 +216,7 @@ export default function UploadAirConsoleData() {
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Rate Type</label>
                                                                     <Select
-                                                                        value={consoleCarrierDetails.rate_type}
+                                                                        value={addAirConsole?.carrierDetails?.rate_type || ''}
                                                                         name='rate_type'
                                                                         onChange={(opt) => {
                                                                             handleSelectGroup('rate_type', opt);
@@ -232,11 +232,15 @@ export default function UploadAirConsoleData() {
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Vendor Type</label>
                                                                     <Select
-                                                                        value={consoleCarrierDetails.vendor_type}
+                                                                        value={addAirConsole?.carrierDetails?.vendor_type || ''}
                                                                         name='vendor_type'
                                                                         onChange={(opt) => {
+                                                                            if (AllVendors){
+                                                                                let vendors = AllVendors?.get(opt?.value);
+                                                                                setFilteredValue(vendors);
+                                                                            }
                                                                             handleSelectGroup('vendor_type', opt)
-                                                                            handleAddAirWayBill('carrierDetails', { ...addAirConsole?.carrierDetails, vendorType: opt });
+                                                                            handleAddAirWayBill('carrierDetails', { ...addAirConsole?.carrierDetails,vendor_name: '', vendor_type: opt });
 
                                                                         }}
                                                                         options={optionVendorType}
@@ -250,7 +254,7 @@ export default function UploadAirConsoleData() {
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Vendor/Carrier Name</label>
                                                                     <Select
-                                                                        value={consoleCarrierDetails.vendor_name}
+                                                                        value={addAirConsole?.carrierDetails?.vendor_name || ''}
                                                                         name='vendor_name'
                                                                         onChange={(opt) => {
                                                                             handleSelectGroup('vendor_name', opt)
@@ -271,7 +275,7 @@ export default function UploadAirConsoleData() {
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
                                                                     <label htmlFor='validity_from' className="form-label">Validity From</label>
-                                                                    <input type="date" name="validity_from" id="validity_from" className='form-control' value={consoleCarrierDetails.validity_from} onChange={(e) => {
+                                                                    <input type="date" name="validity_from" id="validity_from" className='form-control' value={addAirConsole?.carrierDetails?.validity_from || ''} onChange={(e) => {
                                                                         handleSelectGroup('validity_from', e.target.value)
                                                                         handleAddAirWayBill('carrierDetails', { ...addAirConsole?.carrierDetails, validity_from: e.target.value });
                                                                         }} />
@@ -280,7 +284,7 @@ export default function UploadAirConsoleData() {
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
                                                                     <label htmlFor='validity_to' className="form-label">Validity To</label>
-                                                                    <input type="date" name="validity_to" id="validity_to" className='form-control' value={consoleCarrierDetails.validity_to} onChange={(e) => {
+                                                                    <input type="date" name="validity_to" id="validity_to" className='form-control' value={addAirConsole?.carrierDetails?.validity_to || ''} onChange={(e) => {
                                                                         handleSelectGroup('validity_to', e.target.value)
                                                                         handleAddAirWayBill('carrierDetails', { ...addAirConsole?.carrierDetails, validity_to: e.target.value });
                                                                        }} />
@@ -362,7 +366,7 @@ export default function UploadAirConsoleData() {
 
                                                             <li>
                                                                 <button
-                                                                    className="btn btn-primary d-flex align-items-center">Cancel
+                                                                    className="btn btn-primary d-flex align-items-center ms-3">Cancel
                                                                 </button>
                                                             </li>
                                                         </ul>

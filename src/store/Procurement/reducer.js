@@ -376,12 +376,12 @@ const procurement = (state = INIT_STATE, action) => {
                 }  
             } 
         case BLANK_FCL_CARRIER_DATA:
-            console.log(action.payload.data,"action.payload.data");
             return{
                 ...state, 
                 [action.payload.name]: action.payload.data
             } 
         case BLANK_SURCHARGE_DATA:
+            console.log(action.payload,"action.payload");
             return{
                 ...state, 
                 [action.payload.name]: action.payload.data

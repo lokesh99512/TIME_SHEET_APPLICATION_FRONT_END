@@ -164,19 +164,20 @@ export default function AirMasterBill() {
                         {/* breadcrumbs && rate */}
                         <TopBreadcrumbs breadcrumbs={waybillBreadcrumb} data={waybillRateData} />            
 
-                        {waybillData ? (
-            <TableAirwayBill
-              columns={columns}
-              data={waybillData?.content || []}
-              isGlobalFilter={true}
-              isAddInvoiceList={true}
-              customPageSize={10}
-              toggleRightCanvas={toggleRightCanvas}
-              component={'air-waybill'}
-            />
-          ) : (
-            <p>Loading...</p>
-          )}
+                        {/* {waybillData ? ( */}
+                            <TableAirwayBill
+                            columns={columns}
+                            data={waybillData?.content || []}
+                            isGlobalFilter={true}
+                            isAddInvoiceList={true}
+                            customPageSize={10}
+                            toggleRightCanvas={toggleRightCanvas}
+                            component={'air-waybill'}
+                            loader={false}
+                            />
+                        {/* ) : (
+                            <p>Loading...</p>
+                        )} */}
 
                         {/* modal */}
                         <ModalAir modal={modal} onCloseClick={onCloseClick} viewData={waybillFreightData} modalType={'air_waybill'} />

@@ -5,6 +5,7 @@ import { useAsyncDebounce, useExpanded, useFilters, useGlobalFilter, usePaginati
 import { Row, Table } from 'reactstrap';
 import { filter_icon, upload_icon } from '../../../../assets/images';
 import { DefaultColumnFilter, Filter } from '../../../../components/Common/filters';
+import TableCommonSkeleton from '../../../Skeleton/TableCommonSkeleton';
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -43,7 +44,7 @@ function GlobalFilter({
     );
 }
 
-const TableAirwayBill = ({ columns, data, isGlobalFilter, customPageSize, toggleRightCanvas, component }) => {
+const TableAirwayBill = ({ columns, data, isGlobalFilter, customPageSize, toggleRightCanvas, component, loader }) => {
     
     const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow, canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize, state, preGlobalFilteredRows, setGlobalFilter, state: { pageIndex, pageSize }, } = useTable({
         columns,
@@ -124,15 +125,17 @@ const TableAirwayBill = ({ columns, data, isGlobalFilter, customPageSize, toggle
                             })}
                             {page?.length === 0 && (
                                 <>
-                                    {headerGroups.map(headerGroup => (
-                                        <tr key={`nodata_${headerGroup.id}`}>
-                                            <td colSpan={headerGroup.headers.length}>
+                                    {loader ? (
+                                        <TableCommonSkeleton tdCount={headerGroups[0].headers.length} />
+                                    ) :
+                                        <tr>
+                                            <td colSpan={headerGroups[0].headers.length}>
                                                 <div className='no_table_data_found'>
-                                                    <p>No Data Found. Please Adjust Your Filter. </p>
+                                                    <p>No Data Found.</p>
                                                 </div>
                                             </td>
                                         </tr>
-                                    ))}
+                                    }
                                 </>
                             )}
                         </tbody>

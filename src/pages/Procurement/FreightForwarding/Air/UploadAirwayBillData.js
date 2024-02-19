@@ -1,17 +1,15 @@
-import classnames from 'classnames';
 import React, { useCallback, useEffect, useState } from 'react';
 import Dropzone from 'react-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import Select from "react-select";
-import { Card, CardBody, Col, Container, Form, Modal, NavItem, NavLink, Progress, Row, TabContent, TabPane, UncontrolledTooltip } from 'reactstrap';
-import inlandfileData from '../../../../assets/extra/Inlandcharge_Upload.xlsx';
+import { Card, Col, Container, Form, Modal, Row } from 'reactstrap';
 import fileData from '../../../../assets/extra/FclUplaodFormat.xlsx';
-import { delete_icon } from '../../../../assets/images';
-import { optcurrency, optionCarrierName, optionMultiDestination, optionPaymentType, optionRateSource, optionRateType, optionSurchargesName, optionVendorName,optionVendorType } from '../../../../common/data/procurement';
-import { formatBytes, isAnyValueEmpty, isExcelFile } from '../../../../components/Common/CommonLogic';
-import { addAirwaybillData, updateCarrierData, postCarrierData } from '../../../../store/Procurement/actions';
-import {BLANK_CARRIER_DATA} from '../../../../store/Procurement/actiontype';
+import inlandfileData from '../../../../assets/extra/Inlandcharge_Upload.xlsx';
+import { optionRateType, optionVendorType } from '../../../../common/data/procurement';
+import { formatBytes, isExcelFile } from '../../../../components/Common/CommonLogic';
+import { addAirwaybillData, postCarrierData } from '../../../../store/Procurement/actions';
+import { BLANK_CARRIER_DATA } from '../../../../store/Procurement/actiontype';
 
 export default function UploadAirwayBillData() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
@@ -76,8 +74,6 @@ export default function UploadAirwayBillData() {
         setOpenSaveModal(false);
     }
 
- 
-
     function handleAcceptedFiles(files) {
         if (files && files.length) {
             var file = files[0];
@@ -128,21 +124,24 @@ export default function UploadAirwayBillData() {
         setSurcharges(list);
     }
     const handleAddAirWayBill = useCallback((name, opt)=>{
+        console.log(name, opt, "name, opt=============");
         dispatch(addAirwaybillData(name,opt));
     },[addAirBill])
 
     const handleSelectGroup = useCallback((name, opt) => {
-        if (name == 'vendor_type' && AllVendors){
-            let vendors = AllVendors.get(opt?.value);
-            setFilteredValue(vendors);
-        }
+        console.log(name, opt, "name, opt");
+        // if (name == 'vendor_type' && AllVendors){
+        //     let vendors = AllVendors.get(opt?.value);
+        //     setFilteredValue(vendors);
+        // }
+        // handleAddAirWayBill(name, opt);
   
-        dispatch(updateCarrierData(name, opt));
-        if (carrierData?.vendor_type?.value === 'agent') {
-            setRemoveValue('carrier_name');
-        } else {
-            setRemoveValue('vendor_name');
-        }
+        // dispatch(updateCarrierData(name, opt));
+        // if (carrierData?.vendor_type?.value === 'agent') {
+        //     setRemoveValue('carrier_name');
+        // } else {
+        //     setRemoveValue('vendor_name');
+        // }
     }, [carrierData]);
     const handleSelectGroup2 = useCallback((opt, name, index) => {
         const list = [...surcharges];
@@ -216,7 +215,7 @@ export default function UploadAirwayBillData() {
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Rate Type</label>
                                                                     <Select
-                                                                        value={carrierData.rate_type}
+                                                                        value={addAirBill?.carrierDetails?.rate_type || ''}
                                                                         name='rate_type'
                                                                         onChange={(opt) => {
                                                                             handleSelectGroup('rate_type', opt);
@@ -232,12 +231,15 @@ export default function UploadAirwayBillData() {
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Vendor Type</label>
                                                                     <Select
-                                                                        value={carrierData.vendor_type}
+                                                                        value={addAirBill?.carrierDetails?.vendor_type || ''}
                                                                         name='vendor_type'
                                                                         onChange={(opt) => {
+                                                                            if (AllVendors){
+                                                                                let vendors = AllVendors?.get(opt?.value);
+                                                                                setFilteredValue(vendors);
+                                                                            }
                                                                             handleSelectGroup('vendor_type', opt)
-                                                                            handleAddAirWayBill('carrierDetails', { ...addAirBill?.carrierDetails, vendorType: opt });
-
+                                                                            handleAddAirWayBill('carrierDetails', { ...addAirBill?.carrierDetails,vendor_name: '', vendor_type: opt });
                                                                         }}
                                                                         options={optionVendorType}
                                                                         classNamePrefix="select2-selection form-select"
@@ -250,7 +252,7 @@ export default function UploadAirwayBillData() {
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Vendor/Carrier Name</label>
                                                                     <Select
-                                                                        value={carrierData.vendor_name}
+                                                                        value={addAirBill?.carrierDetails?.vendor_name || ''}
                                                                         name='vendor_name'
                                                                         onChange={(opt) => {
                                                                             handleSelectGroup('vendor_name', opt)
@@ -271,7 +273,7 @@ export default function UploadAirwayBillData() {
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
                                                                     <label htmlFor='validity_from' className="form-label">Validity From</label>
-                                                                    <input type="date" name="validity_from" id="validity_from" className='form-control' value={carrierData.validity_from} onChange={(e) => {
+                                                                    <input type="date" name="validity_from" id="validity_from" className='form-control' value={addAirBill?.carrierDetails?.validity_from} onChange={(e) => {
                                                                         handleSelectGroup('validity_from', e.target.value)
                                                                         handleAddAirWayBill('carrierDetails', { ...addAirBill?.carrierDetails, validity_from: e.target.value });
                                                                         }} />
@@ -280,7 +282,7 @@ export default function UploadAirwayBillData() {
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
                                                                     <label htmlFor='validity_to' className="form-label">Validity To</label>
-                                                                    <input type="date" name="validity_to" id="validity_to" className='form-control' value={carrierData.validity_to} onChange={(e) => {
+                                                                    <input type="date" name="validity_to" id="validity_to" className='form-control' value={addAirBill?.carrierDetails?.validity_to} onChange={(e) => {
                                                                         handleSelectGroup('validity_to', e.target.value)
                                                                         handleAddAirWayBill('carrierDetails', { ...addAirBill?.carrierDetails, validity_to: e.target.value });
                                                                        }} />
@@ -362,7 +364,7 @@ export default function UploadAirwayBillData() {
 
                                                             <li>
                                                                 <button
-                                                                    className="btn btn-primary d-flex align-items-center">Cancel
+                                                                    className="btn btn-primary d-flex align-items-center ms-3">Cancel
                                                                 </button>
                                                             </li>
                                                         </ul>

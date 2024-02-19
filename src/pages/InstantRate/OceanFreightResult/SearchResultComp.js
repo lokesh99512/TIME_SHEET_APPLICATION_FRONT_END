@@ -113,7 +113,6 @@ const SearchResultComp = ({ QuoteModalHandler, searchResult }) => {
         }, 1000);
     }
 
-    console.log(filterDetails,"filterDetails");
     return (
         <>
             <div className="search_result_wrap">

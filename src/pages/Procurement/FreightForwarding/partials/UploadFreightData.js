@@ -150,7 +150,7 @@ export default function UploadFreightData() {
         setOpenSaveModal(!openSaveModal);
     }
     const finalSaveButton = () => {
-        if (activeTabProgress === 3) {
+        if (activeTabProgress === 3) {            
             let data = addFCL?.surcharges?.map((item) => {
                 return {
                     ...(item?.surcharges_name && { "surchargeCodeId": item?.surcharges_name?.id }),
@@ -168,16 +168,14 @@ export default function UploadFreightData() {
                 }
             });
 
-            console.log(JSON.stringify(data), "data");
-
+            console.log(JSON.stringify(data), "data"); 
             dispatch(uploadFclSurchargeData(data, fcl_charge_id?.id));
-            dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addFCL', data: { ...addFCL, surcharges: [] } } });
-
+            dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addFCL', data: { carrierDetails: carrierObj,freightUpload: {}, surcharges: [] } } });
             setSurcharges([]);
+            setselectedFiles([]);
+            setOpenSaveModal(false);
+            // dispatch({ type: BLANK_FCL_CARRIER_DATA, payload: { name: 'addFCL', data: { ...addFCL, carrierDetails: carrierObj } } });
         }
-        dispatch({ type: BLANK_FCL_CARRIER_DATA, payload: { name: 'addFCL', data: { ...addFCL, carrierDetails: carrierObj } } });
-        setselectedFiles([]);
-        setOpenSaveModal(false);
     }
     const uploadSaveHandler = () => {        
         if (activeTabProgress === 1) {
@@ -210,6 +208,7 @@ export default function UploadFreightData() {
             dispatch(uploadFclFrightData(formData, fcl_charge_id?.id));            
         }
         if (activeTabProgress === 3) {
+            console.log("iffffffffffffffff");
             if (addFCL?.surcharges?.length !== 0) {
                 if (!isAnyValueEmptyInArray(addFCL?.surcharges, ['gp1', 'gp2', 'hq1', 'hq2', 'rf1', 'rf2']) && addFCL?.surcharges[0]?.destination?.length !== 0) {
                     openSaveConfirmModal();
@@ -445,6 +444,7 @@ export default function UploadFreightData() {
                                                             <h5>FCL Ocean Surcharges</h5>
                                                         </div>
                                                         <form>
+                                                            {console.log(addFCL?.surcharges,"addFCL?.surcharges")}
                                                             {addFCL?.surcharges && addFCL?.surcharges?.map((item, index) => (
                                                                 <div key={index} className='upload_surcharges_row'>
                                                                     <div className="row">
@@ -452,7 +452,7 @@ export default function UploadFreightData() {
                                                                             <div className="mb-3">
                                                                                 <label htmlFor="surcharges_name" className="form-label">Surcharge Name</label>
                                                                                 <Select
-                                                                                    value={item.surcharges_name}
+                                                                                    value={item.surcharges_name || ''}
                                                                                     name='surcharges_name'
                                                                                     onChange={(opt) => {
                                                                                         if (opt.label == "Add New") {
@@ -469,7 +469,7 @@ export default function UploadFreightData() {
                                                                             <div className="mb-3">
                                                                                 <label htmlFor='destination' className="form-label">Applicable Destination Ports</label>
                                                                                 <Select
-                                                                                    value={item.destination}
+                                                                                    value={item.destination || []}
                                                                                     name='destination'
                                                                                     isMulti
                                                                                     options={(fcl_destinationData?.length !== 0 && fcl_destinationData !== undefined) ? [{ value: 'selectAll', label: 'Select All' }, ...fcl_destinationData] : []}
@@ -497,7 +497,7 @@ export default function UploadFreightData() {
                                                                             <div className="mb-3">
                                                                                 <label htmlFor='uom' className="form-label">UOM</label>
                                                                                 <Select
-                                                                                    value={item.uom}
+                                                                                    value={item.uom || ''}
                                                                                     name='uom'
                                                                                     onChange={(opt) => {
                                                                                         handleSelectGroup2(opt, 'uom', index);
@@ -527,37 +527,37 @@ export default function UploadFreightData() {
                                                                         <div className="col-lg-2">
                                                                             <div className="mb-3">
                                                                                 <label htmlFor="gp1" className="form-label">20 GP</label>
-                                                                                <input type="number" className="form-control" id="gp1" placeholder="Enter value" onChange={(e) => { handleChange(e, 'gp1', index) }} />
+                                                                                <input type="number" value={item?.gp1 || ''} className="form-control" id="gp1" placeholder="Enter value" onChange={(e) => { handleChange(e, 'gp1', index) }} />
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-lg-2">
                                                                             <div className="mb-3">
                                                                                 <label htmlFor="gp2" className="form-label">40 GP</label>
-                                                                                <input type="number" className="form-control" id="gp2" placeholder="Enter value" onChange={(e) => { handleChange(e, 'gp2', index) }} />
+                                                                                <input type="number" value={item?.gp2 || ''} className="form-control" id="gp2" placeholder="Enter value" onChange={(e) => { handleChange(e, 'gp2', index) }} />
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-lg-2">
                                                                             <div className="mb-3">
                                                                                 <label htmlFor="hq1" className="form-label">40 HQ</label>
-                                                                                <input type="number" className="form-control" id="hq1" placeholder="Enter value" onChange={(e) => { handleChange(e, 'hq1', index) }} />
+                                                                                <input type="number" value={item?.hq1 || ''} className="form-control" id="hq1" placeholder="Enter value" onChange={(e) => { handleChange(e, 'hq1', index) }} />
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-lg-2">
                                                                             <div className="mb-3">
                                                                                 <label htmlFor="hq2" className="form-label">45 HQ</label>
-                                                                                <input type="number" className="form-control" id="hq2" placeholder="Enter value" onChange={(e) => { handleChange(e, 'hq2', index) }} />
+                                                                                <input type="number" value={item?.hq2 || ''} className="form-control" id="hq2" placeholder="Enter value" onChange={(e) => { handleChange(e, 'hq2', index) }} />
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-lg-2">
                                                                             <div className="mb-3">
                                                                                 <label htmlFor="rf1" className="form-label">20 RF</label>
-                                                                                <input type="number" className="form-control" id="rf1" placeholder="Enter value" onChange={(e) => { handleChange(e, 'rf1', index) }} />
+                                                                                <input type="number" value={item?.rf1 || ''} className="form-control" id="rf1" placeholder="Enter value" onChange={(e) => { handleChange(e, 'rf1', index) }} />
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-lg-2">
                                                                             <div className="mb-3">
                                                                                 <label htmlFor="rf2" className="form-label">40 RF</label>
-                                                                                <input type="number" className="form-control" id="rf2" placeholder="Enter value" onChange={(e) => { handleChange(e, 'rf2', index) }} />
+                                                                                <input type="number" value={item?.rf2 || ''} className="form-control" id="rf2" placeholder="Enter value" onChange={(e) => { handleChange(e, 'rf2', index) }} />
                                                                             </div>
                                                                         </div>
                                                                     </div>

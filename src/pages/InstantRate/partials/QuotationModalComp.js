@@ -24,8 +24,6 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
     const { surchargeCode_data, UOM_data, currency_data } = useSelector((state) => state?.globalReducer);
     const dispatch = useDispatch();
 
-    console.log($instantActiveTab,"$instantActiveTab");
-
     const toggle = (id) => {
         if (open === id) {
             setOpen('');

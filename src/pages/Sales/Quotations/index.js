@@ -257,7 +257,7 @@ export default function Quotations() {
                         {/* breadcrumbs && rate */}
                         <div className="tf_top_breadcrumb_rate_wrap">
                             <TfBreadcrumbs breadcrumb={quotationBreadcrumb} />
-                            <div className="tf_box_wrap d-flex">
+                            {/* <div className="tf_box_wrap d-flex">
                                 {(quotationRateData || []).map((item) => (
                                     <div className="sh_box flex-grow-1" key={item?.id}>
                                         <p className="box_title">{item?.title}</p>
@@ -268,7 +268,7 @@ export default function Quotations() {
                                         </div>
                                     </div>
                                 ))}
-                            </div>
+                            </div> */}
                         </div>
 
                         {/* sales table && filter */}

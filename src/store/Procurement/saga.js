@@ -106,7 +106,7 @@ function* postFclFreightUploadSaga({ payload: { formData, id } }) {
         yield put({type: UPDATE_FCL_ACTIVE_TAB, payload: {tab: 3}});
     } catch (error) {
         console.log(error,"saga error");
-        showErrorToast(error?.response?.data?.description || error?.response?.data?.detail);
+        showErrorToast(error?.response?.data?.description || error?.response?.data?.message || error?.response?.data?.detail);
         if(error?.response?.status === 400){
             const downloadFile = error?.response?.data?.filePath;
             if(downloadFile !== undefined && downloadFile !== ''){
@@ -207,7 +207,7 @@ function* postFCLInLandFreightSaga({ payload: { formData, id } }) {
         showSuccessToast(response?.description);
         yield put({type: UPDATE_INLAND_ACTIVE_TAB, payload: {tab: 3}});
     } catch (error) {
-        showErrorToast(error?.response?.data?.description);
+        showErrorToast(error?.response?.data?.description || error?.response?.data?.message || error?.response?.data?.detail);
         if(error?.response?.status === 400){
             const downloadFile = error?.response?.data?.filePath;
             var rest = downloadFile.substring(0, downloadFile.lastIndexOf("/") + 1);
