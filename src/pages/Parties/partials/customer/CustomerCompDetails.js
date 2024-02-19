@@ -5,7 +5,7 @@ import Select from "react-select";
 import { Card, CardBody, FormFeedback, Input, Nav, NavItem, Row, TabContent, TabPane, NavLink } from 'reactstrap';
 import classnames from "classnames";
 import { useDispatch } from 'react-redux';
-import { optionCustcustomerType, optionCustdepartment, optionCustdesignation, optionCustentityType, optionCustindustryType, optionCustopCode, optionCusttitle,marginType } from '../../../../common/data/settings';
+import { optionCustcustomerType, optionCustdepartment, optionCustdesignation, optionCustentityType, optionCustindustryType, optionCustopCode, optionCusttitle, marginType } from '../../../../common/data/settings';
 import { getAllCustomerDetailsData, getCustomersCountryData, getCustomersPincodeData, getCustomersStateData } from '../../../../store/Parties/actions';
 import FileUpload from '../../FileUpload';
 import ModalAddGST from '../../Modal/ModalAddGST';
@@ -19,6 +19,7 @@ import ModalAddNewSalesEmployee from '../../Modal/ModalAddNewSalesEmployee';
 import { postCustomerDetailsAction } from '../../../../store/Parties/Customer/action';
 import { useLocation } from 'react-router-dom';
 import * as Yup from "yup";
+import { GET_CUSTOMERS_ID } from '../../../../store/Parties/Customer/actiontype';
 
 const CustomerCompDetails = ({ toggleTabProgress }) => {
     const [logoFile, setLogoFile] = useState('');
@@ -33,6 +34,7 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
     const [modalAlldata, setModalAllData] = useState([]);
     const [activeTab, toggleTab] = useState("1");
     const dispatch = useDispatch();
+    const [isNewCustomer, setIsNewCustomer] = useState(false)
 
     const navigateState = useLocation();
 
@@ -42,6 +44,19 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
     const { customer_id, customer_data } = useSelector(
         (state) => state?.customer
     );
+
+     useEffect(() =>{
+        const cityData = parties_city_details?.content?.find((city) => city.cityName === navigateState?.state?.data?.city?.cityName);
+        if(!!cityData){
+          dispatch(getCustomersStateData({ cityId: cityData.id }));
+          dispatch(getCustomersCountryData({ cityId: cityData.id }));
+          dispatch(getCustomersPincodeData({ cityId: cityData.id }));
+        }
+        if(!!(navigateState?.state && navigateState?.state.data)){
+            dispatch({ type: GET_CUSTOMERS_ID, payload: { id: navigateState?.state?.data?.id, version: navigateState?.state?.data?.version } });
+            }
+     },[])
+
     const onCloseClick = () => {
         setGstModal(false);
         setDepartmentModal(false)
@@ -119,9 +134,9 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                     "logo": null,
                     "logoPath": image?.preview || null,
                     "address": values.address || null,
-                    ...((!!(navigateState?.state && navigateState?.state.data)) && {
-                        id: navigateState?.state?.data?.id || null,
-                        version: navigateState?.state?.data?.version || 0,
+                    id: !!(navigateState?.state && navigateState?.state.data) ? navigateState?.state?.data?.id : isNewCustomer ? customer_id.id : null || null,
+                    version: !!(navigateState?.state && navigateState?.state.data) ? !!customer_id?customer_id.version:navigateState?.state?.data?.version : isNewCustomer ? customer_id.version : null || 0,
+                    ...(!!(navigateState?.state && navigateState?.state.data) && {
                         logoPath: image?.path ? image?.path : navigateState?.state?.data?.logoPath
                     }),
                     ...(pincodeVal?.length !== 0 && {
@@ -172,13 +187,14 @@ const CustomerCompDetails = ({ toggleTabProgress }) => {
                     "status": "ACTIVE",
                     "addresses": [],
                     "contacts": [],
-                    documents: newDocuments,
+                    documents: [],
                 }).filter(([_, value]) => value !== null)),
             }
 
             console.log(projectUATRequestDTO, "projectUATRequestDTO");
             formData.append('file', image);
             formData.append('tenantCustomer', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
+            setIsNewCustomer(true)
             dispatch(postCustomerDetailsAction(formData));
             toggleTabProgress(2);
         },

@@ -15,6 +15,11 @@ function* fetchPartiesCustomerSaga() {
                 let imageData = element.logoPath;
                 const base64Encoded = window.btoa(imageData);
                 element.logo =(!!(imageData)? `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`:'');
+                element.documents?.forEach(doc=>{
+                    let imageData = doc.documentPath;
+                    const base64Encoded = window.btoa(imageData);
+                    doc.logo =(!!(imageData)? `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`:'');
+                })
             });
         }
         yield put({ type: GET_PARTIES_CUSTOMER_DETAILS_TYPE_SUCCESS, payload: response });
@@ -50,10 +55,11 @@ function* postCustomerContactSaga({ payload: { data } }) {
 function* postCustomerDocumentSaga({ payload: { data } }) {
     console.log(data, "data saga customer document")
     try {
-        const results = yield all(
-            data?.documents?.map((formData) => call(postCustomerDocSer, formData))
-        );
-        console.log(results, "results customer document");
+        // const response = yield all(
+        //     data?.documents?.map((formData) => call(postCustomerDocSer, formData))
+        // );
+        const response = yield call(postCustomerDocSer, data?.documents[data?.documents?.length - 1]);
+        console.log(response, "response customer document");
         showSuccessToast("Update Successfully");
     } catch (error) {
         console.log(error, "error");

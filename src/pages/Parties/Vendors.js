@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { getAllTableVendor, getCustomersData, getVendorsData, updateCustomerSwitchData, updateVendorSwitchData } from '../../store/Parties/actions';
+import { getAllTableVendor, getCustomersCityData, getCustomersData, getVendorsData, updateCustomerSwitchData, updateVendorSwitchData } from '../../store/Parties/actions';
 import { useSelector } from 'react-redux';
 import TableVenders from './TableVenders';
 import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap';
@@ -12,6 +12,7 @@ import TopBreadcrumbs from '../Settings/Surcharge/TopBreadcrumbs';
 import { vendorsBreadcrumb } from '../../common/data/parties';
 import { Edit } from '../Settings/SettingsCol';
 import { useNavigate } from 'react-router-dom';
+import { VENDOR_TAB_ACTIVE_TYPE } from '../../store/Parties/Vendor/actiontype';
 
 const Vendors = () => {
   const [modal, setModal] = useState(false);
@@ -42,6 +43,8 @@ const Vendors = () => {
 
   useEffect(() => {
     dispatch(getVendorListAction());
+    dispatch(getCustomersCityData())
+    dispatch({type: VENDOR_TAB_ACTIVE_TYPE, payload: { tab: 1, details: 'pending', contact: 'pending', document: 'pending' }})
   }, []);
 
   const columns = useMemo(() => [

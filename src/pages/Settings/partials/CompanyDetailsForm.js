@@ -20,7 +20,7 @@ const CompanyDetailsForm = ({ companyDetailsFormik }) => {
 
     companyDetailsFormik.setFieldValue("image", file);
   };
-
+console.log(tenant_info.logo);
   useEffect(() => {
     if (settings_companyState_data && settings_companyState_data?.content?.length > 0) {
       companyDetailsFormik.setFieldValue("state", settings_companyState_data?.content[0]?.stateName || "")

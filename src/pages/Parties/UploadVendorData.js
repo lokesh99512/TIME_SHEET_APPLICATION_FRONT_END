@@ -19,6 +19,7 @@ import DocumentDetailsForm from "./partials/vendor/DocumentDetailsForm";
 import VenderDetails from "./partials/vendor/VenderDetails";
 import * as Yup from "yup";
 import { marginType } from "../../common/data/settings";
+import { GET_VENDOR_DETAILS_ID } from "../../store/Parties/Vendor/actiontype";
 export default function UploadVendorData() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
     const [openSaveModal, setOpenSaveModal] = useState(false);
@@ -32,6 +33,7 @@ export default function UploadVendorData() {
         (state) => state?.parties
     );
     const dispatch = useDispatch();
+    const [isNewVendor, setIsNewVendor] = useState(false)
 
 
     // if (!!(navigateState?.state?.data)) {
@@ -46,6 +48,9 @@ export default function UploadVendorData() {
     useEffect(() => {
         dispatch(getCustomersCityData());
         // dispatch(getTenantInfoData());
+        if (!!(navigateState?.state && navigateState?.state.data)) {
+            dispatch({ type: GET_VENDOR_DETAILS_ID, payload: { id: navigateState?.state?.data?.id, version: navigateState?.state?.data?.version } });
+        }
     }, []);
 
 
@@ -91,7 +96,7 @@ export default function UploadVendorData() {
             openSaveConfirmModal();
         }
     };
-
+    console.log(vendor_id);
     const companyDetailsFormik = useFormik({
         enableReinitialize: true,
         initialValues: {
@@ -132,6 +137,7 @@ export default function UploadVendorData() {
             let stateVal = parties_state_details?.content?.filter((state) => state?.stateName === value?.state) || [];
             let pincodeVal = parties_pincode_details?.content?.filter((pin) => pin?.pin === value?.zipcode) || [];
             const originalDocuments = navigateState?.state?.data?.documents || [];
+            console.log(originalDocuments);
             const newDocuments = originalDocuments.map((document, index) => ({
                 id: document.id || "",
                 version: document.version || 0,
@@ -144,9 +150,9 @@ export default function UploadVendorData() {
                     logo: null,
                     logoPath: image?.path || null,
                     address: value.address || null,
+                    id: !!(navigateState?.state && navigateState?.state.data) ? navigateState?.state?.data?.id : isNewVendor ? vendor_id.id : null || null,
+                    version: !!(navigateState?.state && navigateState?.state.data) ? !!vendor_id ? vendor_id.version : navigateState?.state?.data?.version : isNewVendor ? vendor_id.version : null || 0,
                     ...(!!(navigateState?.state && navigateState?.state.data) && {
-                        id: navigateState?.state?.data?.id || null,
-                        version: navigateState?.state?.data?.version || 0,
                         logoPath: image?.path ? image?.path : navigateState?.state?.data?.logoPath
                     }),
                     ...(pincodeVal?.length !== 0 && {
@@ -188,34 +194,41 @@ export default function UploadVendorData() {
                     industryType: value?.industryType || null,
                     addresses: [],
                     contacts: [],
-                    documents: newDocuments,
+                    documents: [],
                 }).filter(([_, value]) => value !== null)),
             };
-
-            console.log(projectUATRequestDTO, "projectUATRequestDTO");
 
             const formData = new FormData();
 
             formData.append('file', image);
             formData.append('tenantVendor', new Blob([JSON.stringify(projectUATRequestDTO)], { type: "application/json" }));
-
+            setIsNewVendor(true);
             dispatch(postVendorDetailsAction(formData));
-            console.log(vendor_id);
         },
     });
     const contactsFormik = useFormik({
         initialValues: {
-            contacts: [
-                {
+            ...(!!(navigateState?.state?.data?.contacts && navigateState?.state?.data?.contacts.length > 0) && {
+                contacts: navigateState?.state?.data?.contacts.map(contact => ({
                     title: "",
-                    contactName: navigateState?.state?.data?.contactName || "",
-                    contactNo: navigateState?.state?.data?.contactNo || "",
-                    contactEmail: navigateState?.state?.data?.contactEmail || "",
-                    department: navigateState?.state?.data?.department || "",
-                    designation: navigateState?.state?.data?.designation || "",
+                    contactName: contact.contactName || "",
+                    contactNo: contact.contactNo || "",
+                    contactEmail: contact.contactEmail || "",
+                    department: contact.department || "",
+                    designation: contact.designation || "",
                     opCode: ""
-                },
-            ],
+                })),
+            }) || {
+                contacts: [
+                    {
+                        contactName: navigateState?.state?.data?.contactName || "",
+                        contactNo: navigateState?.state?.data?.contactNo || "",
+                        contactEmail: navigateState?.state?.data?.contactEmail || "",
+                        department: navigateState?.state?.data?.department || "",
+                        designation: navigateState?.state?.data?.designation || "",
+                    }
+                ]
+            }
         },
         validationSchema: Yup.object({
             contacts: Yup.array().of(
@@ -227,11 +240,10 @@ export default function UploadVendorData() {
             ),
         }),
         onSubmit: (values) => {
-            console.log(values);
             let data = {
                 ...Object.fromEntries(Object.entries({
-                    "id": (navigateState?.state?.data?.id) ? navigateState?.state?.data?.id : customer_id.id || null,
-                    "version": (navigateState?.state?.data?.version) ? navigateState?.state?.data?.version : customer_id.version || 0,
+                    "id": (navigateState?.state?.data?.id) ? navigateState?.state?.data?.id : vendor_id.id || null,
+                    "version": (navigateState?.state?.data?.version) ? navigateState?.state?.data?.version : vendor_id.version || 0,
                     contacts: values?.contacts?.map((val) => {
                         return {
                             ...Object.fromEntries(Object.entries({
@@ -245,18 +257,27 @@ export default function UploadVendorData() {
                     })
                 }).filter(([_, value]) => value !== null)),
             }
-            console.log(data, "vendor contact");
             dispatch(postVendorContactAction(data));
         },
     });
     const documentsFormik = useFormik({
         initialValues: {
-            document: [
-                {
-                    documentType: navigateState?.state?.data?.documents[0]?.documentType || "",
-                    uploadDocument: navigateState?.state?.data?.documents[0]?.documentPath || "",
-                },
-            ],
+            ...(!!(navigateState?.state?.data?.documents && navigateState?.state?.data?.documents.length > 0) && {
+                document:
+                    navigateState?.state?.data?.documents.map((document, index, array) => ({
+                        documentType: document?.documentType || "",
+                        uploadDocument: index === array.length - 1 ? "" : document?.documentPath || "",
+                        documentPath: document?.documentPath || "",
+                        id: document?.id || "",
+                        version: document?.version || 0,
+                    }))
+            }) || {
+                document: [{
+                    documentType: document?.documentType || "",
+                    uploadDocument: document?.documentPath || "",
+                }
+                ]
+            }
         },
         validationSchema: Yup.object({
             document: Yup.array().of(
@@ -273,14 +294,16 @@ export default function UploadVendorData() {
                     docfile: val?.uploadDocument || '',
                     docdata: {
                         ...Object.fromEntries(Object.entries({
-                            "id": (navigateState?.state?.data?.id) ? navigateState?.state?.data?.id : customer_id.id || null,
-                            "version": (navigateState?.state?.data?.version) ? navigateState?.state?.data?.version : customer_id.version || 0,
+                            "id": (navigateState?.state?.data?.id) ? navigateState?.state?.data?.id : vendor_id.id || null,
+                            "version": (navigateState?.state?.data?.version) ? navigateState?.state?.data?.version : vendor_id.version || 0,
                             "documents": [
                                 {
                                     ...Object.fromEntries(Object.entries({
                                         "documentType": val?.documentType || '',
                                         "document": null,
-                                        "documentPath": null || '',
+                                        "documentPath": val?.documentPath || '',
+                                        "id": val?.id || null,
+                                        "version": val?.version || 0
                                     }).filter(([_, value]) => value !== null)),
                                 }
                             ]
@@ -288,11 +311,18 @@ export default function UploadVendorData() {
                     }
                 }
             });
-
+            const allDocData = data.reduce((accumulator, currentValue) => {
+                return accumulator.concat(currentValue.docdata.documents);
+            }, []);
+            let newDocData = {
+                "id": (navigateState?.state?.data?.id) ? navigateState?.state?.data?.id : vendor_id.id || null,
+                "version": (navigateState?.state?.data?.version) ? navigateState?.state?.data?.version : vendor_id.version || 0,
+                "documents": allDocData
+            };
             const formDataArray = data?.map((document) => {
                 const formData = new FormData();
-                formData.append('file', document.docfile); // Adjust the field name as needed
-                formData.append('tenantVendor', new Blob([JSON.stringify(document.docdata)], { type: "application/json" })); // Include other fields as needed
+                formData.append('file', document.docfile);
+                formData.append('tenantVendor', new Blob([JSON.stringify(newDocData)], { type: "application/json" }));
                 return formData;
             });
 

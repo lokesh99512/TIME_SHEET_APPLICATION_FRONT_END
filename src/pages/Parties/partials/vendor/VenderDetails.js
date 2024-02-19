@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import { Card, CardBody, FormFeedback, Input } from "reactstrap";
 import { optionVendorType } from "../../../../common/data/procurement";
-import { getCustomersCountryData, getCustomersPincodeData, getCustomersStateData } from "../../../../store/Parties/actions";
+import { getCustomersCityData, getCustomersCountryData, getCustomersPincodeData, getCustomersStateData } from "../../../../store/Parties/actions";
 import { getAllSurchargeCategoryData, getAllTableSurchargeAlias } from "../../../../store/Settings/actions";
 import FileUpload from "../../FileUpload";
 import ModalAddNewDepartment from "../../Modal/ModalAddNewDepartment";
@@ -48,11 +48,18 @@ const VenderDetails = ({ companyDetailsFormik }) => {
       companyDetailsFormik.setFieldValue("country", parties_country_details?.content[0]?.countryName)
     }
   }, [parties_state_details, parties_country_details, parties_pincode_details, parties_all_details]);
+  
 
   useEffect(() => {
     dispatch(getAllTableSurchargeAlias());
     dispatch(getAllSurchargeCategoryData());
-    // dispatch(getTenantInfoData());
+    const cityData = parties_city_details?.content?.find((city) => city.cityName === companyDetailsFormik.values.city);
+    if(!!cityData){
+      dispatch(getCustomersStateData({ cityId: cityData.id }));
+      dispatch(getCustomersCountryData({ cityId: cityData.id }));
+      dispatch(getCustomersPincodeData({ cityId: cityData.id }));
+    }
+
   }, []);
 
   const onUploadChange = (file) => {

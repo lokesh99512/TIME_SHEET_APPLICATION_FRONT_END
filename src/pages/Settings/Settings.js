@@ -17,11 +17,12 @@ import {
     placeOfSupply
 } from "../../common/data/settings";
 import { isAnyValueEmpty } from "../../components/Common/CommonLogic";
-import {    
+import {
     getBusinessData,
     getCompanyCityData,
     getCompanyDetailsData,
     getTaxDetailsData,
+    getTenantInfoData,
     postSettingsCompanyDetailsAction
 } from "../../store/Settings/actions";
 import ModalAddGST from "./Modal/ModalAddGST";
@@ -50,7 +51,7 @@ const Settings = () => {
 
     useEffect(() => {
         dispatch(getCompanyCityData());
-        // dispatch(getTenantInfoData());
+        dispatch(getTenantInfoData());
         dispatch({ type: GET_STATE_ALL_TYPE });
     }, []);
 
