@@ -27,7 +27,7 @@ const Dashboard = () => {
     const [tableData3, setTableData3] = useState(inquirySumData);
     const [tableData4, setTableData4] = useState(salesPerformData);
     const navigate = useNavigate();
-    const  { inquiry_export_data , inquiry_import_data, inquiry_customer_data,inquiry_summary_data, inquiry_sales_customer_data}= useSelector((state) => state?.sales);    
+    const { inquiry_export_data, inquiry_import_data, inquiry_customer_data, inquiry_summary_data, inquiry_sales_customer_data } = useSelector((state) => state?.sales);
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getInquirySummeryData());
@@ -36,20 +36,6 @@ const Dashboard = () => {
         dispatch(getInquiryImportSummeryData());
         dispatch(getInquiryExportSummeryData());
     }, []);
-
-    const salesEnquirySummary = Object.entries(inquiry_summary_data).map(([key, value], index) => {
-        let rate_type = 'up';
-        if (index === 3) { 
-            rate_type = 'down';
-        }
-        return {
-            id: index + 1,
-            title: index==0?"Total Inquires":index==1?"Inquires Actioned":index==2?"Pending Inquires":index==3?"SLA breached":"",
-            rate: value.toString(),
-            compare_rate: (index + 1) * 3, 
-            rate_type: rate_type
-        };
-    });
 
     document.title = "Dashboard || Navigating Freight Costs with Precision||Ultimate Rate Management platform";
 
@@ -83,9 +69,6 @@ const Dashboard = () => {
         <React.Fragment>
             <div className="page-content">
                 <Container fluid>
-                    {/* Render Breadcrumbs */}
-                    {/* <Breadcrumbs title="Dashboard" breadcrumbItem="Dashboard" /> */}
-
                     <div className="main_dashboard_wrapper">
                         <Row className="dashboard_inquiries_summary_wrap">
                             <Col xl={9} lg={8} className="left_summary_wrap">
@@ -93,21 +76,63 @@ const Dashboard = () => {
                                 <div className="sh_inquiry_wrap">
                                     <h3 className="sub_title">Sales Inquires</h3>
                                     <div className="sh_box_wrap">
-                                        {((inquiry_summary_data)?salesEnquirySummary: salesEnquiryData)?.map(item => (
-                                            <div className="sh_box" key={item?.id}>
-                                                <p className="box_title" onClick={() => navigate('/sales/inquiry', { state: { id: item?.title } })}>{item?.title}</p>
-                                                <div className="sh_inquiry_rate justify-content-between align-items-center">
-                                                    <AnimatedCounter rate={Number(item?.rate)} />
-                                                    {/* <span className={`${item?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{item?.compare_rate}%</span> */}
-                                                    <div className="text-nowrap fs-5">
-                                                        <span className={"badge badge-soft-" + `${item?.rate_type === 'down' ? "danger" : "success"}` + " text-" + `${item?.rate_type === 'down' ? "danger" : "success"}`}>
-                                                        {item?.compare_rate}%
-                                                        </span>
-                                                        <span className="ms-1 box_bottom_text">Since last month</span>
-                                                    </div>
+
+                                        <div className="sh_box" >
+                                            <p className="box_title" onClick={() => navigate('/sales/inquiry', { state: { id: item?.title } })}>Total Inquires</p>
+                                            <div className="sh_inquiry_rate justify-content-between align-items-center">
+                                                {inquiry_summary_data?.totalCount != undefined ?
+                                                    <AnimatedCounter rate={Number(inquiry_summary_data?.totalCount)} /> 
+                                                    : "0"}
+                                                <div className="text-nowrap fs-5">
+                                                    <span className={"badge badge-soft-" + `${inquiry_summary_data?.rate_type === 'down' ? "danger" : "success"}` + " text-" + `${inquiry_summary_data?.rate_type === 'down' ? "danger" : "success"}`}>
+                                                        {inquiry_summary_data?.totalCountPercentage}%
+                                                    </span>
+                                                    <span className="ms-1 box_bottom_text">Since last month</span>
                                                 </div>
                                             </div>
-                                        ))}
+                                        </div>
+                                        <div className="sh_box" >
+                                            <p className="box_title" onClick={() => navigate('/sales/inquiry', { state: { id: item?.title } })}>Inquires Actioned</p>
+                                            <div className="sh_inquiry_rate justify-content-between align-items-center">
+                                                {inquiry_summary_data?.actionedCount != undefined ?
+                                                    <AnimatedCounter rate={Number( inquiry_summary_data?.actionedCount)} /> : "0"
+                                                }
+                                                <div className="text-nowrap fs-5">
+                                                    <span className={"badge badge-soft-" + `${inquiry_summary_data?.rate_type === 'down' ? "danger" : "success"}` + " text-" + `${inquiry_summary_data?.rate_type === 'down' ? "danger" : "success"}`}>
+                                                        {inquiry_summary_data?.actionedCountPercentage}%
+                                                    </span>
+                                                    <span className="ms-1 box_bottom_text">Since last month</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="sh_box" >
+                                            <p className="box_title" onClick={() => navigate('/sales/inquiry', { state: { id: item?.title } })}>Pending Inquires</p>
+                                            <div className="sh_inquiry_rate justify-content-between align-items-center">
+                                            {inquiry_summary_data?.pendingCount != undefined ?
+                                                <AnimatedCounter rate={Number(inquiry_summary_data.pendingCount)} />
+                                                : "0"}
+                                                <div className="text-nowrap fs-5">
+                                                    <span className={"badge badge-soft-" + `${inquiry_summary_data?.rate_type === 'down' ? "danger" : "success"}` + " text-" + `${inquiry_summary_data?.rate_type === 'down' ? "danger" : "success"}`}>
+                                                        {inquiry_summary_data?.pendingCountPercentage}%
+                                                    </span>
+                                                    <span className="ms-1 box_bottom_text">Since last month</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="sh_box" >
+                                            <p className="box_title" onClick={() => navigate('/sales/inquiry', { state: { id: item?.title } })}>SLA breached</p>
+                                            <div className="sh_inquiry_rate justify-content-between align-items-center">
+                                            {inquiry_summary_data?.totalCount != undefined ?
+                                                <AnimatedCounter rate={Number(inquiry_summary_data?.slaBreachedCount)} />
+                                                : "0"}
+                                                <div className="text-nowrap fs-5">
+                                                    <span className={"badge badge-soft-" + `${inquiry_summary_data?.rate_type === 'down' ? "danger" : "success"}` + " text-" + `${inquiry_summary_data?.rate_type === 'down' ? "danger" : "success"}`}>
+                                                        {inquiry_summary_data?.slaBreachedCountPercentage}%
+                                                    </span>
+                                                    <span className="ms-1 box_bottom_text">Since last month</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -124,7 +149,7 @@ const Dashboard = () => {
                                                     {item?.compare_rate !== '' && (
                                                         <div className="text-nowrap fs-5">
                                                             <span className={"badge badge-soft-" + `${item?.rate_type === 'down' ? "danger" : "success"}` + " text-" + `${item?.rate_type === 'down' ? "danger" : "success"}`}>
-                                                            {item?.compare_rate}%
+                                                                {item?.compare_rate}%
                                                             </span>
                                                             <span className="ms-1 box_bottom_text">Since last month</span>
                                                         </div>

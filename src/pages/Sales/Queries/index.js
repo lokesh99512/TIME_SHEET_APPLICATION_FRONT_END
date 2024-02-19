@@ -12,11 +12,11 @@ import { FILTER_INQUIRY_DATA, GET_INQUIRY_DATA_SUCCESS } from '../../../store/Sa
 import { useLocation } from 'react-router-dom'
 
 export default function QueriesComp() {
-    document.title = "Inquiry || Navigating Freight Costs with Precision||Ultimate Rate Management platform"   
-    
+    document.title = "Inquiry || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
+
     const inquiryData = useSelector((state) => state?.sales?.inquiry_data);
     const [isRight, setIsRight] = useState(false);
-    const  { inquiry_summary_data}= useSelector((state) => state?.sales);
+    const { inquiry_summary_data } = useSelector((state) => state?.sales);
 
     const dispatch = useDispatch();
     const inputArr = {
@@ -49,29 +49,29 @@ export default function QueriesComp() {
             return originNameMatch && isDestPortMatch && statusMatch;
         });
         console.log(filteredDataArr, "filterDetails lcl-----------------------");
-        dispatch({type: GET_INQUIRY_DATA_SUCCESS, payload: filteredDataArr})
+        dispatch({ type: GET_INQUIRY_DATA_SUCCESS, payload: filteredDataArr })
     }
 
     const clearValueHandler = () => {
         setfilterDetails(inputArr)
-        dispatch(getSalesInquiryData()); 
+        dispatch(getSalesInquiryData());
     }
 
     useEffect(() => {
         dispatch(getSalesInquiryData());
         dispatch(getInquirySummeryData());
-    },[]);
+    }, []);
 
     const salesEnquirySummery = Object.entries(inquiry_summary_data).map(([key, value], index) => {
         let rate_type = 'up';
-        if (index === 3) { 
+        if (index === 3) {
             rate_type = 'down';
         }
         return {
             id: index + 1,
-            title: index==0?"Total Inquires":index==1?"Inquires Actioned":index==2?"Pending Inquires":index==3?"SLA breached":"",
+            title: index == 0 ? "Total Inquires" : index == 1 ? "Inquires Actioned" : index == 2 ? "Pending Inquires" : index == 3 ? "SLA breached" : "",
             rate: value.toString(),
-            compare_rate: (index + 1) * 3, 
+            compare_rate: (index + 1) * 3,
             rate_type: rate_type
         };
     });
@@ -201,7 +201,7 @@ export default function QueriesComp() {
             Cell: (cellProps) => {
                 return <QueriesColVal cellProps={cellProps} />
             }
-        }      
+        }
     ]);
 
     return (
@@ -213,23 +213,43 @@ export default function QueriesComp() {
                         <div className="tf_top_breadcrumb_rate_wrap">
                             <TfBreadcrumbs breadcrumb={inquiryBreadcrumb} />
                             <div className="tf_box_wrap d-flex">
-                                {(salesEnquirySummery.length>0?salesEnquirySummery:salesEnquiryData).map((item) => (
-                                    <div className="sh_box flex-grow-1" key={item?.id}>
-                                        <p className="box_title">{item?.title}</p>
-                                        <div className="sh_inquiry_rate">{item?.rate}
-                                            {item?.compare_rate !== '' ? (
-                                                <span className={`${item?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{item?.compare_rate}%</span>
-                                            ) : null}
-                                        </div>
+                                <div className="sh_box flex-grow-1" >
+                                    <p className="box_title">Total Inquires</p>
+                                    <div className="sh_inquiry_rate">{inquiry_summary_data?.totalCount}
+                                        {inquiry_summary_data?.actionedCount !== undefined ? (
+                                            <span className={`${inquiry_summary_data?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{inquiry_summary_data?.totalCountPercentage}%</span>
+                                        ) : null}
                                     </div>
-                                ))}
+                                </div>
+                                <div className="sh_box flex-grow-1" >
+                                    <p className="box_title">Inquires Actioned</p>
+                                    <div className="sh_inquiry_rate">{inquiry_summary_data?.actionedCount}
+                                        {inquiry_summary_data?.compare_rate !== '' ? (
+                                            <span className={`${inquiry_summary_data?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{inquiry_summary_data?.actionedCountPercentage}%</span>
+                                        ) : null}
+                                    </div>
+                                </div>
+                                <div className="sh_box flex-grow-1" >
+                                    <p className="box_title">Pending Inquires</p>
+                                    <div className="sh_inquiry_rate">{inquiry_summary_data?.pendingCount}
+                                        {inquiry_summary_data?.compare_rate !== '' ? (
+                                            <span className={`${inquiry_summary_data?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{inquiry_summary_data?.pendingCountPercentage}%</span>
+                                        ) : null}
+                                    </div>
+                                </div>
+                                <div className="sh_box flex-grow-1" >
+                                    <p className="box_title">SLA breached</p>
+                                    <div className="sh_inquiry_rate">{inquiry_summary_data?.slaBreachedCount}
+                                        <span className={`${inquiry_summary_data?.rate_type === 'down' ? 'red_text' : 'green_text'}`}>{inquiry_summary_data?.slaBreachedCountPercentage}%</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         {/* sales table && filter */}
                         <SalesCommonTable
                             columns={columns}
-                            data={!!inquiryData.content?inquiryData.content:[]}
+                            data={!!inquiryData.content ? inquiryData.content : []}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}
@@ -238,9 +258,9 @@ export default function QueriesComp() {
                         />
                     </div>
                 </Container>
-            </div>            
+            </div>
 
-            {/* filter right sidebar */}            
+            {/* filter right sidebar */}
             <FilterSalesInquiryComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} />
         </>
     )
