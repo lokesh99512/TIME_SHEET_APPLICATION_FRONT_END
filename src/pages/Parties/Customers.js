@@ -4,7 +4,7 @@ import {
   Container
 } from "reactstrap";
 import { getAllPartiesCustomerData } from "../../store/Parties/Customer/action";
-import { updateCustomerSwitchData } from "../../store/Parties/actions";
+import { getCustomersCityData, updateCustomerSwitchData } from "../../store/Parties/actions";
 import ModalCustomerValue from "./Modal/ModalCustomerValue";
 import {
   City,
@@ -54,6 +54,7 @@ const Customers = () => {
   };
   useEffect(() => {
     dispatch(getAllPartiesCustomerData())
+    dispatch(getCustomersCityData())
   }, []);
 
   const columns = useMemo(

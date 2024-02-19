@@ -13,6 +13,7 @@ import {
 } from "../../../helpers/fakebackend_helper";
 import { LoginAPI, loginpost } from "../../../helpers/services/AuthService";
 import { showErrorToast, showSuccessToast } from "../../../components/Common/CustomToast";
+import { GET_INQUIRY_SUMMARY_DATA } from "../../Sales/actiontype";
 
 const fireBaseBackend = getFirebaseBackend();
 
@@ -58,6 +59,7 @@ function* loginUser({ payload: { dataObj, history } }){
     localStorage.setItem("authUser", JSON.stringify(response?.data));
     showSuccessToast("Login User Successfully");
     yield put({type: LOGIN_SUCCESS, payload: response.data});
+    yield put({type: GET_INQUIRY_SUMMARY_DATA});
     history("/dashboard");
   } catch (error) {
     showErrorToast(error?.response?.data?.message);

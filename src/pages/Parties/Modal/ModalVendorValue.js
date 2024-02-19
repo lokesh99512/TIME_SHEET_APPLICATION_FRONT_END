@@ -78,6 +78,7 @@ const ModalVendorValue = ({ viewData, modal, onCloseClick }) => {
                                     <TabTwoContacts viewData={viewData} />
 
                                 </TabPane>
+                                
                                 <TabPane tabId="3">
                                     <TabThreeDocuments viewData={viewData} />
                                 </TabPane>

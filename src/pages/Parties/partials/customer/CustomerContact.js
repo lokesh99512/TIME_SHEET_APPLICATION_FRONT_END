@@ -14,17 +14,28 @@ const CustomerContact = ({ toggleTabProgress }) => {
     const navigateState = useLocation();
     const contactsFormik = useFormik({
         initialValues: {
+            ...(!!(navigateState?.state?.data?.contacts && navigateState?.state?.data?.contacts.length > 0) && {
+            contacts: navigateState?.state?.data?.contacts.map(contact => ({
+                title: contact.contactName || "",
+                name: contact.contactName || "",
+                opCode: contact.opCode || "",
+                phoneNumber: contact.contactNo || "",
+                emailId: contact.contactEmail || "",
+                department: contact.department || "",
+                designation: contact.designation || "",
+            })),
+        })|| {
             contacts: [
                 {
-                    title: "",
-                    name: navigateState?.state?.data?.contactName || "",
-                    opCode: "",
-                    phoneNumber: navigateState?.state?.data?.contactNo || "",
-                    emailId: navigateState?.state?.data?.contactEmail || "",
-                    department: navigateState?.state?.data?.department || "",
-                    designation: navigateState?.state?.data?.designation || "",
-                },
-            ],
+                        title: "",
+                        name: navigateState?.state?.data?.contactName || "",
+                        opCode: "",
+                        phoneNumber: navigateState?.state?.data?.contactNo || "",
+                        emailId: navigateState?.state?.data?.contactEmail || "",
+                        department: navigateState?.state?.data?.department || "",
+                        designation: navigateState?.state?.data?.designation || "",
+                },]
+            }
         },
         validationSchema: Yup.object({
             contacts: Yup.array().of(

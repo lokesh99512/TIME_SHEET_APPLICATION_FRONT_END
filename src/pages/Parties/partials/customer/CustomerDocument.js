@@ -16,12 +16,22 @@ const CustomerDocument = () => {
     const navigateState = useLocation();
     const documentsFormik = useFormik({
         initialValues: {
-            document: [
-                {
-                    documentType: navigateState?.state?.data?.documents[0]?.documentType || "",
-                    uploadDocument: navigateState?.state?.data?.documents[0]?.documentPath || "",
+            ...(!!(navigateState?.state?.data?.documents && navigateState?.state?.data?.documents.length > 0) && {
+                document:
+                    navigateState?.state?.data?.documents.map((document, index, array) => ({
+                        documentType: document?.documentType || "",
+                        uploadDocument: index === array.length - 1 ? "" : document?.documentPath || "",
+                        documentPath: document?.documentPath || "",
+                        id: document?.id || "",
+                        version: document?.version || 0,
+                    }))
+            }) || {
+                document: [{
+                    documentType: document?.documentType || "",
+                    uploadDocument: document?.documentPath || "",
                 }
-            ],
+                ]
+            }
         },
         validationSchema: Yup.object({
             document: Yup.array().of(
@@ -33,30 +43,21 @@ const CustomerDocument = () => {
         }),
         onSubmit: (values) => {
             console.log(values, "values Document---------------");
-            // let data = {
-            //     "id": customer_id?.id || '',
-            //     "version": customer_id?.version || '',
-            //     "documents": values?.document?.map((val) => {
-            //         return {
-            //             "documentType": val?.documentType?.value || '',
-            //             "document": null,
-            //             "documentPath": val?.uploadDocument?.name || '',
-            //         }
-            //     })
-            // }
             let data = values?.document?.map((val) => {
                 return {
                     docfile: val?.uploadDocument || null,
                     docdata: {
                         ...Object.fromEntries(Object.entries({
-                            "id": (navigateState?.state?.data?.id) ?  navigateState?.state?.data?.id :customer_id.id || null,
-                            "version": (navigateState?.state?.data?.version) ? navigateState?.state?.data?.version:customer_id.version || 0,
+                            "id": (navigateState?.state?.data?.id) ? navigateState?.state?.data?.id : customer_id.id || null,
+                            "version": (navigateState?.state?.data?.version) ? navigateState?.state?.data?.version : customer_id.version || 0,
                             "documents": [
                                 {
                                     ...Object.fromEntries(Object.entries({
                                         "documentType": val?.documentType || null,
                                         "document": null,
-                                        "documentPath":  null,
+                                        "documentPath": val?.documentPath || '',
+                                        "id": val?.id || null,
+                                        "version": val?.version || 0
                                     }).filter(([_, value]) => value !== null)),
                                 }
                             ]
@@ -64,11 +65,18 @@ const CustomerDocument = () => {
                     }
                 }
             })
-
+            const allDocData = data.reduce((accumulator, currentValue) => {
+                return accumulator.concat(currentValue.docdata.documents);
+            }, []);
+            let newDocData = {
+                "id": (navigateState?.state?.data?.id) ? navigateState?.state?.data?.id : vendor_id.id || null,
+                "version": (navigateState?.state?.data?.version) ? navigateState?.state?.data?.version : vendor_id.version || 0,
+                "documents": allDocData
+            };
             const formDataArray = data?.map((document) => {
                 const formData = new FormData();
-                formData.append('file', document.docfile); // Adjust the field name as needed
-                formData.append('tenantCustomer', new Blob([JSON.stringify(document.docdata)], { type: "application/json" })); // Include other fields as needed
+                formData.append('file', document.docfile);
+                formData.append('tenantCustomer', new Blob([JSON.stringify(newDocData)], { type: "application/json" }));
                 return formData;
             });
 

@@ -15,7 +15,7 @@ const CustomerFclPortLocal = () => {
     const navigateState = useLocation();
     const [AllVendorName, setAllVendorName] = useState([]);
     const {
-        vendor_data,container_data,oceanPort_data
+        vendor_data, container_data, oceanPort_data
     } = useSelector((state) => state?.globalReducer);
 
     console.log(vendor_data);
@@ -171,9 +171,9 @@ const CustomerFclPortLocal = () => {
                                                             <div className="mb-2">
                                                                 <label className="form-label">Container Type</label>
                                                                 <Select
-                                                                   name='containerType'
-                                                                   placeholder="Select Container Type"
-                                                                   options={container_data}
+                                                                    name='containerType'
+                                                                    placeholder="Select Container Type"
+                                                                    options={container_data}
                                                                     classNamePrefix="select2-selection form-select"
                                                                 />
                                                             </div>
@@ -235,15 +235,24 @@ const CustomerFclPortLocal = () => {
                     </>
                 </FormikProvider>
             </div>
-            <div className="d-flex justify-content-center mb-2" style={{ margin: "0 0 -62px" }}>
-                <div className="d-flex align-items-center">
-                    <button
-                        type="button"
-                        className="btn btn-primary d-flex align-items-center"
-                        onClick={contactsFormik.handleSubmit}
-                    >
-                        Save
-                    </button>
+            <div className="row">
+                <div className="d-flex justify-content-center">
+                    <div className="mb-3 mx-3 d-flex justify-content-end">
+                        <button
+                            onClick={contactsFormik.handleSubmit}
+                            className=" btn btn-primary"
+                        >
+                            Save
+                        </button>
+                    </div>
+                    <div className="mb-3 mx-3 d-flex justify-content-end">
+                        <button
+                           onClick={() => contactsFormik.resetForm()}
+                            className=" btn btn-primary"
+                        >
+                            Cancel
+                        </button>
+                    </div>
                 </div>
             </div>
 

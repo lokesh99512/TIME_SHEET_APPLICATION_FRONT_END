@@ -16,6 +16,11 @@ function* fetchVendorListSaga() {
                 let imageData = element.logoPath;
                 const base64Encoded = window.btoa(imageData);
                 element.logo =(!!(imageData)? `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`:'');
+                element.documents?.forEach(doc=>{
+                    let imageData = doc.documentPath;
+                    const base64Encoded = window.btoa(imageData);
+                    doc.logo =(!!(imageData)? `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`:'');
+                })
             });
         }
         console.log(response, "reponse into getAllPartiesCompanySettings");
@@ -57,10 +62,11 @@ function* postVenderContactSaga({ payload: { data } }) {
 function* postVenderDocumentSaga({ payload: { data } }) {
     console.log(data, "data saga Vendor document")
     try {
-        const results = yield all(
-            data?.documents?.map((formData) => call(postVenderDocumentSer, formData))
-        );
-        console.log(results, "results Vendor document");
+        // const results = yield all(
+        //     data?.documents?.map((formData) => call(postVenderDocumentSer, formData))
+        // );
+        const response = yield call(postVenderDocumentSer, data?.documents[data?.documents?.length - 1]);
+        console.log(response, "results Vendor document");
         yield put({type: VENDOR_TAB_ACTIVE_TYPE, payload: { tab: 1, details: 'success', contact: 'success', document: 'success' }});
         showSuccessToast("Update Document Successfully");
     } catch (error) {

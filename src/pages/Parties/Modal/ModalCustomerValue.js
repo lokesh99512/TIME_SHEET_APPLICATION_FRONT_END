@@ -42,7 +42,7 @@ const ModalCustomerValue = ({ viewData, modal, onCloseClick }) => {
                             <Card>
                                 <CardBody>
                                     {/* Tabs */}
-                                    <Nav className="nav-tabs-custom card-header-tabs justify-content-between">
+                                    <Nav className="nav-tabs-custom card-header-tabs justify-content-around">
                                         <NavItem>
                                             <NavLink
                                                 href="#"

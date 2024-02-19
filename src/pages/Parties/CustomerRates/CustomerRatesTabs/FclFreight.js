@@ -56,6 +56,7 @@ const CustomerFclFreight = () => {
         },
         onSubmit: (values) => {
             console.log(values, "values");
+            
         },
     });
 
