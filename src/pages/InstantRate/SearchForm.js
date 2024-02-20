@@ -76,7 +76,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
 
   const customerName = customer_data?.content?.map(customer => ({
     value: customer.id,
-    label: customer.contactName,
+    label: customer.name,
     version: customer.version
   })) || [];
 
@@ -698,7 +698,8 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                   placeholder="Select Date"
                   options={{
                     altFormat: "F j, Y",
-                    dateFormat: "Y-m-d"
+                    dateFormat: "Y-m-d",
+                    minDate: "today"
                   }}
                   onChange={handleSingleDateChange}
                 />
@@ -719,6 +720,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                   options={{
                     mode: "range",
                     dateFormat: "Y-m-d",
+                    minDate: "today"
                   }}
                   onChange={handleDateChnage}
                 />

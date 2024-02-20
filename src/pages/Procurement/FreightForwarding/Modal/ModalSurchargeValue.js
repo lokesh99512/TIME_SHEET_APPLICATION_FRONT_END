@@ -23,9 +23,6 @@ const ModalSurchargeValue = ({ viewData, modal, onCloseClick, modalType }) => {
             setOpen(id);
         }
     };
-
-    console.log(viewData, "viewData")
-
     return (
         <>
             <Modal

@@ -208,7 +208,6 @@ export default function UploadFreightData() {
             dispatch(uploadFclFrightData(formData, fcl_charge_id?.id));            
         }
         if (activeTabProgress === 3) {
-            console.log("iffffffffffffffff");
             if (addFCL?.surcharges?.length !== 0) {
                 if (!isAnyValueEmptyInArray(addFCL?.surcharges, ['gp1', 'gp2', 'hq1', 'hq2', 'rf1', 'rf2']) && addFCL?.surcharges[0]?.destination?.length !== 0) {
                     openSaveConfirmModal();
@@ -444,7 +443,6 @@ export default function UploadFreightData() {
                                                             <h5>FCL Ocean Surcharges</h5>
                                                         </div>
                                                         <form>
-                                                            {console.log(addFCL?.surcharges,"addFCL?.surcharges")}
                                                             {addFCL?.surcharges && addFCL?.surcharges?.map((item, index) => (
                                                                 <div key={index} className='upload_surcharges_row'>
                                                                     <div className="row">

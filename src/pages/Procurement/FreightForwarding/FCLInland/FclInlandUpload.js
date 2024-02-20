@@ -53,7 +53,6 @@ export default function FclInlandUpload() {
     }, [])
 
     useEffect(() => {
-        console.log(inlandActiveTab,"inlandActiveTab")
         setActiveTabProgress(inlandActiveTab)
         if (inlandActiveTab === 1) { setProgressValue(33) }
         if (inlandActiveTab === 2) { setProgressValue(66) }
@@ -160,12 +159,12 @@ export default function FclInlandUpload() {
             });
 
             dispatch(uploadFclInlandSurchargeAction(data));
+            dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addInland', data: { carrierDetails: carrierObj, freightUpload: {}, surcharges: [] } } });
             setSurcharges([]);
-            dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addInland', data: { ...addInland, surcharges: [] } } });
+            setselectedFiles([]);
+            setOpenSaveModal(false);
         }
-        dispatch({ type: BLANK_FCL_CARRIER_DATA, payload: { name: 'addInland', data: { ...addInland, carrierDetails: carrierObj } } });
-        setselectedFiles([]);
-        setOpenSaveModal(false);
+        // dispatch({ type: BLANK_FCL_CARRIER_DATA, payload: { name: 'addInland', data: { ...addInland, carrierDetails: carrierObj } } });
     }
     
     const uploadSaveHandler = () => {

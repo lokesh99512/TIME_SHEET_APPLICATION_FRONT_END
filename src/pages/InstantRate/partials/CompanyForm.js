@@ -1,26 +1,33 @@
 import { useFormik } from 'formik';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Select from "react-select";
 import { Card, CardBody, Input } from 'reactstrap';
 import { optionQuoteContactCode, optionQuoteContacttitle } from '../../../common/data/sales';
 const CompanyForm = () => {
-    const { tenant_info } = useSelector((state) => state?.settings);
+    const { customer_data } = useSelector((state) => state?.customer);
+    const { searchForm } = useSelector((state) => state?.instantRate);
+    const [customerInfo, setCustomerInfo] = useState();
+
+    useEffect(() => {
+        let data = customer_data && customer_data?.content?.find(obj => obj.id === searchForm?.customerName?.value);
+        setCustomerInfo(data);
+    },[customer_data]);
 
     const companyDetailsFormik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            customerName: tenant_info && tenant_info?.name || '-',
-            address: tenant_info && tenant_info?.address || '-',
-            city: tenant_info && tenant_info?.city?.cityName || '-',
-            state: tenant_info && tenant_info?.state?.stateName || '-',
-            country: tenant_info && tenant_info?.country?.countryName || '-',
-            zipcode: tenant_info && tenant_info?.pinCode?.pin || '-',
+            customerName: customerInfo && customerInfo?.name || '-',
+            address: customerInfo && customerInfo?.address || '-',
+            city: customerInfo && customerInfo?.city?.cityName || '-',
+            state: customerInfo && customerInfo?.state?.stateName || '-',
+            country: customerInfo && customerInfo?.country?.countryName || '-',
+            zipcode: customerInfo && customerInfo?.pinCode?.pin || '-',
             title: "Mr",
-            contactName: tenant_info && tenant_info?.contactName,
+            contactName: customerInfo && customerInfo?.contactName,
             opCode: "+91",
-            phoneNumber: tenant_info && tenant_info?.contactNumber || '-',
-            email: tenant_info && tenant_info?.email || '-',
+            phoneNumber: customerInfo && customerInfo?.contactNo || '-',
+            email: customerInfo && customerInfo?.contactEmail || '-',
         }
     })
     return (
