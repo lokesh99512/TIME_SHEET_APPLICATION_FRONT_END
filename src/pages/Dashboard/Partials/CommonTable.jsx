@@ -38,7 +38,7 @@ const CommonTable = ({ column, data, type, handleSorting }) => {
                             {data?.slice(0, showAll ? data.length : 10).map((item) => (
                                 <tr key={item?.id}>
                                     {column.map(({ accessor }) => {
-                                        const tData = item[accessor] ? item[accessor] : "__";
+                                        const tData = item[accessor] ? item[accessor] : "_";
                                         if (accessor === 'employee') {
                                             return (
                                                 <td key={accessor}>
@@ -52,11 +52,11 @@ const CommonTable = ({ column, data, type, handleSorting }) => {
                                                 <td key={accessor}>
                                                     {accessor === 'trend' ? (
                                                         <div className="text-nowrap">
-                                                            <span className={"badge badge-soft-" + "success" + " text-" + "success"}>
+                                                            <span className={"badge badge-soft-" +`${tData < 0 ? "danger" : "success"}` + " text-" + `${tData < 0 ? "danger" : "success"}`}>
                                                                 {tData}%
                                                             </span>
                                                         </div>
-                                                    ) : accessor === 'ratio' ? tData + '%' : tData}
+                                                    ) : accessor === 'ratio' ? tData  : tData}
                                                 </td>
                                             );
                                         }

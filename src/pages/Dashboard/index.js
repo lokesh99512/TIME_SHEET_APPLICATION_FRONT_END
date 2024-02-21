@@ -84,7 +84,7 @@ const Dashboard = () => {
                                                     <AnimatedCounter rate={Number(inquiry_summary_data?.totalCount)} /> 
                                                     : "0"}
                                                 <div className="text-nowrap fs-5">
-                                                    <span className={"badge badge-soft-" + `${inquiry_summary_data?.rate_type === 'down' ? "danger" : "success"}` + " text-" + `${inquiry_summary_data?.rate_type === 'down' ? "danger" : "success"}`}>
+                                                    <span className={"badge badge-soft-" + `${inquiry_summary_data?.totalCountPercentage < 0 ? "danger" : "success"}` + " text-" + `${inquiry_summary_data?.totalCountPercentage <0 ? "danger" : "success"}`}>
                                                         {inquiry_summary_data?.totalCountPercentage}%
                                                     </span>
                                                     <span className="ms-1 box_bottom_text">Since last month</span>
@@ -98,7 +98,7 @@ const Dashboard = () => {
                                                     <AnimatedCounter rate={Number( inquiry_summary_data?.actionedCount)} /> : "0"
                                                 }
                                                 <div className="text-nowrap fs-5">
-                                                    <span className={"badge badge-soft-" + `${inquiry_summary_data?.rate_type === 'down' ? "danger" : "success"}` + " text-" + `${inquiry_summary_data?.rate_type === 'down' ? "danger" : "success"}`}>
+                                                    <span className={"badge badge-soft-" + `${inquiry_summary_data?.actionedCountPercentage <0 ? "danger" : "success"}` + " text-" + `${inquiry_summary_data?.actionedCountPercentage < 0 ? "danger" : "success"}`}>
                                                         {inquiry_summary_data?.actionedCountPercentage}%
                                                     </span>
                                                     <span className="ms-1 box_bottom_text">Since last month</span>
@@ -112,7 +112,7 @@ const Dashboard = () => {
                                                 <AnimatedCounter rate={Number(inquiry_summary_data.pendingCount)} />
                                                 : "0"}
                                                 <div className="text-nowrap fs-5">
-                                                    <span className={"badge badge-soft-" + `${inquiry_summary_data?.rate_type === 'down' ? "danger" : "success"}` + " text-" + `${inquiry_summary_data?.rate_type === 'down' ? "danger" : "success"}`}>
+                                                    <span className={"badge badge-soft-" + `${inquiry_summary_data?.pendingCountPercentage < 0 ? "danger" : "success"}` + " text-" + `${inquiry_summary_data?.pendingCountPercentage < 0 ? "danger" : "success"}`}>
                                                         {inquiry_summary_data?.pendingCountPercentage}%
                                                     </span>
                                                     <span className="ms-1 box_bottom_text">Since last month</span>
@@ -126,7 +126,7 @@ const Dashboard = () => {
                                                 <AnimatedCounter rate={Number(inquiry_summary_data?.slaBreachedCount)} />
                                                 : "0"}
                                                 <div className="text-nowrap fs-5">
-                                                    <span className={"badge badge-soft-" + `${inquiry_summary_data?.rate_type === 'down' ? "danger" : "success"}` + " text-" + `${inquiry_summary_data?.rate_type === 'down' ? "danger" : "success"}`}>
+                                                    <span className={"badge badge-soft-" + `${inquiry_summary_data?.slaBreachedCountPercentage < 0 ? "danger" : "success"}` + " text-" + `${inquiry_summary_data?.slaBreachedCountPercentage <0  ? "danger" : "success"}`}>
                                                         {inquiry_summary_data?.slaBreachedCountPercentage}%
                                                     </span>
                                                     <span className="ms-1 box_bottom_text">Since last month</span>
@@ -194,7 +194,7 @@ const Dashboard = () => {
                             {/* Enquiry Summary table */}
                             <Col lg={6}>
                                 <div className="sh_summary_table_wrap">
-                                    <h3 className="sub_title">Inquiry Summary</h3>
+                                    <h3 className="sub_title">Customer Summary</h3>
                                     <CommonTable column={inquiryColumnData} data={inquiry_customer_data} handleSorting={handleSorting} type={'equiry_sum'} />
                                 </div>
                             </Col>

@@ -62,19 +62,7 @@ export default function QueriesComp() {
         dispatch(getInquirySummeryData());
     }, []);
 
-    const salesEnquirySummery = Object.entries(inquiry_summary_data).map(([key, value], index) => {
-        let rate_type = 'up';
-        if (index === 3) {
-            rate_type = 'down';
-        }
-        return {
-            id: index + 1,
-            title: index == 0 ? "Total Inquires" : index == 1 ? "Inquires Actioned" : index == 2 ? "Pending Inquires" : index == 3 ? "SLA breached" : "",
-            rate: value.toString(),
-            compare_rate: (index + 1) * 3,
-            rate_type: rate_type
-        };
-    });
+   
     const columns = useMemo(() => [
         {
             Header: 'Inquiry ID',
