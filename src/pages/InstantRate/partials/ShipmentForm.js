@@ -6,7 +6,6 @@ import { Card, CardBody, Input } from 'reactstrap';
 
 const ShipmentForm = () => {
     const { searchForm, $instantActiveTab } = useSelector((state) => state?.instantRate);
-    console.log(searchForm, "searchForm");
     const shipmentDetailsFormik = useFormik({
         enableReinitialize: true,
         initialValues: {
@@ -44,7 +43,6 @@ const ShipmentForm = () => {
         <>
             <div className="customer_form_details">
                 <Card>
-                    {console.log($instantActiveTab, "$instantActiveTab")}
                     <CardBody>
                         <form>
                             <div className="row">
@@ -327,7 +325,6 @@ const ShipmentForm = () => {
                                         </div>
                                     </div>
                                 )}
-                                {console.log(shipmentDetailsFormik.values)}
 
 
                                 {/* {$instantActiveTab?.sub !== 'FCL' && (

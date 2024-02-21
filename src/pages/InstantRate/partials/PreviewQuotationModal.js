@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Modal } from 'reactstrap'
 import { edit_icon, sitelogo } from '../../../assets/images';
 import { useSelector } from 'react-redux';
@@ -81,65 +81,71 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
                                 <p><b className='me-1'>Quotation:</b> #Q12345678</p>
                             </div>
                             <div className="right_logo">
-                                <img src={sitelogo} alt="logo" />
+                                <img src={tenant_info?.logo || sitelogo} alt="logo" onError={e => {e.target.src = sitelogo}} />
                             </div>
                         </div>
                         <div className="preview_creation_details">
                             <div className="full_wrap white_box">
                                 <div className="top_creation_details">
-                                    <p className="title">Basic Info:</p>
+                                    <p className="title">Customer Details:</p>
                                     <div className="row">
                                         <div className="col-lg-4">
                                             <div className="details">
-                                                <span>Name/Company</span>
-                                                <p>{tenant_info.name || '-'}</p>
+                                                <span>Company Name</span>
+                                                <p>{tenant_info?.name || '-'}</p>
                                             </div>
                                         </div>
                                         <div className="col-lg-4">
                                             <div className="details">
                                                 <span>Primary Contact</span>
-                                                <p>{tenant_info.contactName || '-'}</p>
+                                                <p>{tenant_info?.contactName || '-'}</p>
                                             </div>
                                         </div>
                                         <div className="col-lg-4">
                                             <div className="details">
                                                 <span>Email Address</span>
-                                                <p>{tenant_info.email || '-'}</p>
+                                                <p>{tenant_info?.email || '-'}</p>
+                                            </div>
+                                        </div>
+                                        <div className="col-lg-6">
+                                            <div className="details mt-3">
+                                                <span>Address</span>
+                                                <p>{tenant_info?.address || '-'}</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="top_creation_details">
+                                {/* <div className="top_creation_details">
                                     <p className="title">Quotation Details:</p>
                                     <div className="row">
                                         <div className="col-lg-4">
                                             <div className="details">
                                                 <span>Name/Company</span>
-                                                <p>{tenant_info.name || '-'}</p>
+                                                <p>{tenant_info?.name || '-'}</p>
                                             </div>
                                         </div>
                                         <div className="col-lg-4">
                                             <div className="details">
                                                 <span>Primary Contact</span>
-                                                <p>{tenant_info.contactName || '-'}</p>
+                                                <p>{tenant_info?.contactName || '-'}</p>
                                             </div>
                                         </div>
                                         <div className="col-lg-4">
                                             <div className="details">
                                                 <span>Email Address</span>
-                                                <p>{tenant_info.email || '-'}</p>
+                                                <p>{tenant_info?.contactEmail || '-'}</p>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="half_wrap mt-1">
                                 <div className="half_box white_box">
                                     <p className="title">Origin:</p>
-                                    <div className="details">
+                                    {/* <div className="details">
                                         <span>Pickup</span>
                                         <p>-</p>
-                                    </div>
+                                    </div> */}
                                     <div className="details">
                                         <span>Port</span>
                                         <p>{searchForm?.location_from?.label || '-'}</p>
@@ -151,14 +157,14 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
                                         <span>Port</span>
                                         <p>{searchForm?.location_to?.label || '-'}</p>
                                     </div>
-                                    <div className="details">
+                                    {/* <div className="details">
                                         <span>Drop</span>
                                         <p>-</p>
+                                    </div> */}
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="preview_table_wrap">
+                            <div className="preview_table_wrap">
                             <table>
                                 <caption><p className='d-flex justify-content-between align-items-center'>Commodities</p></caption>
                                 <thead>
