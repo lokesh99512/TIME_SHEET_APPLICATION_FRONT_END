@@ -84,17 +84,20 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
 
         if (e?.target?.name === 'markup_val') {
             marginValue = calculateMarkupVal(data.markup_type, Number(data.amount), Number(e.target.value));
-            sale_cost = Number(data.amount) + marginValue + (data?.taxDetail && data?.taxDetail?.value || 0);
+            sale_cost = Number(data.amount) + marginValue;
+            // sale_cost = Number(data.amount) + marginValue + (data?.taxDetail && data?.taxDetail?.value || 0); for tax 
         }
+
+        console.log(sale_cost,"sale_cost");
 
         existingHandleChange(e.target.value, name, subindex, charge_name, objId, index, sale_cost, marginValue);
     }
 
     const calculateMarkupVal = (type, buycost, value) => {
-        if (type === 'PERCENTAGE') {
-            return (buycost * value / 100)
-        } else {
+        if (type === 'FLAT') {
             return value;
+        } else {
+            return (buycost * value / 100)
         }
     }
     const calculateTax = (buycost, value) => {
@@ -107,19 +110,22 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         if (e.target.name === 'markup_val') {
             let totalAmt = Number(data.unitPerPrice) * Number(data.unit || 1);
             let marginValue = calculateMarkupVal(data.markup_type, totalAmt, Number(e.target.value));
-            sale_cost = totalAmt + marginValue + (data?.taxDetail?.taxPercentage ? calculateTax(totalAmt, Number(data?.taxDetail?.taxPercentage)) : 0);
+            sale_cost = totalAmt + marginValue;
+            // sale_cost = totalAmt + marginValue + (data?.taxDetail?.taxPercentage ? calculateTax(totalAmt, Number(data?.taxDetail?.taxPercentage)) : 0);
             handleChange(e.target.value, name, index, charge_name, objId, sale_cost, marginValue);
-        } else if (e.target.name === 'taxPercentage') {
-            let totalAmt = Number(data.unitPerPrice) * Number(data.unit || 1);
-            let taxAmt = calculateTax(totalAmt, Number(e.target.value))
-            sale_cost = totalAmt + taxAmt + (data.markup_val ? calculateMarkupVal(data.markup_type, totalAmt, Number(data.markup_val)) : 0);
-            handleChange(e.target.value, name, index, charge_name, objId, sale_cost, taxAmt);
-        }
+        } 
+        // else if (e.target.name === 'taxPercentage') {
+        //     let totalAmt = Number(data.unitPerPrice) * Number(data.unit || 1);
+        //     let taxAmt = calculateTax(totalAmt, Number(e.target.value))
+        //     sale_cost = totalAmt + taxAmt + (data.markup_val ? calculateMarkupVal(data.markup_type, totalAmt, Number(data.markup_val)) : 0);
+        //     handleChange(e.target.value, name, index, charge_name, objId, sale_cost, taxAmt);
+        // }
     }
 
     // ---------------- SubTotal / Total and Tax ------------------------------
     const innerTotalHandler = (array, newArray) => {
-        return array?.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost) || (Number(charge.amount + (charge?.taxDetail?.value || 0))), charge.currencyCode), 0) + (newArray !== undefined ? newArray?.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost), charge.currencyCode), 0) : 0);
+        let amt = array?.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost) || (Number(charge.amount + (charge?.taxDetail?.value || 0))), charge.currencyCode), 0) + (newArray !== undefined ? newArray?.reduce((total, charge) => total + convertToINR(Number(charge?.total_sale_cost), charge.currencyCode), 0) : 0)
+        return amt.toFixed(2);
     }
 
     const subTotalHandler = (quoteObject) => {
@@ -151,6 +157,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
             }, 0);
             return accOuter + innerSum;
         }, 0) : 0;
+
         const totalNewMarginSum = mainChargeCurr?.tariffDetails !== undefined ? mainChargeCurr?.tariffDetails?.reduce((accOuter, currentOuter) => {
             let innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
                 return accInner + (convertToINR(currentInner?.margin_value ? Number(currentInner.margin_value) : 0, currentInner.currencyCode) || 0);
@@ -372,7 +379,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                     <input type="text" value={`${subData?.component || ''}${subData?.containerDetail ? '- ' + subData?.containerDetail : ''}`} name="charges_name" id="charges_name" placeholder='Freight' readOnly disabled={viewData} />
                                                                                 </div>
                                                                             </div>
-                                                                            <div className="col-1">
+                                                                            <div className="col-2">
                                                                                 <div className="field_wrap">
                                                                                     {subindex === 0 && <label className='form-label' htmlFor="uom">Charge Basis</label>}
                                                                                     <input type="text" value={subData?.uomCode?.split('_').join(' ') || ''} name="uom" id="uom" readOnly disabled={viewData} />
@@ -400,7 +407,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                 <div className="field_wrap">
                                                                                     {subindex === 0 && <label htmlFor='markup_type' className='form-label'>Markup Type</label>}
                                                                                     <Select
-                                                                                        value={optionMarkupType ? optionMarkupType.find(obj => obj.value === subData?.markup_type) : ''}
+                                                                                        value={optionMarkupType && optionMarkupType.find(obj => obj.value === subData?.markup_type) || { label: "Percentage", value: "PERCENTAGE" }}
                                                                                         name='markup_type'
                                                                                         onChange={(opt) => {
                                                                                             existingHandleChange(opt.value, 'markup_type', subindex, `${data?.header}`, item.quote_id, index);
@@ -423,16 +430,17 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                         placeholder='Enter value' disabled={viewData} />
                                                                                 </div>
                                                                             </div>
-                                                                            <div className="col-1">
+                                                                            {/* <div className="col-1">
                                                                                 <div className="field_wrap">
                                                                                     {subindex === 0 && <label className='form-label' htmlFor="tax">Tax</label>}
                                                                                     <input type="text" value={subData?.taxDetail?.taxPercentage || ''} name="tax" id="tax" placeholder='tax' readOnly disabled={viewData} />
                                                                                 </div>
-                                                                            </div>
+                                                                            </div> */}
                                                                             <div className="col-2">
                                                                                 <div className="field_wrap">
                                                                                     {subindex === 0 && <label className='form-label' htmlFor="total_sale_cost">Total Sale Cost</label>}
-                                                                                    <input type="text" value={subData?.total_sale_cost || Number(subData?.amount + (subData?.taxDetail?.value || 0)).toFixed(2) || ''} name="total_sale_cost" id="total_sale_cost" placeholder='2200' readOnly disabled={viewData} />
+                                                                                    <input type="text" value={subData?.total_sale_cost || Number(subData?.amount || '')} name="total_sale_cost" id="total_sale_cost" placeholder='2200' readOnly disabled={viewData} />
+                                                                                    {/* <input type="text" value={subData?.total_sale_cost || Number(subData?.amount + (subData?.taxDetail?.value || 0)).toFixed(2) || ''} name="total_sale_cost" id="total_sale_cost" placeholder='2200' readOnly disabled={viewData} /> */}
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -462,7 +470,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                     />
                                                                                 </div>
                                                                             </div>
-                                                                            <div className="col-1">
+                                                                            <div className="col-2">
                                                                                 <div className="field_wrap">
                                                                                     <Select
                                                                                         value={newdata?.uomCode || ''}
@@ -501,10 +509,11 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                     <input type="text" name="unitPerPrice" id="unitPerPrice" value={newdata?.unitPerPrice || ''} onChange={(e) => handleChange(e.target.value, 'unitPerPrice', i, `${data?.header}`, item.quote_id)} placeholder='Enter cost' />
                                                                                 </div>
                                                                             </div>
+                                                                            {console.log(optionMarkupType.find(obj => obj.value === newdata?.markup_type), "optionMarkupType")}
                                                                             <div className="col-2">
                                                                                 <div className="field_wrap">
                                                                                     <Select
-                                                                                        value={optionMarkupType ? optionMarkupType.find(obj => obj.value === newdata?.markup_type) : ''}
+                                                                                        value={optionMarkupType && optionMarkupType.find(obj => obj.value === newdata?.markup_type) || { label: "Percentage", value: "PERCENTAGE" }}
                                                                                         name='markup_type'
                                                                                         onChange={(opt) => {
                                                                                             handleChange(opt?.value, 'markup_type', i, `${data?.header}`, item.quote_id);
@@ -525,7 +534,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                         placeholder='Enter value' />
                                                                                 </div>
                                                                             </div>
-                                                                            <div className="col-1">
+                                                                            {/* <div className="col-1">
                                                                                 <div className="field_wrap">
                                                                                     <input type="text" name="taxPercentage" id="taxPercentage"
                                                                                         value={newdata?.taxDetail?.taxPercentage || ''}
@@ -535,7 +544,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                         placeholder='Enter tax'
                                                                                     />
                                                                                 </div>
-                                                                            </div>
+                                                                            </div> */}
                                                                             <div className="col-2">
                                                                                 <div className="field_wrap">
                                                                                     <input type="text" name="total_sale_cost" id="total_sale_cost" value={Number(newdata?.total_sale_cost).toFixed(2)} placeholder='Enter cost' readOnly disabled />
@@ -557,34 +566,35 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                 }
                                             })}
                                         </Accordion>
-                                        <div className="row">
-                                            <div className="col-4 d-flex justify-content-between">
+                                        <div className="row justify-content-end">
+                                            {/* <div className="col-4 d-flex justify-content-between">
                                                 <span>Sub Total:</span>
                                                 <span>
                                                     <b>
-                                                        {/* {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '} */}
-                                                        {/* {formik.values.currencyVal !== 'rupee' ? (subTotalHandler(item) * Number(formik.values.exchangeRate)).toFixed(2) : subTotalHandler(item)} */}
+                                                        {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '}
+                                                        {formik.values.currencyVal !== 'rupee' ? (subTotalHandler(item) * Number(formik.values.exchangeRate)).toFixed(2) : subTotalHandler(item)}
                                                         {subTotalHandler(item)}
                                                     </b>
                                                 </span>
-                                            </div>
-                                            <div className="col-4 d-flex justify-content-between">
+                                            </div> */}
+                                            {/* <div className="col-4 d-flex justify-content-between">
                                                 <span>Tax:</span>
                                                 <span>
                                                     <b>
-                                                        {/* {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '} */}
-                                                        {/* {formik.values.currencyVal !== 'rupee' ? (totalTaxHandler(item) * Number(formik.values.exchangeRate)).toFixed(2) : totalTaxHandler(item)} */}
+                                                        {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '}
+                                                        {formik.values.currencyVal !== 'rupee' ? (totalTaxHandler(item) * Number(formik.values.exchangeRate)).toFixed(2) : totalTaxHandler(item)}
                                                         {totalTaxHandler(item)}
                                                     </b>
                                                 </span>
-                                            </div>
-                                            <div className="col-4 d-flex justify-content-between">
+                                            </div> */}
+                                            <div className="col-4 col-md-3 d-flex justify-content-between">
                                                 <span>Total Amount:</span>
                                                 <span>
                                                     <b className='h5'>
                                                         {/* {optionCurrency ? optionCurrency.find(obj => obj.value === formik.values.currencyVal).code + ' ' : '₹ '} */}
                                                         {/* {formik.values.currencyVal !== 'rupee' ? ((subTotalHandler(item) + totalTaxHandler(item)) * Number(formik.values.exchangeRate)).toFixed(2) : (subTotalHandler(item) + totalTaxHandler(item))} */}
-                                                        {(subTotalHandler(item) + totalTaxHandler(item))}
+                                                        {/* {(subTotalHandler(item) + totalTaxHandler(item))} */}
+                                                        {subTotalHandler(item)}
                                                     </b>
                                                 </span>
                                             </div>

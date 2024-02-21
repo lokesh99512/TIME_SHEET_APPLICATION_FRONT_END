@@ -293,7 +293,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
           <div className="col-12 col-md-12 col-lg-12 col-xl-8 col-xxl-6 mt-2">
             <div className="d-flex flex-column">
               <div className="d-flex position-relative w-100 quotation_select_port_wrap">
-                <div className={`quotation_from_wrap`} >
+                <div className={`quotation_from_wrap focus_custom_div`} tabIndex={0}>
                   <div className={`common_dropdwon_btn_wrap`}>
                     <div id="more_menu" className={`location_wrap d-flex justify-content-center align-items-center`} >
                       <div className="icon me-3 d-flex align-items-center justify-content-center">
@@ -325,7 +325,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                 </button>
 
                 {/* quotation_to_wrap */}
-                <div className={`quotation_to_wrap`} >
+                <div className={`quotation_to_wrap focus_custom_div`} tabIndex={0}>
                   <div className="common_dropdwon_btn_wrap">
                     <div id="more_menu" className={`location_wrap d-flex justify-content-center align-items-center`} >
                       <div className="icon me-3 d-flex align-items-center justify-content-center">
@@ -356,7 +356,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
           {/* container details */}
           {activeTab === "FCL" &&
             <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
-              <div className="common_dropdwon_btn_wrap">
+              <div className="common_dropdwon_btn_wrap focus_custom_div" tabIndex={0}>
                 <div id="more_menu" className={`prof_wrap d-flex justify-content-between`} onClick={() => { toggleDropdown(11); }} >
                   <div className="icon d-flex align-items-center justify-content-center">
                     <img src={cube_filled} alt="Avatar" />
@@ -382,7 +382,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                   <i className="mdi mdi-chevron-down" />
                 </div>
                 {isOpen && dropId === 11 ? (
-                  <div className="searchform container_combine_drop_wrap common_dropdown_wrap container_drop_wrap" ref={dropdownRef} >
+                  <div className="searchform container_combine_drop_wrap common_dropdown_wrap container_drop_wrap focus_custom_div" ref={dropdownRef} tabIndex={0}>
                     {/* select unit   */}
                     <label className="form-label">Container Type</label>
                     <div className="inner mb-2">
@@ -488,7 +488,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
           {/* Shipment Details */}
           {["LCL", "intl_Air", "Land", "dom_air"].includes(activeTab) &&
             <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
-              <div className="common_dropdwon_btn_wrap container_combine_drop_wrap shipment_details_wrap">
+              <div className="common_dropdwon_btn_wrap container_combine_drop_wrap shipment_details_wrap focus_custom_div" tabIndex={0}>
                 <div id="more_menu" className={`prof_wrap d-flex`} onClick={() => { toggleDropdown(11); }} >
                   <div className="icon d-flex align-items-center justify-content-center">
                     <img src={cube_filled} alt="Avatar" />
@@ -702,12 +702,13 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                     minDate: "today"
                   }}
                   onChange={handleSingleDateChange}
+                  tabIndex={0}
                 />
               </div>
             </div>
           </div>
           <div className={`col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2 ocean_cargo_date ${mainactiveTab === "ocean_freight" ? "active" : ""}`}>
-            <div className="prof_wrap calendar_field_wrap d-flex">
+            <div className="prof_wrap calendar_field_wrap d-flex focus_custom_div">
               <div className="icon d-flex align-items-center justify-content-center">
                 <img src={calendar_filled} alt="Avatar" />
               </div>
@@ -723,6 +724,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                     minDate: "today"
                   }}
                   onChange={handleDateChnage}
+                  tabIndex={0}
                 />
               </div>
             </div>
@@ -731,7 +733,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
           {/* Customer Name */}
           {mainactiveTab === "ocean_freight" && (
             <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
-              <div className="common_dropdwon_btn_wrap bottom_drop_field incoterm_field_wrap">
+              <div className="common_dropdwon_btn_wrap bottom_drop_field incoterm_field_wrap focus_custom_div focus_custom_div" tabIndex={0}>
                 <div
                   id="more_menu"
                   className={`prof_wrap d-flex justify-content-between ${isOpen && dropId === 6 ? "openmenu" : ""}`}
@@ -751,7 +753,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                       options={customerName?.length !== 0 ? customerName : []}
                       placeholder="Select Customer"
                       classNamePrefix="select2-selection form-select"
-                      menuPlacement="auto"
+                      menuPlacement="auto"                      
                     />
                   </div>
                   <i className="mdi mdi-chevron-down" />
@@ -765,7 +767,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
             <>
               {mainactiveTab === "air_freight" && (
                 <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
-                  <div className="common_dropdwon_btn_wrap bottom_drop_field incoterm_field_wrap">
+                  <div className="common_dropdwon_btn_wrap bottom_drop_field incoterm_field_wrap focus_custom_div" tabIndex={0}>
                     <div
                       id="more_menu"
                       className={`prof_wrap d-flex justify-content-between ${isOpen && dropId === 6 ? "openmenu" : ""}`}
@@ -785,7 +787,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                           options={customerName?.length !== 0 ? customerName : []}
                           placeholder="Select Customer"
                           classNamePrefix="select2-selection form-select"
-                          menuPlacement="auto"
+                          menuPlacement="auto"                          
                         />
                       </div>
                       <i className="mdi mdi-chevron-down" />
@@ -796,7 +798,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
 
               {/* cargo type */}
               <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
-                <div className="common_dropdwon_btn_wrap bottom_drop_field">
+                <div className="common_dropdwon_btn_wrap bottom_drop_field focus_custom_div" tabIndex={0}>
                   <div id='more_menu' className={`prof_wrap d-flex ${isOpen && dropId === 7 ? 'openmenu' : ''}`} onClick={() => { toggleDropdown(7) }} >
                     <div className="icon d-flex align-items-center justify-content-center">
                       <img src={cube_filled} alt="Avatar" />
@@ -843,7 +845,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
               {/* Incoterm */}
               {mainactiveTab === "ocean_freight" && (
                 <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
-                  <div className="common_dropdwon_btn_wrap bottom_drop_field incoterm_field_wrap">
+                  <div className="common_dropdwon_btn_wrap bottom_drop_field incoterm_field_wrap focus_custom_div" tabIndex={0}>
                     <div
                       id="more_menu"
                       className={`prof_wrap d-flex justify-content-between ${isOpen && dropId === 6 ? "openmenu" : ""}`}
@@ -883,7 +885,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
               {/* Flight Mode */}
               {activeTab === 'dom_air' && (
                 <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
-                  <div className="common_dropdwon_btn_wrap bottom_drop_field incoterm_field_wrap">
+                  <div className="common_dropdwon_btn_wrap bottom_drop_field incoterm_field_wrap focus_custom_div" tabIndex={0}>
                     <div
                       id="more_menu"
                       className={`prof_wrap d-flex justify-content-between ${isOpen && dropId === 6 ? "openmenu" : ""}`}
@@ -914,7 +916,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
 
               {/* Cargo Value */}
               <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
-                <div className="prof_wrap number_field_wrap d-flex ">
+                <div className="prof_wrap number_field_wrap d-flex focus_custom_div" tabIndex={0}>
                   <div className="icon d-flex align-items-center justify-content-center">
                     <img src={cube_filled} alt="Avatar" />
                   </div>

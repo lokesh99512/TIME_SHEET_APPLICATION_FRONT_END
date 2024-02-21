@@ -77,13 +77,11 @@ export default function PreviewCommonTable({ data, newData }) {
                                 <th>Charge Basis</th>
                                 <th>Curreny</th>
                                 <th>Quantity</th>
-                                <th>Tax</th>
+                                {/* <th>Tax</th> */}
                                 <th>Total Sale Cost</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {console.log(data, "data")}
-
                             {data?.tariffDetails?.map((inner, index) => {
                                 if (inner?.selected) {
                                     return (
@@ -98,7 +96,7 @@ export default function PreviewCommonTable({ data, newData }) {
                                                     <td>{sub?.uomCode?.split('_').join(" ") || '-'}</td>
                                                     <td>{sub?.currencyCode || 'INR'}</td>
                                                     <td>{sub?.unit || 0}</td>
-                                                    <td>{sub?.taxDetail?.taxPercentage || 0}</td>
+                                                    {/* <td>{sub?.taxDetail?.taxPercentage || 0}</td> */}
                                                     <td>{sub?.total_sale_cost || (Number(sub?.amount || 0) + Number(sub?.taxDetail?.value || 0))}</td>
                                                 </tr>
                                             ))}
@@ -109,7 +107,7 @@ export default function PreviewCommonTable({ data, newData }) {
                                                     <td>{newSub?.uomCode?.label || '-'}</td>
                                                     <td>{newSub?.currencyCode || 'INR'}</td>
                                                     <td>{newSub?.unit || 0}</td>
-                                                    <td>{newSub?.taxDetail?.taxPercentage || 0}</td>
+                                                    {/* <td>{newSub?.taxDetail?.taxPercentage || 0}</td> */}
                                                     <td>{newSub?.total_sale_cost || 0}</td>
                                                 </tr>
                                             ))}
@@ -121,11 +119,12 @@ export default function PreviewCommonTable({ data, newData }) {
                             })}
                         </tbody>
                         <tfoot>
-                            <tr>
+                            {/* <tr>
                                 <td colSpan={6}><p>Sub Total: <span>₹{subtotalCount()}</span></p></td>
-                            </tr>
+                            </tr> */}
                             <tr>
-                                <td colSpan={6}><p>Total: <span className='text-primary'><b>₹{totalCount(subtotalCount())}</b></span></p></td>
+                                <td colSpan={6}><p>Total: <span className='text-primary'><b>₹{subtotalCount()}</b></span></p></td>
+                                {/* <td colSpan={6}><p>Total: <span className='text-primary'><b>₹{totalCount(subtotalCount())}</b></span></p></td> */}
                             </tr>
                         </tfoot>
                     </table>

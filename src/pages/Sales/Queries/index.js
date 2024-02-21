@@ -103,15 +103,15 @@ export default function QueriesComp() {
                 return <QueriesColVal cellProps={cellProps} />
             }
         },
-        {
-            Header: 'Customer Contact No',
-            accessor: 'customerContactNo',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <QueriesColVal cellProps={cellProps} />
-            }
-        },
+        // {
+        //     Header: 'Customer Contact No',
+        //     accessor: 'customerContactNo',
+        //     filterable: true,
+        //     disableFilters: true,
+        //     Cell: (cellProps) => {
+        //         return <QueriesColVal cellProps={cellProps} />
+        //     }
+        // },
         {
             Header: 'Origin',
             accessor: 'origin',

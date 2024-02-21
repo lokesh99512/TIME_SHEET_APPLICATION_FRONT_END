@@ -124,12 +124,12 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                     readOnly
                                 />
                             </div>
-                            <div className="search_result_card">
+                            <div className={`search_result_card ${quote_Selected.some(obj => obj.quote_id === item.quote_id) ? 'card_active' : ''}`}>
                                 <div className="search_result_card_header d-flex align-items-center">
                                     <div className="card_img">
                                         <span className='d-flex align-items-center justify-content-center img mx-auto'>
-                                            {/* <img src={item?.carrierLogo ? item?.carrierLogo : cube_filled} alt="Logo" /> */}
-                                            <img src={item?.carrierName?.toLowerCase() === 'oocl' ? oocl_logo : item?.carrierName?.toLowerCase() === 'zim' ? zim_logo : cube_filled} alt="Logo" />
+                                            <img src={item?.carrierLogo ? item?.carrierLogo : cube_filled} alt="Logo" onError={e => {e.target.src = item?.carrierName?.toLowerCase() === 'oocl' ? oocl_logo : item?.carrierName?.toLowerCase() === 'zim' ? zim_logo : cube_filled}} />
+                                            {/* <img src={item?.carrierName?.toLowerCase() === 'oocl' ? oocl_logo : item?.carrierName?.toLowerCase() === 'zim' ? zim_logo : cube_filled} alt="Logo" /> */}
                                         </span>
                                         <span className="title d-block text-center mt-2">{item?.carrierName || '-'}</span>
                                     </div>
