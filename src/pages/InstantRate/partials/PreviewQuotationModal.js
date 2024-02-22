@@ -19,7 +19,13 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
     const fasterData = quoteData?.filter(obj => obj.quote_type === 'faster');
     const {searchForm, $instantActiveTab} = useSelector((state) => state?.instantRate);
     const {tenant_info} = useSelector((state) => state?.settings);
+    const { customer_data } = useSelector((state) => state?.customer);
     const dispatch = useDispatch();
+    const [customerInfo, setCustomerInfo] = useState();
+    useEffect(() => {
+        let data = customer_data && customer_data?.content?.find(obj => obj.id === searchForm?.customerName?.value);
+        setCustomerInfo(data);
+    },[customer_data]);
     const confirmHandler = () => {
         // const mergedArray = [...quoteData];
         // let newArry = [...mainChargeObj];
@@ -91,26 +97,26 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
                                     <div className="row">
                                         <div className="col-lg-4">
                                             <div className="details">
-                                                <span>Company Name</span>
-                                                <p>{tenant_info?.name || '-'}</p>
+                                                {/* <span>Company Name</span> */}
+                                                <p>{customerInfo?.name || '-'}</p>
                                             </div>
                                         </div>
-                                        <div className="col-lg-4">
+                                        {/* <div className="col-lg-4">
                                             <div className="details">
                                                 <span>Primary Contact</span>
-                                                <p>{tenant_info?.contactName || '-'}</p>
+                                                <p>{customerInfo?.contactName || '-'}</p>
                                             </div>
                                         </div>
                                         <div className="col-lg-4">
                                             <div className="details">
                                                 <span>Email Address</span>
-                                                <p>{tenant_info?.email || '-'}</p>
+                                                <p>{customerInfo?.contactEmail || '-'}</p>
                                             </div>
-                                        </div>
+                                        </div> */}
                                         <div className="col-lg-6">
-                                            <div className="details mt-3">
-                                                <span>Address</span>
-                                                <p>{tenant_info?.address || '-'}</p>
+                                            <div className="details">
+                                                {/* <span>Address</span> */}
+                                                <p>Address: {customerInfo?.address || '-'}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -190,7 +196,7 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
                         </div>
 
                         <PreviewCommonTable  />
-                        {quoteData?.length !== 0 ? quoteData?.map((data) => (<PreviewCommonTable data={data} key={data.quote_id} newData={mainChargeObj.find(obj => obj.id === data.quote_id) || []} />)) : null}
+                        {quoteData?.length !== 0 ? quoteData?.map((data) => (<PreviewCommonTable data={data} key={data.quote_id} newData={mainChargeObj.find(obj => obj.id === data.quote_id) || []} tab={$instantActiveTab} />)) : null}
                         {/* {preferData?.length !== 0 ? preferData?.map((data) => (<PreviewCommonTable data={data} key={data.id} newData={mainChargeObj.find(obj => obj.id === data.id)} />)) : null}
                         <span style={{pageBreakAfter: 'always'}}></span>
                         {cheaperData?.length !== 0 ? cheaperData?.map((data) => (<PreviewCommonTable data={data} key={data.id} newData={mainChargeObj.find(obj => obj.id === data.id)} />)) : null}

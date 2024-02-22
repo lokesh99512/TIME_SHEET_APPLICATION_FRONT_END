@@ -1,7 +1,8 @@
 import React from 'react'
 import { convertToINR } from '../../../components/Common/CommonLogic';
+import { cube_filled, oocl_logo, zim_logo } from '../../../assets/images';
 
-export default function PreviewCommonTable({ data, newData }) {
+export default function PreviewCommonTable({ data, newData, tab }) {
     const subtotalCount = () => {
         let buyValue = (data?.tariffDetails?.reduce((outeracc, outerCurrent) => {
             let sum = 0;
@@ -68,6 +69,12 @@ export default function PreviewCommonTable({ data, newData }) {
         <>
             {data !== undefined &&
                 <div className="preview_table_wrap">
+                    {console.log(data,"data")}
+                    <div className='preview_carrier_data d-flex align-items-center'>
+                        {/* <img src={data?.carrierLogo ? data?.carrierLogo : cube_filled} alt="Logo" 
+                            onError={(e) => { e.target.src = data?.carrierName?.toLowerCase() === 'oocl' ? oocl_logo : data?.carrierName?.toLowerCase() === 'zim' ? zim_logo : cube_filled }} /> */}
+                        <p>carrier: <b>{data?.carrierName}</b></p>
+                    </div>
                     <table>
                         <caption><p className='d-flex justify-content-between align-items-center'>Freight Charges </p></caption>
                         {/* <caption><p className='d-flex justify-content-between align-items-center'>Freight Charges <span className={`tag preffered ${data.quote_type.toLowerCase() === 'preffered' ? 'preffered' : data.quote_type.toLowerCase() === 'cheaper' ? 'cheaper' : data.quote_type.toLowerCase() === 'faster' ? 'faster' : ''}`}>{data.quote_type}</span></p></caption> */}

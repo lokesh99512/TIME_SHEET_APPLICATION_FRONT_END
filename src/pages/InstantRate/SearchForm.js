@@ -10,6 +10,8 @@ import { isAnyValueEmpty, useOutsideClick } from "../../components/Common/Common
 import { GET_AIR_LOCATION_TYPE, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK } from "../../store/InstantRate/actionType";
 import { getAllIncoTerms, getInstantRateLocation } from "../../store/InstantRate/actions";
 import { getAllPartiesCustomerData } from "../../store/Parties/Customer/action";
+import { instantAirFormValidate, instantFromValidate } from "./partials/ValidationForm";
+import { ToastWrapper, showErrorToast } from "../../components/Common/CustomToast";
 const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
   let unitobj = {
     _standard1: 0,
@@ -48,13 +50,15 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
   const [classHazardous, setClassHazardous] = useState(0);
   const [unitValue, setUnitValue] = useState(unitobj);
   const [open, setOpen] = useState('1');
+  const [shipmentDetails, setShipmentDetails] = useState(shipmentObj);
+  const [formError, setFormError] = useState({});
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
 
   const { customer_data } = useSelector((state) => state?.customer)
   const { cargoType_data, container_data, UOM_weight_data, currency_data } = useSelector((state) => state?.globalReducer)
   const { searchForm, instantRateLocation, incoterm, airLocation } = useSelector((state) => state.instantRate);
-  const [shipmentDetails, setShipmentDetails] = useState(shipmentObj);
+
 
   useEffect(() => {
     if (activeTab === "FCL") {
@@ -64,6 +68,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
     if (["dom_air", "intl_Air"].includes(activeTab)) {
       dispatch({ type: GET_AIR_LOCATION_TYPE });
     }
+    setFormError({});
     dispatch(getAllPartiesCustomerData());
   }, [dispatch, activeTab]);
 
@@ -273,6 +278,23 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
     dispatch({ type: UPDATE_SEARCH_INSTANT_RATE_DATA, payload: { name: 'shipment_details', item: { ...shipmentDetails, array: rows } } });
   }
 
+  const searchHandler = () => {
+    let validateData = {};
+    if(activeTab === 'FCL') {
+      validateData = instantFromValidate(searchForm);
+      setFormError(validateData?.error || {});
+    } else {
+      validateData = instantAirFormValidate(searchForm);
+      setFormError(validateData?.error || {});
+    }
+    console.log(validateData,"test"); 
+    if(validateData?.isValid){
+      searchQuoteHandler();
+    } else {
+      showErrorToast("Please fill all required fields.");
+    }
+  }
+
   // ------------ custom dropdown -------------------
   const toggleDropdown = (id) => {
     setIsOpen(!isOpen);
@@ -293,7 +315,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
           <div className="col-12 col-md-12 col-lg-12 col-xl-8 col-xxl-6 mt-2">
             <div className="d-flex flex-column">
               <div className="d-flex position-relative w-100 quotation_select_port_wrap">
-                <div className={`quotation_from_wrap focus_custom_div`} tabIndex={0}>
+                <div className={`quotation_from_wrap focus_custom_div ${formError?.location_from ? 'error' : ''}`} tabIndex={0}>
                   <div className={`common_dropdwon_btn_wrap`}>
                     <div id="more_menu" className={`location_wrap d-flex justify-content-center align-items-center`} >
                       <div className="icon me-3 d-flex align-items-center justify-content-center">
@@ -325,7 +347,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                 </button>
 
                 {/* quotation_to_wrap */}
-                <div className={`quotation_to_wrap focus_custom_div`} tabIndex={0}>
+                <div className={`quotation_to_wrap focus_custom_div ${formError?.location_to ? 'error' : ''}`} tabIndex={0}>
                   <div className="common_dropdwon_btn_wrap">
                     <div id="more_menu" className={`location_wrap d-flex justify-content-center align-items-center`} >
                       <div className="icon me-3 d-flex align-items-center justify-content-center">
@@ -350,14 +372,16 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                   </div>
                 </div>
               </div>
+              {/* {(formError?.location_from && formError?.location_to) ? <p className="error_msg">{formError?.location_from}  {formError?.location_to ? '& ' + formError?.location_to : ''}</p>} */}
+              {/* {formError?.location_to && <p className="error_msg">{formError?.location_to}</p>} */}
             </div>
           </div>
 
           {/* container details */}
           {activeTab === "FCL" &&
             <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
-              <div className="common_dropdwon_btn_wrap focus_custom_div" tabIndex={0}>
-                <div id="more_menu" className={`prof_wrap d-flex justify-content-between`} onClick={() => { toggleDropdown(11); }} >
+              <div className={`common_dropdwon_btn_wrap focus_custom_div`} tabIndex={0}>
+                <div id="more_menu" className={`prof_wrap d-flex justify-content-between ${formError?.containerArray || formError?.cargo_weight ? 'error' : ''}`} onClick={() => { toggleDropdown(11); }} >
                   <div className="icon d-flex align-items-center justify-content-center">
                     <img src={cube_filled} alt="Avatar" />
                   </div>
@@ -382,12 +406,12 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                   <i className="mdi mdi-chevron-down" />
                 </div>
                 {isOpen && dropId === 11 ? (
-                  <div className="searchform container_combine_drop_wrap common_dropdown_wrap container_drop_wrap focus_custom_div" ref={dropdownRef} tabIndex={0}>
+                  <div className={`searchform container_combine_drop_wrap common_dropdown_wrap container_drop_wrap focus_custom_div`} ref={dropdownRef} tabIndex={0}>
                     {/* select unit   */}
                     <label className="form-label">Container Type</label>
                     <div className="inner mb-2">
                       <UncontrolledDropdown>
-                        <DropdownToggle className="shadow-none prof_wrap1 w-100 d-flex justify-space-between" tag="div">
+                        <DropdownToggle className={`shadow-none prof_wrap1 w-100 d-flex justify-space-between ${formError?.containerArray ? 'error' : ''}`} tag="div">
                           <div className="con">
                             <span className={`value ${containerData?.containerArray?.length !== 0 ? "value_focus" : ""}`} >
                               {containerData?.containerArray?.length !== 0
@@ -447,10 +471,16 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                     {/* select weight  */}
                     <div className="inner_field_wrap">
                       <label className="form-label">Weight</label>
-                      <div className="prof_wrap number_field_wrap d-flex mb-2">
+                      <div className={`prof_wrap number_field_wrap d-flex mb-2 ${formError?.cargo_weight ? 'error' : ''}`}>
                         <div className="con d-flex align-items-center w-100">
                           <div className="left_field">
-                            <input type="number" value={containerData?.cargo_weight?.value || ''} name="cargo_weight" id="cargo_weight" placeholder='Enter weight' onChange={(e) => { setContainerData({ ...containerData, cargo_weight: { ...containerData?.cargo_weight, value: e.target.value } }) }} />
+                            <input 
+                              type="number" 
+                              value={containerData?.cargo_weight?.value || ''} 
+                              name="cargo_weight" id="cargo_weight" 
+                              placeholder='Enter weight' 
+                              onChange={(e) => { setContainerData({ ...containerData, cargo_weight: { ...containerData?.cargo_weight, value: e.target.value } }) }} 
+                            />
                           </div>
                           <div className="common_dropdwon_btn_wrap bottom_drop_field">
                             <div
@@ -482,6 +512,8 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                   </div>
                 ) : null}
               </div>
+              {/* {((formError?.containerArray && formError?.cargo_weight) || formError?.containerArray) && <p className="error_msg">{formError?.containerArray}</p>}
+              {(!formError?.containerArray && formError?.cargo_weight) && <p className="error_msg">{formError?.cargo_weight}</p>} */}
             </div>
           }
 
@@ -489,7 +521,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
           {["LCL", "intl_Air", "Land", "dom_air"].includes(activeTab) &&
             <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
               <div className="common_dropdwon_btn_wrap container_combine_drop_wrap shipment_details_wrap focus_custom_div" tabIndex={0}>
-                <div id="more_menu" className={`prof_wrap d-flex`} onClick={() => { toggleDropdown(11); }} >
+                <div id="more_menu" className={`prof_wrap d-flex ${formError?.shipment_details || formError?.weight ? 'error' : ''}`} onClick={() => { toggleDropdown(11); }} >
                   <div className="icon d-flex align-items-center justify-content-center">
                     <img src={cube_filled} alt="Avatar" />
                   </div>
@@ -682,11 +714,13 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                   </div>
                 ) : null}
               </div>
+              {/* {((formError?.shipment_details && formError?.weight) || formError?.shipment_details) && <p className="error_msg">{formError?.shipment_details}</p>}
+              {(!formError?.shipment_details && formError?.weight) && <p className="error_msg">{formError?.weight}</p>} */}
             </div>}
 
           {/* Cargo Ready Date */}
           <div className={`col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2 air_cargo_date ${mainactiveTab === "air_freight" ? "active" : ""}`}>
-            <div className="prof_wrap calendar_field_wrap d-flex">
+            <div className={`prof_wrap calendar_field_wrap d-flex ${formError?.cargo_date ? "error" : ""}`}>
               <div className="icon d-flex align-items-center justify-content-center">
                 <img src={calendar_filled} alt="Avatar" />
               </div>
@@ -706,9 +740,10 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                 />
               </div>
             </div>
+            {/* {formError?.cargo_date && <p className="error_msg">{formError?.cargo_date}</p>} */}
           </div>
           <div className={`col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2 ocean_cargo_date ${mainactiveTab === "ocean_freight" ? "active" : ""}`}>
-            <div className="prof_wrap calendar_field_wrap d-flex focus_custom_div">
+            <div className={`prof_wrap calendar_field_wrap d-flex focus_custom_div ${formError?.cargo_date ? "error" : ""}`}>
               <div className="icon d-flex align-items-center justify-content-center">
                 <img src={calendar_filled} alt="Avatar" />
               </div>
@@ -728,15 +763,16 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                 />
               </div>
             </div>
+            {/* {formError?.cargo_date && <p className="error_msg">{formError?.cargo_date}</p>} */}
           </div>
 
           {/* Customer Name */}
           {mainactiveTab === "ocean_freight" && (
             <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
-              <div className="common_dropdwon_btn_wrap bottom_drop_field incoterm_field_wrap focus_custom_div focus_custom_div" tabIndex={0}>
+              <div className={`common_dropdwon_btn_wrap bottom_drop_field incoterm_field_wrap focus_custom_div`} tabIndex={0}>
                 <div
                   id="more_menu"
-                  className={`prof_wrap d-flex justify-content-between ${isOpen && dropId === 6 ? "openmenu" : ""}`}
+                  className={`prof_wrap d-flex justify-content-between ${isOpen && dropId === 6 ? "openmenu" : ""}  ${formError?.customerName ? "error" : ""}`}
                   onClick={() => { toggleDropdown(6); }}
                 >
                   <div className="icon d-flex align-items-center justify-content-center">
@@ -759,6 +795,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                   <i className="mdi mdi-chevron-down" />
                 </div>
               </div>
+              {/* {formError?.customerName && <p className="error_msg">{formError?.customerName}</p>} */}
             </div>
           )}
 
@@ -990,11 +1027,14 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
 
           <div className="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mt-2 align-self-center">
             <button className="btn p-0 me-3 border-0" onClick={() => { setAdvanceSearch(!advanceSearch) }}><img src={filter_img} alt="filter" width={'20px'} height={'20px'} /></button>
-            <button type="button" className='btn btn-primary mt-0' onClick={() => { searchQuoteHandler(); }}
-              disabled={mainactiveTab === "air_freight" ? isAnyValueEmpty(searchForm, ['customerName']) : !(!isAnyValueEmpty(searchForm))}>Search</button>
+            <button type="button" className='btn btn-primary mt-0' onClick={() => { searchHandler(); }}
+              >Search</button>
+            {/* <button type="button" className='btn btn-primary mt-0' onClick={() => { searchHandler(); }}
+              disabled={mainactiveTab === "air_freight" ? isAnyValueEmpty(searchForm, ['customerName']) : !(!isAnyValueEmpty(searchForm))}>Search</button> */}
           </div>
         </div>
       </div>
+      <ToastWrapper />
     </>
   );
 };

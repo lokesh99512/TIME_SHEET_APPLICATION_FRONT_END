@@ -76,6 +76,7 @@ export function formatBytes(bytes, decimals = 2) {
 
 /** * Checks if any value is empty */
 export const isAnyValueEmpty = (obj, removeKey) => {
+    console.log(obj,"obj");
     let updatedObj = { ...obj };
     if(removeKey !== undefined && removeKey?.length > 0){
         for (const key of removeKey) {

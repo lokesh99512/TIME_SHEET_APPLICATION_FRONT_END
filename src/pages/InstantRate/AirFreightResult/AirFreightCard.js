@@ -138,7 +138,7 @@ const AirFreightCard = ({ data, QuoteModalHandler, mainTab, bookModalHandler }) 
                                     readOnly
                                 />
                             </div>
-                            <div className="search_result_card air_freight_result_card">
+                            <div className={`search_result_card air_freight_result_card ${quote_Selected.some(obj => obj.quote_id === item.quote_id) ? 'card_active' : ''}`}>
                                 <div className="search_card_top d-flex align-items-center justify-content-between">
                                     <div className="left_details d-flex align-items-center">
                                         <div className="icon"><img src={item?.carrierLogo || indigo_img} alt="indigo_img" /></div>

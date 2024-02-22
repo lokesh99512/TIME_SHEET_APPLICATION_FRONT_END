@@ -56,6 +56,9 @@
             .con, i {
                 pointer-events: none;
             }
+            &.error {
+                border-color: red;
+            }
         }
         .quantity_drop_wrap {
             padding: 0;

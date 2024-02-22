@@ -340,7 +340,6 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                 <img src={$instantActiveTab?.sub === "dom_air" ? item?.carrierLogo : item?.carrierName?.toLowerCase() === 'oocl' ? oocl_logo : item?.carrierName?.toLowerCase() === 'zim' ? zim_logo : cube_filled} alt="Logo" />
                                             </span>
                                             <div className="con d-flex align-items-center">
-                                                {console.log(quoteData,"quoteData")}
                                                 <span className="title d-block text-center me-2">
                                                     {$instantActiveTab?.sub === "dom_air" ? item?.flightname || '-' : item.carrierName || '-'}
                                                 </span>
