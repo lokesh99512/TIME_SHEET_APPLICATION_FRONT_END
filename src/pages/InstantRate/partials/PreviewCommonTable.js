@@ -2,6 +2,143 @@ import React from 'react'
 import { convertToINR } from '../../../components/Common/CommonLogic';
 import { cube_filled, oocl_logo, zim_logo } from '../../../assets/images';
 
+export const CurrencyWiseTotal = ({ data, newData }) => {
+    // const stitchesData = getDesignStitches$?.[view][index]?.stitches;
+    // const palette = stitchesData?.Palette;
+    // const uniqueColors = [...new Map(stitchesData?.Stitches?.map(item => [item?.RelColor,
+    //     [palette[item?.RelColor]]?.map((palette) => (
+    //         {
+    //             ...palette,
+    //             RelColor: item?.RelColor,
+    //         }
+    //         ))
+    //     ])).values()].flat();
+
+
+    let mainArray = []
+    let totalSum = data?.tariffDetails?.reduce((accOuter, currentOuter) => {
+        if (currentOuter?.selected) {
+            let newArray = [];
+            newArray = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+                let currentCurrency = currentInner?.currencyCode;
+                let existingObj = accInner?.find((item) => item.currency === currentCurrency);
+                if (existingObj) {
+                    existingObj.amount = Number(existingObj.amount) + Number(currentInner?.total_sale_cost || currentInner?.amount)
+                } else {
+                    let NewObj = { currency: currentCurrency, amount: (currentInner?.total_sale_cost || currentInner?.amount) }
+                    accInner.push(NewObj);
+                }
+                return accInner
+            }, [])
+            let mainObj = { header: currentOuter?.header, data: newArray };
+            mainArray.push(mainObj)
+        }
+    }, []);
+    console.log(mainArray, "mainArray");
+    let chargesWiseArray = mainArray?.reduce((acc, current) => {
+        current
+        if (current?.header === "ORIGIN_INLAND_CHARGES" || current?.header === "ORIGIN_LOCAL_PORT_CHARGES" || current?.header === "FREIGHT_CHARGES") {
+            let exObj = acc?.find(obj => obj.header === "origin");
+            if (exObj) {
+                exObj.data = exObj?.data.concat(current?.data);
+            } else {
+                let newObj = { header: "origin", data: current?.data }
+                acc.push(newObj);
+            }
+        } else if (current?.header === "DESTINATION_INLAND_CHARGES" || current?.header === "DESTINATION_LOCAL_PORT_CHARGES") {
+            let exObj = acc?.find(obj => obj.header === "destination");
+            if (exObj) {
+                exObj.data = exObj?.data.concat(current?.data);
+            } else {
+                let newObj = { header: "destination", data: current?.data }
+                acc.push(newObj);
+            }
+        }
+        return acc
+    }, [])
+    // console.log(chargesWiseArray, "chargesWiseArray");
+    let finalTotalArray = chargesWiseArray?.map((item) => ({
+        ...item,
+        data: item?.data?.reduce((acc, current) => {
+            let exObj = acc?.find(obj => obj.currency === current?.currency);
+            if (exObj) {
+                exObj.amount = Number(exObj.amount) + Number(current?.amount);
+            } else {
+                let newObj = { currency: current?.currency, amount: current?.amount }
+                acc.push(newObj);
+            }
+            return acc
+        }, [])
+    }))
+    // console.log(finalTotalArray, "finalTotalArray");
+    // let finalTotalArray = []
+    // let uniqArray = mainArray?.flat();
+    // let newMainArray = []
+    // let newTotalSum = newData?.tariffDetails?.reduce((accOuter, currentOuter) => {
+    //     let newArray = [];
+    //     newArray = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {                    
+    //         let currentCurrency = currentInner?.currencyCode;
+    //         let existingObj = accInner?.find((item) => item.currency === currentCurrency);
+    //         if(existingObj){
+    //             existingObj.amount = Number(existingObj.amount) + Number(currentInner?.total_sale_cost)
+    //         } else {
+    //             let NewObj = { currency: currentCurrency, amount: currentInner?.total_sale_cost }
+    //             accInner.push(NewObj);
+    //         } 
+    //         return accInner
+    //     }, [])
+    //     newMainArray.push(newArray)
+    // }, [])
+    // let newUniqArray = newMainArray?.flat();
+
+    // let mergeArray = [...uniqArray, ...newUniqArray]
+    // console.log(mergeArray,"newData Array"); 
+
+    // let finalTotalArray = mergeArray?.reduce((accOuter, currentOuter) => {
+    //     let exObj = accOuter?.find((item) => item.currency === currentOuter?.currency);
+    //     if(exObj){
+    //         exObj.amount = Number(exObj.amount) + Number(currentOuter?.amount)
+    //     } else {
+    //         let NewObj = { currency: currentOuter?.currency, amount: currentOuter?.amount }
+    //         accOuter.push(NewObj)
+    //     }
+    //     return accOuter
+    // },[])
+
+    const filteredArray = finalTotalArray?.reduce((result, item) => {
+        item.data.forEach((dataItem) => {
+            const existingCurrency = result?.find((resultItem) => resultItem.currency === dataItem.currency);
+    
+            if (existingCurrency) {
+                existingCurrency[item.header] = dataItem.amount;
+            } else {
+                result.push({
+                    currency: dataItem.currency,
+                    [item.header]: dataItem.amount,
+                });
+            }
+        });
+    
+        return result;
+    }, []);
+    
+    return (
+        <>
+            <tr>
+                <th>Total</th>
+                <th>Origin</th>
+                <th>Destination</th>
+            </tr>
+            {filteredArray?.map(item => (
+                <tr key={item?.currency}>
+                    <td>Total {item?.currency}:</td>
+                    <td>{item?.origin || 0}</td>
+                    <td>{item?.destination || 0}</td>
+                </tr>
+            ))}
+        </>
+    );
+}
 export default function PreviewCommonTable({ data, newData, tab }) {
     const subtotalCount = () => {
         let buyValue = (data?.tariffDetails?.reduce((outeracc, outerCurrent) => {
@@ -69,7 +206,6 @@ export default function PreviewCommonTable({ data, newData, tab }) {
         <>
             {data !== undefined &&
                 <div className="preview_table_wrap">
-                    {console.log(data,"data")}
                     <div className='preview_carrier_data d-flex align-items-center'>
                         {/* <img src={data?.carrierLogo ? data?.carrierLogo : cube_filled} alt="Logo" 
                             onError={(e) => { e.target.src = data?.carrierName?.toLowerCase() === 'oocl' ? oocl_logo : data?.carrierName?.toLowerCase() === 'zim' ? zim_logo : cube_filled }} /> */}
@@ -104,7 +240,8 @@ export default function PreviewCommonTable({ data, newData, tab }) {
                                                     <td>{sub?.currencyCode || 'INR'}</td>
                                                     <td>{sub?.unit || 0}</td>
                                                     {/* <td>{sub?.taxDetail?.taxPercentage || 0}</td> */}
-                                                    <td>{sub?.total_sale_cost || (Number(sub?.amount || 0) + Number(sub?.taxDetail?.value || 0))}</td>
+                                                    <td>{sub?.total_sale_cost || Number(sub?.amount || 0)}</td>
+                                                    {/* <td>{sub?.total_sale_cost || (Number(sub?.amount || 0) + Number(sub?.taxDetail?.value || 0))}</td> */}
                                                 </tr>
                                             ))}
 
@@ -129,10 +266,9 @@ export default function PreviewCommonTable({ data, newData, tab }) {
                             {/* <tr>
                                 <td colSpan={6}><p>Sub Total: <span>₹{subtotalCount()}</span></p></td>
                             </tr> */}
-                            <tr>
-                                <td colSpan={6}><p>Total: <span className='text-primary'><b>₹{subtotalCount()}</b></span></p></td>
-                                {/* <td colSpan={6}><p>Total: <span className='text-primary'><b>₹{totalCount(subtotalCount())}</b></span></p></td> */}
-                            </tr>
+                            <CurrencyWiseTotal data={data} newData={newData} />
+                            {/* <td colSpan={6}><p>Total: <span className='text-primary'><b>₹{subtotalCount()}</b></span></p></td> */}
+                            {/* <td colSpan={6}><p>Total: <span className='text-primary'><b>₹{totalCount(subtotalCount())}</b></span></p></td> */}
                         </tfoot>
                     </table>
                 </div>

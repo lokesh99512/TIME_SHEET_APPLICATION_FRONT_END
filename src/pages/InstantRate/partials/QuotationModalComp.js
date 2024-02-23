@@ -88,8 +88,6 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
             // sale_cost = Number(data.amount) + marginValue + (data?.taxDetail && data?.taxDetail?.value || 0); for tax 
         }
 
-        console.log(sale_cost,"sale_cost");
-
         existingHandleChange(e.target.value, name, subindex, charge_name, objId, index, sale_cost, marginValue);
     }
 
@@ -508,7 +506,6 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                                     <input type="text" name="unitPerPrice" id="unitPerPrice" value={newdata?.unitPerPrice || ''} onChange={(e) => handleChange(e.target.value, 'unitPerPrice', i, `${data?.header}`, item.quote_id)} placeholder='Enter cost' />
                                                                                 </div>
                                                                             </div>
-                                                                            {console.log(optionMarkupType.find(obj => obj.value === newdata?.markup_type), "optionMarkupType")}
                                                                             <div className="col-2">
                                                                                 <div className="field_wrap">
                                                                                     <Select
