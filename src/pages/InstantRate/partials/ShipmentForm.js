@@ -4,15 +4,15 @@ import { useSelector } from 'react-redux';
 import Select from "react-select";
 import { Card, CardBody, Input } from 'reactstrap';
 
-const ShipmentForm = () => {
+const ShipmentForm = ({ data }) => {
     const { searchForm, $instantActiveTab } = useSelector((state) => state?.instantRate);
     const shipmentDetailsFormik = useFormik({
         enableReinitialize: true,
         initialValues: {
             origin_city: searchForm?.location_from?.locationType === "CITY" && searchForm?.location_from?.label || '-',
             destination_city: searchForm?.location_to?.locationType === "CITY" && searchForm?.location_to?.label || '-',
-            origin_port: $instantActiveTab?.sub === 'dom_air' ? searchForm?.location_from?.label : searchForm?.location_from?.locationType === "PORT" && searchForm?.location_from?.label || '-',
-            destination_port: $instantActiveTab?.sub === 'dom_air' ? searchForm?.location_to?.label : searchForm?.location_to?.locationType === "PORT" && searchForm?.location_to?.label || '-',
+            origin_port: $instantActiveTab?.sub === 'dom_air' ? searchForm?.location_from?.label : searchForm?.location_from?.locationType === "PORT" ? searchForm?.location_from?.label : data?.[0]?.tariffDetails?.[0]?.to || '-',
+            destination_port: $instantActiveTab?.sub === 'dom_air' ? searchForm?.location_to?.label : searchForm?.location_to?.locationType === "PORT" ? searchForm?.location_to?.label : data?.[0]?.tariffDetails?.[data?.[0]?.tariffDetails?.length - 1 || 0]?.from || '-',
             cargo_type: searchForm?.cargo_type?.value || '-',
             commodity: "",
             cargo_value: searchForm?.cargo_value?.value || '-',

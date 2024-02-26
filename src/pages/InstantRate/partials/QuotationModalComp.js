@@ -162,8 +162,8 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
             }, 0);
             return accOuter + innerSum;
         }, 0) : 0;
-
-        return totalSum + newSubTotal + totalMarginSum + totalNewMarginSum;
+        let mainTotal = totalSum + newSubTotal + totalMarginSum + totalNewMarginSum;
+        return mainTotal.toFixed(2);
     }
 
     const totalTaxHandler = (quoteObject) => {
@@ -324,7 +324,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                             Shipment Details
                                         </AccordionHeader>
                                         <AccordionBody accordionId={`shipmentdetails`}>
-                                            <ShipmentForm />
+                                            <ShipmentForm data={quoteData} />
                                         </AccordionBody>
                                     </AccordionItem>
                                 </>

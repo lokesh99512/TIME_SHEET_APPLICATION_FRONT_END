@@ -28,6 +28,198 @@ const inquiryBreadcrumb = [
 ]
 
 // -------------------------------- table data -----------------------------------
+export const testData = {
+    "chargeId": 103,
+    "carrierId": 2,
+    "carrierName": "OOCL",
+    "carrierLogo": "https://demo-api.tarifftales.com/api/v1/misc/download-file/dHdpc3Rlci0zLmpwZWc=",
+    "originId": 2,
+    "originName": "PORT OF CHENNAI",
+    "destinationId": 5,
+    "destinationName": "PORT OF DHAKA",
+    "validFrom": "2024-02-01",
+    "validTo": "2024-02-29",
+    "oceanTransitTime": 49,
+    "alternateRoute": false,
+    "totalCost": 383850,
+    "tariffDetails": [
+        {
+            "header": "ORIGIN_INLAND_CHARGES",
+            "from": "CHENNAI",
+            "to": "PORT OF CHENNAI",
+            "order": 0,
+            "chargeId": 103,
+            "tariffBreakDowns": [
+                {
+                    "component": "TRAIN",
+                    "uomCode": "PER_CONTAINER",
+                    "uomDescription": "PER CONTAINER",
+                    "currencyCode": "INR",
+                    "unit": 4,
+                    "unitPerPrice": 38000,
+                    "amount": 152000,
+                    "originId": 2,
+                    "originName": "CHENNAI",
+                    "destinationId": 3,
+                    "destinationName": "PORT OF CHENNAI",
+                    "transitTime": 1,
+                    "containerDetail": "20GP"
+                },
+                {
+                    "component": "FSC",
+                    "componentDescription": "Fuel Surcharge",
+                    "uomCode": "PER_CONTAINER",
+                    "uomDescription": "PER CONTAINER",
+                    "currencyCode": "USD",
+                    "unit": 4,
+                    "unitPerPrice": 15100,
+                    "amount": 60400,
+                    "taxDetail": {
+                        "taxPercentage": 18,
+                        "value": 10872
+                    }
+                }
+            ],
+            "selected": true
+        },
+        {
+            "header": "ORIGIN_LOCAL_PORT_CHARGES",
+            "order": 1,
+            "portName": "PORT OF CHENNAI",
+            "chargeId": 103,
+            "tariffBreakDowns": [
+                {
+                    "component": "SEAL",
+                    "componentDescription": "SEAL FEE",
+                    "uomCode": "PER_CONTAINER",
+                    "uomDescription": "PER CONTAINER",
+                    "currencyCode": "USD",
+                    "unit": 4,
+                    "unitPerPrice": 50,
+                    "amount": 200,
+                    "portName": "PORT OF CHENNAI",
+                    "containerDetail": "20GP",
+                    "taxDetail": {
+                        "taxPercentage": 0,
+                        "value": 0
+                    }
+                },
+                {
+                    "component": "THC",
+                    "componentDescription": "TERMINAL HANDLING CHARGE",
+                    "uomCode": "PER_CONTAINER",
+                    "uomDescription": "PER CONTAINER",
+                    "currencyCode": "USD",
+                    "unit": 4,
+                    "unitPerPrice": 100,
+                    "amount": 400,
+                    "portName": "PORT OF CHENNAI",
+                    "containerDetail": "20GP",
+                    "taxDetail": {
+                        "taxPercentage": 0,
+                        "value": 0
+                    }
+                }
+            ],
+            "selected": true
+        },
+        {
+            "header": "FREIGHT_CHARGES",
+            "from": "PORT OF CHENNAI",
+            "to": "PORT OF DHAKA",
+            "order": 2,
+            "portName": "PORT OF CHENNAI",
+            "chargeId": 103,
+            "tariffBreakDowns": [
+                {
+                    "component": "Ocean Freight",
+                    "uomCode": "PER_CONTAINER",
+                    "uomDescription": "PER CONTAINER",
+                    "currencyCode": "USD",
+                    "unit": 4,
+                    "unitPerPrice": 1954,
+                    "amount": 7816,
+                    "originId": 3,
+                    "originName": "PORT OF CHENNAI",
+                    "destinationId": 7,
+                    "destinationName": "PORT OF DHAKA",
+                    "transitTime": 49,
+                    "containerDetail": "20GP",
+                    "taxDetail": {
+                        "value": 0
+                    }
+                }
+            ],
+            "selected": true
+        },
+        {
+            "header": "DESTINATION_LOCAL_PORT_CHARGES",
+            "order": 3,
+            "portName": "PORT OF DHAKA",
+            "chargeId": 103,
+            "tariffBreakDowns": [
+                {
+                    "component": "SEAL",
+                    "componentDescription": "SEAL FEE",
+                    "uomCode": "PER_BL",
+                    "uomDescription": "PER BL",
+                    "currencyCode": "USD",
+                    "unit": 4,
+                    "unitPerPrice": 120,
+                    "amount": 120,
+                    "portName": "PORT OF DHAKA",
+                    "containerDetail": "20GP",
+                    "taxDetail": {
+                        "taxPercentage": 0,
+                        "value": 0
+                    }
+                }
+            ],
+            "selected": true
+        },
+        {
+            "header": "DESTINATION_INLAND_CHARGES",
+            "from": "PORT OF DHAKA",
+            "to": "DHAKA",
+            "order": 4,
+            "chargeId": 103,
+            "tariffBreakDowns": [
+                {
+                    "component": "TRAIN",
+                    "uomCode": "PER_CONTAINER",
+                    "uomDescription": "PER CONTAINER",
+                    "currencyCode": "BDT",
+                    "unit": 4,
+                    "unitPerPrice": 38000,
+                    "amount": 152000,
+                    "originId": 7,
+                    "originName": "PORT OF DHAKA",
+                    "destinationId": 5,
+                    "destinationName": "DHAKA",
+                    "transitTime": 49,
+                    "containerDetail": "20GP"
+                },
+                {
+                    "component": "FSC",
+                    "componentDescription": "Fuel Surcharge",
+                    "uomCode": "PER_CONTAINER",
+                    "uomDescription": "PER CONTAINER",
+                    "currencyCode": "USD",
+                    "unit": 4,
+                    "unitPerPrice": 10,
+                    "amount": 40,
+                    "taxDetail": {
+                        "taxPercentage": 5,
+                        "value": 2
+                    }
+                }
+            ],
+            "selected": true
+        }
+    ],
+    "quote_id": "quote_5"
+}
+
 const quotationTableData = [
     {
         id: 'quote_1',
@@ -109,7 +301,7 @@ const quotationTableData = [
                 tax: '0',
                 total_sale_cost: '3756'
             },
-        ],    
+        ],
         port_discharge_charges: [
             {
                 charges_name: 'DOC',
@@ -129,8 +321,8 @@ const quotationTableData = [
                 tax: '0',
                 total_sale_cost: '500'
             },
-        ],    
-        delivery_quote_charge:[]
+        ],
+        delivery_quote_charge: []
     },
     {
         id: 'quote_2',
@@ -212,7 +404,7 @@ const quotationTableData = [
                 tax: '0',
                 total_sale_cost: '3756'
             },
-        ],    
+        ],
         port_discharge_charges: [
             {
                 charges_name: 'DOC',
@@ -232,8 +424,8 @@ const quotationTableData = [
                 tax: '0',
                 total_sale_cost: '500'
             },
-        ],    
-        delivery_quote_charge:[]
+        ],
+        delivery_quote_charge: []
     },
     {
         id: 'quote_3',
@@ -315,7 +507,7 @@ const quotationTableData = [
                 tax: '0',
                 total_sale_cost: '3756'
             },
-        ],    
+        ],
         port_discharge_charges: [
             {
                 charges_name: 'DOC',
@@ -335,8 +527,8 @@ const quotationTableData = [
                 tax: '0',
                 total_sale_cost: '500'
             },
-        ],    
-        delivery_quote_charge:[]
+        ],
+        delivery_quote_charge: []
     },
     {
         id: 'quote_4',
@@ -418,7 +610,7 @@ const quotationTableData = [
                 tax: '0',
                 total_sale_cost: '3756'
             },
-        ],    
+        ],
         port_discharge_charges: [
             {
                 charges_name: 'DOC',
@@ -438,8 +630,8 @@ const quotationTableData = [
                 tax: '0',
                 total_sale_cost: '500'
             },
-        ],    
-        delivery_quote_charge:[]
+        ],
+        delivery_quote_charge: []
     },
     {
         id: 'quote_5',
@@ -521,7 +713,7 @@ const quotationTableData = [
                 tax: '0',
                 total_sale_cost: '3756'
             },
-        ],    
+        ],
         port_discharge_charges: [
             {
                 charges_name: 'DOC',
@@ -541,8 +733,8 @@ const quotationTableData = [
                 tax: '0',
                 total_sale_cost: '500'
             },
-        ],    
-        delivery_quote_charge:[]
+        ],
+        delivery_quote_charge: []
     },
     {
         id: 'quote_6',
@@ -624,7 +816,7 @@ const quotationTableData = [
                 tax: '0',
                 total_sale_cost: '3756'
             },
-        ],    
+        ],
         port_discharge_charges: [
             {
                 charges_name: 'DOC',
@@ -644,8 +836,8 @@ const quotationTableData = [
                 tax: '0',
                 total_sale_cost: '500'
             },
-        ],    
-        delivery_quote_charge:[]
+        ],
+        delivery_quote_charge: []
     },
     {
         id: 'quote_7',
@@ -727,7 +919,7 @@ const quotationTableData = [
                 tax: '0',
                 total_sale_cost: '3756'
             },
-        ],    
+        ],
         port_discharge_charges: [
             {
                 charges_name: 'DOC',
@@ -747,8 +939,8 @@ const quotationTableData = [
                 tax: '0',
                 total_sale_cost: '500'
             },
-        ],    
-        delivery_quote_charge:[]
+        ],
+        delivery_quote_charge: []
     },
     {
         id: 'quote_8',
@@ -830,7 +1022,7 @@ const quotationTableData = [
                 tax: '0',
                 total_sale_cost: '3756'
             },
-        ],    
+        ],
         port_discharge_charges: [
             {
                 charges_name: 'DOC',
@@ -850,8 +1042,8 @@ const quotationTableData = [
                 tax: '0',
                 total_sale_cost: '500'
             },
-        ],    
-        delivery_quote_charge:[]
+        ],
+        delivery_quote_charge: []
     },
 ]
 
@@ -863,7 +1055,7 @@ export const airSearchData = {
             "flightname": "INDIGO",
             "flightno": "32W/6E-6779",
             "agentname": 'ABC',
-            "carrierLogo": indigo_img,                
+            "carrierLogo": indigo_img,
             "originDetails": {
                 "portname": "Chatrapati Shivaji",
                 "time": "21:45",
@@ -1078,7 +1270,7 @@ export const airSearchData = {
             "flightname": "Air Asia",
             "flightno": "32W/6E-6780",
             "agentname": 'ABC',
-            "carrierLogo": airasia_logo,                
+            "carrierLogo": airasia_logo,
             "originDetails": {
                 "portname": "Chatrapati Shivaji",
                 "time": "19:55",
@@ -1155,7 +1347,7 @@ export const airSearchData = {
             "flightname": "Vistara",
             "flightno": "UK 983",
             "agentname": 'ABC',
-            "carrierLogo": vistara_logo,                
+            "carrierLogo": vistara_logo,
             "originDetails": {
                 "portname": "Surat, India",
                 "time": "21:30",
@@ -1383,10 +1575,10 @@ const inquiryTableData = [
         container_type: '',
         tot_container: '',
         weight: '20 GP',
-        cargo_value: '', 
+        cargo_value: '',
         incoterms: 'CPT',
         sales_emp: '',
-        status: 'Actioned',        
+        status: 'Actioned',
         sales_person: 'Darshita',
     },
     {
@@ -1402,11 +1594,11 @@ const inquiryTableData = [
         container_type: '',
         tot_container: '',
         weight: '20 GP',
-        cargo_value: '', 
+        cargo_value: '',
         incoterms: 'CPT',
         sales_emp: '',
-        status: 'Actioned',        
-        sales_person: 'Darshita',        
+        status: 'Actioned',
+        sales_person: 'Darshita',
     },
     {
         id: '3',
@@ -1421,10 +1613,10 @@ const inquiryTableData = [
         container_type: '',
         tot_container: '',
         weight: '40 GP',
-        cargo_value: '', 
+        cargo_value: '',
         incoterms: 'CPT',
         sales_emp: '',
-        status: 'Actioned',        
+        status: 'Actioned',
         sales_person: 'Vijay',
     },
     {
@@ -1440,10 +1632,10 @@ const inquiryTableData = [
         container_type: '',
         tot_container: '',
         weight: '20 GP',
-        cargo_value: '', 
+        cargo_value: '',
         incoterms: 'CPT',
         sales_emp: '',
-        status: 'Pending',        
+        status: 'Pending',
         sales_person: 'Vijay',
     },
     {
@@ -1459,10 +1651,10 @@ const inquiryTableData = [
         container_type: '',
         tot_container: '',
         weight: '40 GP',
-        cargo_value: '', 
+        cargo_value: '',
         incoterms: 'CPT',
         sales_emp: '',
-        status: 'SLA',        
+        status: 'SLA',
         sales_person: 'Vijay',
     },
     {
@@ -1478,10 +1670,10 @@ const inquiryTableData = [
         container_type: '',
         tot_container: '',
         weight: '40 GP',
-        cargo_value: '', 
+        cargo_value: '',
         incoterms: 'CPT',
         sales_emp: '',
-        status: 'Actioned',        
+        status: 'Actioned',
         sales_person: 'Sumit',
     },
     {
@@ -1497,10 +1689,10 @@ const inquiryTableData = [
         container_type: '',
         tot_container: '',
         weight: '40 GP',
-        cargo_value: '', 
+        cargo_value: '',
         incoterms: 'CPT',
         sales_emp: '',
-        status: 'Actioned',        
+        status: 'Actioned',
         sales_person: 'Sumit',
     },
     {
@@ -1516,110 +1708,110 @@ const inquiryTableData = [
         container_type: '',
         tot_container: '',
         weight: '20 GP',
-        cargo_value: '', 
+        cargo_value: '',
         incoterms: 'CPT',
         sales_emp: '',
-        status: 'Pending',        
+        status: 'Pending',
         sales_person: 'Darshita',
     },
 ]
 
 // --------------- options ---------------
 const optionCustomerName = [
-    {value: "apex_export", name: 'Apex Export Pvt Ltd',img: memoji},
-    {value: "balaji_enterprice", name: 'Balaji Enterprice',img: memoji},
-    {value: "house_tea_exports", name: 'House of Tea Exports',img: memoji },
-    {value: "raj_fruits", name: 'Raj Fruits Exports',img: memoji },
+    { value: "apex_export", name: 'Apex Export Pvt Ltd', img: memoji },
+    { value: "balaji_enterprice", name: 'Balaji Enterprice', img: memoji },
+    { value: "house_tea_exports", name: 'House of Tea Exports', img: memoji },
+    { value: "raj_fruits", name: 'Raj Fruits Exports', img: memoji },
 ]
 const optionServiceType = [
-    {value: "door_to_door", name: 'Door to Door'},
-    {value: "door_to_port", name: 'Door to Port'},
-    {value: "port_to_port", name: 'Port to Port'},
-    {value: "port_to_door", name: 'Port to Door'},
+    { value: "door_to_door", name: 'Door to Door' },
+    { value: "door_to_port", name: 'Door to Port' },
+    { value: "port_to_port", name: 'Port to Port' },
+    { value: "port_to_door", name: 'Port to Door' },
 ]
 const optionTransportBy = [
-    {value: "fcl", name: 'FCL'},
-    {value: "lcl", name: 'LCL'},
+    { value: "fcl", name: 'FCL' },
+    { value: "lcl", name: 'LCL' },
 ]
 const optionLandTransportBy = [
-    {value: "ftl", name: 'FTL'},
-    {value: "ltl", name: 'LTL'},
+    { value: "ftl", name: 'FTL' },
+    { value: "ltl", name: 'LTL' },
 ]
 const optionIncoterm = [
-    {value: "CPT", label: 'Carraige Paid To(CPT)'},
-    {value: "CFR", label: 'Cost & Freight(CFR)'},
-    {value: "CIF", label: 'Cost Insurance and Freight(CIF)'},
-    {value: "CIP", label: 'Carraige and Insurance Paid To(CIP)'},
-    {value: "DAP", label: 'Delivery at Place(DAP)'},
-    {value: "DAT", label: 'Delivery At Terminal(DAT)'},
-    {value: "DDU", label: 'Delivery Duty Unpaid(DDU)'},
-    {value: "DPU", label: 'Delivered At Place Unploaded(DPU)'},
-    {value: "EXW", label: 'EX Works(EXW)'},
+    { value: "CPT", label: 'Carraige Paid To(CPT)' },
+    { value: "CFR", label: 'Cost & Freight(CFR)' },
+    { value: "CIF", label: 'Cost Insurance and Freight(CIF)' },
+    { value: "CIP", label: 'Carraige and Insurance Paid To(CIP)' },
+    { value: "DAP", label: 'Delivery at Place(DAP)' },
+    { value: "DAT", label: 'Delivery At Terminal(DAT)' },
+    { value: "DDU", label: 'Delivery Duty Unpaid(DDU)' },
+    { value: "DPU", label: 'Delivered At Place Unploaded(DPU)' },
+    { value: "EXW", label: 'EX Works(EXW)' },
 ]
 const optionContainerType = [
-    {id: '_standard1',value: "20_standard", name: "20' Standard"},
-    {id: '_standard2',value: "40_standard", name: "40' Standard"},
-    {id: '_high_cube1',value: "40_high_cube", name: "40' High Cube"},
-    {id: '_refrigerated1',value: "40_refrigerated", name: "20' Refrigerated"},
-    {id: '_refrigerated2',value: "40_refrigerated", name: "40' Refrigerated"},
-    {id: '_high_cube2',value: "45_high_cube", name: "45' High Cube"},
+    { id: '_standard1', value: "20_standard", name: "20' Standard" },
+    { id: '_standard2', value: "40_standard", name: "40' Standard" },
+    { id: '_high_cube1', value: "40_high_cube", name: "40' High Cube" },
+    { id: '_refrigerated1', value: "40_refrigerated", name: "20' Refrigerated" },
+    { id: '_refrigerated2', value: "40_refrigerated", name: "40' Refrigerated" },
+    { id: '_high_cube2', value: "45_high_cube", name: "45' High Cube" },
 ]
 const optionContainerTypeRefrigerated = [
-    {id: '_refrigerated1',value: "40_refrigerated", name: "20' Refrigerated"},
-    {id: '_refrigerated2',value: "40_refrigerated", name: "40' Refrigerated"},
+    { id: '_refrigerated1', value: "40_refrigerated", name: "20' Refrigerated" },
+    { id: '_refrigerated2', value: "40_refrigerated", name: "40' Refrigerated" },
 ]
 const optionContainerTypeWithoutRefri = [
-    {id: '_standard1',value: "20_standard", name: "20' Standard"},
-    {id: '_standard2',value: "40_standard", name: "40' Standard"},
-    {id: '_high_cube1',value: "40_high_cube", name: "40' High Cube"},
-    {id: '_high_cube2',value: "45_high_cube", name: "45' High Cube"},
+    { id: '_standard1', value: "20_standard", name: "20' Standard" },
+    { id: '_standard2', value: "40_standard", name: "40' Standard" },
+    { id: '_high_cube1', value: "40_high_cube", name: "40' High Cube" },
+    { id: '_high_cube2', value: "45_high_cube", name: "45' High Cube" },
 ]
 const optionCargoType = [
-    {value: "hazardous", name: "Hazardous"},
-    {value: "general", name: "General"},
-    {value: "refrigerated", name: "Refrigerated"},
-    {value: "spl_equipment", name: "SPL Equipment"},
+    { value: "hazardous", name: "Hazardous" },
+    { value: "general", name: "General" },
+    { value: "refrigerated", name: "Refrigerated" },
+    { value: "spl_equipment", name: "SPL Equipment" },
 ]
 const optionCurrency = [
-    {value: "gbp", name: "Pound", code: '£'},
-    {value: "usd", name: "USD", code: '$'},
-    {value: "eur", name: "Euro", code: '€'},
-    {value: "rupee", name: "Rupee", code: '₹'},
-    {value: "jpy", name: "Yen", code: '¥'},
+    { value: "gbp", name: "Pound", code: '£' },
+    { value: "usd", name: "USD", code: '$' },
+    { value: "eur", name: "Euro", code: '€' },
+    { value: "rupee", name: "Rupee", code: '₹' },
+    { value: "jpy", name: "Yen", code: '¥' },
 ]
 const optionlocationType = [
-    {value: "port/air", name: "Port/Airport", icon: pickup_icon},
-    {value: "ware_house", name: "Warehouse", icon: pickup_icon2},    
-    {value: "fulfilment_center", name: "Fulfilment Center", icon: pickup_icon3},
-    {value: "business_address", name: "Business Address", icon: pickup_icon4},
-    {value: "residential_address", name: "Residential Address", icon: pickup_icon5},
-    {value: "last_mile", name: "Last mile delivery warehousing",icon: pickup_icon6 },
+    { value: "port/air", name: "Port/Airport", icon: pickup_icon },
+    { value: "ware_house", name: "Warehouse", icon: pickup_icon2 },
+    { value: "fulfilment_center", name: "Fulfilment Center", icon: pickup_icon3 },
+    { value: "business_address", name: "Business Address", icon: pickup_icon4 },
+    { value: "residential_address", name: "Residential Address", icon: pickup_icon5 },
+    { value: "last_mile", name: "Last mile delivery warehousing", icon: pickup_icon6 },
 ]
 
 const countryList = [
-    {value: 'AZ', label:'Azerbaijan',phonecode: '994', flag: azerbaijan},
-    {value: 'AU', label:'Australia',phonecode: '61', flag: australia},
-    {value: 'IN', label:'India',phonecode: '91', flag: india},
-    {value: 'US', label:'United States',phonecode: '1', flag: unitedstates},
-    {value: 'GB', label:'United Kingdom',phonecode: '44', flag: unitedkingdom}
+    { value: 'AZ', label: 'Azerbaijan', phonecode: '994', flag: azerbaijan },
+    { value: 'AU', label: 'Australia', phonecode: '61', flag: australia },
+    { value: 'IN', label: 'India', phonecode: '91', flag: india },
+    { value: 'US', label: 'United States', phonecode: '1', flag: unitedstates },
+    { value: 'GB', label: 'United Kingdom', phonecode: '44', flag: unitedkingdom }
 ]
 const optionPortList = [
-    {value: 'INMAA', label:'INMAA'},
-    {value: 'INKTP', label:'INKTP'},
-    {value: 'BDDAC', label:'BDDAC'},
-    {value: 'IDSUB', label:'IDSUB'},
-    {value: 'BLRICD', label:'BLR ICD'},
-    {value: 'DHAKAICD', label:'DHAKA ICD'},
-    {value: 'JAKARTAICD', label:'JAKARTA ICD'},
+    { value: 'INMAA', label: 'INMAA' },
+    { value: 'INKTP', label: 'INKTP' },
+    { value: 'BDDAC', label: 'BDDAC' },
+    { value: 'IDSUB', label: 'IDSUB' },
+    { value: 'BLRICD', label: 'BLR ICD' },
+    { value: 'DHAKAICD', label: 'DHAKA ICD' },
+    { value: 'JAKARTAICD', label: 'JAKARTA ICD' },
 ]
 
-const weightUnitOption= [
-    {value: 'kg', name: 'KG'},
-    {value: 'lbs', name: 'Lbs'},
+const weightUnitOption = [
+    { value: 'kg', name: 'KG' },
+    { value: 'lbs', name: 'Lbs' },
 ]
-const cargoWeightUnitOption= [
-    {value: 'KG', name: 'KG'},
-    {value: 'MT', name: 'MT'},
+const cargoWeightUnitOption = [
+    { value: 'KG', name: 'KG' },
+    { value: 'MT', name: 'MT' },
 ]
 const optionPickupCharge = [
     { label: "OTHC", value: "OTHC" },
@@ -1653,7 +1845,7 @@ const optionOceanCharge = [
     { label: "OCR", value: "OCR" },
     { label: "ADDON", value: "ADDON" },
     { label: "LSF", value: "LSF" },
-    { label: "ARD", value: "ARD" },    
+    { label: "ARD", value: "ARD" },
 ];
 const optionPortDischargeCharge = [
     { label: "DTHC", value: "DTHC" },
@@ -1663,29 +1855,29 @@ const optionPortDischargeCharge = [
 ];
 
 const optionCurrencyCharges = [
-    {value: "gbp", label: "Pound", code: '£'},
-    {value: "$", label: "USD", code: '$'},
-    {value: "eur", label: "Euro", code: '€'},
-    {value: "₹", label: "Rupee", code: '₹'},
-    {value: "jpy", label: "Yen", code: '¥'},
-    {value: "BDT", label: "BDT", code: 'BDT'},
-    {value: "IDR", label: "IDR", code: 'IDR'},
+    { value: "gbp", label: "Pound", code: '£' },
+    { value: "$", label: "USD", code: '$' },
+    { value: "eur", label: "Euro", code: '€' },
+    { value: "₹", label: "Rupee", code: '₹' },
+    { value: "jpy", label: "Yen", code: '¥' },
+    { value: "BDT", label: "BDT", code: 'BDT' },
+    { value: "IDR", label: "IDR", code: 'IDR' },
 ]
 const optionOriginQuote = [
-    { label: 'INMAA', value: 'INMAA'},
-    { label: 'INKTP', value: 'INKTP'},
+    { label: 'INMAA', value: 'INMAA' },
+    { label: 'INKTP', value: 'INKTP' },
 ]
 const optionDestQuote = [
-    { label: 'BDDAC', value: 'BDDAC'},
-    { label: 'IDSUB', value: 'IDSUB'},
+    { label: 'BDDAC', value: 'BDDAC' },
+    { label: 'IDSUB', value: 'IDSUB' },
 ]
 const optionModeQuote = [
-    { label: 'OCEAN', value: 'OCEAN'},
+    { label: 'OCEAN', value: 'OCEAN' },
 ]
 const optionStatusQuote = [
-    { label: 'In Progress', value: 'progress'},
-    { label: 'Lost', value: 'lost'},
-    { label: 'Won', value: 'won'},
+    { label: 'In Progress', value: 'progress' },
+    { label: 'Lost', value: 'lost' },
+    { label: 'Won', value: 'won' },
 ]
 const optionQuoteValueQuote = []
 
@@ -1699,9 +1891,9 @@ const optionQuoteContactCode = [
 ]
 
 const optionStatusInquiry = [
-    { label: 'Pending', value: 'pending'},
-    { label: 'Actioned', value: 'actioned'},
-    { label: 'SLA', value: 'sla'},
+    { label: 'Pending', value: 'pending' },
+    { label: 'Actioned', value: 'actioned' },
+    { label: 'SLA', value: 'sla' },
 ]
 
 const optionChargeBasis = [
@@ -1719,24 +1911,24 @@ const optionChargeBasis = [
 
 const optionFlightMode = [
     { label: "Prime", value: "prime" },
-    { label: "General", value: "general" },    
-    { label: "Lean", value: "lean" },    
+    { label: "General", value: "general" },
+    { label: "Lean", value: "lean" },
 ]
 
 const optionCommodity = [
     { label: "General", value: "general" },
-    { label: "SCR", value: "SCR" },    
-    { label: "Hazardous", value: "hazardous" },    
-    { label: "Perishable", value: "perishable" },    
+    { label: "SCR", value: "SCR" },
+    { label: "Hazardous", value: "hazardous" },
+    { label: "Perishable", value: "perishable" },
 ]
 
 
 export {
-    quotationBreadcrumb,quotationTableData,optionCustomerName,optionServiceType,optionTransportBy,optionContainerType,optionIncoterm,optionCargoType,optionCurrency,
-    optionlocationType,countryList,optionPortList,optionLandTransportBy,weightUnitOption,optionContainerTypeWithoutRefri,optionContainerTypeRefrigerated,
-    optionPickupCharge,optionCurrencyCharges,optionOriginQuote,optionModeQuote,optionDestQuote,optionStatusQuote,optionQuoteValueQuote,
-    cargoWeightUnitOption,optionOriginPortCharge,optionOceanCharge,optionPortDischargeCharge,optionQuoteContacttitle,optionQuoteContactCode,inquiryBreadcrumb,
-    optionFlightMode,optionCommodity,
+    quotationBreadcrumb, quotationTableData, optionCustomerName, optionServiceType, optionTransportBy, optionContainerType, optionIncoterm, optionCargoType, optionCurrency,
+    optionlocationType, countryList, optionPortList, optionLandTransportBy, weightUnitOption, optionContainerTypeWithoutRefri, optionContainerTypeRefrigerated,
+    optionPickupCharge, optionCurrencyCharges, optionOriginQuote, optionModeQuote, optionDestQuote, optionStatusQuote, optionQuoteValueQuote,
+    cargoWeightUnitOption, optionOriginPortCharge, optionOceanCharge, optionPortDischargeCharge, optionQuoteContacttitle, optionQuoteContactCode, inquiryBreadcrumb,
+    optionFlightMode, optionCommodity,
 
-    inquiryTableData,optionStatusInquiry,optionChargeBasis
+    inquiryTableData, optionStatusInquiry, optionChargeBasis
 }

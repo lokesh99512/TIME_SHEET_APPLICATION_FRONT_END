@@ -3,135 +3,119 @@ import { convertToINR } from '../../../components/Common/CommonLogic';
 import { cube_filled, oocl_logo, zim_logo } from '../../../assets/images';
 
 export const CurrencyWiseTotal = ({ data, newData }) => {
-    // const stitchesData = getDesignStitches$?.[view][index]?.stitches;
-    // const palette = stitchesData?.Palette;
-    // const uniqueColors = [...new Map(stitchesData?.Stitches?.map(item => [item?.RelColor,
-    //     [palette[item?.RelColor]]?.map((palette) => (
-    //         {
-    //             ...palette,
-    //             RelColor: item?.RelColor,
-    //         }
-    //         ))
-    //     ])).values()].flat();
-
-
-    let mainArray = []
-    let totalSum = data?.tariffDetails?.reduce((accOuter, currentOuter) => {
-        if (currentOuter?.selected) {
-            let newArray = [];
-            newArray = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
-                let currentCurrency = currentInner?.currencyCode;
-                let existingObj = accInner?.find((item) => item.currency === currentCurrency);
-                if (existingObj) {
-                    existingObj.amount = Number(existingObj.amount) + Number(currentInner?.total_sale_cost || currentInner?.amount)
+    const processTariffDetails = (tariffDetails, type) => {
+        const headerMapping = {
+            "ORIGIN_INLAND_CHARGES": "origin",
+            "ORIGIN_LOCAL_PORT_CHARGES": "origin",
+            "FREIGHT_CHARGES": "origin",
+            "DESTINATION_INLAND_CHARGES": "destination",
+            "DESTINATION_LOCAL_PORT_CHARGES": "destination",
+        };
+        return tariffDetails?.reduce((result, currentOuter) => {
+            if (type === 'new') {
+                const newArray = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+                    const currentCurrency = currentInner?.currencyCode;
+                    const existingObj = accInner?.find((item) => item.currency === currentCurrency);
+                    if (existingObj) {
+                        existingObj.amount += Number(currentInner?.total_sale_cost || currentInner?.amount);
+                    } else {
+                        accInner.push({ currency: currentCurrency, amount: Number(currentInner?.total_sale_cost || currentInner?.amount) });
+                    }
+                    return accInner;
+                }, []);
+                const header = headerMapping[currentOuter?.header];
+                const exObj = result?.find(obj => obj.header === header);
+                if (exObj) {
+                    exObj.data = exObj?.data.concat(newArray);
                 } else {
-                    let NewObj = { currency: currentCurrency, amount: (currentInner?.total_sale_cost || currentInner?.amount) }
-                    accInner.push(NewObj);
+                    result.push({ header, data: newArray });
                 }
-                return accInner
+            } else {
+                if (currentOuter?.selected) {
+                    const newArray = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+                        const currentCurrency = currentInner?.currencyCode;
+                        const existingObj = accInner?.find((item) => item.currency === currentCurrency);
+                        if (existingObj) {
+                            existingObj.amount += Number(currentInner?.total_sale_cost || currentInner?.amount);
+                        } else {
+                            accInner.push({ currency: currentCurrency, amount: Number(currentInner?.total_sale_cost || currentInner?.amount) });
+                        }
+                        return accInner;
+                    }, []);
+                    const header = headerMapping[currentOuter?.header];
+                    const exObj = result?.find(obj => obj.header === header);
+                    if (exObj) {
+                        exObj.data = exObj?.data.concat(newArray);
+                    } else {
+                        result.push({ header, data: newArray });
+                    }
+                }
+            }
+            return result;
+        }, []).map((item) => ({
+            ...item,
+            data: item?.data?.reduce((acc, current) => {
+                const exObj = acc?.find(obj => obj.currency === current?.currency);
+                if (exObj) {
+                    exObj.amount += Number(current?.amount);
+                } else {
+                    acc.push({ currency: current?.currency, amount: current?.amount });
+                }
+                return acc;
             }, [])
-            let mainObj = { header: currentOuter?.header, data: newArray };
-            mainArray.push(mainObj)
+        })).reduce((finalResult, item) => {
+            item.data.forEach((dataItem) => {
+                const existingCurrency = finalResult?.find((resultItem) => resultItem.currency === dataItem.currency);
+                if (existingCurrency) {
+                    existingCurrency[item.header] = dataItem.amount;
+                } else {
+                    finalResult.push({ currency: dataItem.currency, [item.header]: dataItem.amount });
+                }
+            });
+            return finalResult;
+        }, []);
+    };
+
+    const filteredArray = processTariffDetails(data?.tariffDetails);
+    const filteredArrayNew = processTariffDetails(newData?.tariffDetails, 'new');
+
+    console.log(filteredArray, "filteredArray");
+    console.log(filteredArrayNew, "filteredArrayNew");
+
+    const mergedMap = new Map();
+    const updateMap = (currency, origin, destination) => {
+        if (mergedMap.has(currency)) {
+            const existingEntry = mergedMap.get(currency);
+            existingEntry.origin += origin;
+            existingEntry.destination += destination;
+        } else {
+            mergedMap.set(currency, { currency, origin, destination });
         }
-    }, []);
-    console.log(mainArray, "mainArray");
-    let chargesWiseArray = mainArray?.reduce((acc, current) => {
-        current
-        if (current?.header === "ORIGIN_INLAND_CHARGES" || current?.header === "ORIGIN_LOCAL_PORT_CHARGES" || current?.header === "FREIGHT_CHARGES") {
-            let exObj = acc?.find(obj => obj.header === "origin");
-            if (exObj) {
-                exObj.data = exObj?.data.concat(current?.data);
-            } else {
-                let newObj = { header: "origin", data: current?.data }
-                acc.push(newObj);
-            }
-        } else if (current?.header === "DESTINATION_INLAND_CHARGES" || current?.header === "DESTINATION_LOCAL_PORT_CHARGES") {
-            let exObj = acc?.find(obj => obj.header === "destination");
-            if (exObj) {
-                exObj.data = exObj?.data.concat(current?.data);
-            } else {
-                let newObj = { header: "destination", data: current?.data }
-                acc.push(newObj);
-            }
-        }
-        return acc
-    }, [])
-    // console.log(chargesWiseArray, "chargesWiseArray");
-    let finalTotalArray = chargesWiseArray?.map((item) => ({
-        ...item,
-        data: item?.data?.reduce((acc, current) => {
-            let exObj = acc?.find(obj => obj.currency === current?.currency);
-            if (exObj) {
-                exObj.amount = Number(exObj.amount) + Number(current?.amount);
-            } else {
-                let newObj = { currency: current?.currency, amount: current?.amount }
-                acc.push(newObj);
-            }
-            return acc
-        }, [])
-    }))
-    // console.log(finalTotalArray, "finalTotalArray");
-    // let finalTotalArray = []
-    // let uniqArray = mainArray?.flat();
-    // let newMainArray = []
-    // let newTotalSum = newData?.tariffDetails?.reduce((accOuter, currentOuter) => {
-    //     let newArray = [];
-    //     newArray = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {                    
-    //         let currentCurrency = currentInner?.currencyCode;
-    //         let existingObj = accInner?.find((item) => item.currency === currentCurrency);
-    //         if(existingObj){
-    //             existingObj.amount = Number(existingObj.amount) + Number(currentInner?.total_sale_cost)
-    //         } else {
-    //             let NewObj = { currency: currentCurrency, amount: currentInner?.total_sale_cost }
-    //             accInner.push(NewObj);
-    //         } 
-    //         return accInner
-    //     }, [])
-    //     newMainArray.push(newArray)
-    // }, [])
-    // let newUniqArray = newMainArray?.flat();
+    };
 
-    // let mergeArray = [...uniqArray, ...newUniqArray]
-    // console.log(mergeArray,"newData Array"); 
+    filteredArray?.forEach(({ currency, origin, destination }) => {
+        updateMap(currency, origin || 0, destination || 0);
+    });
 
-    // let finalTotalArray = mergeArray?.reduce((accOuter, currentOuter) => {
-    //     let exObj = accOuter?.find((item) => item.currency === currentOuter?.currency);
-    //     if(exObj){
-    //         exObj.amount = Number(exObj.amount) + Number(currentOuter?.amount)
-    //     } else {
-    //         let NewObj = { currency: currentOuter?.currency, amount: currentOuter?.amount }
-    //         accOuter.push(NewObj)
-    //     }
-    //     return accOuter
-    // },[])
+    filteredArrayNew?.forEach(({ currency, origin, destination }) => {
+        updateMap(currency, origin || 0, destination || 0);
+    });
+    console.log(mergedMap,"mergedMap");
+    // Convert the merged map values back to an array
+    const mergedArray = [...mergedMap.values()];
 
-    const filteredArray = finalTotalArray?.reduce((result, item) => {
-        item.data.forEach((dataItem) => {
-            const existingCurrency = result?.find((resultItem) => resultItem.currency === dataItem.currency);
-    
-            if (existingCurrency) {
-                existingCurrency[item.header] = dataItem.amount;
-            } else {
-                result.push({
-                    currency: dataItem.currency,
-                    [item.header]: dataItem.amount,
-                });
-            }
-        });
-    
-        return result;
-    }, []);
-    
+    console.log(mergedArray);
+
     return (
         <>
             <tr>
-                <th>Total</th>
-                <th>Origin</th>
-                <th>Destination</th>
+                <td className='title_row'><b>Total</b></td>
+                <td className='title_row'><b>Origin</b></td>
+                <td className='title_row'><b>Destination</b></td>
             </tr>
-            {filteredArray?.map(item => (
+            {mergedArray?.map(item => (
                 <tr key={item?.currency}>
-                    <td>Total {item?.currency}:</td>
+                    <td>Total <b>{item?.currency}</b>:</td>
                     <td>{item?.origin || 0}</td>
                     <td>{item?.destination || 0}</td>
                 </tr>
@@ -175,8 +159,8 @@ export default function PreviewCommonTable({ data, newData, tab }) {
         }, 0) : 0;
 
         // console.log(buyValue, marginValue, newSubTotal, totalNewMarginSum, "buyValue");
-
-        return buyValue + marginValue + newSubTotal + totalNewMarginSum;
+        let mainTotal = buyValue + marginValue + newSubTotal + totalNewMarginSum
+        return mainTotal.toFixed(2);
     }
 
     const totalCount = (subTotal) => {
@@ -244,9 +228,8 @@ export default function PreviewCommonTable({ data, newData, tab }) {
                                                     {/* <td>{sub?.total_sale_cost || (Number(sub?.amount || 0) + Number(sub?.taxDetail?.value || 0))}</td> */}
                                                 </tr>
                                             ))}
-
                                             {newData?.tariffDetails !== undefined && newData?.tariffDetails?.find(obj => obj?.header === inner?.header)?.tariffBreakDowns?.map((newSub, newindex) => (
-                                                <tr key={`new_${data.id}_${index}`}>
+                                                <tr key={`${newData?.id}_${inner?.header}${newindex}`}>
                                                     <td>{newSub?.component?.value || '-'}</td>
                                                     <td>{newSub?.uomCode?.label || '-'}</td>
                                                     <td>{newSub?.currencyCode || 'INR'}</td>
@@ -263,11 +246,18 @@ export default function PreviewCommonTable({ data, newData, tab }) {
                             })}
                         </tbody>
                         <tfoot>
-                            {/* <tr>
-                                <td colSpan={6}><p>Sub Total: <span>₹{subtotalCount()}</span></p></td>
-                            </tr> */}
-                            <CurrencyWiseTotal data={data} newData={newData} />
-                            {/* <td colSpan={6}><p>Total: <span className='text-primary'><b>₹{subtotalCount()}</b></span></p></td> */}
+                            <tr>
+                                <td colSpan={3}>
+                                    <table>
+                                        <CurrencyWiseTotal data={data} newData={newData} />
+                                    </table>
+                                </td>
+                                <td colSpan={3}>
+                                    <p>Sub Total: <span>₹{subtotalCount()}</span></p>
+                                    <p><b>Total:</b> <span className='text-primary'><b>₹{subtotalCount()}</b></span></p>
+                                </td>
+                            </tr>
+
                             {/* <td colSpan={6}><p>Total: <span className='text-primary'><b>₹{totalCount(subtotalCount())}</b></span></p></td> */}
                         </tfoot>
                     </table>
