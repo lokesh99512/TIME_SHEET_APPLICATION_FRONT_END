@@ -1,4 +1,4 @@
-import { GET_PARTIES_CUSTOMER_DETAILS_TYPE, UPLOAD_CUSTOMER_COMPANYDATA_TYPE, UPLOAD_CUSTOMER_CONTACT_TYPE, UPLOAD_CUSTOMER_DOCUMENT_TYPE } from "./actiontype";
+import { GET_CUSTOMER_BY_ID, GET_PARTIES_CUSTOMER_DETAILS_TYPE, UPLOAD_CUSTOMER_COMPANYDATA_TYPE, UPLOAD_CUSTOMER_CONTACT_TYPE, UPLOAD_CUSTOMER_DOCUMENT_TYPE } from "./actiontype";
 
 export const getAllPartiesCustomerData = (data) => {
     console.log(data, "data getAllPartiesData");
@@ -16,6 +16,16 @@ export const postCustomerDetailsAction = (data) => {
         payload: { data },
     };
 };
+export const getCustomerById = (id) => {
+    console.log(id, "---->>getCustomerById");
+    return {
+        type: GET_CUSTOMER_BY_ID,
+        payload: { id },
+    };
+};
+
+
+
 
 export const postCustomerContactAction = (data) => ({
     type: UPLOAD_CUSTOMER_CONTACT_TYPE,
