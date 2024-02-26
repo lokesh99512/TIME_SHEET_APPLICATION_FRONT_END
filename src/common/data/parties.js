@@ -60,6 +60,36 @@ export const usersBreadcrumb = [
     active: true
   }
 ]
+export const RolesBreadcrumb = [
+  {
+    label: 'Settings',
+    link: '/#',
+    active: false
+  },
+  {
+    label: 'Roles',
+    link: '/#',
+    active: true
+  }
+]
+
+export const addRoleBreadcrumb = [
+  {
+    label: 'Settings',
+    link: '/#',
+    active: false
+  },
+  {
+    label: 'Users',
+    link: '/#',
+    active: false
+  },
+  {
+    label: 'Add Role',
+    link: '/#',
+    active: true
+  }
+]
 export const addUserBreadcrumb = [
   {
     label: 'Settings',

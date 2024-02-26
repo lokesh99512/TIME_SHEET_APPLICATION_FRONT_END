@@ -70,6 +70,15 @@ import australia from './icons/country/australia.svg'
 import india from './icons/country/india.svg'
 import unitedkingdom from './icons/country/unitedkingdom.svg'
 import unitedstates from './icons/country/unitedstates.svg'
+import read_book_icon from "./icons/read-book-icon.svg";
+import writing_icon from "./icons/writing-icon.svg";
+import folder_plus_icon from "./icons/folder-plus-icon.svg";
+import book_research_icon from "./icons/book-research-icon.svg";
+import find_book_icon from "./icons/find-book-icon.svg";
+import web_search_icon from "./icons/web-search-result-found-icon.svg";
+import download_icon from "./icons/download-cloud-icon.svg";
+import cloud_upload_icon from "./icons/cloud-backup-icon.svg";
+import task_minus_icon from "./icons/task-minus-icon.svg";
 
 export {
   avatar1,
@@ -92,5 +101,5 @@ export {
 
   
   
-  azerbaijan,australia,india,unitedkingdom,unitedstates
+  azerbaijan,australia,india,unitedkingdom,unitedstates,read_book_icon,download_icon,web_search_icon,find_book_icon,writing_icon,folder_plus_icon,book_research_icon,cloud_upload_icon, task_minus_icon
 }

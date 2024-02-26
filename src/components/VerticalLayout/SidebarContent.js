@@ -314,9 +314,21 @@ const SidebarContent = props => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/settings/users">
+                <Link className="has-arrow">
                     <span>Users</span>
                   </Link>
+                  <ul className="sub-menu">
+                    <li>
+                      <Link to="/settings/users">
+                        <span>Users</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/settings/roles">
+                        <span>Roles</span>
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
                 <li>
                   <Link to="/settings/surcharge">

@@ -1,7 +1,7 @@
 import { all, call, fork, put, takeLatest } from "redux-saga/effects";
-import { GET_VENDOR_DETAILS_ID, GET_VENDOR_LIST_SUCCESS, GET_VENDOR_LIST_TYPE, UPLOAD_VENDOR_CONTACT_TYPE, UPLOAD_VENDOR_DETAILS_TYPE, UPLOAD_VENDOR_DOCUMENT_TYPE, VENDOR_LOADER_TYPE, VENDOR_TAB_ACTIVE_TYPE } from "./actiontype";
+import { GET_VENDOR_BY_ID, GET_VENDOR_BY_ID_SUCCESS, GET_VENDOR_DETAILS_ID, GET_VENDOR_LIST_SUCCESS, GET_VENDOR_LIST_TYPE, UPLOAD_VENDOR_CONTACT_TYPE, UPLOAD_VENDOR_DETAILS_TYPE, UPLOAD_VENDOR_DOCUMENT_TYPE, VENDOR_LOADER_TYPE, VENDOR_TAB_ACTIVE_TYPE } from "./actiontype";
 import { getPartiesAllVendorTable } from "../../../helpers/services/AuthService";
-import { postVenderCompanySer, postVenderDocumentSer, postVenderUpload, postVendorContactSer } from "../../../helpers/services/PartiesService";
+import { getVendorDataByIdSer, postVenderCompanySer, postVenderDocumentSer, postVenderUpload, postVendorContactSer } from "../../../helpers/services/PartiesService";
 import { showErrorToast, showSuccessToast } from "../../../components/Common/CustomToast";
 import { Get_File_URL, UPLOAD_VENDOR_DOCUMENT_URL } from "../../../helpers/url_helper";
 import axios from "axios";
@@ -29,6 +29,18 @@ function* fetchVendorListSaga() {
     } catch (error) {
         yield put({ type: VENDOR_LOADER_TYPE, payload: false });
         console.log(error, "saga getAllCompanySettings api error");
+    }
+}
+
+function* fetchVendorById({ payload: { id } }) {
+    try {
+        const response = yield call(getVendorDataByIdSer, id);
+            let imageData = response.logoPath;
+            const base64Encoded = window.btoa(imageData);
+            response.logo =(!!(imageData)? `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`:'');
+        yield put({type: GET_VENDOR_BY_ID_SUCCESS, payload: response});
+    } catch (error) {
+        console.log("error surcharge", error);
     }
 }
 function* postVenderDataSaga({ payload: { formData } }) {
@@ -81,6 +93,7 @@ function* watchPartiesVendorSaga() {
     yield takeLatest(UPLOAD_VENDOR_DETAILS_TYPE, postVenderDataSaga);
     yield takeLatest(UPLOAD_VENDOR_CONTACT_TYPE, postVenderContactSaga);
     yield takeLatest(UPLOAD_VENDOR_DOCUMENT_TYPE, postVenderDocumentSaga);
+    yield takeLatest(GET_VENDOR_BY_ID, fetchVendorById)
 }
 
 function* partiesVendorSaga() {

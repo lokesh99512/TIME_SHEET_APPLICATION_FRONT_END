@@ -1,4 +1,4 @@
-import { GET_CARGO_TYPE_DATA_SUCCEESS, GET_CONTAINER_DATA_SUCCEESS, GET_CURRENCY_DETAIL_SUCCESS, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_ROLE_TYPE_SUCCEESS, GET_STATE_ALL_TYPE_SUCCEESS, GET_SURCHARGE_ALICE_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA_SUCCESS, GET_UOM_WEIGHT_DATA_SUCCESS, GET_VENDOR_DETAILS_SUCCESS } from "./actiontype";
+import { GET_CARGO_TYPE_DATA_SUCCEESS, GET_CONTAINER_DATA_SUCCEESS, GET_CURRENCY_DETAIL_SUCCESS, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_ROLE_LOADER_TYPE, GET_ROLE_TYPE_SUCCEESS, GET_STATE_ALL_TYPE_SUCCEESS, GET_SURCHARGE_ALICE_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA_SUCCESS, GET_UOM_WEIGHT_DATA_SUCCESS, GET_VENDOR_DETAILS_SUCCESS } from "./actiontype";
 
 const INIT_STATE = {
     vendor_data: [],
@@ -14,6 +14,7 @@ const INIT_STATE = {
     surchargeAlice_descri: [],
     stateAllData: [],
     roleData: [],
+    role_loader:[],
 }
 
 const globalReducer = (state = INIT_STATE, action) => {
@@ -174,7 +175,11 @@ const globalReducer = (state = INIT_STATE, action) => {
                     }
                 })
             }
-
+            case GET_ROLE_LOADER_TYPE:
+                return {
+                    ...state,
+                    role_loader: action.payload
+                }
         default:
             return state;
     }

@@ -1,5 +1,5 @@
 import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects";
-import { GET_CARGO_TYPE_DATA, GET_CARGO_TYPE_DATA_SUCCEESS, GET_CONTAINER_DATA, GET_CONTAINER_DATA_SUCCEESS, GET_CURRENCY_DETAIL, GET_CURRENCY_DETAIL_SUCCESS, GET_OCEAEN_PORT_DATA, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_ROLE_TYPE, GET_ROLE_TYPE_SUCCEESS, GET_STATE_ALL_TYPE, GET_STATE_ALL_TYPE_SUCCEESS, GET_SURCHARGE_ALICE_DATA, GET_SURCHARGE_ALICE_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA, GET_UOM_DATA_SUCCESS, GET_UOM_WEIGHT_DATA, GET_UOM_WEIGHT_DATA_SUCCESS, GET_VENDOR_DETAILS, GET_VENDOR_DETAILS_SUCCESS, POST_SURCHARGE_ALISE_DATA, POST_SURCHARGE_CATEGORY_DATA, POST_SURCHARGE_CODE_DATA, POST_SURCHARGE_CODE_DATA_SUCCEESS } from "./actiontype";
+import { GET_CARGO_TYPE_DATA, GET_CARGO_TYPE_DATA_SUCCEESS, GET_CONTAINER_DATA, GET_CONTAINER_DATA_SUCCEESS, GET_CURRENCY_DETAIL, GET_CURRENCY_DETAIL_SUCCESS, GET_OCEAEN_PORT_DATA, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_ROLE_LOADER_TYPE, GET_ROLE_TYPE, GET_ROLE_TYPE_SUCCEESS, GET_STATE_ALL_TYPE, GET_STATE_ALL_TYPE_SUCCEESS, GET_SURCHARGE_ALICE_DATA, GET_SURCHARGE_ALICE_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA, GET_UOM_DATA_SUCCESS, GET_UOM_WEIGHT_DATA, GET_UOM_WEIGHT_DATA_SUCCESS, GET_VENDOR_DETAILS, GET_VENDOR_DETAILS_SUCCESS, POST_SURCHARGE_ALISE_DATA, POST_SURCHARGE_CATEGORY_DATA, POST_SURCHARGE_CODE_DATA, POST_SURCHARGE_CODE_DATA_SUCCEESS } from "./actiontype";
 import { getCargoTypeData, getContainerData, getCurrencyData, getOceanPortData, getRoleAllSer, getStateAllSer, getSurchargeAliceSer, getSurchargeCategoryData, getSurchargeCodeData, getUomData, getUomWeightData, getVendorData, postSurchargeAliseSer, postSurchargeCateSer, postSurchargeCodeSer } from "../../helpers/services/GlobalService";
 import { showErrorToast, showSuccessToast } from "../../components/Common/CustomToast";
 
@@ -104,12 +104,15 @@ function* fetchStateAllData() {
     }
 }
 function* fetchRoleData() {
+    yield put({type: GET_ROLE_LOADER_TYPE, payload: true});
     try {
         const response = yield call(getRoleAllSer);
-        // console.log(response, "response role===============");
+         console.log(response, "response role===============");
         yield put({ type: GET_ROLE_TYPE_SUCCEESS, payload: response });
+        yield put({type: GET_ROLE_LOADER_TYPE, payload: false});
     } catch (error) {
         console.log(error, "role error-----------");
+        yield put({type: GET_ROLE_LOADER_TYPE, payload: false});
     }
 }
 function* postSurchargeCodeData({ payload: { data } }) {
