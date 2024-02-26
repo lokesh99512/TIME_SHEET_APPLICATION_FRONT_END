@@ -2,6 +2,127 @@ import React from 'react'
 import { convertToINR } from '../../../components/Common/CommonLogic';
 import { cube_filled, oocl_logo, zim_logo } from '../../../assets/images';
 
+export const CurrencyWiseTotal = ({ data, newData }) => {
+    const processTariffDetails = (tariffDetails, type) => {
+        const headerMapping = {
+            "ORIGIN_INLAND_CHARGES": "origin",
+            "ORIGIN_LOCAL_PORT_CHARGES": "origin",
+            "FREIGHT_CHARGES": "origin",
+            "DESTINATION_INLAND_CHARGES": "destination",
+            "DESTINATION_LOCAL_PORT_CHARGES": "destination",
+        };
+        return tariffDetails?.reduce((result, currentOuter) => {
+            if (type === 'new') {
+                const newArray = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+                    const currentCurrency = currentInner?.currencyCode;
+                    const existingObj = accInner?.find((item) => item.currency === currentCurrency);
+                    if (existingObj) {
+                        existingObj.amount += Number(currentInner?.total_sale_cost || currentInner?.amount);
+                    } else {
+                        accInner.push({ currency: currentCurrency, amount: Number(currentInner?.total_sale_cost || currentInner?.amount) });
+                    }
+                    return accInner;
+                }, []);
+                const header = headerMapping[currentOuter?.header];
+                const exObj = result?.find(obj => obj.header === header);
+                if (exObj) {
+                    exObj.data = exObj?.data.concat(newArray);
+                } else {
+                    result.push({ header, data: newArray });
+                }
+            } else {
+                if (currentOuter?.selected) {
+                    const newArray = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+                        const currentCurrency = currentInner?.currencyCode;
+                        const existingObj = accInner?.find((item) => item.currency === currentCurrency);
+                        if (existingObj) {
+                            existingObj.amount += Number(currentInner?.total_sale_cost || currentInner?.amount);
+                        } else {
+                            accInner.push({ currency: currentCurrency, amount: Number(currentInner?.total_sale_cost || currentInner?.amount) });
+                        }
+                        return accInner;
+                    }, []);
+                    const header = headerMapping[currentOuter?.header];
+                    const exObj = result?.find(obj => obj.header === header);
+                    if (exObj) {
+                        exObj.data = exObj?.data.concat(newArray);
+                    } else {
+                        result.push({ header, data: newArray });
+                    }
+                }
+            }
+            return result;
+        }, []).map((item) => ({
+            ...item,
+            data: item?.data?.reduce((acc, current) => {
+                const exObj = acc?.find(obj => obj.currency === current?.currency);
+                if (exObj) {
+                    exObj.amount += Number(current?.amount);
+                } else {
+                    acc.push({ currency: current?.currency, amount: current?.amount });
+                }
+                return acc;
+            }, [])
+        })).reduce((finalResult, item) => {
+            item.data.forEach((dataItem) => {
+                const existingCurrency = finalResult?.find((resultItem) => resultItem.currency === dataItem.currency);
+                if (existingCurrency) {
+                    existingCurrency[item.header] = dataItem.amount;
+                } else {
+                    finalResult.push({ currency: dataItem.currency, [item.header]: dataItem.amount });
+                }
+            });
+            return finalResult;
+        }, []);
+    };
+
+    const filteredArray = processTariffDetails(data?.tariffDetails);
+    const filteredArrayNew = processTariffDetails(newData?.tariffDetails, 'new');
+
+    console.log(filteredArray, "filteredArray");
+    console.log(filteredArrayNew, "filteredArrayNew");
+
+    const mergedMap = new Map();
+    const updateMap = (currency, origin, destination) => {
+        if (mergedMap.has(currency)) {
+            const existingEntry = mergedMap.get(currency);
+            existingEntry.origin += origin;
+            existingEntry.destination += destination;
+        } else {
+            mergedMap.set(currency, { currency, origin, destination });
+        }
+    };
+
+    filteredArray?.forEach(({ currency, origin, destination }) => {
+        updateMap(currency, origin || 0, destination || 0);
+    });
+
+    filteredArrayNew?.forEach(({ currency, origin, destination }) => {
+        updateMap(currency, origin || 0, destination || 0);
+    });
+    console.log(mergedMap,"mergedMap");
+    // Convert the merged map values back to an array
+    const mergedArray = [...mergedMap.values()];
+
+    console.log(mergedArray);
+
+    return (
+        <>
+            <tr>
+                <td className='title_row'><b>Total</b></td>
+                <td className='title_row'><b>Origin</b></td>
+                <td className='title_row'><b>Destination</b></td>
+            </tr>
+            {mergedArray?.map(item => (
+                <tr key={item?.currency}>
+                    <td>Total <b>{item?.currency}</b>:</td>
+                    <td>{item?.origin || 0}</td>
+                    <td>{item?.destination || 0}</td>
+                </tr>
+            ))}
+        </>
+    );
+}
 export default function PreviewCommonTable({ data, newData, tab }) {
     const subtotalCount = () => {
         let buyValue = (data?.tariffDetails?.reduce((outeracc, outerCurrent) => {
@@ -38,8 +159,8 @@ export default function PreviewCommonTable({ data, newData, tab }) {
         }, 0) : 0;
 
         // console.log(buyValue, marginValue, newSubTotal, totalNewMarginSum, "buyValue");
-
-        return buyValue + marginValue + newSubTotal + totalNewMarginSum;
+        let mainTotal = buyValue + marginValue + newSubTotal + totalNewMarginSum
+        return mainTotal.toFixed(2);
     }
 
     const totalCount = (subTotal) => {
@@ -69,7 +190,6 @@ export default function PreviewCommonTable({ data, newData, tab }) {
         <>
             {data !== undefined &&
                 <div className="preview_table_wrap">
-                    {console.log(data,"data")}
                     <div className='preview_carrier_data d-flex align-items-center'>
                         {/* <img src={data?.carrierLogo ? data?.carrierLogo : cube_filled} alt="Logo" 
                             onError={(e) => { e.target.src = data?.carrierName?.toLowerCase() === 'oocl' ? oocl_logo : data?.carrierName?.toLowerCase() === 'zim' ? zim_logo : cube_filled }} /> */}
@@ -104,12 +224,12 @@ export default function PreviewCommonTable({ data, newData, tab }) {
                                                     <td>{sub?.currencyCode || 'INR'}</td>
                                                     <td>{sub?.unit || 0}</td>
                                                     {/* <td>{sub?.taxDetail?.taxPercentage || 0}</td> */}
-                                                    <td>{sub?.total_sale_cost || (Number(sub?.amount || 0) + Number(sub?.taxDetail?.value || 0))}</td>
+                                                    <td>{sub?.total_sale_cost || Number(sub?.amount || 0)}</td>
+                                                    {/* <td>{sub?.total_sale_cost || (Number(sub?.amount || 0) + Number(sub?.taxDetail?.value || 0))}</td> */}
                                                 </tr>
                                             ))}
-
                                             {newData?.tariffDetails !== undefined && newData?.tariffDetails?.find(obj => obj?.header === inner?.header)?.tariffBreakDowns?.map((newSub, newindex) => (
-                                                <tr key={`new_${data.id}_${index}`}>
+                                                <tr key={`${newData?.id}_${inner?.header}${newindex}`}>
                                                     <td>{newSub?.component?.value || '-'}</td>
                                                     <td>{newSub?.uomCode?.label || '-'}</td>
                                                     <td>{newSub?.currencyCode || 'INR'}</td>
@@ -126,13 +246,19 @@ export default function PreviewCommonTable({ data, newData, tab }) {
                             })}
                         </tbody>
                         <tfoot>
-                            {/* <tr>
-                                <td colSpan={6}><p>Sub Total: <span>₹{subtotalCount()}</span></p></td>
-                            </tr> */}
                             <tr>
-                                <td colSpan={6}><p>Total: <span className='text-primary'><b>₹{subtotalCount()}</b></span></p></td>
-                                {/* <td colSpan={6}><p>Total: <span className='text-primary'><b>₹{totalCount(subtotalCount())}</b></span></p></td> */}
+                                <td colSpan={3}>
+                                    <table>
+                                        <CurrencyWiseTotal data={data} newData={newData} />
+                                    </table>
+                                </td>
+                                <td colSpan={3}>
+                                    <p>Sub Total: <span>₹{subtotalCount()}</span></p>
+                                    <p><b>Total:</b> <span className='text-primary'><b>₹{subtotalCount()}</b></span></p>
+                                </td>
                             </tr>
+
+                            {/* <td colSpan={6}><p>Total: <span className='text-primary'><b>₹{totalCount(subtotalCount())}</b></span></p></td> */}
                         </tfoot>
                     </table>
                 </div>

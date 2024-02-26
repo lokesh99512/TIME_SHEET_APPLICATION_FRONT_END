@@ -8,6 +8,7 @@ import { getCustomersCityData, updateCustomerSwitchData } from "../../store/Part
 import ModalCustomerValue from "./Modal/ModalCustomerValue";
 import {
   City,
+  CommonValue,
   ConatctNo,
   ContactName,
   Country,
@@ -162,6 +163,20 @@ const Customers = () => {
         Cell: (cellProps) => {
           return (
             <Country
+              cellProps={cellProps}
+              viewPopupHandler={viewPopupHandler}
+            />
+          );
+        },
+      },
+      {
+        Header: "Sales Manager",
+        accessor: "salesUser.firstName",
+        filterable: true,
+        disableFilters: true,
+        Cell: (cellProps) => {
+          return (
+            <CommonValue
               cellProps={cellProps}
               viewPopupHandler={viewPopupHandler}
             />
