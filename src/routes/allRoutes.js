@@ -159,6 +159,8 @@ import AirPortLocal from "../pages/Procurement/FreightForwarding/Air/AirPortLoca
 import UploadAirPortLocalChargesData from "../pages/Procurement/FreightForwarding/Air/AirPortLocal/partials/UploadAirPortLocalChargesData";
 import CustomerRates from "../pages/Parties/CustomerRates/CustomerRates";
 import VendorDashboard from "../pages/VendorDashboard";
+import Roles from "../pages/Settings/Roles/Roles";
+import AddRole from "../pages/Settings/Roles/AddRole";
 
 const userRoutes = [
   //dashboard
@@ -208,6 +210,8 @@ const userRoutes = [
   // Settings
   { path: "/settings/company-settings", component: <Settings /> },
   { path: "/settings/users", component: <Users /> },
+  { path: "/settings/roles", component: <Roles /> },
+  { path: "/settings/addRole", component: <AddRole /> },
   { path: "/settings/surcharge", component: <FclSurcharge /> },
   { path: "/settings/users/uploadFile", component: <UploadUser /> },
   { path: "/settings/users/addUser", component: <AddUserData /> }, 

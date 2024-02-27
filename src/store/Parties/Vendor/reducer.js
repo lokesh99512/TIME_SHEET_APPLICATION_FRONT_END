@@ -1,9 +1,10 @@
-import { GET_CUSTOMERS_ID, GET_PARTIES_CUSTOMER_DETAILS_TYPE_SUCCESS, GET_VENDOR_DETAILS_ID, GET_VENDOR_LIST_SUCCESS, VENDOR_LOADER_TYPE, VENDOR_TAB_ACTIVE_TYPE } from "./actiontype";
+import { GET_CUSTOMERS_ID, GET_PARTIES_CUSTOMER_DETAILS_TYPE_SUCCESS, GET_VENDOR_BY_ID_SUCCESS, GET_VENDOR_DETAILS_ID, GET_VENDOR_LIST_SUCCESS, VENDOR_LOADER_TYPE, VENDOR_TAB_ACTIVE_TYPE } from "./actiontype";
 
 const INIT_STATE = {
     vendors_data: [],
     vendor_loader: false,
     vendor_id: {},
+    vendor_data_by_id:{},
     vendor_active_Tab: {
         tab: 1,
         details: 'pending',
@@ -33,6 +34,11 @@ const vendor = (state = INIT_STATE, action) => {
                 ...state,
                 vendor_active_Tab: action.payload,
             };
+            case GET_VENDOR_BY_ID_SUCCESS:
+                return {
+                    ...state,
+                    vendor_data_by_id: action.payload,
+                };
 
         default:
             return state;
