@@ -158,11 +158,13 @@ import UploadStatus from "../pages/uploadstatus/uploadstatus"
 import AirPortLocal from "../pages/Procurement/FreightForwarding/Air/AirPortLocal/AirPortLocal";
 import UploadAirPortLocalChargesData from "../pages/Procurement/FreightForwarding/Air/AirPortLocal/partials/UploadAirPortLocalChargesData";
 import CustomerRates from "../pages/Parties/CustomerRates/CustomerRates";
+import VendorDashboard from "../pages/VendorDashboard";
 
 const userRoutes = [
   //dashboard
   { path: "/upload-status", component: <UploadStatus/> },
   { path: "/dashboard", component: <Dashboard/> },
+  { path: "/dashboard-vendor", component: <VendorDashboard/> },
   { path: "/analytics", component: <AnalyticsComp/> },
 
   // Sales

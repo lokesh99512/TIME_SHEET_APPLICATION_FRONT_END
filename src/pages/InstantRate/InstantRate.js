@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
 
-import { airSearchData, testData } from "../../common/data/sales";
+import { airSearchData } from "../../common/data/sales";
 import { GET_CARGO_TYPE_DATA, GET_CONTAINER_DATA, GET_UOM_WEIGHT_DATA } from "../../store/Global/actiontype";
 import { ADD_OBJECT_INSTANT_SEARCH, BLANK_INSTANT_SEARCH, GET_INSTANT_AIR_SEARCH_RESULT_DETAILS, INSTANT_RATE_ACTIVE_TAB_TYPE, QUOTATION_RESULT_SELECTED_BLANK, REMOVE_OBJECT_INSTANT_SEARCH } from "../../store/InstantRate/actionType";
 import { postInstantSearchAction } from "../../store/InstantRate/actions";
@@ -108,83 +108,6 @@ const InstantRate = () => {
         dispatch({ type: GET_UOM_WEIGHT_DATA });
         blankValueHandler();
     }, []);
-
-
-    useEffect(() => {
-        // let totalSum = testData?.tariffDetails?.reduce((accOuter, currentOuter) => {
-        //     if (currentOuter?.selected) {
-        //         let newArray = [];
-        //         newArray = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
-        //             let currentCurrency = currentInner?.currencyCode;
-        //             let existingObj = accInner?.find((item) => item.currency === currentCurrency);
-        //             if (existingObj) {
-        //                 existingObj.amount = Number(existingObj.amount) + Number(currentInner?.total_sale_cost || currentInner?.amount)
-        //             } else {
-        //                 let NewObj = { currency: currentCurrency, amount: (currentInner?.total_sale_cost || currentInner?.amount) }
-        //                 accInner.push(NewObj);
-        //             }
-        //             return accInner
-        //         }, [])
-        //         console.log(currentOuter?.header, "currentOuter");
-        //         let mainObj = { header: currentOuter?.header, data: newArray };
-        //         accOuter.push(mainObj)
-        //     }
-        //     return accOuter
-        // }, []);
-
-        // let chargesWiseArray = totalSum?.reduce((acc, current) => {
-        //     current
-        //     if (current?.header === "ORIGIN_INLAND_CHARGES" || current?.header === "ORIGIN_LOCAL_PORT_CHARGES" || current?.header === "FREIGHT_CHARGES") {
-        //         let exObj = acc?.find(obj => obj.header === "origin");
-        //         if (exObj) {
-        //             exObj.data = exObj?.data.concat(current?.data);
-        //         } else {
-        //             let newObj = { header: "origin", data: current?.data }
-        //             acc.push(newObj);
-        //         }
-        //     } else if (current?.header === "DESTINATION_INLAND_CHARGES" || current?.header === "DESTINATION_LOCAL_PORT_CHARGES") {
-        //         let exObj = acc?.find(obj => obj.header === "destination");
-        //         if (exObj) {
-        //             exObj.data = exObj?.data.concat(current?.data);
-        //         } else {
-        //             let newObj = { header: "destination", data: current?.data }
-        //             acc.push(newObj);
-        //         }
-        //     }
-        //     return acc
-        // }, [])
-
-        // let finalTotalArray = chargesWiseArray?.map((item) => ({
-        //     ...item,
-        //     data: item?.data?.reduce((acc, current) => {
-        //         let exObj = acc?.find(obj => obj.currency === current?.currency);
-        //         if (exObj) {
-        //             exObj.amount = Number(exObj.amount) + Number(current?.amount);
-        //         } else {
-        //             let newObj = { currency: current?.currency, amount: current?.amount }
-        //             acc.push(newObj);
-        //         }
-        //         return acc
-        //     }, [])
-        // }))
-
-        // const filteredArray = finalTotalArray?.reduce((result, item) => {
-        //     item.data.forEach((dataItem) => {
-        //         const existingCurrency = result?.find((resultItem) => resultItem.currency === dataItem.currency);
-
-        //         if (existingCurrency) {
-        //             existingCurrency[item.header] = dataItem.amount;
-        //         } else {
-        //             result.push({
-        //                 currency: dataItem.currency,
-        //                 [item.header]: dataItem.amount,
-        //             });
-        //         }
-        //     });
-        //     return result;
-        // }, []);
-    }, [])
-
 
     return (
         <>

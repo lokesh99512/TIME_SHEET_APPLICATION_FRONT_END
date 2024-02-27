@@ -4,14 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import Select from 'react-select';
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap';
 
-import { calendar_filled, cube_filled, delete_icon, filter_img, location_filled, swap_arrow } from '../../assets/images';
+import { calendar_filled, cube_filled, delete_icon, filter_img, location_filled, pickup_icon, pickup_icon5, swap_arrow } from '../../assets/images';
 import { optionFlightMode, weightUnitOption } from "../../common/data/sales";
-import { isAnyValueEmpty, useOutsideClick } from "../../components/Common/CommonLogic";
+import { useOutsideClick } from "../../components/Common/CommonLogic";
+import { ToastWrapper, showErrorToast } from "../../components/Common/CustomToast";
 import { GET_AIR_LOCATION_TYPE, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK } from "../../store/InstantRate/actionType";
 import { getAllIncoTerms, getInstantRateLocation } from "../../store/InstantRate/actions";
 import { getAllPartiesCustomerData } from "../../store/Parties/Customer/action";
 import { instantAirFormValidate, instantFromValidate } from "./partials/ValidationForm";
-import { ToastWrapper, showErrorToast } from "../../components/Common/CustomToast";
 const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
   let unitobj = {
     _standard1: 0,
@@ -227,30 +227,30 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
       list[index][name] = val;
 
       setShipmentDetails({ ...shipmentDetails, array: list });
-    } else {      
-      let obj = { ...shipmentDetails, [name]: val};
+    } else {
+      let obj = { ...shipmentDetails, [name]: val };
       setShipmentDetails(obj);
     }
   }
 
   const calculateCBM = () => {
     let arrayList = [...shipmentDetails?.array];
-    if(arrayList.length === 0) return 0
-    if(arrayList !== undefined){
+    if (arrayList.length === 0) return 0
+    if (arrayList !== undefined) {
       for (let index = 0; index < arrayList.length; index++) {
         let lval = Number(arrayList[index]?.dimensions_l);
         let wval = Number(arrayList[index]?.dimensions_w);
         let hval = Number(arrayList[index]?.dimensions_h);
-    
+
         if (shipmentDetails?.weight_unit === 'KG') {
           if (arrayList[index]?.dimensions_unit === 'MM') {
             let amount = (lval * wval * hval) / 100000
             let cbmAmount = (amount / 6000) * Number(arrayList[index]?.no_unit)
-            arrayList[index].amount = cbmAmount.toFixed(2);            
-    
+            arrayList[index].amount = cbmAmount.toFixed(2);
+
           } else {
             let amount = (lval * wval * hval)
-            let cbmAmount = (amount / 6000) * Number(arrayList[index]?.no_unit)            
+            let cbmAmount = (amount / 6000) * Number(arrayList[index]?.no_unit)
             arrayList[index].amount = cbmAmount.toFixed(2);
           }
         } else {
@@ -260,7 +260,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
           let cftAmount = (lvalFeet * wvalFeet * hvalFeet) * Number(arrayList[index]?.no_unit)
           arrayList[index].amount = cftAmount.toFixed(2);
         }
-      }      
+      }
     }
     let totalVw = arrayList?.reduce((a, b) => a + Number(b?.amount), 0)
 
@@ -280,15 +280,14 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
 
   const searchHandler = () => {
     let validateData = {};
-    if(activeTab === 'FCL') {
+    if (activeTab === 'FCL') {
       validateData = instantFromValidate(searchForm);
       setFormError(validateData?.error || {});
     } else {
       validateData = instantAirFormValidate(searchForm);
       setFormError(validateData?.error || {});
     }
-    console.log(validateData,"test"); 
-    if(validateData?.isValid){
+    if (validateData?.isValid) {
       searchQuoteHandler();
     } else {
       showErrorToast("Please fill all required fields.");
@@ -331,6 +330,12 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                             handleChangeHandler(opt, "location_from");
                           }}
                           options={activeTab === "FCL" ? locationOptions : ['dom_air', 'intl_Air'].includes(activeTab) ? airLocation : []}
+                          formatOptionLabel={({ label, code, locationType }) => (
+                            <div className="d-flex align-items-center">
+                              <span className="me-1"><img src={locationType === "CITY" ? pickup_icon5 : pickup_icon} alt="Location" /></span>
+                              <span>{label}</span>
+                            </div>
+                          )}
                           isOptionDisabled={(option) => option.value === searchForm?.location_to?.value}
                           placeholder="Select Location"
                           menuPlacement="auto"
@@ -362,6 +367,12 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                             handleChangeHandler(opt, "location_to");
                           }}
                           options={activeTab === "FCL" ? locationOptions : ['dom_air', 'intl_Air'].includes(activeTab) ? airLocation : []}
+                          formatOptionLabel={({ label, code, locationType }) => (
+                            <div className="d-flex align-items-center">
+                              <span className="me-1"><img src={locationType === "CITY" ? pickup_icon5 : pickup_icon} alt="Location" /></span>
+                              <span>{label}</span>
+                            </div>
+                          )}
                           placeholder="Select Location"
                           isOptionDisabled={(option) => option.value === searchForm?.location_from?.value}
                           classNamePrefix="select2-selection form-select"
@@ -372,8 +383,6 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                   </div>
                 </div>
               </div>
-              {/* {(formError?.location_from && formError?.location_to) ? <p className="error_msg">{formError?.location_from}  {formError?.location_to ? '& ' + formError?.location_to : ''}</p>} */}
-              {/* {formError?.location_to && <p className="error_msg">{formError?.location_to}</p>} */}
             </div>
           </div>
 
@@ -474,12 +483,12 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                       <div className={`prof_wrap number_field_wrap d-flex mb-2 ${formError?.cargo_weight ? 'error' : ''}`}>
                         <div className="con d-flex align-items-center w-100">
                           <div className="left_field">
-                            <input 
-                              type="number" 
-                              value={containerData?.cargo_weight?.value || ''} 
-                              name="cargo_weight" id="cargo_weight" 
-                              placeholder='Enter weight' 
-                              onChange={(e) => { setContainerData({ ...containerData, cargo_weight: { ...containerData?.cargo_weight, value: e.target.value } }) }} 
+                            <input
+                              type="number"
+                              value={containerData?.cargo_weight?.value || ''}
+                              name="cargo_weight" id="cargo_weight"
+                              placeholder='Enter weight'
+                              onChange={(e) => { setContainerData({ ...containerData, cargo_weight: { ...containerData?.cargo_weight, value: e.target.value } }) }}
                             />
                           </div>
                           <div className="common_dropdwon_btn_wrap bottom_drop_field">
@@ -512,8 +521,6 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                   </div>
                 ) : null}
               </div>
-              {/* {((formError?.containerArray && formError?.cargo_weight) || formError?.containerArray) && <p className="error_msg">{formError?.containerArray}</p>}
-              {(!formError?.containerArray && formError?.cargo_weight) && <p className="error_msg">{formError?.cargo_weight}</p>} */}
             </div>
           }
 
@@ -708,14 +715,12 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                       </Accordion>
                     )}
                     <div className="btn_wrap d-flex justify-content-end">
-                      <button type="button" className="btn border_btn" onClick={() => {calculateCBM(); AddLoadHandler();}} > Add Another Load </button>
+                      <button type="button" className="btn border_btn" onClick={() => { calculateCBM(); AddLoadHandler(); }} > Add Another Load </button>
                       <button type="button" className="btn btn-primary" onClick={confirmHandler} > Confirm </button>
                     </div>
                   </div>
                 ) : null}
               </div>
-              {/* {((formError?.shipment_details && formError?.weight) || formError?.shipment_details) && <p className="error_msg">{formError?.shipment_details}</p>}
-              {(!formError?.shipment_details && formError?.weight) && <p className="error_msg">{formError?.weight}</p>} */}
             </div>}
 
           {/* Cargo Ready Date */}
@@ -740,7 +745,6 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                 />
               </div>
             </div>
-            {/* {formError?.cargo_date && <p className="error_msg">{formError?.cargo_date}</p>} */}
           </div>
           <div className={`col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2 ocean_cargo_date ${mainactiveTab === "ocean_freight" ? "active" : ""}`}>
             <div className={`prof_wrap calendar_field_wrap d-flex focus_custom_div ${formError?.cargo_date ? "error" : ""}`}>
@@ -763,7 +767,6 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                 />
               </div>
             </div>
-            {/* {formError?.cargo_date && <p className="error_msg">{formError?.cargo_date}</p>} */}
           </div>
 
           {/* Customer Name */}
@@ -789,13 +792,12 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                       options={customerName?.length !== 0 ? customerName : []}
                       placeholder="Select Customer"
                       classNamePrefix="select2-selection form-select"
-                      menuPlacement="auto"                      
+                      menuPlacement="auto"
                     />
                   </div>
                   <i className="mdi mdi-chevron-down" />
                 </div>
               </div>
-              {/* {formError?.customerName && <p className="error_msg">{formError?.customerName}</p>} */}
             </div>
           )}
 
@@ -824,7 +826,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                           options={customerName?.length !== 0 ? customerName : []}
                           placeholder="Select Customer"
                           classNamePrefix="select2-selection form-select"
-                          menuPlacement="auto"                          
+                          menuPlacement="auto"
                         />
                       </div>
                       <i className="mdi mdi-chevron-down" />
@@ -982,12 +984,6 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
                         }}
                         isSearchable
                         placeholder={searchForm?.cargo_value?.currency?.currencyCode || "Select Currency"}
-                        // formatOptionLabel={({ label, code }) => (
-                        //   <div className="d-flex justify-content-between">
-                        //     <span>{label}</span>
-                        //     <span>{code}</span>
-                        //   </div>
-                        // )}
                         styles={{
                           control: (provided) => ({
                             ...provided,
@@ -1028,9 +1024,7 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
           <div className="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mt-2 align-self-center">
             <button className="btn p-0 me-3 border-0" onClick={() => { setAdvanceSearch(!advanceSearch) }}><img src={filter_img} alt="filter" width={'20px'} height={'20px'} /></button>
             <button type="button" className='btn btn-primary mt-0' onClick={() => { searchHandler(); }}
-              >Search</button>
-            {/* <button type="button" className='btn btn-primary mt-0' onClick={() => { searchHandler(); }}
-              disabled={mainactiveTab === "air_freight" ? isAnyValueEmpty(searchForm, ['customerName']) : !(!isAnyValueEmpty(searchForm))}>Search</button> */}
+            >Search</button>
           </div>
         </div>
       </div>

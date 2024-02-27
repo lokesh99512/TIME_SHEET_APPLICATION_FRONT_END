@@ -6864,42 +6864,43 @@ const inLandTableData = [
     },
 ]
 
-// --------------------------- upload form options ---------------------------------
-// unused option
-// const chargeCategory = [
-//     { label: "OCEAN SURCHARGE", value: "freight_surcharge" },
-//     { label: "PORT SURCHARGE", value: "port_surcharge" },
-//     { label: "LOCAL SURCHARGE", value: "local_surcharge" },
-//     { label: "ORIGIN TRANSPORTATION", value: "origin_transportation" },
-//     { label: "DESTINATION TRANSPORTATION", value: "destination_transportation" },
-//     { label: "ANCILLARY CHARGES", value: "ancillary_charges" },
-//     { label: "VAS CHARGES", value: "vas_charges" },
-//     { label: "CUSTOMS", value: "custom" },
-// ];
-// const portName = [
-//     { label: "BDDAC - DHAKA", value: "BDDAC" },
-//     { label: "INMAA - CHENNAI", value: "INMAA" },
-//     { label: "INKTP - CHENNAI", value: "INKTP" },
-//     { label: "CNNGB - NINGBO", value: "CNNGB" },
-//     { label: "CNSHA - SHANGHAI", value: "CNSHA" },
-//     { label: "KHPNH - PHNOM PENH", value: "KHPNH" },
-//     { label: "KHKOS - SIHANOUKVILLE", value: "KHKOS" },
-//     { label: "HKHKG - HONG KONG", value: "HKHKG" },
-//     { label: "IDBLW - BELAWAN", value: "IDBLW" },
-//     { label: "IDJKT - JAKARTA", value: "IDJKT" },
-//     { label: "IDPLM - PALEMBANG", value: "IDPLM" },
-//     { label: "IDPNK - PONTIANAK", value: "IDPNK" },
-//     { label: "IDSRG - SEMARANG", value: "IDSRG" },
-//     { label: "IDSUB - SURABAYA", value: "IDSUB" },
-// ];
-// const serviceType = [
-//     { label: "Door To Door", value: "Door To Door" },
-//     { label: "Door To Port", value: "Door To Port" },
-//     { label: "Port To Door", value: "Port To Door" },
-//     { label: "Port To Port", value: "Port To Port" },
-// ];
-// unused option
+export const airDummyData = [
+    {
+        bookingMode: "bookingMode",
+        origin: "origin",
+        destination: "destination",
+        cargomode: "cargomode",
+        cargoType: "cargoType",
+        weight: "weight",
+        l1Details: {
+            l1fr: "l1fr",
+            l1charges: "l1charges",
+            l1total: "l1total"
+        },
+        l2Details: {
+            l2fr: "l2fr",
+            l2charges: "l2charges",
+            l2total: "l2total"
+        },
+        l3Details: {
+            l3fr: "l3fr",
+            l3charges: "l3charges",
+            l3total: "l3total"
+        },
+        l4Details: {
+            l4fr: "l4fr",
+            l4charges: "l4charges",
+            l4total: "l4total"
+        },
+        l5Details: {
+            l5fr: "l5fr",
+            l5charges: "l5charges",
+            l5total: "l5total"
+        },
+    }
+]
 
+// --------------------------- upload form options ---------------------------------
 
 const optionRateType = [
     { label: "SPOT", value: "SPOT" },

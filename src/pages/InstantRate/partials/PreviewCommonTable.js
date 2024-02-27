@@ -79,8 +79,8 @@ export const CurrencyWiseTotal = ({ data, newData }) => {
     const filteredArray = processTariffDetails(data?.tariffDetails);
     const filteredArrayNew = processTariffDetails(newData?.tariffDetails, 'new');
 
-    console.log(filteredArray, "filteredArray");
-    console.log(filteredArrayNew, "filteredArrayNew");
+    // console.log(filteredArray, "filteredArray");
+    // console.log(filteredArrayNew, "filteredArrayNew");
 
     const mergedMap = new Map();
     const updateMap = (currency, origin, destination) => {
@@ -100,11 +100,12 @@ export const CurrencyWiseTotal = ({ data, newData }) => {
     filteredArrayNew?.forEach(({ currency, origin, destination }) => {
         updateMap(currency, origin || 0, destination || 0);
     });
-    console.log(mergedMap,"mergedMap");
+    // console.log(mergedMap,"mergedMap");
+
     // Convert the merged map values back to an array
     const mergedArray = [...mergedMap.values()];
 
-    console.log(mergedArray);
+    // console.log(mergedArray);
 
     return (
         <>

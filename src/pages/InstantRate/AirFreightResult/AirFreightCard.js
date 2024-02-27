@@ -236,7 +236,6 @@ const AirFreightCard = ({ data, QuoteModalHandler, mainTab, bookModalHandler }) 
                                                                 <div className="price_details_wrap ps-5">
                                                                     {data?.tariffBreakDowns?.length !== 0 && data?.tariffBreakDowns?.map((val, ind) => (
                                                                         <div className="details d-flex justify-content-between" key={`key_${ind}`}>
-                                                                            {/* <p className='me-2'>{`${val?.component || ''} ${val?.containerDetail ? '- ' + val?.containerDetail : ''}`}</p> */}
                                                                             <p className='me-2'>{`${val?.component || ''} `}</p>
                                                                             <span className='text-primary'>{val?.currencyCode || '₹'} {val?.amount || '0'}</span>
                                                                         </div>

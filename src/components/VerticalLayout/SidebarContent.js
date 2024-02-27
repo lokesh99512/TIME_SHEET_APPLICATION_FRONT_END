@@ -173,6 +173,14 @@ const SidebarContent = props => {
                     <span>{props.t("Dashboard")}</span>
                   </Link>
                 </li>
+                <li>
+                  <Link to="/dashboard-vendor" className="">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+                      <path d="M7.5 11.5C8.32843 11.5 9 12.1716 9 13V17C9 17.8284 8.32843 18.5 7.5 18.5H3.5C2.67157 18.5 2 17.8284 2 17V13C2 12.1716 2.67157 11.5 3.5 11.5H7.5ZM16.5 11.5C17.3284 11.5 18 12.1716 18 13V17C18 17.8284 17.3284 18.5 16.5 18.5H12.5C11.6716 18.5 11 17.8284 11 17V13C11 12.1716 11.6716 11.5 12.5 11.5H16.5ZM7.5 2.5C8.32843 2.5 9 3.17157 9 4V8C9 8.82843 8.32843 9.5 7.5 9.5H3.5C2.67157 9.5 2 8.82843 2 8V4C2 3.17157 2.67157 2.5 3.5 2.5H7.5ZM16.5 2.5C17.3284 2.5 18 3.17157 18 4V8C18 8.82843 17.3284 9.5 16.5 9.5H12.5C11.6716 9.5 11 8.82843 11 8V4C11 3.17157 11.6716 2.5 12.5 2.5H16.5Z" fill="#4848F7" />
+                    </svg>
+                    <span>{props.t("Vendor DashBoard")}</span>
+                  </Link>
+                </li>
               </ul>
             </li>
             <li onClick={() => {dispatch({ type: BLANK_MODAL_CHARGE, payload: {} }); dispatch({ type: QUOTATION_RESULT_SELECTED_BLANK, payload: {} }); dispatch({ type: BLANK_INSTANT_SEARCH }); dispatch({type: INSTANT_RATE_ACTIVE_TAB_TYPE, payload: { main: "ocean_freight", sub: "FCL"}});}}>

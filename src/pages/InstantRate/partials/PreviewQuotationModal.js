@@ -1,27 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Modal } from 'reactstrap'
-import { edit_icon, sitelogo } from '../../../assets/images';
-import { useSelector } from 'react-redux';
-import PreviewCommonTable from './PreviewCommonTable';
-import { useDispatch } from 'react-redux';
-import { BLANK_MODAL_CHARGE } from '../../../store/Sales/Quotation/actiontype';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_SELECTED_BLANK } from '../../../store/InstantRate/actionType';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Modal } from 'reactstrap';
+import { edit_icon, sitelogo } from '../../../assets/images';
 import { formatDate } from '../../../components/Common/CommonLogic';
+import PreviewCommonTable from './PreviewCommonTable';
 
 export default function PreviewQuotationModal({ previewModal, previewModalHand, setPreviewModal, QuoteModalHandler }) {
-    const ref = useRef();
     const quoteData = useSelector((state) => state.instantRate.quote_selected_data);
     const mainChargeObj = useSelector((state) => state?.quotation?.mainChargeObj);
-    const preferData = quoteData?.filter(obj => obj.quote_type === 'preffered');
-    const cheaperData = quoteData?.filter(obj => obj.quote_type === 'cheaper');
-    const fasterData = quoteData?.filter(obj => obj.quote_type === 'faster');
     const {searchForm, $instantActiveTab} = useSelector((state) => state?.instantRate);
     const {tenant_info} = useSelector((state) => state?.settings);
     const { customer_data } = useSelector((state) => state?.customer);
-    const dispatch = useDispatch();
     const [customerInfo, setCustomerInfo] = useState();
+
     useEffect(() => {
         let data = customer_data && customer_data?.content?.find(obj => obj.id === searchForm?.customerName?.value);
         setCustomerInfo(data);
@@ -70,7 +63,8 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
             pdf.save('component.pdf');
         });
         confirmHandler();
-      };
+    };
+
     return (
         <>
             <Modal size="md" isOpen={previewModal} toggle={() => { previewModalHand(); }} className='preview_modal_wrap'>
@@ -97,53 +91,12 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
                                     <div className="row">
                                         <div className="col-lg-4">
                                             <div className="details">
-                                                {/* <span>Company Name</span> */}
-                                                <p>{customerInfo?.name || '-'}</p>
-                                            </div>
-                                        </div>
-                                        {/* <div className="col-lg-4">
-                                            <div className="details">
-                                                <span>Primary Contact</span>
-                                                <p>{customerInfo?.contactName || '-'}</p>
-                                            </div>
-                                        </div>
-                                        <div className="col-lg-4">
-                                            <div className="details">
-                                                <span>Email Address</span>
-                                                <p>{customerInfo?.contactEmail || '-'}</p>
-                                            </div>
-                                        </div> */}
-                                        <div className="col-lg-6">
-                                            <div className="details">
-                                                {/* <span>Address</span> */}
-                                                <p>Address: {customerInfo?.address || '-'}</p>
+                                                <p className='mb-1'>{customerInfo?.name || '-'}</p>
+                                                <p>{customerInfo?.address || '-'}</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                {/* <div className="top_creation_details">
-                                    <p className="title">Quotation Details:</p>
-                                    <div className="row">
-                                        <div className="col-lg-4">
-                                            <div className="details">
-                                                <span>Name/Company</span>
-                                                <p>{tenant_info?.name || '-'}</p>
-                                            </div>
-                                        </div>
-                                        <div className="col-lg-4">
-                                            <div className="details">
-                                                <span>Primary Contact</span>
-                                                <p>{tenant_info?.contactName || '-'}</p>
-                                            </div>
-                                        </div>
-                                        <div className="col-lg-4">
-                                            <div className="details">
-                                                <span>Email Address</span>
-                                                <p>{tenant_info?.contactEmail || '-'}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> */}
                             </div>
                             <div className="half_wrap mt-1">
                                 <div className="half_box white_box">
@@ -154,14 +107,15 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
                                     </div> */}
                                     <div className="details">
                                         <span>Port</span>
-                                        <p>{searchForm?.location_from?.label || '-'}</p>
+                                        {/* <p>{searchForm?.location_from?.label || '-'}</p> */}
+                                        <p>{quoteData?.[0]?.tariffDetails?.[0]?.to || '-'}</p>
                                     </div>
                                 </div>
                                 <div className="half_box white_box">
                                     <p className="title">Destination:</p>
                                     <div className="details">
                                         <span>Port</span>
-                                        <p>{searchForm?.location_to?.label || '-'}</p>
+                                        <p>{quoteData?.[0]?.tariffDetails?.[quoteData?.[0]?.tariffDetails?.length - 1]?.from || '-'}</p>
                                     </div>
                                     {/* <div className="details">
                                         <span>Drop</span>
@@ -196,13 +150,7 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
                         </div>
 
                         <PreviewCommonTable  />
-                        {quoteData?.length !== 0 ? quoteData?.map((data) => (<PreviewCommonTable data={data} key={data.quote_id} newData={mainChargeObj.find(obj => obj.id === data.quote_id) || []} tab={$instantActiveTab} />)) : null}
-                        {/* {preferData?.length !== 0 ? preferData?.map((data) => (<PreviewCommonTable data={data} key={data.id} newData={mainChargeObj.find(obj => obj.id === data.id)} />)) : null}
-                        <span style={{pageBreakAfter: 'always'}}></span>
-                        {cheaperData?.length !== 0 ? cheaperData?.map((data) => (<PreviewCommonTable data={data} key={data.id} newData={mainChargeObj.find(obj => obj.id === data.id)} />)) : null}
-                        <span style={{pageBreakAfter: 'always'}}></span>
-                        {fasterData?.length !== 0 ? fasterData?.map((data) => (<PreviewCommonTable data={data} key={data.id} newData={mainChargeObj.find(obj => obj.id === data.id)} />)) : null} */}
-
+                        {quoteData?.length !== 0 ? quoteData?.map((data) => (<PreviewCommonTable data={data} key={data.quote_id} newData={mainChargeObj.find(obj => obj.id === data.quote_id) || []} tab={$instantActiveTab} />)) : null}                        
                     </div>
                 </div>
             </Modal>

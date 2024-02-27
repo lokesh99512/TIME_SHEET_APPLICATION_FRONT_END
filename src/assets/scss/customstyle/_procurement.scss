@@ -2253,3 +2253,37 @@ input[type="number"]{
     pointer-events: none;
     opacity: 0.7;
 }
+
+.air_compare_form{
+    gap: 10px 0;
+    .form-select__control {
+        height: 38px;
+    }
+}
+
+.air_table_wrap {
+    table {
+        thead {
+            tr{                
+                &:first-child:not(:last-child) {
+                    th {
+                        background: transparent;
+                        border: 3px solid #F1F1FE;
+                        text-align: center;
+                        padding: 13px 12px;
+                        &.hide{
+                            font-size: 0;
+                        }
+                    }
+                }
+                &:not(:first-child){
+                    th{
+                        border-radius: 0;
+                        border: 3px solid #ffffff;
+                        padding: 10px 12px;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -87,17 +87,20 @@ const TableAirwayBill = ({ columns, data, isGlobalFilter, customPageSize, toggle
                     </div>
                 </div>
             </div>
-            <div className="table_pagination_wrap">
+            <div className="table_pagination_wrap air_table_wrap">
                 <div className="table-responsive table_wrap">
-                    <Table hover {...getTableProps()} className={'test'}>
+                    <Table hover {...getTableProps()}>
                         <thead className="table-light table-nowrap">
                             {headerGroups.map(headerGroup => (
                                 <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
                                     {headerGroup.headers.map(column => (
-                                        <th key={column.id}>
-                                            <span className='d-flex align-items-center' {...column.getSortByToggleProps()}>
+                                        // <th {...column.getHeaderProps()} key={column.id} className={`${column?.Header?.includes('test') ? 'hide' : ''}`}>{column.render('Header')} </th>
+                                        <th {...column.getHeaderProps()} key={column.id} className={`${column?.Header?.includes('test') ? 'hide' : ''}`}>
+                                            <span className='d-flex align-items-center justify-content-center' {...column.getSortByToggleProps()}>
                                                 {column.render("Header")}
-                                                <i className='fas fa-sort'></i>
+                                                {!column?.Header?.includes('test') && (
+                                                    <i className='fas fa-sort'></i>
+                                                )}
                                             </span>
                                             <Filter column={column} />
                                         </th>
@@ -111,7 +114,7 @@ const TableAirwayBill = ({ columns, data, isGlobalFilter, customPageSize, toggle
                                 prepareRow(row);
                                 return (
                                     <Fragment key={row.getRowProps().key}>
-                                        <tr>
+                                        <tr {...row.getRowProps()}>
                                             {row.cells.map(cell => {
                                                 return (
                                                     <td key={cell.id} {...cell.getCellProps()} style={{ backgroundColor: cell?.row?.original?.is_active === false ? "#D3D3D3" : "" }}>
@@ -123,13 +126,14 @@ const TableAirwayBill = ({ columns, data, isGlobalFilter, customPageSize, toggle
                                     </Fragment>
                                 );
                             })}
+                            {console.log(headerGroups[0],"headerGroups[0]")}
                             {page?.length === 0 && (
                                 <>
                                     {loader ? (
                                         <TableCommonSkeleton tdCount={headerGroups[0].headers.length} />
                                     ) :
                                         <tr>
-                                            <td colSpan={headerGroups[0].headers.length}>
+                                            <td colSpan={18}>
                                                 <div className='no_table_data_found'>
                                                     <p>No Data Found.</p>
                                                 </div>
