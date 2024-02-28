@@ -430,4 +430,25 @@
             }
         }
     }
+    &.vendor_dashboard_wrapper{
+        .sh_box_wrap{
+            flex-wrap: wrap;
+            gap: 15px;
+            .sh_box {
+                @extend .border;
+                background: $neutral_1;
+                width: calc(50% - 8px);
+                padding: 6px 12px;
+                .count {
+                    font-weight: 700;
+                    font-size: 20px;
+                }
+            }
+            &.sh_box-4{
+                .sh_box{
+                    width: calc(25% - 12px);
+                }
+            }
+        }
+    }
 }

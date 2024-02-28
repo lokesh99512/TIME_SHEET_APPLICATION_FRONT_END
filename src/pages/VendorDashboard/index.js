@@ -1,55 +1,50 @@
-import React from 'react'
-import ReactApexChart from 'react-apexcharts';
-import { Card, CardBody, Container } from 'reactstrap';
+import React, { useMemo } from 'react';
+import { Card, CardBody, Col, Container, Row } from 'reactstrap';
+import AnimatedCounter from '../Dashboard/Partials/AnimatedCounter';
+import CarrierChart from './CarrierChart';
+import { CommonValue } from './DashboardCol';
+import VendorCommonTable from './VendorCommonTable';
 
 const VendorDashboard = () => {
-    const options = {
-        chart: {
-            height: 50,
-            type: "bar",
-            toolbar: { show: false },
-        },
-        colors: ["#5156be"],
-        stroke: {
-            curve: 'smooth',
-            width: 2,
-        },
-        xaxis: {
-            labels: {
-                show: false
-            },
-            axisTicks: {
-                show: false
-            },
-            axisBorder: {
-                show: false
+    const columns = useMemo(() => [
+        {
+            Header: 'Lane',
+            accessor: 'lane',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} />
             }
         },
-        yaxis: {
-            labels: {
-                show: false
+        {
+            Header: 'Total Queries',
+            accessor: 'queries',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} />
             }
         },
-        tooltip: {
-            fixed: {
-                enabled: false
-            },
-            x: {
-                show: false
-            },
-            y: {
-                title: {
-                    formatter: function (seriesName) {
-                        return ''
-                    }
-                }
-            },
-            marker: {
-                show: false
+        {
+            Header: 'Conversion',
+            accessor: 'conversion',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} />
+            }
+        },
+        {
+            Header: 'Trend',
+            accessor: 'trend',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} />
             }
         }
-    };
-    const series= [2, 10, 18, 22, 36, 15, 47, 75, 65, 19, 14, 2, 47, 42, 15]
+    ]);
+
     return (
         <React.Fragment>
             <div className="page-content">
@@ -58,31 +53,213 @@ const VendorDashboard = () => {
                         <div className="row">
                             <div className="col-xl-4">
                                 <div>
-                                    <h3 className="sub_title">Vendor Spend</h3>
                                     <Card>
                                         <CardBody>
-                                            Vendor Spend
+                                            <h3 className="sub_title">Vendor Spend</h3>
+                                            <div className="sh_box_wrap d-flex">
+                                                <div className="sh_box" >
+                                                    <p className="box_title">Total Vendors</p>
+                                                    <div className="sh_inquiry_rate justify-content-between align-items-center">
+                                                        <AnimatedCounter rate={100} />
+                                                        <div className="text-nowrap fs-5">
+                                                            <span className={`${20 < 0 ? 'red_text' : 'green_text'}`}>20%</span>
+                                                            <span className="ms-1 box_bottom_text">Since last month</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="sh_box" >
+                                                    <p className="box_title">Total Spend MTD</p>
+                                                    <div className="sh_inquiry_rate justify-content-between align-items-center">
+                                                        <AnimatedCounter rate={100} />
+                                                        <div className="text-nowrap fs-5">
+                                                            <span className={`${15 < 0 ? 'red_text' : 'green_text'}`}>15%</span>
+                                                            <span className="ms-1 box_bottom_text">Since last month</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="sh_box" >
+                                                    <p className="box_title">Total Spend Projected</p>
+                                                    <div className="sh_inquiry_rate justify-content-between align-items-center">
+                                                        <AnimatedCounter rate={100} />
+                                                        <div className="text-nowrap fs-5">
+                                                            <span className={`${-15 < 0 ? 'red_text' : 'green_text'}`}>15%</span>
+                                                            <span className="ms-1 box_bottom_text">Since last month</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="sh_box" >
+                                                    <p className="box_title">Total Vendor</p>
+                                                    <div className="sh_inquiry_rate justify-content-between align-items-center">
+                                                        <AnimatedCounter rate={100} />
+                                                        <div className="text-nowrap fs-5">
+                                                            <span className={`${15 < 0 ? 'red_text' : 'green_text'}`}>15%</span>
+                                                            <span className="ms-1 box_bottom_text">Since last month</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </CardBody>
+                                    </Card>
+                                </div>
+                                <div>
+                                    <h3 className="sub_title">Weight Exceptions</h3>
+                                    <Card>
+                                        <CardBody>
+                                            <div className="sh_box_wrap d-flex">
+                                                <div className="sh_box" >
+                                                    <p className="box_title">Total Wt Exception</p>
+                                                    <div className="sh_inquiry_rate justify-content-between align-items-center">
+                                                        <AnimatedCounter rate={100} />
+                                                        <div className="text-nowrap fs-5">
+                                                            <span className={`${20 < 0 ? 'red_text' : 'green_text'}`}>20%</span>
+                                                            <span className="ms-1 box_bottom_text">Since last month</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="sh_box" >
+                                                    <p className="box_title">Spend Impact</p>
+                                                    <div className="sh_inquiry_rate justify-content-between align-items-center">
+                                                        <AnimatedCounter rate={100} />
+                                                        <div className="text-nowrap fs-5">
+                                                            <span className={`${15 < 0 ? 'red_text' : 'green_text'}`}>15%</span>
+                                                            <span className="ms-1 box_bottom_text">Since last month</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </CardBody>
+                                    </Card>
+                                </div>
+                                <div>
+                                    <h3 className="sub_title">Flight Exceptions</h3>
+                                    <Card>
+                                        <CardBody>
+                                            <div className="sh_box_wrap d-flex">
+                                                <div className="sh_box" >
+                                                    <p className="box_title">Total Flight Changes</p>
+                                                    <div className="sh_inquiry_rate justify-content-between align-items-center">
+                                                        <AnimatedCounter rate={100} />
+                                                        <div className="text-nowrap fs-5">
+                                                            <span className={`${20 < 0 ? 'red_text' : 'green_text'}`}>20%</span>
+                                                            <span className="ms-1 box_bottom_text">Since last month</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="sh_box" >
+                                                    <p className="box_title">Spend Impact</p>
+                                                    <div className="sh_inquiry_rate justify-content-between align-items-center">
+                                                        <AnimatedCounter rate={100} />
+                                                        <div className="text-nowrap fs-5">
+                                                            <span className={`${15 < 0 ? 'red_text' : 'green_text'}`}>15%</span>
+                                                            <span className="ms-1 box_bottom_text">Since last month</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </CardBody>
                                     </Card>
                                 </div>
                             </div>
                             <div className="col-xl-8">
                                 <div>
-                                    <h3 className="sub_title">Carrier Distribution</h3>
+                                    <CarrierChart />
+                                </div>
+                                <div>
+                                    <h3 className="sub_title">Shipment Status</h3>
                                     <Card>
                                         <CardBody>
-                                            <ReactApexChart
-                                                options={options}
-                                                series={[{ data: series }]}
-                                                type="line"
-                                                className="apex-charts"
-                                                dir="ltr"
-                                            />
+                                            <div className="sh_box_wrap sh_box-4 d-flex">
+                                                <div className="sh_box" >
+                                                    <p className="box_title">Total Shipments</p>
+                                                    <div className="sh_inquiry_rate justify-content-between align-items-center">
+                                                        <AnimatedCounter rate={100} />
+                                                        <div className="text-nowrap fs-5">
+                                                            <span className={`${20 < 0 ? 'red_text' : 'green_text'}`}>20%</span>
+                                                            <span className="ms-1 box_bottom_text">Since last month</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="sh_box" >
+                                                    <p className="box_title">Delivered</p>
+                                                    <div className="sh_inquiry_rate justify-content-between align-items-center">
+                                                        <AnimatedCounter rate={100} />
+                                                        <div className="text-nowrap fs-5">
+                                                            <span className={`${15 < 0 ? 'red_text' : 'green_text'}`}>15%</span>
+                                                            <span className="ms-1 box_bottom_text">Since last month</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="sh_box" >
+                                                    <p className="box_title">In Transit</p>
+                                                    <div className="sh_inquiry_rate justify-content-between align-items-center">
+                                                        <AnimatedCounter rate={100} />
+                                                        <div className="text-nowrap fs-5">
+                                                            <span className={`${15 < 0 ? 'red_text' : 'green_text'}`}>15%</span>
+                                                            <span className="ms-1 box_bottom_text">Since last month</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="sh_box" >
+                                                    <p className="box_title">Exceptions</p>
+                                                    <div className="sh_inquiry_rate justify-content-between align-items-center">
+                                                        <AnimatedCounter rate={100} />
+                                                        <div className="text-nowrap fs-5">
+                                                            <span className={`${15 < 0 ? 'red_text' : 'green_text'}`}>15%</span>
+                                                            <span className="ms-1 box_bottom_text">Since last month</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </CardBody>
                                     </Card>
                                 </div>
                             </div>
                         </div>
+
+                        {/* dashboard tables */}
+                        <Row className="sh_dashboar_table_wrap">
+                            {/* Export Summary table */}
+                            <Col lg={6}>
+                                <div className="sh_summary_table_wrap">
+                                    <h3 className="sub_title">Top 10 Lanes by Weight</h3>
+                                    <VendorCommonTable 
+                                        columns={columns}
+                                        data={[]}
+                                        customPageSize={10}
+                                    />
+                                </div>
+                            </Col>
+                            <Col lg={6}>
+                                <div className="sh_summary_table_wrap">
+                                    <h3 className="sub_title">Top 10 Lanes by Spend</h3>
+                                    <VendorCommonTable 
+                                        columns={columns}
+                                        data={[]}
+                                        customPageSize={10}
+                                    />
+                                </div>
+                            </Col>
+                            <Col lg={6}>
+                                <div className="sh_summary_table_wrap">
+                                    <h3 className="sub_title">Top 10 Customer</h3>
+                                    <VendorCommonTable 
+                                        columns={columns}
+                                        data={[]}
+                                        customPageSize={10}
+                                    />
+                                </div>
+                            </Col>
+                            <Col lg={6}>
+                                <div className="sh_summary_table_wrap">
+                                    <h3 className="sub_title">Customerwise Inquiries</h3>
+                                    <VendorCommonTable 
+                                        columns={columns}
+                                        data={[]}
+                                        customPageSize={10}
+                                    />
+                                </div>
+                            </Col>
+                        </Row>
                     </div>
                 </Container>
             </div>

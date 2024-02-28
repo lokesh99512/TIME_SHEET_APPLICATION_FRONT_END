@@ -273,6 +273,11 @@ const SidebarContent = props => {
                         <span>Airport/Local Charges</span>
                       </Link>
                     </li>
+                    <li>
+                      <Link to="/freight/air/compare-rate">
+                        <span>Compare Rate</span>
+                      </Link>
+                    </li>
                   </ul>
                 </li>
                 {/* <li>

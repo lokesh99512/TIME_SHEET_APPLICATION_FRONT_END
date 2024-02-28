@@ -2,14 +2,13 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap'
 import { edit_icon, eye_icon } from '../../../../assets/images'
-import { airDummyData, waybillBreadcrumb, waybillRateData } from '../../../../common/data/procurement'
-import { getAirwaybillData, updateAirwaybillSwitchData,getAirwaybillDataById } from '../../../../store/Procurement/actions'
+import { waybillBreadcrumb, waybillRateData } from '../../../../common/data/procurement'
+import { getAirwaybillData, getAirwaybillDataById, updateAirwaybillSwitchData } from '../../../../store/Procurement/actions'
 import FilterOffCanvasComp from '../Modal/FilterOffCanvasComp'
-import ModalAir from './ModalAir'
-import {  ChargeId, CommonReplaceValue, CommonValue, ValidTill, VendorName, ViaPort } from '../partials/OceanCol'
-import TableAirwayBill from './TableAirwayBill'
+import { ChargeId, CommonReplaceValue, ValidTill, VendorName } from '../partials/OceanCol'
 import TopBreadcrumbs from '../partials/TopBreadcrumbs'
-import AirCompare from './partials/AirCompare'
+import ModalAir from './ModalAir'
+import TableAirwayBill from './TableAirwayBill'
 
 export default function AirMasterBill() {
     document.title="Air Master || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
@@ -70,280 +69,91 @@ export default function AirMasterBill() {
 
     const columns = useMemo(() => [
         {
-            Header: "test1",
-            columns:[
-                {
-                    Header: 'Booking Mode',
-                    accessor: 'bookingMode',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-                    }
-                },
-            ]
+            Header: 'Charge ID',
+            accessor: 'id',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <ChargeId cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
         },
         {
-            Header: "test2",
-            columns:[
-                {
-                    Header: 'Origin',
-                    accessor: 'origin',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-                    }
-                },
-            ]
+            Header: 'Carrier name',
+            accessor: (row) => `${row.tenantVendor === null ? '' : row.tenantVendor.name}`,
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonReplaceValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
         },
         {
-            Header: "test3",
-            columns:[
-                {
-                    Header: 'Destination',
-                    accessor: 'destination',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-                    }
-                },
-            ]
+            Header: 'Vendor Type',
+            accessor: (row) => `${row.tenantVendor === null ? '' : row.tenantVendor.vendorType}`,
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <VendorName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
         },
         {
-            Header: "test4",
-            columns:[
-                {
-                    Header: 'Cargo Mode',
-                    accessor: 'cargomode',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-                    }
-                },
-            ]
+            Header: 'Rate Type',
+            accessor: 'rateType',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        
+        {
+            Header: 'Valid To',
+            accessor: 'validTo',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
         },
         {
-            Header: "test5",
-            columns:[
-                {
-                    Header: 'Cargo Type',
-                    accessor: 'cargoType',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-                    }
-                },
-            ]
+            Header: 'Valid From',
+            accessor: 'validFrom',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },  
+        {
+            Header: 'Action',
+            Cell: (cellProps) => {
+                return (
+                    <UncontrolledDropdown>
+                        <DropdownToggle className="btn btn-link text-muted py-1 font-size-16 shadow-none" tag="a">
+                            <i className='bx bx-dots-vertical-rounded'></i>
+                        </DropdownToggle>
+                        <DropdownMenu className="dropdown-menu-end">
+                            <DropdownItem onClick={(e) => {e.stopPropagation(); editPopupHandler(cellProps.row.original)}}>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
+                            <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem>
+                            <DropdownItem onClick={(e) => e.stopPropagation()}>
+                                {cellProps.row.original?.status === "ACTIVE" ? "Activate" : "Deactive"}
+                                <div className="switch_wrap">
+                                    <FormGroup switch>
+                                        <Input 
+                                        type="switch"
+                                        checked={cellProps.row.original?.status === "ACTIVE" || false}
+                                        onClick={() => {
+                                            switchHandler(cellProps.row.original);
+                                        }}
+                                        readOnly
+                                        />
+                                    </FormGroup>
+                                </div>
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
+                )
+            }
         },
-        {
-            Header: "test6",
-            columns:[
-                {
-                    Header: 'Weight',
-                    accessor: 'weight',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-                    }
-                },
-            ]
-        },
-        {
-            Header: "L1 - Ariline/Vendor",
-            columns:[
-                {
-                    Header: 'FR/kg',
-                    accessor: 'l1Details.l1fr',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-                    }
-                },
-                {
-                    Header: 'dd. Charges',
-                    accessor: 'l1Details.l1charges',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-                    }
-                },
-                {
-                    Header: 'Total/KG',
-                    accessor: 'l1Details.l1total',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-                    }
-                }
-            ]
-        },
-        {
-            Header: "L2 - Ariline/Vendor",
-            columns:[
-                {
-                    Header: 'FR/kg',
-                    accessor: 'l2Details.l2fr',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-                    }
-                },
-                {
-                    Header: 'dd. Charges',
-                    accessor: 'l2Details.l2charges',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-                    }
-                },
-                {
-                    Header: 'Total/KG',
-                    accessor: 'l2Details.l2total',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-                    }
-                }
-            ]
-        },
-        {
-            Header: "L3 - Ariline/Vendor",
-            columns:[
-                {
-                    Header: 'FR/kg',
-                    accessor: 'l3Details.l3fr',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-                    }
-                },
-                {
-                    Header: 'dd. Charges',
-                    accessor: 'l3Details.l3charges',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-                    }
-                },
-                {
-                    Header: 'Total/KG',
-                    accessor: 'l3Details.l3total',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-                    }
-                }
-            ]
-        },
-        {
-            Header: "L4 - Ariline/Vendor",
-            columns:[
-                {
-                    Header: 'FR/kg',
-                    accessor: 'l4Details.l4fr',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-                    }
-                },
-                {
-                    Header: 'dd. Charges',
-                    accessor: 'l4Details.l4charges',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-                    }
-                },
-                {
-                    Header: 'Total/KG',
-                    accessor: 'l4Details.l4total',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-                    }
-                }
-            ]
-        }, 
-        {
-            Header: "L5 - Ariline/Vendor",
-            columns:[
-                {
-                    Header: 'FR/kg',
-                    accessor: 'l5Details.l5fr',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-                    }
-                },
-                {
-                    Header: 'dd. Charges',
-                    accessor: 'l5Details.l5charges',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-                    }
-                },
-                {
-                    Header: 'Total/KG',
-                    accessor: 'l5Details.l5total',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-                    }
-                }
-            ]
-        }, 
-        // {
-        //     Header: 'Action',
-        //     Cell: (cellProps) => {
-        //         return (
-        //             <UncontrolledDropdown>
-        //                 <DropdownToggle className="btn btn-link text-muted py-1 font-size-16 shadow-none" tag="a">
-        //                     <i className='bx bx-dots-vertical-rounded'></i>
-        //                 </DropdownToggle>
-        //                 <DropdownMenu className="dropdown-menu-end">
-        //                     <DropdownItem onClick={(e) => {e.stopPropagation(); editPopupHandler(cellProps.row.original)}}>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
-        //                     <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem>
-        //                     <DropdownItem onClick={(e) => e.stopPropagation()}>
-        //                         {cellProps.row.original?.status === "ACTIVE" ? "Activate" : "Deactive"}
-        //                         <div className="switch_wrap">
-        //                             <FormGroup switch>
-        //                                 <Input 
-        //                                 type="switch"
-        //                                 checked={cellProps.row.original?.status === "ACTIVE" || false}
-        //                                 onClick={() => {
-        //                                     switchHandler(cellProps.row.original);
-        //                                 }}
-        //                                 readOnly
-        //                                 />
-        //                             </FormGroup>
-        //                         </div>
-        //                     </DropdownItem>
-        //                 </DropdownMenu>
-        //             </UncontrolledDropdown>
-        //         )
-        //     }
-        // },
     ]);
 
     return (
@@ -352,21 +162,22 @@ export default function AirMasterBill() {
                 <Container fluid>
                     <div className="main_freight_wrapper">
                         {/* breadcrumbs && rate */}
-                        {/* <TopBreadcrumbs breadcrumbs={waybillBreadcrumb} data={waybillRateData} />       */}
+                        <TopBreadcrumbs breadcrumbs={waybillBreadcrumb} data={waybillRateData} />            
 
-                        {/* Compare */}
-                        <AirCompare />
-
-                        <TableAirwayBill
+                        {/* {waybillData ? ( */}
+                            <TableAirwayBill
                             columns={columns}
-                            data={[]}
+                            data={waybillData?.content || []}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}
                             toggleRightCanvas={toggleRightCanvas}
                             component={'air-waybill'}
                             loader={false}
-                        />
+                            />
+                        {/* ) : (
+                            <p>Loading...</p>
+                        )} */}
 
                         {/* modal */}
                         <ModalAir modal={modal} onCloseClick={onCloseClick} viewData={waybillFreightData} modalType={'air_waybill'} />

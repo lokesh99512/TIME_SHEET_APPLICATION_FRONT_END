@@ -122,45 +122,41 @@ import PageLogin from "../pages/AuthenticationInner/PageLogin";
 import PageRegister from "../pages/AuthenticationInner/PageRegister";
 import RecoverPassword from "../pages/AuthenticationInner/RecoverPassword";
 import TwoStepVerfication from "../pages/AuthenticationInner/TwoStepVerfication";
+
 import InstantRate from "../pages/InstantRate/InstantRate";
+import CustomerRates from "../pages/Parties/CustomerRates/CustomerRates";
 import Customers from "../pages/Parties/Customers";
 import UploadCustomerData from "../pages/Parties/UploadCustomerData";
 import UploadVendorData from "../pages/Parties/UploadVendorData";
 import Vendors from "../pages/Parties/Vendors";
 import AirConsoleComp from "../pages/Procurement/FreightForwarding/Air/AirConsoleComp";
 import AirMasterBill from "../pages/Procurement/FreightForwarding/Air/AirMasterBill";
-import FclInlandCharge from "../pages/Procurement/FreightForwarding/FCLInland/FclInlandCharge";
-import FclInlandUpload from "../pages/Procurement/FreightForwarding/FCLInland/FclInlandUpload";
-import OceanInlandSurchargeNameAddNew from "../pages/Procurement/FreightForwarding/FCLInland/OceanInlandSurchargeNameAddNew";
-import FclOceanFreight from "../pages/Procurement/FreightForwarding/FCL/FclOceanFreight";
-import LclOceanFreight from "../pages/Procurement/FreightForwarding/LCL/LclOceanFreight";
-import OceanFCLSurchargeNameAddNew from "../pages/Procurement/FreightForwarding/FCL/OceanFCLSurchargeNameAddNew";
-import PortLocalChargesSurchargeCodeAddNew from "../pages/Procurement/FreightForwarding/PortLocal/PortLocalChargesSurchargeCodeAddNew";
-import PortLocalFreight from "../pages/Procurement/FreightForwarding/PortLocal/PortLocalFreight";
-import UploadAirwayBillData from "../pages/Procurement/FreightForwarding/Air/UploadAirwayBillData";
-import UploadAirConsoleData from "../pages/Procurement/FreightForwarding/Air/UploadAirConsoleData";
-import UploadFreightData from "../pages/Procurement/FreightForwarding/partials/UploadFreightData";
-import UploadPortLocalChargesData from "../pages/Procurement/FreightForwarding/PortLocal/UploadPortLocalChargesData";
-// import FclSurcharge from "../pages/Rate/Surcharge/FclSurcharge";
-// import UploadFile from "../pages/Rate/Surcharge/UploadFile";
-// import UploadRateData from "../pages/Rate/Surcharge/UploadRateData";
-// import CreateQuotation from "../pages/Sales/Quotations/partials/CreateQuotation";
-import AddUserData from "../pages/Settings/AddUserData";
-import EditUserData from "../pages/Settings/EditUserData";
-import Settings from "../pages/Settings/Settings";
-import UploadUser from "../pages/Settings/UploadUser";
-import Users from "../pages/Settings/Users";
-import FclSurcharge from "../pages/Settings/Surcharge/FclSurcharge";
-import UploadRateData from "../pages/Settings/Surcharge/UploadRateData";
-import UploadFile from "../pages/Settings/Surcharge/UploadFile";
-import AddTanentLocation from "../pages/Settings/AddTanentLocation";
-import UploadStatus from "../pages/uploadstatus/uploadstatus"
 import AirPortLocal from "../pages/Procurement/FreightForwarding/Air/AirPortLocal/AirPortLocal";
 import UploadAirPortLocalChargesData from "../pages/Procurement/FreightForwarding/Air/AirPortLocal/partials/UploadAirPortLocalChargesData";
-import CustomerRates from "../pages/Parties/CustomerRates/CustomerRates";
-import VendorDashboard from "../pages/VendorDashboard";
-import Roles from "../pages/Settings/Roles/Roles";
+import CompareRate from "../pages/Procurement/FreightForwarding/Air/CompareRate";
+import UploadAirConsoleData from "../pages/Procurement/FreightForwarding/Air/UploadAirConsoleData";
+import UploadAirwayBillData from "../pages/Procurement/FreightForwarding/Air/UploadAirwayBillData";
+import FclOceanFreight from "../pages/Procurement/FreightForwarding/FCL/FclOceanFreight";
+import OceanFCLSurchargeNameAddNew from "../pages/Procurement/FreightForwarding/FCL/OceanFCLSurchargeNameAddNew";
+import FclInlandCharge from "../pages/Procurement/FreightForwarding/FCLInland/FclInlandCharge";
+import FclInlandUpload from "../pages/Procurement/FreightForwarding/FCLInland/FclInlandUpload";
+import LclOceanFreight from "../pages/Procurement/FreightForwarding/LCL/LclOceanFreight";
+import PortLocalFreight from "../pages/Procurement/FreightForwarding/PortLocal/PortLocalFreight";
+import UploadPortLocalChargesData from "../pages/Procurement/FreightForwarding/PortLocal/UploadPortLocalChargesData";
+import UploadFreightData from "../pages/Procurement/FreightForwarding/partials/UploadFreightData";
+import AddTanentLocation from "../pages/Settings/AddTanentLocation";
+import AddUserData from "../pages/Settings/AddUserData";
+import EditUserData from "../pages/Settings/EditUserData";
 import AddRole from "../pages/Settings/Roles/AddRole";
+import Roles from "../pages/Settings/Roles/Roles";
+import Settings from "../pages/Settings/Settings";
+import FclSurcharge from "../pages/Settings/Surcharge/FclSurcharge";
+import UploadFile from "../pages/Settings/Surcharge/UploadFile";
+import UploadRateData from "../pages/Settings/Surcharge/UploadRateData";
+import UploadUser from "../pages/Settings/UploadUser";
+import Users from "../pages/Settings/Users";
+import VendorDashboard from "../pages/VendorDashboard";
+import UploadStatus from "../pages/uploadstatus/uploadstatus";
 
 const userRoutes = [
   //dashboard
@@ -170,11 +166,8 @@ const userRoutes = [
   { path: "/analytics", component: <AnalyticsComp/> },
 
   // Sales
-  // Queries
   { path: "/sales/inquiry", component: <QueriesComp /> },
-  // Quotations
   { path: "/sales/quotation", component: <QuotationComp /> },
-  // { path: "/sales/create", component: <CreateQuotation /> },
   
   // Instant Rate
   { path: "/instant-rate/search-rate", component: <InstantRate /> },
@@ -188,6 +181,7 @@ const userRoutes = [
   { path: "/freight/air/masterbill", component: <AirMasterBill /> },
   { path: "/freight/air/console", component: <AirConsoleComp /> },
   { path: "/freight/air/local", component: <AirPortLocal /> },
+  { path: "/freight/air/compare-rate", component: <CompareRate /> },
   { path: "/freight/air/upload/air-waybill", component: <UploadAirwayBillData /> },
   { path: "/freight/air/upload/console", component: <UploadAirConsoleData /> },
   { path: "/freight/upload/inland", component: <FclInlandUpload /> },
@@ -196,16 +190,7 @@ const userRoutes = [
   { path: "/air/port-local/upload", component: <UploadAirPortLocalChargesData /> },
   { path: "/freight/upload/fcl/add-new", component: <OceanFCLSurchargeNameAddNew /> },
   { path: "/freight/upload/inland/add-new", component: <OceanFCLSurchargeNameAddNew /> },
-  // { path: "/freight/upload/inland/add-new", component: <OceanInlandSurchargeNameAddNew /> },
   { path: "/freight/ocean/upload/fcl-pl/add-new", component: <OceanFCLSurchargeNameAddNew /> },
-  // { path: "/freight/ocean/upload/PortLocalCharges/add-new", component: <PortLocalChargesSurchargeCodeAddNew /> },
-  
-  
-  
-  // Rate Management
-  // { path: "/rate/surcharge/fcl", component: <FclSurcharge/> },
-  // { path: "/rate/upload/:tabName", component: <UploadRateData /> },
-  // { path: "/rate/upload/uploadFile", component: <UploadFile /> },
   
   // Settings
   { path: "/settings/company-settings", component: <Settings /> },

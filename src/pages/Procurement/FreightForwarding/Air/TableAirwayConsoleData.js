@@ -75,7 +75,7 @@ const TableAirwayConsoleData = ({ columns, data, isGlobalFilter, customPageSize,
                         <button className='bg-transparent' onClick={toggleRightCanvas}><img src={filter_icon} alt="filter" /></button>
                     </div>
                     <div className="upload_wrap">
-                        <button className='bg-transparent' onClick={() => { navidate(`/freight/upload/${component}`, { state: { id: component } }); }}>
+                        <button className='bg-transparent' onClick={() => { navidate(`/freight/air/upload/console`, { state: { id: component } }); }}>
                             <img src={upload_icon} alt="Upload" />Upload file
                         </button>
                     </div>
