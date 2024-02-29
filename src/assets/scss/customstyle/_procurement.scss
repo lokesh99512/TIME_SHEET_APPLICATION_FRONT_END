@@ -2257,14 +2257,30 @@ input[type="number"]{
 .air_compare_form{
     gap: 10px 0;
     .form-select__control {
-        height: 32px;
         min-height: 32px;
+        max-height: 32px;
+        overflow-y: auto;
         .select2-selection.form-select__indicator{
             padding: 4px 8px;
         }
     }
     .form-control{
         padding: 6px 12px;
+    }
+    .form-select__menu-list {
+        .form-select__option {
+            color: $black;            
+            label {
+                margin: 0 0 0 5px;
+            }
+            &.form-select__option--is-selected{
+                background-color: $primary_1;   
+                color: $neutral_8;             
+            }
+            &.form-select__option--is-disabled {
+                opacity: 0.5;
+            }
+        }
     }
 }
 

@@ -39,10 +39,13 @@ const CarrierChart = () => {
                     color: ["#000000"],
                 },
             },
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-            ],
+            categories: ['Air Asia', 'Air India', 'Indigo Airlines', 'Spicejet', 'Air India-Index', 'Indigo Balaji'],
             tickPlacement: 'on'
+        },
+        yaxis: {
+            min: 0,
+            max: 300,
+            tickAmount: 4,
         },
         fill: {
             type: 'gradient',
@@ -70,9 +73,11 @@ const CarrierChart = () => {
             },
         }
     };
+    const Volumnseries = [{
+        data: [83.3, 104.2, 166.7, 20.8,20.8,20.8]
+    }]
     const series = [{
-        name: 'Revenue',
-        data: [44, 55, 41, 67, 35, 43, 50, 55, 45, 40, 87, 65]
+        data: [40, 50, 80, 10, 10, 10]
     }]
     return (
         <>
@@ -90,6 +95,8 @@ const CarrierChart = () => {
                             </DropdownToggle>
                             <DropdownMenu className='dropdown-menu-end dropdown-menu-lg-start'>
                                 <DropdownItem to="#" onClick={() => { dropHandler('By Volume') }}>By Volume</DropdownItem>
+                                <DropdownItem to="#" onClick={() => { dropHandler('By Weight') }}>By Weight</DropdownItem>
+                                <DropdownItem to="#" onClick={() => { dropHandler('By Spend') }}>By Spend</DropdownItem>
                             </DropdownMenu>
                         </UncontrolledDropdown>
                     </div>
@@ -97,7 +104,7 @@ const CarrierChart = () => {
 
                 {/* Revenue Chart */}
                 <div className="chart_wrap">
-                    <ReactApexChart options={options} series={series} type="bar" height={400} />
+                    <ReactApexChart options={options} series={labelText === "By Volume" ? Volumnseries : series} type="bar" height={415} />
                 </div>
             </div>
         </>

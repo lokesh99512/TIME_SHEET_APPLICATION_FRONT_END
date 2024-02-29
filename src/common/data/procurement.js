@@ -7039,10 +7039,18 @@ const optionIsStandard = [
     { label: "Incidental", value: "incidental" },
 ];
 
+const optionAirline = [
+    {value: "Air Asia", label: "Air Asia", version: "1"},
+    {value: "Air India", label: "Air India", version: "2"},
+    {value: "Indigo", label: "Indigo", version: "3"},
+]
+
 export {
     fclBreadcrumb, fclRateData, fclTableData, lclBreadcrumb, portLocalBreadcrumb, lclRateData, lclTableData,
     optionRateType, optionRateSource, optionVendorType, optionVendorName, optionCarrierName, optionValidityApp, optionSurchargesName, optionMultiDestination, optionPaymentType,
     waybillBreadcrumb, waybillRateData, waybillTableData, consoleBreadcrumb, consoleRateData, consoleTableData, inLandBreadcrumb, inLandRateData, inLandTableData, fclSurchargeBreadcrumb, fclSurchargeRateData,
     optcurrency, optionOrgPort, optionDestPort, optionCargoType, optionMovementType, optionPortlocalOrgPort,
-    optionChargeBasis, optionCalculationType, optionContainerType, optionServiceType, optionIsStandard,instantRateBreadcrumb,airPortLocalBreadcrumb
+    optionChargeBasis, optionCalculationType, optionContainerType, optionServiceType, optionIsStandard,instantRateBreadcrumb,airPortLocalBreadcrumb,
+
+    optionAirline
 };

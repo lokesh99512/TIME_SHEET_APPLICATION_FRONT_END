@@ -2,11 +2,12 @@ import React, { useMemo } from 'react';
 import { Card, CardBody, Col, Container, Row } from 'reactstrap';
 import AnimatedCounter from '../Dashboard/Partials/AnimatedCounter';
 import CarrierChart from './CarrierChart';
-import { CommonValue } from './DashboardCol';
+import { CommonValue, TrendValue } from './DashboardCol';
 import VendorCommonTable from './VendorCommonTable';
+import { lansbySpendTableData, lansbyWeightTableData } from '../../common/data/dashboard';
 
-const VendorDashboard = () => {
-    const columns = useMemo(() => [
+const VendorDashboard = () => {    
+    const columnsLansbyWeight = useMemo(() => [
         {
             Header: 'Lane',
             accessor: 'lane',
@@ -17,17 +18,8 @@ const VendorDashboard = () => {
             }
         },
         {
-            Header: 'Total Queries',
-            accessor: 'queries',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <CommonValue cellProps={cellProps} />
-            }
-        },
-        {
-            Header: 'Conversion',
-            accessor: 'conversion',
+            Header: 'Total Weight',
+            accessor: 'weight',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -36,11 +28,40 @@ const VendorDashboard = () => {
         },
         {
             Header: 'Trend',
-            accessor: 'trend',
+            accessor: 'rate',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <TrendValue cellProps={cellProps} />
+            }
+        }
+    ]);
+    const columnsLansbySpend = useMemo(() => [
+        {
+            Header: 'Lane',
+            accessor: 'lane',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
                 return <CommonValue cellProps={cellProps} />
+            }
+        },
+        {
+            Header: 'Total Spends',
+            accessor: 'spend',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} />
+            }
+        },
+        {
+            Header: 'Trend',
+            accessor: 'rate',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <TrendValue cellProps={cellProps} />
             }
         }
     ]);
@@ -60,39 +81,48 @@ const VendorDashboard = () => {
                                                 <div className="sh_box" >
                                                     <p className="box_title">Total Vendors</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
-                                                        <AnimatedCounter rate={100} />
+                                                        <AnimatedCounter rate={10} />
                                                         <div className="text-nowrap fs-5">
-                                                            <span className={`${20 < 0 ? 'red_text' : 'green_text'}`}>20%</span>
+                                                            {/* <span className={`${20 < 0 ? 'red_text' : 'green_text'}`}>20%</span> */}
+                                                            <span className={"badge badge-soft-" + `${20 < 0 ? "danger" : "success"}` + " text-" + `${20 < 0 ? "danger" : "success"}`}>
+                                                                20%
+                                                            </span>
                                                             <span className="ms-1 box_bottom_text">Since last month</span>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div className="sh_box" >
-                                                    <p className="box_title">Total Spend MTD</p>
+                                                    <p className="box_title">Total Spend MTD(Lacs)</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
-                                                        <AnimatedCounter rate={100} />
+                                                        <AnimatedCounter rate={200} />INR
                                                         <div className="text-nowrap fs-5">
-                                                            <span className={`${15 < 0 ? 'red_text' : 'green_text'}`}>15%</span>
+                                                            <span className={"badge badge-soft-" + `${15 < 0 ? "danger" : "success"}` + " text-" + `${15 < 0 ? "danger" : "success"}`}>
+                                                                15%
+                                                            </span>
                                                             <span className="ms-1 box_bottom_text">Since last month</span>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div className="sh_box" >
-                                                    <p className="box_title">Total Spend Projected</p>
+                                                    <p className="box_title">Total Spend Projected(Lacs)</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
-                                                        <AnimatedCounter rate={100} />
+                                                        <AnimatedCounter rate={200} />INR
                                                         <div className="text-nowrap fs-5">
-                                                            <span className={`${-15 < 0 ? 'red_text' : 'green_text'}`}>15%</span>
+                                                            <span className={"badge badge-soft-" + `${-15 < 0 ? "danger" : "success"}` + " text-" + `${-15 < 0 ? "danger" : "success"}`}>
+                                                                -15%
+                                                            </span>
                                                             <span className="ms-1 box_bottom_text">Since last month</span>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div className="sh_box" >
-                                                    <p className="box_title">Total Vendor</p>
-                                                    <div className="sh_inquiry_rate justify-content-between align-items-center">
-                                                        <AnimatedCounter rate={100} />
+                                                    <p className="box_title">Top Vendor Spend(Lacs) <b className='d-block text-primary'>Indigo Airlines</b></p>
+                                                    <div className="sh_inquiry_rate justify-content-between align-items-center">                                                        
+                                                        <AnimatedCounter rate={80} />
                                                         <div className="text-nowrap fs-5">
-                                                            <span className={`${15 < 0 ? 'red_text' : 'green_text'}`}>15%</span>
+                                                            <span className={"badge badge-soft-" + `${15 < 0 ? "danger" : "success"}` + " text-" + `${15 < 0 ? "danger" : "success"}`}>
+                                                                15%
+                                                            </span>
                                                             <span className="ms-1 box_bottom_text">Since last month</span>
                                                         </div>
                                                     </div>
@@ -107,11 +137,13 @@ const VendorDashboard = () => {
                                         <CardBody>
                                             <div className="sh_box_wrap d-flex">
                                                 <div className="sh_box" >
-                                                    <p className="box_title">Total Wt Exception</p>
+                                                    <p className="box_title">Total Wt Exception(MT)</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
-                                                        <AnimatedCounter rate={100} />
+                                                        <AnimatedCounter rate={0.54} />
                                                         <div className="text-nowrap fs-5">
-                                                            <span className={`${20 < 0 ? 'red_text' : 'green_text'}`}>20%</span>
+                                                            <span className={"badge badge-soft-" + `${20 < 0 ? "danger" : "success"}` + " text-" + `${20 < 0 ? "danger" : "success"}`}>
+                                                                20%
+                                                            </span>
                                                             <span className="ms-1 box_bottom_text">Since last month</span>
                                                         </div>
                                                     </div>
@@ -119,9 +151,11 @@ const VendorDashboard = () => {
                                                 <div className="sh_box" >
                                                     <p className="box_title">Spend Impact</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
-                                                        <AnimatedCounter rate={100} />
+                                                        <AnimatedCounter rate={250000} />INR
                                                         <div className="text-nowrap fs-5">
-                                                            <span className={`${15 < 0 ? 'red_text' : 'green_text'}`}>15%</span>
+                                                            <span className={"badge badge-soft-" + `${15 < 0 ? "danger" : "success"}` + " text-" + `${15 < 0 ? "danger" : "success"}`}>
+                                                                15%
+                                                            </span>
                                                             <span className="ms-1 box_bottom_text">Since last month</span>
                                                         </div>
                                                     </div>
@@ -138,9 +172,11 @@ const VendorDashboard = () => {
                                                 <div className="sh_box" >
                                                     <p className="box_title">Total Flight Changes</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
-                                                        <AnimatedCounter rate={100} />
+                                                        <AnimatedCounter rate={15} />
                                                         <div className="text-nowrap fs-5">
-                                                            <span className={`${20 < 0 ? 'red_text' : 'green_text'}`}>20%</span>
+                                                            <span className={"badge badge-soft-" + `${20 < 0 ? "danger" : "success"}` + " text-" + `${20 < 0 ? "danger" : "success"}`}>
+                                                                20%
+                                                            </span>
                                                             <span className="ms-1 box_bottom_text">Since last month</span>
                                                         </div>
                                                     </div>
@@ -148,9 +184,11 @@ const VendorDashboard = () => {
                                                 <div className="sh_box" >
                                                     <p className="box_title">Spend Impact</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
-                                                        <AnimatedCounter rate={100} />
+                                                        <AnimatedCounter rate={	150000 } />INR
                                                         <div className="text-nowrap fs-5">
-                                                            <span className={`${15 < 0 ? 'red_text' : 'green_text'}`}>15%</span>
+                                                            <span className={"badge badge-soft-" + `${15 < 0 ? "danger" : "success"}` + " text-" + `${15 < 0 ? "danger" : "success"}`}>
+                                                                15%
+                                                            </span>
                                                             <span className="ms-1 box_bottom_text">Since last month</span>
                                                         </div>
                                                     </div>
@@ -172,9 +210,11 @@ const VendorDashboard = () => {
                                                 <div className="sh_box" >
                                                     <p className="box_title">Total Shipments</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
-                                                        <AnimatedCounter rate={100} />
+                                                        <AnimatedCounter rate={340} />
                                                         <div className="text-nowrap fs-5">
-                                                            <span className={`${20 < 0 ? 'red_text' : 'green_text'}`}>20%</span>
+                                                            <span className={"badge badge-soft-" + `${20 < 0 ? "danger" : "success"}` + " text-" + `${20 < 0 ? "danger" : "success"}`}>
+                                                                20%
+                                                            </span>
                                                             <span className="ms-1 box_bottom_text">Since last month</span>
                                                         </div>
                                                     </div>
@@ -182,7 +222,7 @@ const VendorDashboard = () => {
                                                 <div className="sh_box" >
                                                     <p className="box_title">Delivered</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
-                                                        <AnimatedCounter rate={100} />
+                                                        <AnimatedCounter rate={272} />
                                                         <div className="text-nowrap fs-5">
                                                             <span className={`${15 < 0 ? 'red_text' : 'green_text'}`}>15%</span>
                                                             <span className="ms-1 box_bottom_text">Since last month</span>
@@ -192,9 +232,11 @@ const VendorDashboard = () => {
                                                 <div className="sh_box" >
                                                     <p className="box_title">In Transit</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
-                                                        <AnimatedCounter rate={100} />
+                                                        <AnimatedCounter rate={61} />
                                                         <div className="text-nowrap fs-5">
-                                                            <span className={`${15 < 0 ? 'red_text' : 'green_text'}`}>15%</span>
+                                                            <span className={"badge badge-soft-" + `${15 < 0 ? "danger" : "success"}` + " text-" + `${15 < 0 ? "danger" : "success"}`}>
+                                                                15%
+                                                            </span>
                                                             <span className="ms-1 box_bottom_text">Since last month</span>
                                                         </div>
                                                     </div>
@@ -202,9 +244,11 @@ const VendorDashboard = () => {
                                                 <div className="sh_box" >
                                                     <p className="box_title">Exceptions</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
-                                                        <AnimatedCounter rate={100} />
+                                                        <AnimatedCounter rate={7} />
                                                         <div className="text-nowrap fs-5">
-                                                            <span className={`${15 < 0 ? 'red_text' : 'green_text'}`}>15%</span>
+                                                            <span className={"badge badge-soft-" + `${15 < 0 ? "danger" : "success"}` + " text-" + `${15 < 0 ? "danger" : "success"}`}>
+                                                                15%
+                                                            </span>
                                                             <span className="ms-1 box_bottom_text">Since last month</span>
                                                         </div>
                                                     </div>
@@ -221,25 +265,25 @@ const VendorDashboard = () => {
                             {/* Export Summary table */}
                             <Col lg={6}>
                                 <div className="sh_summary_table_wrap">
-                                    <h3 className="sub_title">Top 10 Lanes by Weight</h3>
-                                    <VendorCommonTable 
-                                        columns={columns}
-                                        data={[]}
-                                        customPageSize={10}
+                                    <h3 className="sub_title">Top 10 Lanes by Weight(MT)</h3>
+                                    <VendorCommonTable
+                                        columns={columnsLansbyWeight}
+                                        data={lansbyWeightTableData || []}
+                                        customPageSize={8}
                                     />
                                 </div>
                             </Col>
                             <Col lg={6}>
                                 <div className="sh_summary_table_wrap">
-                                    <h3 className="sub_title">Top 10 Lanes by Spend</h3>
-                                    <VendorCommonTable 
-                                        columns={columns}
-                                        data={[]}
-                                        customPageSize={10}
+                                    <h3 className="sub_title">Top 10 Lanes by Spend(Lacs)</h3>
+                                    <VendorCommonTable
+                                        columns={columnsLansbySpend}
+                                        data={lansbySpendTableData || []}
+                                        customPageSize={8}
                                     />
                                 </div>
                             </Col>
-                            <Col lg={6}>
+                            {/* <Col lg={6}>
                                 <div className="sh_summary_table_wrap">
                                     <h3 className="sub_title">Top 10 Customer</h3>
                                     <VendorCommonTable 
@@ -258,7 +302,7 @@ const VendorDashboard = () => {
                                         customPageSize={10}
                                     />
                                 </div>
-                            </Col>
+                            </Col> */}
                         </Row>
                     </div>
                 </Container>

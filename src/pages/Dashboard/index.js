@@ -84,10 +84,9 @@ const Dashboard = () => {
                                                     <AnimatedCounter rate={Number(inquiry_summary_data?.totalCount)} /> 
                                                     : "0"}
                                                 <div className="text-nowrap fs-5">
-                                                    {/* <span className={"badge badge-soft-" + `${inquiry_summary_data?.totalCountPercentage < 0 ? "danger" : "success"}` + " text-" + `${inquiry_summary_data?.totalCountPercentage <0 ? "danger" : "success"}`}>
+                                                    <span className={"badge badge-soft-" + `${inquiry_summary_data?.totalCountPercentage < 0 ? "danger" : "success"}` + " text-" + `${inquiry_summary_data?.totalCountPercentage <0 ? "danger" : "success"}`}>
                                                         {inquiry_summary_data?.totalCountPercentage}%
-                                                    </span> */}
-                                                    <span className={`${inquiry_summary_data?.totalCountPercentage < 0 ? 'red_text' : 'green_text'}`}>{inquiry_summary_data?.totalCountPercentage || 0}%</span>
+                                                    </span>                                                    
                                                     <span className="ms-1 box_bottom_text">Since last month</span>
                                                 </div>
                                             </div>

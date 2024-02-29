@@ -32,7 +32,11 @@ export default function AnimatedCounter({rate}) {
     }, [])
     return (
         <>
-            <span data-counter={`${rate}`} className="count me-2">0</span>
+            {rate > 1 ? (
+                <span data-counter={`${rate}`} className="count me-2">0</span>                
+            ) : (
+                <span className="count me-2">{rate}</span>
+            )}
         </>
     )
 }

@@ -493,6 +493,33 @@ const chartCountryCode = {
     ZW: 5.57
 }
 
+// ----------------------- Vendor Dashboard -----------------------
+export const lansbyWeightTableData = [
+    { lane: "BOM - BLR", weight:  "104.2", rate: 10 },
+    { lane: "BOM - DEL", weight:  "75.0", rate: 10 },
+    { lane: "BLR - DEL", weight:  "62.5", rate: 10 },
+    { lane: "BLR - CCU", weight:  "50.0", rate: 10 },
+    { lane: "CCU - GAU", weight:  "45.8", rate: 10 },
+    { lane: "DEL - BLR", weight:  "33.3", rate: 10 },
+    { lane: "DEL - MAA", weight:  "14.6", rate: 10 },
+    { lane: "DEL - CCU", weight:  "12.5", rate: 10 },
+    { lane: "DEL - PNQ", weight:  "10.4", rate: 10 },
+    { lane: "BOM - MAA", weight:  "8.3", rate: 10 },
+]
+export const lansbySpendTableData = [
+    { lane: "BOM - BLR", spend:  "5000000", rate: 10 },
+    { lane: "BOM - DEL", spend:  "3600000", rate: 10 },
+    { lane: "BLR - DEL", spend:  "3000000", rate: 10 },
+    { lane: "BLR - CCU", spend:  "2400000", rate: 10 },
+    { lane: "CCU - GAU", spend:  "2200000", rate: 10 },
+    { lane: "DEL - BLR", spend:  "1600000", rate: 10 },
+    { lane: "DEL - MAA", spend:  "700000", rate: 10 },
+    { lane: "DEL - CCU", spend:  "600000", rate: 10 },
+    { lane: "DEL - PNQ", spend:  "500000", rate: 10 },
+    { lane: "BOM - MAA", spend:  "400000", rate: 10 },
+]
+
+
 export {
     WidgetsData, MarketOver1YData, MarketOver6MData, MarketOver1MData, MarketOverViewAllData, PieChart1YData, PieChart6MData,
     PieChart1MData, PieChartAllData, InvestedOverviewMay, InvestedOverviewApril, InvestedOverviewMarch, InvestedOverviewFeb,
