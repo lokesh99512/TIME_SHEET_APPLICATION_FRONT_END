@@ -79,7 +79,7 @@ const TableCompareRate = ({ columns, data, isGlobalFilter, customPageSize, toggl
                                 <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
                                     {headerGroup.headers.map(column => (                                        
                                         <th {...column.getHeaderProps()} key={column.id} className={`${column?.Header?.includes('test') ? 'hide' : ''}`}>
-                                            <span className='d-flex align-items-center justify-content-center' {...column.getSortByToggleProps()}>
+                                            <span className='d-flex align-items-center' {...column.getSortByToggleProps()}>
                                                 {column.render("Header")}
                                                 {!column?.Header?.includes('test') && (
                                                     <i className='fas fa-sort'></i>

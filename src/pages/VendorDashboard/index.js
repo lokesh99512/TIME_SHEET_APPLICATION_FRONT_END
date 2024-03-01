@@ -106,10 +106,10 @@ const VendorDashboard = () => {
                                                 <div className="sh_box" >
                                                     <p className="box_title">Total Spend Projected(Lacs)</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
-                                                        <AnimatedCounter rate={200} />INR
+                                                        <AnimatedCounter rate={500} />INR
                                                         <div className="text-nowrap fs-5">
-                                                            <span className={"badge badge-soft-" + `${-15 < 0 ? "danger" : "success"}` + " text-" + `${-15 < 0 ? "danger" : "success"}`}>
-                                                                -15%
+                                                            <span className={"badge badge-soft-" + `${15 < 0 ? "danger" : "success"}` + " text-" + `${15 < 0 ? "danger" : "success"}`}>
+                                                                15%
                                                             </span>
                                                             <span className="ms-1 box_bottom_text">Since last month</span>
                                                         </div>
@@ -118,7 +118,7 @@ const VendorDashboard = () => {
                                                 <div className="sh_box" >
                                                     <p className="box_title">Top Vendor Spend(Lacs) <b className='d-block text-primary'>Indigo Airlines</b></p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">                                                        
-                                                        <AnimatedCounter rate={80} />
+                                                        <AnimatedCounter rate={80} />INR
                                                         <div className="text-nowrap fs-5">
                                                             <span className={"badge badge-soft-" + `${15 < 0 ? "danger" : "success"}` + " text-" + `${15 < 0 ? "danger" : "success"}`}>
                                                                 15%
@@ -149,9 +149,9 @@ const VendorDashboard = () => {
                                                     </div>
                                                 </div>
                                                 <div className="sh_box" >
-                                                    <p className="box_title">Spend Impact</p>
+                                                    <p className="box_title">Spend Impact(Lacs)</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
-                                                        <AnimatedCounter rate={250000} />INR
+                                                        <AnimatedCounter rate={2.5} />INR
                                                         <div className="text-nowrap fs-5">
                                                             <span className={"badge badge-soft-" + `${15 < 0 ? "danger" : "success"}` + " text-" + `${15 < 0 ? "danger" : "success"}`}>
                                                                 15%
@@ -182,9 +182,9 @@ const VendorDashboard = () => {
                                                     </div>
                                                 </div>
                                                 <div className="sh_box" >
-                                                    <p className="box_title">Spend Impact</p>
+                                                    <p className="box_title">Spend Impact(Lacs)</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
-                                                        <AnimatedCounter rate={	150000 } />INR
+                                                        <AnimatedCounter rate={	1.5 } />INR
                                                         <div className="text-nowrap fs-5">
                                                             <span className={"badge badge-soft-" + `${15 < 0 ? "danger" : "success"}` + " text-" + `${15 < 0 ? "danger" : "success"}`}>
                                                                 15%
@@ -224,7 +224,10 @@ const VendorDashboard = () => {
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
                                                         <AnimatedCounter rate={272} />
                                                         <div className="text-nowrap fs-5">
-                                                            <span className={`${15 < 0 ? 'red_text' : 'green_text'}`}>15%</span>
+                                                            {/* <span className={`${15 < 0 ? 'red_text' : 'green_text'}`}>15%</span> */}
+                                                            <span className={"badge badge-soft-" + `${15 < 0 ? "danger" : "success"}` + " text-" + `${15 < 0 ? "danger" : "success"}`}>
+                                                                15%
+                                                            </span>
                                                             <span className="ms-1 box_bottom_text">Since last month</span>
                                                         </div>
                                                     </div>

@@ -6866,38 +6866,335 @@ const inLandTableData = [
 
 export const airDummyData = [
     {
-        bookingMode: "bookingMode",
-        origin: "origin",
-        destination: "destination",
-        cargomode: "cargomode",
-        cargoType: "cargoType",
-        weight: "weight",
+        bookingMode: "Master AWB",
+        origin: "BOM",
+        destination: "BLR",
+        cargomode: "GCR",
+        cargoType: "GENERAL",
+        weight: "100",
         l1Details: {
-            l1fr: "l1fr",
-            l1charges: "l1charges",
-            l1total: "l1total"
+            l1fr: "32.36",
+            l1charges: "8",
+            l1total: "40.36"
         },
         l2Details: {
-            l2fr: "l2fr",
-            l2charges: "l2charges",
-            l2total: "l2total"
+            l2fr: "33.86",
+            l2charges: "8.00",
+            l2total: "41.86"
         },
         l3Details: {
-            l3fr: "l3fr",
-            l3charges: "l3charges",
-            l3total: "l3total"
+            l3fr: "35.36",
+            l3charges: "8.00",
+            l3total: "43.36"
         },
         l4Details: {
-            l4fr: "l4fr",
-            l4charges: "l4charges",
-            l4total: "l4total"
+            l4fr: "36.86",
+            l4charges: "8.00",
+            l4total: "44.86"
         },
         l5Details: {
-            l5fr: "l5fr",
-            l5charges: "l5charges",
-            l5total: "l5total"
+            l5fr: "38.36",
+            l5charges: "8.00",
+            l5total: "46.36"
         },
-    }
+    },
+    {
+        bookingMode: "CONSOL",
+        origin: "BOM",
+        destination: "BLR",
+        cargomode: "GCR",
+        cargoType: "GENERAL",
+        weight: "100",
+        l1Details: {
+            l1fr: "40.00",
+            l1charges: "1.50",
+            l1total: "41.50"
+        },
+        l2Details: {
+            l2fr: "41.50",
+            l2charges: "1.50",
+            l2total: "43.00"
+        },
+        l3Details: {
+            l3fr: "43.00",
+            l3charges: "1.50",
+            l3total: "44.50"
+        },
+        l4Details: {
+            l4fr: "44.50",
+            l4charges: "1.50",
+            l4total: "46.00"
+        },
+        l5Details: {
+            l5fr: "46.00",
+            l5charges: "1.50",
+            l5total: "47.50"
+        },
+    },
+    {
+        bookingMode: "CONSOL",
+        origin: "BOM",
+        destination: "MAA",
+        cargomode: "GCR",
+        cargoType: "GENERAL",
+        weight: "100",
+        l1Details: {
+            l1fr: "37.36",
+            l1charges: "8.00",
+            l1total: "45.36"
+        },
+        l2Details: {
+            l2fr: "38.86",
+            l2charges: "8.00",
+            l2total: "46.86"
+        },
+        l3Details: {
+            l3fr: "40.36",
+            l3charges: "8.00",
+            l3total: "48.36"
+        },
+        l4Details: {
+            l4fr: "41.86",
+            l4charges: "8.00",
+            l4total: "49.86"
+        },
+        l5Details: {
+            l5fr: "43.36",
+            l5charges: "8.00",
+            l5total: "51.36"
+        },
+    },
+    {
+        bookingMode: "Master AWB",
+        origin: "BOM",
+        destination: "MAA",
+        cargomode: "GCR",
+        cargoType: "GENERAL",
+        weight: "100",
+        l1Details: {
+            l1fr: "40.00",
+            l1charges: "1.50",
+            l1total: "41.50"
+        },
+        l2Details: {
+            l2fr: "41.50",
+            l2charges: "1.50",
+            l2total: "43.00"
+        },
+        l3Details: {
+            l3fr: "43.00",
+            l3charges: "1.50",
+            l3total: "44.50"
+        },
+        l4Details: {
+            l4fr: "44.50",
+            l4charges: "1.50",
+            l4total: "46.00"
+        },
+        l5Details: {
+            l5fr: "46.00",
+            l5charges: "1.50",
+            l5total: "47.50"
+        },
+    },
+    {
+        bookingMode: "Master AWB",
+        origin: "BOM",
+        destination: "CCU",
+        cargomode: "GCR",
+        cargoType: "GENERAL",
+        weight: "100",
+        l1Details: {
+            l1fr: "32.36",
+            l1charges: "8",
+            l1total: "40.36"
+        },
+        l2Details: {
+            l2fr: "33.86",
+            l2charges: "8.00",
+            l2total: "41.86"
+        },
+        l3Details: {
+            l3fr: "35.36",
+            l3charges: "8.00",
+            l3total: "43.36"
+        },
+        l4Details: {
+            l4fr: "36.86",
+            l4charges: "8.00",
+            l4total: "44.86"
+        },
+        l5Details: {
+            l5fr: "38.36",
+            l5charges: "8.00",
+            l5total: "46.36"
+        },
+    },
+    {
+        bookingMode: "CONSOL",
+        origin: "BOM",
+        destination: "CCU",
+        cargomode: "GCR",
+        cargoType: "GENERAL",
+        weight: "100",
+        l1Details: {
+            l1fr: "40.00",
+            l1charges: "1.50",
+            l1total: "41.50"
+        },
+        l2Details: {
+            l2fr: "41.50",
+            l2charges: "1.50",
+            l2total: "43.00"
+        },
+        l3Details: {
+            l3fr: "43.00",
+            l3charges: "1.50",
+            l3total: "44.50"
+        },
+        l4Details: {
+            l4fr: "44.50",
+            l4charges: "1.50",
+            l4total: "46.00"
+        },
+        l5Details: {
+            l5fr: "46.00",
+            l5charges: "1.50",
+            l5total: "47.50"
+        },
+    },
+    {
+        bookingMode: "Master AWB",
+        origin: "BOM",
+        destination: "DEL",
+        cargomode: "GCR",
+        cargoType: "GENERAL",
+        weight: "100",
+        l1Details: {
+            l1fr: "32.36",
+            l1charges: "8",
+            l1total: "40.36"
+        },
+        l2Details: {
+            l2fr: "33.86",
+            l2charges: "8.00",
+            l2total: "41.86"
+        },
+        l3Details: {
+            l3fr: "35.36",
+            l3charges: "8.00",
+            l3total: "43.36"
+        },
+        l4Details: {
+            l4fr: "36.86",
+            l4charges: "8.00",
+            l4total: "44.86"
+        },
+        l5Details: {
+            l5fr: "38.36",
+            l5charges: "8.00",
+            l5total: "46.36"
+        },
+    },
+    {
+        bookingMode: "CONSOL",
+        origin: "BOM",
+        destination: "DEL",
+        cargomode: "GCR",
+        cargoType: "GENERAL",
+        weight: "100",
+        l1Details: {
+            l1fr: "40.00",
+            l1charges: "1.50",
+            l1total: "41.50"
+        },
+        l2Details: {
+            l2fr: "41.50",
+            l2charges: "1.50",
+            l2total: "43.00"
+        },
+        l3Details: {
+            l3fr: "43.00",
+            l3charges: "1.50",
+            l3total: "44.50"
+        },
+        l4Details: {
+            l4fr: "44.50",
+            l4charges: "1.50",
+            l4total: "46.00"
+        },
+        l5Details: {
+            l5fr: "46.00",
+            l5charges: "1.50",
+            l5total: "47.50"
+        },
+    },
+    {
+        bookingMode: "CONSOL",
+        origin: "BOM",
+        destination: "HYD",
+        cargomode: "GCR",
+        cargoType: "GENERAL",
+        weight: "100",
+        l1Details: {
+            l1fr: "32.36",
+            l1charges: "8",
+            l1total: "40.36"
+        },
+        l2Details: {
+            l2fr: "33.86",
+            l2charges: "8.00",
+            l2total: "41.86"
+        },
+        l3Details: {
+            l3fr: "35.36",
+            l3charges: "8.00",
+            l3total: "43.36"
+        },
+        l4Details: {
+            l4fr: "36.86",
+            l4charges: "8.00",
+            l4total: "44.86"
+        },
+        l5Details: {
+            l5fr: "38.36",
+            l5charges: "8.00",
+            l5total: "46.36"
+        },
+    },
+    {
+        bookingMode: "Master AWB",
+        origin: "BOM",
+        destination: "HYD",
+        cargomode: "GCR",
+        cargoType: "GENERAL",
+        weight: "100",
+        l1Details: {
+            l1fr: "40.00",
+            l1charges: "1.50",
+            l1total: "41.50"
+        },
+        l2Details: {
+            l2fr: "41.50",
+            l2charges: "1.50",
+            l2total: "43.00"
+        },
+        l3Details: {
+            l3fr: "43.00",
+            l3charges: "1.50",
+            l3total: "44.50"
+        },
+        l4Details: {
+            l4fr: "44.50",
+            l4charges: "1.50",
+            l4total: "46.00"
+        },
+        l5Details: {
+            l5fr: "46.00",
+            l5charges: "1.50",
+            l5total: "47.50"
+        },
+    },
 ]
 
 // --------------------------- upload form options ---------------------------------
@@ -7040,9 +7337,18 @@ const optionIsStandard = [
 ];
 
 const optionAirline = [
-    {value: "Air Asia", label: "Air Asia", version: "1"},
-    {value: "Air India", label: "Air India", version: "2"},
-    {value: "Indigo", label: "Indigo", version: "3"},
+    {value: "Air Asia", label: "Air Asia"},
+    {value: "Air India", label: "Air India"},
+    {value: "Indigo", label: "Indigo"},
+]
+const optionBookingMode = [
+    {value: "master_AWB", label: "Master AWB"},
+    {value: "CONSOL", label: "CONSOL"},
+]
+const optionMode = [
+    { label: "Prime", value: "prime" },
+    { label: "General", value: "general" },
+    { label: "Lean", value: "lean" },
 ]
 
 export {
@@ -7052,5 +7358,5 @@ export {
     optcurrency, optionOrgPort, optionDestPort, optionCargoType, optionMovementType, optionPortlocalOrgPort,
     optionChargeBasis, optionCalculationType, optionContainerType, optionServiceType, optionIsStandard,instantRateBreadcrumb,airPortLocalBreadcrumb,
 
-    optionAirline
+    optionAirline,optionBookingMode, optionMode
 };

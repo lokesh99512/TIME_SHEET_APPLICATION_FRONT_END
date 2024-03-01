@@ -443,10 +443,28 @@
                     font-weight: 700;
                     font-size: 20px;
                 }
+                @media only screen and (max-width: 1300px) {
+                    width: 100%;
+                }
+                @media only screen and (max-width: 1200px) {
+                    width: calc(50% - 8px);
+                }
+                @media only screen and (max-width: 420px) {
+                    width: 100%;
+                }
             }
             &.sh_box-4{
                 .sh_box{
                     width: calc(25% - 12px);
+                    @media only screen and (max-width: 1300px) {
+                        width: 100%;
+                    }
+                    @media only screen and (max-width: 1200px) {
+                        width: calc(50% - 8px);
+                    }
+                    @media only screen and (max-width: 420px) {
+                        width: 100%;
+                    }
                 }
             }
         }

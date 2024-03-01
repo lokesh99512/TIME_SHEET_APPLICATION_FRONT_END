@@ -30,12 +30,13 @@ export default function AnimatedCounter({rate}) {
 
         document.querySelectorAll("[data-counter]").forEach(counter);
     }, [])
+
     return (
         <>
-            {rate > 1 ? (
-                <span data-counter={`${rate}`} className="count me-2">0</span>                
-            ) : (
+            {!Number.isInteger(rate) ? (
                 <span className="count me-2">{rate}</span>
+                ) : (
+                <span data-counter={`${rate}`} className="count me-2">0</span>                
             )}
         </>
     )

@@ -8,6 +8,7 @@ import AirCompare from './AirCompare';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { GET_CARGO_TYPE_DATA } from '../../../../../store/Global/actiontype';
+import { airDummyData } from '../../../../../common/data/procurement';
 
 const CompareRate = () => {
     document.title="Air Master || Navigating Freight Costs with Precision || Ultimate Rate Management platform"
@@ -52,7 +53,7 @@ const CompareRate = () => {
                     filterable: true,
                     disableFilters: true,
                     Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                        return <CommonValue cellProps={cellProps} />
                     }
                 },
             ]
@@ -66,7 +67,7 @@ const CompareRate = () => {
                     filterable: true,
                     disableFilters: true,
                     Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                        return <CommonValue cellProps={cellProps} />
                     }
                 },
             ]
@@ -80,7 +81,7 @@ const CompareRate = () => {
                     filterable: true,
                     disableFilters: true,
                     Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                        return <CommonValue cellProps={cellProps} />
                     }
                 },
             ]
@@ -94,7 +95,7 @@ const CompareRate = () => {
                     filterable: true,
                     disableFilters: true,
                     Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                        return <CommonValue cellProps={cellProps} />
                     }
                 },
             ]
@@ -108,7 +109,7 @@ const CompareRate = () => {
                     filterable: true,
                     disableFilters: true,
                     Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                        return <CommonValue cellProps={cellProps} />
                     }
                 },
             ]
@@ -122,30 +123,30 @@ const CompareRate = () => {
                     filterable: true,
                     disableFilters: true,
                     Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                        return <CommonValue cellProps={cellProps} />
                     }
                 },
             ]
         },
         {
-            Header: "L1 - Ariline/Vendor",
+            Header: "L1 - Go Indigo",
             columns:[
                 {
-                    Header: 'FR/kg',
+                    Header: 'Frght/Kg',
                     accessor: 'l1Details.l1fr',
                     filterable: true,
                     disableFilters: true,
                     Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                        return <CommonValue cellProps={cellProps} />
                     }
                 },
                 {
-                    Header: 'dd. Charges',
+                    Header: 'Oth Chrgs/KG',
                     accessor: 'l1Details.l1charges',
                     filterable: true,
                     disableFilters: true,
                     Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                        return <CommonValue cellProps={cellProps} />
                     }
                 },
                 {
@@ -154,30 +155,30 @@ const CompareRate = () => {
                     filterable: true,
                     disableFilters: true,
                     Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                        return <CommonValue cellProps={cellProps} />
                     }
                 }
             ]
         },
         {
-            Header: "L2 - Ariline/Vendor",
+            Header: "L2 - Go Indigo - BALAJI",
             columns:[
                 {
-                    Header: 'FR/kg',
+                    Header: 'Frght/Kg',
                     accessor: 'l2Details.l2fr',
                     filterable: true,
                     disableFilters: true,
                     Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                        return <CommonValue cellProps={cellProps} />
                     }
                 },
                 {
-                    Header: 'dd. Charges',
+                    Header: 'Oth Chrgs/KG',
                     accessor: 'l2Details.l2charges',
                     filterable: true,
                     disableFilters: true,
                     Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                        return <CommonValue cellProps={cellProps} />
                     }
                 },
                 {
@@ -186,30 +187,30 @@ const CompareRate = () => {
                     filterable: true,
                     disableFilters: true,
                     Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                        return <CommonValue cellProps={cellProps} />
                     }
                 }
             ]
         },
         {
-            Header: "L3 - Ariline/Vendor",
+            Header: "L3 - AIR ASIA",
             columns:[
                 {
-                    Header: 'FR/kg',
+                    Header: 'Frght/Kg',
                     accessor: 'l3Details.l3fr',
                     filterable: true,
                     disableFilters: true,
                     Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                        return <CommonValue cellProps={cellProps} />
                     }
                 },
                 {
-                    Header: 'dd. Charges',
+                    Header: 'Oth Chrgs/KG',
                     accessor: 'l3Details.l3charges',
                     filterable: true,
                     disableFilters: true,
                     Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                        return <CommonValue cellProps={cellProps} />
                     }
                 },
                 {
@@ -218,30 +219,30 @@ const CompareRate = () => {
                     filterable: true,
                     disableFilters: true,
                     Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                        return <CommonValue cellProps={cellProps} />
                     }
                 }
             ]
         },
         {
-            Header: "L4 - Ariline/Vendor",
+            Header: "L4 - Go Indigo",
             columns:[
                 {
-                    Header: 'FR/kg',
+                    Header: 'Frght/Kg',
                     accessor: 'l4Details.l4fr',
                     filterable: true,
                     disableFilters: true,
                     Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                        return <CommonValue cellProps={cellProps} />
                     }
                 },
                 {
-                    Header: 'dd. Charges',
+                    Header: 'Oth Chrgs/KG',
                     accessor: 'l4Details.l4charges',
                     filterable: true,
                     disableFilters: true,
                     Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                        return <CommonValue cellProps={cellProps} />
                     }
                 },
                 {
@@ -250,30 +251,30 @@ const CompareRate = () => {
                     filterable: true,
                     disableFilters: true,
                     Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                        return <CommonValue cellProps={cellProps} />
                     }
                 }
             ]
         }, 
         {
-            Header: "L5 - Ariline/Vendor",
+            Header: "L5 - Go Indigo",
             columns:[
                 {
-                    Header: 'FR/kg',
+                    Header: 'Frght/Kg',
                     accessor: 'l5Details.l5fr',
                     filterable: true,
                     disableFilters: true,
                     Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                        return <CommonValue cellProps={cellProps} />
                     }
                 },
                 {
-                    Header: 'dd. Charges',
+                    Header: 'Oth Chrgs/KG',
                     accessor: 'l5Details.l5charges',
                     filterable: true,
                     disableFilters: true,
                     Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                        return <CommonValue cellProps={cellProps} />
                     }
                 },
                 {
@@ -282,7 +283,7 @@ const CompareRate = () => {
                     filterable: true,
                     disableFilters: true,
                     Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                        return <CommonValue cellProps={cellProps} />
                     }
                 }
             ]
@@ -299,7 +300,7 @@ const CompareRate = () => {
 
                         <TableCompareRate 
                             columns={columns}
-                            data={[]}
+                            data={airDummyData || []}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}

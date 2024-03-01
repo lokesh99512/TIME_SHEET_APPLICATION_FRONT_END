@@ -31,6 +31,14 @@ const CarrierChart = () => {
             strokeDashArray: 2,
         },
         xaxis: {
+            title: {
+                text: 'Vendor',
+                offsetX: 0,
+                offsetY: 90,
+                style: {
+                    cssClass: 'apexcharts-xaxis-title',
+                },
+            },
             labels: {
                 rotate: -45,
                 style: {
@@ -46,6 +54,14 @@ const CarrierChart = () => {
             min: 0,
             max: 300,
             tickAmount: 4,
+            title: {
+                text: labelText === 'By Weight' ? 'Weight (MT)' : 'Spend (Lacs)',
+                offsetX: 0,
+                offsetY: 0,
+                style: {
+                    cssClass: 'apexcharts-yaxis-title',
+                },
+            },
         },
         fill: {
             type: 'gradient',
@@ -74,9 +90,11 @@ const CarrierChart = () => {
         }
     };
     const Volumnseries = [{
+        name: 'Weight(MT)',
         data: [83.3, 104.2, 166.7, 20.8,20.8,20.8]
     }]
     const series = [{
+        name: 'Spend(Lacs)',
         data: [40, 50, 80, 10, 10, 10]
     }]
     return (
@@ -94,7 +112,7 @@ const CarrierChart = () => {
                                 {labelText}
                             </DropdownToggle>
                             <DropdownMenu className='dropdown-menu-end dropdown-menu-lg-start'>
-                                <DropdownItem to="#" onClick={() => { dropHandler('By Volume') }}>By Volume</DropdownItem>
+                                {/* <DropdownItem to="#" onClick={() => { dropHandler('By Volume') }}>By Volume</DropdownItem> */}
                                 <DropdownItem to="#" onClick={() => { dropHandler('By Weight') }}>By Weight</DropdownItem>
                                 <DropdownItem to="#" onClick={() => { dropHandler('By Spend') }}>By Spend</DropdownItem>
                             </DropdownMenu>
@@ -104,7 +122,7 @@ const CarrierChart = () => {
 
                 {/* Revenue Chart */}
                 <div className="chart_wrap">
-                    <ReactApexChart options={options} series={labelText === "By Volume" ? Volumnseries : series} type="bar" height={415} />
+                    <ReactApexChart options={options} series={labelText === "By Weight" ? Volumnseries : series} type="bar" height={415} />
                 </div>
             </div>
         </>

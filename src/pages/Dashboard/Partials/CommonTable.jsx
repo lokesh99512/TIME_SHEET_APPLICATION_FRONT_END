@@ -27,8 +27,8 @@ const CommonTable = ({ column, data, type, handleSorting }) => {
                     <Table className="table mb-0">
                         <thead className="table-light">
                             <tr>
-                                {column?.map(({ label, accessor }) => (
-                                    <th key={accessor} onClick={() => handleSortingChange(accessor, type)}>
+                                {column?.map(({ label, accessor },index) => (
+                                    <th key={index} onClick={() => handleSortingChange(accessor, type)}>
                                         <span className='d-flex align-items-center'>{label} </span>
                                     </th>
                                 ))}

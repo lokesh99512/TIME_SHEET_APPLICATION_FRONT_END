@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 import { GET_CARGO_TYPE_DATA } from '../../../../../store/Global/actiontype';
 import { GET_AIR_LOCATION_TYPE } from '../../../../../store/InstantRate/actionType';
-import { optionAirline } from '../../../../../common/data/procurement';
+import { optionAirline, optionBookingMode, optionMode } from '../../../../../common/data/procurement';
 
 import { components } from "react-select";
 
@@ -66,6 +66,7 @@ const AirCompare = () => {
                                 Option
                             }}
                             options={optionAirline || []}
+                            closeMenuOnSelect={false}
                             classNamePrefix="select2-selection form-select"
                             menuPlacement="auto"                            
                         />
@@ -88,12 +89,13 @@ const AirCompare = () => {
                             classNamePrefix="select2-selection form-select"
                             isOptionDisabled={(option) => compareFormik?.values?.destination?.includes(option)}
                             menuPlacement="auto"
+                            closeMenuOnSelect={false}
                         />
                     </div>
                 </div>
                 <div className="col-md-3">
                     <div className='field_wrap'>
-                        <label className="form-label">Destination</label>
+                        <label className="form-label">Destination {compareFormik?.values?.destination?.length > 0 && `(${compareFormik?.values?.destination?.length} Selected)`}</label>
                         <Select
                             isMulti
                             value={compareFormik?.values?.destination || ""}
@@ -108,7 +110,8 @@ const AirCompare = () => {
                             options={airLocation || []}
                             classNamePrefix="select2-selection form-select"
                             isOptionDisabled={(option) => option.value === compareFormik?.values?.origin?.value}
-                            menuPlacement="auto"                            
+                            menuPlacement="auto"   
+                            closeMenuOnSelect={false}                         
                         />
                     </div>
                 </div>
@@ -119,14 +122,17 @@ const AirCompare = () => {
                             isMulti
                             value={compareFormik?.values?.mode || ""}
                             name="mode"
-                            onChange={compareFormik.handleChange}
+                            onChange={(e) => {
+                                compareFormik.setFieldValue('mode', e)
+                            }}
                             hideSelectedOptions={false}
                             components={{
                                 Option
                             }}
-                            options={[]}
+                            options={optionMode || []}
                             classNamePrefix="select2-selection form-select"
                             menuPlacement="auto"
+                            closeMenuOnSelect={false}
                         />
                     </div>
                 </div>
@@ -147,6 +153,7 @@ const AirCompare = () => {
                             options={cargoType_data || []}
                             classNamePrefix="select2-selection form-select"
                             menuPlacement="auto"
+                            closeMenuOnSelect={false}
                         />
                     </div>
                 </div>
@@ -157,14 +164,17 @@ const AirCompare = () => {
                             isMulti
                             value={compareFormik?.values?.bookingmode || ""}
                             name="bookingmode"
-                            onChange={compareFormik.handleChange}
+                            onChange={(e) => {
+                                compareFormik.setFieldValue('bookingmode', e)
+                            }}
                             hideSelectedOptions={false}
                             components={{
                                 Option
                             }}
-                            options={[]}
+                            options={optionBookingMode || []}
                             classNamePrefix="select2-selection form-select"
                             menuPlacement="auto"
+                            closeMenuOnSelect={false}
                         />
                     </div>
                 </div>
