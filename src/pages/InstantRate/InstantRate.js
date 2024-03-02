@@ -82,13 +82,13 @@ const InstantRate = () => {
         }
 
         console.log(data, "data");
-        // if ($instantActiveTab?.sub === 'FCL') {
-        //     dispatch(postInstantSearchAction(data));
-        // }
-        // if ($instantActiveTab?.sub === 'dom_air') {
-        //     dispatch({ type: GET_INSTANT_AIR_SEARCH_RESULT_DETAILS, payload: airSearchData });
-        // }
-        // setSearchResult(true);
+        if ($instantActiveTab?.sub === 'FCL') {
+            dispatch(postInstantSearchAction(data));
+        }
+        if ($instantActiveTab?.sub === 'dom_air') {
+            dispatch({ type: GET_INSTANT_AIR_SEARCH_RESULT_DETAILS, payload: airSearchData });
+        }
+        setSearchResult(true);
     }
 
     // Preview Modal
