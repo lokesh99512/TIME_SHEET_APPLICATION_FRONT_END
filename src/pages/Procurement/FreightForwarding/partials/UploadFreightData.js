@@ -504,7 +504,7 @@ export default function UploadFreightData() {
                                                                                     }}
                                                                                     options={UOM_data}
                                                                                     classNamePrefix="select2-selection form-select"
-                                                                                    isDisabled
+                                                                                    // isDisabled
                                                                                 />
                                                                             </div>
                                                                         </div>
