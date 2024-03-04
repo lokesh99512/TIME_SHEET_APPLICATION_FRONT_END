@@ -1,5 +1,5 @@
 import * as url from "../url_helper"
-import { get, getWithOutAuth, post } from "../api_helper";
+import { del, get, getWithOutAuth, post } from "../api_helper";
 
 export const getVendorData = () => get(url.Get_Vendor_Data);
 export const getCurrencyData = () => get(url.Get_Currency_Data);
@@ -10,6 +10,9 @@ export const getCargoTypeData = () => get(url.Get_Cargo_Type_Data);
 export const getContainerData = () => get(url.Get_Container_Data);
 export const getStateAllSer = () => get(url.Get_State_ALL_URL);
 export const getRoleAllSer = () => get(url.GET_ROLE_URL);
+export const getModuleAllSer=() => get(url.GET_MODULE_URL);
+export const deletePermissionser = (roleId, moduleId, RolName) =>del(`${url.DELETE_PERMISSIONS}${roleId}/${moduleId}/${RolName}`);
+export const savePermissionSer = (roleId, moduleId, RolName) =>post(`${url.Save_PERMISSIONS}${roleId}/${moduleId}/${RolName}`);
 
 // surcharge
 export const getSurchargeCodeData = () => get(url.Get_surcharge_code_Data);
