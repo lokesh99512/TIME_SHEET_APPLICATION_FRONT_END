@@ -138,7 +138,7 @@ const Layout = props => {
   useEffect(() => {
     dispatch({type: GET_VENDOR_DETAILS});
     dispatch({type: GET_CURRENCY_DETAIL});
-    dispatch({type: GET_UOM_DATA});
+    // dispatch({type: GET_UOM_DATA});
     dispatch({type: GET_SURCHARGE_CODE_DATA});
     dispatch({type: GET_SURCHARGE_CATEGORY_DATA});
     dispatch({type: GET_OCEAEN_PORT_DATA});

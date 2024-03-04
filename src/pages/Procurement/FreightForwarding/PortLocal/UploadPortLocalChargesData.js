@@ -7,7 +7,7 @@ import { Card, CardBody, Col, Container, Input, Row } from "reactstrap";
 
 import { optionCalculationType, optionMovementType } from "../../../../common/data/procurement";
 import { isAnyValueEmpty, isAnyValueEmptyInArray } from "../../../../components/Common/CommonLogic";
-import { GET_CARGO_TYPE_DATA, GET_CONTAINER_DATA } from "../../../../store/Global/actiontype";
+import { GET_CARGO_TYPE_DATA, GET_CONTAINER_DATA, GET_UOM_DATA } from "../../../../store/Global/actiontype";
 import { postPortLocalChargesData } from "../../../../store/Procurement/actions";
 import ModalAddTerm from "../Modal/ModalAddTerm";
 
@@ -240,6 +240,7 @@ export default function UploadPortLocalChargesData() {
   useEffect(() => {
     dispatch({ type: GET_CARGO_TYPE_DATA });
     dispatch({ type: GET_CONTAINER_DATA });
+    dispatch({type: GET_UOM_DATA});
   }, [dispatch])
 
   return (

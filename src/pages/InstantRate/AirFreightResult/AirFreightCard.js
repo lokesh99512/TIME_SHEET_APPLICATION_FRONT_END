@@ -92,7 +92,7 @@ const AirFreightCard = ({ data, QuoteModalHandler, mainTab, bookModalHandler }) 
         const totalSum = item?.tariffDetails?.reduce((accOuter, currentOuter) => {
             let innerSum = 0;
             if (currentOuter?.selected) {
-                innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+                innerSum = currentOuter?.fclTariffBreakDowns?.reduce((accInner, currentInner) => {
                     return accInner + convertToINR(Number(currentInner.amount), currentInner.currencyCode);
                 }, 0);
             }
@@ -229,12 +229,12 @@ const AirFreightCard = ({ data, QuoteModalHandler, mainTab, bookModalHandler }) 
                                                                     {data?.header?.split('_').join(' ') || '-'}
                                                                 </div>
                                                                 <div className="right_con d-flex ms-auto">
-                                                                    <span className='text-primary'>{'₹'} {innerTotalHandler(data?.tariffBreakDowns || [])}</span>
+                                                                    <span className='text-primary'>{'₹'} {innerTotalHandler(data?.fclTariffBreakDowns || [])}</span>
                                                                 </div>
                                                             </AccordionHeader>
                                                             <AccordionBody accordionId={`${data?.header}_${index}${i}`}>
                                                                 <div className="price_details_wrap ps-5">
-                                                                    {data?.tariffBreakDowns?.length !== 0 && data?.tariffBreakDowns?.map((val, ind) => (
+                                                                    {data?.fclTariffBreakDowns?.length !== 0 && data?.fclTariffBreakDowns?.map((val, ind) => (
                                                                         <div className="details d-flex justify-content-between" key={`key_${ind}`}>
                                                                             <p className='me-2'>{`${val?.component || ''} `}</p>
                                                                             <span className='text-primary'>{val?.currencyCode || '₹'} {val?.amount || '0'}</span>

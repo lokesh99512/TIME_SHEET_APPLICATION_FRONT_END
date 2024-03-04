@@ -12,6 +12,7 @@ import { optionCalculationType, optionRateSource, optionRateType, optionVendorTy
 import { formatBytes, isAnyValueEmpty, isAnyValueEmptyInArray, isExcelFile } from '../../../../components/Common/CommonLogic';
 import { addInlandData, updateInlandActiveTab, uploadFclInlandCarrierAction, uploadFclInlandFreightAction, uploadFclInlandSurchargeAction } from '../../../../store/Procurement/actions';
 import { BLANK_FCL_CARRIER_DATA, BLANK_SURCHARGE_DATA, FCL_INLAND_FAILD_POPUP_TYPE, UPDATE_INLAND_ACTIVE_TAB } from '../../../../store/Procurement/actiontype';
+import { GET_UOM_DATA } from '../../../../store/Global/actiontype';
 
 export default function FclInlandUpload() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
@@ -50,6 +51,7 @@ export default function FclInlandUpload() {
 
     useEffect(() => {
         dispatch({ type: BLANK_FCL_CARRIER_DATA, payload: { name: 'addInland', data: { ...addInland, carrierDetails: carrierObj } } });
+        dispatch({type: GET_UOM_DATA});
     }, [])
 
     useEffect(() => {

@@ -11,6 +11,7 @@ import { optionRateSource, optionRateType, optionValidityApp, optionVendorType }
 import { formatBytes, isAnyValueEmpty, isAnyValueEmptyInArray, isExcelFile } from '../../../../components/Common/CommonLogic';
 import { addFCLData, getFclDestinationAction, updateFCLActiveTab, uploadFclCarrierData, uploadFclFrightData, uploadFclSurchargeData } from '../../../../store/Procurement/actions';
 import { BLANK_FCL_CARRIER_DATA, BLANK_SURCHARGE_DATA, FCL_FREIGHT_FAILD_POPUP_TYPE, UPDATE_FCL_ACTIVE_TAB } from '../../../../store/Procurement/actiontype';
+import { GET_UOM_DATA } from '../../../../store/Global/actiontype';
 
 export default function UploadFreightData() {
     const [activeTabProgress, setActiveTabProgress] = useState(1);
@@ -28,6 +29,7 @@ export default function UploadFreightData() {
 
     useEffect(() => {
         dispatch({ type: BLANK_FCL_CARRIER_DATA, payload: { name: 'addFCL', data: { ...addFCL, carrierDetails: carrierObj } } });
+        dispatch({type: GET_UOM_DATA});
     },[]);
 
     let carrierObj = {

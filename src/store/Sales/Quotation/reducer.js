@@ -68,13 +68,13 @@ const quotation = (state = INIT_STATE, action) => {
 
                 if(newArray2[existingIndex].tariffDetails.some((obj) => obj.header === action.payload.charge_name)){
                     let index = subArray.findIndex((obj) => obj.header === action.payload.charge_name);
-                    subArray[index].tariffBreakDowns.push({...state.inputObj});
+                    subArray[index].fclTariffBreakDowns.push({...state.inputObj});
                 } else {
-                    subArray.push({header: action.payload.charge_name, tariffBreakDowns: [{...state.inputObj}]  });
+                    subArray.push({header: action.payload.charge_name, fclTariffBreakDowns: [{...state.inputObj}]  });
                 }
                 newArray2[existingIndex].tariffDetails = subArray;
             } else {
-                let newObj = {id: action.payload.id, tariffDetails: [{header: action.payload.charge_name, tariffBreakDowns: [{...state.inputObj}]  }] }
+                let newObj = {id: action.payload.id, tariffDetails: [{header: action.payload.charge_name, fclTariffBreakDowns: [{...state.inputObj}]  }] }
                 newArray2.push(newObj);
             }     
             return {
@@ -91,7 +91,7 @@ const quotation = (state = INIT_STATE, action) => {
                     if (item.header === action.payload.charge_name) {
                         return {
                             ...item,
-                            tariffBreakDowns: item.tariffBreakDowns.map((subItem, subindex) => {
+                            fclTariffBreakDowns: item.fclTariffBreakDowns.map((subItem, subindex) => {
                                 if (subindex === action.payload.index) {
                                     if(action.payload.name === 'markup_val'){
                                         return {
@@ -141,7 +141,7 @@ const quotation = (state = INIT_STATE, action) => {
                     if (item.header === action.payload.header) {
                         return {
                             ...item,
-                            tariffBreakDowns: item.tariffBreakDowns.filter((subItem, subindex) => subindex !== action.payload.index)
+                            fclTariffBreakDowns: item.fclTariffBreakDowns.filter((subItem, subindex) => subindex !== action.payload.index)
                         }
                     } else {
                         return item;

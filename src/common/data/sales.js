@@ -880,7 +880,7 @@ export const airSearchData = {
             "tariffDetails": [
                 {
                     "header": "Pickup_Charges",
-                    "tariffBreakDowns": [
+                    "fclTariffBreakDowns": [
                         {
                             "component": "TRAIN",
                             "uomCode": "PER_CONTAINER",
@@ -914,7 +914,7 @@ export const airSearchData = {
                 },
                 {
                     "header": "Origin_Airport_Charges",
-                    "tariffBreakDowns": [
+                    "fclTariffBreakDowns": [
                         {
                             "component": "TSP Charges",
                             "uomCode": "PER_CONTAINER",
@@ -949,7 +949,7 @@ export const airSearchData = {
                 },
                 {
                     "header": "Air_Freight_Charges",
-                    "tariffBreakDowns": [
+                    "fclTariffBreakDowns": [
                         {
                             "component": "Air Freight",
                             "uomCode": "PER_CONTAINER",
@@ -1003,7 +1003,7 @@ export const airSearchData = {
                 },
                 {
                     "header": "Destination_Airport_Charges",
-                    "tariffBreakDowns": [
+                    "fclTariffBreakDowns": [
                         {
                             "component": "TSP Charges",
                             "componentDescription": "SEAL FEE",
@@ -1039,7 +1039,7 @@ export const airSearchData = {
                 },
                 {
                     "header": "Delivery_Charges",
-                    "tariffBreakDowns": [
+                    "fclTariffBreakDowns": [
                         {
                             "component": "TRAIN",
                             "uomCode": "PER_CONTAINER",
@@ -1095,15 +1095,15 @@ export const airSearchData = {
             "tariffDetails": [
                 {
                     "header": "Pickup_Charges",
-                    "tariffBreakDowns": []
+                    "fclTariffBreakDowns": []
                 },
                 {
                     "header": "Origin_Airport_Charges",
-                    "tariffBreakDowns": []
+                    "fclTariffBreakDowns": []
                 },
                 {
                     "header": "Air_Freight_Charges",
-                    "tariffBreakDowns": [
+                    "fclTariffBreakDowns": [
                         {
                             "component": "Freight Charges",
                             "uomCode": "PER_CONTAINER",
@@ -1142,11 +1142,11 @@ export const airSearchData = {
                 },
                 {
                     "header": "Destination_Airport_Charges",
-                    "tariffBreakDowns": []
+                    "fclTariffBreakDowns": []
                 },
                 {
                     "header": "Delivery_Charges",
-                    "tariffBreakDowns": []
+                    "fclTariffBreakDowns": []
                 }
             ]
         },
@@ -1172,7 +1172,7 @@ export const airSearchData = {
             "tariffDetails": [
                 {
                     "header": "Pickup_Charges",
-                    "tariffBreakDowns": [
+                    "fclTariffBreakDowns": [
                         {
                             "component": "TRAIN",
                             "uomCode": "PER_CONTAINER",
@@ -1206,7 +1206,7 @@ export const airSearchData = {
                 },
                 {
                     "header": "Origin_Airport_Charges",
-                    "tariffBreakDowns": [
+                    "fclTariffBreakDowns": [
                         {
                             "component": "TSP Charges",
                             "uomCode": "PER_CONTAINER",
@@ -1241,7 +1241,7 @@ export const airSearchData = {
                 },
                 {
                     "header": "Air_Freight_Charges",
-                    "tariffBreakDowns": [
+                    "fclTariffBreakDowns": [
                         {
                             "component": "Air Freight",
                             "uomCode": "PER_CONTAINER",
@@ -1295,7 +1295,7 @@ export const airSearchData = {
                 },
                 {
                     "header": "Destination_Airport_Charges",
-                    "tariffBreakDowns": [
+                    "fclTariffBreakDowns": [
                         {
                             "component": "TSP Charges",
                             "componentDescription": "SEAL FEE",
@@ -1331,7 +1331,7 @@ export const airSearchData = {
                 },
                 {
                     "header": "Delivery_Charges",
-                    "tariffBreakDowns": [
+                    "fclTariffBreakDowns": [
                         {
                             "component": "TRAIN",
                             "uomCode": "PER_CONTAINER",

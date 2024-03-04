@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from "react-select";
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem, Modal } from 'reactstrap';
@@ -10,6 +10,7 @@ import { QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_UPDATE } from '../../
 import { ADD_QUOTE_MODAL_CHARGES, BLANK_MODAL_CHARGE, REMOVE_QUOTE_MODAL_CHARGES, UPDATE_QUOTE_MODAL_CHARGES } from '../../../store/Sales/Quotation/actiontype';
 import ShipmentForm from './ShipmentForm';
 import CompanyForm from './CompanyForm';
+import { GET_UOM_DATA } from '../../../store/Global/actiontype';
 
 const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setPreviewModal, viewData }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -39,9 +40,10 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         }
     };
 
-    // useEffect(() => {
-    //     dispatch(getCurrencyExchangeRate());
-    // }, [])
+    useEffect(() => {
+        // dispatch(getCurrencyExchangeRate());
+        dispatch({type: GET_UOM_DATA});
+    }, [])
 
     const formik = useFormik({
         enableReinitialize: true,
@@ -66,7 +68,6 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
     }
 
     const handleChange = (value, name, index, charge_name, objId, sales_cost, newVal) => {
-        console.log(charge_name, "charge_name")
         dispatch({ type: UPDATE_QUOTE_MODAL_CHARGES, payload: { charge_name, id: objId, value, name, index, sales_cost, newVal } })
     }
 
@@ -103,7 +104,6 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
     }
 
     const handleChangeAndCalculate = (data, e, name, index, charge_name, objId) => {
-        console.log(data);
         let sale_cost = 0;
         if (e.target.name === 'markup_val') {
             let totalAmt = Number(data.unitPerPrice) * Number(data.unit || 1);
@@ -132,7 +132,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         const totalSum = quoteObject?.tariffDetails?.reduce((accOuter, currentOuter) => {
             let innerSum = 0;
             if (currentOuter?.selected) {
-                innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+                innerSum = currentOuter?.fclTariffBreakDowns?.reduce((accInner, currentInner) => {
                     return accInner + convertToINR(Number(currentInner.amount), currentInner.currencyCode);
                 }, 0);
             }
@@ -141,7 +141,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         const totalMarginSum = quoteObject?.tariffDetails?.reduce((accOuter, currentOuter) => {
             let innerSum = 0;
             if (currentOuter?.selected) {
-                innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+                innerSum = currentOuter?.fclTariffBreakDowns?.reduce((accInner, currentInner) => {
                     return accInner + (convertToINR(currentInner?.margin_value ? Number(currentInner.margin_value) : 0, currentInner.currencyCode) || 0);
                 }, 0);
             }
@@ -149,7 +149,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         }, 0);
 
         const newSubTotal = mainChargeCurr?.tariffDetails !== undefined ? mainChargeCurr?.tariffDetails?.reduce((accOuter, currentOuter) => {
-            let innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+            let innerSum = currentOuter?.fclTariffBreakDowns?.reduce((accInner, currentInner) => {
                 let totalAmt = Number(currentInner.unitPerPrice || 0) * Number(currentInner.unit || 1);
                 return accInner + convertToINR(Number(totalAmt), currentInner.currencyCode);
             }, 0);
@@ -157,7 +157,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         }, 0) : 0;
 
         const totalNewMarginSum = mainChargeCurr?.tariffDetails !== undefined ? mainChargeCurr?.tariffDetails?.reduce((accOuter, currentOuter) => {
-            let innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+            let innerSum = currentOuter?.fclTariffBreakDowns?.reduce((accInner, currentInner) => {
                 return accInner + (convertToINR(currentInner?.margin_value ? Number(currentInner.margin_value) : 0, currentInner.currencyCode) || 0);
             }, 0);
             return accOuter + innerSum;
@@ -172,7 +172,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         const totalTax = quoteObject?.tariffDetails?.reduce((accOuter, currentOuter) => {
             let innerSum = 0;
             if (currentOuter?.selected) {
-                innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+                innerSum = currentOuter?.fclTariffBreakDowns?.reduce((accInner, currentInner) => {
                     return accInner + (currentInner?.taxDetail !== undefined && (convertToINR(Number(currentInner?.taxDetail?.value || 0), currentInner.currencyCode || 'INR') || 0));
                 }, 0);
             }
@@ -180,7 +180,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         }, 0);
 
         const totalNewTax = mainChargeCurr?.tariffDetails !== undefined ? mainChargeCurr?.tariffDetails?.reduce((accOuter, currentOuter) => {
-            let innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+            let innerSum = currentOuter?.fclTariffBreakDowns?.reduce((accInner, currentInner) => {
                 return accInner + (currentInner?.taxDetail !== undefined && (convertToINR(Number(currentInner?.taxDetail?.value || 0), currentInner.currencyCode) || 0));
             }, 0);
             return accOuter + innerSum;
@@ -196,7 +196,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         const totalMarginSum = quoteObject?.tariffDetails?.reduce((accOuter, currentOuter) => {
             let innerSum = 0;
             if (currentOuter?.selected) {
-                innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+                innerSum = currentOuter?.fclTariffBreakDowns?.reduce((accInner, currentInner) => {
                     return accInner + (convertToINR(currentInner?.margin_value !== undefined ? Number(currentInner.margin_value || 0) : 0, currentInner.currencyCode) || 0);
                 }, 0);
             }
@@ -204,7 +204,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
         }, 0);
 
         const totalNewMarginSum = mainChargeCurr?.tariffDetails !== undefined ? mainChargeCurr?.tariffDetails?.reduce((accOuter, currentOuter) => {
-            let innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+            let innerSum = currentOuter?.fclTariffBreakDowns?.reduce((accInner, currentInner) => {
                 return accInner + (convertToINR(currentInner?.margin_value !== undefined ? Number(currentInner.margin_value || 0) : 0, currentInner.currencyCode) || 0);
             }, 0);
             return accOuter + innerSum;
@@ -362,12 +362,12 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                 {data?.header?.split('_').join(" ") || '-'}
                                                                 <div className="right_con ms-auto">
                                                                     {/* <span className="price text-primary">{'₹'} {innerTotalHandler((item?.pickup_quote_charge || []), (mainChargeObj?.find(obj => obj.quote_id === item.quote_id)?.pickup_quote_charge || []))}</span> */}
-                                                                    <span className="price text-primary">{'₹'} {innerTotalHandler((data?.tariffBreakDowns || []), (mainChargeObj?.find(obj => obj.id === item.quote_id)?.tariffDetails?.find(obj => obj.header === data?.header)?.tariffBreakDowns || []))}</span>
+                                                                    <span className="price text-primary">{'₹'} {innerTotalHandler((data?.fclTariffBreakDowns || []), (mainChargeObj?.find(obj => obj.id === item.quote_id)?.tariffDetails?.find(obj => obj.header === data?.header)?.fclTariffBreakDowns || []))}</span>
                                                                     
                                                                 </div>
                                                             </AccordionHeader>
                                                             <AccordionBody accordionId={`subacco_${index}`}>
-                                                                {data?.tariffBreakDowns?.length !== 0 && data?.tariffBreakDowns?.map((subData, subindex) => (
+                                                                {data?.fclTariffBreakDowns?.length !== 0 && data?.fclTariffBreakDowns?.map((subData, subindex) => (
                                                                     <div className="charges_wrap mb-3" key={subindex}>
                                                                         <div className="row">
                                                                             <div className="col-2">
@@ -444,7 +444,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                     </div>
                                                                 ))}
                                                                 {/* {console.log(mainChargeObj,"mainChargeObj")} */}
-                                                                {mainChargeObj?.find(obj => obj.id === item.quote_id)?.tariffDetails?.find(obj => obj.header === data?.header)?.tariffBreakDowns?.map((newdata, i) => (
+                                                                {mainChargeObj?.find(obj => obj.id === item.quote_id)?.tariffDetails?.find(obj => obj.header === data?.header)?.fclTariffBreakDowns?.map((newdata, i) => (
                                                                     <div className="charges_wrap mt-3" key={i}>
                                                                         <div className="label_delete_wwrap d-flex justify-content-between">
                                                                             <label className="form-label">Select Charge</label>

@@ -305,7 +305,7 @@ const instantRate = (state = INIT_STATE, action) => {
                     if (innerIndex === action.payload.index) {
                         return {
                             ...item,
-                            tariffBreakDowns: item.tariffBreakDowns.map((subItem, subInnerIndex) => {
+                            fclTariffBreakDowns: item.fclTariffBreakDowns.map((subItem, subInnerIndex) => {
                                 if (subInnerIndex === action.payload.subindex) {
                                     if (action.payload.name === 'markup_val') {
                                         return {

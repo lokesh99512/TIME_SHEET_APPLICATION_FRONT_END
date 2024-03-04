@@ -80,11 +80,19 @@ input[type="number"]{
         }   
         .upload_surcharges_row{
             position: relative;
-            &:not(:first-child){
-                padding-top: 30px;
-                margin-top: 20px;
-                border-top: 1px solid #e9e9ef;
+            padding: 13px;
+            border: 1px solid #4848F7;
+            border-radius: 10px;
+            background: rgb(241 241 254 / 50%);
+            &:not(:last-child){
+                margin: 0 0 15px;
             }
+            // &:not(:first-child){
+            //     padding-top: 30px;
+            //     margin-top: 20px;
+            //     border-top: 1px solid #e9e9ef;
+            //     border-top: 1px solid $neutral_2;
+            // }
             .btn_wrap{
                 position: absolute;
                 bottom: 20px;
