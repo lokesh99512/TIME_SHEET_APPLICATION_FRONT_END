@@ -13,7 +13,7 @@ export const CurrencyWiseTotal = ({ data, newData }) => {
         };
         return tariffDetails?.reduce((result, currentOuter) => {
             if (type === 'new') {
-                const newArray = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+                const newArray = currentOuter?.fclTariffBreakDowns?.reduce((accInner, currentInner) => {
                     const currentCurrency = currentInner?.currencyCode;
                     const existingObj = accInner?.find((item) => item.currency === currentCurrency);
                     if (existingObj) {
@@ -32,7 +32,7 @@ export const CurrencyWiseTotal = ({ data, newData }) => {
                 }
             } else {
                 if (currentOuter?.selected) {
-                    const newArray = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+                    const newArray = currentOuter?.fclTariffBreakDowns?.reduce((accInner, currentInner) => {
                         const currentCurrency = currentInner?.currencyCode;
                         const existingObj = accInner?.find((item) => item.currency === currentCurrency);
                         if (existingObj) {
@@ -129,7 +129,7 @@ export default function PreviewCommonTable({ data, newData, tab }) {
         let buyValue = (data?.tariffDetails?.reduce((outeracc, outerCurrent) => {
             let sum = 0;
             if (outerCurrent?.selected) {
-                sum = outerCurrent?.tariffBreakDowns?.reduce((inneracc, innerCurrent) => {
+                sum = outerCurrent?.fclTariffBreakDowns?.reduce((inneracc, innerCurrent) => {
                     return inneracc + convertToINR(Number(innerCurrent?.amount || 0), innerCurrent?.currencyCode);
                 }, 0);
             }
@@ -138,7 +138,7 @@ export default function PreviewCommonTable({ data, newData, tab }) {
         let marginValue = (data?.tariffDetails?.reduce((outeracc, outerCurrent) => {
             let sum = 0;
             if (outerCurrent?.selected) {
-                sum = outerCurrent?.tariffBreakDowns?.reduce((inneracc, innerCurrent) => {
+                sum = outerCurrent?.fclTariffBreakDowns?.reduce((inneracc, innerCurrent) => {
                     return inneracc + convertToINR(innerCurrent?.margin_value ? Number(innerCurrent.margin_value) : 0, innerCurrent?.currencyCode);
                 }, 0);
             }
@@ -146,14 +146,14 @@ export default function PreviewCommonTable({ data, newData, tab }) {
         }, 0))
 
         let newSubTotal = newData?.tariffDetails !== undefined ? newData?.tariffDetails?.reduce((accOuter, currentOuter) => {
-            let innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+            let innerSum = currentOuter?.fclTariffBreakDowns?.reduce((accInner, currentInner) => {
                 let totalAmt = Number(currentInner.unitPerPrice || 0) * Number(currentInner.unit || 1);
                 return accInner + convertToINR(Number(totalAmt), currentInner.currencyCode);
             }, 0);
             return accOuter + innerSum;
         }, 0) : 0;
         let totalNewMarginSum = newData?.tariffDetails !== undefined ? newData?.tariffDetails?.reduce((accOuter, currentOuter) => {
-            let innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+            let innerSum = currentOuter?.fclTariffBreakDowns?.reduce((accInner, currentInner) => {
                 return accInner + (convertToINR(currentInner?.margin_value ? Number(currentInner.margin_value) : 0, currentInner.currencyCode) || 0);
             }, 0);
             return accOuter + innerSum;
@@ -168,7 +168,7 @@ export default function PreviewCommonTable({ data, newData, tab }) {
         let totalTax = data?.tariffDetails?.reduce((accOuter, currentOuter) => {
             let innerSum = 0;
             if (currentOuter?.selected) {
-                innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+                innerSum = currentOuter?.fclTariffBreakDowns?.reduce((accInner, currentInner) => {
                     return accInner + (currentInner?.taxDetail !== undefined && (convertToINR(Number(currentInner?.taxDetail?.value || 0), currentInner.currencyCode || 'INR') || 0));
                 }, 0);
             }
@@ -176,7 +176,7 @@ export default function PreviewCommonTable({ data, newData, tab }) {
         }, 0);
 
         let totalNewTax = newData?.tariffDetails !== undefined ? newData?.tariffDetails?.reduce((accOuter, currentOuter) => {
-            let innerSum = currentOuter?.tariffBreakDowns?.reduce((accInner, currentInner) => {
+            let innerSum = currentOuter?.fclTariffBreakDowns?.reduce((accInner, currentInner) => {
                 return accInner + (currentInner?.taxDetail !== undefined && (convertToINR(Number(currentInner?.taxDetail?.value || 0), currentInner.currencyCode) || 0));
             }, 0);
             return accOuter + innerSum;
@@ -218,7 +218,7 @@ export default function PreviewCommonTable({ data, newData, tab }) {
                                             <tr key={`header_${data.id}_${index}`}>
                                                 <td colSpan={6} className='title_row'>{inner?.header?.split("_").join(" ") || '-'}</td>
                                             </tr>
-                                            {inner?.tariffBreakDowns?.length !== 0 && inner?.tariffBreakDowns?.map((sub, index) => (
+                                            {inner?.fclTariffBreakDowns?.length !== 0 && inner?.fclTariffBreakDowns?.map((sub, index) => (
                                                 <tr key={`tariff_${data.id}_${index}`}>
                                                     <td>{sub?.component || '-'}</td>
                                                     <td>{sub?.uomCode?.split('_').join(" ") || '-'}</td>
@@ -229,7 +229,7 @@ export default function PreviewCommonTable({ data, newData, tab }) {
                                                     {/* <td>{sub?.total_sale_cost || (Number(sub?.amount || 0) + Number(sub?.taxDetail?.value || 0))}</td> */}
                                                 </tr>
                                             ))}
-                                            {newData?.tariffDetails !== undefined && newData?.tariffDetails?.find(obj => obj?.header === inner?.header)?.tariffBreakDowns?.map((newSub, newindex) => (
+                                            {newData?.tariffDetails !== undefined && newData?.tariffDetails?.find(obj => obj?.header === inner?.header)?.fclTariffBreakDowns?.map((newSub, newindex) => (
                                                 <tr key={`${newData?.id}_${inner?.header}${newindex}`}>
                                                     <td>{newSub?.component?.value || '-'}</td>
                                                     <td>{newSub?.uomCode?.label || '-'}</td>
@@ -240,7 +240,7 @@ export default function PreviewCommonTable({ data, newData, tab }) {
                                                 </tr>
                                             ))}
 
-                                            {(inner?.tariffBreakDowns?.length === 0 && newData?.tariffDetails?.find(obj => obj?.header === inner?.header) === undefined) && <tr><td colSpan={6}>No data found</td></tr>}
+                                            {(inner?.fclTariffBreakDowns?.length === 0 && newData?.tariffDetails?.find(obj => obj?.header === inner?.header) === undefined) && <tr><td colSpan={6}>No data found</td></tr>}
                                         </>
                                     )
                                 }
