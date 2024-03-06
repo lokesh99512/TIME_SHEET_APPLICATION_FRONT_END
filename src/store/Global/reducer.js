@@ -1,4 +1,4 @@
-import {  GET_CARGO_TYPE_DATA_SUCCEESS, GET_CONTAINER_DATA_SUCCEESS, GET_CURRENCY_DETAIL_SUCCESS, GET_MODULE_LOADER_TYPE, GET_MODULE_TYPE_SUCCEESS, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_ROLE_LOADER_TYPE, GET_ROLE_TYPE_SUCCEESS, GET_STATE_ALL_TYPE_SUCCEESS, GET_SURCHARGE_ALICE_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA_SUCCESS, GET_UOM_WEIGHT_DATA_SUCCESS, GET_VENDOR_DETAILS_SUCCESS } from "./actiontype";
+import { GET_ALL_MODULES_BY_ROLE_TYPE_SUCCEESS, GET_CARGO_TYPE_DATA_SUCCEESS, GET_CONTAINER_DATA_SUCCEESS, GET_CURRENCY_DETAIL_SUCCESS, GET_MODULE_LOADER_TYPE, GET_MODULE_TYPE_SUCCEESS, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_ROLE_BY_ID_TYPE_SUCCEESS, GET_ROLE_LOADER_TYPE, GET_ROLE_TYPE_SUCCEESS, GET_STATE_ALL_TYPE_SUCCEESS, GET_SURCHARGE_ALICE_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA_SUCCESS, GET_UOM_WEIGHT_DATA_SUCCESS, GET_VENDOR_DETAILS_SUCCESS, SAVE_ROLE_TYPE_SUCCEESS } from "./actiontype";
 
 const INIT_STATE = {
     vendor_data: [],
@@ -17,6 +17,8 @@ const INIT_STATE = {
     role_loader: [],
     moduleData: [],
     module_loader: [],
+    module_data_by_role: [],
+    role_data_By_id: []
 }
 
 const globalReducer = (state = INIT_STATE, action) => {
@@ -153,6 +155,21 @@ const globalReducer = (state = INIT_STATE, action) => {
                     }
                 })
             }
+        case GET_ALL_MODULES_BY_ROLE_TYPE_SUCCEESS:
+            return {
+                ...state,
+                module_data_by_role: action.payload.content
+            }
+        case GET_ROLE_BY_ID_TYPE_SUCCEESS:
+            return {
+                ...state,
+                role_data_By_id: action.payload
+            }
+        case SAVE_ROLE_TYPE_SUCCEESS:
+            return {
+                ...state,
+                role_data_By_id: action.payload
+            }
         case GET_STATE_ALL_TYPE_SUCCEESS:
             return {
                 ...state,
@@ -193,8 +210,6 @@ const globalReducer = (state = INIT_STATE, action) => {
                         value: item?.name,
                         id: item?.id,
                         status: item?.status,
-                        actionNames: item?.actionNames,
-                        roleId: item?.roleId
                     }
                 })
             }

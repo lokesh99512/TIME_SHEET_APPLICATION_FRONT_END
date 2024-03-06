@@ -90,6 +90,24 @@ export const addRoleBreadcrumb = [
     active: true
   }
 ]
+
+export const editRoleBreadcrumb = [
+  {
+    label: 'Settings',
+    link: '/#',
+    active: false
+  },
+  {
+    label: 'Users',
+    link: '/#',
+    active: false
+  },
+  {
+    label: 'Edit Role',
+    link: '/#',
+    active: true
+  }
+]
 export const addUserBreadcrumb = [
   {
     label: 'Settings',

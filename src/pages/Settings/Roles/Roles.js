@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Container, DropdownItem, FormGroup, Input } from "reactstrap";
 import TopBreadcrumbs from "../Surcharge/TopBreadcrumbs";
-import { GET_MODULE_TYPE, GET_ROLE_TYPE } from "../../../store/Global/actiontype";
+import { GET_ALL_MODULES_BY_ROLE_TYPE, GET_MODULE_TYPE, GET_ROLE_TYPE } from "../../../store/Global/actiontype";
 import { RolesBreadcrumb } from "../../../common/data/parties";
 import RoleTable from "./RoleTable";
 import { Permissions, RoleName, Edit } from "./RolesCol";
@@ -18,7 +18,7 @@ const Roles = () => {
     setResetModal(true);
   }
 
-  const { roleData, role_loader, moduleData } = useSelector((state) => state.globalReducer);
+  const { roleData, role_loader,module_data_by_role, moduleData } = useSelector((state) => state.globalReducer);
 
   const onCloseClick = () => {
     setResetModal(false);
@@ -28,11 +28,19 @@ const Roles = () => {
     console.log("popup");
   };
   const editHandler = (data) => {
-    console.log(data);
+    let permission = [];
+    data?.moduleData?.forEach(data => {
+      const namesArray = data?.actionNames.split(',').map(name => name.trim());
+      const actionNamesArray = namesArray.map(name => ({ name }));
+      actionNamesArray.forEach(action => {
+          permission.push({ roleId: data.roleId, moduleId: data.id, actionName: action.name })
+      })
+  })
     navidate(`/settings/addRole`, {
       state: {
         id: data?.id || '',
-        data: data || ''
+        data: data || '',
+        permissions: permission || '',
       },
     });
   };
@@ -45,10 +53,11 @@ const Roles = () => {
   useEffect(() => {
     dispatch({ type: GET_ROLE_TYPE });
     dispatch({ type: GET_MODULE_TYPE });
+    dispatch({type:GET_ALL_MODULES_BY_ROLE_TYPE});
   }, [dispatch]);
 
   roleData?.forEach(element => {
-    element.moduleData = moduleData?.filter(module => module.roleId == element.id);
+    element.moduleData = module_data_by_role?.filter(module => module.roleId == element.id);
   });
 
   const columns = useMemo(() => ([
@@ -74,7 +83,7 @@ const Roles = () => {
           <>
             {cellProps.row.original.moduleData.map((module, index) => (
               <div key={index}>
-                {module.label}
+                {module.name}
                 {index !== cellProps.row.original.moduleData.length - 1 && <hr className="module-divider" />}
               </div>
             ))}

@@ -1,6 +1,6 @@
 import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects";
-import { DELETE_PERMISSIONS_TYPE, DELETE_PERMISSIONS_TYPE_SUCCEESS, GET_CARGO_TYPE_DATA, GET_CARGO_TYPE_DATA_SUCCEESS, GET_CONTAINER_DATA, GET_CONTAINER_DATA_SUCCEESS, GET_CURRENCY_DETAIL, GET_CURRENCY_DETAIL_SUCCESS, GET_MODULE_LOADER_TYPE, GET_MODULE_TYPE, GET_MODULE_TYPE_SUCCEESS, GET_OCEAEN_PORT_DATA, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_ROLE_LOADER_TYPE, GET_ROLE_TYPE, GET_ROLE_TYPE_SUCCEESS, GET_STATE_ALL_TYPE, GET_STATE_ALL_TYPE_SUCCEESS, GET_SURCHARGE_ALICE_DATA, GET_SURCHARGE_ALICE_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA, GET_UOM_DATA_SUCCESS, GET_UOM_WEIGHT_DATA, GET_UOM_WEIGHT_DATA_SUCCESS, GET_VENDOR_DETAILS, GET_VENDOR_DETAILS_SUCCESS, POST_SURCHARGE_ALISE_DATA, POST_SURCHARGE_CATEGORY_DATA, POST_SURCHARGE_CODE_DATA, POST_SURCHARGE_CODE_DATA_SUCCEESS, SAVE_PERMISSIONS_TYPE, SAVE_PERMISSIONS_TYPE_SUCCEESS } from "./actiontype";
-import { deletePermissionser, getCargoTypeData, getContainerData, getCurrencyData, getModuleAllSer, getOceanPortData, getRoleAllSer, getStateAllSer, getSurchargeAliceSer, getSurchargeCategoryData, getSurchargeCodeData, getUomData, getUomWeightData, getVendorData, postSurchargeAliseSer, postSurchargeCateSer, postSurchargeCodeSer, savePermissionSer } from "../../helpers/services/GlobalService";
+import { DELETE_PERMISSIONS_TYPE, DELETE_PERMISSIONS_TYPE_SUCCEESS, GET_ALL_MODULES_BY_ROLE_TYPE, GET_ALL_MODULES_BY_ROLE_TYPE_SUCCEESS, GET_CARGO_TYPE_DATA, GET_CARGO_TYPE_DATA_SUCCEESS, GET_CONTAINER_DATA, GET_CONTAINER_DATA_SUCCEESS, GET_CURRENCY_DETAIL, GET_CURRENCY_DETAIL_SUCCESS, GET_MODULE_LOADER_TYPE, GET_MODULE_TYPE, GET_MODULE_TYPE_SUCCEESS, GET_OCEAEN_PORT_DATA, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_ROLE_BY_ID_TYPE, GET_ROLE_BY_ID_TYPE_SUCCEESS, GET_ROLE_LOADER_TYPE, GET_ROLE_TYPE, GET_ROLE_TYPE_SUCCEESS, GET_STATE_ALL_TYPE, GET_STATE_ALL_TYPE_SUCCEESS, GET_SURCHARGE_ALICE_DATA, GET_SURCHARGE_ALICE_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA, GET_UOM_DATA_SUCCESS, GET_UOM_WEIGHT_DATA, GET_UOM_WEIGHT_DATA_SUCCESS, GET_VENDOR_DETAILS, GET_VENDOR_DETAILS_SUCCESS, POST_SURCHARGE_ALISE_DATA, POST_SURCHARGE_CATEGORY_DATA, POST_SURCHARGE_CODE_DATA, POST_SURCHARGE_CODE_DATA_SUCCEESS, SAVE_PERMISSIONS_TYPE, SAVE_PERMISSIONS_TYPE_SUCCEESS, SAVE_ROLE_TYPE, SAVE_ROLE_TYPE_SUCCEESS } from "./actiontype";
+import { deletePermissionser, getAllmodulesbyrole, getCargoTypeData, getContainerData, getCurrencyData, getModuleAllSer, getOceanPortData, getRoleAllSer, getRoleById, getStateAllSer, getSurchargeAliceSer, getSurchargeCategoryData, getSurchargeCodeData, getUomData, getUomWeightData, getVendorData, postSurchargeAliseSer, postSurchargeCateSer, postSurchargeCodeSer, savePermissionSer, saveRoleSer } from "../../helpers/services/GlobalService";
 import { showErrorToast, showSuccessToast } from "../../components/Common/CustomToast";
 
 function* fetchVendorData() {
@@ -127,6 +127,24 @@ function* fetchModuleData() {
         yield put({ type: GET_MODULE_LOADER_TYPE, payload: false });
     }
 }
+function* fetchByRoleId({ payload: {id} }) {
+    try {
+        const response = yield call( getRoleById ,id);
+        yield put({
+            type: GET_ROLE_BY_ID_TYPE_SUCCEESS, payload: response  });
+    } catch (error) {
+        console.log(error, "saga state api error");
+    }
+}
+function* fetchModuleDataByRole() {
+    try {
+        const response = yield call(getAllmodulesbyrole);
+        console.log(response, "response MODULE===============");
+        yield put({ type: GET_ALL_MODULES_BY_ROLE_TYPE_SUCCEESS, payload: response });
+    } catch (error) {
+        console.log(error, "MODULE error-----------");
+    }
+}
 function* postSurchargeCodeData({ payload: { data } }) {
     try {
         const response = yield call(postSurchargeCodeSer, data);
@@ -151,14 +169,24 @@ function* deletePermission({ payload }) {
     }
 }
 
-function* postPermission({ payload }) {
+function* postPermission({ payload: { data ,roleId} }) {
+    console.log(roleId);
     try {
-        const { roleId, moduleId, actionName } = payload;
-        const response = yield call( savePermissionSer, roleId, moduleId, actionName);
+        const response = yield call( savePermissionSer, data, roleId);
         yield put({
-            type: SAVE_PERMISSIONS_TYPE_SUCCEESS,
-            payload: response,
-        });
+            type: SAVE_PERMISSIONS_TYPE_SUCCEESS, payload: response  });
+            showSuccessToast("Permission saved Successfully");
+    } catch (error) {
+        console.log(error, "saga state api error");
+    }
+}
+
+function* postRoleData({ payload: { data } }) {
+    try {
+        const response = yield call( saveRoleSer, data);
+        yield put({
+            type: SAVE_ROLE_TYPE_SUCCEESS ,  payload: response });
+            showSuccessToast("Role saved Successfully");
     } catch (error) {
         console.log(error, "saga state api error");
     }
@@ -207,6 +235,9 @@ function* watchGetglobalData() {
     yield takeEvery(POST_SURCHARGE_ALISE_DATA, postSurchargeAliseData);
     yield takeEvery(DELETE_PERMISSIONS_TYPE, deletePermission);
     yield takeEvery(SAVE_PERMISSIONS_TYPE, postPermission);
+    yield takeEvery(GET_ALL_MODULES_BY_ROLE_TYPE, fetchModuleDataByRole);
+    yield takeEvery(SAVE_ROLE_TYPE, postRoleData);
+    yield takeEvery(GET_ROLE_BY_ID_TYPE, fetchByRoleId);
 }
 
 function* globalSaga() {
