@@ -191,8 +191,8 @@ const globalReducer = (state = INIT_STATE, action) => {
                         value: item?.name,
                         id: item?.id,
                         status: item?.status,
-                        moduleNames: item?.moduleNames,
-                        actionNames: item?.actionNames
+                        totalUsers: item?.totalUsers,
+                        version: item?.version
                     }
                 })
             }

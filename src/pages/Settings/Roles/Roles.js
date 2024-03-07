@@ -20,6 +20,7 @@ const Roles = () => {
 
   const { roleData, role_loader,module_data_by_role, moduleData } = useSelector((state) => state.globalReducer);
 
+  console.log(roleData);
   const onCloseClick = () => {
     setResetModal(false);
   }

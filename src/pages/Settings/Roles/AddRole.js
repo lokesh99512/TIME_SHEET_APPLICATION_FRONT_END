@@ -30,7 +30,7 @@ const AddRole = () => {
         dispatch({
             type: GET_ROLE_BY_ID_TYPE_SUCCEESS,
             payload: []
-            })
+        })
     }, [])
     const switchHandler = (data) => {
 
@@ -52,7 +52,7 @@ const AddRole = () => {
         else {
             console.log(role_data_By_id?.id);
             if (!!navigateState?.state?.data || role_data_By_id?.id) {
-                dispatch(savePermissions(permissions, (( role_data_By_id?.id) ? role_data_By_id?.id : roleFormik.values.roleCode)));
+                dispatch(savePermissions(permissions, ((role_data_By_id?.id) ? role_data_By_id?.id : roleFormik.values.roleCode)));
             } else
                 showErrorToast("Please Save Role")
         }
@@ -70,14 +70,17 @@ const AddRole = () => {
         initialValues: {
             roleCode: navigateState?.state?.data?.id,
             roleName: navigateState?.state?.data?.value || "",
+            version: navigateState?.state?.data?.version || 0,
         },
         validationSchema: Yup.object({
             roleCode: Yup.string().required("Please enter role code"),
             roleName: Yup.string().required("Please select role name"),
         }),
         onSubmit: (values) => {
-            const role = { id: values.roleCode, name: values.roleName }
-            console.log(role);
+            const role = {
+                id: (role_data_By_id?.id) ? role_data_By_id?.id: navigateState?.state?.data?.id || '',
+                 name: values.roleName,
+                 version:(role_data_By_id?.version) ? role_data_By_id?.version: navigateState?.state?.data?.version || 0 }
             dispatch(saveRole(role))
         },
     })
@@ -248,7 +251,7 @@ const AddRole = () => {
                 );
             },
         },
-    ]), [roleData]);
+    ]), [moduleData]);
 
     return (
         <>
@@ -273,6 +276,7 @@ const AddRole = () => {
                                         name="roleCode"
                                         value={roleFormik.values.roleCode}
                                         onChange={roleFormik.handleChange}
+                                        readOnly={navigateState?.state?.data?.id?true:false}
                                         onBlur={roleFormik.handleBlur}
                                         className="form-control"
                                         placeholder="Role Code"
