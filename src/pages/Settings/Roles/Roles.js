@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Container, DropdownItem, FormGroup, Input } from "reactstrap";
 import TopBreadcrumbs from "../Surcharge/TopBreadcrumbs";
-import { GET_ROLE_TYPE } from "../../../store/Global/actiontype";
+import { GET_ALL_MODULES_BY_ROLE_TYPE, GET_MODULE_TYPE, GET_ROLE_TYPE } from "../../../store/Global/actiontype";
 import { RolesBreadcrumb } from "../../../common/data/parties";
 import RoleTable from "./RoleTable";
 import { Permissions, RoleName, Edit } from "./RolesCol";
@@ -18,8 +18,9 @@ const Roles = () => {
     setResetModal(true);
   }
 
-  const { roleData, role_loader } = useSelector((state) => state.globalReducer);
+  const { roleData, role_loader,module_data_by_role, moduleData } = useSelector((state) => state.globalReducer);
 
+  console.log(roleData);
   const onCloseClick = () => {
     setResetModal(false);
   }
@@ -28,9 +29,19 @@ const Roles = () => {
     console.log("popup");
   };
   const editHandler = (data) => {
+    let permission = [];
+    data?.moduleData?.forEach(data => {
+      const namesArray = data?.actionNames.split(',').map(name => name.trim());
+      const actionNamesArray = namesArray.map(name => ({ name }));
+      actionNamesArray.forEach(action => {
+          permission.push({ roleId: data.roleId, moduleId: data.id, actionName: action.name })
+      })
+  })
     navidate(`/settings/addRole`, {
       state: {
         id: data?.id || '',
+        data: data || '',
+        permissions: permission || '',
       },
     });
   };
@@ -41,11 +52,14 @@ const Roles = () => {
   }
 
   useEffect(() => {
-    //dispatch(getUsersData()); 
     dispatch({ type: GET_ROLE_TYPE });
+    dispatch({ type: GET_MODULE_TYPE });
+    dispatch({type:GET_ALL_MODULES_BY_ROLE_TYPE});
   }, [dispatch]);
 
-  console.log(roleData);
+  roleData?.forEach(element => {
+    element.moduleData = module_data_by_role?.filter(module => module.roleId == element.id);
+  });
 
   const columns = useMemo(() => ([
     {
@@ -61,12 +75,20 @@ const Roles = () => {
     },
     {
       Header: "Modules",
-      accessor: "modules",
+      accessor: "modulsedData",
       filterable: true,
+      enableRowSpan: true,
       disableFilters: true,
       Cell: (cellProps) => {
         return (
-          <RoleName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+          <>
+            {cellProps.row.original.moduleData.map((module, index) => (
+              <div key={index}>
+                {module.name}
+                {index !== cellProps.row.original.moduleData.length - 1 && <hr className="module-divider" />}
+              </div>
+            ))}
+          </>
         );
       },
     },
@@ -74,95 +96,191 @@ const Roles = () => {
       Header: <img src={read_book_icon} alt="Upload" title="Read" height={20} className="p-0" />,
       accessor: "demo",
       filterable: true,
+      enableRowSpan: true,
       width: 2,
       disableFilters: true,
       Cell: (cellProps) => {
         return (
-          <Input type="checkbox" className="form-controler" id="chk19" />
+          <>
+            {cellProps.row.original.moduleData.map((module, index) => (
+              <div key={index}>
+                <Input type="checkbox" className="custom-checkbox" readOnly
+                checked={module.actionNames?.includes("READ") || false} />
+                {index !== cellProps.row.original.moduleData.length - 1 && <hr className="module-divider" />}
+              </div>
+            ))}
+            {cellProps.row.original.moduleData.length == 0 &&
+              <Input type="checkbox" className="custom-checkbox" readOnly checked={false} />
+            }
+          </>
         );
       },
     },
     {
-      Header: <img src={writing_icon} alt="Upload" title="Write" height={20} className="p-0" />,
-      accessor: "write",
+      Header: <img src={folder_plus_icon} alt="Upload" title="ADD" height={20} className="p-0" />,
+      accessor: "ADD",
       filterable: true,
+      enableRowSpan: true,
       width: 2,
       disableFilters: true,
       Cell: (cellProps) => {
         return (
-          <Input type="checkbox" checked id="chk19" />
+          <>
+            {cellProps.row.original.moduleData.map((module, index) => (
+              <div key={index}>
+                <Input type="checkbox" className="custom-checkbox" readOnly
+                  checked={module.actionNames?.includes("ADD") || false} id="chk19" />
+                {index !== cellProps.row.original.moduleData.length - 1 && <hr className="module-divider" />}
+              </div>
+            ))}
+            {cellProps.row.original.moduleData.length == 0 &&
+              <Input type="checkbox" className="custom-checkbox" readOnly checked={false} />
+            }
+          </>
         );
       },
     },
     {
-      Header: <img src={folder_plus_icon} alt="Upload" title="Add New" height={20} className="p-0" />,
-      accessor: "bookmark",
+      Header: <img src={writing_icon} alt="Upload" title="EDIT" height={20} className="p-0" />,
+      accessor: "EDIT",
       filterable: true,
+      enableRowSpan: true,
       width: 2,
       disableFilters: true,
       Cell: (cellProps) => {
         return (
-          <Input type="checkbox" checked id="chk19" />
+          <>
+            {cellProps.row.original.moduleData.map((module, index) => (
+              <div key={index}>
+                <Input type="checkbox" className="custom-checkbox" readOnly
+                  checked={module.actionNames?.includes("EDIT") || false} id="chk19" />
+                {index !== cellProps.row.original.moduleData.length - 1 && <hr className="module-divider" />}
+              </div>
+            ))}
+            {cellProps.row.original.moduleData.length == 0 &&
+              <Input type="checkbox" className="custom-checkbox" readOnly checked={false} />
+            }
+          </>
         );
       },
     },
     {
-      Header: <img src={task_minus_icon} alt="Upload" title="data" height={20} className="p-0" />,
-      accessor: "minus",
+      Header: <img src={task_minus_icon} alt="Upload" title="DELETE" height={20} className="p-0" />,
+      accessor: "DELETE",
       filterable: true,
+      enableRowSpan: true,
       width: 2,
       disableFilters: true,
       Cell: (cellProps) => {
         return (
-          <Input type="checkbox" checked id="chk19" />
+          <>
+            {cellProps.row.original.moduleData.map((module, index) => (
+              <div key={index}>
+                <Input type="checkbox" className="custom-checkbox" readOnly
+                  checked={module.actionNames?.includes("DELETE") || false} id="chk19" />
+                {index !== cellProps.row.original.moduleData.length - 1 && <hr className="module-divider" />}
+              </div>
+            ))}
+            {cellProps.row.original.moduleData.length == 0 &&
+              <Input type="checkbox" className="custom-checkbox" readOnly checked={false} />
+            }
+          </>
         );
       },
     },
     {
-      Header: <img src={find_book_icon} alt="Upload" title="Search" height={20} className="p-0" />,
-      accessor: "edit",
+      Header: <img src={find_book_icon} alt="Upload" title="SEARCH" height={20} className="p-0" />,
+      accessor: "SEARCH",
       filterable: true,
+      enableRowSpan: true,
       width: 2,
       disableFilters: true,
       Cell: (cellProps) => {
         return (
-          <Input type="checkbox" checked id="chk19" />
+          <>
+            {cellProps.row.original.moduleData.map((module, index) => (
+              <div key={index}>
+                <Input type="checkbox" className="custom-checkbox" readOnly
+                  checked={module.actionNames?.includes("SEARCH") || false} id="chk19" />
+                {index !== cellProps.row.original.moduleData.length - 1 && <hr className="module-divider" />}
+              </div>
+            ))}
+            {cellProps.row.original.moduleData.length == 0 &&
+              <Input type="checkbox" className="custom-checkbox" readOnly checked={false} />
+            }
+          </>
         );
       },
     },
     {
-      Header: <img src={cloud_upload_icon} alt="Upload" title="Upload" height={20} className="p-0" />,
-      accessor: "Upload",
+      Header: <img src={cloud_upload_icon} alt="Upload" title="UPLOAD" height={20} className="p-0" />,
+      accessor: "UPLOAD",
       filterable: true,
+      enableRowSpan: true,
       width: 2,
       disableFilters: true,
       Cell: (cellProps) => {
         return (
-          <Input type="checkbox" checked id="chk19" />
+          <>
+            {cellProps.row.original.moduleData.map((module, index) => (
+              <div key={index}>
+                <Input type="checkbox" className="custom-checkbox" readOnly
+                  checked={module.actionNames?.includes("UPLOAD") || false} id="chk19" />
+                {index !== cellProps.row.original.moduleData.length - 1 && <hr className="module-divider" />}
+              </div>
+            ))}
+            {cellProps.row.original.moduleData.length == 0 &&
+              <Input type="checkbox" className="custom-checkbox" readOnly checked={false} />
+            }
+          </>
         );
       },
     },
     {
-      Header: <img src={download_icon} alt="Upload" title="Download" height={20} className="p-0" />,
-      accessor: "1",
+      Header: <img src={download_icon} alt="Upload" title="DOWNLOAD" height={20} className="p-0" />,
+      accessor: "DOWNLOAD",
       filterable: true,
       width: 2,
+      enableRowSpan: true,
       disableFilters: true,
       Cell: (cellProps) => {
         return (
-          <Input type="checkbox" checked id="chk19" />
+          <>
+            {cellProps.row.original.moduleData.map((module, index) => (
+              <div key={index}>
+                <Input type="checkbox" className="custom-checkbox" readOnly
+                  checked={module.actionNames?.includes("DOWNLOAD") || false} id="chk19" />
+                {index !== cellProps.row.original.moduleData.length - 1 && <hr className="module-divider" />}
+              </div>
+            ))}
+            {cellProps.row.original.moduleData.length == 0 &&
+              <Input type="checkbox" className="custom-checkbox" readOnly checked={false} />
+            }
+          </>
         );
       },
     },
     {
-      Header: <img src={web_search_icon} alt="Upload" title="Right" height={20} className="p-0" />,
-      accessor: "web",
+      Header: <img src={web_search_icon} alt="Upload" title="APPROVE" height={20} className="p-0" />,
+      accessor: "APPROVE",
       filterable: true,
       width: 2,
+      enableRowSpan: true,
       disableFilters: true,
       Cell: (cellProps) => {
         return (
-          <Input type="checkbox" checked id="chk19" />
+          <>
+            {cellProps.row.original.moduleData.map((module, index) => (
+              <div key={index}>
+                <Input type="checkbox" className="custom-checkbox" readOnly
+                  checked={module.actionNames?.includes("APPROVE") || false} id="chk19" />
+                {index !== cellProps.row.original.moduleData.length - 1 && <hr className="module-divider" />}
+              </div>
+            ))}
+            {cellProps.row.original.moduleData.length == 0 &&
+              <Input type="checkbox" className="custom-checkbox" readOnly checked={false} />
+            }
+          </>
         );
       },
     },
@@ -197,7 +315,7 @@ const Roles = () => {
       disableFilters: true,
       Cell: (cellProps) => {
         return (
-          <RoleName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+          <RoleName cellProps={cellProps} />
         );
       },
     },
