@@ -122,7 +122,7 @@ const CarrierChart = () => {
 
                 {/* Revenue Chart */}
                 <div className="chart_wrap">
-                    <ReactApexChart options={options} series={labelText === "By Weight" ? Volumnseries : series} type="bar" height={415} />
+                    <ReactApexChart options={options} series={labelText === "By Weight" ? Volumnseries : series} type="bar" height={422} />
                 </div>
             </div>
         </>

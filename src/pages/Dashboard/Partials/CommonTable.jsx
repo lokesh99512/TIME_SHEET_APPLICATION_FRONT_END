@@ -38,7 +38,7 @@ const CommonTable = ({ column, data, type, handleSorting }) => {
                             {data?.slice(0, showAll ? data.length : 10).map((item) => (
                                 <tr key={item?.id}>
                                     {column.map(({ accessor }) => {
-                                        const tData = item[accessor] ? item[accessor] : "_";
+                                        const tData = item[accessor] ? item[accessor] : item[accessor] === 0 ? 0 : "_";
                                         if (accessor === 'employee') {
                                             return (
                                                 <td key={accessor}>

@@ -11,7 +11,7 @@ import { GET_CARGO_TYPE_DATA } from '../../../../../store/Global/actiontype';
 import { airDummyData } from '../../../../../common/data/procurement';
 
 const CompareRate = () => {
-    document.title="Air Master || Navigating Freight Costs with Precision || Ultimate Rate Management platform"
+    document.title = "Air Master || Navigating Freight Costs with Precision || Ultimate Rate Management platform"
     const [modal, setModal] = useState(false);
     const [isRight, setIsRight] = useState(false);
     const inputArr = {
@@ -24,7 +24,7 @@ const CompareRate = () => {
         cargo_type: '',
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
-    const dispatch = useDispatch();    
+    const dispatch = useDispatch();
 
     const onCloseClick = () => {
         setModal(false);
@@ -37,11 +37,11 @@ const CompareRate = () => {
 
     const applyFilterHandler = () => {
         setIsRight(false);
-        console.log(filterDetails,"filterDetails Air MaterBill-----------------------")
+        console.log(filterDetails, "filterDetails Air MaterBill-----------------------")
     }
     const clearValueHandler = () => {
         setfilterDetails(inputArr)
-    }    
+    }
 
     const columns = useMemo(() => [
         {
@@ -290,6 +290,72 @@ const CompareRate = () => {
         },
     ]);
 
+    // const columns = useMemo(() => [
+    //     {
+    //         id: 'expander',
+    //         Header: 'Booking Mode',
+    //         accessor: 'bookingMode',
+    //         filterable: true,
+    //         disableFilters: true,
+    //         Cell: (cellProps) => {
+    //             // console.log(cellProps.row,"cellProps.row");
+    //             return (
+    //                 <span onClick={() => {cellProps.row.toggleRowExpanded(); }}>{cellProps.value ? cellProps.value : '-'} {cellProps?.row?.isExpanded ? '👇' : '👉'}</span>
+    //             )
+    //         }
+    //     },
+    //     {
+    //         Header: 'Origin',
+    //         accessor: 'origin',
+    //         filterable: true,
+    //         disableFilters: true,
+    //         Cell: (cellProps) => {
+    //             return <CommonValue cellProps={cellProps} />
+    //         },
+    //         footer: props => props.column.id,
+    //     },
+    //     {
+    //         Header: 'Destination',
+    //         accessor: 'destination',
+    //         filterable: true,
+    //         disableFilters: true,
+    //         Cell: (cellProps) => {
+    //             return <CommonValue cellProps={cellProps} />
+    //         },
+    //         footer: props => props.column.id,
+    //     },
+    //     {
+    //         Header: 'Cargo Mode',
+    //         accessor: 'cargomode',
+    //         filterable: true,
+    //         disableFilters: true,
+    //         Cell: (cellProps) => {
+    //             return <CommonValue cellProps={cellProps} />
+    //         },
+    //         footer: props => props.column.id,
+    //     },
+    //     {
+    //         Header: 'Cargo Type',
+    //         accessor: 'cargoType',
+    //         filterable: true,
+    //         disableFilters: true,
+    //         Cell: (cellProps) => {
+    //             return <CommonValue cellProps={cellProps} />
+    //         },
+    //         footer: props => props.column.id,
+    //     },
+    //     {
+    //         Header: 'Weight',
+    //         accessor: 'weight',
+    //         filterable: true,
+    //         disableFilters: true,
+    //         Cell: (cellProps) => {
+    //             return <CommonValue cellProps={cellProps} />
+    //         },
+    //         footer: props => props.column.id,
+    //     }
+    // ])
+
     return (
         <>
             <div className="page-content">
@@ -298,7 +364,7 @@ const CompareRate = () => {
                         {/* Compare */}
                         <AirCompare />
 
-                        <TableCompareRate 
+                        <TableCompareRate
                             columns={columns}
                             data={airDummyData || []}
                             isGlobalFilter={true}
@@ -306,7 +372,7 @@ const CompareRate = () => {
                             customPageSize={10}
                             toggleRightCanvas={toggleRightCanvas}
                             component={'air-waybill'}
-                            loader={false}                        
+                            loader={false}
                         />
 
                         {/* modal */}

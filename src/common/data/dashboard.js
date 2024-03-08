@@ -497,7 +497,7 @@ const chartCountryCode = {
 export const lansbyWeightTableData = [
     { lane: "BOM - BLR", weight:  "104.2", rate: 10 },
     { lane: "BOM - DEL", weight:  "75.0", rate: 10 },
-    { lane: "BLR - DEL", weight:  "62.5", rate: 10 },
+    { lane: "BLR - DEL", weight:  "62.5", rate: 0 },
     { lane: "BLR - CCU", weight:  "50.0", rate: 10 },
     { lane: "CCU - GAU", weight:  "45.8", rate: 10 },
     { lane: "DEL - BLR", weight:  "33.3", rate: 10 },

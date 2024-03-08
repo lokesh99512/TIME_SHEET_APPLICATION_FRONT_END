@@ -7197,6 +7197,152 @@ export const airDummyData = [
     },
 ]
 
+export const compareListData = [
+    {
+        "bookingMode": "Console",
+        "origin": "CHENNAI",
+        "orgCode": "MAA",
+        "destination": "DELHI",
+        "destCode": "DEL",
+        "cargoMode": "GRC",
+        "itemLimit": 3,
+        "items": [
+            {
+                "weight": 100,
+                "airLines": "OOCL",
+                "vendorName": null,
+                "totalPerKg": 49.5,
+                "othersPerKg": 0.0,
+                "freightPerkg": 49.5
+            },
+            {
+                "weight": 100,
+                "airLines": "OOCL",
+                "vendorName": null,
+                "totalPerKg": 49.5,
+                "othersPerKg": 0.0,
+                "freightPerkg": 49.5
+            },
+            {
+                "weight": 100,
+                "airLines": "OOCL",
+                "vendorName": null,
+                "totalPerKg": 25.5,
+                "othersPerKg": 0.0,
+                "freightPerkg": 25.5
+            }
+        ]
+    },
+    {
+        "bookingMode": "Console",
+        "origin": "CHENNAI",
+        "orgCode": "MAA",
+        "destination": "BENGALURU",
+        "destCode": "BLR",
+        "cargoMode": "LEAN",
+        "itemLimit": 3,
+        "items": [
+            {
+                "weight": 100,
+                "airLines": "OOCL",
+                "vendorName": null,
+                "totalPerKg": 30.0,
+                "othersPerKg": 0.0,
+                "freightPerkg": 30.0
+            },
+            {
+                "weight": 100,
+                "airLines": "OOCL",
+                "vendorName": null,
+                "totalPerKg": 29.5,
+                "othersPerKg": 0.0,
+                "freightPerkg": 29.5
+            },
+            {
+                "weight": 100,
+                "airLines": "OOCL",
+                "vendorName": null,
+                "totalPerKg": 25.0,
+                "othersPerKg": 0.0,
+                "freightPerkg": 25.0
+            }
+        ]
+    },
+    {
+        "bookingMode": "Console",
+        "origin": "CHENNAI",
+        "orgCode": "MAA",
+        "destination": "KOLKATA",
+        "destCode": "CCU",
+        "cargoMode": "LEAN",
+        "itemLimit": 3,
+        "items": [
+            {
+                "weight": 100,
+                "airLines": "OOCL",
+                "vendorName": "Indigo Airlines",
+                "totalPerKg": 41.5,
+                "othersPerKg": 0.0,
+                "freightPerkg": 41.5
+            },
+            {
+                "weight": 100,
+                "airLines": "OOCL",
+                "vendorName": "Indigo Airlines",
+                "totalPerKg": 36.5,
+                "othersPerKg": 0.0,
+                "freightPerkg": 36.5
+            },
+            {
+                "weight": 100,
+                "airLines": "OOCL",
+                "vendorName": "Air Asia",
+                "totalPerKg": 36.5,
+                "othersPerKg": 0.0,
+                "freightPerkg": 36.5
+            }
+        ]
+    },
+    {
+        "bookingMode": "MAWB",
+        "origin": "CHENNAI",
+        "orgCode": "MAA",
+        "destination": "DELHI",
+        "destCode": "DEL",
+        "cargoMode": "GRC",
+        "itemLimit": 3,
+        "items": [
+            {
+                "weight": 100,
+                "airLines": "Air Asia",
+                "vendorName": null,
+                "totalPerKg": 30.0,
+                "othersPerKg": 0.0,
+                "freightPerkg": 30.0
+            }
+        ]
+    },
+    {
+        "bookingMode": "MAWB",
+        "origin": "CHENNAI",
+        "orgCode": "MAA",
+        "destination": "KOLKATA",
+        "destCode": "CCU",
+        "cargoMode": "LEAN",
+        "itemLimit": 3,
+        "items": [
+            {
+                "weight": 100,
+                "airLines": "Air Asia",
+                "vendorName": null,
+                "totalPerKg": 25.0,
+                "othersPerKg": 0.0,
+                "freightPerkg": 25.0
+            }
+        ]
+    }
+]
+
 // --------------------------- upload form options ---------------------------------
 
 const optionRateType = [

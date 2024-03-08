@@ -79,7 +79,7 @@ const VendorDashboard = () => {
                                             <h3 className="sub_title">Vendor Spend</h3>
                                             <div className="sh_box_wrap d-flex">
                                                 <div className="sh_box" >
-                                                    <p className="box_title">Total Vendors</p>
+                                                    <p className="box_title" title='Total Vendors'>Total Vendors</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
                                                         <AnimatedCounter rate={10} />
                                                         <div className="text-nowrap fs-5">
@@ -92,7 +92,7 @@ const VendorDashboard = () => {
                                                     </div>
                                                 </div>
                                                 <div className="sh_box" >
-                                                    <p className="box_title">Total Spend MTD(Lacs)</p>
+                                                    <p className="box_title" title='Total Spend MTD (Lacs)'>Total Spend MTD (Lacs)</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
                                                         <AnimatedCounter rate={200} />INR
                                                         <div className="text-nowrap fs-5">
@@ -104,7 +104,7 @@ const VendorDashboard = () => {
                                                     </div>
                                                 </div>
                                                 <div className="sh_box" >
-                                                    <p className="box_title">Total Spend Projected(Lacs)</p>
+                                                    <p className="box_title" title='Total Spend Projected (Lacs)'>Total Spend Projected (Lacs)</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
                                                         <AnimatedCounter rate={500} />INR
                                                         <div className="text-nowrap fs-5">
@@ -116,7 +116,8 @@ const VendorDashboard = () => {
                                                     </div>
                                                 </div>
                                                 <div className="sh_box" >
-                                                    <p className="box_title">Top Vendor Spend(Lacs) <b className='d-block text-primary'>Indigo Airlines</b></p>
+                                                    <p className="box_title" title='Top Vendor Spend (Lacs)'>Top Vendor Spend (Lacs)</p>
+                                                    <b className='d-block text-primary'>Indigo Airlines</b>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">                                                        
                                                         <AnimatedCounter rate={80} />INR
                                                         <div className="text-nowrap fs-5">
@@ -137,7 +138,7 @@ const VendorDashboard = () => {
                                         <CardBody>
                                             <div className="sh_box_wrap d-flex">
                                                 <div className="sh_box" >
-                                                    <p className="box_title">Total Wt Exception(MT)</p>
+                                                    <p className="box_title" title='Total Wt Exception (MT)'>Total Wt Exception (MT)</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
                                                         <AnimatedCounter rate={0.54} />
                                                         <div className="text-nowrap fs-5">
@@ -149,7 +150,7 @@ const VendorDashboard = () => {
                                                     </div>
                                                 </div>
                                                 <div className="sh_box" >
-                                                    <p className="box_title">Spend Impact(Lacs)</p>
+                                                    <p className="box_title" title='Spend Impact (Lacs)'>Spend Impact (Lacs)</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
                                                         <AnimatedCounter rate={2.5} />INR
                                                         <div className="text-nowrap fs-5">
@@ -170,7 +171,7 @@ const VendorDashboard = () => {
                                         <CardBody>
                                             <div className="sh_box_wrap d-flex">
                                                 <div className="sh_box" >
-                                                    <p className="box_title">Total Flight Changes</p>
+                                                    <p className="box_title" title='Total Flight Changes'>Total Flight Changes</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
                                                         <AnimatedCounter rate={15} />
                                                         <div className="text-nowrap fs-5">
@@ -182,7 +183,7 @@ const VendorDashboard = () => {
                                                     </div>
                                                 </div>
                                                 <div className="sh_box" >
-                                                    <p className="box_title">Spend Impact(Lacs)</p>
+                                                    <p className="box_title" title='Spend Impact(Lacs)'>Spend Impact(Lacs)</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
                                                         <AnimatedCounter rate={	1.5 } />INR
                                                         <div className="text-nowrap fs-5">
@@ -208,7 +209,7 @@ const VendorDashboard = () => {
                                         <CardBody>
                                             <div className="sh_box_wrap sh_box-4 d-flex">
                                                 <div className="sh_box" >
-                                                    <p className="box_title">Total Shipments</p>
+                                                    <p className="box_title" title='Total Shipments'>Total Shipments</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
                                                         <AnimatedCounter rate={340} />
                                                         <div className="text-nowrap fs-5">
@@ -220,7 +221,7 @@ const VendorDashboard = () => {
                                                     </div>
                                                 </div>
                                                 <div className="sh_box" >
-                                                    <p className="box_title">Delivered</p>
+                                                    <p className="box_title" title='Delivered'>Delivered</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
                                                         <AnimatedCounter rate={272} />
                                                         <div className="text-nowrap fs-5">
@@ -233,7 +234,7 @@ const VendorDashboard = () => {
                                                     </div>
                                                 </div>
                                                 <div className="sh_box" >
-                                                    <p className="box_title">In Transit</p>
+                                                    <p className="box_title" title='In Transit'>In Transit</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
                                                         <AnimatedCounter rate={61} />
                                                         <div className="text-nowrap fs-5">
@@ -245,7 +246,7 @@ const VendorDashboard = () => {
                                                     </div>
                                                 </div>
                                                 <div className="sh_box" >
-                                                    <p className="box_title">Exceptions</p>
+                                                    <p className="box_title" title='Exceptions'>Exceptions</p>
                                                     <div className="sh_inquiry_rate justify-content-between align-items-center">
                                                         <AnimatedCounter rate={7} />
                                                         <div className="text-nowrap fs-5">
