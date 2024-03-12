@@ -5,6 +5,10 @@ export const getFclData = (data) => ({
     type: GET_FCL_TABLE_DATA,
     payload: data,
 })
+// export const getFclFilterData = (data) => ({
+//     type: GET_FCL_TABLE_DATA,
+//     payload: data,
+// })
 export const getFclFreightViewAction = (data) => {
     return {
         type: GET_FCL_FREIGHT_VIEW_DATA,

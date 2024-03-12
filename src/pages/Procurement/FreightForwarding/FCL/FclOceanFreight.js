@@ -24,9 +24,10 @@ export default function FclOceanFreight() {
         carrier_name: '',
         validity_from: '',
         validity_to: '',
-        org_port: '',
-        dest_port: '',
+        // org_port: '',
+        // dest_port: '',
         cargo_type: '',
+        rate_type: '',
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
     const dispatch = useDispatch();
@@ -58,21 +59,14 @@ export default function FclOceanFreight() {
     };
 
     const applyFilterHandler = () => {
-        setIsRight(false);
-        let newArr = [...fclTableData];
-        const filteredDataArr = newArr.filter(item => {
-            const isCarrierNameMatch = filterDetails?.carrier_name?.value === '' ||
-                item?.carrier_name?.toLowerCase().includes(filterDetails?.carrier_name?.value?.toLowerCase());
-
-            const isDestPortMatch = filterDetails?.dest_port?.value === '' ||
-                item?.dest_port?.toLowerCase().includes(filterDetails?.dest_port?.value?.toLowerCase());
-
-            const isOrgPortMatch = filterDetails?.org_port?.value === '' ||
-                item?.org_port?.toLowerCase().includes(filterDetails?.org_port?.value?.toLowerCase());
-
-            return isCarrierNameMatch && isDestPortMatch && isOrgPortMatch;
-        });
-        dispatch({ type: FILTER_FCL_DATA, payload: filteredDataArr });
+        // setIsRight(false);
+        if(filterDetails.carrier_name !== '' || filterDetails.vendor_name !== '' || filterDetails.validity_from !== '' || filterDetails.validity_to !== '' || filterDetails.rate_type !== ''){
+            let url = '?'
+            url+= `${filterDetails?.carrier_name?.id ? `carriers=${filterDetails?.carrier_name?.id}&` : ''}${filterDetails?.vendor_name?.id ? `vendors=${filterDetails?.vendor_name?.id}&` : ''}${filterDetails?.validity_from ? `validFrom=${filterDetails?.validity_from}&` : ''}${filterDetails?.validity_to ? `validTo=${filterDetails?.validity_to}&` : ''}${filterDetails?.rate_type?.value ? `rateType=${filterDetails?.rate_type?.value}&` : ''}`
+            let newurl = url.substring(0, url.length - 1)
+            dispatch(getFclData(newurl));
+        }
+        // dispatch({ type: FILTER_FCL_DATA, payload: filteredDataArr });
 
     }
     const clearValueHandler = () => {
@@ -203,7 +197,6 @@ export default function FclOceanFreight() {
                             <TfBreadcrumbs breadcrumb={fclBreadcrumb} />
                         </div>
                         {/* <TopBreadcrumbs breadcrumbs={fclBreadcrumb} data={fclRateData} /> */}
-
                         {/* React Table */}
                         <TableReact
                             columns={columns}
@@ -223,7 +216,7 @@ export default function FclOceanFreight() {
             </div>
 
             {/* filter right sidebar */}
-            <FilterOffCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} />
+            <FilterOffCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} data={fclData?.content || []} />
         </>
     )
 }

@@ -8,12 +8,14 @@ import AirCompare from './AirCompare';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { GET_CARGO_TYPE_DATA } from '../../../../../store/Global/actiontype';
-import { airDummyData } from '../../../../../common/data/procurement';
+import { airDummyData, comparetableData } from '../../../../../common/data/procurement';
 
 const CompareRate = () => {
     document.title = "Air Master || Navigating Freight Costs with Precision || Ultimate Rate Management platform"
     const [modal, setModal] = useState(false);
     const [isRight, setIsRight] = useState(false);
+    const [headerData, setHeaderData] = useState([]);
+    const [bodyData, setBodyData] = useState([]);
     const inputArr = {
         vendor_name: '',
         carrier_name: '',
@@ -43,318 +45,125 @@ const CompareRate = () => {
         setfilterDetails(inputArr)
     }
 
+    
+
     const columns = useMemo(() => [
         {
-            Header: "test1",
-            columns:[
-                {
-                    Header: 'Booking Mode',
-                    accessor: 'bookingMode',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} />
-                    }
-                },
-            ]
+            Header: 'Booking Mode',
+            accessor: 'bookingMode',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <span>{cellProps.value ? cellProps.value : '-'}</span>
+            }
         },
         {
-            Header: "test2",
-            columns:[
-                {
-                    Header: 'Origin',
-                    accessor: 'origin',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} />
-                    }
-                },
-            ]
+            Header: 'Origin',
+            accessor: 'origin',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <span>{cellProps.value ? cellProps.value : '-'}</span>
+            }
         },
         {
-            Header: "test3",
-            columns:[
-                {
-                    Header: 'Destination',
-                    accessor: 'destination',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} />
-                    }
-                },
-            ]
+            Header: 'Destination',
+            accessor: 'destination',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <span>{cellProps.value ? cellProps.value : '-'}</span>
+            }
         },
         {
-            Header: "test4",
-            columns:[
-                {
-                    Header: 'Cargo Mode',
-                    accessor: 'cargomode',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} />
-                    }
-                },
-            ]
+            Header: 'Cargo Mode',
+            accessor: 'cargoMode',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <span>{cellProps.value ? cellProps.value : '-'}</span>
+            }
         },
         {
-            Header: "test5",
-            columns:[
-                {
-                    Header: 'Cargo Type',
-                    accessor: 'cargoType',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} />
-                    }
-                },
-            ]
+            Header: 'Cargo Type',
+            accessor: 'cargoType',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <span>{cellProps.value ? cellProps.value : '-'}</span>
+            }
         },
         {
-            Header: "test6",
-            columns:[
-                {
-                    Header: 'Weight',
-                    accessor: 'weight',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} />
-                    }
-                },
-            ]
+            Header: 'Weight',
+            accessor: 'weight',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <span>{cellProps.value ? cellProps.value : '-'}</span>
+            }
         },
-        {
-            Header: "L1 - Go Indigo",
-            columns:[
-                {
-                    Header: 'Frght/Kg',
-                    accessor: 'l1Details.l1fr',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} />
+        ...(headerData && headerData?.map(h => {
+            return {
+                Header: h.key,
+                columns: [
+                    {
+                        Header: 'Carrier',
+                        accessor: `${h.key}.airLines`,
+                        filterable: true,
+                        disableFilters: true,
+                        Cell: (cellProps) => {
+                            return <span>{cellProps.value ? cellProps.value : '-'}</span>
+                        }
+                    },
+                    {
+                        Header: 'Frght/Kg',
+                        accessor: `${h.key}.freightAmount`,
+                        filterable: true,
+                        disableFilters: true,
+                        Cell: (cellProps) => {
+                            return <span>{cellProps.value ? cellProps.value : '-'}</span>
+                        }
+                    },
+                    {
+                        Header: 'Oth Chrgs/KG',
+                        accessor: `${h.key}.otherPerKg`,
+                        filterable: true,
+                        disableFilters: true,
+                        Cell: (cellProps) => {
+                            return <CommonValue cellProps={cellProps} />
+                        }
+                    },
+                    {
+                        Header: 'Total/KG',
+                        accessor: `${h.key}.totalAmount`,
+                        filterable: true,
+                        disableFilters: true,
+                        Cell: (cellProps) => {
+                            return <span>{cellProps.value ? cellProps.value : '-'}</span>
+                        }
                     }
-                },
-                {
-                    Header: 'Oth Chrgs/KG',
-                    accessor: 'l1Details.l1charges',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} />
-                    }
-                },
-                {
-                    Header: 'Total/KG',
-                    accessor: 'l1Details.l1total',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} />
-                    }
-                }
-            ]
-        },
-        {
-            Header: "L2 - Go Indigo - BALAJI",
-            columns:[
-                {
-                    Header: 'Frght/Kg',
-                    accessor: 'l2Details.l2fr',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} />
-                    }
-                },
-                {
-                    Header: 'Oth Chrgs/KG',
-                    accessor: 'l2Details.l2charges',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} />
-                    }
-                },
-                {
-                    Header: 'Total/KG',
-                    accessor: 'l2Details.l2total',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} />
-                    }
-                }
-            ]
-        },
-        {
-            Header: "L3 - AIR ASIA",
-            columns:[
-                {
-                    Header: 'Frght/Kg',
-                    accessor: 'l3Details.l3fr',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} />
-                    }
-                },
-                {
-                    Header: 'Oth Chrgs/KG',
-                    accessor: 'l3Details.l3charges',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} />
-                    }
-                },
-                {
-                    Header: 'Total/KG',
-                    accessor: 'l3Details.l3total',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} />
-                    }
-                }
-            ]
-        },
-        {
-            Header: "L4 - Go Indigo",
-            columns:[
-                {
-                    Header: 'Frght/Kg',
-                    accessor: 'l4Details.l4fr',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} />
-                    }
-                },
-                {
-                    Header: 'Oth Chrgs/KG',
-                    accessor: 'l4Details.l4charges',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} />
-                    }
-                },
-                {
-                    Header: 'Total/KG',
-                    accessor: 'l4Details.l4total',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} />
-                    }
-                }
-            ]
-        }, 
-        {
-            Header: "L5 - Go Indigo",
-            columns:[
-                {
-                    Header: 'Frght/Kg',
-                    accessor: 'l5Details.l5fr',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} />
-                    }
-                },
-                {
-                    Header: 'Oth Chrgs/KG',
-                    accessor: 'l5Details.l5charges',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} />
-                    }
-                },
-                {
-                    Header: 'Total/KG',
-                    accessor: 'l5Details.l5total',
-                    filterable: true,
-                    disableFilters: true,
-                    Cell: (cellProps) => {
-                        return <CommonValue cellProps={cellProps} />
-                    }
-                }
-            ]
-        },
+                ]
+            }
+        })),
     ]);
 
-    // const columns = useMemo(() => [
-    //     {
-    //         id: 'expander',
-    //         Header: 'Booking Mode',
-    //         accessor: 'bookingMode',
-    //         filterable: true,
-    //         disableFilters: true,
-    //         Cell: (cellProps) => {
-    //             // console.log(cellProps.row,"cellProps.row");
-    //             return (
-    //                 <span onClick={() => {cellProps.row.toggleRowExpanded(); }}>{cellProps.value ? cellProps.value : '-'} {cellProps?.row?.isExpanded ? '👇' : '👉'}</span>
-    //             )
-    //         }
-    //     },
-    //     {
-    //         Header: 'Origin',
-    //         accessor: 'origin',
-    //         filterable: true,
-    //         disableFilters: true,
-    //         Cell: (cellProps) => {
-    //             return <CommonValue cellProps={cellProps} />
-    //         },
-    //         footer: props => props.column.id,
-    //     },
-    //     {
-    //         Header: 'Destination',
-    //         accessor: 'destination',
-    //         filterable: true,
-    //         disableFilters: true,
-    //         Cell: (cellProps) => {
-    //             return <CommonValue cellProps={cellProps} />
-    //         },
-    //         footer: props => props.column.id,
-    //     },
-    //     {
-    //         Header: 'Cargo Mode',
-    //         accessor: 'cargomode',
-    //         filterable: true,
-    //         disableFilters: true,
-    //         Cell: (cellProps) => {
-    //             return <CommonValue cellProps={cellProps} />
-    //         },
-    //         footer: props => props.column.id,
-    //     },
-    //     {
-    //         Header: 'Cargo Type',
-    //         accessor: 'cargoType',
-    //         filterable: true,
-    //         disableFilters: true,
-    //         Cell: (cellProps) => {
-    //             return <CommonValue cellProps={cellProps} />
-    //         },
-    //         footer: props => props.column.id,
-    //     },
-    //     {
-    //         Header: 'Weight',
-    //         accessor: 'weight',
-    //         filterable: true,
-    //         disableFilters: true,
-    //         Cell: (cellProps) => {
-    //             return <CommonValue cellProps={cellProps} />
-    //         },
-    //         footer: props => props.column.id,
-    //     }
-    // ])
+    useEffect(() => {
+        const newArray = comparetableData
+
+        const bodyData = newArray.map((ele) => ({
+            ...ele,
+            items: [],
+            ...Object.fromEntries(ele.items.map((data, i) => [`L${i + 1}`, { key: `L${i + 1}`, ...data }])),
+        }));
+
+        const headers = [...new Set(newArray?.flatMap(val =>
+            val?.items?.map((_, index) => `L${index + 1}`)
+        ))].map(key => ({ key }));
+
+        setBodyData(bodyData);
+        setHeaderData(headers);
+
+    }, [comparetableData]);
 
     return (
         <>
@@ -366,7 +175,7 @@ const CompareRate = () => {
 
                         <TableCompareRate
                             columns={columns}
-                            data={airDummyData || []}
+                            data={bodyData || []}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}

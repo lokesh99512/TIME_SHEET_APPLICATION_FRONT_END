@@ -7197,150 +7197,233 @@ export const airDummyData = [
     },
 ]
 
-export const compareListData = [
+// export const compareListData = [
+//     {
+//         "bookingMode": "Console",
+//         "origin": "CHENNAI",
+//         "orgCode": "MAA",
+//         "destination": "DELHI",
+//         "destCode": "DEL",
+//         "cargoMode": "GRC",
+//         "itemLimit": 3,
+//         "items": [
+//             {
+//                 "weight": 100,
+//                 "airLines": "OOCL",
+//                 "vendorName": null,
+//                 "totalPerKg": 49.5,
+//                 "othersPerKg": 0.0,
+//                 "freightPerkg": 49.5
+//             },
+//             {
+//                 "weight": 100,
+//                 "airLines": "OOCL",
+//                 "vendorName": null,
+//                 "totalPerKg": 49.5,
+//                 "othersPerKg": 0.0,
+//                 "freightPerkg": 49.5
+//             },
+//             {
+//                 "weight": 100,
+//                 "airLines": "OOCL",
+//                 "vendorName": null,
+//                 "totalPerKg": 25.5,
+//                 "othersPerKg": 0.0,
+//                 "freightPerkg": 25.5
+//             }
+//         ]
+//     },
+//     {
+//         "bookingMode": "Console",
+//         "origin": "CHENNAI",
+//         "orgCode": "MAA",
+//         "destination": "BENGALURU",
+//         "destCode": "BLR",
+//         "cargoMode": "LEAN",
+//         "itemLimit": 3,
+//         "items": [
+//             {
+//                 "weight": 100,
+//                 "airLines": "OOCL",
+//                 "vendorName": null,
+//                 "totalPerKg": 30.0,
+//                 "othersPerKg": 0.0,
+//                 "freightPerkg": 30.0
+//             },
+//             {
+//                 "weight": 100,
+//                 "airLines": "OOCL",
+//                 "vendorName": null,
+//                 "totalPerKg": 29.5,
+//                 "othersPerKg": 0.0,
+//                 "freightPerkg": 29.5
+//             },
+//             {
+//                 "weight": 100,
+//                 "airLines": "OOCL",
+//                 "vendorName": null,
+//                 "totalPerKg": 25.0,
+//                 "othersPerKg": 0.0,
+//                 "freightPerkg": 25.0
+//             }
+//         ]
+//     },
+//     {
+//         "bookingMode": "Console",
+//         "origin": "CHENNAI",
+//         "orgCode": "MAA",
+//         "destination": "KOLKATA",
+//         "destCode": "CCU",
+//         "cargoMode": "LEAN",
+//         "itemLimit": 3,
+//         "items": [
+//             {
+//                 "weight": 100,
+//                 "airLines": "OOCL",
+//                 "vendorName": "Indigo Airlines",
+//                 "totalPerKg": 41.5,
+//                 "othersPerKg": 0.0,
+//                 "freightPerkg": 41.5
+//             },
+//             {
+//                 "weight": 100,
+//                 "airLines": "OOCL",
+//                 "vendorName": "Indigo Airlines",
+//                 "totalPerKg": 36.5,
+//                 "othersPerKg": 0.0,
+//                 "freightPerkg": 36.5
+//             },
+//             {
+//                 "weight": 100,
+//                 "airLines": "OOCL",
+//                 "vendorName": "Air Asia",
+//                 "totalPerKg": 36.5,
+//                 "othersPerKg": 0.0,
+//                 "freightPerkg": 36.5
+//             }
+//         ]
+//     },
+//     {
+//         "bookingMode": "MAWB",
+//         "origin": "CHENNAI",
+//         "orgCode": "MAA",
+//         "destination": "DELHI",
+//         "destCode": "DEL",
+//         "cargoMode": "GRC",
+//         "itemLimit": 3,
+//         "items": [
+//             {
+//                 "weight": 100,
+//                 "airLines": "Air Asia",
+//                 "vendorName": null,
+//                 "totalPerKg": 30.0,
+//                 "othersPerKg": 0.0,
+//                 "freightPerkg": 30.0
+//             }
+//         ]
+//     },
+//     {
+//         "bookingMode": "MAWB",
+//         "origin": "CHENNAI",
+//         "orgCode": "MAA",
+//         "destination": "KOLKATA",
+//         "destCode": "CCU",
+//         "cargoMode": "LEAN",
+//         "itemLimit": 3,
+//         "items": [
+//             {
+//                 "weight": 100,
+//                 "airLines": "Air Asia",
+//                 "vendorName": null,
+//                 "totalPerKg": 25.0,
+//                 "othersPerKg": 0.0,
+//                 "freightPerkg": 25.0
+//             }
+//         ]
+//     }
+// ]
+
+export const comparetableData = [
     {
         "bookingMode": "Console",
         "origin": "CHENNAI",
-        "orgCode": "MAA",
+        "originCode": "MAA",
         "destination": "DELHI",
-        "destCode": "DEL",
+        "destinationCode": "DEL",
         "cargoMode": "GRC",
-        "itemLimit": 3,
+        "weight": 1000,
+        "uniqueHash": "93bbe107a8804b1225a2448ecdb74b2e",
         "items": [
             {
-                "weight": 100,
+                "freightAmount": 25.5,
+                "totalAmount": 25.5,
+                "otherPerKg": 0.0,
                 "airLines": "OOCL",
                 "vendorName": null,
-                "totalPerKg": 49.5,
-                "othersPerKg": 0.0,
-                "freightPerkg": 49.5
+                "uniqueHash": "435409a52f5de35b76a47f9275633d0d"
             },
             {
-                "weight": 100,
+                "freightAmount": 30.0,
+                "totalAmount": 30.0,
+                "otherPerKg": 0.0,
                 "airLines": "OOCL",
                 "vendorName": null,
-                "totalPerKg": 49.5,
-                "othersPerKg": 0.0,
-                "freightPerkg": 49.5
+                "uniqueHash": "6a59048ead7c1dab889916a750b464ea"
             },
-            {
-                "weight": 100,
-                "airLines": "OOCL",
-                "vendorName": null,
-                "totalPerKg": 25.5,
-                "othersPerKg": 0.0,
-                "freightPerkg": 25.5
-            }
         ]
     },
     {
         "bookingMode": "Console",
         "origin": "CHENNAI",
-        "orgCode": "MAA",
-        "destination": "BENGALURU",
-        "destCode": "BLR",
-        "cargoMode": "LEAN",
-        "itemLimit": 3,
-        "items": [
-            {
-                "weight": 100,
-                "airLines": "OOCL",
-                "vendorName": null,
-                "totalPerKg": 30.0,
-                "othersPerKg": 0.0,
-                "freightPerkg": 30.0
-            },
-            {
-                "weight": 100,
-                "airLines": "OOCL",
-                "vendorName": null,
-                "totalPerKg": 29.5,
-                "othersPerKg": 0.0,
-                "freightPerkg": 29.5
-            },
-            {
-                "weight": 100,
-                "airLines": "OOCL",
-                "vendorName": null,
-                "totalPerKg": 25.0,
-                "othersPerKg": 0.0,
-                "freightPerkg": 25.0
-            }
-        ]
-    },
-    {
-        "bookingMode": "Console",
-        "origin": "CHENNAI",
-        "orgCode": "MAA",
-        "destination": "KOLKATA",
-        "destCode": "CCU",
-        "cargoMode": "LEAN",
-        "itemLimit": 3,
-        "items": [
-            {
-                "weight": 100,
-                "airLines": "OOCL",
-                "vendorName": "Indigo Airlines",
-                "totalPerKg": 41.5,
-                "othersPerKg": 0.0,
-                "freightPerkg": 41.5
-            },
-            {
-                "weight": 100,
-                "airLines": "OOCL",
-                "vendorName": "Indigo Airlines",
-                "totalPerKg": 36.5,
-                "othersPerKg": 0.0,
-                "freightPerkg": 36.5
-            },
-            {
-                "weight": 100,
-                "airLines": "OOCL",
-                "vendorName": "Air Asia",
-                "totalPerKg": 36.5,
-                "othersPerKg": 0.0,
-                "freightPerkg": 36.5
-            }
-        ]
-    },
-    {
-        "bookingMode": "MAWB",
-        "origin": "CHENNAI",
-        "orgCode": "MAA",
+        "originCode": "MAA",
         "destination": "DELHI",
-        "destCode": "DEL",
+        "destinationCode": "DEL",
         "cargoMode": "GRC",
-        "itemLimit": 3,
+        "weight": 1000,
+        "uniqueHash": "93bbe107a8804b1225a2448ecdb74b2e",
         "items": [
             {
-                "weight": 100,
-                "airLines": "Air Asia",
+                "freightAmount": 25.5,
+                "totalAmount": 25.5,
+                "otherPerKg": 0.0,
+                "airLines": "OOCL",
                 "vendorName": null,
-                "totalPerKg": 30.0,
-                "othersPerKg": 0.0,
-                "freightPerkg": 30.0
-            }
+                "uniqueHash": "435409a52f5de35b76a47f9275633d0d"
+            },
+            {
+                "freightAmount": 30.0,
+                "totalAmount": 30.0,
+                "otherPerKg": 0.0,
+                "airLines": "OOCL",
+                "vendorName": null,
+                "uniqueHash": "6a59048ead7c1dab889916a750b464ea"
+            },
+            {
+                "freightAmount": 32.5,
+                "totalAmount": 32.5,
+                "otherPerKg": 0.0,
+                "airLines": "OOCL",
+                "vendorName": null,
+                "uniqueHash": "7d4954c0160550cc2212270ea615b8f9"
+            },
+            {
+                "freightAmount": 32.5,
+                "totalAmount": 32.5,
+                "otherPerKg": 0.0,
+                "airLines": "OOCL",
+                "vendorName": null,
+                "uniqueHash": "7d4954c0160550cc2212270ea615b8f9"
+            },
+            {
+                "freightAmount": 32.5,
+                "totalAmount": 32.5,
+                "otherPerKg": 0.0,
+                "airLines": "OOCL",
+                "vendorName": null,
+                "uniqueHash": "7d4954c0160550cc2212270ea615b8f9"
+            },
         ]
     },
-    {
-        "bookingMode": "MAWB",
-        "origin": "CHENNAI",
-        "orgCode": "MAA",
-        "destination": "KOLKATA",
-        "destCode": "CCU",
-        "cargoMode": "LEAN",
-        "itemLimit": 3,
-        "items": [
-            {
-                "weight": 100,
-                "airLines": "Air Asia",
-                "vendorName": null,
-                "totalPerKg": 25.0,
-                "othersPerKg": 0.0,
-                "freightPerkg": 25.0
-            }
-        ]
-    }
 ]
 
 // --------------------------- upload form options ---------------------------------

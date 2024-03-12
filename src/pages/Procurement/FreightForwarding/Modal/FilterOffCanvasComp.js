@@ -1,9 +1,16 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Select from "react-select";
 import { Offcanvas, OffcanvasBody, OffcanvasHeader } from 'reactstrap';
-import { optionCargoType, optionCarrierName, optionDestPort, optionOrgPort, optionVendorName } from '../../../../common/data/procurement';
+import { optionCargoType, optionCarrierName, optionDestPort, optionOrgPort, optionRateType, optionVendorName } from '../../../../common/data/procurement';
+import { useSelector } from 'react-redux';
+import { GET_CARGO_TYPE_DATA } from '../../../../store/Global/actiontype';
+import { useDispatch } from 'react-redux';
 
 export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDetails,setfilterDetails,applyFilterHandler,filterType,clearValueHandler}) {
+    const [allVendors, setAllVendors] = useState([]);
+    const { vendor_data, cargoType_data } = useSelector((state) => state?.globalReducer);
+    const dispatch = useDispatch();
+
     const handleSelectGroup = useCallback((name, opt) => {
         let newObj = {
             ...filterDetails,
@@ -11,6 +18,17 @@ export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDet
         }
         setfilterDetails(newObj);
     }, [filterDetails]);
+
+    useEffect(() => {
+        let vendorlist = vendor_data?.content?.map((item) => {
+            return { label: item?.name, value: item?.name, version: item?.version, id: item?.id, type: item?.vendorType }
+        })
+        setAllVendors(vendorlist);
+    }, [vendor_data]);
+
+    useEffect(() => {
+        dispatch({ type: GET_CARGO_TYPE_DATA });
+    },[dispatch]);
     return (
         <>
             <Offcanvas
@@ -36,7 +54,7 @@ export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDet
                                         <input type="date" name="validity_to" id="validity_to" className='form-control' value={filterDetails.validity_to} onChange={(e) => handleSelectGroup('validity_to', e.target.value)} />
                                     </div>
                                 </div>
-                                <div className="col-lg-12">
+                                {/* <div className="col-lg-12">
                                     <div className="mb-3">
                                         <label className="form-label">Origin Port</label>
                                         <Select
@@ -65,7 +83,7 @@ export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDet
                                             classNamePrefix="select2-selection form-select"
                                         />
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className="col-lg-12">
                                     <div className="mb-3">
                                         <label className="form-label">Carrier Name</label>
@@ -75,7 +93,7 @@ export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDet
                                             onChange={(opt) => {
                                                 handleSelectGroup('carrier_name', opt)
                                             }}
-                                            options={optionCarrierName}
+                                            options={allVendors && allVendors?.filter((item) => item?.type === 'CARRIER') || []}
                                             placeholder={'Select carrier name'}
                                             classNamePrefix="select2-selection form-select"
                                         />
@@ -90,7 +108,7 @@ export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDet
                                             onChange={(opt) => {
                                                 handleSelectGroup('vendor_name', opt)
                                             }}
-                                            options={optionVendorName}
+                                            options={allVendors && allVendors?.filter((item) => item?.type !== 'CARRIER') || []}
                                             placeholder={'Select vendor name'}
                                             classNamePrefix="select2-selection form-select"
                                         />
@@ -105,8 +123,23 @@ export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDet
                                             onChange={(opt) => {
                                                 handleSelectGroup('cargo_type', opt)
                                             }}
-                                            options={optionCargoType}
+                                            options={cargoType_data || []}
                                             placeholder={'Select cargo type'}
+                                            classNamePrefix="select2-selection form-select"
+                                        />
+                                    </div>
+                                </div>     
+                                <div className="col-lg-12">
+                                    <div className="mb-3">
+                                        <label className="form-label">Rate Type</label>
+                                        <Select
+                                            value={filterDetails.rate_type}
+                                            name='rate_type'
+                                            onChange={(opt) => {
+                                                handleSelectGroup('rate_type', opt)
+                                            }}
+                                            options={optionRateType}
+                                            placeholder={'Select rate type'}
                                             classNamePrefix="select2-selection form-select"
                                         />
                                     </div>
@@ -148,7 +181,7 @@ export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDet
                             </div>                        
                             <div className="btn_wrap d-flex mt-auto">
                                 <button className='btn border' type='button' onClick={clearValueHandler}>Clear</button>
-                                <button className='btn btn-primary' type='button' onClick={applyFilterHandler} disabled={!(filterDetails.carrier_name !== '' && filterDetails.org_port !== '' && filterDetails.dest_port !== '')}>Apply Filter</button>
+                                <button className='btn btn-primary' type='button' onClick={applyFilterHandler}>Apply Filter</button>
                             </div>
                         </div>
                     </form>

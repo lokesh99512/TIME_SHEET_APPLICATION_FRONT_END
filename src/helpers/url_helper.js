@@ -186,6 +186,7 @@ export const POST_SURCHARGE_ALISE_URL = "/api/v1/surcharge-alias/"
 
 // FCL
 export const Get_FCL_Data= "/api/v1/tenant-ocean-fcl-rp/"
+export const GET_FCLFilterURL= "/api/v1/tenant-ocean-fcl-rp/"
 // export const Get_FCL_View_Freight_Data= "/api/v1/tenant-ocean-fcl-rp/freight-details/"
 export const Get_FCL_View_Freight_Data= "/api/v2/tenant-ocean-fcl-rp/freight-details/"
 // export const Get_FCL_View_Surcharge_Data= "/api/v1/tenant-ocean-fcl-rp/freight-surcharge-details/"
