@@ -3,7 +3,7 @@ import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects"
 import { showErrorToast, showSuccessToast } from "../../components/Common/CustomToast";
 import { getLCLTableData } from "../../helpers/fakebackend_helper";
 import { fetcAirConsoleTableData, fetcAirFreighConsoletData, getAirFreightData, getAirMWBData, postAirConsoleUploadService, postAirUploadService, uploadAirRateData, uploadConsoleAirRateData } from "../../helpers/services/AirService";
-import { getFCLDestinationData, getFCLFilterSer, getFCLFreightViewData, getFCLInlandFreightSer, getFCLInlandSurchargeSer, getFCLInlandTableData, getFCLSurchargeViewData, getFCLTableData, getPortLocalChargesTableData, postFclFreightUploadSer, postFclInlandFreightUploadSer, postFclInlandSurchargeUploadSer, postFclInlandUploadSer, postFclPLUploadSer, postFclSurchargeUploadSer, postFclUploadSer } from "../../helpers/services/FCLService";
+import { getFCLDestinationData, getFCLFilterSer, getFCLFreightViewData, getFCLInlandFilterSer, getFCLInlandFreightSer, getFCLInlandSurchargeSer, getFCLInlandTableData, getFCLSurchargeViewData, getFCLTableData, getPortLocalChargesFilterSer, getPortLocalChargesTableData, postFclFreightUploadSer, postFclInlandFreightUploadSer, postFclInlandSurchargeUploadSer, postFclInlandUploadSer, postFclPLUploadSer, postFclSurchargeUploadSer, postFclUploadSer } from "../../helpers/services/FCLService";
 import { getUploadStatus } from "../../helpers/services/GlobalService";
 import { Get_File_URL } from "../../helpers/url_helper";
 import { getAirConsoleDataFail, getAirConsoleDataSuccess, getAirConsoleDataSuccessById, getAirwaybillDataByIdResponse, getAirwaybillDataFail, getAirwaybillDataSuccess, getFclDataFail, getFclDataSuccess, getInLandDataFail, getInLandDataSuccess, getLclDataFail, getLclDataSuccess, getPortLocalChargesDataFail, getPortLocalChargesDataSuccess } from "./actions";
@@ -15,18 +15,14 @@ function* fetchFclData({ payload }) {
         if(payload){
             const response = yield call(getFCLFilterSer, payload); 
             yield put(getFclDataSuccess(response));
-            console.log(payload,"payload iffffffffffffffffff");
-
         } else {
             const response = yield call(getFCLTableData); 
             yield put(getFclDataSuccess(response));
-            console.log("elseeeeeeeeee");
         }
         yield put({type: GET_FCL_LOADER, payload: false});
     } catch (error) {
-        console.log(error,"error");
-        // yield put({type: GET_FCL_LOADER, payload: false});
-        // yield put(getFclDataFail(error))
+        yield put({type: GET_FCL_LOADER, payload: false});
+        yield put(getFclDataFail(error))
     }
 }
 function* fetchFclFreightViewData({ payload }) {
@@ -73,8 +69,6 @@ function* postFclUploadSaga({ payload: { dataObj } }) {
 
 function* postAirUploadSaga({ payload: { dataObj } }) {
     try {
-        console.log("postAirUploadSaga");
-        console.log(dataObj);
         const response = yield call(postAirUploadService, dataObj.newData.carrierData);     
         let formData = dataObj.newData.formData;
         let id = response.id;
@@ -89,8 +83,6 @@ function* postAirUploadSaga({ payload: { dataObj } }) {
 
 function* postAirConsoleUploadSaga({ payload: { dataObj } }) {
     try {
-        console.log("postAirConsoleUploadSaga");
-        console.log(dataObj);
         const response = yield call(postAirConsoleUploadService, dataObj.newData.consoleCarrierDetails);     
         let formData = dataObj.newData.formData;
         let id = response.id;
@@ -141,12 +133,16 @@ function* postFclSurchargeUploadSaga({ payload: { data, id } }) {
 }
 
 // ------------------ FCL Port & Local Charges ------------------
-function* fetchPLChargesData() {
+function* fetchPLChargesData({ payload }) {
     yield put({type: GET_FCL_PLCHARGES_LOADER, payload: true});
     try {
-        const response = yield call(getPortLocalChargesTableData);
-        console.log("response", response)
-        yield put(getPortLocalChargesDataSuccess(response));
+        if(payload){
+            const response = yield call(getPortLocalChargesFilterSer, payload);
+            yield put(getPortLocalChargesDataSuccess(response));
+        } else {
+            const response = yield call(getPortLocalChargesTableData);
+            yield put(getPortLocalChargesDataSuccess(response));
+        }
         yield put({type: GET_FCL_PLCHARGES_LOADER, payload: false});
     } catch (error) {
         yield put(getPortLocalChargesDataFail(error));
@@ -165,12 +161,18 @@ function* postPLChargesData({payload: { dataObj }}) {
 }
 
 // FCL Inland charges
-function* fetchFCLInLandData() {
+function* fetchFCLInLandData({ payload }) {
+    console.log(payload,"saga payload");
     yield put ({type: GET_FCL_INLAND_LOADER, payload: true});
     try {
-        const response = yield call(getFCLInlandTableData);
+        if(payload){
+            const response = yield call(getFCLInlandFilterSer, payload);
+            yield put(getInLandDataSuccess(response));
+        } else {
+            const response = yield call(getFCLInlandTableData);
+            yield put(getInLandDataSuccess(response));
+        }
         yield put ({type: GET_FCL_INLAND_LOADER, payload: false});
-        yield put(getInLandDataSuccess(response));
     } catch (error) {
         yield put ({type: GET_FCL_INLAND_LOADER, payload: false});
         yield put(getInLandDataFail(error));

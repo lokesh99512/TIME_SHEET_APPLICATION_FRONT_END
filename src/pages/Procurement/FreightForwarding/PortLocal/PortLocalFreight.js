@@ -16,10 +16,13 @@ export default function PortLocalFreight() {
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
     const inputArr = {
-        surcharge_category: '',
-        port_name: '',
-        carrier_name:'',
-        movement_type: ''
+        carriers:'',
+        sur_category: '',
+        from: '',
+        to: '',
+        status: '',
+        movement: '',
+        ports: '',
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
     const dispatch = useDispatch();
@@ -41,20 +44,12 @@ export default function PortLocalFreight() {
 
     const applyFilterHandler = () => {
         setIsRight(false);
-        // let newArr = [...portLocalChargesData];
-        // const filteredDataArr = newArr.filter(item => {
-        //     const isPortNameMatch = filterDetails?.port_name?.value === '' ||
-        //       item?.port_name?.toLowerCase().includes(filterDetails?.port_name?.value?.toLowerCase());
-          
-        //     const isCarrierNameMatch = filterDetails?.carrier_name?.value === '' ||
-        //       item?.carrier_name?.toLowerCase().includes(filterDetails?.carrier_name?.value?.toLowerCase());
-          
-        //     const isMovementMatch = filterDetails?.org_port?.value === '' ||
-        //       item?.movement_type?.toLowerCase().includes(filterDetails?.movement_type?.value?.toLowerCase());
-          
-        //     return isCarrierNameMatch && isPortNameMatch && isMovementMatch;
-        // });
-        // dispatch({type: FILTER_PORTLOCALCHARGES_DATA, payload: filteredDataArr});
+        if(filterDetails?.carriers || filterDetails?.sur_category || filterDetails?.from || filterDetails?.to || filterDetails?.status || filterDetails?.movement || filterDetails?.ports){
+            let url = '?'
+            url +=  `${filterDetails?.carriers?.id ? `carriers=${filterDetails?.carriers?.id}&` : ''}${filterDetails.sur_category?.id ? `chargeCategories=${filterDetails.sur_category?.id}&` : ''}${filterDetails?.ports?.id ? `ports=${filterDetails?.ports?.id}&` : ''}${filterDetails?.from ? `validFrom=${filterDetails?.from}&` : ''}${filterDetails.to ? `validTo=${filterDetails?.to}&` : ''}${filterDetails?.status ? `status=${filterDetails?.status}&` : ''}${filterDetails?.movement?.value ? `movementType=${filterDetails?.movement?.value}&` : ''}`;
+            let newurl = url.substring(0, url.length - 1);
+            dispatch(getPortLocalChargesData(newurl));
+        }
     }
     const clearValueHandler = () => {
         setfilterDetails(inputArr)

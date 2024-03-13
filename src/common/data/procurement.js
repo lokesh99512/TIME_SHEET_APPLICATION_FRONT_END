@@ -7405,29 +7405,17 @@ export const comparetableData = [
                 "airLines": "OOCL",
                 "vendorName": null,
                 "uniqueHash": "7d4954c0160550cc2212270ea615b8f9"
-            },
-            {
-                "freightAmount": 32.5,
-                "totalAmount": 32.5,
-                "otherPerKg": 0.0,
-                "airLines": "OOCL",
-                "vendorName": null,
-                "uniqueHash": "7d4954c0160550cc2212270ea615b8f9"
-            },
-            {
-                "freightAmount": 32.5,
-                "totalAmount": 32.5,
-                "otherPerKg": 0.0,
-                "airLines": "OOCL",
-                "vendorName": null,
-                "uniqueHash": "7d4954c0160550cc2212270ea615b8f9"
-            },
+            }
         ]
     },
 ]
 
 // --------------------------- upload form options ---------------------------------
 
+const optionStatus = [
+    { label: "ACTIVE", value: "ACTIVE" },
+    { label: "INACTIVE", value: "INACTIVE" },
+]
 const optionRateType = [
     { label: "SPOT", value: "SPOT" },
     { label: "CONTRACT", value: "CONTRACT" },
@@ -7587,5 +7575,5 @@ export {
     optcurrency, optionOrgPort, optionDestPort, optionCargoType, optionMovementType, optionPortlocalOrgPort,
     optionChargeBasis, optionCalculationType, optionContainerType, optionServiceType, optionIsStandard,instantRateBreadcrumb,airPortLocalBreadcrumb,
 
-    optionAirline,optionBookingMode, optionMode
+    optionAirline,optionBookingMode, optionMode, optionStatus
 };

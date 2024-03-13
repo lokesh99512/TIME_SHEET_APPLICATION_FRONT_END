@@ -52,7 +52,7 @@ export default function FclInlandUpload() {
     useEffect(() => {
         dispatch({ type: BLANK_FCL_CARRIER_DATA, payload: { name: 'addInland', data: { ...addInland, carrierDetails: carrierObj } } });
         dispatch({type: GET_UOM_DATA});
-    }, [])
+    }, []);
 
     useEffect(() => {
         setActiveTabProgress(inlandActiveTab)
@@ -60,7 +60,7 @@ export default function FclInlandUpload() {
         if (inlandActiveTab === 2) { setProgressValue(66) }
         if (inlandActiveTab === 3) { setProgressValue(100); }
         setSurcharges(addInland?.surcharges)
-    }, [inlandActiveTab])
+    }, [inlandActiveTab]);
 
     const toggleTabProgress = (tab) => {
         if (activeTabProgress !== tab) {
@@ -164,9 +164,9 @@ export default function FclInlandUpload() {
             dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addInland', data: { carrierDetails: carrierObj, freightUpload: {}, surcharges: [] } } });
             setSurcharges([]);
             setselectedFiles([]);
+            navigate('/freight/inland');
             setOpenSaveModal(false);
         }
-        // dispatch({ type: BLANK_FCL_CARRIER_DATA, payload: { name: 'addInland', data: { ...addInland, carrierDetails: carrierObj } } });
     }
     
     const uploadSaveHandler = () => {
@@ -498,7 +498,7 @@ export default function FclInlandUpload() {
                                                                         </div>
                                                                         <div className="col-lg-3">
                                                                             <div className="mb-3">
-                                                                                <label htmlFor='charge_currency' className="form-label">Currency</label>
+                                                                                <label htmlFor='charge_currency' className="form-label">Currency<span className='required_star'>*</span></label>
                                                                                 <Select
                                                                                     value={item.charge_currency || ''}
                                                                                     name='currency'

@@ -1,14 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Select from "react-select";
 import { Offcanvas, OffcanvasBody, OffcanvasHeader } from 'reactstrap';
-import { optionCargoType, optionCarrierName, optionDestPort, optionOrgPort, optionRateType, optionVendorName } from '../../../../common/data/procurement';
-import { useSelector } from 'react-redux';
-import { GET_CARGO_TYPE_DATA } from '../../../../store/Global/actiontype';
-import { useDispatch } from 'react-redux';
+import { optionRateType, optionStatus } from '../../../../common/data/procurement';
 
 export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDetails,setfilterDetails,applyFilterHandler,filterType,clearValueHandler}) {
     const [allVendors, setAllVendors] = useState([]);
-    const { vendor_data, cargoType_data } = useSelector((state) => state?.globalReducer);
+    const { vendor_data } = useSelector((state) => state?.globalReducer);
     const dispatch = useDispatch();
 
     const handleSelectGroup = useCallback((name, opt) => {
@@ -24,11 +22,7 @@ export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDet
             return { label: item?.name, value: item?.name, version: item?.version, id: item?.id, type: item?.vendorType }
         })
         setAllVendors(vendorlist);
-    }, [vendor_data]);
-
-    useEffect(() => {
-        dispatch({ type: GET_CARGO_TYPE_DATA });
-    },[dispatch]);
+    }, [vendor_data]);    
     return (
         <>
             <Offcanvas
@@ -114,7 +108,7 @@ export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDet
                                         />
                                     </div>
                                 </div>                            
-                                <div className="col-lg-12">
+                                {/* <div className="col-lg-12">
                                     <div className="mb-3">
                                         <label className="form-label">Cargo Type</label>
                                         <Select
@@ -128,7 +122,7 @@ export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDet
                                             classNamePrefix="select2-selection form-select"
                                         />
                                     </div>
-                                </div>     
+                                </div>      */}                                    
                                 <div className="col-lg-12">
                                     <div className="mb-3">
                                         <label className="form-label">Rate Type</label>
@@ -144,7 +138,7 @@ export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDet
                                         />
                                     </div>
                                 </div>     
-                                {filterType === 'inland' && (
+                                {/* {filterType === 'inland' && (
                                     <>
                                         <div className="col-lg-12">
                                             <div className="mb-3">
@@ -177,7 +171,22 @@ export default function FilterOffCanvasComp({isRight,toggleRightCanvas,filterDet
                                             </div>
                                         </div>
                                     </> 
-                                )}                       
+                                )}   */}
+                                <div className="col-lg-12">
+                                    <div className="mb-3">
+                                        <label className="form-label">Status</label>
+                                        <Select
+                                            value={optionStatus && optionStatus?.find(val => val.value === filterDetails.status) || ''}
+                                            name='status'
+                                            onChange={(opt) => {
+                                                handleSelectGroup('status', opt.value)
+                                            }}
+                                            options={optionStatus}
+                                            placeholder={'Select Status'}
+                                            classNamePrefix="select2-selection form-select"
+                                        />
+                                    </div>
+                                </div>                      
                             </div>                        
                             <div className="btn_wrap d-flex mt-auto">
                                 <button className='btn border' type='button' onClick={clearValueHandler}>Clear</button>

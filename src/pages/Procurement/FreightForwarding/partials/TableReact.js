@@ -7,7 +7,7 @@ import { Row, Table } from 'reactstrap';
 import { filter_icon, upload_icon } from '../../../../assets/images';
 import { DefaultColumnFilter, Filter } from '../../../../components/Common/filters';
 import { updateFCLActiveTab } from '../../../../store/Procurement/actions';
-import { BLANK_CARRIER_DATA, BLANK_FCL_CARRIER_DATA, BLANK_SURCHARGE_DATA } from '../../../../store/Procurement/actiontype';
+import { BLANK_CARRIER_DATA, BLANK_FCL_CARRIER_DATA, BLANK_SURCHARGE_DATA, UPDATE_INLAND_ACTIVE_TAB } from '../../../../store/Procurement/actiontype';
 import TableCommonSkeleton from '../../../Skeleton/TableCommonSkeleton';
 import { useSelector } from 'react-redux';
 
@@ -62,15 +62,16 @@ const TableReact = ({ columns, data, isGlobalFilter, customPageSize, toggleRight
         usePagination,);
     const navidate = useNavigate();
     const dispatch = useDispatch();
-    const { addFCL, addInland} = useSelector((state) => state?.procurement);
+    const { addFCL, addInland } = useSelector((state) => state?.procurement);
 
     const blankDataHandler = () => {
-        if(component === 'fcl'){
+        if (component === 'fcl') {
             dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addFCL', data: { ...addFCL, surcharges: [] } } });
         } else if (component === 'inland') {
             dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addInland', data: { ...addInland, surcharges: [] } } });
+            dispatch({type: UPDATE_INLAND_ACTIVE_TAB, payload: {tab: 3}});
         }
-        navidate(`/freight/upload/${component}`, { state: { id: component } }); 
+        navidate(`/freight/upload/${component}`, { state: { id: component } });
         dispatch(updateFCLActiveTab(1));
     }
 
@@ -123,27 +124,27 @@ const TableReact = ({ columns, data, isGlobalFilter, customPageSize, toggleRight
                         </thead>
 
                         <tbody {...getTableBodyProps()}>
-                            {page.map(row => {
-                                prepareRow(row);
-                                return (
-                                    <Fragment key={row.getRowProps().key}>
-                                        <tr>
-                                            {row.cells.map(cell => {
-                                                return (
-                                                    <td key={cell.id} {...cell.getCellProps()} style={{ backgroundColor: cell?.row?.original?.is_active === false ? "#D3D3D3" : "" }}>
-                                                        {cell.render("Cell")}
-                                                    </td>
-                                                );
-                                            })}
-                                        </tr>
-                                    </Fragment>
-                                );
-                            })}
-                            {page?.length === 0 && (
-                                <>
-                                    {loader ? (
-                                        <TableCommonSkeleton tdCount={headerGroups[0].headers.length} />
-                                    ) :
+                            {loader ? (
+                                <TableCommonSkeleton tdCount={headerGroups[0].headers.length} />
+                            ) : (
+                                <React.Fragment>
+                                    {page.map(row => {
+                                        prepareRow(row);
+                                        return (
+                                            <Fragment key={row.getRowProps().key}>
+                                                <tr>
+                                                    {row.cells.map(cell => {
+                                                        return (
+                                                            <td key={cell.id} {...cell.getCellProps()} style={{ backgroundColor: cell?.row?.original?.is_active === false ? "#D3D3D3" : "" }}>
+                                                                {cell.render("Cell")}
+                                                            </td>
+                                                        );
+                                                    })}
+                                                </tr>
+                                            </Fragment>
+                                        );
+                                    })}
+                                    {page?.length === 0 && (
                                         <tr>
                                             <td colSpan={headerGroups[0].headers.length}>
                                                 <div className='no_table_data_found'>
@@ -151,8 +152,8 @@ const TableReact = ({ columns, data, isGlobalFilter, customPageSize, toggleRight
                                                 </div>
                                             </td>
                                         </tr>
-                                    }
-                                </>
+                                    )}
+                                </React.Fragment>
                             )}
                         </tbody>
                     </Table>

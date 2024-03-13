@@ -25,11 +25,8 @@ const FclInlandCharge = () => {
         carrier_name: '',
         validity_from: '',
         validity_to: '',
-        org_port: '',
-        dest_port: '',
-        cargo_type: '',
-        container_type: '',
-        unit_type: '',
+        rate_type: '',
+        status: '',
     };
     const [filterDetails, setfilterDetails] = useState(inputArr);
 
@@ -52,12 +49,19 @@ const FclInlandCharge = () => {
     };
 
     const applyFilterHandler = () => {
-        setIsRight(false);
-        console.log(filterDetails, "filterDetails lcl-----------------------");
+        // setIsRight(false);
+        if(filterDetails.carrier_name !== '' || filterDetails.vendor_name !== '' || filterDetails.validity_from !== '' || filterDetails.validity_to !== '' || filterDetails.rate_type !== ''){
+            let url = '?'
+            url+= `${filterDetails?.carrier_name?.id ? `carriers=${filterDetails?.carrier_name?.id}&` : ''}${filterDetails?.vendor_name?.id ? `vendors=${filterDetails?.vendor_name?.id}&` : ''}${filterDetails?.validity_from ? `validFrom=${filterDetails?.validity_from}&` : ''}${filterDetails?.validity_to ? `validTo=${filterDetails?.validity_to}&` : ''}${filterDetails?.rate_type?.value ? `rateType=${filterDetails?.rate_type?.value}&${filterDetails?.status ? `status=${filterDetails?.status}` : ''}&` : ''}`
+            let newurl = url.substring(0, url.length - 1)
+            dispatch(getInLandData(newurl));
+        }
+        console.log(filterDetails, "filterDetails-----------------------");
     }
 
     const clearValueHandler = () => {
-        setfilterDetails(inputArr)
+        setfilterDetails(inputArr);
+        dispatch(getInLandData());
     }
 
     // Activate deactivate table data
@@ -113,15 +117,6 @@ const FclInlandCharge = () => {
             }
         },
         {
-            Header: 'Valid To',
-            accessor: 'validTo',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
             Header: 'Valid From',
             accessor: 'validFrom',
             filterable: true,
@@ -129,7 +124,16 @@ const FclInlandCharge = () => {
             Cell: (cellProps) => {
                 return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
-        },        
+        }, 
+        {
+            Header: 'Valid To',
+            accessor: 'validTo',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },               
         {
             Header: 'Action',
             Cell: (cellProps) => {

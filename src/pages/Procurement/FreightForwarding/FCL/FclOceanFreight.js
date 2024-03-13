@@ -3,10 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap'
 
 import { edit_icon, eye_icon } from '../../../../assets/images'
-import { fclBreadcrumb, fclTableData } from '../../../../common/data/procurement'
+import { fclBreadcrumb } from '../../../../common/data/procurement'
 import TfBreadcrumbs from '../../../../components/Common/TfBreadcrumbs'
 import { getFclData, getFclFreightViewAction, getFclSurchargeViewAction, uploadFclCarrierData } from '../../../../store/Procurement/actions'
-import { FILTER_FCL_DATA } from '../../../../store/Procurement/actiontype'
 import FilterOffCanvasComp from '../Modal/FilterOffCanvasComp'
 import { ChargeId, CommonReplaceValue, ValidTill, VendorName } from '../partials/OceanCol'
 import TableReact from '../partials/TableReact'
@@ -26,7 +25,8 @@ export default function FclOceanFreight() {
         validity_to: '',
         // org_port: '',
         // dest_port: '',
-        cargo_type: '',
+        // cargo_type: '',
+        status: 'ACTIVE',
         rate_type: '',
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
@@ -59,15 +59,13 @@ export default function FclOceanFreight() {
     };
 
     const applyFilterHandler = () => {
-        // setIsRight(false);
+        setIsRight(false);
         if(filterDetails.carrier_name !== '' || filterDetails.vendor_name !== '' || filterDetails.validity_from !== '' || filterDetails.validity_to !== '' || filterDetails.rate_type !== ''){
             let url = '?'
-            url+= `${filterDetails?.carrier_name?.id ? `carriers=${filterDetails?.carrier_name?.id}&` : ''}${filterDetails?.vendor_name?.id ? `vendors=${filterDetails?.vendor_name?.id}&` : ''}${filterDetails?.validity_from ? `validFrom=${filterDetails?.validity_from}&` : ''}${filterDetails?.validity_to ? `validTo=${filterDetails?.validity_to}&` : ''}${filterDetails?.rate_type?.value ? `rateType=${filterDetails?.rate_type?.value}&` : ''}`
+            url+= `${filterDetails?.carrier_name?.id ? `carriers=${filterDetails?.carrier_name?.id}&` : ''}${filterDetails?.vendor_name?.id ? `vendors=${filterDetails?.vendor_name?.id}&` : ''}${filterDetails?.validity_from ? `validFrom=${filterDetails?.validity_from}&` : ''}${filterDetails?.validity_to ? `validTo=${filterDetails?.validity_to}&` : ''}${filterDetails?.rate_type?.value ? `rateType=${filterDetails?.rate_type?.value}&${filterDetails?.status ? `status=${filterDetails?.status}` : ''}&` : ''}`
             let newurl = url.substring(0, url.length - 1)
             dispatch(getFclData(newurl));
         }
-        // dispatch({ type: FILTER_FCL_DATA, payload: filteredDataArr });
-
     }
     const clearValueHandler = () => {
         dispatch(getFclData());

@@ -178,6 +178,7 @@ export default function UploadFreightData() {
             setOpenSaveModal(false);
             // dispatch({ type: BLANK_FCL_CARRIER_DATA, payload: { name: 'addFCL', data: { ...addFCL, carrierDetails: carrierObj } } });
         }
+        navigate('/freight/ocean/fcl');
     }
     const uploadSaveHandler = () => {        
         if (activeTabProgress === 1) {
