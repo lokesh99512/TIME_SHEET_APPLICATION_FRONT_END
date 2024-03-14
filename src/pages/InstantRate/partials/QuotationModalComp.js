@@ -362,8 +362,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                 {data?.header?.split('_').join(" ") || '-'}
                                                                 <div className="right_con ms-auto">
                                                                     {/* <span className="price text-primary">{'₹'} {innerTotalHandler((item?.pickup_quote_charge || []), (mainChargeObj?.find(obj => obj.quote_id === item.quote_id)?.pickup_quote_charge || []))}</span> */}
-                                                                    <span className="price text-primary">{'₹'} {innerTotalHandler((data?.fclTariffBreakDowns || []), (mainChargeObj?.find(obj => obj.id === item.quote_id)?.tariffDetails?.find(obj => obj.header === data?.header)?.fclTariffBreakDowns || []))}</span>
-                                                                    
+                                                                    <span className="price text-primary">{'₹'} {innerTotalHandler((data?.fclTariffBreakDowns || []), (mainChargeObj?.find(obj => obj.id === item.quote_id)?.tariffDetails?.find(obj => obj.header === data?.header)?.fclTariffBreakDowns || []))}</span>                                                                
                                                                 </div>
                                                             </AccordionHeader>
                                                             <AccordionBody accordionId={`subacco_${index}`}>
@@ -443,7 +442,8 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                         </div>
                                                                     </div>
                                                                 ))}
-                                                                {/* {console.log(mainChargeObj,"mainChargeObj")} */}
+                                                                
+                                                                {/* Add Surcharge Code */}
                                                                 {mainChargeObj?.find(obj => obj.id === item.quote_id)?.tariffDetails?.find(obj => obj.header === data?.header)?.fclTariffBreakDowns?.map((newdata, i) => (
                                                                     <div className="charges_wrap mt-3" key={i}>
                                                                         <div className="label_delete_wwrap d-flex justify-content-between">
@@ -549,6 +549,7 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                                         </div>
                                                                     </div>
                                                                 ))}
+
                                                                 {!viewData && (
                                                                     <div className="add_btn_box mt-3">
                                                                         <div className="add_btn_wrap">
@@ -562,6 +563,12 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                                 }
                                             })}
                                         </Accordion>
+
+                                        <div className="remark_wrap mb-3">
+                                            <label className="form-label" htmlFor="remark">Remark</label>
+                                            <textarea className='form-control' name="remark" id="remark" cols="30" rows="8" placeholder='Enter remark'></textarea>
+                                        </div>
+
                                         <div className="row justify-content-end">
                                             {/* <div className="col-4 d-flex justify-content-between">
                                                 <span>Sub Total:</span>

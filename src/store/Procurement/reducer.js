@@ -15,7 +15,8 @@ const INIT_STATE = {
             rate_source:"",
             vendor_name:"",
             validity_from:"",
-            validity_to:""
+            validity_to:"",
+            vendor_type: { label: "CARRIER", value: "CARRIER" }
         },
         freightUpload:{},
         surcharges:[]
@@ -167,7 +168,7 @@ const procurement = (state = INIT_STATE, action) => {
         case GET_FCL_INLAND_TABLE_DATA_SUCCESS:
             return{
                 ...state,
-                fclInlandData: action.payload.content
+                fclInlandData: action.payload
             }
         case GET_FCL_INLAND_TABLE_DATA_FAIL:
             return{

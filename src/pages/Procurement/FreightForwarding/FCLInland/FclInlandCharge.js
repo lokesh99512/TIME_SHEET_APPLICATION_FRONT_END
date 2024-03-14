@@ -20,13 +20,14 @@ const FclInlandCharge = () => {
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
     const [isRight, setIsRight] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
     const inputArr = {
         vendor_name: '',
         carrier_name: '',
         validity_from: '',
         validity_to: '',
         rate_type: '',
-        status: '',
+        status: 'ACTIVE',
     };
     const [filterDetails, setfilterDetails] = useState(inputArr);
 
@@ -49,9 +50,9 @@ const FclInlandCharge = () => {
     };
 
     const applyFilterHandler = () => {
-        // setIsRight(false);
+        setIsRight(false);
         if(filterDetails.carrier_name !== '' || filterDetails.vendor_name !== '' || filterDetails.validity_from !== '' || filterDetails.validity_to !== '' || filterDetails.rate_type !== ''){
-            let url = '?'
+            let url = `?page=${currentPage}&size=10&`;
             url+= `${filterDetails?.carrier_name?.id ? `carriers=${filterDetails?.carrier_name?.id}&` : ''}${filterDetails?.vendor_name?.id ? `vendors=${filterDetails?.vendor_name?.id}&` : ''}${filterDetails?.validity_from ? `validFrom=${filterDetails?.validity_from}&` : ''}${filterDetails?.validity_to ? `validTo=${filterDetails?.validity_to}&` : ''}${filterDetails?.rate_type?.value ? `rateType=${filterDetails?.rate_type?.value}&${filterDetails?.status ? `status=${filterDetails?.status}` : ''}&` : ''}`
             let newurl = url.substring(0, url.length - 1)
             dispatch(getInLandData(newurl));
@@ -60,8 +61,9 @@ const FclInlandCharge = () => {
     }
 
     const clearValueHandler = () => {
+        setIsRight(false);
         setfilterDetails(inputArr);
-        dispatch(getInLandData());
+        dispatch(getInLandData(`?page=${currentPage}&size=10`));
     }
 
     // Activate deactivate table data
@@ -76,8 +78,15 @@ const FclInlandCharge = () => {
     }
 
     useEffect(() => {
-        dispatch(getInLandData());
-    }, [dispatch]);
+        if(currentPage !== '' && currentPage !== undefined){
+            let url = `?page=${currentPage}&size=10`;
+            dispatch(getInLandData(url));
+        }
+    }, [dispatch,currentPage]);
+
+    useEffect(() => {
+        setCurrentPage(inlandData?.pageNumber || 1);
+    }, [inlandData]);
 
     const columns = useMemo(() => [
         {
@@ -177,17 +186,21 @@ const FclInlandCharge = () => {
                             <TfBreadcrumbs breadcrumb={inLandBreadcrumb} />
                         </div>
                         {/* <TopBreadcrumbs breadcrumbs={inLandBreadcrumb} data={inLandRateData} /> */}
-
                         {/* React Table */}
                         <TableReact
                             columns={columns}
-                            data={inlandData || []}
+                            data={inlandData?.content || []}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}
                             toggleRightCanvas={toggleRightCanvas}
                             component={'inland'}
                             loader={inlandloader}
+                            currentPage={currentPage}
+                            setCurrentPage={setCurrentPage}
+                            totalPages={inlandData?.totalPages || 0}
+                            totalEntries={inlandData?.totalElements || 0}
+                            pageOffset={inlandData?.offset || 0}
                         />
 
                         {/* modal */}

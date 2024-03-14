@@ -7,7 +7,7 @@ import { Row, Table } from 'reactstrap';
 import { filter_icon, upload_icon } from '../../../../assets/images';
 import { DefaultColumnFilter, Filter } from '../../../../components/Common/filters';
 import { updateFCLActiveTab } from '../../../../store/Procurement/actions';
-import { BLANK_CARRIER_DATA, BLANK_FCL_CARRIER_DATA, BLANK_SURCHARGE_DATA, UPDATE_INLAND_ACTIVE_TAB } from '../../../../store/Procurement/actiontype';
+import { BLANK_CARRIER_DATA, BLANK_FCL_CARRIER_DATA, BLANK_SURCHARGE_DATA, GET_FCL_CHARGE_ID, GET_FCL_INLAND_CHARGE_ID, UPDATE_INLAND_ACTIVE_TAB } from '../../../../store/Procurement/actiontype';
 import TableCommonSkeleton from '../../../Skeleton/TableCommonSkeleton';
 import { useSelector } from 'react-redux';
 
@@ -48,7 +48,7 @@ function GlobalFilter({
     );
 }
 
-const TableReact = ({ columns, data, isGlobalFilter, customPageSize, toggleRightCanvas, component, loader }) => {
+const TableReact = ({ columns, data, isGlobalFilter, customPageSize, toggleRightCanvas, component, loader,currentPage,setCurrentPage, totalPages,totalEntries,pageOffset }) => {
     const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow, canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize, state, preGlobalFilteredRows, setGlobalFilter, state: { pageIndex, pageSize }, } = useTable({
         columns,
         data,
@@ -66,10 +66,13 @@ const TableReact = ({ columns, data, isGlobalFilter, customPageSize, toggleRight
 
     const blankDataHandler = () => {
         if (component === 'fcl') {
-            dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addFCL', data: { ...addFCL, surcharges: [] } } });
+            console.log("iffffffffffffffff table..")
+            dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addFCL', data: { ...addFCL, surcharges: [] } } });            
+            dispatch({ type: GET_FCL_CHARGE_ID, payload: '' });
         } else if (component === 'inland') {
             dispatch({ type: BLANK_SURCHARGE_DATA, payload: { name: 'addInland', data: { ...addInland, surcharges: [] } } });
             dispatch({type: UPDATE_INLAND_ACTIVE_TAB, payload: {tab: 3}});
+            dispatch({ type: GET_FCL_INLAND_CHARGE_ID, payload: '' });
         }
         navidate(`/freight/upload/${component}`, { state: { id: component } });
         dispatch(updateFCLActiveTab(1));
@@ -160,32 +163,19 @@ const TableReact = ({ columns, data, isGlobalFilter, customPageSize, toggleRight
                 </div>
                 <Row className="align-items-center g-3 text-center text-sm-start pagination_wrap">
                     <div className="col-sm">
-                        <div className='pagination_left_text'>Showing<span className="fw-normal ms-1">{page.length}</span> of <span className="fw-normal">{data.length}</span> entries
+                        <div className='pagination_left_text'>Showing<span className="fw-normal ms-1">{page.length}</span> of <span className="fw-normal">{totalEntries}</span> entries
                         </div>
+                        {/* <div className='pagination_left_text'>Showing <span className="fw-normal ms-1">{currentPage > 1 ? (currentPage - 1) + '1' : (currentPage - 1)}</span> to <span className="fw-normal">{pageOffset}</span> of <span className="fw-normal">{totalEntries}</span> entries
+                        </div> */}
                     </div>
                     <div className="col-sm-auto">
-                        {/* <ul className="pagination pagination-separated pagination-md justify-content-center justify-content-sm-start mb-0">
-                            <li className={!canPreviousPage ?   "page-item arrow_wrap previous disabled" : "page-item arrow_wrap previous"}>
-                                <Link to="#" className="page-link" onClick={previousPage}><i className='fas fa-chevron-left'></i></Link>
-                            </li>
-                            {pageOptions.map((item, key) => (
-                                <React.Fragment key={key}>
-                                    <li className="page-item">
-                                    <Link to="#" className={pageIndex === item ? "page-link active" : "page-link"} onClick={() => gotoPage(item)}>{item + 1}</Link>
-                                    </li>
-                                </React.Fragment>
-                            ))}
-                            <li className={!canNextPage ? "page-item arrow_wrap next disabled" : "page-item arrow_wrap next"}>
-                                <Link to="#" className="page-link" onClick={nextPage}><i className='fas fa-chevron-right'></i></Link>
-                            </li>
-                        </ul> */}
                         <div className='react_pagination_wrap'>
                             <ReactPaginate
                                 breakLabel="..."
                                 nextLabel="next"
-                                onPageChange={(item) => { gotoPage(item.selected) }}
+                                onPageChange={(item) => { setCurrentPage(item.selected + 1); gotoPage(item.selected); }}
                                 pageRangeDisplayed={3}
-                                pageCount={pageOptions.length}
+                                pageCount={totalPages - 1}
                                 previousLabel="previous"
                                 renderOnZeroPageCount={null}
                             />
@@ -193,57 +183,6 @@ const TableReact = ({ columns, data, isGlobalFilter, customPageSize, toggleRight
                     </div>
                 </Row>
             </div>
-            {/* <Row className="justify-content-md-end justify-content-center align-items-center">
-                <Col className="col-md-auto">
-                    <div className="d-flex gap-1">
-                        <Button
-                        color="primary"
-                        onClick={() => gotoPage(0)}
-                        disabled={!canPreviousPage}
-                        >
-                        {"<<"}
-                        </Button>
-                        <Button
-                        color="primary"
-                        onClick={previousPage}
-                        disabled={!canPreviousPage}
-                        >
-                        {"<"}
-                        </Button>
-                    </div>
-                </Col>
-                <Col className="col-md-auto d-none d-md-block">
-                    Page{" "}
-                    <strong>
-                        {pageIndex + 1} of {pageOptions.length}
-                    </strong>
-                </Col>
-                <Col className="col-md-auto">
-                    <Input
-                        type="number"
-                        min={1}
-                        style={{ width: 70 }}
-                        max={pageOptions.length}
-                        defaultValue={pageIndex + 1}
-                        onChange={onChangeInInput}
-                    />
-                </Col>
-
-                <Col className="col-md-auto">
-                    <div className="d-flex gap-1">
-                        <Button color="primary" onClick={nextPage} disabled={!canNextPage}>
-                        {">"}
-                        </Button>
-                        <Button
-                        color="primary"
-                        onClick={() => gotoPage(pageCount - 1)}
-                        disabled={!canNextPage}
-                        >
-                        {">>"}
-                        </Button>
-                    </div>
-                </Col>
-            </Row> */}
         </>
     )
 }

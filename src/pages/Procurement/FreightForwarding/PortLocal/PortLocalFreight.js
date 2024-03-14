@@ -20,7 +20,7 @@ export default function PortLocalFreight() {
         sur_category: '',
         from: '',
         to: '',
-        status: '',
+        status: 'ACTIVE',
         movement: '',
         ports: '',
     }

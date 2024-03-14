@@ -35,7 +35,7 @@ export default function UploadFreightData() {
     let carrierObj = {
         rate_type: '',
         rate_source: '',
-        vendor_type: '',
+        vendor_type: { label: "CARRIER", value: "CARRIER" },
         vendor_name: '',
         validity_application: '',
         validity_from: '',
@@ -201,7 +201,8 @@ export default function UploadFreightData() {
                 [addFCL?.carrierDetails?.vendor_type?.value === 'CARRIER' ? 'tenantCarrierVendor' : 'tenantVendor']: vendorInfo,
             };
             
-            dispatch(uploadFclCarrierData({ ...newData }));
+            console.log(newData,"newData");
+            // dispatch(uploadFclCarrierData({ ...newData }));
             
         } else if (activeTabProgress === 2) {
             let xlxsfile = selectedFiles[0]
@@ -308,7 +309,6 @@ export default function UploadFreightData() {
                                                                 </div>
                                                             </div>
                                                         </div>
-
                                                         <div className="row">
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
@@ -324,6 +324,7 @@ export default function UploadFreightData() {
                                                                         }}
                                                                         options={optionVendorType}
                                                                         classNamePrefix="select2-selection form-select"
+                                                                        isDisabled={true}
                                                                     />
                                                                 </div>
                                                             </div>
@@ -336,7 +337,8 @@ export default function UploadFreightData() {
                                                                         onChange={(opt) => {
                                                                             handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, vendor_name: opt });
                                                                         }}
-                                                                        options={vendorName || []}
+                                                                        options={AllVendorName && AllVendorName?.filter(t => t.type === "CARRIER") || []}
+                                                                        // options={vendorName || []}
                                                                         classNamePrefix="select2-selection form-select"
                                                                     />
                                                                 </div>

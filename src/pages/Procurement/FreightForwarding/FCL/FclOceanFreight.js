@@ -18,6 +18,7 @@ export default function FclOceanFreight() {
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
     const [isRight, setIsRight] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
     const inputArr = {
         vendor_name: '',
         carrier_name: '',
@@ -61,14 +62,15 @@ export default function FclOceanFreight() {
     const applyFilterHandler = () => {
         setIsRight(false);
         if(filterDetails.carrier_name !== '' || filterDetails.vendor_name !== '' || filterDetails.validity_from !== '' || filterDetails.validity_to !== '' || filterDetails.rate_type !== ''){
-            let url = '?'
+            let url = `?page=${currentPage}&size=10&`
             url+= `${filterDetails?.carrier_name?.id ? `carriers=${filterDetails?.carrier_name?.id}&` : ''}${filterDetails?.vendor_name?.id ? `vendors=${filterDetails?.vendor_name?.id}&` : ''}${filterDetails?.validity_from ? `validFrom=${filterDetails?.validity_from}&` : ''}${filterDetails?.validity_to ? `validTo=${filterDetails?.validity_to}&` : ''}${filterDetails?.rate_type?.value ? `rateType=${filterDetails?.rate_type?.value}&${filterDetails?.status ? `status=${filterDetails?.status}` : ''}&` : ''}`
             let newurl = url.substring(0, url.length - 1)
             dispatch(getFclData(newurl));
         }
     }
     const clearValueHandler = () => {
-        dispatch(getFclData());
+        setIsRight(false);
+        dispatch(getFclData(`?page=${currentPage}&size=10`));
         setfilterDetails(inputArr)
     }
 
@@ -84,8 +86,11 @@ export default function FclOceanFreight() {
     }
 
     useEffect(() => {
-        dispatch(getFclData());
-    }, [dispatch]);
+        if(currentPage !== '' && currentPage !== undefined){
+            let url = `?page=${currentPage}&size=10`;
+            dispatch(getFclData(url));
+        }
+    }, [dispatch,currentPage]);
 
     const columns = useMemo(() => [
         {
@@ -205,6 +210,11 @@ export default function FclOceanFreight() {
                             toggleRightCanvas={toggleRightCanvas}
                             component={'fcl'}
                             loader={fcl_loader}
+                            currentPage={currentPage}
+                            setCurrentPage={setCurrentPage}
+                            totalPages={fclData?.totalPages || 0}
+                            totalEntries={fclData?.totalElements || 0}
+                            pageOffset={fclData?.offset || 0}
                         />
 
                         {/* modal */}
@@ -214,7 +224,7 @@ export default function FclOceanFreight() {
             </div>
 
             {/* filter right sidebar */}
-            <FilterOffCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} data={fclData?.content || []} />
+            <FilterOffCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} />
         </>
     )
 }
