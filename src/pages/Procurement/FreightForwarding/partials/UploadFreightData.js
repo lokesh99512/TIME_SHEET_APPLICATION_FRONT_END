@@ -9,7 +9,7 @@ import fileData from '../../../../assets/extra/FclUplaodFormat.xlsx';
 import { delete_icon } from '../../../../assets/images';
 import { optionRateSource, optionRateType, optionValidityApp, optionVendorType } from '../../../../common/data/procurement';
 import { formatBytes, isAnyValueEmpty, isAnyValueEmptyInArray, isExcelFile } from '../../../../components/Common/CommonLogic';
-import { addFCLData, getFclDestinationAction, updateFCLActiveTab, uploadFclCarrierData, uploadFclFrightData, uploadFclSurchargeData } from '../../../../store/Procurement/actions';
+import { addFCLData, getFCLCurrVersionAction, getFclDestinationAction, updateFCLActiveTab, uploadFclCarrierData, uploadFclFrightData, uploadFclSurchargeData } from '../../../../store/Procurement/actions';
 import { BLANK_FCL_CARRIER_DATA, BLANK_SURCHARGE_DATA, FCL_FREIGHT_FAILD_POPUP_TYPE, UPDATE_FCL_ACTIVE_TAB } from '../../../../store/Procurement/actiontype';
 import { GET_UOM_DATA } from '../../../../store/Global/actiontype';
 
@@ -202,7 +202,7 @@ export default function UploadFreightData() {
             };
             
             console.log(newData,"newData");
-            // dispatch(uploadFclCarrierData({ ...newData }));
+            dispatch(uploadFclCarrierData({ ...newData }));
             
         } else if (activeTabProgress === 2) {
             let xlxsfile = selectedFiles[0]
@@ -337,14 +337,12 @@ export default function UploadFreightData() {
                                                                         onChange={(opt) => {
                                                                             handleAddFCL('carrierDetails', { ...addFCL?.carrierDetails, vendor_name: opt });
                                                                         }}
-                                                                        options={AllVendorName && AllVendorName?.filter(t => t.type === "CARRIER") || []}
-                                                                        // options={vendorName || []}
+                                                                        options={AllVendorName && AllVendorName?.filter(t => t.type === "CARRIER") || []}                                                                        
                                                                         classNamePrefix="select2-selection form-select"
                                                                     />
                                                                 </div>
                                                             </div>
                                                         </div>
-
                                                         <div className="row">
                                                             <div className="col-lg-4">
                                                                 <div className="mb-3">
@@ -584,6 +582,11 @@ export default function UploadFreightData() {
                                                         className={`d-flex align-items-center ${activeTabProgress === 1 ? "btn btn-primary disabled" : "btn btn-primary"}`}
                                                         onClick={() => {
                                                             toggleTabProgress(activeTabProgress - 1);
+                                                            if(activeTabProgress === 2){
+                                                                if(fcl_charge_id){
+                                                                    dispatch(getFCLCurrVersionAction(fcl_charge_id?.id));
+                                                                }
+                                                            }
                                                         }}
                                                     >
                                                         <i className="bx bx-chevron-left me-1"></i> Previous
@@ -611,7 +614,6 @@ export default function UploadFreightData() {
                 <div className="modal-body pb-4">
                 <div className='modal_icon text-center'>
                         <i className="bx bx-error"></i>
-                        {/* <h2 className='text-center'>{fclfaildData?.data?.status}</h2> */}
                         <h2 className='text-center'>File Was Not Uploaded.</h2>
                     </div>
                     <div id="bar" className="mt-4">

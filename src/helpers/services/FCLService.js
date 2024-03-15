@@ -2,8 +2,8 @@ import { get, post, postFormData, put } from "../api_helper";
 import * as url from "../url_helper";
 
 export const getFCLTableData = () => get(url.Get_FCL_Data);
+export const getFCLVersionSer = (data) => get(url.Get_FCL_Data + data);
 export const getFCLFilterSer = (data) => get(url.Get_FCL_Data + data);
-export const testDataSer = (url) => get(url.GET_FCL_INLAND + url);
 export const postFclUploadSer = (data) => post(url.Get_FCL_Data, data);
 export const postFclFreightUploadSer = ({formData, id}) => postFormData(url.Upload_FCL_freight_Data + id, formData, {
     headers: {
