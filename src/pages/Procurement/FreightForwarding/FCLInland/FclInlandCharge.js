@@ -20,7 +20,7 @@ const FclInlandCharge = () => {
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
     const [isRight, setIsRight] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(0);
     const inputArr = {
         vendor_name: '',
         carrier_name: '',
@@ -84,9 +84,9 @@ const FclInlandCharge = () => {
         }
     }, [dispatch,currentPage]);
 
-    useEffect(() => {
-        setCurrentPage(inlandData?.pageNumber || 1);
-    }, [inlandData]);
+    // useEffect(() => {
+    //     setCurrentPage(inlandData?.pageNumber || 0);
+    // }, [inlandData]);
 
     const columns = useMemo(() => [
         {

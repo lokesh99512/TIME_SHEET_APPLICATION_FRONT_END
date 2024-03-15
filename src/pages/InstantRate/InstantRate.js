@@ -13,7 +13,7 @@ import AirBookQuoteModal from "./AirFreightResult/AirBookQuoteModal";
 import AirFreightResultComp from "./AirFreightResult/AirFreightResultComp";
 import SearchResultComp from "./OceanFreightResult/SearchResultComp";
 import SearchForm from './SearchForm';
-import PreviewQuotationModal from "./partials/PreviewQuotationModal";
+import PreviewQuotationModal from "./Preview/PreviewQuotationModal";
 import QuotationModalComp from "./partials/QuotationModalComp";
 
 const InstantRate = () => {
@@ -200,6 +200,7 @@ const InstantRate = () => {
 
             {/* Preview Quotation Modal */}
             {previewModal && <PreviewQuotationModal previewModal={previewModal} previewModalHand={previewModalHand} setPreviewModal={setPreviewModal} QuoteModalHandler={QuoteModalHandler} />}
+            {/* <PreviewQuotationModal previewModal={true} previewModalHand={previewModalHand} setPreviewModal={setPreviewModal} QuoteModalHandler={QuoteModalHandler} /> */}
         </>
     )
 }

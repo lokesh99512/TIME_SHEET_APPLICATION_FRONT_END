@@ -18,7 +18,7 @@ export default function FclOceanFreight() {
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
     const [isRight, setIsRight] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(0);
     const inputArr = {
         vendor_name: '',
         carrier_name: '',
@@ -91,6 +91,10 @@ export default function FclOceanFreight() {
             dispatch(getFclData(url));
         }
     }, [dispatch,currentPage]);
+
+    // useEffect(() => {
+    //     setCurrentPage(fclData?.pageNumber || '');
+    // }, [fclData]);
 
     const columns = useMemo(() => [
         {

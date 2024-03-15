@@ -2112,7 +2112,7 @@ input[type="number"]{
         @include borderRadius(0px);
         .modal-header{
             position: absolute;
-            right: -130px;
+            left: calc(100% + 20px);
             display: block;
             border: 0;
             padding: 0;
@@ -2134,6 +2134,13 @@ input[type="number"]{
                     &.bx-plus{
                         transform: rotate(45deg);
                     }
+                }
+            }
+            &.modal-left-button{
+                left: auto;
+                right: calc(100% + 20px);
+                button{
+                    white-space: nowrap;
                 }
             }
         }
@@ -2226,6 +2233,48 @@ input[type="number"]{
                         }
                     }
                 }
+            }
+        }
+    }
+    .preview_format2{
+        .preview_sidebar {
+            @extend .white_box;
+            height: 100%;
+            .side_data {
+                .label{
+                    @include font($font-weight-medium,12px,normal,$neutral_8);
+                    margin: 0 0 7px;
+                }
+                .value{
+                    @include font($font-weight-bold,14px,normal,$neutral_8);
+                    margin: 0;
+                    &.blue_text{
+                        color: $primary_7;
+                    }
+                }
+                .sub_text{
+                    @include font($font-weight-medium,10px,normal,$neutral_5);
+                }
+                .pera{
+                    @include font($font-weight-normal,12px,normal,$black);
+                    &.blue_pera{
+                        color: $primary_7;
+                    }
+                }
+                a{
+                    text-decoration: underline !important;
+                    @include font($font-weight-medium,14px,normal,$primary_7);
+                }
+            }
+        }
+        h2{
+            @include font($font-weight-bold,18px,normal,$black);
+        }
+        .address{
+            max-width: 240px;
+            p{
+                margin: 0 0 5px;
+                font-weight: 500;
             }
         }
     }

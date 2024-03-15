@@ -8,11 +8,11 @@ import TfBreadcrumbs from '../../../components/Common/TfBreadcrumbs'
 import { QUOTATION_RESULT_SELECTED } from '../../../store/InstantRate/actionType'
 import { getSalesQuotationData } from '../../../store/Sales/actions'
 import { FILTER_QUOTATION_DATA } from '../../../store/Sales/actiontype'
-import PreviewQuotationModal from '../../InstantRate/partials/PreviewQuotationModal'
 import QuotationModalComp from '../../InstantRate/partials/QuotationModalComp'
 import FilterSalesComp from '../partials/FilterSalesComp'
 import { CommonValue } from '../partials/SalesCol'
 import SalesCommonTable from '../partials/SalesCommonTable'
+import PreviewQuotationModal from '../../InstantRate/Preview/PreviewQuotationModal'
 
 export default function Quotations() {
     document.title = "Sales || Navigating Freight Costs with Precision||Ultimate Rate Management platform"

@@ -173,9 +173,9 @@ const TableReact = ({ columns, data, isGlobalFilter, customPageSize, toggleRight
                             <ReactPaginate
                                 breakLabel="..."
                                 nextLabel="next"
-                                onPageChange={(item) => { setCurrentPage(item.selected + 1); gotoPage(item.selected); }}
+                                onPageChange={(item) => { setCurrentPage(item.selected); gotoPage(item.selected); }}
                                 pageRangeDisplayed={3}
-                                pageCount={totalPages - 1}
+                                pageCount={totalPages}
                                 previousLabel="previous"
                                 renderOnZeroPageCount={null}
                             />
