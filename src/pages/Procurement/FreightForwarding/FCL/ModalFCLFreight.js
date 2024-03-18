@@ -133,7 +133,7 @@ const ModalFCLFreight = ({ viewData, modal, onCloseClick, modalType }) => {
                                                             <td>{item?.commodity || '-'}</td>
                                                             <td>{item?.originPort || '-'}</td>
                                                             <td>{item?.destinationPort || '-'}</td>
-                                                            <td>{item?.viaPort || '-'}</td>
+                                                            <td>{item?.viaPorts?.length > 0 ? item?.viaPorts?.map((item) => item?.code).join(', ') : '-'}</td>
                                                             <td>{item?.transitTime || '-'}</td>
                                                             <td>{item?.currency || '-'}</td>
                                                             <td>{item?.gp20 || '-'}</td>

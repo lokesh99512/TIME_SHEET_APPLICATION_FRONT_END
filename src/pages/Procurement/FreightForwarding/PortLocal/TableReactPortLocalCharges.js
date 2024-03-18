@@ -45,7 +45,7 @@ function GlobalFilter({
     );
 }
 
-const TableReact = ({ columns, data, isGlobalFilter, customPageSize, toggleRightCanvas, component,loader }) => {
+const TableReact = ({ columns, data, isGlobalFilter, customPageSize, toggleRightCanvas, component,loader,setCurrentPage, totalPages,totalEntries }) => {
     const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow, canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize, state, preGlobalFilteredRows, setGlobalFilter, state: { pageIndex, pageSize }, } = useTable({
         columns,
         data,
@@ -107,36 +107,38 @@ const TableReact = ({ columns, data, isGlobalFilter, customPageSize, toggleRight
                         </thead>
 
                         <tbody {...getTableBodyProps()}>
-                            {page.map(row => {
-                                prepareRow(row);
-                                return (
-                                    <Fragment key={row.getRowProps().key}>
-                                        <tr>
-                                            {row.cells.map(cell => {
-                                                return (
-                                                    <td key={cell.id} {...cell.getCellProps()}>
-                                                        {cell.render("Cell")}
-                                                    </td>
-                                                );
-                                            })}
-                                        </tr>
-                                    </Fragment>
-                                );
-                            })}
-                            {page?.length === 0 && (
-                                <>
-                                    {loader ? (
-                                        <TableCommonSkeleton tdCount={headerGroups[0].headers.length} />
-                                    ) :
-                                        <tr>
-                                            <td colSpan={headerGroups[0].headers.length}>
-                                                <div className='no_table_data_found'>
-                                                    <p>No Data Found.</p>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    }
-                                </>
+                            {loader ? (
+                                <TableCommonSkeleton tdCount={headerGroups[0].headers.length} />
+                            ) : (
+                                <React.Fragment>
+                                    {page.map(row => {
+                                        prepareRow(row);
+                                        return (
+                                            <Fragment key={row.getRowProps().key}>
+                                                <tr>
+                                                    {row.cells.map(cell => {
+                                                        return (
+                                                            <td key={cell.id} {...cell.getCellProps()}>
+                                                                {cell.render("Cell")}
+                                                            </td>
+                                                        );
+                                                    })}
+                                                </tr>
+                                            </Fragment>
+                                        );
+                                    })}
+                                    {page?.length === 0 && (
+                                        <>
+                                            <tr>
+                                                <td colSpan={headerGroups[0].headers.length}>
+                                                    <div className='no_table_data_found'>
+                                                        <p>No Data Found.</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </>
+                                    )}
+                                </React.Fragment>
                             )}
                         </tbody>
                     </Table>
@@ -151,9 +153,9 @@ const TableReact = ({ columns, data, isGlobalFilter, customPageSize, toggleRight
                             <ReactPaginate
                                 breakLabel="..."
                                 nextLabel="next"
-                                onPageChange={(item) => { gotoPage(item.selected) }}
+                                onPageChange={(item) => { setCurrentPage(item.selected);gotoPage(item.selected) }}
                                 pageRangeDisplayed={3}
-                                pageCount={pageOptions.length}
+                                pageCount={totalPages}
                                 previousLabel="previous"
                                 renderOnZeroPageCount={null}
                             />

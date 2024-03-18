@@ -67,9 +67,9 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
     return (
         <>
             <Modal size="md" isOpen={previewModal} toggle={() => { previewModalHand(); }} className='preview_modal_wrap'>
-                {/* <div className="modal-header modal-left-button">                    
-                    <button type="button" onClick={() => {setPreviewFormat((prev) => prev === '1' ? '2' : '1')}}>Select Format</button>
-                </div> */}
+                <div className="modal-header modal-left-button">                    
+                    <button type="button" onClick={() => {setPreviewFormat((prev) => prev === '1' ? '2' : '1')}}>Change Format</button>
+                </div>
                 <div className="modal-header">
                     <button type="button" onClick={() => { setPreviewModal(false); }}><i className='bx bx-plus me-2'></i> Close</button>
                     <button type="button" onClick={() => { setPreviewModal(false); QuoteModalHandler(); }}><img src={edit_icon} alt="Edit" className='me-2' /> Edit</button>

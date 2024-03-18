@@ -15,6 +15,7 @@ export default function PortLocalFreight() {
     const [isRight, setIsRight] = useState(false);
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
+    const [currentPage, setCurrentPage] = useState(0);
     const inputArr = {
         carriers:'',
         sur_category: '',
@@ -45,7 +46,7 @@ export default function PortLocalFreight() {
     const applyFilterHandler = () => {
         setIsRight(false);
         if(filterDetails?.carriers || filterDetails?.sur_category || filterDetails?.from || filterDetails?.to || filterDetails?.status || filterDetails?.movement || filterDetails?.ports){
-            let url = '?'
+            let url = `?page=${currentPage}&size=10&`
             url +=  `${filterDetails?.carriers?.id ? `carriers=${filterDetails?.carriers?.id}&` : ''}${filterDetails.sur_category?.id ? `chargeCategories=${filterDetails.sur_category?.id}&` : ''}${filterDetails?.ports?.id ? `ports=${filterDetails?.ports?.id}&` : ''}${filterDetails?.from ? `validFrom=${filterDetails?.from}&` : ''}${filterDetails.to ? `validTo=${filterDetails?.to}&` : ''}${filterDetails?.status ? `status=${filterDetails?.status}&` : ''}${filterDetails?.movement?.value ? `movementType=${filterDetails?.movement?.value}&` : ''}`;
             let newurl = url.substring(0, url.length - 1);
             dispatch(getPortLocalChargesData(newurl));
@@ -53,7 +54,8 @@ export default function PortLocalFreight() {
     }
     const clearValueHandler = () => {
         setfilterDetails(inputArr)
-        dispatch(getPortLocalChargesData());
+        let url = `?page=${currentPage}&size=10`;
+        dispatch(getPortLocalChargesData(url));
     }
 
     // Activate deactivate table data
@@ -67,9 +69,16 @@ export default function PortLocalFreight() {
         dispatch(postPortLocalChargesData(obj));
     }
 
+    // useEffect(() => {
+    //     dispatch(getPortLocalChargesData());        
+    // }, [dispatch]);
+
     useEffect(() => {
-        dispatch(getPortLocalChargesData());        
-    }, [dispatch]);
+        if(currentPage !== '' && currentPage !== undefined){
+            let url = `?page=${currentPage}&size=10`;
+            dispatch(getPortLocalChargesData(url));
+        }
+    }, [dispatch,currentPage]);
 
     const columns = useMemo(() => [
         {
@@ -197,6 +206,9 @@ export default function PortLocalFreight() {
                             toggleRightCanvas={toggleRightCanvas}
                             component={'PortLocalCharges'}
                             loader={fclplChargesLoader || false}
+                            setCurrentPage={setCurrentPage}
+                            totalPages={portLocalChargesData?.totalPages || 0}
+                            totalEntries={portLocalChargesData?.totalElements || 0}
                         />
 
                         {/* modal */}

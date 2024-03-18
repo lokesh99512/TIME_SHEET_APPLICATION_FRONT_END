@@ -614,3 +614,14 @@ nav.breadcrumb_wrap {
     border: 2px solid #ced4da;
     border-radius: 4px;
 }
+
+// tooltip
+.viaTooltip  .tooltip-inner {
+    background: $primary_1;
+    color: #000;
+    border: 1px solid $primary_8;
+    font-weight: 500;
+}
+.viaTooltip div[data-popper-placement^=top] .tooltip-arrow::before {
+    border-top-color: $primary_8;
+}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from 'reactstrap';
+import { Accordion, AccordionBody, AccordionHeader, AccordionItem, Tooltip, UncontrolledTooltip } from 'reactstrap';
 import { cube_filled, oocl_logo, ship_filled, truck_outline, zim_logo } from '../../../assets/images';
 import { convertToINR } from '../../../components/Common/CommonLogic';
 import { QUOTATION_RESULT_SELECTED, UPDATE_QUOTATION_RESULT_DETAILS } from '../../../store/InstantRate/actionType';
@@ -41,7 +41,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
         dispatch({ type: UPDATE_QUOTATION_RESULT_DETAILS, payload: { name, value: val, id, index } })
         let newArry = [];
         dispatch({ type: QUOTATION_RESULT_SELECTED, payload: newArry })
-    }   
+    }
 
     const quotationCheckHandler = (item) => {
         const maxSelection = 3;
@@ -77,23 +77,23 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
     const TotalQuotationCount = (item) => {
         const totalSum = item?.tariffDetails?.reduce((accOuter, currentOuter) => {
             let innerSum = 0;
-            if(currentOuter?.selected){
+            if (currentOuter?.selected) {
                 innerSum = currentOuter?.fclTariffBreakDowns?.reduce((accInner, currentInner) => {
-                return accInner + convertToINR(Number(currentInner.amount), currentInner.currencyCode);
+                    return accInner + convertToINR(Number(currentInner.amount), currentInner.currencyCode);
                 }, 0);
-            }          
+            }
             return accOuter + innerSum;
         }, 0);
         return totalSum;
     }
 
-    useEffect(() => { 
-        let routeArray= data?.map((item, index) => {
+    useEffect(() => {
+        let routeArray = data?.map((item, index) => {
             let newArray = [];
             item.tariffDetails?.map((charge) => {
-                if(charge?.selected){                    
-                    if(charge.from !== undefined){
-                        newArray= [...newArray, charge.from, charge.to];
+                if (charge?.selected) {
+                    if (charge.from !== undefined) {
+                        newArray = [...newArray, charge.from, charge.to];
                     }
                 }
             })
@@ -106,12 +106,12 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
         })
 
         setResultRoute(uniqueArray);
-    },[data]);
+    }, [data]);
 
     return (
         <div>
             {result_loader ? <ResultCardSkeleton /> : (
-                <div className="result_tab_content_wrap">  
+                <div className="result_tab_content_wrap">
                     {data?.length !== 0 ? data?.map((item, index) => (
                         <div className="search_result_card_check_wrap d-flex align-items-center" key={`main_${index}`}>
                             <div className={`form-check me-2`} onClick={(e) => quotationCheckHandler(item)}>
@@ -128,7 +128,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                 <div className="search_result_card_header d-flex align-items-center">
                                     <div className="card_img">
                                         <span className='d-flex align-items-center justify-content-center img mx-auto'>
-                                            <img src={item?.carrierLogo ? item?.carrierLogo : cube_filled} alt="Logo" onError={e => {e.target.src = item?.carrierName?.toLowerCase() === 'oocl' ? oocl_logo : item?.carrierName?.toLowerCase() === 'zim' ? zim_logo : cube_filled}} />
+                                            <img src={item?.carrierLogo ? item?.carrierLogo : cube_filled} alt="Logo" onError={e => { e.target.src = item?.carrierName?.toLowerCase() === 'oocl' ? oocl_logo : item?.carrierName?.toLowerCase() === 'zim' ? zim_logo : cube_filled }} />
                                             {/* <img src={item?.carrierName?.toLowerCase() === 'oocl' ? oocl_logo : item?.carrierName?.toLowerCase() === 'zim' ? zim_logo : cube_filled} alt="Logo" /> */}
                                         </span>
                                         <span className="title d-block text-center mt-2">{item?.carrierName || '-'}</span>
@@ -136,8 +136,22 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                     <div className="middle_content">
                                         {/* {console.log(instantRateLocation,"instantRateLocation")} */}
                                         <span className="duration text-center d-block">Duration <b>{item.oceanTransitTime || 0} days</b></span>
+                                        {item?.viaPorts?.length > 0 && (
+                                            <div className="text-center">
+                                                <button className="btn btn-link p-0 via_port_btn" id={`viaTooltip_${item.quote_id}`}>Via Ports</button>
+                                                <UncontrolledTooltip
+                                                    placement="top"
+                                                    target={`viaTooltip_${item.quote_id}`}
+                                                    trigger="click"
+                                                    className='viaTooltip'
+                                                    autohide={true}
+                                                >
+                                                    {item?.viaPorts?.map(t => t.code).join(', ')}
+                                                </UncontrolledTooltip>
+                                            </div>                                            
+                                        )}
                                         <div className="from_to_wrap multi_route mt-2 mb-3 d-flex justify-content-between">
-                                            <span className="icon d-flex align-items-center justify-content-center"><img src={ship_filled} alt="Shipping" /></span>
+                                            <span className="icon d-flex align-items-center justify-content-center"><img src={ship_filled} alt="Shipping" /></span>                                            
                                             {resultRoute?.length > 0 && resultRoute?.[index] ? resultRoute?.[index]?.map((item, index) => {
                                                 return (<span className="from_loc" key={index}>{item}</span>)
                                             }) : null}
@@ -158,14 +172,14 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                     </div>
                                 </div>
                                 {showDetails?.find(obj => obj.index === index)?.details && (
-                                    <div className="search_result_accordion_details">  
-                                        {item?.tariffDetails?.length !== 0 && (                                    
+                                    <div className="search_result_accordion_details">
+                                        {item?.tariffDetails?.length !== 0 && (
                                             <Accordion flush open={open} toggle={toggle}>
-                                                {item?.tariffDetails?.map((data, i) => (                                            
+                                                {item?.tariffDetails?.map((data, i) => (
                                                     <AccordionItem key={i}>
                                                         <AccordionHeader targetId={`${data?.header}_${index}${i}`}>
                                                             <div className="left_lable d-flex align-items-center">
-                                                                <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!data?.selected, data?.header,i,item?.quote_id); }}>
+                                                                <div className={`form-check me-2`} onClick={(e) => { e.stopPropagation(); handleChange(!data?.selected, data?.header, i, item?.quote_id); }}>
                                                                     <input
                                                                         className="form-check-input"
                                                                         type="checkbox"
@@ -186,9 +200,9 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                         </AccordionHeader>
                                                         <AccordionBody accordionId={`${data?.header}_${index}${i}`}>
                                                             <div className="price_details_wrap ps-5">
-                                                                {data?.fclTariffBreakDowns?.length !== 0 && data?.fclTariffBreakDowns?.map((val,ind) => (
+                                                                {data?.fclTariffBreakDowns?.length !== 0 && data?.fclTariffBreakDowns?.map((val, ind) => (
                                                                     <div className="details d-flex justify-content-between" key={`key_${ind}`}>
-                                                                        <p className='me-2'>{`${val?.component || ''} ${val?.containerDetail ? '- ' + val?.containerDetail : '' }` }</p>
+                                                                        <p className='me-2'>{`${val?.component || ''} ${val?.containerDetail ? '- ' + val?.containerDetail : ''}`}</p>
                                                                         <span className='text-primary'>{val?.currencyCode || '₹'} {val?.amount || '0'}</span>
                                                                     </div>
                                                                 ))}
@@ -197,7 +211,7 @@ const SearchResultCard = ({ data, QuoteModalHandler }) => {
                                                     </AccordionItem>
                                                 ))}
                                             </Accordion>
-                                        )}                              
+                                        )}
                                     </div>
                                 )}
                             </div>

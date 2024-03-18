@@ -1546,6 +1546,9 @@ input[type="number"]{
         .middle_content {
             width: calc(100% - 390px);
             padding-right: 20px;
+            .via_port_btn{
+                @include font($font-weight-medium, 14px, normal, $primary_7);
+            }
             .from_to_wrap  {
                 position: relative;
                 &::before{
@@ -2275,6 +2278,18 @@ input[type="number"]{
             p{
                 margin: 0 0 5px;
                 font-weight: 500;
+            }
+        }
+        .preview_notes {
+            p {
+                margin: 0;
+                font-size: 12px;
+                @include font($font-weight-normal,12px,normal,$neutral_8);
+            }
+        }
+        .preview_additional_info {
+            .add_info_content{
+                @include font($font-weight-normal,12px,normal,$neutral_8);
             }
         }
     }
