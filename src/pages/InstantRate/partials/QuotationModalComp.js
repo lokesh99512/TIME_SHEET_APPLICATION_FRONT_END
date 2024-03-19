@@ -1,16 +1,20 @@
+import { ContentState, convertToRaw } from 'draft-js';
 import { useFormik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
+import { Editor } from 'react-draft-wysiwyg';
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { useDispatch, useSelector } from 'react-redux';
 import Select from "react-select";
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem, Modal } from 'reactstrap';
 import { cube_filled, delete_icon, oocl_logo, zim_logo } from '../../../assets/images';
 import { optionMarkupType } from '../../../common/data/common';
 import { convertToINR, useOutsideClick } from '../../../components/Common/CommonLogic';
-import { QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_UPDATE } from '../../../store/InstantRate/actionType';
-import { ADD_QUOTE_MODAL_CHARGES, BLANK_MODAL_CHARGE, REMOVE_QUOTE_MODAL_CHARGES, UPDATE_QUOTE_MODAL_CHARGES } from '../../../store/Sales/Quotation/actiontype';
-import ShipmentForm from './ShipmentForm';
-import CompanyForm from './CompanyForm';
 import { GET_UOM_DATA } from '../../../store/Global/actiontype';
+import { QUOTATION_RESULT_REMARK_UPDATE, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_UPDATE } from '../../../store/InstantRate/actionType';
+import { ADD_QUOTE_MODAL_CHARGES, BLANK_MODAL_CHARGE, REMOVE_QUOTE_MODAL_CHARGES, UPDATE_QUOTE_MODAL_CHARGES } from '../../../store/Sales/Quotation/actiontype';
+import CompanyForm from './CompanyForm';
+import ShipmentForm from './ShipmentForm';
+import draftToHtml from 'draftjs-to-html';
 
 const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setPreviewModal, viewData }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -233,6 +237,35 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
     };
     useOutsideClick(dropdownRef, setIsOpen);
     // ------------ custom dropdown ------------------- ")
+
+    // const [editorState, setEditorState] = useState(
+    //     () => EditorState.createEmpty(),
+    //   );
+
+    const contentChangeHandler = (data, name, id) => {
+        dispatch({type: QUOTATION_RESULT_REMARK_UPDATE, payload: {data, name, id}})
+    }
+
+    const _toolbarOptions = {
+        options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'embedded', 'emoji', 'remove', 'history'],
+        inline: {
+            options: ['bold', 'italic', 'underline', 'strikethrough','monospace','superscript', 'subscript'],
+        },
+        blockType: {
+            inDropdown: true,
+            options: ['Normal', 'H1', 'H2', 'H3','H4','H5','H6','Blockquote'],
+        },
+        fontSize: {
+            options: [8, 10, 12, 14, 18, 24, 30, 36],
+        },
+        list: {
+            options: ['unordered', 'ordered'],
+        },
+        textAlign: {
+            options: ['left', 'center', 'right', 'justify'],
+        },
+    };
+
     return (
         <>
             <Modal size="xl" isOpen={quoteModal} toggle={() => { QuoteModalHandler(); }} className='quotation_modal_wrap' >
@@ -329,7 +362,6 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                     </AccordionItem>
                                 </>
                             )}
-
                             {quoteData.map((item, mainindex) => (
                                 <AccordionItem key={item.quote_id}>
                                     <AccordionHeader targetId={`main_${mainindex}`}>
@@ -564,9 +596,17 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
                                             })}
                                         </Accordion>
 
-                                        <div className="remark_wrap mb-3">
-                                            <label className="form-label" htmlFor="remark">Remark</label>
-                                            <textarea className='form-control' name="remark" id="remark" cols="30" rows="8" placeholder='Enter remark'></textarea>
+                                        <div className="remark_wrap mb-4">
+                                            <label className="form-label fs-5" htmlFor="remark">Remarks</label>
+                                            {/* <textarea className='form-control' name="remark" id="remark" cols="30" rows="8" placeholder='Enter remark'></textarea> */}
+                                            <Editor
+                                                defaultContentState={item?.remarks || ''}
+                                                onContentStateChange={(data) => contentChangeHandler(data, 'remarks', item.quote_id)}
+                                                toolbar={_toolbarOptions}
+                                                toolbarClassName="toolbarClassName"
+                                                wrapperClassName="demo-wrapper"
+                                                editorClassName="demo-editor"
+                                            />
                                         </div>
 
                                         <div className="row justify-content-end">

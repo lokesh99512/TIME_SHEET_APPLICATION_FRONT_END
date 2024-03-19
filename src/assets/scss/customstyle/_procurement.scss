@@ -2146,6 +2146,32 @@ input[type="number"]{
                     white-space: nowrap;
                 }
             }
+            .format_image_wrap {
+                width: 100%;
+                border: 1px solid $neutral_3;
+                background: $white;
+                height: 70px;
+                border-radius: 8px;
+                padding: 5px;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 5px;
+                .img {
+                    border: 1px solid $neutral_3;
+                    border-radius: 4px;
+                    overflow: hidden;
+                    cursor: pointer;
+                    &:hover{
+                        opacity: 0.7;
+                    }
+                    &.active{
+                        border-color: $primary_7;
+                    }
+                    img{
+                        max-width: 100%;
+                    }
+                }
+            }
         }
     }
     .preview_top_details{
@@ -2290,6 +2316,15 @@ input[type="number"]{
         .preview_additional_info {
             .add_info_content{
                 @include font($font-weight-normal,12px,normal,$neutral_8);
+            }
+        }
+        .editor_details{
+            ul{
+                list-style: revert;
+                padding: revert;
+            }
+            *{
+                font-family: "IBM Plex Sans", sans-serif !important;
             }
         }
     }

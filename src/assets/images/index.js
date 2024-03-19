@@ -63,6 +63,8 @@ import evening_active from "./icons/evening_active.png";
 import evening_inactive from "./icons/evening_inactive.png";
 import night_active from "./icons/night_active.png";
 import night_inactive from "./icons/night_inactive.png";
+import preview1 from "./icons/preview1.png";
+import preview2 from "./icons/preview2.png";
 
 // country------------------
 import azerbaijan from './icons/country/azerbaijan.svg'
@@ -96,6 +98,7 @@ export {
   ship_filled,ship_darkblue,airplane_darkblue,airplane_filled,truk_darkblue,truk_filled,swap_arrow,
   pickup_icon,pickup_icon2,pickup_icon3,pickup_icon4,pickup_icon5,pickup_icon6,cma_logo,truck_outline,status_update,oocl_logo,zim_logo,filter_img,user_blank,
   indigo_img,airasia_logo,vistara_logo,morning_active,morning_inactive,noon_active,noon_inactive,evening_active,evening_inactive,night_active,night_inactive,
+  preview1,preview2,
 
 
 

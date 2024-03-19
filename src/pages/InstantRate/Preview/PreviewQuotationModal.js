@@ -3,7 +3,7 @@ import jsPDF from 'jspdf';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Modal } from 'reactstrap';
-import { edit_icon, sitelogo } from '../../../assets/images';
+import { edit_icon, preview1, preview2, sitelogo } from '../../../assets/images';
 import { formatDate } from '../../../components/Common/CommonLogic';
 import PreviewCommonTable from './PreviewCommonTable';
 import PreviewFormat1 from './PreviewFormat1';
@@ -68,7 +68,11 @@ export default function PreviewQuotationModal({ previewModal, previewModalHand, 
         <>
             <Modal size="md" isOpen={previewModal} toggle={() => { previewModalHand(); }} className='preview_modal_wrap'>
                 <div className="modal-header modal-left-button">                    
-                    <button type="button" onClick={() => {setPreviewFormat((prev) => prev === '1' ? '2' : '1')}}>Change Format</button>
+                    <button type="button">Change Format</button>
+                    <div className="format_image_wrap">
+                        <div className={`img ${previewFormat === '1' ? 'active' : ''}`} onClick={() => {setPreviewFormat('1')}}><img src={preview1} alt="Preview" /></div>
+                        <div className={`img ${previewFormat === '2' ? 'active' : ''}`} onClick={() => {setPreviewFormat('2')}}><img src={preview2} alt="Preview" /></div>
+                    </div>
                 </div>
                 <div className="modal-header">
                     <button type="button" onClick={() => { setPreviewModal(false); }}><i className='bx bx-plus me-2'></i> Close</button>

@@ -4,11 +4,20 @@ import { useSelector } from 'react-redux';
 import { formatDate } from '../../../components/Common/CommonLogic';
 import { sitelogo } from '../../../assets/images';
 import { Link } from 'react-router-dom';
+import draftToHtml from 'draftjs-to-html';
 
 const PreviewFormat2 = ({ customerInfo }) => {
     const mainChargeObj = useSelector((state) => state?.quotation?.mainChargeObj);
     const { searchForm, $instantActiveTab,instantInquiryId,quote_selected_data } = useSelector((state) => state?.instantRate);
     const { tenant_info } = useSelector((state) => state?.settings);
+
+    const getHTML = (data) => {
+        // const contentStateVar = contentState.getCurrentContent();
+        // const rawContentState = convertToRaw(contentStateVar);
+        const html = draftToHtml(data);
+        return { __html: html };
+    };
+
     return (
         <>
             <div className="common_bg_wrap preview_top_details preview_format2">
@@ -20,10 +29,11 @@ const PreviewFormat2 = ({ customerInfo }) => {
                             <div className="left_details">
                                 <h2>Quotation Document</h2>
                                 <div className='address'>
-                                    <p>SWENLOG SUPPLY CHAIN SOLUTION PVT LTD</p>
+                                    {customerInfo?.address || '-'}
+                                    {/* <p>SWENLOG SUPPLY CHAIN SOLUTION PVT LTD</p>
                                     <p>205, 1ST FLOOR, D CROSS EAST OF NGEF, KASTURI NAGARQ.. </p>
                                     <p>560043 BANGALORE</p>
-                                    <p>INDIA</p>
+                                    <p>INDIA</p> */}
                                 </div>
                                 {/* <p><b className='me-1'>Quotation:</b> #Q12345678</p> */}
                             </div>
@@ -32,8 +42,8 @@ const PreviewFormat2 = ({ customerInfo }) => {
                                 <p className='text-end mt-2'>{formatDate(new Date())}</p>
                             </div>
                         </div>
-                        <div className="preview_customer_details mt-3 mb-4">
-                            <p>Dear SWENLOG CUSTOMER SERVICE,</p>
+                        <div className="preview_customer_details my-4">
+                            <p>Dear {customerInfo?.name || '-'},</p>
                             <p>Thank you for your recent enquiry. Hapag-Lloyd is pleased to make you the following offer, for which please find our rates and further details below.</p>
                             <p>Offer expires on: <b>July 9th 2024</b></p>
                             <p>Our quotation is valid until the above mentioned offer expiry date. We reserve the right to review and re-quote, if we do not receive any booking prior to above mentioned offer expiry date.</p>
@@ -64,9 +74,14 @@ const PreviewFormat2 = ({ customerInfo }) => {
                             </table>
                         </div>
 
-                        {quote_selected_data?.length !== 0 ? quote_selected_data?.map((data) => (<PreviewCommonTable data={data} key={data.quote_id} newData={mainChargeObj.find(obj => obj.id === data.quote_id) || []} tab={$instantActiveTab} />)) : null}
+                        {/* {quote_selected_data?.length !== 0 ? quote_selected_data?.map((data) => (<PreviewCommonTable data={data} key={data.quote_id} newData={mainChargeObj.find(obj => obj.id === data.quote_id) || []} tab={$instantActiveTab} />)) : null} */}
+                        {quote_selected_data?.length !== 0 ? quote_selected_data?.slice(0,1)?.map((data) => (<PreviewCommonTable data={data} key={data.quote_id} newData={mainChargeObj.find(obj => obj.id === data.quote_id) || []} tab={$instantActiveTab} />)) : null}
 
-                        <div className="preview_notes my-4">
+                        <div className='my-4 editor_details'>
+                            <div dangerouslySetInnerHTML={getHTML(quote_selected_data?.[0]?.remarks || '')}></div>
+                        </div>
+
+                        {/* <div className="preview_notes my-4">
                             <h5 className='fs-6'><b>Notes</b></h5>
                             <p><b>Subject to Security Manifest Document Fee:</b> INR 3750 per Bill of Lading</p>
                             <p><b>Subject to Document Charge:</b> INR 4800 per Bill of Lading</p>
@@ -80,7 +95,7 @@ const PreviewFormat2 = ({ customerInfo }) => {
                             <div className="add_info_content mt-2">
                             The Terms and Conditions under which Hapag-Lloyd accepted your business are available at: <Link to={"/#"}>Hapag-Lloyd Homepage</Link>.
                             </div>
-                        </div>
+                        </div> */}
 
                     </div>
                     <div className="col-4">
