@@ -45,7 +45,7 @@ function GlobalFilter({
     );
 }
 
-const TableUsers = ({ columns, data, isGlobalFilter, customPageSize, toggleRightCanvas, component, loader }) => {
+const TableUsers = ({ columns, data, isGlobalFilter, customPageSize, toggleRightCanvas, component, loader, setCurrentPage, totalPages, totalEntries }) => {
     const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow, canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize, state, preGlobalFilteredRows, setGlobalFilter, state: { pageIndex, pageSize }, } = useTable({
         columns,
         data,
@@ -107,27 +107,27 @@ const TableUsers = ({ columns, data, isGlobalFilter, customPageSize, toggleRight
                         </thead>
 
                         <tbody {...getTableBodyProps()}>
-                            {page.map(row => {
-                                prepareRow(row);
-                                return (
-                                    <Fragment key={row.getRowProps().key}>
-                                        <tr>
-                                            {row.cells.map(cell => {
-                                                return (
-                                                    <td key={cell.id} {...cell.getCellProps()}>
-                                                        {cell.render("Cell")}
-                                                    </td>
-                                                );
-                                            })}
-                                        </tr>
-                                    </Fragment>
-                                );
-                            })}
-                            {page?.length === 0 && (
-                                <>
-                                    {loader ? (
-                                        <TableCommonSkeleton tdCount={headerGroups[0].headers.length} />
-                                    ) :
+                            {loader ? (
+                                <TableCommonSkeleton tdCount={headerGroups[0].headers.length} />
+                            ) : (
+                                <Fragment>
+                                    {page.map(row => {
+                                        prepareRow(row);
+                                        return (
+                                            <Fragment key={row.getRowProps().key}>
+                                                <tr>
+                                                    {row.cells.map(cell => {
+                                                        return (
+                                                            <td key={cell.id} {...cell.getCellProps()}>
+                                                                {cell.render("Cell")}
+                                                            </td>
+                                                        );
+                                                    })}
+                                                </tr>
+                                            </Fragment>
+                                        );
+                                    })}
+                                    {page?.length === 0 && (
                                         <tr>
                                             <td colSpan={headerGroups[0].headers.length}>
                                                 <div className='no_table_data_found'>
@@ -136,40 +136,26 @@ const TableUsers = ({ columns, data, isGlobalFilter, customPageSize, toggleRight
                                                 </div>
                                             </td>
                                         </tr>
-                                    }
-                                </>
+                                    )}
+
+                                </Fragment>
                             )}
                         </tbody>
                     </Table>
                 </div>
                 <Row className="align-items-center g-3 text-center text-sm-start pagination_wrap">
                     <div className="col-sm">
-                        <div className='pagination_left_text'>Showing<span className="fw-normal ms-1">{page.length}</span> of <span className="fw-normal">{data.length}</span> entries
+                        <div className='pagination_left_text'>Showing<span className="fw-normal ms-1">{page.length}</span> of <span className="fw-normal">{totalEntries}</span> entries
                         </div>
                     </div>
                     <div className="col-sm-auto">
-                        {/* <ul className="pagination pagination-separated pagination-md justify-content-center justify-content-sm-start mb-0">
-                            <li className={!canPreviousPage ?   "page-item arrow_wrap previous disabled" : "page-item arrow_wrap previous"}>
-                                <Link to="#" className="page-link" onClick={previousPage}><i className='fas fa-chevron-left'></i></Link>
-                            </li>
-                            {pageOptions.map((item, key) => (
-                                <React.Fragment key={key}>
-                                    <li className="page-item">
-                                    <Link to="#" className={pageIndex === item ? "page-link active" : "page-link"} onClick={() => gotoPage(item)}>{item + 1}</Link>
-                                    </li>
-                                </React.Fragment>
-                            ))}
-                            <li className={!canNextPage ? "page-item arrow_wrap next disabled" : "page-item arrow_wrap next"}>
-                                <Link to="#" className="page-link" onClick={nextPage}><i className='fas fa-chevron-right'></i></Link>
-                            </li>
-                        </ul> */}
                         <div className='react_pagination_wrap'>
                             <ReactPaginate
                                 breakLabel="..."
                                 nextLabel="next"
-                                onPageChange={(item) => { gotoPage(item.selected) }}
+                                onPageChange={(item) => { setCurrentPage(item.selected); gotoPage(item.selected) }}
                                 pageRangeDisplayed={3}
-                                pageCount={pageOptions.length}
+                                pageCount={totalPages}
                                 previousLabel="previous"
                                 renderOnZeroPageCount={null}
                             />

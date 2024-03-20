@@ -27,10 +27,9 @@ const Customers = () => {
   const [viewData, setViewData] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate()
+  const [currentPage, setCurrentPage] = useState(0);
 
-  const { customer_data, customer_loader } = useSelector((state) => state?.customer)
-
-  console.log(customer_data, "--customer_data");
+  const { customer_data, customer_loader } = useSelector((state) => state?.customer);
 
   const viewPopupHandler = (data) => {
     setModal(true);
@@ -53,10 +52,17 @@ const Customers = () => {
       },
     });
   };
+
   useEffect(() => {
-    dispatch(getAllPartiesCustomerData())
     dispatch(getCustomersCityData())
-  }, []);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if(currentPage !== '' && currentPage !== undefined){
+      let url = `?page=${currentPage}&size=10`;
+      dispatch(getAllPartiesCustomerData(url))
+    }
+  }, [dispatch,currentPage]);
 
   const columns = useMemo(
     () => [
@@ -208,10 +214,12 @@ const Customers = () => {
               isGlobalFilter={true}
               isAddInvoiceList={true}
               customPageSize={10}
-              totalPages={customer_data?.totalElements/10 || 0}
               // toggleRightCanvas={toggleRightCanvas}
               component={"Customers"}
               loader={customer_loader || false}
+              setCurrentPage={setCurrentPage}
+              totalPages={customer_data?.totalPages || 0}
+              totalEntries={customer_data?.totalElements || 0}
             />
 
             {/* modal */}

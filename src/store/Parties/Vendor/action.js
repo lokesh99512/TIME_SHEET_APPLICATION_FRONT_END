@@ -1,7 +1,6 @@
 import { GET_VENDOR_BY_ID, GET_VENDOR_LIST_TYPE, UPLOAD_VENDOR_CONTACT_TYPE, UPLOAD_VENDOR_DETAILS_TYPE, UPLOAD_VENDOR_DOCUMENT_TYPE } from "./actiontype";
 
 export const getVendorListAction = (data) => {
-    console.log(data, "data getAllTableVendor");
     return {
         type: GET_VENDOR_LIST_TYPE,
         payload: data,

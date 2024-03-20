@@ -238,10 +238,6 @@ const QuotationModalComp = ({ quoteModal, setQuoteModal, QuoteModalHandler, setP
     useOutsideClick(dropdownRef, setIsOpen);
     // ------------ custom dropdown ------------------- ")
 
-    // const [editorState, setEditorState] = useState(
-    //     () => EditorState.createEmpty(),
-    //   );
-
     const contentChangeHandler = (data, name, id) => {
         dispatch({type: QUOTATION_RESULT_REMARK_UPDATE, payload: {data, name, id}})
     }

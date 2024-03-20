@@ -4,8 +4,7 @@ import {
   CompanyCountryDetails,
   CompanyPincodeDetails,
   CompanyStateDetails,
-  getAllPartiesCustomerEmployeeDeatils,
-  getPartiesAllTable
+  getAllPartiesCustomerEmployeeDeatils
 } from "../../helpers/services/AuthService";
 import {
   GET_PARTIES_COMPANY_CITY_DATA,
@@ -17,22 +16,17 @@ import {
   GET_PARTIES_COMPANY_STATE_DATA,
   GET_PARTIES_COMPANY_STATE_DATA_SUCCESS,
   GET_PARTIES_CUSTOMER_EMPLOYEE_DETAILS,
-  GET_PARTIES_CUSTOMER_EMPLOYEE_DETAILS_SUCCESS,
-  GET_PARTIES_TABLE,
-  GET_PARTIES_TABLE_SUCCESS
+  GET_PARTIES_CUSTOMER_EMPLOYEE_DETAILS_SUCCESS
 } from "./actiontype";
 
 function* getCompanyCityDetails() {
   try {
-    // console.log("payload getCompanyCityDetails", payload)
     const response = yield call(CompanyCityDetails);
-    // console.log(response, "--respnse")
     yield put({
       type: GET_PARTIES_COMPANY_CITY_DATA_SUCCESS,
       payload: response,
     });
   } catch (error) {
-    // showErrorToast(error?.message);
     console.log(error, "saga city api error");
   }
 }
@@ -40,29 +34,23 @@ function* getCompanyCityDetails() {
 // state into company
 function* getCompanyStateDetails({ payload: { cityId } }) {
   try {
-    // console.log("payload getCompanyCityDetails", payload)
     const response = yield call(() => CompanyStateDetails({ cityId }));
-    // console.log(response, "--respnse")
     yield put({
       type: GET_PARTIES_COMPANY_STATE_DATA_SUCCESS,
       payload: response,
     });
   } catch (error) {
-    // showErrorToast(error?.message);
     console.log(error, "saga state api error");
   }
 }
 function* getCompanyCountryDetails({ payload: { cityId } }) {
   try {
-    // console.log("payload getCompanyCityDetails", payload)
     const response = yield call(() => CompanyCountryDetails({ cityId }));
-    // console.log(response, "--respnse")
     yield put({
       type: GET_PARTIES_COMPANY_COUNTRY_DATA_SUCCESS,
       payload: response,
     });
   } catch (error) {
-    // showErrorToast(error?.message);
     console.log(error, "saga state api error");
   }
 }
@@ -79,16 +67,6 @@ function* getCompanyPincodeDetails({ payload: { cityId } }) {
   } catch (error) {
     // showErrorToast(error?.message);
     console.log(error, "saga state api error");
-  }
-}
-
-function* getAllPartiesTable() {
-  try {
-    const response = yield call(getPartiesAllTable);
-    console.log(response, "reponse into getAllPartiesCompanySettings");
-    yield put({ type: GET_PARTIES_TABLE_SUCCESS, payload: response });
-  } catch (error) {
-    console.log(error, "saga getAllCompanySettings api error");
   }
 }
 
@@ -112,7 +90,6 @@ export function* watchGetPartiesCustomersData() {
   yield takeLatest(GET_PARTIES_COMPANY_STATE_DATA, getCompanyStateDetails);
   yield takeLatest(GET_PARTIES_COMPANY_COUNTRY_DATA, getCompanyCountryDetails);
   yield takeLatest(GET_PARTIES_COMPANY_PINCODE_DATA, getCompanyPincodeDetails);
-  yield takeLatest(GET_PARTIES_TABLE, getAllPartiesTable);
   yield takeLatest(GET_PARTIES_CUSTOMER_EMPLOYEE_DETAILS, getAllPartiesEmployeeDetails);
 }
 

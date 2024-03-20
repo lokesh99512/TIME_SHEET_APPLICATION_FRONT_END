@@ -15,17 +15,10 @@ import {
   GET_PARTIES_CUSTOMERS_DETAILS_SUCCESS,
   GET_PARTIES_CUSTOMER_EMPLOYEE_DETAILS_FAIL,
   GET_PARTIES_CUSTOMER_EMPLOYEE_DETAILS_SUCCESS,
-  GET_PARTIES_TABLE_FAIL,
-  GET_PARTIES_TABLE_SUCCESS,
-  GET_PARTIES_VENDOR_TABLE_FAIL,
-  GET_PARTIES_VENDOR_TABLE_SUCCESS,
   GET_VENDORS_TABLE_DATA_FAIL,
   GET_VENDORS_TABLE_DATA_SUCCESS,
-  GET_VENDOR_DETAILS_ID,
-  GET_VENDOR_LIST_SUCCESS,
   UPDATE_CUSTOMER_SWITCH,
-  UPDATE_VENDOR_SWITCH,
-  VENDOR_LOADER_TYPE
+  UPDATE_VENDOR_SWITCH
 } from "./actiontype";
 
 const INIT_STATE = {
@@ -37,8 +30,6 @@ const INIT_STATE = {
   parties_country_details: [],
   parties_pincode_details: [],
   parties_all_details: [],
-  parties_table_all_details: [],
-  // parties_all_vendors_data: [],
   parties_all_employee_details: [],
   parties_vendors_details: [],  
   vendor_loader: false,
@@ -137,38 +128,6 @@ const parties = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
-
-    // get all table in parties
-
-    case GET_PARTIES_TABLE_SUCCESS:
-      return {
-        ...state,
-        parties_table_all_details: action.payload,
-      };
-
-    case GET_PARTIES_TABLE_FAIL:
-      return {
-        ...state,
-        error: action.payload,
-      };
-
-    // get all table in vendor
-
-    // case GET_VENDOR_LIST_SUCCESS:
-    //   return {
-    //     ...state,
-    //     parties_all_vendors_data: action.payload,
-    //   };
-    // case VENDOR_LOADER_TYPE:
-    //   return {
-    //     ...state,
-    //     vendor_loader: action.payload,
-    //   };
-    // case GET_VENDOR_DETAILS_ID:
-    //   return {
-    //     ...state,
-    //     vendor_id: action.payload,
-    //   };
 
     // all customers in parties
 

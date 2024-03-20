@@ -17,11 +17,10 @@ import { VENDOR_TAB_ACTIVE_TYPE } from '../../store/Parties/Vendor/actiontype';
 const Vendors = () => {
   const [modal, setModal] = useState(false);
   const [viewData, setViewData] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const { vendor_loader, vendors_data } = useSelector(
-    (state) => state?.vendor
-  );
+  const { vendor_loader, vendors_data } = useSelector((state) => state?.vendor);
 
   const viewPopupHandler = (data) => {
     setModal(true);
@@ -42,10 +41,14 @@ const Vendors = () => {
   };
 
   useEffect(() => {
-    dispatch(getVendorListAction());
     dispatch(getCustomersCityData())
-    dispatch({type: VENDOR_TAB_ACTIVE_TYPE, payload: { tab: 1, details: 'pending', contact: 'pending', document: 'pending' }})
+    dispatch({ type: VENDOR_TAB_ACTIVE_TYPE, payload: { tab: 1, details: 'pending', contact: 'pending', document: 'pending' } })
   }, []);
+
+  useEffect(() => {
+    let url = `?page=${currentPage}&size=10`;
+    dispatch(getVendorListAction(url));
+  }, [dispatch, currentPage]);
 
   const columns = useMemo(() => [
     {
@@ -163,6 +166,9 @@ const Vendors = () => {
               //   toggleRightCanvas={toggleRightCanvas}
               component={"Customers"}
               loader={vendor_loader || false}
+              setCurrentPage={setCurrentPage}
+              totalPages={vendors_data?.totalPages || 0}
+              totalEntries={vendors_data?.totalElements || 0}
             />
 
             {/* modal */}

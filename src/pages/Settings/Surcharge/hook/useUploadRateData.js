@@ -1,13 +1,11 @@
-import { useDispatch } from "react-redux";
-import { getAllAddSurchargeData } from "../../../../store/Settings/actions";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { postMSurchargeData } from "../../../../store/Settings/actions";
 
 export const useUploadRateData = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const navigateState = useLocation();
-  console.log(navigateState?.state?.id,"navigateState");
   const { settings_surcharges_table_data } = useSelector((state) => state?.settings);
   const { surchargeCategory_data, surchargeAlice_data } = useSelector((state) => state.globalReducer);
 
@@ -23,12 +21,11 @@ export const useUploadRateData = () => {
   const handleSubmit = (values, { resetForm }) => {
     let sCategory_data = surchargeCategory_data?.find((item) => item?.value === values?.surchargeCategory);
     let sAlice_data = surchargeAlice_data?.find((item) => item?.value === values?.surchargeAliasCode);
-
     let data = {
       ...(Object.keys(currSurchargeData).length ? { id: currSurchargeData.id, version: currSurchargeData.version } : {}),
       code: values?.surchargeCode || '',
       description: values?.surchargeDesc || '',
-      ...(values?.surchargeAliasCode && {
+      ...((values?.surchargeAliasCode && sAlice_data) && {
         surchargeAlias: {
           version: sAlice_data && sAlice_data?.version || 0,
           id: sAlice_data && sAlice_data?.id || '',
@@ -42,9 +39,8 @@ export const useUploadRateData = () => {
 
     console.log(data,"data");
 
-    dispatch(getAllAddSurchargeData(data));
+    dispatch(postMSurchargeData(data));
     resetForm();
-    navigate('/settings/surcharge');
   };
 
   return {

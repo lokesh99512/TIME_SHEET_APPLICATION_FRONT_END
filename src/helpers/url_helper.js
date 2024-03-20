@@ -257,16 +257,13 @@ export const COMPANY_GET_ALL_DETAILS = "/api/v1/tenant/"
 export const GET_ALL_PARTIES_TABLE = "/api/v1/tenant/customer"
 
 // All table vendor listing
-export const GET_ALL_PARTIES_VENDOR_TABLE = "/api/v1/tenant/vendor/"
+export const GET_VENDOR_LIST_URL = "/api/v1/tenant/vendor/"
 
 // Parties into Basic companyDetails 
 // export const PARTIES_VENDOR_BASIC_DETAILS = "/api/v1/tenant/vendor/update-basic-details"
 
 // get all table in surcharge fcl 
-export const GET_ALL_SETTINGS_SURCHARGE_FCL = "/api/v1/surcharge-code/"
-
-// get all table in surcharge fcl only alias code 
-export const GET_ALL_SETTINGS_SURCHARGE_FCL_ALIAS_CODE = "/api/v1/surcharge-alias/"
+export const GET_M_SURCHARGE_API = "/api/v1/surcharge-code/"
 
 // get to particular id to target
 export const GET_SURCHARGE_DATA_ID = "/api/v1/surcharge-code/"

@@ -62,10 +62,9 @@ export default function AddTanentLocation() {
             let countryVal = parties_country_details?.content?.filter((con) => con?.countryName === values?.country) || [];
             let cityVal = parties_city_details?.content?.filter((city) => city?.cityName === values?.city) || [];
             let stateVal = parties_state_details?.content?.filter((state) => state?.stateName === values?.state) || [];
-            let pincodeVal = parties_pincode_details?.content?.filter((pin) => pin?.pin === values?.zipcode) || [];
-            console.log(parties_state_details);
-            let locationtypeVal = tenant_all_location_type_data?.content?.filter((type) => type?.typeName === values?.tenantLocationType?.label);
-            console.log(tenant_all_location_type_data.content);
+            let pincodeVal = parties_pincode_details?.content?.filter((pin) => pin?.pin === values?.zipcode) || [];            
+            let locationtypeVal = tenant_all_location_type_data?.content?.filter((type) => type?.typeName === values?.tenantLocationType);
+            
             const tenantLocation = {
                 "name": values.name || "",
                 "address": values.address || null,
@@ -104,7 +103,7 @@ export default function AddTanentLocation() {
                 "email": values.email || null,
                 "contactName": values.contactName || null,
             }
-            console.log(tenantLocation);
+            console.log(tenantLocation, "tenantLocation");
             dispatch(postTenantLocation(tenantLocation));
             addLocationFormik.resetForm();
         },
@@ -120,7 +119,6 @@ export default function AddTanentLocation() {
             value: 'add_new',
             label: 'Add New',
         };
-        console.log(tenant_all_location_type_data);
 
         setLocationType([...newLocationType, addNewItem]);
     }, [tenant_all_location_type_data]);
@@ -166,13 +164,13 @@ export default function AddTanentLocation() {
                                                     <label className="form-label">Location Type<span className='required_star'>*</span></label>
                                                     <div className="">
                                                         <Select
-                                                            value={addLocationFormik?.values?.tenantLocationType}
+                                                            value={locationType ? locationType?.find(obj => obj.label === addLocationFormik?.values?.tenantLocationType) : ''}
                                                             name="tenantLocationType"
                                                             onChange={(opt) => {
                                                                 if (opt.label == "Add New") {
                                                                     setAddTenentType(true)
                                                                 } else {
-                                                                    addLocationFormik.setFieldValue("tenantLocationType", opt);
+                                                                    addLocationFormik.setFieldValue("tenantLocationType", opt.label);
                                                                 }
                                                             }}
                                                             options={locationType}

@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import { Card, CardBody, FormFeedback, Input } from "reactstrap";
 import { optionVendorType } from "../../../../common/data/procurement";
-import { getCustomersCityData, getCustomersCountryData, getCustomersPincodeData, getCustomersStateData } from "../../../../store/Parties/actions";
-import { getAllSurchargeCategoryData, getAllTableSurchargeAlias } from "../../../../store/Settings/actions";
+import { getCustomersCountryData, getCustomersPincodeData, getCustomersStateData } from "../../../../store/Parties/actions";
 import FileUpload from "../../FileUpload";
 import ModalAddNewDepartment from "../../Modal/ModalAddNewDepartment";
 import ModalAddNewDesignation from "../../Modal/ModalAddNewDesignation";
@@ -51,8 +50,6 @@ const VenderDetails = ({ companyDetailsFormik }) => {
   
 
   useEffect(() => {
-    dispatch(getAllTableSurchargeAlias());
-    dispatch(getAllSurchargeCategoryData());
     const cityData = parties_city_details?.content?.find((city) => city.cityName === companyDetailsFormik.values.city);
     if(!!cityData){
       dispatch(getCustomersStateData({ cityId: cityData.id }));

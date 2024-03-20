@@ -1,28 +1,26 @@
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import {
   Card,
   CardBody,
   Col,
   Container,
-  FormFeedback,
   Input,
-  Row,
+  Row
 } from "reactstrap";
 import { addSurchargeSettingsBreadcrumb } from "../../../common/data/parties";
 import { isAnyValueEmpty } from "../../../components/Common/CommonLogic";
-import {  
-  getAllSurchargeCategoryData,
-  getAllTableSurchargeAlias,
+import { GET_SURCHARGE_ALICE_DATA } from "../../../store/Global/actiontype";
+import {
+  getAllSurchargeCategoryData
 } from "../../../store/Settings/actions";
 import ModalAddNewAlias from "./Modal/ModalAddNewAlias";
 import ModalAddNewCategory from "./Modal/ModalAddNewCategory";
 import TopBreadcrumbs from "./TopBreadcrumbs";
 import { useUploadRateData } from "./hook/useUploadRateData";
-import { GET_SURCHARGE_ALICE_DATA } from "../../../store/Global/actiontype";
 
 
 export default function UploadRateData() {
@@ -41,7 +39,6 @@ export default function UploadRateData() {
   });
 
   useEffect(() => {
-    dispatch(getAllTableSurchargeAlias());
     dispatch(getAllSurchargeCategoryData());
     // dispatch(getTenantInfoData());
     dispatch({ type: GET_SURCHARGE_ALICE_DATA });

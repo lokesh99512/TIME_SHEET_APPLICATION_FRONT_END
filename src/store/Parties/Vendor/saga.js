@@ -1,16 +1,15 @@
-import { all, call, fork, put, takeLatest } from "redux-saga/effects";
-import { GET_VENDOR_BY_ID, GET_VENDOR_BY_ID_SUCCESS, GET_VENDOR_DETAILS_ID, GET_VENDOR_LIST_SUCCESS, GET_VENDOR_LIST_TYPE, UPLOAD_VENDOR_CONTACT_TYPE, UPLOAD_VENDOR_DETAILS_TYPE, UPLOAD_VENDOR_DOCUMENT_TYPE, VENDOR_LOADER_TYPE, VENDOR_TAB_ACTIVE_TYPE } from "./actiontype";
-import { getPartiesAllVendorTable } from "../../../helpers/services/AuthService";
-import { getVendorDataByIdSer, postVenderCompanySer, postVenderDocumentSer, postVenderUpload, postVendorContactSer } from "../../../helpers/services/PartiesService";
-import { showErrorToast, showSuccessToast } from "../../../components/Common/CustomToast";
-import { Get_File_URL, UPLOAD_VENDOR_DOCUMENT_URL } from "../../../helpers/url_helper";
 import axios from "axios";
+import { all, call, fork, put, takeLatest } from "redux-saga/effects";
+import { showErrorToast, showSuccessToast } from "../../../components/Common/CustomToast";
+import { getVendorDataByIdSer, getVendorDataSer, postVenderCompanySer, postVenderDocumentSer, postVendorContactSer } from "../../../helpers/services/PartiesService";
+import { Get_File_URL } from "../../../helpers/url_helper";
+import { GET_VENDOR_BY_ID, GET_VENDOR_BY_ID_SUCCESS, GET_VENDOR_DETAILS_ID, GET_VENDOR_LIST_SUCCESS, GET_VENDOR_LIST_TYPE, UPLOAD_VENDOR_CONTACT_TYPE, UPLOAD_VENDOR_DETAILS_TYPE, UPLOAD_VENDOR_DOCUMENT_TYPE, VENDOR_LOADER_TYPE, VENDOR_TAB_ACTIVE_TYPE } from "./actiontype";
 
 
-function* fetchVendorListSaga() {
+function* fetchVendorListSaga({ payload }) {
     yield put({ type: VENDOR_LOADER_TYPE, payload: true });
     try {
-        const response = yield call(getPartiesAllVendorTable);
+        const response = yield call(getVendorDataSer, payload);
         if (response && response.content && response.content) {
             response?.content?.forEach(element => {
                 let imageData = element.logoPath;
@@ -23,12 +22,11 @@ function* fetchVendorListSaga() {
                 })
             });
         }
-        console.log(response, "reponse into getAllPartiesCompanySettings");
         yield put({ type: GET_VENDOR_LIST_SUCCESS, payload: response });
         yield put({ type: VENDOR_LOADER_TYPE, payload: false });
     } catch (error) {
         yield put({ type: VENDOR_LOADER_TYPE, payload: false });
-        console.log(error, "saga getAllCompanySettings api error");
+        console.log(error, "saga Vendor error");
     }
 }
 
@@ -74,9 +72,6 @@ function* postVenderContactSaga({ payload: { data } }) {
 function* postVenderDocumentSaga({ payload: { data } }) {
     console.log(data, "data saga Vendor document")
     try {
-        // const results = yield all(
-        //     data?.documents?.map((formData) => call(postVenderDocumentSer, formData))
-        // );
         const response = yield call(postVenderDocumentSer, data?.documents[data?.documents?.length - 1]);
         console.log(response, "results Vendor document");
         yield put({type: VENDOR_TAB_ACTIVE_TYPE, payload: { tab: 1, details: 'success', contact: 'success', document: 'success' }});

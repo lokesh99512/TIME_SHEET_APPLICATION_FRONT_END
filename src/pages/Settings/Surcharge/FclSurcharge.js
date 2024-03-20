@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap'
 import { edit_icon } from '../../../assets/images'
 import { fclSurchargeBreadcrumb } from '../../../common/data/procurement'
-import { getAllTableSurcharge, getAllTableSurchargeAlias } from '../../../store/Settings/actions'
+import { getAllTableSurcharge } from '../../../store/Settings/actions'
 import FilterOffCanvasComp from "./Modal/FilterOffCanvasComp"
 import { ChargeAliasCode, ChargeCategory, ChargeCode, ChargeDesc } from './SurchargeCol'
 import TableReact from "./TableReact"
@@ -14,6 +14,7 @@ import TopBreadcrumbs from './TopBreadcrumbs'
 export default function FclSurcharge() {
     const { settings_surcharges_table_data } = useSelector((state) => state?.settings);
     const [isRight, setIsRight] = useState(false);
+    const [currentPage, setCurrentPage] = useState(0);
     const inputArr = {
         status: '',
         surcharge_code: '',
@@ -38,9 +39,11 @@ export default function FclSurcharge() {
     }
 
     useEffect(() => {
-        dispatch(getAllTableSurcharge());
-        dispatch(getAllTableSurchargeAlias());
-    }, []);
+        if(currentPage !== '' && currentPage !== undefined){
+            let url = `?page=${currentPage}&size=10`;
+            dispatch(getAllTableSurcharge(url));
+        }
+    }, [dispatch,currentPage]);
 
     const columns = useMemo(() => [
         {
@@ -133,6 +136,9 @@ export default function FclSurcharge() {
                             customPageSize={10}
                             toggleRightCanvas={toggleRightCanvas}
                             component={'fclSurcharge'}
+                            setCurrentPage={setCurrentPage}
+                            totalPages={settings_surcharges_table_data?.totalPages || 0}
+                            totalEntries={settings_surcharges_table_data?.totalElements || 0}
                         />
 
                         {/* modal */}

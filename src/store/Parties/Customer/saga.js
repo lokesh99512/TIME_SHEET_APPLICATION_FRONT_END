@@ -5,11 +5,11 @@ import { GET_CUSTOMERS_ID, GET_CUSTOMER_BY_ID, GET_CUSTOMER_BY_ID_SUCCESS, GET_C
 import axios from "axios";
 import { Get_File_URL } from "../../../helpers/url_helper";
 
-function* fetchPartiesCustomerSaga() {
+function* fetchPartiesCustomerSaga({ payload}) {
     yield put({type: GET_CUSTOMER_LOADER, payload: true});
     try {
-        const response = yield call(getCustomerDataSer);
-        console.log(response, "reponse customer");
+        const response = yield call(getCustomerDataSer, payload);
+        
         if (response && response.content && response.content) {
             response?.content?.forEach(element => {
                 let imageData = element.logoPath;

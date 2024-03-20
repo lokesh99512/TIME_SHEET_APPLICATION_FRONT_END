@@ -12,6 +12,7 @@ import { GET_ROLE_TYPE } from "../../store/Global/actiontype";
 
 const Users = () => {
   const [resetModal, setResetModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
   const dispatch = useDispatch();
   const navidate = useNavigate()
 
@@ -42,7 +43,13 @@ const Users = () => {
   }
 
   useEffect(() => {
-    dispatch(getUsersData()); 
+    if(currentPage !== '' && currentPage !== undefined){
+      let url = `?page=${currentPage}&size=10`;
+      dispatch(getUsersData(url));  
+    }
+  }, [dispatch,currentPage]);
+
+  useEffect(() => {
     dispatch({ type: GET_ROLE_TYPE });   
   }, [dispatch]);
 
@@ -169,6 +176,9 @@ const Users = () => {
               customPageSize={10}
               component={"Users"}
               loader={users_loader || false}
+              setCurrentPage={setCurrentPage}
+              totalPages={settings_users_data?.totalPages || 0}
+              totalEntries={settings_users_data?.totalElements || 0}
             />
 
             {/* modal */}

@@ -21,8 +21,10 @@ export default function AddUserData() {
 
 
     useEffect(() => {
+        if(roleData?.length === 0 || roleData === undefined){
+            dispatch({ type: GET_ROLE_TYPE });
+        }
         dispatch(getUsersData());
-        // dispatch({ type: GET_ROLE_TYPE });
         dispatch(getAllTenantLocationData())
     }, []);
 

@@ -21,7 +21,8 @@ export const CompanyBasicDetailsAPI = data => {
     })
 }
 
-export const CompanyUsersDetails = () => get(url.COMPANY_USER_DETAILS)
+export const getUsersListSer = () => get(url.COMPANY_USER_DETAILS)
+export const getUsersPageSer = (data) => get(url.COMPANY_USER_DETAILS + data)
 export const CompanyUserAddDetails = data => {
     return post((url.COMPANY_USER_ADD_DETAILS), data, {
         headers: {
@@ -42,39 +43,8 @@ export const CompanyBusinessDetails = (data) => post(url.COMPANY_BUSINESS_DETAIL
 // GET ALL company settings
 export const CompanyAllDetails = (userId) => get(url.COMPANY_GET_ALL_DETAILS + userId);
 
-export const getPartiesAllTable = () => {
-    return get((url.GET_ALL_PARTIES_TABLE), {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-        }
-    })
-}
-
-export const getPartiesAllVendorTable = () => {
-    return get(url.GET_ALL_PARTIES_VENDOR_TABLE, {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-        }
-    })
-}
-
 // get all parties into surcharge table data
-export const getPartiesSurchargeTable = () => {
-    return get(url.GET_ALL_SETTINGS_SURCHARGE_FCL, {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-        }
-    })
-}
-
-// get all parties into surcharge table data only surcharge code
-export const getPartiesSurchargeTableAliasCode = () => {
-    return get(url.GET_ALL_SETTINGS_SURCHARGE_FCL_ALIAS_CODE, {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-        }
-    })
-}
+export const getMSurchargeListSer = (data) => get(url.GET_M_SURCHARGE_API + data);
 
 // POST ADD data in surcharge table
 export const getAddSurchargeData = data => {

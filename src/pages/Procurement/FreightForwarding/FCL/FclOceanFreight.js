@@ -24,9 +24,6 @@ export default function FclOceanFreight() {
         carrier_name: '',
         validity_from: '',
         validity_to: '',
-        // org_port: '',
-        // dest_port: '',
-        // cargo_type: '',
         status: 'ACTIVE',
         rate_type: '',
     }

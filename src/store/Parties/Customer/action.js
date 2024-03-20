@@ -1,7 +1,6 @@
 import { GET_CUSTOMER_BY_ID, GET_PARTIES_CUSTOMER_DETAILS_TYPE, UPLOAD_CUSTOMER_COMPANYDATA_TYPE, UPLOAD_CUSTOMER_CONTACT_TYPE, UPLOAD_CUSTOMER_DOCUMENT_TYPE } from "./actiontype";
 
 export const getAllPartiesCustomerData = (data) => {
-    console.log(data, "data getAllPartiesData");
     return {
         type: GET_PARTIES_CUSTOMER_DETAILS_TYPE,
         payload: data,

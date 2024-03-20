@@ -1,11 +1,40 @@
+import axios from "axios";
 import {
   all,
   call,
   fork,
   put,
-  takeEvery,
-  takeLatest,
+  takeLatest
 } from "redux-saga/effects";
+import {
+  showErrorToast,
+  showSuccessToast,
+} from "../../components/Common/CustomToast";
+import {
+  getFCLSurcharge
+} from "../../helpers/fakebackend_helper";
+import {
+  CompanyAllDetails,
+  CompanyBasicDetailsAPI,
+  CompanyBusinessDetails,
+  CompanyCityDetails,
+  CompanyCountryDetails,
+  CompanyPincodeDetails,
+  CompanyStateDetails,
+  CompanyTaxDetails,
+  CompanyUserAddDetails,
+  getAddSurchargeData,
+  getAllSurchargeCategory,
+  getMSurchargeListSer,
+  getUsersListSer,
+  getUsersPageSer
+} from "../../helpers/services/AuthService";
+import { getAllTenantLocation, getAllTenantLocationType, postTenantLocation, postTenantLocationType } from "../../helpers/services/GlobalService";
+import { Get_File_URL } from "../../helpers/url_helper";
+import {
+  getFclSurchargeDataFail,
+  getFclSurchargeDataSuccess
+} from "./actions";
 import {
   GET_ALL_COMPANY_SETTINGS,
   GET_ALL_COMPANY_SETTINGS_SUCCESS,
@@ -19,7 +48,6 @@ import {
   GET_BUSINESS_DATA_SUCCESS,
   GET_COMPANYDETAILS_BASIC_DATA,
   GET_COMPANYDETAILS_BASIC_DATA_SUCCESS,
-  GET_COMPANYDETAILS_DATA,
   GET_COMPANY_ADD_USERS_DATA,
   GET_COMPANY_ADD_USERS_DATA_SUCCESS,
   GET_COMPANY_CITY_DATA,
@@ -28,14 +56,9 @@ import {
   GET_COMPANY_COUNTRY_DATA_SUCCESS,
   GET_COMPANY_PINCODE_DATA,
   GET_COMPANY_PINCODE_DATA_SUCCESS,
-  GET_COMPANY_PIN_CODE_DATA_SUCCESS,
   GET_COMPANY_STATE_DATA,
   GET_COMPANY_STATE_DATA_SUCCESS,
   GET_FCL_SURCHARGE_TABLE_DATA,
-  GET_PARTIES_CUSTOMERS_DETAILS,
-  GET_PARTIES_CUSTOMERS_DETAILS_SUCCESS,
-  GET_PARTIES_SURCHARGE_ALIAS_TABLE,
-  GET_PARTIES_SURCHARGE_ALIAS_TABLE_SUCCESS,
   GET_PARTIES_SURCHARGE_TABLE,
   GET_PARTIES_SURCHARGE_TABLE_SUCCESS,
   GET_TAXES_DATA,
@@ -43,59 +66,27 @@ import {
   GET_USERS_LOADER_TYPE,
   GET_USERS_TABLE_DATA,
   GET_USERS_TABLE_DATA_SUCCESS,
-  POST_SETTINGS_SURCHARGE_DATA,
+  POST_M_SURCHARGE_DATA,
   POST_SETTINGS_SURCHARGE_DATA_SUCCESS,
   POST_TENANT_LOCATION,
   POST_TENANT_LOCATION_SUCCESS,
   POST_TENANT_LOCATION_TYPE,
-  POST_TENANT_LOCATION_TYPE_SUCCESS,
+  POST_TENANT_LOCATION_TYPE_SUCCESS
 } from "./actiontype";
-import {
-  getUsersDataSuccess,
-  getUsersDataFail,
-  getCompanyDetailsDataFail,
-  getCompanyDetailsDataSuccess,
-  getFclSurchargeDataSuccess,
-  getFclSurchargeDataFail,
-} from "./actions";
-import {
-  getCompanyDetails,
-  getFCLSurcharge,
-  getSettingsUsers,
-} from "../../helpers/fakebackend_helper";
-import { COMPANY_BASIC_DETAILS, Get_File_URL } from "../../helpers/url_helper";
-import {
-  CompanyAllDetails,
-  CompanyBasicDetailsAPI,
-  CompanyBusinessDetails,
-  CompanyCityDetails,
-  CompanyCountryDetails,
-  CompanyPinCodeBasicDetails,
-  CompanyPincodeDetails,
-  CompanyStateDetails,
-  CompanyTaxDetails,
-  CompanyUserAddDetails,
-  CompanyUsersDetails,
-  PartiesCustomerDetails,
-  getAddSurchargeData,
-  getAllSurchargeCategory,
-  getPartiesSurchargeTable,
-  getPartiesSurchargeTableAliasCode,
-} from "../../helpers/services/AuthService";
-import {
-  showErrorToast,
-  showSuccessToast,
-} from "../../components/Common/CustomToast";
-import { GetFileSer, postTenantLocation, getAllTenantLocationType, postTenantLocationType, getAllTenantLocation } from "../../helpers/services/GlobalService";
-import axios from "axios";
 
-function* getUsersData() {
+function* getUsersData({ payload }) {
   yield put({type: GET_USERS_LOADER_TYPE, payload: true});
   try {
-    const response = yield call(CompanyUsersDetails);
-    console.log(response, "saga getUsersData call in settings");
-    yield put({ type: GET_USERS_TABLE_DATA_SUCCESS, payload: response });
-    yield put({type: GET_USERS_LOADER_TYPE, payload: false});
+    if(payload){
+      const response = yield call(getUsersPageSer, payload);
+      yield put({ type: GET_USERS_TABLE_DATA_SUCCESS, payload: response });
+      yield put({type: GET_USERS_LOADER_TYPE, payload: false});
+    } else {
+      const response = yield call(getUsersListSer, payload);
+      yield put({ type: GET_USERS_TABLE_DATA_SUCCESS, payload: response });
+      yield put({type: GET_USERS_LOADER_TYPE, payload: false});
+
+    }
   } catch (error) {
     yield put({type: GET_USERS_LOADER_TYPE, payload: false});
     console.log(error, "saga user api error");
@@ -109,7 +100,7 @@ function* getCompanyAddUserData({ payload }) {
     const response = yield call(CompanyUserAddDetails, payload);
     showSuccessToast("Add User Successfully");
     yield put({ type: GET_COMPANY_ADD_USERS_DATA_SUCCESS, payload: response.data, });
-    const userList = yield call(CompanyUsersDetails);
+    const userList = yield call(getUsersListSer);
     yield put({ type: GET_USERS_TABLE_DATA_SUCCESS, payload: userList });
   } catch (error) {
     showErrorToast(error?.message);
@@ -246,9 +237,9 @@ function* getFclSurchargeData() {
 }
 
 // all parties surcharge table api
-function* getAllPartiesSurchargeTable() {
+function* getSurchargeListSaga({ payload }) {
   try {
-    const response = yield call(getPartiesSurchargeTable);
+    const response = yield call(getMSurchargeListSer, payload);
     console.log(response, "reponse into getAllPartiesCompanySettings");
     yield put({ type: GET_PARTIES_SURCHARGE_TABLE_SUCCESS, payload: response });
   } catch (error) {
@@ -256,30 +247,13 @@ function* getAllPartiesSurchargeTable() {
   }
 }
 
-// all parties surcharge table api
-function* getAllPartiesSurchargeAliasTable() {
-  try {
-    const response = yield call(getPartiesSurchargeTableAliasCode);
-    console.log(response, "reponse into getAllPartiesCompanySettings");
-    yield put({
-      type: GET_PARTIES_SURCHARGE_ALIAS_TABLE_SUCCESS,
-      payload: response,
-    });
-  } catch (error) {
-    console.log(error, "saga getAllCompanySettings api error");
-  }
-}
-
 // post add surcharge data
-
-function* getAddSurchargeDeatilsData({ payload }) {
+function* postMSurchargeData({ payload }) {
   try {
     console.log("payload getAddSurchargeData", payload);
     const response = yield call(getAddSurchargeData, payload);
     showSuccessToast("Add Surcharge Data successfully");
     yield put({ type: POST_SETTINGS_SURCHARGE_DATA_SUCCESS, payload: response, });
-    const response2 = yield call(getPartiesSurchargeTable);
-    yield put({ type: GET_PARTIES_SURCHARGE_TABLE_SUCCESS, payload: response2 });
   } catch (error) {
     showErrorToast(error?.message);
     console.log(error, "Surcharge Data saga");
@@ -354,12 +328,9 @@ export function* watchGetSettingsUsersData() {
   yield takeLatest(GET_BUSINESS_DATA, getCompanyBusinessDeatilsData);
   yield takeLatest(GET_ALL_COMPANY_SETTINGS, getAllCompanySettings);
   yield takeLatest(GET_FCL_SURCHARGE_TABLE_DATA, getFclSurchargeData);
-  yield takeLatest(GET_PARTIES_SURCHARGE_TABLE, getAllPartiesSurchargeTable);
-  yield takeLatest(
-    GET_PARTIES_SURCHARGE_ALIAS_TABLE,
-    getAllPartiesSurchargeAliasTable
-  );
-  yield takeLatest(POST_SETTINGS_SURCHARGE_DATA, getAddSurchargeDeatilsData);
+  yield takeLatest(GET_PARTIES_SURCHARGE_TABLE, getSurchargeListSaga);
+
+  yield takeLatest(POST_M_SURCHARGE_DATA, postMSurchargeData);
   yield takeLatest(GET_ALL_SURCHARGE_CATEGORY, getSurchargeCategory);
   yield takeLatest(GET_ALL_TENANT_LOCATION, getAllTenantLocations);
   yield takeLatest(POST_TENANT_LOCATION, saveTenantLocation);
