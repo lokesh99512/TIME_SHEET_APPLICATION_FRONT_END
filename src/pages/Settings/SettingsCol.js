@@ -18,7 +18,7 @@ export const Role = ({cellProps,viewPopupHandler, roleData}) => {
     return <span onClick={() => {viewPopupHandler(cellProps.row.original);}}>{
         (roleData?.length !== 0 && cellProps.value.length > 0) ? (
         <>
-            {cellProps.value.map((item,index) => index !== 0 ? ', ' + roleData.find(obj => obj.id === item)?.label?.toLowerCase() : roleData.find(obj => obj.id === item)?.label.toLowerCase())}
+            {cellProps?.value.map((item,index) => index !== 0 ? ', ' + roleData?.find(obj => obj.id === item)?.label?.toLowerCase() : roleData?.find(obj => obj.id === item)?.label.toLowerCase())}
         </>) : '-'}
     </span>;
 }

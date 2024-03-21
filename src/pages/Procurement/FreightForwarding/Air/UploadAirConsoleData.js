@@ -3,13 +3,12 @@ import Dropzone from 'react-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import Select from "react-select";
-import { Card, Col, Container, Form, Modal, Row } from 'reactstrap';
-import fileData from '../../../../assets/extra/FclUplaodFormat.xlsx';
-import inlandfileData from '../../../../assets/extra/Inlandcharge_Upload.xlsx';
+import { Card, Col, Container, Form, Modal, Progress, Row } from 'reactstrap';
+import consoleData from '../../../../assets/extra/AIR_CONSOLE_FORMAT.xlsx';
 import { optionRateType, optionVendorType } from '../../../../common/data/procurement';
 import { formatBytes, isExcelFile } from '../../../../components/Common/CommonLogic';
 import { addAirConsoleData, postconsoleCarrierDetails } from '../../../../store/Procurement/actions';
-import { BLANK_CARRIER_DATA } from '../../../../store/Procurement/actiontype';
+import { BLANK_CARRIER_DATA, CONSOLE_FRIGHT_FAILD_POPUP_TYPE } from '../../../../store/Procurement/actiontype';
 
 export default function UploadAirConsoleData() {
     const [openSaveModal, setOpenSaveModal] = useState(false);
@@ -17,6 +16,7 @@ export default function UploadAirConsoleData() {
     const navigate = useNavigate();
     const [fileError, setfileError] = useState('');
     const addAirConsole = useSelector((state) => state?.procurement?.addAirConsole);
+    const { consoleFaildData, consolePopup } = useSelector((state) => state?.procurement);
     const dispatch = useDispatch();
     const navigateState = useLocation();
     const [AllVendors, setAllVendors] = useState([]);
@@ -84,22 +84,22 @@ export default function UploadAirConsoleData() {
 
     const handleSaveCarrierDetails = () => {
 
-        const vendorInfo = {
-            id: addAirConsole?.carrierDetails?.vendor_name?.id || '',
-            version: addAirConsole?.carrierDetails?.vendor_name?.version || 0,
-        };
+        // const vendorInfo = {
+        //     id: addAirConsole?.carrierDetails?.vendor_name?.id || '',
+        //     version: addAirConsole?.carrierDetails?.vendor_name?.version || 0,
+        // };
 
-        const data = {
-            rateType: addAirConsole?.carrierDetails?.rate_type?.value || '',
-            validFrom: addAirConsole?.carrierDetails?.validity_from || '',
-            validTo: addAirConsole?.carrierDetails?.validity_to || '',
-            status: addAirConsole?.carrierDetails?.status || 'ACTIVE'
-        };
+        // const data = {
+        //     rateType: addAirConsole?.carrierDetails?.rate_type?.value || '',
+        //     validFrom: addAirConsole?.carrierDetails?.validity_from || '',
+        //     validTo: addAirConsole?.carrierDetails?.validity_to || '',
+        //     status: addAirConsole?.carrierDetails?.status || 'ACTIVE'
+        // };
 
-        const consoleCarrierDetails = {
-            ...data,
-            'tenantVendor': vendorInfo,
-        };
+        // const consoleCarrierDetails = {
+        //     ...data,
+        //     'tenantVendor': vendorInfo,
+        // };
 
         let xlxsfile = selectedFiles[0]
         const formData = new FormData();
@@ -107,12 +107,11 @@ export default function UploadAirConsoleData() {
 
 
         const newData = {
-            'consoleCarrierDetails': consoleCarrierDetails,
             'formData': formData,
         };
         console.log("going to save data air console data");
         console.log(newData);
-        // dispatch(postconsoleCarrierDetails({ newData }));
+         dispatch(postconsoleCarrierDetails({ newData }));
         // setselectedFiles([]);
 
     }
@@ -126,7 +125,7 @@ export default function UploadAirConsoleData() {
                             <Col lg="12">
                                 <div id="progrss-wizard" className="twitter-bs-wizard upload_freight_wrap">
 
-                                    <div className="text-center mb-4">
+                                    {/* <div className="text-center mb-4">
                                         <h5>Carrier Details</h5>
                                     </div>
                                     <form>
@@ -204,16 +203,16 @@ export default function UploadAirConsoleData() {
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
+                                    </form> */}
 
 
                                     <div>
 
                                         <div className='mb-3 d-flex justify-content-end'>
                                             {navigateState?.state?.id === "inland" ? (
-                                                <a href={inlandfileData} className="download_formate btn btn-primary" download="Inland Upload Format">Download Format</a>
+                                                <a href={consoleData} className="download_formate btn btn-primary" download="Sample_console_Rate">Download Format</a>
                                             ) : (
-                                                <a href={fileData} className="download_formate btn btn-primary" download="Fcl Uplaod Format">Download Format</a>
+                                                <a href={consoleData} className="download_formate btn btn-primary" download="Sample_console_Rate">Download Format</a>
                                             )}
                                         </div>
                                         <Form>
@@ -290,6 +289,42 @@ export default function UploadAirConsoleData() {
             </div>
 
             {/* modal */}
+            <Modal isOpen={consolePopup} className='data_failed_popup'>
+                <div className="modal-body pb-4">
+                <div className='modal_icon text-center'>
+                        <i className="bx bx-error"></i>
+                        {/* <h2 className='text-center'>{consoleFaildData?.data?.status}</h2> */}
+                        <h2 className='text-center'>File Was Not Uploaded.</h2>
+                    </div>
+                    <div id="bar" className="mt-4">
+                        <Progress color="success" striped animated value={Number(consoleFaildData?.data?.success || 0) * 100 / Number(consoleFaildData?.data?.totalUploaded || 0)} />
+                    </div>
+                    <div className='mt-4 d-flex justify-content-between align-items-center'>
+                        <p className='m-0'><b>Failed:</b> {consoleFaildData?.data?.failed || 0}</p>
+                        <p className='my-1'><b>Success:</b> {consoleFaildData?.data?.success || 0}</p>
+                        <p className='m-0'><b>Total Data Uploaded:</b> {consoleFaildData?.data?.totalUploaded || 0}</p>
+                    </div>
+                </div>
+                <div className="modal-footer justify-content-center">
+                    <button
+                        type="button"
+                        onClick={() => {
+                            dispatch({type: CONSOLE_FRIGHT_FAILD_POPUP_TYPE, payload: false})
+                        }}
+                        className="btn btn-secondary "
+                        data-dismiss="modal"
+                    >
+                        Close
+                    </button>
+                        
+                    <a href={consoleFaildData?.url} download={consoleFaildData?.filename} className='btn btn-primary'>Download</a>
+
+                    {/* {(consoleFaildData?.data?.success > 0 && consoleFaildData?.data?.totalUploaded !== consoleFaildData?.data?.failed) && (
+                        <span className='text-decoration-underline text-primary' onClick={() => { dispatch(getFclDestinationAction(fcl_charge_id?.id)); dispatch({type: UPDATE_FCL_ACTIVE_TAB, payload: {tab: 3}});dispatch({type: FCL_FREIGHT_FAILD_POPUP_TYPE, payload: false}); }}>Proceed with error</span>              
+                    )} */}
+                </div>
+            </Modal>
+            
             <Modal
                 isOpen={openSaveModal}
                 toggle={() => {

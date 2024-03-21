@@ -68,18 +68,27 @@ export default function AirMasterBill() {
     console.log(waybillData, "-->waybillData")
 
     const columns = useMemo(() => [
+        // {
+        //     Header: 'Charge ID',
+        //     accessor: 'id',
+        //     filterable: true,
+        //     disableFilters: true,
+        //     Cell: (cellProps) => {
+        //         return <ChargeId cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+        //     }
+        // },
         {
-            Header: 'Charge ID',
-            accessor: 'id',
+            Header: 'Agent',
+                  accessor: (row) => `${row.tenantVendor === null ? '' : row.tenantVendor.name}`,
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
-                return <ChargeId cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                return <CommonReplaceValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
         {
             Header: 'Carrier name',
-            accessor: (row) => `${row.tenantVendor === null ? '' : row.tenantVendor.name}`,
+            accessor: (row) => `${row.tenantCarrierVendor === null ? '' : row.tenantCarrierVendor.name}`,
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -106,15 +115,6 @@ export default function AirMasterBill() {
         },
         
         {
-            Header: 'Valid To',
-            accessor: 'validTo',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
             Header: 'Valid From',
             accessor: 'validFrom',
             filterable: true,
@@ -123,6 +123,15 @@ export default function AirMasterBill() {
                 return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },  
+        {
+            Header: 'Valid To',
+            accessor: 'validTo',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
         {
             Header: 'Action',
             Cell: (cellProps) => {

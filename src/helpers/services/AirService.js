@@ -9,8 +9,8 @@ export const postAirUploadService = (data) => post(url.Post_Air_destination_Data
         }
     })
 
-export const uploadAirRateData = ({formData, id}) => 
-postFormData(url.Upload_Air_rate_data_ + id, formData, {
+export const uploadAirRateData = ({formData}) => 
+postFormData(url.Upload_Air_rate_data_ , formData, {
     headers: {
         'Content-Type': 'multipart/form-data',
     }
@@ -30,8 +30,8 @@ export const postAirConsoleUploadService = (data) => post(url.Post_Air_destinati
         }
     })
 
-export const uploadConsoleAirRateData = ({formData, id}) => 
-postFormData(url.Upload_Air_rate_data_Console_ + id, formData, {
+export const uploadConsoleAirRateData = ({formData}) => 
+postFormData(url.Upload_Air_rate_data_Console_ , formData, {
     headers: {
         'Content-Type': 'multipart/form-data',
     }

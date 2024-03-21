@@ -3,13 +3,13 @@ import Dropzone from 'react-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Select from "react-select";
-import { Card, Col, Container, Form, Modal, Row } from 'reactstrap';
+import { Card, Col, Container, Form, Modal, Progress, Row } from 'reactstrap';
 import fileData from '../../../../assets/extra/FclUplaodFormat.xlsx';
-import inlandfileData from '../../../../assets/extra/Inlandcharge_Upload.xlsx';
+import mawpFileData from '../../../../assets/extra/MAWB_Upload_Format.xlsx';
 import { optionRateType, optionVendorType } from '../../../../common/data/procurement';
 import { formatBytes, isExcelFile } from '../../../../components/Common/CommonLogic';
 import { addAirwaybillData, postCarrierData } from '../../../../store/Procurement/actions';
-import { BLANK_CARRIER_DATA } from '../../../../store/Procurement/actiontype';
+import { BLANK_CARRIER_DATA, MAWB_FRIGHT_FAILD_POPUP_TYPE } from '../../../../store/Procurement/actiontype';
 
 export default function UploadAirwayBillData() {
     const [openSaveModal, setOpenSaveModal] = useState(false);
@@ -17,6 +17,8 @@ export default function UploadAirwayBillData() {
     const navigate = useNavigate();
     const [fileError, setfileError] = useState('');
     const addAirBill = useSelector((state) => state?.procurement?.addAirWaybill);
+    const { mawbFaildData, mawbPopup } = useSelector((state) => state?.procurement);
+
     const dispatch = useDispatch();
     const navigateState = useLocation();
     const [AllVendors, setAllVendors] = useState([]);
@@ -91,17 +93,16 @@ export default function UploadAirwayBillData() {
             version: addAirBill?.carrierDetails?.vendor_name?.version || 0,
         };
 
-        const data = {
-            rateType: addAirBill?.carrierDetails?.rate_type?.value || '',
-            validFrom: addAirBill?.carrierDetails?.validity_from || '',
-            validTo: addAirBill?.carrierDetails?.validity_to || '',
-            status: addAirBill?.carrierDetails?.status || 'ACTIVE'
-        };
+        // const data = {
+        //     rateType: addAirBill?.carrierDetails?.rate_type?.value || '',
+        //     validFrom: addAirBill?.carrierDetails?.validity_from || '',
+        //     validTo: addAirBill?.carrierDetails?.validity_to || '',
+        //     status: addAirBill?.carrierDetails?.status || 'ACTIVE'
+        // };
 
-        const carrierData = {
-            ...data,
-            'tenantVendor': vendorInfo,
-        };
+        // const carrierData = {
+        //     'tenantVendor': vendorInfo,
+        // };
 
         let xlxsfile = selectedFiles[0]
         const formData = new FormData();
@@ -109,12 +110,12 @@ export default function UploadAirwayBillData() {
 
 
         const newData = {
-            'carrierData': carrierData,
+            // 'carrierData': carrierData,
             'formData': formData,
         };
         console.log(newData);
-        // dispatch(postCarrierData({ newData }));
-        // setselectedFiles([]);
+         dispatch(postCarrierData({ newData }));
+       //  setselectedFiles([]);
 
     }
     return (
@@ -127,7 +128,7 @@ export default function UploadAirwayBillData() {
                             <Col lg="12">
                                 <div id="progrss-wizard" className="twitter-bs-wizard upload_freight_wrap">
 
-                                    <div className="text-center mb-4">
+                                    {/* <div className="text-center mb-4">
                                         <h5>Carrier Details</h5>
                                     </div>
                                     <form>
@@ -204,16 +205,16 @@ export default function UploadAirwayBillData() {
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
+                                    </form> */}
 
 
                                     <div>
 
                                         <div className='mb-3 d-flex justify-content-end'>
                                             {navigateState?.state?.id === "inland" ? (
-                                                <a href={inlandfileData} className="download_formate btn btn-primary" download="Inland Upload Format">Download Format</a>
+                                                <a href={mawpFileData} className="download_formate btn btn-primary" download="Inland Upload Format">Download Format</a>
                                             ) : (
-                                                <a href={fileData} className="download_formate btn btn-primary" download="Fcl Uplaod Format">Download Format</a>
+                                                <a href={mawpFileData} className="download_formate btn btn-primary" download="Sample_Master_Waybill_Rate">Download Format</a>
                                             )}
                                         </div>
                                         <Form>
@@ -290,6 +291,42 @@ export default function UploadAirwayBillData() {
             </div>
 
             {/* modal */}
+
+            <Modal isOpen={mawbPopup} className='data_failed_popup'>
+                <div className="modal-body pb-4">
+                <div className='modal_icon text-center'>
+                        <i className="bx bx-error"></i>
+                        {/* <h2 className='text-center'>{mawbFaildData?.data?.status}</h2> */}
+                        <h2 className='text-center'>File Was Not Uploaded.</h2>
+                    </div>
+                    <div id="bar" className="mt-4">
+                        <Progress color="success" striped animated value={Number(mawbFaildData?.data?.success || 0) * 100 / Number(mawbFaildData?.data?.totalUploaded || 0)} />
+                    </div>
+                    <div className='mt-4 d-flex justify-content-between align-items-center'>
+                        <p className='m-0'><b>Failed:</b> {mawbFaildData?.data?.failed || 0}</p>
+                        <p className='my-1'><b>Success:</b> {mawbFaildData?.data?.success || 0}</p>
+                        <p className='m-0'><b>Total Data Uploaded:</b> {mawbFaildData?.data?.totalUploaded || 0}</p>
+                    </div>
+                </div>
+                <div className="modal-footer justify-content-center">
+                    <button
+                        type="button"
+                        onClick={() => {
+                            dispatch({type: MAWB_FRIGHT_FAILD_POPUP_TYPE, payload: false})
+                        }}
+                        className="btn btn-secondary "
+                        data-dismiss="modal"
+                    >
+                        Close
+                    </button>
+                        
+                    <a href={mawbFaildData?.url} download={mawbFaildData?.filename} className='btn btn-primary'>Download</a>
+
+                    {/* {(mawbFaildData?.data?.success > 0 && mawbFaildData?.data?.totalUploaded !== mawbFaildData?.data?.failed) && (
+                        <span className='text-decoration-underline text-primary' onClick={() => { dispatch(getFclDestinationAction(fcl_charge_id?.id)); dispatch({type: UPDATE_FCL_ACTIVE_TAB, payload: {tab: 3}});dispatch({type: FCL_FREIGHT_FAILD_POPUP_TYPE, payload: false}); }}>Proceed with error</span>              
+                    )} */}
+                </div>
+            </Modal>
             <Modal
                 isOpen={openSaveModal}
                 toggle={() => {
