@@ -17,7 +17,7 @@ const AirPortLocal = () => {
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
 
-    const {airportLocalChargesData} =useSelector(state=>state.procurement)
+    const {airportLocalChargesData,airportLocalChargesLoder} =useSelector(state=>state.procurement)
 
     const inputArr = {
         surcharge_category: '',
@@ -187,7 +187,7 @@ const AirPortLocal = () => {
                         {/* React Table */}
                         <AirPortLocalTableReact
                             columns={columns}
-                            
+                            loader={airportLocalChargesLoder}
                             data={airportLocalChargesData || []}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}

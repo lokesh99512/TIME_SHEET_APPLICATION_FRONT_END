@@ -25,7 +25,7 @@ export default function AirMasterBill() {
         cargo_type: '',
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
-    const waybillData = useSelector((state) => state?.procurement?.waybillData);
+    const {waybillData,wayBillDataLoader} = useSelector((state) => state?.procurement);
     const waybillFreightData = useSelector((state) => state?.procurement?.airFreightData);
     const dispatch = useDispatch();
 
@@ -182,7 +182,7 @@ export default function AirMasterBill() {
                             customPageSize={10}
                             toggleRightCanvas={toggleRightCanvas}
                             component={'air-waybill'}
-                            loader={false}
+                            loader={wayBillDataLoader}
                             />
                         {/* ) : (
                             <p>Loading...</p>

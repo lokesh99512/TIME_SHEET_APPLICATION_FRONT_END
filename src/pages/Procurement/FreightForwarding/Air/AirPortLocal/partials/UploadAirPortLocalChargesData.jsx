@@ -204,10 +204,9 @@ export default function UploadAirPortLocalChargesData() {
                     }
                 })
             }
-            console.log(data);
+          //  console.log(data);
               dispatch(postAirPortLocalChargesData(data));
-             formik.resetForm();
-             navigate(-1)
+            // formik.resetForm();
         },
     });
 
@@ -549,6 +548,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                                     formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].cargoType`, e);
                                                                                                                                 }}
                                                                                                                                 options={cargoType_data || []}
+                                                                                                                                classNamePrefix="select2-selection form-select"
                                                                                                                             />
                                                                                                                         </div>
 
@@ -562,6 +562,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                                     formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].commodity`, e);
                                                                                                                                 }}
                                                                                                                                 options={optionCommodity || []}
+                                                                                                                                classNamePrefix="select2-selection form-select"
                                                                                                                             />
                                                                                                                         </div>
 

@@ -26,7 +26,7 @@ export default function AirConsoleComp() {
         cargo_type: '',
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
-    const consoleData = useSelector((state) => state?.procurement?.consoleData);
+    const {consoleData,consoleDataLoader} = useSelector((state) => state?.procurement);
     const dispatch = useDispatch();
 
     const viewPopupHandler = (data) => {
@@ -180,6 +180,7 @@ export default function AirConsoleComp() {
                           customPageSize={10}
                           toggleRightCanvas={toggleRightCanvas}
                           component={'console'}
+                          loader={consoleDataLoader}
                         />
 
                         {/* modal */}
