@@ -205,6 +205,10 @@ export const Post_Air_destination_Data_Console= "/api/v1/tenant-console-rp/"
 export const Upload_Air_rate_data_Console_= "/api/v1/tenant-console-rp/upload"
 export const GET_AIR_MWB_DATA_Console= "/api/v1/tenant-console-rp/"
 
+// Air port & local charges
+export const GET_AIR_PORT_LOCAL_CHARGES_ALL = "/api/v1/air-port-and-local-charges/"
+export const Upload_Air_Port_Local_Data= "/api/v1/air-port-and-local-charges/"
+
 // FCL Port & Local Charges
 export const GET_PORTLOCALCHARGES_ALL = "/api/v1/port-and-local-charges/"
 export const Upload_FCL_PL_Data= "/api/v1/port-and-local-charges/"

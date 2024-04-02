@@ -41,3 +41,7 @@ postFormData(url.Upload_Air_rate_data_Console_ , formData, {
 export const fetcAirConsoleTableData = () => get(url.GET_AIR_MWB_DATA_Console);
 
 export const fetcAirFreighConsoletData = (id) => get(url.GET_AIR_MWB_DATA_Console + id);
+
+//Air local Changes
+export const getAirPortLocalChargesTableData = () => get(url.GET_AIR_PORT_LOCAL_CHARGES_ALL);
+export const postAirPortLocalUploadSer = (dataObj) => postFormData(url.Upload_Air_Port_Local_Data, dataObj);

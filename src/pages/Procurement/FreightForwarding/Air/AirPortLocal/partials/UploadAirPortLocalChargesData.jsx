@@ -4,12 +4,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { Card, CardBody, Col, Container, Input, Row } from "reactstrap";
-import { optionCalculationType, optionMovementType } from "../../../../../../common/data/procurement";
+import { optionMovementType } from "../../../../../../common/data/procurement";
 import { isAnyValueEmpty } from "../../../../../../components/Common/CommonLogic";
 import { GET_CARGO_TYPE_DATA, GET_CONTAINER_DATA, GET_UOM_DATA } from "../../../../../../store/Global/actiontype";
-import ModalAddTerm from "../../../Modal/ModalAddTerm";
+import { postAirPortLocalChargesData } from "../../../../../../store/Procurement/actions";
+import { GET_AIR_LOCATION_TYPE } from "../../../../../../store/InstantRate/actionType";
 
 const terminalName = [];
+
+const optionCommodity = [
+    { label: "General", value: "general" },
+    { label: "SCR", value: "SCR" },
+    { label: "Hazardous", value: "hazardous" },
+    { label: "Perishable", value: "perishable" },
+]
 
 const initialValue = {
     chargeCategory: "",
@@ -25,11 +33,14 @@ const initialValue = {
             chargeCode: "",
             chargeBasis: "",
             currency: "",
-            minValue: "",
+            tax: "",
             mainrate: "",
             isSlab: false,
             addTerms: {},
             subBox: [{
+                cargoType: "",
+                commodity: "",
+                minValue: "",
                 fromSlab: "",
                 toSlab: "",
                 rate: "",
@@ -40,8 +51,9 @@ const initialValue = {
 
 export default function UploadAirPortLocalChargesData() {
     const {
-        surchargeCategory_data, oceanPort_data, vendor_data, surchargeCode_data, UOM_data, currency_data, cargoType_data, container_data,
+        surchargeCategory_data, vendor_data, surchargeCode_data, UOM_data, currency_data, cargoType_data, container_data,
     } = useSelector(state => state?.globalReducer);
+    const { airLocation } = useSelector((state) => state.instantRate);
     const [optionVendorName, setOptionVendorName] = useState([]);
     const [optionCarrierName, setOptionCarrierName] = useState([]);
     const [addTermsModal, setAddTermsModal] = useState({ isOpen: false, id: "" });
@@ -75,41 +87,30 @@ export default function UploadAirPortLocalChargesData() {
 
             let surchargeValuesArray = value?.mainBox?.map((item) => {
                 let newData = item?.subBox?.map((subItem, subIndex) => {
-                    const mapContainerData = (containerOption) => containerOption?.map((sub, index) => {
-                        return {
-                            ...(subItem?.cargoType && {
-                                "cargoType": {
-                                    "id": subItem?.cargoType?.id || '',
-                                    "version": subItem?.cargoType?.version || 0
-                                }
-                            }),
-                            ...(subItem?.containerType && {
-                                "oceanContainer": {
-                                    "id": sub?.id || '',
-                                    "version": sub?.version || 0
-                                }
-                            }),
-                            ...(item?.currency && {
-                                "currency": {
-                                    "id": item?.currency?.id || '',
-                                    "version": item?.currency?.version || 0
-                                }
-                            }),
-                            ...(subItem?.fromSlab && { "fromSlab": subItem?.fromSlab || 0 }),
-                            ...(subItem?.toSlab && { "toSlab": subItem?.toSlab || 0 }),
-                            ...(subItem?.rate && { "value": subItem?.rate || 0 })
-                        }
-                    })
+                    // const mapContainerData = (containerOption) => containerOption?.map((sub, index) => {
+                    //     return {
+                    //         ...(subItem?.cargoType && {
+                    //             "cargoType": {
+                    //                 "id": subItem?.cargoType?.id || '',
+                    //                 "version": subItem?.cargoType?.version || 0
+                    //             }
+                    //         }),
+                    //         ...(subItem?.fromSlab && { "fromSlab": subItem?.fromSlab || 0 }),
+                    //         ...(subItem?.toSlab && { "toSlab": subItem?.toSlab || 0 }),
+                    //         ...(subItem?.rate && { "rate": subItem?.rate || 0 }),
+                    //         ...(subItem?.minValue && { "minValue": subItem?.minValue || 0 }),
+                    //     }
+                    // })
 
-                    if (subItem?.containerType?.value === 'all') {
-                        if (subItem?.cargoType?.value === "GENERAL") {
-                            return mapContainerData(generalContainerOpt);
-                        } else if (subItem?.cargoType?.value === "REFRIGERATED") {
-                            return mapContainerData(refrigeContainerOpt);
-                        } else {
-                            return mapContainerData(container_data);
-                        }
-                    } else {
+                    // if (subItem?.containerType?.value === 'all') {
+                    //     if (subItem?.cargoType?.value === "GENERAL") {
+                    //         return mapContainerData(generalContainerOpt);
+                    //     } else if (subItem?.cargoType?.value === "REFRIGERATED") {
+                    //         return mapContainerData(refrigeContainerOpt);
+                    //     } else {
+                    //         return mapContainerData(container_data);
+                    //     }
+                    // } else {
                         let obj = {
                             ...(subItem?.cargoType && {
                                 "cargoType": {
@@ -117,24 +118,19 @@ export default function UploadAirPortLocalChargesData() {
                                     "version": subItem?.cargoType?.version || 0
                                 }
                             }),
-                            ...(subItem?.containerType && {
-                                "oceanContainer": {
-                                    "id": subItem?.containerType?.id || '',
-                                    "version": subItem?.containerType?.version || 0
-                                }
-                            }),
-                            ...(item?.currency && {
-                                "currency": {
-                                    "id": item?.currency?.id || '',
-                                    "version": item?.currency?.version || 0
+                            ...(subItem?.commodity && {
+                                "commodity": {
+                                    "id": 1 || '',
+                                    "version": item?.version || 0
                                 }
                             }),
                             ...(subItem?.fromSlab && { "fromSlab": subItem?.fromSlab || 0 }),
                             ...(subItem?.toSlab && { "toSlab": subItem?.toSlab || 0 }),
-                            ...(subItem?.rate && { "value": subItem?.rate || 0 })
+                            ...(subItem?.rate && { "rate": subItem?.rate || 0 }),
+                            ...(subItem?.minValue && { "minValue": subItem?.minValue || 0 }),
                         }
                         return obj
-                    }
+                  //  }
                 });
                 return newData
             });
@@ -151,20 +147,22 @@ export default function UploadAirPortLocalChargesData() {
                     }
                 }),
                 ...(value?.portName && {
-                    "oceanPort": {
+                    "airPort": {
                         "id": value?.portName?.id || 0,
                         "version": value?.portName?.version || 0
                     }
                 }),
+
                 ...(value?.terminalName && {
                     "oceanPortTerminal": {
                         "id": 1,
                         "version": 0
                     },
                 }),
+
                 ...(value?.movementType && { "movementType": value?.movementType?.value || "IMPORT" }),
                 ...(value?.carrierName && {
-                    "tenantCarrier": {
+                    "tenantCarrierVendor": {
                         "id": value?.carrierName?.id || '',
                         "version": value?.carrierName?.version || 0
                     },
@@ -177,7 +175,7 @@ export default function UploadAirPortLocalChargesData() {
                 }),
                 ...(value?.validityFrom && { "validFrom": value?.validityFrom || 0 }),
                 ...(value?.validityTo && { "validTo": value?.validityTo || 0 }),
-                "tenantVendorFCLSurchargeDetails": value?.mainBox?.map((item, mainindex) => {
+                "vendorAirportChargeDetails": value?.mainBox?.map((item, mainindex) => {
                     return {
                         ...(item?.chargeCode && {
                             "surchargeCode": {
@@ -185,53 +183,39 @@ export default function UploadAirPortLocalChargesData() {
                                 "version": item?.chargeCode?.version || 0
                             }
                         }),
+                        ...(item?.currency && {
+                            "currency": {
+                                "id": item?.currency?.id || '',
+                                "version": item?.currency?.version || 0
+                            }
+                        }),
+                        ...(item?.tax && { "tax": item?.tax || 0 }),
                         ...(item?.chargeBasis && {
                             "unitOfMeasurement": {
                                 "id": item?.chargeBasis?.id || '',
                                 "version": item?.chargeBasis?.version || 0
                             }
                         }),
-                        ...(item?.addTerms?.paymentTerm && { "paymentTerm": item?.addTerms?.paymentTerm || "PREPAID" }),
-                        ...(item?.addTerms?.isStandard && { "standard": item?.addTerms?.isStandard === 'incidental' ? false : true }),
-                        ...(item?.calculationType && { "calculationType": item?.calculationType || "FLAT" }),
-                        ...(item?.minValue && { "minimumValue": item?.minValue || 0 }),
-                        ...(item?.tax && { "applicableTax": item?.tax || 0 }),
+                        ...(item?.tax && { "tax": item?.tax || 0 }),
 
-                        "tenantVendorFCLSurchargeValues": spreadSurArray?.[mainindex],
+                        "vendorAirportChargeValues": spreadSurArray?.[mainindex],
 
-                        ...(item?.addTerms?.incoTerm?.length !== 0 && {
-                            "tenantVendorFCLSurchargeDetailIncoterms": item?.addTerms?.incoTerm?.map((incoterm, index) => {
-                                return {
-                                    "incoterm": {
-                                        "id": incoterm?.value,
-                                        "version": incoterm?.version
-                                    }
-                                }
-                            })
-                        }),
-                        ...(item?.addTerms?.commodity?.length !== 0 && {
-                            "tenantVendorFCLSurchargeDetailCommodities": item?.addTerms?.commodity?.map((commodity, index) => {
-                                return {
-                                    "commodity": {
-                                        "id": commodity?.id || (index + 1),
-                                        "version": commodity?.version || 0
-                                    }
-                                }
-                            })
-                        })
+                     
                     }
                 })
             }
-
-            //   dispatch(postPortLocalChargesData(data));
-            //   formik.resetForm();
+            console.log(data);
+              dispatch(postAirPortLocalChargesData(data));
+             formik.resetForm();
+             navigate(-1)
         },
     });
 
     useEffect(() => {
         dispatch({ type: GET_CARGO_TYPE_DATA });
         dispatch({ type: GET_CONTAINER_DATA });
-        dispatch({type: GET_UOM_DATA});
+        dispatch({ type: GET_UOM_DATA });
+        dispatch({ type: GET_AIR_LOCATION_TYPE });
     }, [dispatch])
 
     return (
@@ -277,7 +261,7 @@ export default function UploadAirPortLocalChargesData() {
                                                     onChange={(e) => {
                                                         formik.setFieldValue(`portName`, e);
                                                     }}
-                                                    options={oceanPort_data}
+                                                    options={airLocation}
                                                     placeholder={"Select Port Name"}
                                                     classNamePrefix="select2-selection form-select"
                                                 />
@@ -289,6 +273,7 @@ export default function UploadAirPortLocalChargesData() {
                                                 <Select
                                                     name="terminalName"
                                                     value={terminalName ? terminalName.find((option) => option.value === formik.values.terminalName) : ""}
+                                                    isDisabled={true}
                                                     onChange={(e) => {
                                                         formik.setFieldValue(`terminalName`, e.value);
                                                     }}
@@ -386,7 +371,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                             <div className="row" key={index}>
                                                                                 {/* Charge Code */}
                                                                                 <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
-                                                                                    <label className="form-label"> Surcharge Code<span className='required_star'>*</span></label>
+                                                                                    <label className="form-label"> Charge Code<span className='required_star'>*</span></label>
                                                                                     <Select
                                                                                         name={`mainBox[${index}].chargeCode`}
                                                                                         value={formik.values.mainBox[index].chargeCode || ""}
@@ -412,7 +397,7 @@ export default function UploadAirPortLocalChargesData() {
 
                                                                                 {/* Charge Basis */}
                                                                                 <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
-                                                                                    <label className="form-label"> Surcharge Basis<span className='required_star'>*</span></label>
+                                                                                    <label className="form-label"> Charge Basis<span className='required_star'>*</span></label>
                                                                                     <Select
                                                                                         name={`mainBox[${index}].chargeBasis`}
                                                                                         value={formik.values.mainBox[index].chargeBasis || ""}
@@ -439,7 +424,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                 </div>
 
                                                                                 {/* Min Value */}
-                                                                                <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
+                                                                                {/* <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
                                                                                     <label className="form-label"> Min Value </label>
                                                                                     <Input
                                                                                         type="text"
@@ -448,10 +433,21 @@ export default function UploadAirPortLocalChargesData() {
                                                                                         value={formik.values.mainBox[index].minValue}
                                                                                         onChange={formik.handleChange}
                                                                                     />
+                                                                                </div> */}
+
+                                                                                <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
+                                                                                    <label className="form-label"> Tax(Optional) </label>
+                                                                                    <Input
+                                                                                        type="text"
+                                                                                        name={`mainBox[${index}].tax`}
+                                                                                        placeholder="Enter tax"
+                                                                                        value={formik.values.mainBox[index].tax}
+                                                                                        onChange={formik.handleChange}
+                                                                                    />
                                                                                 </div>
 
                                                                                 {/* Rate Value */}
-                                                                                <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
+                                                                                {/* <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
                                                                                     <label className="form-label"> Rate<span className='required_star'>*</span></label>
                                                                                     <Input
                                                                                         type="text"
@@ -460,12 +456,12 @@ export default function UploadAirPortLocalChargesData() {
                                                                                         onChange={formik.handleChange}
                                                                                         disabled={formik.values.mainBox[index].isSlab}
                                                                                     />
-                                                                                </div>
+                                                                                </div> */}
 
                                                                                 {/* checkbox */}
-                                                                                <div className="col-lg-6 col-md-4 col-sm-6 col-12 d-flex align-items-center justify-content-between">
+                                                                                <div className="col-lg-2 col-md-4 col-sm-6 col-12 d-flex align-items-center justify-content-between">
                                                                                     <div>
-                                                                                        <div className="form-check">
+                                                                                        <div className="form-check mt-3">
                                                                                             <input className="form-check-input" type="checkbox" id="add_slab"
                                                                                                 name={`mainBox[${index}].isSlab`}
                                                                                                 onChange={() => {
@@ -477,7 +473,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                 Add Slab (Optional)
                                                                                             </label>
                                                                                         </div>
-                                                                                        <div className="form-check">
+                                                                                        {/* <div className="form-check">
                                                                                             <input className="form-check-input" type="checkbox" id="add_rules"
                                                                                                 onChange={(e) => {
                                                                                                     if (e.target.checked) {
@@ -515,7 +511,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                             <label className="form-check-label" htmlFor="add_slab">
                                                                                                 Add Commodity (Optional)
                                                                                             </label>
-                                                                                        </div>
+                                                                                        </div> */}
                                                                                     </div>
                                                                                     <div>
                                                                                         {formik.values.mainBox.length >
@@ -532,7 +528,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                             </div>
 
                                                                             {/* SUB Field Array started------------------------------------------------- */}
-                                                                            {formik.values.mainBox[index].isSlab && (
+                                                                            {(
                                                                                 <FieldArray name={`mainBox[${index}].subBox`} >
                                                                                     {(arrayHelpersTwo, i) => {
                                                                                         return (
@@ -541,36 +537,75 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                     {item.subBox.length > 0 && item.subBox.map((subItem, subIndex) => {
                                                                                                         return (
                                                                                                             <React.Fragment key={subIndex}>
-                                                                                                                {formik.values.mainBox[index].isSlab && (
+                                                                                                                {(
                                                                                                                     <div className="row mb-3">
-                                                                                                                        {/* From Slab */}
+                                                                                                                        {/* cargo type */}
                                                                                                                         <div className="col-md-2 mb-2">
-                                                                                                                            <label className="form-label"> From Slab<span className='required_star'>*</span></label>
+                                                                                                                            <label className="form-label"> Cargo Type<span className='required_star'>*</span></label>
+                                                                                                                            <Select
+                                                                                                                                name={`mainBox[${index}].subBox[${subIndex}].cargoType`}
+                                                                                                                                value={formik.values.mainBox[index].subBox[subIndex].cargoType || ''}
+                                                                                                                                onChange={(e) => {
+                                                                                                                                    formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].cargoType`, e);
+                                                                                                                                }}
+                                                                                                                                options={cargoType_data || []}
+                                                                                                                            />
+                                                                                                                        </div>
+
+                                                                                                                        {/* Commodity */}
+                                                                                                                        <div className="col-md-2 mb-2">
+                                                                                                                            <label className="form-label"> Commodity<span className='required_star'>*</span></label>
+                                                                                                                            <Select
+                                                                                                                                name={`mainBox[${index}].subBox[${subIndex}].commodity`}
+                                                                                                                                value={formik.values.mainBox[index].subBox[subIndex].commodity || ''}
+                                                                                                                                onChange={(e) => {
+                                                                                                                                    formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].commodity`, e);
+                                                                                                                                }}
+                                                                                                                                options={optionCommodity || []}
+                                                                                                                            />
+                                                                                                                        </div>
+
+                                                                                                                        {/* min value */}
+                                                                                                                        <div className="col-md-2 mb-2">
+                                                                                                                            <label className="form-label"> Min Value<span className='required_star'>*</span></label>
                                                                                                                             <Input
                                                                                                                                 type="text"
-                                                                                                                                name={`mainBox[${index}].subBox[${subIndex}].fromSlab`}
-                                                                                                                                value={formik.values.mainBox[index].subBox[subIndex].fromSlab || ''}
+                                                                                                                                name={`mainBox[${index}].subBox[${subIndex}].minValue`}
+                                                                                                                                value={formik.values.mainBox[index].subBox[subIndex].minValue || ''}
                                                                                                                                 onChange={
                                                                                                                                     formik.handleChange
                                                                                                                                 }
                                                                                                                             />
                                                                                                                         </div>
 
-                                                                                                                        {/* To Slab */}
-                                                                                                                        <div className="col-md-2 mb-2">
-                                                                                                                            <label className="form-label"> To Slab<span className='required_star'>*</span></label>
-                                                                                                                            <Input
-                                                                                                                                type="text"
-                                                                                                                                name={`mainBox[${index}].subBox[${subIndex}].toSlab`}
-                                                                                                                                value={formik.values.mainBox[index].subBox[subIndex].toSlab || ''}
-                                                                                                                                onChange={
-                                                                                                                                    formik.handleChange
-                                                                                                                                }
-                                                                                                                            />
-                                                                                                                        </div>
+                                                                                                                        {formik.values.mainBox[index].isSlab && (
+                                                                                                                            <div className="col-md-2 mb-2">
+                                                                                                                                <label className="form-label">From Slab <span className='required_star'>*</span></label>
+                                                                                                                                <Input
+                                                                                                                                    type="number"
+                                                                                                                                    name={`mainBox[${index}].subBox[${subIndex}].fromSlab`}
+                                                                                                                                    value={formik.values.mainBox[index].subBox[subIndex].fromSlab || ''}
+                                                                                                                                    onChange={
+                                                                                                                                        formik.handleChange
+                                                                                                                                    }
+                                                                                                                                />
+                                                                                                                            </div>
+                                                                                                                        )}
+                                                                                                                        {formik.values.mainBox[index].isSlab && (
+                                                                                                                            <div className="col-md-2 mb-2">
+                                                                                                                                <label className="form-label"> To Slab<span className='required_star'>*</span></label>
+                                                                                                                                <Input
+                                                                                                                                    type="number"
+                                                                                                                                    name={`mainBox[${index}].subBox[${subIndex}].toSlab`}
+                                                                                                                                    value={formik.values.mainBox[index].subBox[subIndex].toSlab || ''}
+                                                                                                                                    onChange={
+                                                                                                                                        formik.handleChange
+                                                                                                                                    }
+                                                                                                                                />
+                                                                                                                            </div>
+                                                                                                                        )}
 
-                                                                                                                        {/* Rate */}
-                                                                                                                        <div className="col-md-2 mb-2">
+                                                                                                                        <div className={"col-md-" + (formik.values.mainBox[index].isSlab && formik.values.mainBox[index].subBox.length > 1 ? "1" : "2") + " mb-2 pr-0"}>
                                                                                                                             <label className="form-label"> Rate<span className='required_star'>*</span></label>
                                                                                                                             <Input
                                                                                                                                 type="text"
@@ -583,7 +618,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                         </div>
 
                                                                                                                         {/* Add remove  */}
-                                                                                                                        <div className="col-md-3 mt-2 d-flex justify-content-end align-items-center">
+                                                                                                                        <div className="col-md-1 p-0 mt-2 d-flex justify-content-end align-items-center">
                                                                                                                             <div>
                                                                                                                                 {formik.values.mainBox[index].subBox.length > 1 && (
                                                                                                                                     <button
@@ -641,14 +676,17 @@ export default function UploadAirPortLocalChargesData() {
                                                                             chargeBasis: "",
                                                                             slabBasis: "",
                                                                             currency: "",
-                                                                            minValue: "",
                                                                             mainrate: "",
+                                                                            tax: "",
                                                                             isSlab: false,
                                                                             addTerms: false,
                                                                             subBox: [{
                                                                                 fromSlab: "",
                                                                                 toSlab: "",
                                                                                 rate: "",
+                                                                                minValue: "",
+                                                                                cargoType: "",
+                                                                                commodity: "",
                                                                             }],
                                                                         });
                                                                     }}

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useReducer, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap'
 
@@ -8,12 +8,17 @@ import TopBreadcrumbs from '../../../../Settings/Surcharge/TopBreadcrumbs'
 import { CommonValue } from '../../partials/OceanCol'
 import AirPortLocalTableReact from './partials/AirPortLocalTableReact'
 import FilterAirPortCanvasComp from './partials/FilterAirPortCanvasComp'
+import { getAIrPortLocalChargesData } from '../../../../../store/Procurement/actions'
+import { useSelector } from 'react-redux'
 
 
 const AirPortLocal = () => {
     const [isRight, setIsRight] = useState(false);
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
+
+    const {airportLocalChargesData} =useSelector(state=>state.procurement)
+
     const inputArr = {
         surcharge_category: '',
         port_name: '',
@@ -60,14 +65,14 @@ const AirPortLocal = () => {
         // dispatch(getPortLocalChargesData());
     }
 
-    // useEffect(() => {
-    //     dispatch(getPortLocalChargesData());
-    // }, [dispatch]);
+    useEffect(() => {
+        dispatch(getAIrPortLocalChargesData());
+    }, [dispatch]);
 
     const columns = useMemo(() => [
         {
             Header: 'Surcharge ID',
-            accessor: 'surcharge_id',
+            accessor: 'id',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -76,7 +81,7 @@ const AirPortLocal = () => {
         },
         {
             Header: 'Surcharge Category',
-            accessor: 'surcharge_category',
+            accessor: (row) => `${row.surchargeCategory === null ? '' : row.surchargeCategory.name}`,
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -85,7 +90,7 @@ const AirPortLocal = () => {
         },
         {
             Header: 'Port Name',
-            accessor: 'port_name',
+            accessor: (row) => `${row.airPort === null ? '' : row.airPort.name}`,
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -103,7 +108,7 @@ const AirPortLocal = () => {
         },
         {
             Header: 'Movement Type',
-            accessor: 'movement_type',
+            accessor: 'movementType',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -112,7 +117,7 @@ const AirPortLocal = () => {
         },
         {
             Header: 'Carrier Name',
-            accessor: 'carrier_name',
+            accessor: (row) => `${row.tenantCarrierVendor === null ? '' : row.tenantCarrierVendor.name}`,
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -121,7 +126,7 @@ const AirPortLocal = () => {
         },
         {
             Header: 'Vendor Name',
-            accessor: 'vendor_name',
+            accessor: (row) => `${row.tenantVendor === null ? '' : row.tenantVendor.name}`,
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -130,7 +135,7 @@ const AirPortLocal = () => {
         },
         {
             Header: 'Valid Till',
-            accessor: 'valid_till',
+            accessor: 'validFrom',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -182,7 +187,8 @@ const AirPortLocal = () => {
                         {/* React Table */}
                         <AirPortLocalTableReact
                             columns={columns}
-                            data={portLocalData}
+                            
+                            data={airportLocalChargesData || []}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}

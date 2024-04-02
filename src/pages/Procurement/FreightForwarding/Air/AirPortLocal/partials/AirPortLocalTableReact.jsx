@@ -44,7 +44,7 @@ function GlobalFilter({
     );
 }
 
-const AirPortLocalTableReact = ({ columns, data, isGlobalFilter, customPageSize, toggleRightCanvas, component }) => {
+const AirPortLocalTableReact = ({ columns, data, isGlobalFilter,loader, customPageSize, toggleRightCanvas, component }) => {
     const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow, canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize, state, preGlobalFilteredRows, setGlobalFilter, state: { pageIndex, pageSize }, } = useTable({
         columns,
         data,
