@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
-import { Card, CardBody, Col, Container, Input, Row } from "reactstrap";
+import { Card, CardBody, Col, Container, FormFeedback, Input, Row } from "reactstrap";
 import { optionMovementType } from "../../../../../../common/data/procurement";
 import { isAnyValueEmpty } from "../../../../../../components/Common/CommonLogic";
 import { GET_CARGO_TYPE_DATA, GET_CONTAINER_DATA, GET_UOM_DATA } from "../../../../../../store/Global/actiontype";
 import { postAirPortLocalChargesData } from "../../../../../../store/Procurement/actions";
 import { GET_AIR_LOCATION_TYPE } from "../../../../../../store/InstantRate/actionType";
+import * as Yup from "yup";
 
 const terminalName = [];
 
@@ -19,35 +20,7 @@ const optionCommodity = [
     { label: "Perishable", value: "perishable" },
 ]
 
-const initialValue = {
-    chargeCategory: "",
-    portName: "",
-    terminalName: "",
-    movementType: "",
-    carrierName: "",
-    vendorName: "",
-    validityFrom: "",
-    validityTo: "",
-    mainBox: [
-        {
-            chargeCode: "",
-            chargeBasis: "",
-            currency: "",
-            tax: "",
-            mainrate: "",
-            isSlab: false,
-            addTerms: {},
-            subBox: [{
-                cargoType: "",
-                commodity: "",
-                minValue: "",
-                fromSlab: "",
-                toSlab: "",
-                rate: "",
-            }],
-        },
-    ],
-};
+
 
 export default function UploadAirPortLocalChargesData() {
     const {
@@ -81,36 +54,82 @@ export default function UploadAirPortLocalChargesData() {
     };
 
     const formik = useFormik({
-        initialValues: initialValue,
+        initialValues: {
+            chargeCategory: "",
+            portName: "",
+            terminalName: "",
+            movementType: "",
+            carrierName: "",
+            vendorName: "",
+            validityFrom: "",
+            validityTo: "",
+            mainBox: [
+                {
+                    chargeCode: "",
+                    chargeBasis: "",
+                    currency: "",
+                    tax: "",
+                    mainrate: "",
+                    isSlab: false,
+                    addTerms: {},
+                    subBox: [{
+                        cargoType: "",
+                        commodity: "",
+                        minValue: "",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "",
+                    }],
+                },
+            ],
+        },
+        validationSchema: Yup.object({
+            mainBox: Yup.array().of(
+                Yup.object({
+                    chargeCode: Yup.string().required("Please select charge code"),
+                    chargeBasis: Yup.string().required('Please select charge basis'),
+                    currency: Yup.string().required("Please select currency"),
+                    subBox: Yup.array().of(
+                        Yup.object({
+                            cargoType: Yup.string().required("Please select cargo type"),
+                            rate: Yup.string().required("Please enter rate")
+                        })
+                    )
+                })
+            )
+        }),
+
         onSubmit: (value) => {
             // console.log(value, "main value ");
 
             let surchargeValuesArray = value?.mainBox?.map((item) => {
                 let newData = item?.subBox?.map((subItem, subIndex) => {
-                    // const mapContainerData = (containerOption) => containerOption?.map((sub, index) => {
-                    //     return {
-                    //         ...(subItem?.cargoType && {
-                    //             "cargoType": {
-                    //                 "id": subItem?.cargoType?.id || '',
-                    //                 "version": subItem?.cargoType?.version || 0
-                    //             }
-                    //         }),
-                    //         ...(subItem?.fromSlab && { "fromSlab": subItem?.fromSlab || 0 }),
-                    //         ...(subItem?.toSlab && { "toSlab": subItem?.toSlab || 0 }),
-                    //         ...(subItem?.rate && { "rate": subItem?.rate || 0 }),
-                    //         ...(subItem?.minValue && { "minValue": subItem?.minValue || 0 }),
-                    //     }
-                    // })
+                    const mapContainerData = cargoType_data?.map((sub, index) => {
+                        return {
+                            ...(subItem?.cargoType && {
+                                "cargoType": {
+                                    "id": sub?.id || '',
+                                    "version": sub?.version || 0
+                                }
+                            }),
+                            ...(subItem?.commodity && {
+                                "commodity": {
+                                    "id": 1 || '',
+                                    "version": item?.version || 0
+                                }
+                            }),
+                            ...(subItem?.fromSlab && { "fromSlab": subItem?.fromSlab || 0 }),
+                            ...(subItem?.toSlab && { "toSlab": subItem?.toSlab || 0 }),
+                            ...(subItem?.rate && { "rate": subItem?.rate || 0 }),
+                            ...(subItem?.minValue && { "minValue": subItem?.minValue || 0 }),
+                        }
+                    })
 
-                    // if (subItem?.containerType?.value === 'all') {
-                    //     if (subItem?.cargoType?.value === "GENERAL") {
-                    //         return mapContainerData(generalContainerOpt);
-                    //     } else if (subItem?.cargoType?.value === "REFRIGERATED") {
-                    //         return mapContainerData(refrigeContainerOpt);
-                    //     } else {
-                    //         return mapContainerData(container_data);
-                    //     }
-                    // } else {
+
+                    if (subItem?.cargoType?.value === "all") {
+                        console.log(mapContainerData);
+                        return mapContainerData;
+                    } else {
                         let obj = {
                             ...(subItem?.cargoType && {
                                 "cargoType": {
@@ -130,7 +149,7 @@ export default function UploadAirPortLocalChargesData() {
                             ...(subItem?.minValue && { "minValue": subItem?.minValue || 0 }),
                         }
                         return obj
-                  //  }
+                    }
                 });
                 return newData
             });
@@ -199,14 +218,11 @@ export default function UploadAirPortLocalChargesData() {
                         ...(item?.tax && { "tax": item?.tax || 0 }),
 
                         "vendorAirportChargeValues": spreadSurArray?.[mainindex],
-
-                     
                     }
                 })
             }
-          //  console.log(data);
-              dispatch(postAirPortLocalChargesData(data));
-            // formik.resetForm();
+            dispatch(postAirPortLocalChargesData(data));
+            formik.resetForm();
         },
     });
 
@@ -391,7 +407,24 @@ export default function UploadAirPortLocalChargesData() {
                                                                                             { label: "Add New", value: "Add New" }
                                                                                         ]}
                                                                                         classNamePrefix="select2-selection form-select"
+                                                                                        onBlur={formik.handleBlur}
+                                                                                        invalid={
+                                                                                            formik.touched.mainBox &&
+                                                                                                formik.touched.mainBox[index] &&
+                                                                                                formik.errors.mainBox &&
+                                                                                                formik.errors.mainBox[index] &&
+                                                                                                formik.errors.mainBox[index].chargeCode
+                                                                                                ? true
+                                                                                                : false
+                                                                                        }
                                                                                     />
+                                                                                    {formik.touched.mainBox &&
+                                                                                        formik.touched.mainBox[index] &&
+                                                                                        formik.errors.mainBox &&
+                                                                                        formik.errors.mainBox[index] &&
+                                                                                        formik.errors.mainBox[index].chargeCode ? (
+                                                                                        <FormFeedback>{formik.errors.mainBox[index].chargeCode}</FormFeedback>
+                                                                                    ) : null}
                                                                                 </div>
 
                                                                                 {/* Charge Basis */}
@@ -405,7 +438,24 @@ export default function UploadAirPortLocalChargesData() {
                                                                                         }}
                                                                                         options={UOM_data}
                                                                                         classNamePrefix="select2-selection form-select"
+                                                                                        onBlur={formik.handleBlur}
+                                                                                        invalid={
+                                                                                            formik.touched.mainBox &&
+                                                                                                formik.touched.mainBox[index] &&
+                                                                                                formik.errors.mainBox &&
+                                                                                                formik.errors.mainBox[index] &&
+                                                                                                formik.errors.mainBox[index].chargeBasis
+                                                                                                ? true
+                                                                                                : false
+                                                                                        }
                                                                                     />
+                                                                                    {formik.touched.mainBox &&
+                                                                                        formik.touched.mainBox[index] &&
+                                                                                        formik.errors.mainBox &&
+                                                                                        formik.errors.mainBox[index] &&
+                                                                                        formik.errors.mainBox[index].chargeBasis ? (
+                                                                                        <FormFeedback>{formik.errors.mainBox[index].chargeBasis}</FormFeedback>
+                                                                                    ) : null}
                                                                                 </div>
 
                                                                                 {/* Currency */}
@@ -419,8 +469,26 @@ export default function UploadAirPortLocalChargesData() {
                                                                                         }}
                                                                                         options={currency_data}
                                                                                         classNamePrefix="select2-selection form-select"
+                                                                                        onBlur={formik.handleBlur}
+                                                                                        invalid={
+                                                                                            formik.touched.mainBox &&
+                                                                                                formik.touched.mainBox[index] &&
+                                                                                                formik.errors.mainBox &&
+                                                                                                formik.errors.mainBox[index] &&
+                                                                                                formik.errors.mainBox[index].currency
+                                                                                                ? true
+                                                                                                : false
+                                                                                        }
                                                                                     />
+                                                                                    {formik.touched.mainBox &&
+                                                                                        formik.touched.mainBox[index] &&
+                                                                                        formik.errors.mainBox &&
+                                                                                        formik.errors.mainBox[index] &&
+                                                                                        formik.errors.mainBox[index].currency ? (
+                                                                                        <FormFeedback>{formik.errors.mainBox[index].currency}</FormFeedback>
+                                                                                    ) : null}
                                                                                 </div>
+
 
                                                                                 {/* Min Value */}
                                                                                 {/* <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
@@ -547,14 +615,38 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                                 onChange={(e) => {
                                                                                                                                     formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].cargoType`, e);
                                                                                                                                 }}
-                                                                                                                                options={cargoType_data || []}
+                                                                                                                                options={[
+                                                                                                                                    ...cargoType_data || [],
+                                                                                                                                    { value: 'all', label: 'ALL' }
+                                                                                                                                ]}
                                                                                                                                 classNamePrefix="select2-selection form-select"
+                                                                                                                                onBlur={formik.handleBlur}
+                                                                                                                                invalid={
+                                                                                                                                    formik.touched.mainBox &&
+                                                                                                                                        formik.touched.mainBox[index] &&
+                                                                                                                                        formik.errors.mainBox &&
+                                                                                                                                        formik.errors.mainBox[index] &&
+                                                                                                                                        formik.errors.mainBox[index].subBox &&
+                                                                                                                                        formik.errors.mainBox[index].subBox[subIndex] &&
+                                                                                                                                        formik.errors.mainBox[index].subBox[subIndex].cargoType
+                                                                                                                                        ? true
+                                                                                                                                        : false
+                                                                                                                                }
                                                                                                                             />
+                                                                                                                            {formik.touched.mainBox &&
+                                                                                                                                formik.touched.mainBox[index] &&
+                                                                                                                                formik.errors.mainBox &&
+                                                                                                                                formik.errors.mainBox[index] &&
+                                                                                                                                formik.errors.mainBox[index].subBox &&
+                                                                                                                                formik.errors.mainBox[index].subBox[subIndex] &&
+                                                                                                                                formik.errors.mainBox[index].subBox[subIndex].cargoType ? (
+                                                                                                                                <FormFeedback>{formik.errors.mainBox[index].subBox[subIndex].cargoType}</FormFeedback>
+                                                                                                                            ) : null}
                                                                                                                         </div>
 
                                                                                                                         {/* Commodity */}
                                                                                                                         <div className="col-md-2 mb-2">
-                                                                                                                            <label className="form-label"> Commodity<span className='required_star'>*</span></label>
+                                                                                                                            <label className="form-label"> Commodity</label>
                                                                                                                             <Select
                                                                                                                                 name={`mainBox[${index}].subBox[${subIndex}].commodity`}
                                                                                                                                 value={formik.values.mainBox[index].subBox[subIndex].commodity || ''}
@@ -568,7 +660,7 @@ export default function UploadAirPortLocalChargesData() {
 
                                                                                                                         {/* min value */}
                                                                                                                         <div className="col-md-2 mb-2">
-                                                                                                                            <label className="form-label"> Min Value<span className='required_star'>*</span></label>
+                                                                                                                            <label className="form-label"> Min Value</label>
                                                                                                                             <Input
                                                                                                                                 type="text"
                                                                                                                                 name={`mainBox[${index}].subBox[${subIndex}].minValue`}
@@ -581,7 +673,7 @@ export default function UploadAirPortLocalChargesData() {
 
                                                                                                                         {formik.values.mainBox[index].isSlab && (
                                                                                                                             <div className="col-md-2 mb-2">
-                                                                                                                                <label className="form-label">From Slab <span className='required_star'>*</span></label>
+                                                                                                                                <label className="form-label">From Slab </label>
                                                                                                                                 <Input
                                                                                                                                     type="number"
                                                                                                                                     name={`mainBox[${index}].subBox[${subIndex}].fromSlab`}
@@ -594,7 +686,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                         )}
                                                                                                                         {formik.values.mainBox[index].isSlab && (
                                                                                                                             <div className="col-md-2 mb-2">
-                                                                                                                                <label className="form-label"> To Slab<span className='required_star'>*</span></label>
+                                                                                                                                <label className="form-label"> To Slab</label>
                                                                                                                                 <Input
                                                                                                                                     type="number"
                                                                                                                                     name={`mainBox[${index}].subBox[${subIndex}].toSlab`}
@@ -611,12 +703,33 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                             <Input
                                                                                                                                 type="text"
                                                                                                                                 name={`mainBox[${index}].subBox[${subIndex}].rate`}
+                                                                                                                                required
                                                                                                                                 value={formik.values.mainBox[index].subBox[subIndex].rate || ''}
-                                                                                                                                onChange={
-                                                                                                                                    formik.handleChange
+                                                                                                                                onChange={formik.handleChange}
+                                                                                                                                onBlur={formik.handleBlur}
+                                                                                                                                invalid={
+                                                                                                                                    formik.touched.mainBox &&
+                                                                                                                                        formik.touched.mainBox[index] &&
+                                                                                                                                        formik.errors.mainBox &&
+                                                                                                                                        formik.errors.mainBox[index] &&
+                                                                                                                                        formik.errors.mainBox[index].subBox &&
+                                                                                                                                        formik.errors.mainBox[index].subBox[subIndex] &&
+                                                                                                                                        formik.errors.mainBox[index].subBox[subIndex].rate
+                                                                                                                                        ? true
+                                                                                                                                        : false
                                                                                                                                 }
                                                                                                                             />
+                                                                                                                            {formik.touched.mainBox &&
+                                                                                                                                formik.touched.mainBox[index] &&
+                                                                                                                                formik.errors.mainBox &&
+                                                                                                                                formik.errors.mainBox[index] &&
+                                                                                                                                formik.errors.mainBox[index].subBox &&
+                                                                                                                                formik.errors.mainBox[index].subBox[subIndex] &&
+                                                                                                                                formik.errors.mainBox[index].subBox[subIndex].rate ? (
+                                                                                                                                <FormFeedback>{formik.errors.mainBox[index].subBox[subIndex].rate}</FormFeedback>
+                                                                                                                            ) : null}
                                                                                                                         </div>
+
 
                                                                                                                         {/* Add remove  */}
                                                                                                                         <div className="col-md-1 p-0 mt-2 d-flex justify-content-end align-items-center">

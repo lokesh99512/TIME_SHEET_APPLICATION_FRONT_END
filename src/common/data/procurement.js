@@ -63,7 +63,7 @@ const airPortLocalBreadcrumb = [
         active: false
     },
     {
-        label: 'Port & Local Charges',
+        label: 'Air Port & Local Charges',
         link: '/#',
         active: true
     },

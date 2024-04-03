@@ -174,7 +174,7 @@ const AirPortLocal = () => {
             }
         },
     ]);
-    document.title = "Port & Local Charges || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
+    document.title = "Air Port & Local Charges || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
     return (
         <>
             <div className="page-content">

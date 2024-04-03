@@ -14,7 +14,7 @@ import { useLocation } from 'react-router-dom'
 export default function QueriesComp() {
     document.title = "Inquiry || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
 
-    const inquiryData = useSelector((state) => state?.sales?.inquiry_data);
+    const {inquiry_data_loader,inquiry_data} = useSelector((state) => state?.sales);
     const [isRight, setIsRight] = useState(false);
     const { inquiry_summary_data } = useSelector((state) => state?.sales);
 
@@ -237,9 +237,10 @@ export default function QueriesComp() {
                         {/* sales table && filter */}
                         <SalesCommonTable
                             columns={columns}
-                            data={!!inquiryData.content ? inquiryData.content : []}
+                            data={!!inquiry_data.content ? inquiry_data.content : []}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
+                            loader={inquiry_data_loader}
                             customPageSize={10}
                             toggleRightCanvas={toggleRightCanvas}
                             component={'inquiry'}
