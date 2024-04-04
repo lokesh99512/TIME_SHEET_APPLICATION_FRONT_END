@@ -1,6 +1,6 @@
 import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects";
-import { DELETE_PERMISSIONS_TYPE, DELETE_PERMISSIONS_TYPE_SUCCEESS, GET_ALL_MODULES_BY_ROLE_TYPE, GET_ALL_MODULES_BY_ROLE_TYPE_SUCCEESS, GET_CARGO_TYPE_DATA, GET_CARGO_TYPE_DATA_SUCCEESS, GET_CONTAINER_DATA, GET_CONTAINER_DATA_SUCCEESS, GET_CURRENCY_DETAIL, GET_CURRENCY_DETAIL_SUCCESS, GET_MODULE_LOADER_TYPE, GET_MODULE_TYPE, GET_MODULE_TYPE_SUCCEESS, GET_OCEAEN_PORT_DATA, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_ROLE_BY_ID_TYPE, GET_ROLE_BY_ID_TYPE_SUCCEESS, GET_ROLE_LOADER_TYPE, GET_ROLE_TYPE, GET_ROLE_TYPE_SUCCEESS, GET_STATE_ALL_TYPE, GET_STATE_ALL_TYPE_SUCCEESS, GET_SURCHARGE_ALICE_DATA, GET_SURCHARGE_ALICE_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA, GET_UOM_DATA_SUCCESS, GET_UOM_WEIGHT_DATA, GET_UOM_WEIGHT_DATA_SUCCESS, GET_VENDOR_DETAILS, GET_VENDOR_DETAILS_SUCCESS, POST_SURCHARGE_ALISE_DATA, POST_SURCHARGE_CATEGORY_DATA, POST_SURCHARGE_CODE_DATA, POST_SURCHARGE_CODE_DATA_SUCCEESS, SAVE_PERMISSIONS_TYPE, SAVE_PERMISSIONS_TYPE_SUCCEESS, SAVE_ROLE_TYPE, SAVE_ROLE_TYPE_SUCCEESS } from "./actiontype";
-import { deletePermissionser, getAllmodulesbyrole, getCargoTypeData, getContainerData, getCurrencyData, getModuleAllSer, getOceanPortData, getRoleAllSer, getRoleById, getStateAllSer, getSurchargeAliceSer, getSurchargeCategoryData, getSurchargeCodeData, getUomData, getUomWeightData, getVendorData, postSurchargeAliseSer, postSurchargeCateSer, postSurchargeCodeSer, savePermissionSer, saveRoleSer } from "../../helpers/services/GlobalService";
+import { DELETE_PERMISSIONS_TYPE, DELETE_PERMISSIONS_TYPE_SUCCEESS, GET_ALL_MODULES_BY_ROLE_TYPE, GET_ALL_MODULES_BY_ROLE_TYPE_SUCCEESS, GET_CARGO_TYPE_DATA, GET_CARGO_TYPE_DATA_SUCCEESS, GET_COMMODITY_DATA, GET_COMMODITY_DATA_SUCCEESS, GET_CONTAINER_DATA, GET_CONTAINER_DATA_SUCCEESS, GET_CURRENCY_DETAIL, GET_CURRENCY_DETAIL_SUCCESS, GET_MODULE_LOADER_TYPE, GET_MODULE_TYPE, GET_MODULE_TYPE_SUCCEESS, GET_OCEAEN_PORT_DATA, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_ROLE_BY_ID_TYPE, GET_ROLE_BY_ID_TYPE_SUCCEESS, GET_ROLE_LOADER_TYPE, GET_ROLE_TYPE, GET_ROLE_TYPE_SUCCEESS, GET_STATE_ALL_TYPE, GET_STATE_ALL_TYPE_SUCCEESS, GET_SURCHARGE_ALICE_DATA, GET_SURCHARGE_ALICE_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA, GET_UOM_DATA_SUCCESS, GET_UOM_WEIGHT_DATA, GET_UOM_WEIGHT_DATA_SUCCESS, GET_VENDOR_DETAILS, GET_VENDOR_DETAILS_SUCCESS, POST_SURCHARGE_ALISE_DATA, POST_SURCHARGE_CATEGORY_DATA, POST_SURCHARGE_CODE_DATA, POST_SURCHARGE_CODE_DATA_SUCCEESS, SAVE_PERMISSIONS_TYPE, SAVE_PERMISSIONS_TYPE_SUCCEESS, SAVE_ROLE_TYPE, SAVE_ROLE_TYPE_SUCCEESS } from "./actiontype";
+import { deletePermissionser, getAllmodulesbyrole, getCargoTypeData, getCommodityData, getContainerData, getCurrencyData, getModuleAllSer, getOceanPortData, getRoleAllSer, getRoleById, getStateAllSer, getSurchargeAliceSer, getSurchargeCategoryData, getSurchargeCodeData, getUomData, getUomWeightData, getVendorData, postSurchargeAliseSer, postSurchargeCateSer, postSurchargeCodeSer, savePermissionSer, saveRoleSer } from "../../helpers/services/GlobalService";
 import { showErrorToast, showSuccessToast } from "../../components/Common/CustomToast";
 
 function* fetchVendorData() {
@@ -74,6 +74,15 @@ function* fetchCargoTypeData() {
         yield put({ type: GET_CARGO_TYPE_DATA_SUCCEESS, payload: response });
     } catch (error) {
         console.log(error, "cargo type error-----------");
+    }
+}
+
+function* fetchCommodityData() {
+    try {
+        const response = yield call(getCommodityData);
+        yield put({ type: GET_COMMODITY_DATA_SUCCEESS, payload: response });
+    } catch (error) {
+        console.log(error, "cargo COMMODITY-----------");
     }
 }
 function* fetchContainerData() {
@@ -238,6 +247,7 @@ function* watchGetglobalData() {
     yield takeEvery(GET_ALL_MODULES_BY_ROLE_TYPE, fetchModuleDataByRole);
     yield takeEvery(SAVE_ROLE_TYPE, postRoleData);
     yield takeEvery(GET_ROLE_BY_ID_TYPE, fetchByRoleId);
+    yield takeEvery(GET_COMMODITY_DATA,fetchCommodityData)
 }
 
 function* globalSaga() {

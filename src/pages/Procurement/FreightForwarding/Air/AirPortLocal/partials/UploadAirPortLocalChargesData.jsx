@@ -6,25 +6,20 @@ import Select from "react-select";
 import { Card, CardBody, Col, Container, FormFeedback, Input, Row } from "reactstrap";
 import { optionMovementType } from "../../../../../../common/data/procurement";
 import { isAnyValueEmpty } from "../../../../../../components/Common/CommonLogic";
-import { GET_CARGO_TYPE_DATA, GET_CONTAINER_DATA, GET_UOM_DATA } from "../../../../../../store/Global/actiontype";
+import { GET_CARGO_TYPE_DATA, GET_COMMODITY_DATA, GET_CONTAINER_DATA, GET_UOM_DATA } from "../../../../../../store/Global/actiontype";
 import { postAirPortLocalChargesData } from "../../../../../../store/Procurement/actions";
 import { GET_AIR_LOCATION_TYPE } from "../../../../../../store/InstantRate/actionType";
 import * as Yup from "yup";
 
 const terminalName = [];
 
-const optionCommodity = [
-    { label: "General", value: "general" },
-    { label: "SCR", value: "SCR" },
-    { label: "Hazardous", value: "hazardous" },
-    { label: "Perishable", value: "perishable" },
-]
+
 
 
 
 export default function UploadAirPortLocalChargesData() {
     const {
-        surchargeCategory_data, vendor_data, surchargeCode_data, UOM_data, currency_data, cargoType_data, container_data,
+        surchargeCategory_data, vendor_data,commodity_data, surchargeCode_data, UOM_data, currency_data, cargoType_data, container_data,
     } = useSelector(state => state?.globalReducer);
     const { airLocation } = useSelector((state) => state.instantRate);
     const [optionVendorName, setOptionVendorName] = useState([]);
@@ -132,8 +127,6 @@ export default function UploadAirPortLocalChargesData() {
         }),
 
         onSubmit: (value) => {
-            // console.log(value, "main value ");
-
             let surchargeValuesArray = value?.mainBox?.map((item) => {
                 let newData = item?.subBox?.map((subItem, subIndex) => {
                     const mapContainerData = cargoType_data?.map((sub, index) => {
@@ -146,8 +139,8 @@ export default function UploadAirPortLocalChargesData() {
                             }),
                             ...(subItem?.commodity && {
                                 "commodity": {
-                                    "id": 1 || '',
-                                    "version": item?.version || 0
+                                    "id": subItem?.commodity?.id || '',
+                                    "version": subItem?.commodity?.version || 0
                                 }
                             }),
                             ...(subItem?.fromSlab && { "fromSlab": subItem?.fromSlab || 0 }),
@@ -171,8 +164,8 @@ export default function UploadAirPortLocalChargesData() {
                             }),
                             ...(subItem?.commodity && {
                                 "commodity": {
-                                    "id": 1 || '',
-                                    "version": item?.version || 0
+                                    "id": subItem?.commodity?.id || '',
+                                    "version": subItem?.commodity?.version || 0
                                 }
                             }),
                             ...(subItem?.fromSlab && { "fromSlab": subItem?.fromSlab || 0 }),
@@ -253,8 +246,9 @@ export default function UploadAirPortLocalChargesData() {
                     }
                 })
             }
-            dispatch(postAirPortLocalChargesData(data));
-            formik.resetForm();
+         
+           dispatch(postAirPortLocalChargesData(data));
+           // formik.resetForm();
         },
     });
 
@@ -263,6 +257,7 @@ export default function UploadAirPortLocalChargesData() {
         dispatch({ type: GET_CONTAINER_DATA });
         dispatch({ type: GET_UOM_DATA });
         dispatch({ type: GET_AIR_LOCATION_TYPE });
+        dispatch({ type: GET_COMMODITY_DATA });
     }, [dispatch])
 
     return (
@@ -685,7 +680,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                                 onChange={(e) => {
                                                                                                                                     formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].commodity`, e);
                                                                                                                                 }}
-                                                                                                                                options={optionCommodity || []}
+                                                                                                                                options={commodity_data || []}
                                                                                                                                 classNamePrefix="select2-selection form-select"
                                                                                                                             />
                                                                                                                         </div>
