@@ -248,7 +248,7 @@ export default function UploadAirPortLocalChargesData() {
             }
          
            dispatch(postAirPortLocalChargesData(data));
-           // formik.resetForm();
+            formik.resetForm();
         },
     });
 
