@@ -86,12 +86,12 @@ export default function UploadAirPortLocalChargesData() {
         validationSchema: Yup.object({
             mainBox: Yup.array().of(
                 Yup.object({
-                    chargeCode: Yup.string().required("Please select charge code"),
-                    chargeBasis: Yup.string().required('Please select charge basis'),
-                    currency: Yup.string().required("Please select currency"),
+                    chargeCode: Yup.array().required("Please select charge code"),
+                    chargeBasis: Yup.array().required('Please select charge basis'),
+                    currency: Yup.array().required("Please select currency"),
                     subBox: Yup.array().of(
                         Yup.object({
-                            cargoType: Yup.string().required("Please select cargo type"),
+                            cargoType: Yup.array().required("Please select cargo type"),
                             rate: Yup.string().required("Please enter rate")
                         })
                     )
