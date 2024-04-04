@@ -85,13 +85,45 @@ export default function UploadAirPortLocalChargesData() {
         },
         validationSchema: Yup.object({
             mainBox: Yup.array().of(
-                Yup.object({
-                    chargeCode: Yup.array().required("Please select charge code"),
-                    chargeBasis: Yup.array().required('Please select charge basis'),
-                    currency: Yup.array().required("Please select currency"),
+                Yup.object().shape({
+                    chargeCode: Yup.mixed().test('is-object-or-string', 'Please select charge code', function (value) {
+                        if (typeof value === 'string') {
+                            return true;
+                        } else if (typeof value === 'object' && value !== null) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }).required("Please select charge code"),
+                    chargeBasis: Yup.mixed().test('is-object-or-string', 'Please select charge code', function (value) {
+                        if (typeof value === 'string') {
+                            return true;
+                        } else if (typeof value === 'object' && value !== null) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }).required('Please select charge basis'),
+                    currency: Yup.mixed().test('is-object-or-string', 'Please select charge code', function (value) {
+                        if (typeof value === 'string') {
+                            return true;
+                        } else if (typeof value === 'object' && value !== null) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }).required("Please select currency"),
                     subBox: Yup.array().of(
                         Yup.object({
-                            cargoType: Yup.array().required("Please select cargo type"),
+                            cargoType: Yup.mixed().test('is-object-or-string', 'Please select charge code', function (value) {
+                                if (typeof value === 'string') {
+                                    return true;
+                                } else if (typeof value === 'object' && value !== null) {
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            }).required("Please select cargo type"),
                             rate: Yup.string().required("Please enter rate")
                         })
                     )
