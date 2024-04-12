@@ -157,6 +157,8 @@ import UploadUser from "../pages/Settings/UploadUser";
 import Users from "../pages/Settings/Users";
 import VendorDashboard from "../pages/VendorDashboard";
 import UploadStatus from "../pages/uploadstatus/uploadstatus";
+import AirLineCharges from "../pages/Procurement/FreightForwarding/Air/AirLineCharges/AirLineCharges";
+import UploadAirLineCharges from "../pages/Procurement/FreightForwarding/Air/AirLineCharges/UploadAirLineCharges";
 
 const userRoutes = [
   //dashboard
@@ -181,6 +183,7 @@ const userRoutes = [
   { path: "/freight/air/masterbill", component: <AirMasterBill /> },
   { path: "/freight/air/console", component: <AirConsoleComp /> },
   { path: "/freight/air/local", component: <AirPortLocal /> },
+  {path : "/freight/air/line", component: <AirLineCharges /> },
   { path: "/freight/air/compare-rate", component: <CompareRate /> },
   { path: "/freight/air/upload/air-waybill", component: <UploadAirwayBillData /> },
   { path: "/freight/air/upload/console", component: <UploadAirConsoleData /> },
@@ -188,6 +191,7 @@ const userRoutes = [
   { path: "/freight/upload/:tabName", component: <UploadFreightData /> },
   { path: "/fcl/port-local/upload", component: <UploadPortLocalChargesData /> },
   { path: "/air/port-local/upload", component: <UploadAirPortLocalChargesData /> },
+  { path: "/air/line-charges/upload", component: <UploadAirLineCharges /> },
   { path: "/freight/upload/fcl/add-new", component: <OceanFCLSurchargeNameAddNew /> },
   { path: "/freight/upload/inland/add-new", component: <OceanFCLSurchargeNameAddNew /> },
   { path: "/freight/ocean/upload/fcl-pl/add-new", component: <OceanFCLSurchargeNameAddNew /> },
