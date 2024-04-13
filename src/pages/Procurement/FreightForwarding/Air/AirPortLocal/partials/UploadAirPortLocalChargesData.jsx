@@ -145,6 +145,12 @@ export default function UploadAirPortLocalChargesData() {
                                         "version": commodity?.version || 0
                                     }
                                 }),
+                                ...(item?.currency && {
+                                    "currency": {
+                                        "id": item?.currency?.id || '',
+                                        "version": item?.currency?.version || 0
+                                    }
+                                }),
                                 ...(subItem?.fromSlab && { "fromSlab": subItem?.fromSlab || 0 }),
                                 ...(subItem?.toSlab && { "toSlab": subItem?.toSlab || 0 }),
                                 ...(subItem?.rate && { "rate": subItem?.rate || 0 }),
@@ -207,12 +213,7 @@ export default function UploadAirPortLocalChargesData() {
                                 "version": item?.chargeCode?.version || 0
                             }
                         }),
-                        ...(item?.currency && {
-                            "currency": {
-                                "id": item?.currency?.id || '',
-                                "version": item?.currency?.version || 0
-                            }
-                        }),
+
                         ...(item?.tax && { "tax": item?.tax || 0 }),
                         ...(item?.chargeBasis && {
                             "unitOfMeasurement": {
@@ -621,7 +622,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                                 isMulti
                                                                                                                                 options={[
                                                                                                                                     ...cargoType_data || [],
-                                                                                                                                  
+
                                                                                                                                 ]}
                                                                                                                                 classNamePrefix="select2-selection form-select"
                                                                                                                                 onBlur={formik.handleBlur}
