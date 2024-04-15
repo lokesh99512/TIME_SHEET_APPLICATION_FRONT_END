@@ -264,7 +264,7 @@ export default function UploadAirPortLocalChargesData() {
                                         <div className="row">
                                             {/* Charge Category */}
                                             <div className="col-md-6 col-lg-4 mb-4">
-                                                <label className="form-label">Charge Category<span className='required_star'>*</span></label>
+                                                <label className="form-label">Charge Category</label>
                                                 <Select
                                                     value={formik.values.chargeCategory || ""}
                                                     onChange={(e) => {
@@ -395,7 +395,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                         <CardBody>
                                                                             <div className="row" key={index}>
                                                                                 {/* Charge Code */}
-                                                                                <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
+                                                                                <div className="col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
                                                                                     <label className="form-label"> Charge Code<span className='required_star'>*</span></label>
                                                                                     <Select
                                                                                         name={`mainBox[${index}].chargeCode`}
@@ -432,7 +432,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                 </div>
 
                                                                                 {/* Charge Basis */}
-                                                                                <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
+                                                                                <div className="col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
                                                                                     <label className="form-label"> Charge Basis<span className='required_star'>*</span></label>
                                                                                     <Select
                                                                                         name={`mainBox[${index}].chargeBasis`}
@@ -829,7 +829,7 @@ export default function UploadAirPortLocalChargesData() {
                                         <div className="row">
                                             <div className="d-flex justify-content-center">
                                                 <div className="mt-3 mx-3 d-flex justify-content-end">
-                                                    <button className=" btn btn-primary" onClick={formik.handleSubmit} disabled={isAnyValueEmpty(formik.values, ['terminalName', 'vendorName'])}> Save </button>
+                                                    <button className=" btn btn-primary" onClick={formik.handleSubmit} disabled={isAnyValueEmpty(formik.values, ['terminalName', 'vendorName', 'chargeCategory'])}> Save </button>
                                                     {/* <button className=" btn btn-primary" onClick={formik.handleSubmit} disabled={!(!isAnyValueEmpty(formik.values.mainBox, ['minValue','addTerms']) && !isAnyValueEmptyInArray(formik.values.mainBox[0].subBox))}> Save </button> */}
                                                 </div>
                                                 <div className="mt-3 mx-3 d-flex justify-content-end">

@@ -98,19 +98,22 @@ export default function UploadAirLineCharges() {
                             return false;
                         }
                     }).required("Please select currency"),
-                    subBox: Yup.array().of(
-                        Yup.object({
-                            cargoType: Yup.mixed().test('is-object-or-string', 'Please select charge code', function (value) {
-                                if (typeof value === 'string') {
-                                    return true;
-                                } else if (typeof value === 'object' && value !== null) {
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            }).required("Please select cargo type"),
-                        })
-                    )
+                    validFrom: Yup.string().required("Please select Valid From"),
+                    validTo: Yup.string().required("Please select Valid To")
+
+                    // subBox: Yup.array().of(
+                    //     Yup.object({
+                    //         cargoType: Yup.mixed().test('is-object-or-string', 'Please select charge code', function (value) {
+                    //             if (typeof value === 'string') {
+                    //                 return true;
+                    //             } else if (typeof value === 'object' && value !== null) {
+                    //                 return true;
+                    //             } else {
+                    //                 return false;
+                    //             }
+                    //         }).required("Please select cargo type"),
+                    //     })
+                    // )
                 })
             )
         }),
@@ -403,7 +406,24 @@ export default function UploadAirLineCharges() {
                                                                                         value={formik.values.mainBox[index].validFrom}
                                                                                         onChange={formik.handleChange}
                                                                                         className="form-control"
+                                                                                        onBlur={formik.handleBlur}
+                                                                                        invalid={
+                                                                                            formik.touched.mainBox &&
+                                                                                                formik.touched.mainBox[index] &&
+                                                                                                formik.errors.mainBox &&
+                                                                                                formik.errors.mainBox[index] &&
+                                                                                                formik.errors.mainBox[index].validFrom
+                                                                                                ? true
+                                                                                                : false
+                                                                                        }
                                                                                     />
+                                                                                    {formik.touched.mainBox &&
+                                                                                        formik.touched.mainBox[index] &&
+                                                                                        formik.errors.mainBox &&
+                                                                                        formik.errors.mainBox[index] &&
+                                                                                        formik.errors.mainBox[index].validFrom ? (
+                                                                                        <FormFeedback>{formik.errors.mainBox[index].validFrom}</FormFeedback>
+                                                                                    ) : null}
                                                                                 </div>
 
                                                                                 {/* Validity To */}
@@ -416,7 +436,24 @@ export default function UploadAirLineCharges() {
                                                                                         value={formik.values.mainBox[index].validTo}
                                                                                         onChange={formik.handleChange}
                                                                                         className="form-control"
+                                                                                        onBlur={formik.handleBlur}
+                                                                                        invalid={
+                                                                                            formik.touched.mainBox &&
+                                                                                                formik.touched.mainBox[index] &&
+                                                                                                formik.errors.mainBox &&
+                                                                                                formik.errors.mainBox[index] &&
+                                                                                                formik.errors.mainBox[index].validTo
+                                                                                                ? true
+                                                                                                : false
+                                                                                        }
                                                                                     />
+                                                                                    {formik.touched.mainBox &&
+                                                                                        formik.touched.mainBox[index] &&
+                                                                                        formik.errors.mainBox &&
+                                                                                        formik.errors.mainBox[index] &&
+                                                                                        formik.errors.mainBox[index].validTo ? (
+                                                                                        <FormFeedback>{formik.errors.mainBox[index].validTo}</FormFeedback>
+                                                                                    ) : null}
                                                                                 </div>
                                                                                 <div className="col-lg-2 col-md-4 col-sm-6 col-12 d-flex align-items-center justify-content-between">
                                                                                     <div>
@@ -485,7 +522,7 @@ export default function UploadAirLineCharges() {
                                                                                                                         </div>
                                                                                                                         {/* cargo type */}
                                                                                                                         <div className="col-md-2 mb-2">
-                                                                                                                            <label className="form-label"> Cargo Type<span className='required_star'>*</span></label>
+                                                                                                                            <label className="form-label"> Cargo Type</label>
                                                                                                                             <Select
                                                                                                                                 name={`mainBox[${index}].subBox[${subIndex}].cargoType`}
                                                                                                                                 value={formik.values.mainBox[index].subBox[subIndex].cargoType || ''}
@@ -498,20 +535,20 @@ export default function UploadAirLineCharges() {
                                                                                                                                     // { value: 'all', label: 'ALL' }
                                                                                                                                 ]}
                                                                                                                                 classNamePrefix="select2-selection form-select"
-                                                                                                                                onBlur={formik.handleBlur}
-                                                                                                                                invalid={
-                                                                                                                                    formik.touched.mainBox &&
-                                                                                                                                        formik.touched.mainBox[index] &&
-                                                                                                                                        formik.errors.mainBox &&
-                                                                                                                                        formik.errors.mainBox[index] &&
-                                                                                                                                        formik.errors.mainBox[index].subBox &&
-                                                                                                                                        formik.errors.mainBox[index].subBox[subIndex] &&
-                                                                                                                                        formik.errors.mainBox[index].subBox[subIndex].cargoType
-                                                                                                                                        ? true
-                                                                                                                                        : false
-                                                                                                                                }
+                                                                                                                            // onBlur={formik.handleBlur}
+                                                                                                                            // invalid={
+                                                                                                                            //     formik.touched.mainBox &&
+                                                                                                                            //         formik.touched.mainBox[index] &&
+                                                                                                                            //         formik.errors.mainBox &&
+                                                                                                                            //         formik.errors.mainBox[index] &&
+                                                                                                                            //         formik.errors.mainBox[index].subBox &&
+                                                                                                                            //         formik.errors.mainBox[index].subBox[subIndex] &&
+                                                                                                                            //         formik.errors.mainBox[index].subBox[subIndex].cargoType
+                                                                                                                            //         ? true
+                                                                                                                            //         : false
+                                                                                                                            // }
                                                                                                                             />
-                                                                                                                            {formik.touched.mainBox &&
+                                                                                                                            {/* {formik.touched.mainBox &&
                                                                                                                                 formik.touched.mainBox[index] &&
                                                                                                                                 formik.errors.mainBox &&
                                                                                                                                 formik.errors.mainBox[index] &&
@@ -519,7 +556,7 @@ export default function UploadAirLineCharges() {
                                                                                                                                 formik.errors.mainBox[index].subBox[subIndex] &&
                                                                                                                                 formik.errors.mainBox[index].subBox[subIndex].cargoType ? (
                                                                                                                                 <FormFeedback>{formik.errors.mainBox[index].subBox[subIndex].cargoType}</FormFeedback>
-                                                                                                                            ) : null}
+                                                                                                                            ) : null} */}
                                                                                                                         </div>
 
                                                                                                                         {/* Commodity */}
