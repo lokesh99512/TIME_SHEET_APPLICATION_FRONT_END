@@ -399,7 +399,7 @@ export default function UploadAirLineCharges() {
 
                                                                                 <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
                                                                                     <label className="form-label">Valid From<span className='required_star'>*</span></label>
-                                                                                    <input
+                                                                                    <Input
                                                                                         type="date"
                                                                                         name={`mainBox[${index}].validFrom`}
                                                                                         id="validity_from"
@@ -429,7 +429,7 @@ export default function UploadAirLineCharges() {
                                                                                 {/* Validity To */}
                                                                                 <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
                                                                                     <label className="form-label">Valid To<span className='required_star'>*</span></label>
-                                                                                    <input
+                                                                                    <Input
                                                                                         type="date"
                                                                                         name={`mainBox[${index}].validTo`}
                                                                                         id="validity_to"
