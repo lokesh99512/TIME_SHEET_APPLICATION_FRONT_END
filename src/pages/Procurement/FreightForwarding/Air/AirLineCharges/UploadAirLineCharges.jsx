@@ -7,28 +7,18 @@ import { Card, CardBody, Col, Container, FormFeedback, Input, Row } from "reacts
 import { optionBookingType, optionMovementType } from "../../../../../common/data/procurement";
 import { isAnyValueEmpty } from "../../../../../components/Common/CommonLogic";
 import { GET_CARGO_TYPE_DATA, GET_COMMODITY_DATA, GET_CONTAINER_DATA, GET_UOM_DATA } from "../../../../../store/Global/actiontype";
-import { postAirPortLocalChargesData, postAirlineChargesData } from "../../../../../store/Procurement/actions";
+import { postAirlineChargesData } from "../../../../../store/Procurement/actions";
 import { GET_AIR_LOCATION_TYPE } from "../../../../../store/InstantRate/actionType";
 import * as Yup from "yup";
 
-const terminalName = [];
-
-
-
-
-
 export default function UploadAirLineCharges() {
-    const {
-        surchargeCategory_data, vendor_data, commodity_data, surchargeCode_data, UOM_data, currency_data, cargoType_data, container_data,
-    } = useSelector(state => state?.globalReducer);
+    const { vendor_data, commodity_data, surchargeCode_data, UOM_data, currency_data, cargoType_data } = useSelector(state => state?.globalReducer);
     const { airLocation } = useSelector((state) => state.instantRate);
     const [optionVendorName, setOptionVendorName] = useState([]);
     const [optionCarrierName, setOptionCarrierName] = useState([]);
     const [addTermsModal, setAddTermsModal] = useState({ isOpen: false, id: "" });
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    let generalContainerOpt = container_data?.filter((item) => item.value !== "20RF" && item.value !== "40RF");
-    let refrigeContainerOpt = container_data?.filter((item) => item.value === "20RF" || item.value === "40RF");
 
     useEffect(() => {
         let vendorlist = vendor_data?.content?.map((item) => {
@@ -126,8 +116,6 @@ export default function UploadAirLineCharges() {
         }),
 
         onSubmit: (value) => {
-
-            console.log(value);
             let surchargeValuesArray = value?.mainBox?.map((item) => {
                 let newData = item?.subBox?.map((subItem, subIndex) => {
                     let cargoTypeData = subItem?.cargoType?.map((cargoType) => {
@@ -181,7 +169,8 @@ export default function UploadAirLineCharges() {
                                     }),
                                     ...(slab?.fromSlab && { "fromSlab": slab?.fromSlab || 0 }),
                                     ...(slab?.toSlab && { "toSlab": slab?.toSlab || 0 }),
-                                    ...(subItem?.rate && { "rate":  subItem?.rate || 0 }),
+                                    ...(subItem?.rate && { "rate": subItem?.rate || 0 }),
+                                    ...(slab?.rate && { "rate": slab?.rate || 0 }),
                                     ...(subItem?.flightNumber && { "flightNumber": subItem?.flightNumber || 0 }),
                                 }
                                 return obj
@@ -215,10 +204,8 @@ export default function UploadAirLineCharges() {
                 ...(value?.bookingMode && { "bookingModeType": value?.bookingMode?.value || "MAWB" }),
                 "vendorAirlineChargeValues": spreadSurArray[0]
             }
-
-            console.log(data);
             dispatch(postAirlineChargesData(data));
-              formik.resetForm();
+            formik.resetForm();
         },
     });
 
@@ -472,7 +459,6 @@ export default function UploadAirLineCharges() {
                                                                                                             return (
                                                                                                                 <React.Fragment key={subIndex}>
                                                                                                                     <div className="row mb-3">
-
                                                                                                                         <div className="col-md-2 mb-2">
                                                                                                                             <label className="form-label"> Origin Port</label>
                                                                                                                             <Select
