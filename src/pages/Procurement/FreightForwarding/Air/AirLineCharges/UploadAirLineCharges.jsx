@@ -50,6 +50,7 @@ export default function UploadAirLineCharges() {
                     currency: "",
                     validFrom: "",
                     validTo: "",
+                    tax: "",
                     isSlab: false,
                     addTerms: {},
                     subBox: [{
@@ -170,6 +171,7 @@ export default function UploadAirLineCharges() {
                                             "version": subItem?.destinataionPort?.version || 0
                                         }
                                     }),
+                                    ...(item?.tax && { "tax": item?.tax || 0 }),
                                     ...(slab?.fromSlab && { "fromSlab": slab?.fromSlab || 0 }),
                                     ...(slab?.toSlab && { "toSlab": slab?.toSlab || 0 }),
                                     ...(subItem?.rate && { "rate": subItem?.rate || 0 }),
@@ -455,7 +457,17 @@ export default function UploadAirLineCharges() {
                                                                                         <FormFeedback>{formik.errors.mainBox[index].validTo}</FormFeedback>
                                                                                     ) : null}
                                                                                 </div>
-                                                                                <div className="col-lg-2 col-md-4 col-sm-6 col-12 d-flex align-items-center justify-content-between">
+                                                                                <div className="col-lg-1 col-md-4 col-sm-6 col-12 mb-2">
+                                                                                    <label className="form-label"> Tax </label>
+                                                                                    <Input
+                                                                                        type="text"
+                                                                                        name={`mainBox[${index}].tax`}
+                                                                                        placeholder="Enter tax"
+                                                                                        value={formik.values.mainBox[index].tax}
+                                                                                        onChange={formik.handleChange}
+                                                                                    />
+                                                                                </div>
+                                                                                <div className="col-lg-1 col-md-4 col-sm-6 col-12 d-flex align-items-center justify-content-between">
                                                                                     <div>
                                                                                         <div className="form-check mt-3">
                                                                                             <input className="form-check-input" type="checkbox" id="add_slab"
@@ -742,6 +754,7 @@ export default function UploadAirLineCharges() {
                                                                             currency: "",
                                                                             validFrom: "",
                                                                             validTo: "",
+                                                                            tax: "",
                                                                             isSlab: false,
                                                                             addTerms: false,
                                                                             subBox: [{
