@@ -509,7 +509,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                 <div className="col-lg-2 col-md-4 col-sm-6 col-12 mb-2">
                                                                                     <label className="form-label"> Tax(Optional) </label>
                                                                                     <Input
-                                                                                        type="text"
+                                                                                        type="number"
                                                                                         name={`mainBox[${index}].tax`}
                                                                                         placeholder="Enter tax"
                                                                                         value={formik.values.mainBox[index].tax}
@@ -668,7 +668,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                         <div className="col-md-2 mb-2">
                                                                                                                             <label className="form-label"> Min Value</label>
                                                                                                                             <Input
-                                                                                                                                type="text"
+                                                                                                                                type="number"
                                                                                                                                 name={`mainBox[${index}].subBox[${subIndex}].minValue`}
                                                                                                                                 value={formik.values.mainBox[index].subBox[subIndex].minValue || ''}
                                                                                                                                 onChange={
@@ -707,7 +707,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                         <div className={"col-md-" + (formik.values.mainBox[index].isSlab && formik.values.mainBox[index].subBox.length > 1 ? "1" : "2") + " mb-2 pr-0"}>
                                                                                                                             <label className="form-label"> Rate<span className='required_star'>*</span></label>
                                                                                                                             <Input
-                                                                                                                                type="text"
+                                                                                                                                type="number"
                                                                                                                                 name={`mainBox[${index}].subBox[${subIndex}].rate`}
                                                                                                                                 required
                                                                                                                                 value={formik.values.mainBox[index].subBox[subIndex].rate || ''}

@@ -60,6 +60,7 @@ export default function UploadAirLineCharges() {
                         cargoType: "",
                         commodity: "",
                         slab: [{
+                            minVal: "",
                             fromSlab: "",
                             toSlab: "",
                             rate: "",
@@ -176,6 +177,7 @@ export default function UploadAirLineCharges() {
                                     ...(slab?.toSlab && { "toSlab": slab?.toSlab || 0 }),
                                     ...(subItem?.rate && { "rate": subItem?.rate || 0 }),
                                     ...(slab?.rate && { "rate": slab?.rate || 0 }),
+                                    ...(slab?.minVal && { "minValue": slab?.minVal || 0 }),
                                     ...(subItem?.flightNumber && { "flightNumber": subItem?.flightNumber || 0 }),
                                 }
                                 return obj
@@ -460,7 +462,7 @@ export default function UploadAirLineCharges() {
                                                                                 <div className="col-lg-1 col-md-4 col-sm-6 col-12 mb-2">
                                                                                     <label className="form-label"> Tax </label>
                                                                                     <Input
-                                                                                        type="text"
+                                                                                        type="number"
                                                                                         name={`mainBox[${index}].tax`}
                                                                                         placeholder="Enter tax"
                                                                                         value={formik.values.mainBox[index].tax}
@@ -598,7 +600,7 @@ export default function UploadAirLineCharges() {
                                                                                                                             <div className={"col-md-" + (formik.values.mainBox[index].subBox.length > 1 ? "1" : "2") + " mb-2 pr-0"}>
                                                                                                                                 <label className="form-label"> Rate</label>
                                                                                                                                 <Input
-                                                                                                                                    type="text"
+                                                                                                                                    type="number"
                                                                                                                                     name={`mainBox[${index}].subBox[${subIndex}].rate`}
                                                                                                                                     value={formik.values.mainBox[index].subBox[subIndex].rate || ''}
                                                                                                                                     onChange={formik.handleChange}
@@ -637,7 +639,7 @@ export default function UploadAirLineCharges() {
                                                                                                                                                                 <div className="col-md-2 mb-2">
                                                                                                                                                                     <label className="form-label">From Slab</label>
                                                                                                                                                                     <input
-                                                                                                                                                                        type="text"
+                                                                                                                                                                        type="number"
                                                                                                                                                                         name={`mainBox[${index}].subBox[${subIndex}].slab[${slabIndex}].fromSlab`}
                                                                                                                                                                         value={formik.values.mainBox[index].subBox[subIndex].slab[slabIndex].fromSlab || ''}
                                                                                                                                                                         onChange={formik.handleChange}
@@ -646,9 +648,9 @@ export default function UploadAirLineCharges() {
                                                                                                                                                                     />
                                                                                                                                                                 </div>
                                                                                                                                                                 <div className="col-md-2 mb-2">
-                                                                                                                                                                    <label className="form-label">to Slab</label>
+                                                                                                                                                                    <label className="form-label">To Slab</label>
                                                                                                                                                                     <input
-                                                                                                                                                                        type="text"
+                                                                                                                                                                        type="number"
                                                                                                                                                                         name={`mainBox[${index}].subBox[${subIndex}].slab[${slabIndex}].toSlab`}
                                                                                                                                                                         value={formik.values.mainBox[index].subBox[subIndex].slab[slabIndex].toSlab || ''}
                                                                                                                                                                         onChange={formik.handleChange}
@@ -659,9 +661,20 @@ export default function UploadAirLineCharges() {
                                                                                                                                                                 <div className="col-md-2 mb-2">
                                                                                                                                                                     <label className="form-label">Rate</label>
                                                                                                                                                                     <input
-                                                                                                                                                                        type="text"
+                                                                                                                                                                        type="number"
                                                                                                                                                                         name={`mainBox[${index}].subBox[${subIndex}].slab[${slabIndex}].rate`}
                                                                                                                                                                         value={formik.values.mainBox[index].subBox[subIndex].slab[slabIndex].rate || ''}
+                                                                                                                                                                        onChange={formik.handleChange}
+                                                                                                                                                                        onBlur={formik.handleBlur}
+                                                                                                                                                                        className="form-control"
+                                                                                                                                                                    />
+                                                                                                                                                                </div>
+                                                                                                                                                                <div className="col-md-2 mb-2">
+                                                                                                                                                                    <label className="form-label">Min Value</label>
+                                                                                                                                                                    <input
+                                                                                                                                                                        type="number"
+                                                                                                                                                                        name={`mainBox[${index}].subBox[${subIndex}].slab[${slabIndex}].minVal`}
+                                                                                                                                                                        value={formik.values.mainBox[index].subBox[subIndex].slab[slabIndex].minVal || ''}
                                                                                                                                                                         onChange={formik.handleChange}
                                                                                                                                                                         onBlur={formik.handleBlur}
                                                                                                                                                                         className="form-control"
@@ -690,7 +703,8 @@ export default function UploadAirLineCharges() {
                                                                                                                                                             slabArrayHelpers.push({
                                                                                                                                                                 fromSlab: "",
                                                                                                                                                                 toSlab: "",
-                                                                                                                                                                rate: ""
+                                                                                                                                                                rate: "",
+                                                                                                                                                                minVal: ""
                                                                                                                                                             });
                                                                                                                                                         }}
                                                                                                                                                     >

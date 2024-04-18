@@ -303,9 +303,9 @@ export default function UploadAirwayBillData() {
                         <Progress color="success" striped animated value={Number(mawbFaildData?.data?.success || 0) * 100 / Number(mawbFaildData?.data?.totalUploaded || 0)} />
                     </div>
                     <div className='mt-4 d-flex justify-content-between align-items-center'>
+                        <p className='m-0'><b>Total Records:</b> {mawbFaildData?.data?.totalUploaded || 0}</p>
                         <p className='m-0'><b>Failed:</b> {mawbFaildData?.data?.failed || 0}</p>
                         <p className='my-1'><b>Success:</b> {mawbFaildData?.data?.success || 0}</p>
-                        <p className='m-0'><b>Total Data Uploaded:</b> {mawbFaildData?.data?.totalUploaded || 0}</p>
                     </div>
                 </div>
                 <div className="modal-footer justify-content-center">

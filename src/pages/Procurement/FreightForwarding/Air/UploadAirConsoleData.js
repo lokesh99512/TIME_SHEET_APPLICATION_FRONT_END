@@ -300,9 +300,9 @@ export default function UploadAirConsoleData() {
                         <Progress color="success" striped animated value={Number(consoleFaildData?.data?.success || 0) * 100 / Number(consoleFaildData?.data?.totalUploaded || 0)} />
                     </div>
                     <div className='mt-4 d-flex justify-content-between align-items-center'>
+                        <p className='m-0'><b>Total Records:</b> {consoleFaildData?.data?.totalUploaded || 0}</p>
                         <p className='m-0'><b>Failed:</b> {consoleFaildData?.data?.failed || 0}</p>
                         <p className='my-1'><b>Success:</b> {consoleFaildData?.data?.success || 0}</p>
-                        <p className='m-0'><b>Total Data Uploaded:</b> {consoleFaildData?.data?.totalUploaded || 0}</p>
                     </div>
                 </div>
                 <div className="modal-footer justify-content-center">
