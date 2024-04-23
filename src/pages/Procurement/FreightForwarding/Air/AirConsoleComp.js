@@ -77,7 +77,7 @@ export default function AirConsoleComp() {
         // },
         {
             Header: 'Agent',
-            accessor: (row) => `${row.tenantVendor === null ? '' : row.tenantVendor.name}`,
+            accessor:"agentName",
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -86,7 +86,7 @@ export default function AirConsoleComp() {
         },
         {
             Header: 'Carrier Name',
-            accessor: (row) => `${row.tenantCarrierVendor === null ? '' : row.tenantCarrierVendor.name}`,
+            accessor: "carrierName",
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -95,7 +95,7 @@ export default function AirConsoleComp() {
         },
         {
             Header: 'Vendor Type',
-            accessor: (row) => `${row.tenantVendor === null ? '' : row.tenantVendor.vendorType}`,
+            accessor: "vendorType",
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -124,6 +124,15 @@ export default function AirConsoleComp() {
         {
             Header: 'Valid To',
             accessor: 'validTo',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Total Port Pairs',
+            accessor: 'totalCount',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {

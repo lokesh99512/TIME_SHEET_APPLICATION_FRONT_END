@@ -11,7 +11,7 @@ import ModalAir from './ModalAir'
 import TableAirwayBill from './TableAirwayBill'
 
 export default function AirMasterBill() {
-    document.title="Air Master || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
+    document.title = "Air Master || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
     const [isRight, setIsRight] = useState(false);
@@ -25,13 +25,13 @@ export default function AirMasterBill() {
         cargo_type: '',
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
-    const {waybillData,wayBillDataLoader} = useSelector((state) => state?.procurement);
+    const { waybillData, wayBillDataLoader } = useSelector((state) => state?.procurement);
     const waybillFreightData = useSelector((state) => state?.procurement?.airFreightData);
     const dispatch = useDispatch();
 
     const viewPopupHandler = (data) => {
         if (data?.status == "ACTIVE") {
-            dispatch(getAirwaybillDataById(data?.id));  
+            dispatch(getAirwaybillDataById(data?.id));
             setModal(true);
             setViewData(data);
         } else {
@@ -50,7 +50,7 @@ export default function AirMasterBill() {
 
     const applyFilterHandler = () => {
         setIsRight(false);
-        console.log(filterDetails,"filterDetails Air MaterBill-----------------------")
+        console.log(filterDetails, "filterDetails Air MaterBill-----------------------")
     }
     const clearValueHandler = () => {
         setfilterDetails(inputArr)
@@ -58,12 +58,12 @@ export default function AirMasterBill() {
 
     // Activate deactivate table data
     const switchHandler = (data) => {
-        dispatch(updateAirwaybillSwitchData(data.id,data.is_active));
+        dispatch(updateAirwaybillSwitchData(data.id, data.is_active));
     }
 
     useEffect(() => {
         dispatch(getAirwaybillData());
-    },[dispatch]);
+    }, [dispatch]);
 
     console.log(waybillData, "-->waybillData")
 
@@ -79,7 +79,7 @@ export default function AirMasterBill() {
         // },
         {
             Header: 'Agent',
-                  accessor: (row) => `${row.tenantVendor === null ? '' : row.tenantVendor.name}`,
+            accessor: "agentName",
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -88,7 +88,7 @@ export default function AirMasterBill() {
         },
         {
             Header: 'Carrier name',
-            accessor: (row) => `${row.tenantCarrierVendor === null ? '' : row.tenantCarrierVendor.name}`,
+            accessor: "carrierName",
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -97,7 +97,7 @@ export default function AirMasterBill() {
         },
         {
             Header: 'Vendor Type',
-            accessor: (row) => `${row.tenantVendor === null ? '' : row.tenantVendor.vendorType}`,
+            accessor: "vendorType",
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -113,7 +113,7 @@ export default function AirMasterBill() {
                 return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
-        
+
         {
             Header: 'Valid From',
             accessor: 'validFrom',
@@ -122,10 +122,19 @@ export default function AirMasterBill() {
             Cell: (cellProps) => {
                 return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
-        },  
+        },
         {
             Header: 'Valid To',
             accessor: 'validTo',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
+            Header: 'Total Port Pairs',
+            accessor: 'totalCount',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -141,19 +150,19 @@ export default function AirMasterBill() {
                             <i className='bx bx-dots-vertical-rounded'></i>
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-end">
-                            <DropdownItem onClick={(e) => {e.stopPropagation(); editPopupHandler(cellProps.row.original)}}>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
-                            <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem>
+                            <DropdownItem onClick={(e) => { e.stopPropagation(); editPopupHandler(cellProps.row.original) }}>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
+                            <DropdownItem onClick={(e) => { e.stopPropagation(); viewPopupHandler(cellProps.row.original) }}>View <img src={eye_icon} alt="Eye" /></DropdownItem>
                             <DropdownItem onClick={(e) => e.stopPropagation()}>
                                 {cellProps.row.original?.status === "ACTIVE" ? "Activate" : "Deactive"}
                                 <div className="switch_wrap">
                                     <FormGroup switch>
-                                        <Input 
-                                        type="switch"
-                                        checked={cellProps.row.original?.status === "ACTIVE" || false}
-                                        onClick={() => {
-                                            switchHandler(cellProps.row.original);
-                                        }}
-                                        readOnly
+                                        <Input
+                                            type="switch"
+                                            checked={cellProps.row.original?.status === "ACTIVE" || false}
+                                            onClick={() => {
+                                                switchHandler(cellProps.row.original);
+                                            }}
+                                            readOnly
                                         />
                                     </FormGroup>
                                 </div>
@@ -171,10 +180,10 @@ export default function AirMasterBill() {
                 <Container fluid>
                     <div className="main_freight_wrapper">
                         {/* breadcrumbs && rate */}
-                        <TopBreadcrumbs breadcrumbs={waybillBreadcrumb} data={waybillRateData} />            
+                        <TopBreadcrumbs breadcrumbs={waybillBreadcrumb} data={waybillRateData} />
 
                         {/* {waybillData ? ( */}
-                            <TableAirwayBill
+                        <TableAirwayBill
                             columns={columns}
                             data={waybillData?.content || []}
                             isGlobalFilter={true}
@@ -183,14 +192,14 @@ export default function AirMasterBill() {
                             toggleRightCanvas={toggleRightCanvas}
                             component={'air-waybill'}
                             loader={wayBillDataLoader}
-                            />
+                        />
                         {/* ) : (
                             <p>Loading...</p>
                         )} */}
 
                         {/* modal */}
                         <ModalAir modal={modal} onCloseClick={onCloseClick} viewData={waybillFreightData} modalType={'air_waybill'} />
-                    </div>  
+                    </div>
                 </Container>
             </div>
             {/* filter right sidebar */}

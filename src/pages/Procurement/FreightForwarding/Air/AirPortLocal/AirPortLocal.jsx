@@ -8,16 +8,16 @@ import TopBreadcrumbs from '../../../../Settings/Surcharge/TopBreadcrumbs'
 import { CommonValue } from '../../partials/OceanCol'
 import AirPortLocalTableReact from './partials/AirPortLocalTableReact'
 import FilterAirPortCanvasComp from './partials/FilterAirPortCanvasComp'
-import { getAIrPortLocalChargesData } from '../../../../../store/Procurement/actions'
+import { getAIrPortLocalChargesData, getAirPortLocalChargesById } from '../../../../../store/Procurement/actions'
 import { useSelector } from 'react-redux'
-
+import { useNavigate } from 'react-router-dom';
+import { Edit } from '../../../../Settings/SettingsCol'
 
 const AirPortLocal = () => {
     const [isRight, setIsRight] = useState(false);
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
-
-    const {airportLocalChargesData,airportLocalChargesLoder} =useSelector(state=>state.procurement)
+    const { airportLocalChargesData, airportLocalChargesLoder } = useSelector(state => state.procurement)
 
     const inputArr = {
         surcharge_category: '',
@@ -69,19 +69,29 @@ const AirPortLocal = () => {
         dispatch(getAIrPortLocalChargesData());
     }, [dispatch]);
 
+    const navigate = useNavigate();
+    const editHandler = (rowData) => {
+        dispatch(getAirPortLocalChargesById(rowData?.id))
+        navigate(`/air/port-local/upload`)
+    }
+
+    const switchHandler = (rowData) => {
+
+    }
+
     const columns = useMemo(() => [
-        {
-            Header: 'Surcharge ID',
-            accessor: 'id',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
+        // {
+        //     Header: 'Surcharge ID',
+        //     accessor: 'id',
+        //     filterable: true,
+        //     disableFilters: true,
+        //     Cell: (cellProps) => {
+        //         return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+        //     }
+        // },
         {
             Header: 'Surcharge Category',
-            accessor: (row) => `${row.surchargeCategory === null ? '' : row.surchargeCategory.name}`,
+            accessor: "surchargeCategoryName",
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -90,7 +100,7 @@ const AirPortLocal = () => {
         },
         {
             Header: 'Port Name',
-            accessor: (row) => `${row.airPort === null ? '' : row.airPort.name}`,
+            accessor: "airPortName",
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -117,7 +127,7 @@ const AirPortLocal = () => {
         },
         {
             Header: 'Carrier Name',
-            accessor: (row) => `${row.tenantCarrierVendor === null ? '' : row.tenantCarrierVendor.name}`,
+            accessor: "carrierName",
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -126,7 +136,7 @@ const AirPortLocal = () => {
         },
         {
             Header: 'Vendor Name',
-            accessor: (row) => `${row.tenantVendor === null ? '' : row.tenantVendor.name}`,
+            accessor: "agentName",
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -143,34 +153,42 @@ const AirPortLocal = () => {
             }
         },
         {
+            Header: 'Total Charge Pairs',
+            accessor: 'totalCount',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        {
             Header: 'Action',
             Cell: (cellProps) => {
-                return (
-                    <UncontrolledDropdown>
-                        <DropdownToggle className="btn btn-link text-muted py-1 font-size-16 shadow-none" tag="a">
-                            <i className='bx bx-dots-vertical-rounded'></i>
-                        </DropdownToggle>
-                        <DropdownMenu className="dropdown-menu-end">
-                            <DropdownItem>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
-                            {/* <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem> */}
-                            <DropdownItem onClick={(e) => e.stopPropagation()}>
-                                Activate
-                                <div className="switch_wrap">
-                                    <FormGroup switch>
-                                        <Input
-                                            type="switch"
-                                            checked={cellProps.row.original?.is_active || false}
-                                            onClick={() => {
-                                                switchHandler(cellProps.row.original);
-                                            }}
-                                            readOnly
-                                        />
-                                    </FormGroup>
-                                </div>
-                            </DropdownItem>
-                        </DropdownMenu>
-                    </UncontrolledDropdown>
-                )
+                return <Edit cellProps={cellProps} viewPopupHandler={editHandler} />
+                    // <UncontrolledDropdown>
+                    //     <DropdownToggle className="btn btn-link text-muted py-1 font-size-16 shadow-none" tag="a">
+                    //         <i className='bx bx-dots-vertical-rounded'></i>
+                    //     </DropdownToggle>
+                    //     <DropdownMenu className="dropdown-menu-end">
+                    //         <DropdownItem>Edit <Edit cellProps={cellProps} viewPopupHandler={editHandler} /></DropdownItem>
+                    //         <DropdownItem onClick={(e) => e.stopPropagation()}>
+                    //             Activate
+                    //             <div className="switch_wrap">
+                    //                 <FormGroup switch>
+                    //                     <Input
+                    //                         type="switch"
+                    //                         checked={cellProps.row.original?.is_active || false}
+                    //                         onClick={() => {
+                    //                             switchHandler(cellProps.row.original);
+                    //                         }}
+                    //                         readOnly
+                    //                     />
+                    //                 </FormGroup>
+                    //             </div>
+                    //         </DropdownItem>
+                    //     </DropdownMenu>
+                    // </UncontrolledDropdown>
+                
             }
         },
     ]);
@@ -203,7 +221,7 @@ const AirPortLocal = () => {
             </div>
 
             {/* filter right sidebar */}
-            <FilterAirPortCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} />            
+            <FilterAirPortCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} />
         </>
     )
 }

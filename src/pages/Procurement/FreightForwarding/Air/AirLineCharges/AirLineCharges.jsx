@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux'
 import FilterAirPortCanvasComp from '../AirPortLocal/partials/FilterAirPortCanvasComp'
 import AirPortLocalTableReact from '../AirPortLocal/partials/AirPortLocalTableReact'
 import AirLineChargesTable from './AirLineChargesTable'
+import { useNavigate } from 'react-router-dom'
 
 
 const AirLineCharges = () => {
@@ -71,46 +72,18 @@ const AirLineCharges = () => {
         dispatch(getAIrlineChargesData());
     }, [dispatch]);
 
+    const navigate = useNavigate();
+    const handleEdit = (rowData) => {
+         // dispatch(getAirPortLocalChargesById(rowData?.id))
+          navigate(`/air/port-local/upload`)
+    }
+
+
     const columns = useMemo(() => [
-        // {
-        //     Header: 'Charge Id',
-        //     accessor: 'id',
-        //     filterable: true,
-        //     disableFilters: true,
-        //     Cell: (cellProps) => {
-        //         return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-        //     }
-        // },
-        // {
-        //     Header: 'Surcharge Category',
-        //     accessor: (row) => `${row.surchargeCategory === null ? '' : row.surchargeCategory.name}`,
-        //     filterable: true,
-        //     disableFilters: true,
-        //     Cell: (cellProps) => {
-        //         return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-        //     }
-        // },
-        // {
-        //     Header: 'Port Name',
-        //     accessor: (row) => `${row.airPort === null ? '' : row.airPort.name}`,
-        //     filterable: true,
-        //     disableFilters: true,
-        //     Cell: (cellProps) => {
-        //         return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-        //     }
-        // },
-        // {
-        //     Header: 'Terminals',
-        //     accessor: 'terminals',
-        //     filterable: true,
-        //     disableFilters: true,
-        //     Cell: (cellProps) => {
-        //         return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-        //     }
-        // },
+       
         {
             Header: 'Booking Mode',
-            accessor: 'bookingModeType',
+            accessor: 'bookingMode',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -119,7 +92,7 @@ const AirLineCharges = () => {
         },
         {
             Header: 'Carrier Name',
-            accessor: (row) => `${row.tenantCarrierVendor === null ? '' : row.tenantCarrierVendor.name}`,
+            accessor: "carrierName",
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -128,22 +101,23 @@ const AirLineCharges = () => {
         },
         {
             Header: 'Vendor Name',
-            accessor: (row) => `${row.tenantVendor === null ? '' : row.tenantVendor.name}`,
+            accessor: "agentName",
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
                 return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
-        // {
-        //     Header: 'Valid Till',
-        //     accessor: 'validFrom',
-        //     filterable: true,
-        //     disableFilters: true,
-        //     Cell: (cellProps) => {
-        //         return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-        //     }
-        // },
+        {
+            Header: 'Total Port Pairs',
+            accessor: 'totalCount',
+            filterable: true,
+            disableFilters: true,
+            Cell: (cellProps) => {
+                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+            }
+        },
+        
         {
             Header: 'Action',
             Cell: (cellProps) => {
@@ -153,7 +127,7 @@ const AirLineCharges = () => {
                             <i className='bx bx-dots-vertical-rounded'></i>
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-end">
-                            <DropdownItem>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
+                            <DropdownItem onClick={() => handleEdit(cellProps.row.original)}>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
                             {/* <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem> */}
                             <DropdownItem onClick={(e) => e.stopPropagation()}>
                                 Activate

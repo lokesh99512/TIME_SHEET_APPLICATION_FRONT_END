@@ -194,7 +194,7 @@ export default function UploadAirLineCharges() {
             let spreadSurArray = surchargeValuesArray?.map((item) => {
                 return item.flat(Infinity)
             });
-
+            let finalArray = spreadSurArray?.reduce((acc, val) => acc.concat(val), []);
             let data = {
                 ...(value?.carrierName && {
                     "tenantCarrierVendor": {
@@ -209,7 +209,7 @@ export default function UploadAirLineCharges() {
                     },
                 }),
                 ...(value?.bookingMode && { "bookingModeType": value?.bookingMode?.value || "MAWB" }),
-                "vendorAirlineChargeValues": spreadSurArray[0]
+                "vendorAirlineChargeValues": finalArray
             }
             dispatch(postAirlineChargesData(data));
             formik.resetForm();
