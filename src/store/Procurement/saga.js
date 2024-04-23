@@ -181,6 +181,7 @@ function* postAirPortLocalChargesData({ payload: { dataObj } }) {
     try {
         const response = yield call(postAirPortLocalUploadSer, dataObj);
         console.log(response, "response port local");
+        yield put({ type: GET_AIR_PORT_LOCAL_CHARGES_BY_ID_SUCCESS, payload: response });
         showSuccessToast("Update Successfully");
     } catch (error) {
         showErrorToast(error?.response?.data?.message);

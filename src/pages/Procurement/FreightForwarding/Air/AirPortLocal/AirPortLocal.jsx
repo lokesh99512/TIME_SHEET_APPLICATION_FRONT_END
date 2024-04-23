@@ -1,17 +1,14 @@
-import React, { useEffect, useMemo, useReducer, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap'
-
-import { edit_icon } from '../../../../../assets/images'
-import { airPortLocalBreadcrumb } from '../../../../../common/data/procurement'
-import TopBreadcrumbs from '../../../../Settings/Surcharge/TopBreadcrumbs'
-import { CommonValue } from '../../partials/OceanCol'
-import AirPortLocalTableReact from './partials/AirPortLocalTableReact'
-import FilterAirPortCanvasComp from './partials/FilterAirPortCanvasComp'
-import { getAIrPortLocalChargesData, getAirPortLocalChargesById } from '../../../../../store/Procurement/actions'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap';
+import { edit_icon } from '../../../../../assets/images';
+import { airPortLocalBreadcrumb } from '../../../../../common/data/procurement';
+import TopBreadcrumbs from '../../../../Settings/Surcharge/TopBreadcrumbs';
+import { CommonValue } from '../../partials/OceanCol';
+import AirPortLocalTableReact from './partials/AirPortLocalTableReact';
+import FilterAirPortCanvasComp from './partials/FilterAirPortCanvasComp';
+import { getAIrPortLocalChargesData, getAirPortLocalChargesById } from '../../../../../store/Procurement/actions';
 import { useNavigate } from 'react-router-dom';
-import { Edit } from '../../../../Settings/SettingsCol'
 
 const AirPortLocal = () => {
     const [isRight, setIsRight] = useState(false);
@@ -67,28 +64,25 @@ const AirPortLocal = () => {
 
     useEffect(() => {
         dispatch(getAIrPortLocalChargesData());
-    }, [dispatch]);
+    }, []);
 
     const navigate = useNavigate();
-    const editHandler = (rowData) => {
-        dispatch(getAirPortLocalChargesById(rowData?.id))
-        navigate(`/air/port-local/upload`)
+
+    const editHandler = async (rowData) => {
+       await dispatch(getAirPortLocalChargesById(rowData?.id))
+        navigate("/air/port-local/upload", {
+            state: {
+                id: rowData?.id || '',
+            },
+        })
     }
+
 
     const switchHandler = (rowData) => {
 
     }
 
     const columns = useMemo(() => [
-        // {
-        //     Header: 'Surcharge ID',
-        //     accessor: 'id',
-        //     filterable: true,
-        //     disableFilters: true,
-        //     Cell: (cellProps) => {
-        //         return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-        //     }
-        // },
         {
             Header: 'Surcharge Category',
             accessor: "surchargeCategoryName",
@@ -164,35 +158,37 @@ const AirPortLocal = () => {
         {
             Header: 'Action',
             Cell: (cellProps) => {
-                return <Edit cellProps={cellProps} viewPopupHandler={editHandler} />
-                    // <UncontrolledDropdown>
-                    //     <DropdownToggle className="btn btn-link text-muted py-1 font-size-16 shadow-none" tag="a">
-                    //         <i className='bx bx-dots-vertical-rounded'></i>
-                    //     </DropdownToggle>
-                    //     <DropdownMenu className="dropdown-menu-end">
-                    //         <DropdownItem>Edit <Edit cellProps={cellProps} viewPopupHandler={editHandler} /></DropdownItem>
-                    //         <DropdownItem onClick={(e) => e.stopPropagation()}>
-                    //             Activate
-                    //             <div className="switch_wrap">
-                    //                 <FormGroup switch>
-                    //                     <Input
-                    //                         type="switch"
-                    //                         checked={cellProps.row.original?.is_active || false}
-                    //                         onClick={() => {
-                    //                             switchHandler(cellProps.row.original);
-                    //                         }}
-                    //                         readOnly
-                    //                     />
-                    //                 </FormGroup>
-                    //             </div>
-                    //         </DropdownItem>
-                    //     </DropdownMenu>
-                    // </UncontrolledDropdown>
-                
+                return (
+                    <UncontrolledDropdown>
+                        <DropdownToggle className="btn btn-link text-muted py-1 font-size-16 shadow-none" tag="a">
+                            <i className='bx bx-dots-vertical-rounded'></i>
+                        </DropdownToggle>
+                        <DropdownMenu className="dropdown-menu-end">
+                            <DropdownItem onClick={(e) => { e.stopPropagation(); editHandler(cellProps.row.original); }}>
+                                Edit <img src={edit_icon} alt="Edit" />
+                            </DropdownItem>
+                            <DropdownItem onClick={(e) => e.stopPropagation()}>
+                                Activate
+                                <div className="switch_wrap">
+                                    <FormGroup switch>
+                                        <Input
+                                            type="switch"
+                                            checked={cellProps.row.original?.is_active || false}
+                                            onClick={() => {
+                                                switchHandler(cellProps.row.original);
+                                            }}
+                                            readOnly
+                                        />
+                                    </FormGroup>
+                                </div>
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
+                )
             }
         },
-    ]);
-    document.title = "Air Port & Local Charges || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
+    ], []);
+
     return (
         <>
             <div className="page-content">

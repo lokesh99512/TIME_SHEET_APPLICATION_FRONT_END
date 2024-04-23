@@ -6,6 +6,8 @@ import { Row, Table } from 'reactstrap';
 import { filter_icon, upload_icon } from '../../../../../../assets/images';
 import { DefaultColumnFilter, Filter } from '../../../../../../components/Common/filters';
 import TableCommonSkeleton from '../../../../../Skeleton/TableCommonSkeleton';
+import { GET_AIR_PORT_LOCAL_CHARGES_BY_ID_SUCCESS } from '../../../../../../store/Procurement/actiontype';
+import { useDispatch } from 'react-redux';
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -58,7 +60,7 @@ const AirPortLocalTableReact = ({ columns, data, isGlobalFilter, loader, customP
         useExpanded,
         usePagination,);
     const navidate = useNavigate();
-
+    const dispatch = useDispatch();
     return (
         <>
             <div className="freight_filter_wrap d-flex align-items-center">
@@ -81,7 +83,7 @@ const AirPortLocalTableReact = ({ columns, data, isGlobalFilter, loader, customP
                         </button>
                     </div> */}
                     <div className="add_btn">
-                        <button className='border-0' onClick={() => { navidate(`/air/port-local/upload`); }}>
+                        <button className='border-0' onClick={() => { navidate(`/air/port-local/upload`);  dispatch({ type: GET_AIR_PORT_LOCAL_CHARGES_BY_ID_SUCCESS, payload: {} }); }}>
                             <i className='bx bx-plus align-middle'></i> Add
                         </button>
                     </div>

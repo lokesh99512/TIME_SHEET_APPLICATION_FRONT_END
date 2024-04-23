@@ -1,13 +1,13 @@
 import { FieldArray, FormikProvider, useFormik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, version } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { Card, CardBody, Col, Container, FormFeedback, Input, Row } from "reactstrap";
 import { optionMovementType } from "../../../../../../common/data/procurement";
 import { isAnyValueEmpty } from "../../../../../../components/Common/CommonLogic";
 import { GET_CARGO_TYPE_DATA, GET_COMMODITY_DATA, GET_CONTAINER_DATA, GET_UOM_DATA } from "../../../../../../store/Global/actiontype";
-import { postAirPortLocalChargesData } from "../../../../../../store/Procurement/actions";
+import { getAirPortLocalChargesById, postAirPortLocalChargesData } from "../../../../../../store/Procurement/actions";
 import { GET_AIR_LOCATION_TYPE } from "../../../../../../store/InstantRate/actionType";
 import * as Yup from "yup";
 
@@ -22,13 +22,30 @@ export default function UploadAirPortLocalChargesData() {
         surchargeCategory_data, vendor_data, commodity_data, surchargeCode_data, UOM_data, currency_data, cargoType_data, container_data,
     } = useSelector(state => state?.globalReducer);
     const { airLocation } = useSelector((state) => state.instantRate);
+    const { airportLocalChargesDataById } = useSelector(state => state.procurement)
     const [optionVendorName, setOptionVendorName] = useState([]);
     const [optionCarrierName, setOptionCarrierName] = useState([]);
     const [addTermsModal, setAddTermsModal] = useState({ isOpen: false, id: "" });
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    let generalContainerOpt = container_data?.filter((item) => item.value !== "20RF" && item.value !== "40RF");
-    let refrigeContainerOpt = container_data?.filter((item) => item.value === "20RF" || item.value === "40RF");
+    const navigateState = useLocation();
+
+    const onCloseClick = () => {
+        setAddTermsModal((prev) => ({ ...prev, isOpen: false, id: "" }));
+    };
+
+    const setTermHandler = (obj) => {
+        formik.setFieldValue(`mainBox[${addTermsModal.id}].addTerms`, obj);
+    };
+    useEffect(() => {
+        dispatch({ type: GET_CARGO_TYPE_DATA });
+        dispatch({ type: GET_CONTAINER_DATA });
+        dispatch({ type: GET_UOM_DATA });
+        dispatch({ type: GET_AIR_LOCATION_TYPE });
+        dispatch({ type: GET_COMMODITY_DATA });
+        if (!!navigateState?.state?.id)
+            dispatch(getAirPortLocalChargesById(navigateState?.state?.id))
+    }, [])
 
     useEffect(() => {
         let vendorlist = vendor_data?.content?.map((item) => {
@@ -40,27 +57,36 @@ export default function UploadAirPortLocalChargesData() {
         setOptionCarrierName(carrierList);
     }, [vendor_data]);
 
-    const onCloseClick = () => {
-        setAddTermsModal((prev) => ({ ...prev, isOpen: false, id: "" }));
-    };
-
-    const setTermHandler = (obj) => {
-        formik.setFieldValue(`mainBox[${addTermsModal.id}].addTerms`, obj);
-    };
-
 
     const formik = useFormik({
         initialValues: {
-            chargeCategory: "",
-            portName: "",
+            chargeCategory: airportLocalChargesDataById?.surchargeCategory || "",
+            portName: airportLocalChargesDataById?.airPort || "",
             terminalName: "",
-            movementType: "",
-            carrierName: "",
-            vendorName: "",
-            validityFrom: "",
-            validityTo: "",
-            mainBox: [
-                {
+            movementType: airportLocalChargesDataById?.movementType || "",
+            carrierName: airportLocalChargesDataById?.tenantCarrierVendor || "",
+            vendorName: airportLocalChargesDataById?.tenantVendor || "",
+            validityFrom: airportLocalChargesDataById?.validFrom || "",
+            validityTo: airportLocalChargesDataById?.validTo || '',
+            ...(!!(navigateState?.state?.id) && {
+                mainBox: airportLocalChargesDataById?.vendorAirportChargeDetails?.map(chargeDetail => ({
+                    chargeCode: chargeDetail?.surchargeCode ? chargeDetail.surchargeCode : "",
+                    chargeBasis: chargeDetail?.unitOfMeasurement ? chargeDetail.unitOfMeasurement : "",
+                    currency: chargeDetail?.currency ? chargeDetail.currency : "",
+                    tax: chargeDetail?.tax || "",
+                    isSlab: chargeDetail?.vendorAirportChargeValues?.some(chargeValue => chargeValue.fromSlab || chargeValue.toSlab),
+                    addTerms: {},
+                    subBox: chargeDetail?.vendorAirportChargeValues?.map(chargeValue => ({
+                        cargoType: chargeValue?.cargoType ? [chargeValue.cargoType] : "",
+                        commodity: chargeValue?.commodity ? [chargeValue.commodity] : "",
+                        minValue: chargeValue?.minValue || "",
+                        fromSlab: chargeValue?.fromSlab || "",
+                        toSlab: chargeValue?.toSlab || "",
+                        rate: chargeValue?.rate || "",
+                    })),
+                }))
+            }) || {
+                mainBox: [{
                     chargeCode: "",
                     chargeBasis: "",
                     currency: "",
@@ -76,9 +102,12 @@ export default function UploadAirPortLocalChargesData() {
                         toSlab: "",
                         rate: "",
                     }],
-                },
-            ],
+                }],
+            }
         },
+
+
+
         validationSchema: Yup.object({
             mainBox: Yup.array().of(
                 Yup.object().shape({
@@ -128,6 +157,7 @@ export default function UploadAirPortLocalChargesData() {
         }),
 
         onSubmit: (value) => {
+            console.log(value);
             let surchargeValuesArray = value?.mainBox?.map((item) => {
                 let newData = item?.subBox?.map((subItem, subIndex) => {
                     let cargoTypeData = subItem?.cargoType?.map((cargoType) => {
@@ -145,12 +175,7 @@ export default function UploadAirPortLocalChargesData() {
                                         "version": commodity?.version || 0
                                     }
                                 }),
-                                ...(item?.currency && {
-                                    "currency": {
-                                        "id": item?.currency?.id || '',
-                                        "version": item?.currency?.version || 0
-                                    }
-                                }),
+
                                 ...(subItem?.fromSlab && { "fromSlab": subItem?.fromSlab || 0 }),
                                 ...(subItem?.toSlab && { "toSlab": subItem?.toSlab || 0 }),
                                 ...(subItem?.rate && { "rate": subItem?.rate || 0 }),
@@ -170,6 +195,10 @@ export default function UploadAirPortLocalChargesData() {
             });
 
             let data = {
+                ...(airportLocalChargesDataById && {
+                    id: airportLocalChargesDataById?.id || "",
+                    version: airportLocalChargesDataById?.version || 0
+                }),
                 ...(value?.chargeCategory && {
                     "surchargeCategory": {
                         "id": value?.chargeCategory?.id || 0,
@@ -213,7 +242,12 @@ export default function UploadAirPortLocalChargesData() {
                                 "version": item?.chargeCode?.version || 0
                             }
                         }),
-
+                        ...(item?.currency && {
+                            "currency": {
+                                "id": item?.currency?.id || '',
+                                "version": item?.currency?.version || 0
+                            }
+                        }),
                         ...(item?.tax && { "tax": item?.tax || 0 }),
                         ...(item?.chargeBasis && {
                             "unitOfMeasurement": {
@@ -227,21 +261,11 @@ export default function UploadAirPortLocalChargesData() {
                     }
                 })
             }
-
-
-
             dispatch(postAirPortLocalChargesData(data));
-            formik.resetForm();
+            // formik.resetForm();
         },
     });
 
-    useEffect(() => {
-        dispatch({ type: GET_CARGO_TYPE_DATA });
-        dispatch({ type: GET_CONTAINER_DATA });
-        dispatch({ type: GET_UOM_DATA });
-        dispatch({ type: GET_AIR_LOCATION_TYPE });
-        dispatch({ type: GET_COMMODITY_DATA });
-    }, [dispatch])
 
     return (
         <>
@@ -266,7 +290,7 @@ export default function UploadAirPortLocalChargesData() {
                                             <div className="col-md-6 col-lg-4 mb-4">
                                                 <label className="form-label">Charge Category</label>
                                                 <Select
-                                                    value={formik.values.chargeCategory || ""}
+                                                    value={surchargeCategory_data ? surchargeCategory_data.find((option) => option.value === formik?.values?.chargeCategory?.name) : ""}
                                                     onChange={(e) => {
                                                         formik.setFieldValue(`chargeCategory`, e);
                                                     }}
@@ -282,7 +306,7 @@ export default function UploadAirPortLocalChargesData() {
                                                 <label className="form-label">AirPort Name<span className='required_star'>*</span></label>
                                                 <Select
                                                     name="portName"
-                                                    value={formik.values.portName || ""}
+                                                    value={airLocation ? airLocation.find((option) => option.value === formik?.values?.portName?.name) : ""}
                                                     onChange={(e) => {
                                                         formik.setFieldValue(`portName`, e);
                                                     }}
@@ -313,7 +337,7 @@ export default function UploadAirPortLocalChargesData() {
                                                 <label className="form-label">Movement Type<span className='required_star'>*</span></label>
                                                 <Select
                                                     name="movementType"
-                                                    value={formik.values.movementType || ""}
+                                                    value={optionMovementType ? optionMovementType.find((option) => option.value === formik.values.movementType) : ""}
                                                     onChange={(e) => {
                                                         formik.setFieldValue(`movementType`, e);
                                                     }}
@@ -328,7 +352,7 @@ export default function UploadAirPortLocalChargesData() {
                                                 <label className="form-label">Carrier Name<span className='required_star'>*</span></label>
                                                 <Select
                                                     name="carrierName"
-                                                    value={formik.values.carrierName || ""}
+                                                    value={optionCarrierName ? optionCarrierName.find((option) => option.value === formik.values.carrierName?.name) : ""}
                                                     onChange={(e) => {
                                                         formik.setFieldValue(`carrierName`, e);
                                                     }}
@@ -343,7 +367,7 @@ export default function UploadAirPortLocalChargesData() {
                                                 <label className="form-label">Agent Name</label>
                                                 <Select
                                                     name="vendorName"
-                                                    value={formik.values.vendorName || ""}
+                                                    value={optionVendorName ? optionVendorName.find((option) => option.value === formik.values.vendorName?.name) : ""}
                                                     onChange={(e) => {
                                                         formik.setFieldValue(`vendorName`, e);
                                                     }}
@@ -389,7 +413,7 @@ export default function UploadAirPortLocalChargesData() {
                                                 {(arrayHelpers, i) => {
                                                     return (
                                                         <React.Fragment key={i}>
-                                                            {formik.values.mainBox.length > 0 &&
+                                                            {formik.values.mainBox && formik.values.mainBox.length > 0 &&
                                                                 formik.values.mainBox.map((item, index) => (
                                                                     <Card key={index} className={`sub_field_wrap`}>
                                                                         <CardBody>
@@ -399,7 +423,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                     <label className="form-label"> Charge Code<span className='required_star'>*</span></label>
                                                                                     <Select
                                                                                         name={`mainBox[${index}].chargeCode`}
-                                                                                        value={formik.values.mainBox[index].chargeCode || ""}
+                                                                                        value={surchargeCode_data ? surchargeCode_data.find((option) => option.value === formik.values.mainBox[index].chargeCode?.code) : ""}
                                                                                         onChange={(e) => {
                                                                                             if (e.label == "Add New") {
                                                                                                 navigate("/freight/ocean/upload/fcl-pl/add-new", { state: { id: 'fcl-pl' } })
@@ -436,7 +460,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                     <label className="form-label"> Charge Basis<span className='required_star'>*</span></label>
                                                                                     <Select
                                                                                         name={`mainBox[${index}].chargeBasis`}
-                                                                                        value={formik.values.mainBox[index].chargeBasis || ""}
+                                                                                        value={UOM_data ? UOM_data.find((option) => option.value === formik.values.mainBox[index].chargeBasis.code) : ""}
                                                                                         onChange={(e) => {
                                                                                             formik.setFieldValue(`mainBox[${index}].chargeBasis`, e);
                                                                                         }}
@@ -467,7 +491,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                     <label className="form-label"> Currency<span className='required_star'>*</span></label>
                                                                                     <Select
                                                                                         name={`mainBox[${index}].currency`}
-                                                                                        value={formik.values.mainBox[index].currency || ""}
+                                                                                        value={currency_data ? currency_data.find((option) => option.value === formik.values.mainBox[index].currency.currencyName) : ""}
                                                                                         onChange={(e) => {
                                                                                             formik.setFieldValue(`mainBox[${index}].currency`, e);
                                                                                         }}
@@ -605,7 +629,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                         return (
                                                                                             <Card key={i}>
                                                                                                 <CardBody>
-                                                                                                    {item.subBox.length > 0 && item.subBox.map((subItem, subIndex) => {
+                                                                                                    {item.subBox && item.subBox.length > 0 && item.subBox.map((subItem, subIndex) => {
                                                                                                         return (
                                                                                                             <React.Fragment key={subIndex}>
                                                                                                                 {(
@@ -615,7 +639,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                             <label className="form-label"> Cargo Type<span className='required_star'>*</span></label>
                                                                                                                             <Select
                                                                                                                                 name={`mainBox[${index}].subBox[${subIndex}].cargoType`}
-                                                                                                                                value={formik.values.mainBox[index].subBox[subIndex].cargoType || ''}
+                                                                                                                                value={cargoType_data ? cargoType_data.find((option) => option.value === formik.values.mainBox[index].subBox[subIndex].cargoType[0]?.type) : ""}
                                                                                                                                 onChange={(e) => {
                                                                                                                                     formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].cargoType`, e);
                                                                                                                                 }}
@@ -654,8 +678,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                             <label className="form-label"> Commodity</label>
                                                                                                                             <Select
                                                                                                                                 name={`mainBox[${index}].subBox[${subIndex}].commodity`}
-                                                                                                                                value={formik.values.mainBox[index].subBox[subIndex].commodity || ''}
-                                                                                                                                isMulti
+                                                                                                                                value={commodity_data ? commodity_data.find((option) => option.value === formik.values.mainBox[index].subBox[subIndex].commodity[0]?.name) : ""}
                                                                                                                                 onChange={(e) => {
                                                                                                                                     formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].commodity`, e);
                                                                                                                                 }}
