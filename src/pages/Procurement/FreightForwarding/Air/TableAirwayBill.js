@@ -45,7 +45,7 @@ function GlobalFilter({
 }
 
 const TableAirwayBill = ({ columns, data, isGlobalFilter, customPageSize, toggleRightCanvas, component, loader }) => {
-    
+
     const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow, canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize, state, preGlobalFilteredRows, setGlobalFilter, state: { pageIndex, pageSize }, } = useTable({
         columns,
         data,
@@ -107,36 +107,42 @@ const TableAirwayBill = ({ columns, data, isGlobalFilter, customPageSize, toggle
                         </thead>
 
                         <tbody {...getTableBodyProps()}>
-                            {page.map(row => {
-                                prepareRow(row);
-                                return (
-                                    <Fragment key={row.getRowProps().key}>
-                                        <tr>
-                                            {row.cells.map(cell => {
-                                                return (
-                                                    <td key={cell.id} {...cell.getCellProps()} style={{ backgroundColor: cell?.row?.original?.is_active === false ? "#D3D3D3" : "" }}>
-                                                        {cell.render("Cell")}
+                            {loader ? (
+                                <TableCommonSkeleton tdCount={headerGroups[0].headers.length} />
+                            ) : (
+                                <Fragment>
+                                    {page.map(row => {
+                                        prepareRow(row);
+                                        return (
+                                            <Fragment key={row.getRowProps().key}>
+                                                <tr>
+                                                    {row.cells.map(cell => {
+                                                        return (
+                                                            <td key={cell.id} {...cell.getCellProps()} style={{ backgroundColor: cell?.row?.original?.is_active === false ? "#D3D3D3" : "" }}>
+                                                                {cell.render("Cell")}
+                                                            </td>
+                                                        );
+                                                    })}
+                                                </tr>
+                                            </Fragment>
+                                        );
+                                    })}
+                                    {page?.length === 0 && (
+                                        <>
+                                            {loader ? (
+                                                <TableCommonSkeleton tdCount={headerGroups[0].headers.length} />
+                                            ) :
+                                                <tr>
+                                                    <td colSpan={headerGroups[0].headers.length}>
+                                                        <div className='no_table_data_found'>
+                                                            <p>No Data Found.</p>
+                                                        </div>
                                                     </td>
-                                                );
-                                            })}
-                                        </tr>
-                                    </Fragment>
-                                );
-                            })}
-                            {page?.length === 0 && (
-                                <>
-                                    {loader ? (
-                                        <TableCommonSkeleton tdCount={headerGroups[0].headers.length} />
-                                    ) :
-                                        <tr>
-                                            <td colSpan={headerGroups[0].headers.length}>
-                                                <div className='no_table_data_found'>
-                                                    <p>No Data Found.</p>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    }
-                                </>
+                                                </tr>
+                                            }
+                                        </>
+                                    )}
+                                </Fragment>
                             )}
                         </tbody>
                     </Table>

@@ -78,7 +78,7 @@ const AddRole = () => {
         }),
         onSubmit: (values) => {
             const role = {
-                id: (role_data_By_id?.id) ? role_data_By_id?.id: navigateState?.state?.data?.id || '',
+                id: (role_data_By_id?.id) ? role_data_By_id?.id: navigateState?.state?.data?.id ? navigateState?.state?.data?.id: roleFormik.values.roleCode || '',
                  name: values.roleName,
                  version:(role_data_By_id?.version) ? role_data_By_id?.version: navigateState?.state?.data?.version || 0 }
             dispatch(saveRole(role))

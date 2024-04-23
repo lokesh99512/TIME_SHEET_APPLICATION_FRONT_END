@@ -63,7 +63,24 @@ const airPortLocalBreadcrumb = [
         active: false
     },
     {
-        label: 'Port & Local Charges',
+        label: 'Air Port & Local Charges',
+        link: '/#',
+        active: true
+    },
+]
+const airLineChargesBreadcrumb = [   
+    {
+        label: 'Procurement',
+        link: '/#',
+        active: false
+    },
+    {
+        label: 'Air Freight',
+        link: '/#',
+        active: false
+    },
+    {
+        label: 'Airline Charges',
         link: '/#',
         active: true
     },
@@ -7447,6 +7464,10 @@ const optionMovementType = [
     { label: "IMPORT", value: "IMPORT" },
     { label: "EXPORT", value: "EXPORT" },
 ]
+const optionBookingType = [
+    { label: "MAWB", value: "MAWB" },
+    { label: "CONSOLE", value: "CONSOLE" },
+]
 const optionValidityApp = [
     { label: "SAILING DATE", value: "SAILING_DATE" },
     { label: "CARGO HANDOVER DATE", value: "CARGO_HANDOVER_DATE" }
@@ -7575,5 +7596,5 @@ export {
     optcurrency, optionOrgPort, optionDestPort, optionCargoType, optionMovementType, optionPortlocalOrgPort,
     optionChargeBasis, optionCalculationType, optionContainerType, optionServiceType, optionIsStandard,instantRateBreadcrumb,airPortLocalBreadcrumb,
 
-    optionAirline,optionBookingMode, optionMode, optionStatus
+    optionAirline,optionBookingMode, optionMode, optionStatus,airLineChargesBreadcrumb,optionBookingType
 };

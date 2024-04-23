@@ -1,4 +1,4 @@
-import { GET_ALL_MODULES_BY_ROLE_TYPE_SUCCEESS, GET_CARGO_TYPE_DATA_SUCCEESS, GET_CONTAINER_DATA_SUCCEESS, GET_CURRENCY_DETAIL_SUCCESS, GET_MODULE_LOADER_TYPE, GET_MODULE_TYPE_SUCCEESS, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_ROLE_BY_ID_TYPE_SUCCEESS, GET_ROLE_LOADER_TYPE, GET_ROLE_TYPE_SUCCEESS, GET_STATE_ALL_TYPE_SUCCEESS, GET_SURCHARGE_ALICE_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA_SUCCESS, GET_UOM_WEIGHT_DATA_SUCCESS, GET_VENDOR_DETAILS_SUCCESS, SAVE_ROLE_TYPE_SUCCEESS } from "./actiontype";
+import { GET_ALL_MODULES_BY_ROLE_TYPE_SUCCEESS, GET_CARGO_TYPE_DATA_SUCCEESS, GET_COMMODITY_DATA_SUCCEESS, GET_CONTAINER_DATA_SUCCEESS, GET_CURRENCY_DETAIL_SUCCESS, GET_MODULE_LOADER_TYPE, GET_MODULE_TYPE_SUCCEESS, GET_OCEAEN_PORT_DATA_SUCCEESS, GET_ROLE_BY_ID_TYPE_SUCCEESS, GET_ROLE_LOADER_TYPE, GET_ROLE_TYPE_SUCCEESS, GET_STATE_ALL_TYPE_SUCCEESS, GET_SURCHARGE_ALICE_DATA_SUCCEESS, GET_SURCHARGE_CATEGORY_DATA_SUCCESS, GET_SURCHARGE_CODE_DATA_SUCCESS, GET_UOM_DATA_SUCCESS, GET_UOM_WEIGHT_DATA_SUCCESS, GET_VENDOR_DETAILS_SUCCESS, SAVE_ROLE_TYPE_SUCCEESS } from "./actiontype";
 
 const INIT_STATE = {
     vendor_data: [],
@@ -18,7 +18,8 @@ const INIT_STATE = {
     moduleData: [],
     module_loader: [],
     module_data_by_role: [],
-    role_data_By_id: []
+    role_data_By_id: [],
+    commodity_data:[]
 }
 
 const globalReducer = (state = INIT_STATE, action) => {
@@ -118,6 +119,18 @@ const globalReducer = (state = INIT_STATE, action) => {
                     }
                 })
             }
+            case GET_COMMODITY_DATA_SUCCEESS:
+                return {
+                    ...state,
+                    commodity_data: action.payload.content?.map((item) => {
+                        return {
+                            label: `${item?.name}`,
+                            value: `${item?.hsnCode}`,
+                            id: `${item?.id}`,
+                            version: `${item?.version}`,
+                        }
+                    })
+                }
         case GET_CONTAINER_DATA_SUCCEESS:
             return {
                 ...state,

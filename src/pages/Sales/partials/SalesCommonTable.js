@@ -8,6 +8,7 @@ import { DefaultColumnFilter, Filter } from '../../../components/Common/filters'
 import { SEARCH_QUOTATION_BLANK } from '../../../store/Sales/actiontype';
 import { QUOTATION_RESULT_SELECTED_BLANK } from '../../../store/InstantRate/actionType';
 import ReactPaginate from 'react-paginate';
+import TableCommonSkeleton from '../../Skeleton/TableCommonSkeleton';
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -47,7 +48,7 @@ function GlobalFilter({
     );
 }
 
-const SalesCommonTable = ({ columns, data, isGlobalFilter, customPageSize, toggleRightCanvas, component }) => {
+const SalesCommonTable = ({ columns, data, isGlobalFilter, customPageSize, toggleRightCanvas, component, loader }) => {
     const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow, canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize, state, preGlobalFilteredRows, setGlobalFilter, state: { pageIndex, pageSize }, } = useTable({
         columns,
         data,
@@ -78,7 +79,7 @@ const SalesCommonTable = ({ columns, data, isGlobalFilter, customPageSize, toggl
                         <button className='bg-transparent' onClick={toggleRightCanvas}><img src={filter_icon} alt="filter" /></button>
                     </div>
                     {component !== 'inquiry' && (
-                        <>                        
+                        <>
                             <div className="upload_wrap">
                                 <button className='bg-transparent'>
                                     <img src={upload_icon} alt="Upload" />Upload file
@@ -92,11 +93,11 @@ const SalesCommonTable = ({ columns, data, isGlobalFilter, customPageSize, toggl
                         </>
                     )}
                     {/* {component === 'inquiry' && ( */}
-                        <div className="add_btn">
-                            <button className='border-0' onClick={() => {navidate('/instant-rate/search-rate');dispatch({type: SEARCH_QUOTATION_BLANK});dispatch({type: QUOTATION_RESULT_SELECTED_BLANK});}}>
-                                <i className='bx bx-plus align-middle'></i> Instant Rate
-                            </button>
-                        </div>
+                    <div className="add_btn">
+                        <button className='border-0' onClick={() => { navidate('/instant-rate/search-rate'); dispatch({ type: SEARCH_QUOTATION_BLANK }); dispatch({ type: QUOTATION_RESULT_SELECTED_BLANK }); }}>
+                            <i className='bx bx-plus align-middle'></i> Instant Rate
+                        </button>
+                    </div>
                     {/* )} */}
                 </div>
             </div>
@@ -120,22 +121,28 @@ const SalesCommonTable = ({ columns, data, isGlobalFilter, customPageSize, toggl
                         </thead>
 
                         <tbody {...getTableBodyProps()}>
-                            {page.map(row => {
-                                prepareRow(row);
-                                return (
-                                    <Fragment key={row.getRowProps().key}>
-                                        <tr>
-                                            {row.cells.map(cell => {
-                                                return (
-                                                    <td key={cell.id} {...cell.getCellProps()}>
-                                                        {cell.render("Cell")}
-                                                    </td>
-                                                );
-                                            })}
-                                        </tr>
-                                    </Fragment>
-                                );
-                            })}
+                            {loader ? (
+                                <TableCommonSkeleton tdCount={headerGroups[0].headers.length} />
+                            ) : (
+                                <Fragment>
+                                    {page.map(row => {
+                                        prepareRow(row);
+                                        return (
+                                            <Fragment key={row.getRowProps().key}>
+                                                <tr>
+                                                    {row.cells.map(cell => {
+                                                        return (
+                                                            <td key={cell.id} {...cell.getCellProps()}>
+                                                                {cell.render("Cell")}
+                                                            </td>
+                                                        );
+                                                    })}
+                                                </tr>
+                                            </Fragment>
+                                        );
+                                    })}
+                                </Fragment>
+                              )}
                         </tbody>
                     </Table>
                 </div>

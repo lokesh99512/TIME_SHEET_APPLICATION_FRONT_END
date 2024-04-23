@@ -9,8 +9,8 @@ export const postAirUploadService = (data) => post(url.Post_Air_destination_Data
         }
     })
 
-export const uploadAirRateData = ({formData, id}) => 
-postFormData(url.Upload_Air_rate_data_ + id, formData, {
+export const uploadAirRateData = ({formData}) => 
+postFormData(url.Upload_Air_rate_data_ , formData, {
     headers: {
         'Content-Type': 'multipart/form-data',
     }
@@ -30,8 +30,8 @@ export const postAirConsoleUploadService = (data) => post(url.Post_Air_destinati
         }
     })
 
-export const uploadConsoleAirRateData = ({formData, id}) => 
-postFormData(url.Upload_Air_rate_data_Console_ + id, formData, {
+export const uploadConsoleAirRateData = ({formData}) => 
+postFormData(url.Upload_Air_rate_data_Console_ , formData, {
     headers: {
         'Content-Type': 'multipart/form-data',
     }
@@ -41,3 +41,11 @@ postFormData(url.Upload_Air_rate_data_Console_ + id, formData, {
 export const fetcAirConsoleTableData = () => get(url.GET_AIR_MWB_DATA_Console);
 
 export const fetcAirFreighConsoletData = (id) => get(url.GET_AIR_MWB_DATA_Console + id);
+
+//Air local Changes
+export const getAirPortLocalChargesTableData = () => get(url.GET_AIR_PORT_LOCAL_CHARGES_ALL);
+export const postAirPortLocalUploadSer = (dataObj) => postFormData(url.Upload_Air_Port_Local_Data, dataObj);
+
+//Air line charges
+export const getAirLineTableData = () => get(url.GET_AIR_LINE_CHARGES_ALL);
+export const postAirLineUploadSer = (dataObj) => postFormData(url.Upload_Airline_Charge_Data, dataObj);

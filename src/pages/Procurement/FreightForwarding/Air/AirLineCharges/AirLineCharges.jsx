@@ -3,21 +3,23 @@ import { useDispatch } from 'react-redux'
 import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, UncontrolledDropdown } from 'reactstrap'
 
 import { edit_icon } from '../../../../../assets/images'
-import { airPortLocalBreadcrumb } from '../../../../../common/data/procurement'
+import { airLineChargesBreadcrumb } from '../../../../../common/data/procurement'
 import TopBreadcrumbs from '../../../../Settings/Surcharge/TopBreadcrumbs'
 import { CommonValue } from '../../partials/OceanCol'
-import AirPortLocalTableReact from './partials/AirPortLocalTableReact'
-import FilterAirPortCanvasComp from './partials/FilterAirPortCanvasComp'
-import { getAIrPortLocalChargesData } from '../../../../../store/Procurement/actions'
+// import FilterAirPortCanvasComp from './partials/FilterAirPortCanvasComp'
+import { getAIrPortLocalChargesData, getAIrlineChargesData } from '../../../../../store/Procurement/actions'
 import { useSelector } from 'react-redux'
+import FilterAirPortCanvasComp from '../AirPortLocal/partials/FilterAirPortCanvasComp'
+import AirPortLocalTableReact from '../AirPortLocal/partials/AirPortLocalTableReact'
+import AirLineChargesTable from './AirLineChargesTable'
 
 
-const AirPortLocal = () => {
+const AirLineCharges = () => {
     const [isRight, setIsRight] = useState(false);
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
 
-    const {airportLocalChargesData,airportLocalChargesLoder} =useSelector(state=>state.procurement)
+    const {airLineChargesLoder,airLineChargesData} =useSelector(state=>state.procurement)
 
     const inputArr = {
         surcharge_category: '',
@@ -66,49 +68,49 @@ const AirPortLocal = () => {
     }
 
     useEffect(() => {
-        dispatch(getAIrPortLocalChargesData());
+        dispatch(getAIrlineChargesData());
     }, [dispatch]);
 
     const columns = useMemo(() => [
+        // {
+        //     Header: 'Charge Id',
+        //     accessor: 'id',
+        //     filterable: true,
+        //     disableFilters: true,
+        //     Cell: (cellProps) => {
+        //         return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+        //     }
+        // },
+        // {
+        //     Header: 'Surcharge Category',
+        //     accessor: (row) => `${row.surchargeCategory === null ? '' : row.surchargeCategory.name}`,
+        //     filterable: true,
+        //     disableFilters: true,
+        //     Cell: (cellProps) => {
+        //         return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+        //     }
+        // },
+        // {
+        //     Header: 'Port Name',
+        //     accessor: (row) => `${row.airPort === null ? '' : row.airPort.name}`,
+        //     filterable: true,
+        //     disableFilters: true,
+        //     Cell: (cellProps) => {
+        //         return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+        //     }
+        // },
+        // {
+        //     Header: 'Terminals',
+        //     accessor: 'terminals',
+        //     filterable: true,
+        //     disableFilters: true,
+        //     Cell: (cellProps) => {
+        //         return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+        //     }
+        // },
         {
-            Header: 'Surcharge ID',
-            accessor: 'id',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Surcharge Category',
-            accessor: (row) => `${row.surchargeCategory === null ? '' : row.surchargeCategory.name}`,
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Port Name',
-            accessor: (row) => `${row.airPort === null ? '' : row.airPort.name}`,
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Terminals',
-            accessor: 'terminals',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
-        {
-            Header: 'Movement Type',
-            accessor: 'movementType',
+            Header: 'Booking Mode',
+            accessor: 'bookingModeType',
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -133,15 +135,15 @@ const AirPortLocal = () => {
                 return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
-        {
-            Header: 'Valid Till',
-            accessor: 'validFrom',
-            filterable: true,
-            disableFilters: true,
-            Cell: (cellProps) => {
-                return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-            }
-        },
+        // {
+        //     Header: 'Valid Till',
+        //     accessor: 'validFrom',
+        //     filterable: true,
+        //     disableFilters: true,
+        //     Cell: (cellProps) => {
+        //         return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+        //     }
+        // },
         {
             Header: 'Action',
             Cell: (cellProps) => {
@@ -174,7 +176,7 @@ const AirPortLocal = () => {
             }
         },
     ]);
-    document.title = "Air Port & Local Charges || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
+    document.title = "Airline Charges || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
     return (
         <>
             <div className="page-content">
@@ -182,13 +184,13 @@ const AirPortLocal = () => {
                     <div className="main_freight_wrapper">
 
                         {/* breadcrumbs && rate */}
-                        <TopBreadcrumbs breadcrumbs={airPortLocalBreadcrumb} />
+                        <TopBreadcrumbs breadcrumbs={airLineChargesBreadcrumb} />
 
                         {/* React Table */}
-                        <AirPortLocalTableReact
+                        <AirLineChargesTable
                             columns={columns}
-                            loader={airportLocalChargesLoder}
-                            data={airportLocalChargesData || []}
+                             loader={airLineChargesLoder}
+                            data={airLineChargesData || []}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
                             customPageSize={10}
@@ -208,4 +210,4 @@ const AirPortLocal = () => {
     )
 }
 
-export default AirPortLocal
+export default AirLineCharges

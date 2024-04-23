@@ -3,9 +3,9 @@ import ReactPaginate from 'react-paginate';
 import { useNavigate } from 'react-router-dom';
 import { useAsyncDebounce, useExpanded, useFilters, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
 import { Row, Table } from 'reactstrap';
-import { filter_icon, upload_icon } from '../../../../../../assets/images';
-import { DefaultColumnFilter, Filter } from '../../../../../../components/Common/filters';
-import TableCommonSkeleton from '../../../../../Skeleton/TableCommonSkeleton';
+import { DefaultColumnFilter, Filter } from '../../../../../components/Common/filters';
+import TableCommonSkeleton from '../../../../Skeleton/TableCommonSkeleton';
+import { filter_icon } from '../../../../../assets/images';
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -45,7 +45,7 @@ function GlobalFilter({
     );
 }
 
-const AirPortLocalTableReact = ({ columns, data, isGlobalFilter, loader, customPageSize, toggleRightCanvas, component }) => {
+const AirLineChargesTable = ({ columns, data, isGlobalFilter, loader, customPageSize, toggleRightCanvas, component }) => {
     const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow, canPreviousPage, canNextPage, pageOptions, pageCount, gotoPage, nextPage, previousPage, setPageSize, state, preGlobalFilteredRows, setGlobalFilter, state: { pageIndex, pageSize }, } = useTable({
         columns,
         data,
@@ -81,7 +81,7 @@ const AirPortLocalTableReact = ({ columns, data, isGlobalFilter, loader, customP
                         </button>
                     </div> */}
                     <div className="add_btn">
-                        <button className='border-0' onClick={() => { navidate(`/air/port-local/upload`); }}>
+                        <button className='border-0' onClick={() => { navidate(`/air/line-charges/upload`); }}>
                             <i className='bx bx-plus align-middle'></i> Add
                         </button>
                     </div>
@@ -170,4 +170,4 @@ const AirPortLocalTableReact = ({ columns, data, isGlobalFilter, loader, customP
     )
 }
 
-export default AirPortLocalTableReact
+export default AirLineChargesTable

@@ -7,6 +7,7 @@ export const getUomData = () => get(`${url.Get_Uom_Data}`);
 export const getUomWeightData = () => get(url.Get_Uom_Data + '?weightParameterOnly=true');
 export const getOceanPortData = () => get(url.Get_Ocean_Port_Data);
 export const getCargoTypeData = () => get(url.Get_Cargo_Type_Data);
+export const getCommodityData = () => get(url.Get_commodity_data);
 export const getContainerData = () => get(url.Get_Container_Data);
 export const getStateAllSer = () => get(url.Get_State_ALL_URL);
 export const getRoleAllSer = () => get(url.ROLE_URL);

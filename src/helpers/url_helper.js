@@ -167,6 +167,7 @@ export const Get_surcharge_code_Data= "/api/v1/surcharge-code/"
 export const Get_surcharge_category_Data= "/api/v1/surcharge-category/"
 export const Get_Ocean_Port_Data= "/api/v1/ocean-port/"
 export const Get_Cargo_Type_Data= "/api/v1/cargo-type/"
+export const Get_commodity_data="/api/v1/commodity/"
 export const Get_Container_Data= "/api/v1/ocean-container/"
 export const Get_Surcharge_Alice_Data= "/api/v1/surcharge-alias/"
 export const Get_State_ALL_URL= "/api/v1/state/"
@@ -197,13 +198,20 @@ export const Upload_FCL_surcharge_Data= "/api/v1/tenant-ocean-fcl-rp/update/surc
 
 //Air
 export const Post_Air_destination_Data= "/api/v1/tenant-mawb-rp/"
-export const Upload_Air_rate_data_= "/api/v1/tenant-mawb-rp/upload/"
+export const Upload_Air_rate_data_= "/api/v1/tenant-mawb-rp/upload"
 export const GET_AIR_MWB_DATA= "/api/v1/tenant-mawb-rp/"
 
 //Air Console
 export const Post_Air_destination_Data_Console= "/api/v1/tenant-console-rp/"
-export const Upload_Air_rate_data_Console_= "/api/v1/tenant-console-rp/upload/"
+export const Upload_Air_rate_data_Console_= "/api/v1/tenant-console-rp/upload"
 export const GET_AIR_MWB_DATA_Console= "/api/v1/tenant-console-rp/"
+
+// Air port & local charges
+export const GET_AIR_PORT_LOCAL_CHARGES_ALL = "/api/v1/air-port-and-local-charges/"
+export const Upload_Air_Port_Local_Data= "/api/v1/air-port-and-local-charges/"
+
+export const GET_AIR_LINE_CHARGES_ALL = "/api/v1/air-line-charges/"
+export const Upload_Airline_Charge_Data= "/api/v1/air-line-charges/"
 
 // FCL Port & Local Charges
 export const GET_PORTLOCALCHARGES_ALL = "/api/v1/port-and-local-charges/"
