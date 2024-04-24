@@ -6,6 +6,7 @@ import { Row, Table } from 'reactstrap';
 import { DefaultColumnFilter, Filter } from '../../../../../components/Common/filters';
 import TableCommonSkeleton from '../../../../Skeleton/TableCommonSkeleton';
 import { filter_icon } from '../../../../../assets/images';
+import { GET_AIR_LINE_CHARGES_BY_ID_SUCCESS } from '../../../../../store/Procurement/actiontype';
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -81,7 +82,7 @@ const AirLineChargesTable = ({ columns, data, isGlobalFilter, loader, customPage
                         </button>
                     </div> */}
                     <div className="add_btn">
-                        <button className='border-0' onClick={() => { navidate(`/air/line-charges/upload`); }}>
+                        <button className='border-0' onClick={() => { navidate(`/air/line-charges/upload`);dispatch({ type: GET_AIR_LINE_CHARGES_BY_ID_SUCCESS, payload: {} }); }}>
                             <i className='bx bx-plus align-middle'></i> Add
                         </button>
                     </div>

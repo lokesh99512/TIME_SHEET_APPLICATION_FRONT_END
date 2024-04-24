@@ -69,7 +69,6 @@ const AirPortLocal = () => {
     const navigate = useNavigate();
 
     const editHandler = async (rowData) => {
-       await dispatch(getAirPortLocalChargesById(rowData?.id))
         navigate("/air/port-local/upload", {
             state: {
                 id: rowData?.id || '',

@@ -181,6 +181,7 @@ function* postAirPortLocalChargesData({ payload: { dataObj } }) {
     try {
         const response = yield call(postAirPortLocalUploadSer, dataObj);
         console.log(response, "response port local");
+        if(dataObj?.id)
         yield put({ type: GET_AIR_PORT_LOCAL_CHARGES_BY_ID_SUCCESS, payload: response });
         showSuccessToast("Update Successfully");
     } catch (error) {
@@ -190,7 +191,7 @@ function* postAirPortLocalChargesData({ payload: { dataObj } }) {
 
 function* fetchAirPortLocalChargesDataById({ payload: { id } }) {
     try {
-        const response = yield call(getAirPortLocalChargesTableDataById , id);
+        const response = yield call(getAirPortLocalChargesTableDataById, id);
         yield put({ type: GET_AIR_PORT_LOCAL_CHARGES_BY_ID_SUCCESS, payload: response });
     } catch (error) {
         console.log(error);
@@ -213,7 +214,7 @@ function* fetchAirLineChargesData({ payload }) {
 
 function* fetchAirLineChargesDataById({ payload: { id } }) {
     try {
-        const response = yield call(getAirLineTableDataById , id);
+        const response = yield call(getAirLineTableDataById, id);
         yield put({ type: GET_AIR_LINE_CHARGES_BY_ID_SUCCESS, payload: response });
     } catch (error) {
         console.log(error);
@@ -223,6 +224,8 @@ function* postAirLineChargesData({ payload: { dataObj } }) {
     try {
         const response = yield call(postAirLineUploadSer, dataObj);
         console.log(response, "response port local");
+        if(dataObj?.id)
+        yield put({ type: GET_AIR_LINE_CHARGES_BY_ID_SUCCESS, payload: response });
         showSuccessToast("Update Successfully");
     } catch (error) {
         showErrorToast(error?.response?.data?.message);
@@ -442,9 +445,9 @@ export function* watchGetProcureData() {
     yield takeEvery(GET_AIR_PORT_LOCAL_CHARGES_DATA, fetchAirPortLocalChargesData);
     yield takeEvery(UPLOAD_AIR_PORT_LOCAL_DATA, postAirPortLocalChargesData);
 
-    yield takeEvery( GET_AIR_LINE_CHARGES_DATA ,fetchAirLineChargesData);
+    yield takeEvery(GET_AIR_LINE_CHARGES_DATA, fetchAirLineChargesData);
     yield takeEvery(UPLOAD_AIR_LINE_DATA, postAirLineChargesData);
-    yield takeEvery(GET_AIR_PORT_LOCAL_CHARGES_BY_ID,fetchAirPortLocalChargesDataById)
+    yield takeEvery(GET_AIR_PORT_LOCAL_CHARGES_BY_ID, fetchAirPortLocalChargesDataById)
     yield takeEvery(GET_AIR_LINE_CHARGES_BY_ID, fetchAirLineChargesDataById)
 
 

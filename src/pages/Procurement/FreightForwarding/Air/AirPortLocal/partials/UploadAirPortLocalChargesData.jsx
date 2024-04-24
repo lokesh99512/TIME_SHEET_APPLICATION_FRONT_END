@@ -60,53 +60,32 @@ export default function UploadAirPortLocalChargesData() {
 
     const formik = useFormik({
         initialValues: {
-            chargeCategory: airportLocalChargesDataById?.surchargeCategory || "",
-            portName: airportLocalChargesDataById?.airPort || "",
+            chargeCategory: "",
+            portName: "",
             terminalName: "",
-            movementType: airportLocalChargesDataById?.movementType || "",
-            carrierName: airportLocalChargesDataById?.tenantCarrierVendor || "",
-            vendorName: airportLocalChargesDataById?.tenantVendor || "",
-            validityFrom: airportLocalChargesDataById?.validFrom || "",
-            validityTo: airportLocalChargesDataById?.validTo || '',
-            ...(!!(navigateState?.state?.id) && {
-                mainBox: airportLocalChargesDataById?.vendorAirportChargeDetails?.map(chargeDetail => ({
-                    chargeCode: chargeDetail?.surchargeCode ? chargeDetail.surchargeCode : "",
-                    chargeBasis: chargeDetail?.unitOfMeasurement ? chargeDetail.unitOfMeasurement : "",
-                    currency: chargeDetail?.currency ? chargeDetail.currency : "",
-                    tax: chargeDetail?.tax || "",
-                    isSlab: chargeDetail?.vendorAirportChargeValues?.some(chargeValue => chargeValue.fromSlab || chargeValue.toSlab),
-                    addTerms: {},
-                    subBox: chargeDetail?.vendorAirportChargeValues?.map(chargeValue => ({
-                        cargoType: chargeValue?.cargoType ? [chargeValue.cargoType] : "",
-                        commodity: chargeValue?.commodity ? [chargeValue.commodity] : "",
-                        minValue: chargeValue?.minValue || "",
-                        fromSlab: chargeValue?.fromSlab || "",
-                        toSlab: chargeValue?.toSlab || "",
-                        rate: chargeValue?.rate || "",
-                    })),
-                }))
-            }) || {
-                mainBox: [{
-                    chargeCode: "",
-                    chargeBasis: "",
-                    currency: "",
-                    tax: "",
-                    mainrate: "",
-                    isSlab: false,
-                    addTerms: {},
-                    subBox: [{
-                        cargoType: "",
-                        commodity: "",
-                        minValue: "",
-                        fromSlab: "",
-                        toSlab: "",
-                        rate: "",
-                    }],
+            movementType: "",
+            carrierName: "",
+            vendorName: "",
+            validityFrom: "",
+            validityTo: '',
+            mainBox: [{
+                chargeCode: "",
+                chargeBasis: "",
+                currency: "",
+                tax: "",
+                mainrate: "",
+                isSlab: false,
+                addTerms: {},
+                subBox: [{
+                    cargoType: "",
+                    commodity: "",
+                    minValue: "",
+                    fromSlab: "",
+                    toSlab: "",
+                    rate: "",
                 }],
-            }
+            }],
         },
-
-
 
         validationSchema: Yup.object({
             mainBox: Yup.array().of(
@@ -157,7 +136,6 @@ export default function UploadAirPortLocalChargesData() {
         }),
 
         onSubmit: (value) => {
-            console.log(value);
             let surchargeValuesArray = value?.mainBox?.map((item) => {
                 let newData = item?.subBox?.map((subItem, subIndex) => {
                     let cargoTypeData = subItem?.cargoType?.map((cargoType) => {
@@ -266,6 +244,63 @@ export default function UploadAirPortLocalChargesData() {
         },
     });
 
+    useEffect(() => {
+        formik.setValues({
+            ...formik.values,
+            ...(!!(navigateState?.state?.id) && {
+                chargeCategory: airportLocalChargesDataById?.surchargeCategory || "",
+                portName: airportLocalChargesDataById?.airPort || "",
+                terminalName: "",
+                movementType: airportLocalChargesDataById?.movementType || "",
+                carrierName: airportLocalChargesDataById?.tenantCarrierVendor || "",
+                vendorName: airportLocalChargesDataById?.tenantVendor || "",
+                validityFrom: airportLocalChargesDataById?.validFrom || "",
+                validityTo: airportLocalChargesDataById?.validTo || '',
+                mainBox: airportLocalChargesDataById?.vendorAirportChargeDetails?.map(chargeDetail => ({
+                    chargeCode: chargeDetail?.surchargeCode ? chargeDetail.surchargeCode : "",
+                    chargeBasis: chargeDetail?.unitOfMeasurement ? chargeDetail.unitOfMeasurement : "",
+                    currency: chargeDetail?.currency ? chargeDetail.currency : "",
+                    tax: chargeDetail?.tax || "",
+                    isSlab: chargeDetail?.vendorAirportChargeValues?.some(chargeValue => chargeValue.fromSlab || chargeValue.toSlab),
+                    addTerms: {},
+                    subBox: chargeDetail?.vendorAirportChargeValues?.map(chargeValue => ({
+                        cargoType: chargeValue?.cargoType ? [chargeValue.cargoType] : "",
+                        commodity: chargeValue?.commodity ? [chargeValue.commodity] : "",
+                        minValue: chargeValue?.minValue || "",
+                        fromSlab: chargeValue?.fromSlab || "",
+                        toSlab: chargeValue?.toSlab || "",
+                        rate: chargeValue?.rate || "",
+                    })),
+                }))
+            }) || {
+                chargeCategory: "",
+                portName: "",
+                terminalName: "",
+                movementType: "",
+                carrierName: "",
+                vendorName: "",
+                validityFrom: "",
+                validityTo: '',
+                mainBox: [{
+                    chargeCode: "",
+                    chargeBasis: "",
+                    currency: "",
+                    tax: "",
+                    mainrate: "",
+                    isSlab: false,
+                    addTerms: {},
+                    subBox: [{
+                        cargoType: "",
+                        commodity: "",
+                        minValue: "",
+                        fromSlab: "",
+                        toSlab: "",
+                        rate: "",
+                    }],
+                }],
+            }
+        });
+    }, [airportLocalChargesDataById]);
 
     return (
         <>
@@ -677,6 +712,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                         <div className="col-md-2 mb-2">
                                                                                                                             <label className="form-label"> Commodity</label>
                                                                                                                             <Select
+                                                                                                                                isMulti
                                                                                                                                 name={`mainBox[${index}].subBox[${subIndex}].commodity`}
                                                                                                                                 value={commodity_data ? commodity_data.find((option) => option.value === formik.values.mainBox[index].subBox[subIndex].commodity[0]?.name) : ""}
                                                                                                                                 onChange={(e) => {

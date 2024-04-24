@@ -7,7 +7,7 @@ import { airLineChargesBreadcrumb } from '../../../../../common/data/procurement
 import TopBreadcrumbs from '../../../../Settings/Surcharge/TopBreadcrumbs'
 import { CommonValue } from '../../partials/OceanCol'
 // import FilterAirPortCanvasComp from './partials/FilterAirPortCanvasComp'
-import { getAIrPortLocalChargesData, getAIrlineChargesData } from '../../../../../store/Procurement/actions'
+import { getAIrPortLocalChargesData, getAIrlineChargesData, getAirlineChargesDataById } from '../../../../../store/Procurement/actions'
 import { useSelector } from 'react-redux'
 import FilterAirPortCanvasComp from '../AirPortLocal/partials/FilterAirPortCanvasComp'
 import AirPortLocalTableReact from '../AirPortLocal/partials/AirPortLocalTableReact'
@@ -20,7 +20,7 @@ const AirLineCharges = () => {
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
 
-    const {airLineChargesLoder,airLineChargesData} =useSelector(state=>state.procurement)
+    const { airLineChargesLoder, airLineChargesData } = useSelector(state => state.procurement)
 
     const inputArr = {
         surcharge_category: '',
@@ -74,13 +74,16 @@ const AirLineCharges = () => {
 
     const navigate = useNavigate();
     const handleEdit = (rowData) => {
-         // dispatch(getAirPortLocalChargesById(rowData?.id))
-          navigate(`/air/port-local/upload`)
+        navigate(`/air/line-charges/upload`, {
+            state: {
+                id: rowData?.id || '',
+            },
+        })
     }
 
 
     const columns = useMemo(() => [
-       
+
         {
             Header: 'Booking Mode',
             accessor: 'bookingMode',
@@ -117,7 +120,7 @@ const AirLineCharges = () => {
                 return <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
-        
+
         {
             Header: 'Action',
             Cell: (cellProps) => {
@@ -149,7 +152,7 @@ const AirLineCharges = () => {
                 )
             }
         },
-    ]);
+    ], []);
     document.title = "Airline Charges || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
     return (
         <>
@@ -163,7 +166,7 @@ const AirLineCharges = () => {
                         {/* React Table */}
                         <AirLineChargesTable
                             columns={columns}
-                             loader={airLineChargesLoder}
+                            loader={airLineChargesLoder}
                             data={airLineChargesData || []}
                             isGlobalFilter={true}
                             isAddInvoiceList={true}
@@ -179,7 +182,7 @@ const AirLineCharges = () => {
             </div>
 
             {/* filter right sidebar */}
-            <FilterAirPortCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} />            
+            <FilterAirPortCanvasComp isRight={isRight} toggleRightCanvas={toggleRightCanvas} filterDetails={filterDetails} setfilterDetails={setfilterDetails} applyFilterHandler={applyFilterHandler} clearValueHandler={clearValueHandler} />
         </>
     )
 }

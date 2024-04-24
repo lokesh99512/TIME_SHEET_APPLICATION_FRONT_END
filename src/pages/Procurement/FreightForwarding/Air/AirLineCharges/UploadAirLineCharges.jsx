@@ -1,13 +1,13 @@
 import { FieldArray, FormikProvider, useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { Card, CardBody, Col, Container, FormFeedback, Input, Row } from "reactstrap";
 import { optionBookingType, optionMovementType } from "../../../../../common/data/procurement";
 import { isAnyValueEmpty } from "../../../../../components/Common/CommonLogic";
 import { GET_CARGO_TYPE_DATA, GET_COMMODITY_DATA, GET_CONTAINER_DATA, GET_UOM_DATA } from "../../../../../store/Global/actiontype";
-import { postAirlineChargesData } from "../../../../../store/Procurement/actions";
+import { getAirlineChargesDataById, postAirlineChargesData } from "../../../../../store/Procurement/actions";
 import { GET_AIR_LOCATION_TYPE } from "../../../../../store/InstantRate/actionType";
 import * as Yup from "yup";
 
@@ -19,7 +19,8 @@ export default function UploadAirLineCharges() {
     const [addTermsModal, setAddTermsModal] = useState({ isOpen: false, id: "" });
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
+    const navigateState = useLocation();
+    const { airLineChargesDataById } = useSelector(state => state.procurement)
     useEffect(() => {
         let vendorlist = vendor_data?.content?.map((item) => {
             return { label: item?.name, value: item?.name, version: item?.version, id: item?.id, type: item?.vendorType }
@@ -37,6 +38,16 @@ export default function UploadAirLineCharges() {
     const setTermHandler = (obj) => {
         formik.setFieldValue(`mainBox[${addTermsModal.id}].addTerms`, obj);
     };
+
+    useEffect(() => {
+        dispatch({ type: GET_CARGO_TYPE_DATA });
+        dispatch({ type: GET_CONTAINER_DATA });
+        dispatch({ type: GET_UOM_DATA });
+        dispatch({ type: GET_AIR_LOCATION_TYPE });
+        dispatch({ type: GET_COMMODITY_DATA });
+        if (!!navigateState?.state?.id)
+            dispatch(getAirlineChargesDataById(navigateState?.state?.id))
+    }, [])
 
     const formik = useFormik({
         initialValues: {
@@ -212,17 +223,70 @@ export default function UploadAirLineCharges() {
                 "vendorAirlineChargeValues": finalArray
             }
             dispatch(postAirlineChargesData(data));
-            formik.resetForm();
+            //   formik.resetForm();
         },
     });
 
+
     useEffect(() => {
-        dispatch({ type: GET_CARGO_TYPE_DATA });
-        dispatch({ type: GET_CONTAINER_DATA });
-        dispatch({ type: GET_UOM_DATA });
-        dispatch({ type: GET_AIR_LOCATION_TYPE });
-        dispatch({ type: GET_COMMODITY_DATA });
-    }, [dispatch])
+        formik.setValues({
+            ...formik.values,
+            ...(!!(navigateState?.state?.id) && {
+                bookingMode: airLineChargesDataById?.bookingModeType || "",
+                carrierName: airLineChargesDataById?.tenantCarrierVendor || "",
+                vendorName: airLineChargesDataById?.tenantVendor || "",
+                mainBox: airLineChargesDataById?.vendorAirlineChargeValues?.map(chargeValue => ({
+                    chargeCode: chargeValue?.surchargeCode ? chargeValue.surchargeCode : "",
+                    chargeBasis: chargeValue?.unitOfMeasurement ? chargeValue.unitOfMeasurement : "",
+                    currency: chargeValue?.currency ? chargeValue.currency : "",
+                    validFrom: chargeValue?.validFrom || '',
+                    validTo: chargeValue?.validTo || "",
+                    tax: chargeValue?.tax || "",
+                    isSlab: chargeValue?.vendorAirportChargeValues?.some(chargeValue => chargeValue.fromSlab || chargeValue.toSlab),
+                    addTerms: {},
+                    subBox: chargeValue?.vendorAirportChargeValues?.map(chargeValue => ({
+                        cargoType: chargeValue?.cargoType ? [chargeValue.cargoType] : "",
+                        commodity: chargeValue?.commodity ? [chargeValue.commodity] : "",
+                        minValue: chargeValue?.minValue || "",
+                        fromSlab: chargeValue?.fromSlab || "",
+                        toSlab: chargeValue?.toSlab || "",
+                        rate: chargeValue?.rate || "",
+                    })),
+                }))
+            }) || {
+                carrierName: "",
+                vendorName: "",
+                bookingMode: "",
+                mainBox: [
+                    {
+                        chargeCode: "",
+                        chargeBasis: "",
+                        currency: "",
+                        validFrom: "",
+                        validTo: "",
+                        tax: "",
+                        isSlab: false,
+                        addTerms: {},
+                        subBox: [{
+                            originPort: "",
+                            destinataionPort: "",
+                            flightNumber: "",
+                            cargoType: "",
+                            commodity: "",
+                            slab: [{
+                                minVal: "",
+                                fromSlab: "",
+                                toSlab: "",
+                                rate: "",
+                            }],
+                            rate: "",
+                        }],
+                    },
+                ],
+            }
+        });
+    }, [airLineChargesDataById]);
+
 
     return (
         <>
@@ -249,7 +313,7 @@ export default function UploadAirLineCharges() {
                                                 <label className="form-label">Carrier Name<span className='required_star'>*</span></label>
                                                 <Select
                                                     name="carrierName"
-                                                    value={formik.values.carrierName || ""}
+                                                    value={optionCarrierName ? optionCarrierName.find((option) => option.value === formik?.values?.carrierName?.name) : ""}
                                                     onChange={(e) => {
                                                         formik.setFieldValue(`carrierName`, e);
                                                     }}
@@ -264,7 +328,7 @@ export default function UploadAirLineCharges() {
                                                 <label className="form-label">Agent Name</label>
                                                 <Select
                                                     name="vendorName"
-                                                    value={formik.values.vendorName || ""}
+                                                    value={optionVendorName ? optionVendorName.find((option) => option.value === formik?.values?.vendorName?.name) : ""}
                                                     onChange={(e) => {
                                                         formik.setFieldValue(`vendorName`, e);
                                                     }}
@@ -277,7 +341,7 @@ export default function UploadAirLineCharges() {
                                                 <label className="form-label">Booking Mode<span className='required_star'>*</span></label>
                                                 <Select
                                                     name="bookingMode"
-                                                    value={formik.values.bookingMode || ""}
+                                                    value={optionBookingType ? optionBookingType.find((option) => option.value === formik?.values?.bookingMode) : ""}
                                                     onChange={(e) => {
                                                         formik.setFieldValue(`bookingMode`, e);
                                                     }}
@@ -297,7 +361,7 @@ export default function UploadAirLineCharges() {
                                                 {(arrayHelpers, i) => {
                                                     return (
                                                         <React.Fragment key={i}>
-                                                            {formik.values.mainBox.length > 0 &&
+                                                            {formik.values.mainBox && formik.values.mainBox.length > 0 &&
                                                                 formik.values.mainBox.map((item, index) => (
                                                                     <Card key={index} className={`sub_field_wrap`}>
                                                                         <CardBody>
@@ -307,7 +371,7 @@ export default function UploadAirLineCharges() {
                                                                                     <label className="form-label"> Charge Code<span className='required_star'>*</span></label>
                                                                                     <Select
                                                                                         name={`mainBox[${index}].chargeCode`}
-                                                                                        value={formik.values.mainBox[index].chargeCode || ""}
+                                                                                        value={surchargeCode_data ? surchargeCode_data.find((option) => option.value === formik.values.mainBox[index].chargeCode?.code) : ""}
                                                                                         onChange={(e) => {
                                                                                             if (e.label == "Add New") {
                                                                                                 navigate("/freight/ocean/upload/fcl-pl/add-new", { state: { id: 'fcl-pl' } })
@@ -344,7 +408,7 @@ export default function UploadAirLineCharges() {
                                                                                     <label className="form-label"> Charge Basis<span className='required_star'>*</span></label>
                                                                                     <Select
                                                                                         name={`mainBox[${index}].chargeBasis`}
-                                                                                        value={formik.values.mainBox[index].chargeBasis || ""}
+                                                                                        value={UOM_data ? UOM_data.find((option) => option.value === formik.values.mainBox[index].chargeBasis?.code) : ""}
                                                                                         onChange={(e) => {
                                                                                             formik.setFieldValue(`mainBox[${index}].chargeBasis`, e);
                                                                                         }}
@@ -375,7 +439,7 @@ export default function UploadAirLineCharges() {
                                                                                     <label className="form-label"> Currency<span className='required_star'>*</span></label>
                                                                                     <Select
                                                                                         name={`mainBox[${index}].currency`}
-                                                                                        value={formik.values.mainBox[index].currency || ""}
+                                                                                        value={currency_data ? currency_data.find((option) => option.value === formik.values.mainBox[index].currency?.currencyName) : ""}
                                                                                         onChange={(e) => {
                                                                                             formik.setFieldValue(`mainBox[${index}].currency`, e);
                                                                                         }}
@@ -506,7 +570,7 @@ export default function UploadAirLineCharges() {
                                                                                             <>
                                                                                                 <Card key={i}>
                                                                                                     <CardBody>
-                                                                                                        {item.subBox.length > 0 && item.subBox.map((subItem, subIndex) => {
+                                                                                                        {item.subBox && item.subBox.length > 0 && item.subBox.map((subItem, subIndex) => {
                                                                                                             return (
                                                                                                                 <React.Fragment key={subIndex}>
                                                                                                                     <div className="row mb-3">
