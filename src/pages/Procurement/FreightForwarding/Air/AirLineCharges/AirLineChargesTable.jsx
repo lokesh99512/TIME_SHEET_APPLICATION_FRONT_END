@@ -7,6 +7,7 @@ import { DefaultColumnFilter, Filter } from '../../../../../components/Common/fi
 import TableCommonSkeleton from '../../../../Skeleton/TableCommonSkeleton';
 import { filter_icon } from '../../../../../assets/images';
 import { GET_AIR_LINE_CHARGES_BY_ID_SUCCESS } from '../../../../../store/Procurement/actiontype';
+import { useDispatch } from 'react-redux';
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -59,6 +60,7 @@ const AirLineChargesTable = ({ columns, data, isGlobalFilter, loader, customPage
         useExpanded,
         usePagination,);
     const navidate = useNavigate();
+    const dispatch = useDispatch();
 
     return (
         <>
