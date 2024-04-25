@@ -132,6 +132,7 @@ export default function UploadAirLineCharges() {
         }),
 
         onSubmit: (value) => {
+            console.log(value);
             let surchargeValuesArray = value?.mainBox?.map((item) => {
                 let newData = item?.subBox?.map((subItem, subIndex) => {
                     let cargoTypeData = subItem?.cargoType?.map((cargoType) => {
@@ -206,7 +207,7 @@ export default function UploadAirLineCharges() {
                 return item.flat(Infinity)
             });
             let finalArray = spreadSurArray?.reduce((acc, val) => acc.concat(val), []);
-            console.log(finalArray);
+
             let data = {
                 ...(airLineChargesDataById && {
                     id: airLineChargesDataById?.id || "",
@@ -235,7 +236,7 @@ export default function UploadAirLineCharges() {
 
 
     useEffect(() => {
-        if (navigateState?.state?.id) {
+        if (navigateState?.state?.id && airLineChargesDataById) {
             const uniqueValues = new Set(
                 airLineChargesDataById?.vendorAirlineChargeValues?.map(chargeValue => JSON.stringify({
                     surchargeCode: chargeValue?.surchargeCode || "",
@@ -247,25 +248,6 @@ export default function UploadAirLineCharges() {
                 }))
             );
             const distinctVendorAirlineChargeValues = Array.from(uniqueValues).map(value => JSON.parse(value));
-            let matchingRecords = [];
-            airLineChargesDataById.vendorAirlineChargeValues.forEach(chargeValue => {
-                const match = distinctVendorAirlineChargeValues.some(distinctValue => {
-                    return (
-                        chargeValue.surchargeCode?.code === distinctValue.surchargeCode?.code &&
-                        chargeValue.unitOfMeasurement?.code === distinctValue.unitOfMeasurement?.code &&
-                        chargeValue.currency.currencyName === distinctValue.currency.currencyName &&
-                        chargeValue.validFrom === distinctValue.validFrom &&
-                        chargeValue.validTo === distinctValue.validTo
-                    );
-                });
-                if (match) {
-                    matchingRecords.push(chargeValue);
-                }
-            });
-
-            console.log(matchingRecords);
-
-
             formik.setValues({
                 ...formik.values,
                 ...(!!(navigateState?.state?.id) && {
@@ -279,18 +261,27 @@ export default function UploadAirLineCharges() {
                         validFrom: chargeValue?.validFrom || '',
                         validTo: chargeValue?.validTo || "",
                         tax: chargeValue?.tax || "",
-                        isSlab: matchingRecords?.some(chargeValue => chargeValue.fromSlab || chargeValue.toSlab),
+                        isSlab:false,
                         addTerms: {},
-                        subBox: matchingRecords?.map(chargeValue => ({
+                        subBox: airLineChargesDataById?.vendorAirlineChargeValues.filter(data =>
+                            chargeValue.surchargeCode?.code === data.surchargeCode?.code &&
+                            chargeValue.unitOfMeasurement?.code === data.unitOfMeasurement?.code &&
+                            chargeValue.currency.currencyName === data.currency.currencyName &&
+                            chargeValue.validFrom === data.validFrom &&
+                            chargeValue.validTo === data.validTo
+                        ).map(chargeValue => ({
                             originPort: chargeValue?.originPort ? chargeValue.originPort : "",
                             destinataionPort: chargeValue?.destinationPort ? chargeValue?.destinationPort : "",
                             cargoType: chargeValue?.cargoType ? [chargeValue.cargoType] : "",
                             commodity: chargeValue?.commodity ? [chargeValue.commodity] : "",
                             flightNumber: chargeValue?.flightNumber || "",
-                            minValue: chargeValue?.minValue || "",
-                            fromSlab: chargeValue?.fromSlab || "",
-                            toSlab: chargeValue?.toSlab || "",
                             rate: chargeValue?.rate || "",
+                            slab: [{
+                                minVal: "",
+                                fromSlab: "",
+                                toSlab: "",
+                                rate: "",
+                            }],
                         })),
                     }))
                 }) || {
@@ -326,6 +317,7 @@ export default function UploadAirLineCharges() {
                 }
             });
         }
+        
     }, [airLineChargesDataById]);
 
 
