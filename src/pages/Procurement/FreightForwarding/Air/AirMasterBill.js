@@ -9,12 +9,14 @@ import { ChargeId, CommonReplaceValue, ValidTill, VendorName } from '../partials
 import TopBreadcrumbs from '../partials/TopBreadcrumbs'
 import ModalAir from './ModalAir'
 import TableAirwayBill from './TableAirwayBill'
+import { useNavigate } from 'react-router-dom'
 
 export default function AirMasterBill() {
     document.title = "Air Master || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
     const [isRight, setIsRight] = useState(false);
+    const navigate = useNavigate();
     const inputArr = {
         vendor_name: '',
         carrier_name: '',
@@ -30,13 +32,11 @@ export default function AirMasterBill() {
     const dispatch = useDispatch();
 
     const viewPopupHandler = (data) => {
-        if (data?.status == "ACTIVE") {
-            dispatch(getAirwaybillDataById(data?.id));
-            setModal(true);
-            setViewData(data);
-        } else {
-            console.log("Cannot view details for inactive data");
-        }
+        navigate(`/freight/air/masterbill/details`, {
+            state: {
+                data: data || '',
+            },
+        })
     }
 
     const onCloseClick = () => {
@@ -172,7 +172,7 @@ export default function AirMasterBill() {
                 )
             }
         },
-    ]);
+    ], []);
 
     return (
         <>

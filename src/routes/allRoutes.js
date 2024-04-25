@@ -159,6 +159,8 @@ import VendorDashboard from "../pages/VendorDashboard";
 import UploadStatus from "../pages/uploadstatus/uploadstatus";
 import AirLineCharges from "../pages/Procurement/FreightForwarding/Air/AirLineCharges/AirLineCharges";
 import UploadAirLineCharges from "../pages/Procurement/FreightForwarding/Air/AirLineCharges/UploadAirLineCharges";
+import AirMawbDetails from "../pages/Procurement/FreightForwarding/Air/AirMawbViewTable";
+import AirConsoleDetails from "../pages/Procurement/FreightForwarding/Air/AirConsoleViewTable";
 
 const userRoutes = [
   //dashboard
@@ -181,6 +183,8 @@ const userRoutes = [
   { path: "/freight/ocean/lcl", component: <LclOceanFreight /> },
   { path: "/freight/ocean/portlocal", component: <PortLocalFreight /> },
   { path: "/freight/air/masterbill", component: <AirMasterBill /> },
+  { path: "/freight/air/masterbill/details", component: <AirMawbDetails /> },
+  { path: "/freight/air/masterConsole/details", component: <AirConsoleDetails /> },
   { path: "/freight/air/console", component: <AirConsoleComp /> },
   { path: "/freight/air/local", component: <AirPortLocal /> },
   {path : "/freight/air/line", component: <AirLineCharges /> },

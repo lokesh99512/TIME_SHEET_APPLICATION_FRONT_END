@@ -9,12 +9,12 @@ export const postAirUploadService = (data) => post(url.Post_Air_destination_Data
         }
     })
 
-export const uploadAirRateData = ({formData}) => 
-postFormData(url.Upload_Air_rate_data_ , formData, {
-    headers: {
-        'Content-Type': 'multipart/form-data',
-    }
-});
+export const uploadAirRateData = ({ formData }) =>
+    postFormData(url.Upload_Air_rate_data_, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    });
 
 
 export const getAirMWBData = () => get(url.GET_AIR_MWB_DATA);
@@ -30,17 +30,22 @@ export const postAirConsoleUploadService = (data) => post(url.Post_Air_destinati
         }
     })
 
-export const uploadConsoleAirRateData = ({formData}) => 
-postFormData(url.Upload_Air_rate_data_Console_ , formData, {
-    headers: {
-        'Content-Type': 'multipart/form-data',
-    }
-});
+export const uploadConsoleAirRateData = ({ formData }) =>
+    postFormData(url.Upload_Air_rate_data_Console_, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    });
 
 
-export const fetcAirConsoleTableData = () => get(url.GET_AIR_MWB_DATA_Console);
-
+//mawb
 export const fetcAirFreighConsoletData = (id) => get(url.GET_AIR_MWB_DATA_Console + id);
+export const fetchAirMawbdetails = (data) => get(url.GET_All_MAWB_DETAILS + data);
+
+//console
+export const fetcAirConsoleTableData = () => get(url.GET_AIR_MWB_DATA_Console);
+export const fetcAirConsoledetails = (data) => get(url.GET_All_CONSOLE_DETAILS + data);
+
 
 //Air local Changes
 export const getAirPortLocalChargesTableData = () => get(url.GET_AIR_PORT_LOCAL_CHARGES_ALL);

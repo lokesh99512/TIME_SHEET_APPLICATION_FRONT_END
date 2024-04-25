@@ -4,18 +4,20 @@ import { Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input
 
 import { edit_icon, eye_icon } from '../../../../assets/images';
 import { consoleBreadcrumb, consoleRateData } from '../../../../common/data/procurement';
-import { getAirConsoleDataById,getAirConsoleData, updateAirConsoleSwitchData } from '../../../../store/Procurement/actions';
+import { getAirConsoleDataById, getAirConsoleData, updateAirConsoleSwitchData } from '../../../../store/Procurement/actions';
 import FilterOffCanvasComp from '../Modal/FilterOffCanvasComp';
 import ModalAirConsole from './ModalAirConsole';
 import { CargoType, CarrierName, ChargeId, DestPort, DetentionFree, OrgPort, TransitTime, ValidTill, VendorName, ViaPort } from '../partials/OceanCol';
 import TopBreadcrumbs from '../partials/TopBreadcrumbs';
 import TableAirwayConsoleData from './TableAirwayConsoleData'
+import { useNavigate } from 'react-router-dom';
 
 export default function AirConsoleComp() {
-    document.title="Air Console || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
+    document.title = "Air Console || Navigating Freight Costs with Precision||Ultimate Rate Management platform"
     const [modal, setModal] = useState(false);
     const [viewData, setViewData] = useState(false);
     const [isRight, setIsRight] = useState(false);
+    const navigate = useNavigate();
     const inputArr = {
         vendor_name: '',
         carrier_name: '',
@@ -26,17 +28,22 @@ export default function AirConsoleComp() {
         cargo_type: '',
     }
     const [filterDetails, setfilterDetails] = useState(inputArr);
-    const {consoleData,consoleDataLoader} = useSelector((state) => state?.procurement);
+    const { consoleData, consoleDataLoader } = useSelector((state) => state?.procurement);
     const dispatch = useDispatch();
 
     const viewPopupHandler = (data) => {
-        if (data?.status == "ACTIVE") {
-            dispatch(getAirConsoleDataById(data?.id));
-            setModal(true);
-            setViewData(data);
-        } else {
-            console.log("Cannot view details for inactive data");
-        }
+        navigate(`/freight/air/masterConsole/details`, {
+            state: {
+                data: data || '',
+            },
+        })
+        // if (data?.status == "ACTIVE") {
+        //     dispatch(getAirConsoleDataById(data?.id));
+        //     setModal(true);
+        //     setViewData(data);
+        // } else {
+        //     console.log("Cannot view details for inactive data");
+        // }
     }
 
     const onCloseClick = () => {
@@ -50,7 +57,7 @@ export default function AirConsoleComp() {
 
     const applyFilterHandler = () => {
         setIsRight(false);
-        console.log(filterDetails,"filterDetails Air Console -----------------------")
+        console.log(filterDetails, "filterDetails Air Console -----------------------")
     }
     const clearValueHandler = () => {
         setfilterDetails(inputArr)
@@ -58,26 +65,17 @@ export default function AirConsoleComp() {
 
     // Activate deactivate table data
     const switchHandler = (data) => {
-        dispatch(updateAirConsoleSwitchData(data.id,data.is_active));
+        dispatch(updateAirConsoleSwitchData(data.id, data.is_active));
     }
 
     useEffect(() => {
         dispatch(getAirConsoleData());
-    },[dispatch])
+    }, [dispatch])
 
     const columns = useMemo(() => [
-        // {
-        //     Header: 'Charge ID',
-        //     accessor: 'id',
-        //     filterable: true,
-        //     disableFilters: true,
-        //     Cell: (cellProps) => {
-        //         return <ChargeId cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
-        //     }
-        // },
         {
             Header: 'Agent',
-            accessor:"agentName",
+            accessor: "agentName",
             filterable: true,
             disableFilters: true,
             Cell: (cellProps) => {
@@ -111,7 +109,7 @@ export default function AirConsoleComp() {
                 return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
         },
-        
+
         {
             Header: 'Valid From',
             accessor: 'validFrom',
@@ -120,7 +118,7 @@ export default function AirConsoleComp() {
             Cell: (cellProps) => {
                 return <ValidTill cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
             }
-        },  
+        },
         {
             Header: 'Valid To',
             accessor: 'validTo',
@@ -149,12 +147,12 @@ export default function AirConsoleComp() {
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-end">
                             <DropdownItem>Edit <img src={edit_icon} alt="Edit" /></DropdownItem>
-                            <DropdownItem onClick={(e) => {e.stopPropagation(); viewPopupHandler(cellProps.row.original)}}>View <img src={eye_icon} alt="Eye" /></DropdownItem>
+                            <DropdownItem onClick={(e) => { e.stopPropagation(); viewPopupHandler(cellProps.row.original) }}>View <img src={eye_icon} alt="Eye" /></DropdownItem>
                             <DropdownItem onClick={(e) => e.stopPropagation()}>
-                                {cellProps.row.original?.is_active ? "Activate" : "Deactivate"} 
+                                {cellProps.row.original?.is_active ? "Activate" : "Deactivate"}
                                 <div className="switch_wrap">
                                     <FormGroup switch>
-                                        <Input 
+                                        <Input
                                             type="switch"
                                             checked={cellProps.row.original?.is_active || false}
                                             onClick={() => {
@@ -170,7 +168,7 @@ export default function AirConsoleComp() {
                 )
             }
         },
-    ]);
+    ], []);
 
     return (
         <>
@@ -178,18 +176,18 @@ export default function AirConsoleComp() {
                 <Container fluid>
                     <div className="main_freight_wrapper">
                         {/* breadcrumbs && rate */}
-                        <TopBreadcrumbs breadcrumbs={consoleBreadcrumb} data={consoleRateData} />            
+                        <TopBreadcrumbs breadcrumbs={consoleBreadcrumb} data={consoleRateData} />
 
                         {/* React Table */}
                         <TableAirwayConsoleData
-                          columns={columns}
-                          data={consoleData?.content || []}
-                          isGlobalFilter={true}
-                          isAddInvoiceList={true}
-                          customPageSize={10}
-                          toggleRightCanvas={toggleRightCanvas}
-                          component={'console'}
-                          loader={consoleDataLoader}
+                            columns={columns}
+                            data={consoleData?.content || []}
+                            isGlobalFilter={true}
+                            isAddInvoiceList={true}
+                            customPageSize={10}
+                            toggleRightCanvas={toggleRightCanvas}
+                            component={'console'}
+                            loader={consoleDataLoader}
                         />
 
                         {/* modal */}

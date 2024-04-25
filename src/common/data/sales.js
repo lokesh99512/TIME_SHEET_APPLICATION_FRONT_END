@@ -27,6 +27,20 @@ const inquiryBreadcrumb = [
     },
 ]
 
+const mawbBreadcrumb = [
+    {
+        label: 'Master Waybill',
+        link: '/#',
+        active: false
+    },
+    {
+        label: 'Details',
+        link: '/#',
+        active: true
+    },
+]
+
+
 // -------------------------------- table data -----------------------------------
 const quotationTableData = [
     {
@@ -1738,5 +1752,5 @@ export {
     cargoWeightUnitOption, optionOriginPortCharge, optionOceanCharge, optionPortDischargeCharge, optionQuoteContacttitle, optionQuoteContactCode, inquiryBreadcrumb,
     optionFlightMode, optionCommodity,
 
-    inquiryTableData, optionStatusInquiry, optionChargeBasis
+    inquiryTableData, optionStatusInquiry, optionChargeBasis,mawbBreadcrumb
 }

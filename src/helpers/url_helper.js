@@ -196,15 +196,17 @@ export const Upload_FCL_Carrier_Data= "/api/v1/tenant-ocean-fcl-rp/"
 export const Upload_FCL_freight_Data= "/api/v1/tenant-ocean-fcl-rp/upload/freight/"
 export const Upload_FCL_surcharge_Data= "/api/v1/tenant-ocean-fcl-rp/update/surcharge/"
 
-//Air
+//Air mawb
 export const Post_Air_destination_Data= "/api/v1/tenant-mawb-rp/"
 export const Upload_Air_rate_data_= "/api/v1/tenant-mawb-rp/upload"
 export const GET_AIR_MWB_DATA= "/api/v1/tenant-mawb-rp/"
+export const GET_All_MAWB_DETAILS= "/api/v1/tenant-mawb-rp/details"
 
 //Air Console
 export const Post_Air_destination_Data_Console= "/api/v1/tenant-console-rp/"
 export const Upload_Air_rate_data_Console_= "/api/v1/tenant-console-rp/upload"
 export const GET_AIR_MWB_DATA_Console= "/api/v1/tenant-console-rp/"
+export const GET_All_CONSOLE_DETAILS= "/api/v1/tenant-console-rp/details"
 
 // Air port & local charges
 export const GET_AIR_PORT_LOCAL_CHARGES_ALL = "/api/v1/air-port-and-local-charges/"
