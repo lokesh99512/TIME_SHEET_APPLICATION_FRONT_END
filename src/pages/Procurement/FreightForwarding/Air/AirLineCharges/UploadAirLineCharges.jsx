@@ -68,8 +68,8 @@ export default function UploadAirLineCharges() {
                         originPort: "",
                         destinataionPort: "",
                         flightNumber: "",
-                        cargoType: "",
-                        commodity: "",
+                        cargoType: [],
+                        commodity: [],
                         slab: [{
                             minVal: "",
                             fromSlab: "",
@@ -261,9 +261,20 @@ export default function UploadAirLineCharges() {
                         validFrom: chargeValue?.validFrom || '',
                         validTo: chargeValue?.validTo || "",
                         tax: chargeValue?.tax || "",
-                        isSlab:false,
+                        isSlab: false,
                         addTerms: {},
-                        subBox: airLineChargesDataById?.vendorAirlineChargeValues.filter(data =>
+                        subBox: airLineChargesDataById?.vendorAirlineChargeValues.reduce((acc, val) => {
+                            const isUnique = !acc.some(item =>
+                                item.minValue === val.minValue &&
+                                item.rate === val.rate &&
+                                item.originPort?.name == val.originPort?.name &&
+                                item.destinataionPort?.name == val.destinataionPort?.name
+                            );
+                            if (isUnique) {
+                                acc.push(val);
+                            }
+                            return acc;
+                        }, []).filter(data =>
                             chargeValue.surchargeCode?.code === data.surchargeCode?.code &&
                             chargeValue.unitOfMeasurement?.code === data.unitOfMeasurement?.code &&
                             chargeValue.currency.currencyName === data.currency.currencyName &&
@@ -272,8 +283,32 @@ export default function UploadAirLineCharges() {
                         ).map(chargeValue => ({
                             originPort: chargeValue?.originPort ? chargeValue.originPort : "",
                             destinataionPort: chargeValue?.destinationPort ? chargeValue?.destinationPort : "",
-                            cargoType: chargeValue?.cargoType ? [chargeValue.cargoType] : "",
-                            commodity: chargeValue?.commodity ? [chargeValue.commodity] : "",
+                            cargoType: airLineChargesDataById ? (
+                                () => {
+                                    const cargoTypesSet = new Set();
+                                    airLineChargesDataById?.vendorAirlineChargeValues.filter(data =>
+                                        data?.destinationPort?.name === chargeValue?.destinationPort?.name &&
+                                        data?.originPort?.name === chargeValue?.originPort?.name
+                                    ).forEach(filteredData => {
+                                        const cargoTypeString = JSON.stringify(cargoType_data.find(data => data.value == filteredData.cargoType.type));
+                                        cargoTypesSet.add(cargoTypeString);
+                                    });
+                                    return Array.from(cargoTypesSet).map(value => JSON.parse(value))
+                                }
+                            )() : [],
+                            commodity: airLineChargesDataById ? (
+                                () => {
+                                    const commoditysSet = new Set();
+                                    airLineChargesDataById?.vendorAirlineChargeValues.filter(data =>
+                                        data?.destinationPort?.name === chargeValue?.destinationPort?.name &&
+                                        data?.originPort?.name === chargeValue?.originPort?.name
+                                    ).forEach(filteredData => {
+                                        const commodityString = JSON.stringify(commodity_data.find(data => data.value == filteredData.commodity.name));
+                                        commoditysSet.add(commodityString);
+                                    });
+                                    return Array.from(commoditysSet).map(value => JSON.parse(value))
+                                }
+                            )() : [],
                             flightNumber: chargeValue?.flightNumber || "",
                             rate: chargeValue?.rate || "",
                             slab: [{
@@ -302,8 +337,8 @@ export default function UploadAirLineCharges() {
                                 originPort: "",
                                 destinataionPort: "",
                                 flightNumber: "",
-                                cargoType: "",
-                                commodity: "",
+                                cargoType: [],
+                                commodity: [],
                                 slab: [{
                                     minVal: "",
                                     fromSlab: "",
@@ -317,7 +352,7 @@ export default function UploadAirLineCharges() {
                 }
             });
         }
-        
+
     }, [airLineChargesDataById]);
 
 
@@ -335,6 +370,7 @@ export default function UploadAirLineCharges() {
                         >
                             Back
                         </button>
+
                         <Row>
                             <Col lg="12">
                                 <Card>
@@ -636,38 +672,16 @@ export default function UploadAirLineCharges() {
                                                                                                                             <label className="form-label"> Cargo Type</label>
                                                                                                                             <Select
                                                                                                                                 name={`mainBox[${index}].subBox[${subIndex}].cargoType`}
-                                                                                                                                value={cargoType_data ? cargoType_data.find((option) => option.value === formik.values.mainBox[index].subBox[subIndex].cargoType[0]?.type) : ""}
+                                                                                                                                value={formik.values.mainBox[index].subBox[subIndex].cargoType}
                                                                                                                                 onChange={(e) => {
                                                                                                                                     formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].cargoType`, e);
                                                                                                                                 }}
                                                                                                                                 isMulti
                                                                                                                                 options={[
                                                                                                                                     ...cargoType_data || [],
-                                                                                                                                    // { value: 'all', label: 'ALL' }
                                                                                                                                 ]}
                                                                                                                                 classNamePrefix="select2-selection form-select"
-                                                                                                                            // onBlur={formik.handleBlur}
-                                                                                                                            // invalid={
-                                                                                                                            //     formik.touched.mainBox &&
-                                                                                                                            //         formik.touched.mainBox[index] &&
-                                                                                                                            //         formik.errors.mainBox &&
-                                                                                                                            //         formik.errors.mainBox[index] &&
-                                                                                                                            //         formik.errors.mainBox[index].subBox &&
-                                                                                                                            //         formik.errors.mainBox[index].subBox[subIndex] &&
-                                                                                                                            //         formik.errors.mainBox[index].subBox[subIndex].cargoType
-                                                                                                                            //         ? true
-                                                                                                                            //         : false
-                                                                                                                            // }
                                                                                                                             />
-                                                                                                                            {/* {formik.touched.mainBox &&
-                                                                                                                                formik.touched.mainBox[index] &&
-                                                                                                                                formik.errors.mainBox &&
-                                                                                                                                formik.errors.mainBox[index] &&
-                                                                                                                                formik.errors.mainBox[index].subBox &&
-                                                                                                                                formik.errors.mainBox[index].subBox[subIndex] &&
-                                                                                                                                formik.errors.mainBox[index].subBox[subIndex].cargoType ? (
-                                                                                                                                <FormFeedback>{formik.errors.mainBox[index].subBox[subIndex].cargoType}</FormFeedback>
-                                                                                                                            ) : null} */}
                                                                                                                         </div>
 
                                                                                                                         {/* Commodity */}
@@ -675,7 +689,7 @@ export default function UploadAirLineCharges() {
                                                                                                                             <label className="form-label"> Commodity</label>
                                                                                                                             <Select
                                                                                                                                 name={`mainBox[${index}].subBox[${subIndex}].commodity`}
-                                                                                                                                value={commodity_data ? commodity_data.find((option) => option.value === formik.values.mainBox[index].subBox[subIndex].commodity[0]?.name) : ""}
+                                                                                                                                value={formik.values.mainBox[index].subBox[subIndex].commodity}
                                                                                                                                 onChange={(e) => {
                                                                                                                                     formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].commodity`, e);
                                                                                                                                 }}
@@ -872,8 +886,8 @@ export default function UploadAirLineCharges() {
                                                                                 originPort: "",
                                                                                 destinataionPort: "",
                                                                                 flightNumber: "",
-                                                                                cargoType: "",
-                                                                                commodity: "",
+                                                                                cargoType: [],
+                                                                                commodity: [],
                                                                                 rate: "",
                                                                                 slab: [{
                                                                                     fromSlab: "",

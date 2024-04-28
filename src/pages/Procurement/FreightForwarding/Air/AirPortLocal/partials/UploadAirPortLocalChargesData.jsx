@@ -263,9 +263,42 @@ export default function UploadAirPortLocalChargesData() {
                     tax: chargeDetail?.tax || "",
                     isSlab: chargeDetail?.vendorAirportChargeValues?.some(chargeValue => chargeValue.fromSlab || chargeValue.toSlab),
                     addTerms: {},
-                    subBox: chargeDetail?.vendorAirportChargeValues?.map(chargeValue => ({
-                        cargoType: chargeValue?.cargoType ? [chargeValue.cargoType] : "",
-                        commodity: chargeValue?.commodity ? [chargeValue.commodity] : "",
+                    subBox: chargeDetail?.vendorAirportChargeValues.reduce((acc, val) => {
+                        const isUnique = !acc.some(item =>
+                            item.minValue === val.minValue &&
+                            item.rate === val.rate
+                        );
+                        if (isUnique) {
+                            acc.push(val);
+                        }
+                        return acc;
+                    }, [])?.map(chargeValue => ({
+                        cargoType: chargeDetail?.vendorAirportChargeValues ? (
+                            () => {
+                                const cargoTypesSet = new Set();
+                                chargeDetail?.vendorAirportChargeValues.filter(data =>
+                                    data.minValue === chargeValue.minValue &&
+                                    data.rate === chargeValue.rate
+                                ).forEach(filteredData => {
+                                    const cargoTypeString = JSON.stringify(cargoType_data.find(data => data.value == filteredData.cargoType.type));
+                                    cargoTypesSet.add(cargoTypeString);
+                                });
+                                return Array.from(cargoTypesSet).map(value => JSON.parse(value))
+                            }
+                        )() : [],
+                        commodity: chargeDetail?.vendorAirportChargeValues ? (
+                            () => {
+                                const commoditysSet = new Set();
+                                chargeDetail?.vendorAirportChargeValues.filter(data =>
+                                    data.minValue === chargeValue.minValue &&
+                                    data.rate === chargeValue.rate
+                                ).forEach(filteredData => {
+                                    const commodityString = JSON.stringify(commodity_data.find(data => data.value == filteredData.commodity.name));
+                                    commoditysSet.add(commodityString);
+                                });
+                                return Array.from(commoditysSet).map(value => JSON.parse(value))
+                            }
+                        )() : [],
                         minValue: chargeValue?.minValue || "",
                         fromSlab: chargeValue?.fromSlab || "",
                         toSlab: chargeValue?.toSlab || "",
@@ -674,7 +707,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                             <label className="form-label"> Cargo Type<span className='required_star'>*</span></label>
                                                                                                                             <Select
                                                                                                                                 name={`mainBox[${index}].subBox[${subIndex}].cargoType`}
-                                                                                                                                value={cargoType_data ? cargoType_data.find((option) => option.value === formik.values.mainBox[index].subBox[subIndex].cargoType[0]?.type) : ""}
+                                                                                                                                value={formik.values.mainBox[index].subBox[subIndex].cargoType}
                                                                                                                                 onChange={(e) => {
                                                                                                                                     formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].cargoType`, e);
                                                                                                                                 }}
@@ -714,7 +747,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                             <Select
                                                                                                                                 isMulti
                                                                                                                                 name={`mainBox[${index}].subBox[${subIndex}].commodity`}
-                                                                                                                                value={commodity_data ? commodity_data.find((option) => option.value === formik.values.mainBox[index].subBox[subIndex].commodity[0]?.name) : ""}
+                                                                                                                                value={formik.values.mainBox[index].subBox[subIndex].commodity}
                                                                                                                                 onChange={(e) => {
                                                                                                                                     formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].commodity`, e);
                                                                                                                                 }}
@@ -864,8 +897,8 @@ export default function UploadAirPortLocalChargesData() {
                                                                                 toSlab: "",
                                                                                 rate: "",
                                                                                 minValue: "",
-                                                                                cargoType: "",
-                                                                                commodity: "",
+                                                                                cargoType: [],
+                                                                                commodity: [],
                                                                             }],
                                                                         });
                                                                     }}

@@ -143,7 +143,7 @@ export default function AddUserData() {
                                                     <label className="form-label">Role<span className='required_star'>*</span></label>
                                                     <div className="">
                                                         <Select
-                                                            value={roleData.filter((role) => formik.values.roles.includes(role.id))}
+                                                            value={roleData?.filter((role) => formik.values.roles.includes(role.id))}
                                                             onChange={(selectedOptions) => {
                                                                 const selectedValues = selectedOptions.map((option) => option.id);
                                                                 formik.setFieldValue("roles", selectedValues);

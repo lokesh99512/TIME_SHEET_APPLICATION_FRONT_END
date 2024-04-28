@@ -81,11 +81,11 @@ const TableMawbDetails = ({ columns, data, isGlobalFilter, customPageSize, toggl
                             <img src={upload_icon} alt="Upload" />Upload file
                         </button>
                     </div> */}
-                    <div className="add_btn">
+                    {/* <div className="add_btn">
                         <button className='border-0' onClick={() => {console.log("click"); }}> 
                             <i className='bx bx-plus align-middle'></i> Add
                         </button>
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <div className="table_pagination_wrap">

@@ -41,10 +41,14 @@ export const uploadConsoleAirRateData = ({ formData }) =>
 //mawb
 export const fetcAirFreighConsoletData = (id) => get(url.GET_AIR_MWB_DATA_Console + id);
 export const fetchAirMawbdetails = (data) => get(url.GET_All_MAWB_DETAILS + data);
+export const postAirMawbSer = (dataObj) => postFormData(url.save_air_mawb_data, dataObj);
+
 
 //console
 export const fetcAirConsoleTableData = () => get(url.GET_AIR_MWB_DATA_Console);
 export const fetcAirConsoledetails = (data) => get(url.GET_All_CONSOLE_DETAILS + data);
+export const postAirConsoleData = (dataObj) => postFormData(url.save_air_console_data, dataObj);
+
 
 
 //Air local Changes
@@ -56,3 +60,6 @@ export const postAirPortLocalUploadSer = (dataObj) => postFormData(url.Upload_Ai
 export const getAirLineTableData = () => get(url.GET_AIR_LINE_CHARGES_ALL);
 export const getAirLineTableDataById = (id) => get(url.GET_AIR_LINE_CHARGES_ALL + id);
 export const postAirLineUploadSer = (dataObj) => postFormData(url.Upload_Airline_Charge_Data, dataObj);
+
+// tenant cargo mode
+export const getTenantCargoModeSer=()=> get(url.get_all_cargo_mode)

@@ -201,12 +201,14 @@ export const Post_Air_destination_Data= "/api/v1/tenant-mawb-rp/"
 export const Upload_Air_rate_data_= "/api/v1/tenant-mawb-rp/upload"
 export const GET_AIR_MWB_DATA= "/api/v1/tenant-mawb-rp/"
 export const GET_All_MAWB_DETAILS= "/api/v1/tenant-mawb-rp/details"
+export const save_air_mawb_data="/api/v1/tenant-mawb-rp/"
 
 //Air Console
 export const Post_Air_destination_Data_Console= "/api/v1/tenant-console-rp/"
 export const Upload_Air_rate_data_Console_= "/api/v1/tenant-console-rp/upload"
 export const GET_AIR_MWB_DATA_Console= "/api/v1/tenant-console-rp/"
 export const GET_All_CONSOLE_DETAILS= "/api/v1/tenant-console-rp/details"
+export const save_air_console_data="/api/v1/tenant-console-rp/"
 
 // Air port & local charges
 export const GET_AIR_PORT_LOCAL_CHARGES_ALL = "/api/v1/air-port-and-local-charges/"
@@ -218,6 +220,9 @@ export const Upload_Airline_Charge_Data= "/api/v1/air-line-charges/"
 // FCL Port & Local Charges
 export const GET_PORTLOCALCHARGES_ALL = "/api/v1/port-and-local-charges/"
 export const Upload_FCL_PL_Data= "/api/v1/port-and-local-charges/"
+
+// tenant cargoMode
+export const get_all_cargo_mode="/api/v1/tenant-cargo-mode/"
 
 
 // FCL Inland Charges

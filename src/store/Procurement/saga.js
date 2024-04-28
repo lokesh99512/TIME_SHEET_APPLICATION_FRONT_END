@@ -2,12 +2,12 @@ import axios from "axios";
 import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects";
 import { showErrorToast, showSuccessToast } from "../../components/Common/CustomToast";
 import { getLCLTableData } from "../../helpers/fakebackend_helper";
-import { fetcAirConsoleTableData, fetcAirConsoledetails, fetcAirFreighConsoletData, fetchAirMawbdetails, getAirFreightData, getAirLineTableData, getAirLineTableDataById, getAirMWBData, getAirPortLocalChargesTableData, getAirPortLocalChargesTableDataById, postAirConsoleUploadService, postAirLineUploadSer, postAirPortLocalUploadSer, postAirUploadService, uploadAirRateData, uploadConsoleAirRateData } from "../../helpers/services/AirService";
+import { fetcAirConsoleTableData, fetcAirConsoledetails, fetcAirFreighConsoletData, fetchAirMawbdetails, getAirFreightData, getAirLineTableData, getAirLineTableDataById, getAirMWBData, getAirPortLocalChargesTableData, getAirPortLocalChargesTableDataById, getTenantCargoModeSer, postAirConsoleData, postAirConsoleUploadService, postAirLineUploadSer, postAirMawbSer, postAirPortLocalUploadSer, postAirUploadService, uploadAirRateData, uploadConsoleAirRateData } from "../../helpers/services/AirService";
 import { getFCLDestinationData, getFCLFilterSer, getFCLFreightViewData, getFCLInlandFilterSer, getFCLInlandFreightSer, getFCLInlandSurchargeSer, getFCLInlandTableData, getFCLSurchargeViewData, getFCLTableData, getFCLVersionSer, getPortLocalChargesFilterSer, getPortLocalChargesTableData, postFclFreightUploadSer, postFclInlandFreightUploadSer, postFclInlandSurchargeUploadSer, postFclInlandUploadSer, postFclPLUploadSer, postFclSurchargeUploadSer, postFclUploadSer } from "../../helpers/services/FCLService";
 import { getUploadStatus } from "../../helpers/services/GlobalService";
 import { Get_File_URL } from "../../helpers/url_helper";
 import { getAirConsoleDataFail, getAirConsoleDataSuccess, getAirConsoleDataSuccessById, getAirwaybillDataByIdResponse, getAirwaybillDataFail, getAirwaybillDataSuccess, getFclDataFail, getFclDataSuccess, getInLandDataFail, getInLandDataSuccess, getLclDataFail, getLclDataSuccess, getPortLocalChargesDataFail, getPortLocalChargesDataSuccess } from "./actions";
-import { CONSOLE_FRIGHT_FAILD_DATA_TYPE, CONSOLE_FRIGHT_FAILD_POPUP_TYPE, FCL_FREIGHT_FAILD_DATA_TYPE, FCL_FREIGHT_FAILD_POPUP_TYPE, FCL_INLAND_FAILD_DATA_TYPE, FCL_INLAND_FAILD_POPUP_TYPE, GET_AIR_LINE_CHARGES_BY_ID, GET_AIR_LINE_CHARGES_BY_ID_SUCCESS, GET_AIR_LINE_CHARGES_DATA, GET_AIR_LINE_CHARGES_LOADER, GET_AIR_LINE_CHARGES_SUCCESS, GET_AIR_PORT_LOCAL_CHARGES_BY_ID, GET_AIR_PORT_LOCAL_CHARGES_BY_ID_SUCCESS, GET_AIR_PORT_LOCAL_CHARGES_DATA, GET_AIR_PORT_LOCAL_CHARGES_LOADER, GET_AIR_PORT_LOCAL_CHARGES_SUCCESS, GET_ALL_CONSOLE_FRIGHT_DETAILS, GET_ALL_CONSOLE_FRIGHT_DETAILS_LOADER, GET_ALL_CONSOLE_FRIGHT_DETAILS_SUCCESS, GET_ALL_MAWB_FRIGHT_DETAILS, GET_ALL_MAWB_FRIGHT_DETAILS_LOADER, GET_ALL_MAWB_FRIGHT_DETAILS_SUCCESS, GET_CONSOLE_TABLE_DATA, GET_CONSOLE_TABLE_DATA_BY_ID, GET_CONSOLE_TABLE_DATA_LOADER, GET_FCL_CHARGE_ID, GET_FCL_CURRENT_VERSION_TYPE, GET_FCL_DESTINATION_DATA, GET_FCL_DESTINATION_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_DATA, GET_FCL_FREIGHT_VIEW_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_LOADER, GET_FCL_INLAND_CHARGE_ID, GET_FCL_INLAND_FREIGHT_ACTION, GET_FCL_INLAND_FREIGHT_ACTION_SUCCESS, GET_FCL_INLAND_FREIGHT_LOADER, GET_FCL_INLAND_LOADER, GET_FCL_INLAND_SURCHARGE_ACTION, GET_FCL_INLAND_SURCHARGE_ACTION_SUCCESS, GET_FCL_INLAND_SURCHARGE_LOADER, GET_FCL_INLAND_TABLE_DATA, GET_FCL_LOADER, GET_FCL_PLCHARGES_LOADER, GET_FCL_SURCHARGE_VIEW_DATA, GET_FCL_SURCHARGE_VIEW_DATA_SUCCESS, GET_FCL_SURCHARGE_VIEW_LOADER, GET_FCL_TABLE_DATA, GET_LCL_TABLE_DATA, GET_PORTLOCALCHARGES_TABLE_DATA, GET_UPLOAD_STATUS, GET_UPLOAD_STATUS_SUCCESS, GET_WAYBILL_TABLE_DATA, GET_WAYBILL_TABLE_DATA_BY_ID, GET_WAYBILL_TABLE_DATA_LOADER, MAWB_FRIGHT_FAILD_DATA_TYPE, MAWB_FRIGHT_FAILD_POPUP_TYPE, POST_CARRIER_DATA, POST_CARRIER_DATA_CONSOLE, UPDATE_FCL_ACTIVE_TAB, UPDATE_INLAND_ACTIVE_TAB, UPLOAD_AIR_LINE_DATA, UPLOAD_AIR_PORT_LOCAL_DATA, UPLOAD_FCL_CARRIER_DATA, UPLOAD_FCL_FREIGHT, UPLOAD_FCL_INLAND_CARRIER_DATA, UPLOAD_FCL_INLAND_FREIGHT_DATA, UPLOAD_FCL_INLAND_SURCHARGE_DATA, UPLOAD_FCL_PORTLOCALCHARGES, UPLOAD_FCL_SURCHARGE } from "./actiontype";
+import { CONSOLE_FRIGHT_FAILD_DATA_TYPE, CONSOLE_FRIGHT_FAILD_POPUP_TYPE, FCL_FREIGHT_FAILD_DATA_TYPE, FCL_FREIGHT_FAILD_POPUP_TYPE, FCL_INLAND_FAILD_DATA_TYPE, FCL_INLAND_FAILD_POPUP_TYPE, GET_AIR_LINE_CHARGES_BY_ID, GET_AIR_LINE_CHARGES_BY_ID_SUCCESS, GET_AIR_LINE_CHARGES_DATA, GET_AIR_LINE_CHARGES_LOADER, GET_AIR_LINE_CHARGES_SUCCESS, GET_AIR_PORT_LOCAL_CHARGES_BY_ID, GET_AIR_PORT_LOCAL_CHARGES_BY_ID_SUCCESS, GET_AIR_PORT_LOCAL_CHARGES_DATA, GET_AIR_PORT_LOCAL_CHARGES_LOADER, GET_AIR_PORT_LOCAL_CHARGES_SUCCESS, GET_ALL_CONSOLE_FRIGHT_DETAILS, GET_ALL_CONSOLE_FRIGHT_DETAILS_LOADER, GET_ALL_CONSOLE_FRIGHT_DETAILS_SUCCESS, GET_ALL_MAWB_FRIGHT_DETAILS, GET_ALL_MAWB_FRIGHT_DETAILS_LOADER, GET_ALL_MAWB_FRIGHT_DETAILS_SUCCESS, GET_ALL_TENANT_CARGO_MODE, GET_ALL_TENANT_CARGO_MODE_SUCCESS, GET_CONSOLE_TABLE_DATA, GET_CONSOLE_TABLE_DATA_BY_ID, GET_CONSOLE_TABLE_DATA_LOADER, GET_FCL_CHARGE_ID, GET_FCL_CURRENT_VERSION_TYPE, GET_FCL_DESTINATION_DATA, GET_FCL_DESTINATION_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_DATA, GET_FCL_FREIGHT_VIEW_DATA_SUCCESS, GET_FCL_FREIGHT_VIEW_LOADER, GET_FCL_INLAND_CHARGE_ID, GET_FCL_INLAND_FREIGHT_ACTION, GET_FCL_INLAND_FREIGHT_ACTION_SUCCESS, GET_FCL_INLAND_FREIGHT_LOADER, GET_FCL_INLAND_LOADER, GET_FCL_INLAND_SURCHARGE_ACTION, GET_FCL_INLAND_SURCHARGE_ACTION_SUCCESS, GET_FCL_INLAND_SURCHARGE_LOADER, GET_FCL_INLAND_TABLE_DATA, GET_FCL_LOADER, GET_FCL_PLCHARGES_LOADER, GET_FCL_SURCHARGE_VIEW_DATA, GET_FCL_SURCHARGE_VIEW_DATA_SUCCESS, GET_FCL_SURCHARGE_VIEW_LOADER, GET_FCL_TABLE_DATA, GET_LCL_TABLE_DATA, GET_PORTLOCALCHARGES_TABLE_DATA, GET_UPLOAD_STATUS, GET_UPLOAD_STATUS_SUCCESS, GET_WAYBILL_TABLE_DATA, GET_WAYBILL_TABLE_DATA_BY_ID, GET_WAYBILL_TABLE_DATA_LOADER, MAWB_FRIGHT_FAILD_DATA_TYPE, MAWB_FRIGHT_FAILD_POPUP_TYPE, POST_CARRIER_DATA, POST_CARRIER_DATA_CONSOLE, SAVE_CONSOLE_FRIGHT_RP_DATA, SAVE_CONSOLE_FRIGHT_RP_DATA_SUCCESS, SAVE_MAWB_FRIGHT_RP_DATA, SAVE_MAWB_FRIGHT_RP_DATA_SUCCESS, UPDATE_FCL_ACTIVE_TAB, UPDATE_INLAND_ACTIVE_TAB, UPLOAD_AIR_LINE_DATA, UPLOAD_AIR_PORT_LOCAL_DATA, UPLOAD_FCL_CARRIER_DATA, UPLOAD_FCL_FREIGHT, UPLOAD_FCL_INLAND_CARRIER_DATA, UPLOAD_FCL_INLAND_FREIGHT_DATA, UPLOAD_FCL_INLAND_SURCHARGE_DATA, UPLOAD_FCL_PORTLOCALCHARGES, UPLOAD_FCL_SURCHARGE } from "./actiontype";
 import UploadAirPortLocalChargesData from "../../pages/Procurement/FreightForwarding/Air/AirPortLocal/partials/UploadAirPortLocalChargesData";
 
 function* fetchFclData({ payload }) {
@@ -90,6 +90,17 @@ function* postAirUploadSaga({ payload: { dataObj } }) {
     }
 }
 
+function* postAirMawbData({ payload: { data } }) {
+    try {
+        const response = yield call(postAirMawbSer, data);
+        console.log(response, "response surcharge");
+        showSuccessToast("Update Successfully");
+        yield put({ type: SAVE_MAWB_FRIGHT_RP_DATA_SUCCESS, payload: response });
+    } catch (error) {
+        showErrorToast(error?.response?.data?.message);
+    }
+}
+
 function* fetchAllMawbDetails({ payload: { data } }) {
     yield put({ type: GET_ALL_MAWB_FRIGHT_DETAILS_LOADER, payload: true })
     try {
@@ -127,6 +138,19 @@ function* postFclFreightUploadSaga({ payload: { formData, id } }) {
         }
     }
 }
+
+function* saveConsoledata({ payload: { data } }) {
+    try {
+        const response = yield call(postAirConsoleData,  data);
+        console.log(response, "response surcharge");
+        showSuccessToast("Update Successfully");
+        yield put({ type: SAVE_CONSOLE_FRIGHT_RP_DATA_SUCCESS, payload: response });
+    } catch (error) {
+        showErrorToast(error?.response?.data?.message);
+    }
+}
+
+
 
 function* fetchAllConsoleDetails({ payload: { data } }) {
     yield put({ type: GET_ALL_CONSOLE_FRIGHT_DETAILS_LOADER, payload: true })
@@ -212,6 +236,17 @@ function* postAirPortLocalChargesData({ payload: { dataObj } }) {
         showSuccessToast("Update Successfully");
     } catch (error) {
         showErrorToast(error?.response?.data?.message);
+    }
+}
+
+// tenant cargo mode
+
+function* fetchAllTenantCargomode() {
+    try {
+        const response = yield call(getTenantCargoModeSer);
+        yield put({ type: GET_ALL_TENANT_CARGO_MODE_SUCCESS, payload: response });
+    } catch (error) {
+        console.log(error);
     }
 }
 
@@ -477,6 +512,9 @@ export function* watchGetProcureData() {
     yield takeEvery(GET_AIR_LINE_CHARGES_BY_ID, fetchAirLineChargesDataById)
     yield takeEvery(GET_ALL_CONSOLE_FRIGHT_DETAILS, fetchAllConsoleDetails)
     yield takeEvery(GET_ALL_MAWB_FRIGHT_DETAILS, fetchAllMawbDetails)
+    yield takeEvery(GET_ALL_TENANT_CARGO_MODE, fetchAllTenantCargomode)
+    yield takeEvery(SAVE_MAWB_FRIGHT_RP_DATA, postAirMawbData)
+    yield takeEvery(SAVE_CONSOLE_FRIGHT_RP_DATA, saveConsoledata)
 
 }
 
