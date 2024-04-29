@@ -76,7 +76,11 @@ export default function UploadAirPortLocalChargesData() {
                 mainrate: "",
                 isSlab: false,
                 addTerms: {},
+                id: "",
+                version: 0,
                 subBox: [{
+                    id: "",
+                    version: 0,
                     cargoType: "",
                     commodity: "",
                     minValue: "",
@@ -141,6 +145,10 @@ export default function UploadAirPortLocalChargesData() {
                     let cargoTypeData = subItem?.cargoType?.map((cargoType) => {
                         let commodityData = subItem?.commodity?.map((commodity) => {
                             let obj = {
+                                ...(airportLocalChargesDataById && {
+                                    id: subItem.id || "",
+                                    version: subItem.version || 0
+                                }),
                                 ...(subItem?.cargoType && {
                                     "cargoType": {
                                         "id": cargoType?.id || '',
@@ -214,6 +222,10 @@ export default function UploadAirPortLocalChargesData() {
                 ...(value?.validityTo && { "validTo": value?.validityTo || 0 }),
                 "vendorAirportChargeDetails": value?.mainBox?.map((item, mainindex) => {
                     return {
+                        ...(airportLocalChargesDataById && {
+                            id: item.id || "",
+                            version: item.version || 0
+                        }),
                         ...(item?.chargeCode && {
                             "surchargeCode": {
                                 "id": item?.chargeCode?.id || '',
@@ -257,6 +269,8 @@ export default function UploadAirPortLocalChargesData() {
                 validityFrom: airportLocalChargesDataById?.validFrom || "",
                 validityTo: airportLocalChargesDataById?.validTo || '',
                 mainBox: airportLocalChargesDataById?.vendorAirportChargeDetails?.map(chargeDetail => ({
+                    id: chargeDetail?.id || "",
+                    version: chargeDetail.version || 0,
                     chargeCode: chargeDetail?.surchargeCode ? chargeDetail.surchargeCode : "",
                     chargeBasis: chargeDetail?.unitOfMeasurement ? chargeDetail.unitOfMeasurement : "",
                     currency: chargeDetail?.currency ? chargeDetail.currency : "",
@@ -273,6 +287,8 @@ export default function UploadAirPortLocalChargesData() {
                         }
                         return acc;
                     }, [])?.map(chargeValue => ({
+                        id: chargeValue?.id || "",
+                        version: chargeValue.version || 0,
                         cargoType: chargeDetail?.vendorAirportChargeValues ? (
                             () => {
                                 const cargoTypesSet = new Set();
@@ -897,8 +913,8 @@ export default function UploadAirPortLocalChargesData() {
                                                                                 toSlab: "",
                                                                                 rate: "",
                                                                                 minValue: "",
-                                                                                cargoType: [],
-                                                                                commodity: [],
+                                                                                cargoType: '',
+                                                                                commodity: "",
                                                                             }],
                                                                         });
                                                                     }}

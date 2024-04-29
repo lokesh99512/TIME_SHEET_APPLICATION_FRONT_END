@@ -64,12 +64,14 @@ export default function UploadAirLineCharges() {
                     tax: "",
                     isSlab: false,
                     addTerms: {},
+                    id: '',
+                    version: '',
                     subBox: [{
                         originPort: "",
                         destinataionPort: "",
                         flightNumber: "",
-                        cargoType: [],
-                        commodity: [],
+                        cargoType: '',
+                        commodity: '',
                         slab: [{
                             minVal: "",
                             fromSlab: "",
@@ -139,6 +141,10 @@ export default function UploadAirLineCharges() {
                         let commodityData = subItem?.commodity?.map((commodity) => {
                             let slabData = subItem?.slab?.map((slab) => {
                                 let obj = {
+                                    ...(airLineChargesDataById && {
+                                        id: item.id || "",
+                                        version: item.version || 0
+                                    }),
                                     ...(item?.chargeCode && {
                                         "surchargeCode": {
                                             "id": item?.chargeCode?.id || '',
@@ -245,6 +251,8 @@ export default function UploadAirLineCharges() {
                     validFrom: chargeValue?.validFrom || "",
                     validTo: chargeValue?.validTo || "",
                     tax: chargeValue?.tax || "",
+                    id: chargeValue?.id || "",
+                    version: chargeValue?.version || 0,
                 }))
             );
             const distinctVendorAirlineChargeValues = Array.from(uniqueValues).map(value => JSON.parse(value));
@@ -262,6 +270,8 @@ export default function UploadAirLineCharges() {
                         validTo: chargeValue?.validTo || "",
                         tax: chargeValue?.tax || "",
                         isSlab: false,
+                        id: chargeValue?.id,
+                        version: chargeValue?.version,
                         addTerms: {},
                         subBox: airLineChargesDataById?.vendorAirlineChargeValues.reduce((acc, val) => {
                             const isUnique = !acc.some(item =>
@@ -337,8 +347,8 @@ export default function UploadAirLineCharges() {
                                 originPort: "",
                                 destinataionPort: "",
                                 flightNumber: "",
-                                cargoType: [],
-                                commodity: [],
+                                cargoType: '',
+                                commodity: '',
                                 slab: [{
                                     minVal: "",
                                     fromSlab: "",
@@ -886,8 +896,8 @@ export default function UploadAirLineCharges() {
                                                                                 originPort: "",
                                                                                 destinataionPort: "",
                                                                                 flightNumber: "",
-                                                                                cargoType: [],
-                                                                                commodity: [],
+                                                                                cargoType: '',
+                                                                                commodity: '',
                                                                                 rate: "",
                                                                                 slab: [{
                                                                                     fromSlab: "",
