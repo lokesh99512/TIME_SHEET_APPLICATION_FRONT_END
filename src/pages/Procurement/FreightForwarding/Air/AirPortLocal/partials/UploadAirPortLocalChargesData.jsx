@@ -81,8 +81,8 @@ export default function UploadAirPortLocalChargesData() {
                 subBox: [{
                     id: "",
                     version: 0,
-                    cargoType: "",
-                    commodity: "",
+                    cargoType: [],
+                    commodity: [],
                     minValue: "",
                     fromSlab: "",
                     toSlab: "",
@@ -140,14 +140,37 @@ export default function UploadAirPortLocalChargesData() {
         }),
 
         onSubmit: (value) => {
+            console.log(value);
             let surchargeValuesArray = value?.mainBox?.map((item) => {
                 let newData = item?.subBox?.map((subItem, subIndex) => {
                     let cargoTypeData = subItem?.cargoType?.map((cargoType) => {
+                        const subbox = subItem.chargeValue?.find(data => subItem.rate == data.rate &&data.cargoType.type == cargoType.value)
+                        let obj = {
+                            ...(airportLocalChargesDataById && airportLocalChargesDataById?.id && subItem?.id && subbox && {
+                                id: subbox?.id || "",
+                                version: subbox?.version || 0
+                            }),
+                            ...(subItem?.cargoType && {
+                                "cargoType": {
+                                    "id": cargoType?.id || '',
+                                    "version": cargoType?.version || 0
+                                }
+                            }),
+                            ...(subItem?.fromSlab && { "fromSlab": subItem?.fromSlab || 0 }),
+                            ...(subItem?.toSlab && { "toSlab": subItem?.toSlab || 0 }),
+                            ...(subItem?.rate && { "rate": subItem?.rate || 0 }),
+                            ...(subItem?.minValue && { "minValue": subItem?.minValue || 0 }),
+                        };
+                        if (!(subItem?.commodity && subItem?.commodity.length>0)) {
+                            console.log("sub");
+                            return obj; 
+                        }
                         let commodityData = subItem?.commodity?.map((commodity) => {
+                            const subbox = subItem.chargeValue?.find(data => subItem.rate == data.rate && data.cargoType.type == cargoType.value)
                             let obj = {
-                                ...(airportLocalChargesDataById && {
-                                    id: subItem.id || "",
-                                    version: subItem.version || 0
+                                ...(airportLocalChargesDataById && airportLocalChargesDataById?.id && subItem?.id && subbox && {
+                                    id: subbox?.id || "",
+                                    version: subbox?.version || 0
                                 }),
                                 ...(subItem?.cargoType && {
                                     "cargoType": {
@@ -155,33 +178,35 @@ export default function UploadAirPortLocalChargesData() {
                                         "version": cargoType?.version || 0
                                     }
                                 }),
-                                ...(subItem?.commodity && {
+                                ...(commodity && {
                                     "commodity": {
                                         "id": commodity?.id || '',
                                         "version": commodity?.version || 0
                                     }
                                 }),
-
+            
                                 ...(subItem?.fromSlab && { "fromSlab": subItem?.fromSlab || 0 }),
                                 ...(subItem?.toSlab && { "toSlab": subItem?.toSlab || 0 }),
                                 ...(subItem?.rate && { "rate": subItem?.rate || 0 }),
                                 ...(subItem?.minValue && { "minValue": subItem?.minValue || 0 }),
                             };
                             return obj;
-                        })
+                        });
+            
                         return commodityData;
-                    });
+                    }).filter(data => data !== undefined);
                     return cargoTypeData;
                 });
                 return newData;
             });
+            
 
             let spreadSurArray = surchargeValuesArray?.map((item) => {
                 return item.flat(Infinity)
             });
 
             let data = {
-                ...(airportLocalChargesDataById && {
+                ...(airportLocalChargesDataById && airportLocalChargesDataById?.id && {
                     id: airportLocalChargesDataById?.id || "",
                     version: airportLocalChargesDataById?.version || 0
                 }),
@@ -222,7 +247,7 @@ export default function UploadAirPortLocalChargesData() {
                 ...(value?.validityTo && { "validTo": value?.validityTo || 0 }),
                 "vendorAirportChargeDetails": value?.mainBox?.map((item, mainindex) => {
                     return {
-                        ...(airportLocalChargesDataById && {
+                        ...(airportLocalChargesDataById && airportLocalChargesDataById?.id && item?.id && {
                             id: item.id || "",
                             version: item.version || 0
                         }),
@@ -251,6 +276,7 @@ export default function UploadAirPortLocalChargesData() {
                     }
                 })
             }
+            console.log(data);
             dispatch(postAirPortLocalChargesData(data));
             // formik.resetForm();
         },
@@ -287,6 +313,7 @@ export default function UploadAirPortLocalChargesData() {
                         }
                         return acc;
                     }, [])?.map(chargeValue => ({
+                        chargeValue: chargeDetail?.vendorAirportChargeValues,
                         id: chargeValue?.id || "",
                         version: chargeValue.version || 0,
                         cargoType: chargeDetail?.vendorAirportChargeValues ? (
@@ -309,8 +336,10 @@ export default function UploadAirPortLocalChargesData() {
                                     data.minValue === chargeValue.minValue &&
                                     data.rate === chargeValue.rate
                                 ).forEach(filteredData => {
-                                    const commodityString = JSON.stringify(commodity_data.find(data => data.value == filteredData.commodity.name));
-                                    commoditysSet.add(commodityString);
+                                    if (filteredData?.commodity) {
+                                        const commodityString = JSON.stringify(commodity_data.find(data => data.value == filteredData.commodity.name));
+                                        commoditysSet.add(commodityString);
+                                    }
                                 });
                                 return Array.from(commoditysSet).map(value => JSON.parse(value))
                             }
@@ -339,8 +368,8 @@ export default function UploadAirPortLocalChargesData() {
                     isSlab: false,
                     addTerms: {},
                     subBox: [{
-                        cargoType: "",
-                        commodity: "",
+                        cargoType: [],
+                        commodity: [],
                         minValue: "",
                         fromSlab: "",
                         toSlab: "",
@@ -764,6 +793,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                                 isMulti
                                                                                                                                 name={`mainBox[${index}].subBox[${subIndex}].commodity`}
                                                                                                                                 value={formik.values.mainBox[index].subBox[subIndex].commodity}
+                                                                                                                                isDisabled={!formik.values.mainBox[index].subBox[subIndex].cargoType?.find(data=>data.value=="PERISHABLE")}
                                                                                                                                 onChange={(e) => {
                                                                                                                                     formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].commodity`, e);
                                                                                                                                 }}
@@ -913,8 +943,8 @@ export default function UploadAirPortLocalChargesData() {
                                                                                 toSlab: "",
                                                                                 rate: "",
                                                                                 minValue: "",
-                                                                                cargoType: '',
-                                                                                commodity: "",
+                                                                                cargoType: [],
+                                                                                commodity: [],
                                                                             }],
                                                                         });
                                                                     }}

@@ -64,14 +64,14 @@ export default function UploadAirLineCharges() {
                     tax: "",
                     isSlab: false,
                     addTerms: {},
-                    id: '',
-                    version: '',
                     subBox: [{
+                        id: '',
+                        version: '',
                         originPort: "",
                         destinataionPort: "",
                         flightNumber: "",
-                        cargoType: '',
-                        commodity: '',
+                        cargoType: [],
+                        commodity: [],
                         slab: [{
                             minVal: "",
                             fromSlab: "",
@@ -134,16 +134,69 @@ export default function UploadAirLineCharges() {
         }),
 
         onSubmit: (value) => {
-            console.log(value);
             let surchargeValuesArray = value?.mainBox?.map((item) => {
                 let newData = item?.subBox?.map((subItem, subIndex) => {
                     let cargoTypeData = subItem?.cargoType?.map((cargoType) => {
+                        const subbox = subItem.chargeValue?.find(data => subItem.rate == data.rate && data.cargoType.type == cargoType.value)
+                        let obj = {
+                            ...(airLineChargesDataById && subbox && {
+                                id: subbox.id || "",
+                                version: subbox.version || 0
+                            }),
+                            ...(item?.chargeCode && {
+                                "surchargeCode": {
+                                    "id": item?.chargeCode?.id || '',
+                                    "version": item?.chargeCode?.version || 0
+                                }
+                            }),
+                            ...(item?.validFrom && { "validFrom": item?.validFrom || 0 }),
+                            ...(item?.validTo && { "validTo": item?.validTo || 0 }),
+                            ...(item?.currency && {
+                                "currency": {
+                                    "id": item?.currency?.id || '',
+                                    "version": item?.currency?.version || 0
+                                }
+                            }),
+
+                            ...(item?.chargeBasis && {
+                                "unitOfMeasurement": {
+                                    "id": item?.chargeBasis?.id || '',
+                                    "version": item?.chargeBasis?.version || 0
+                                }
+                            }),
+                            ...(subItem?.cargoType && {
+                                "cargoType": {
+                                    "id": cargoType?.id || '',
+                                    "version": cargoType?.version || 0
+                                }
+                            }),
+                            ...(subItem?.originPort && {
+                                "originPort": {
+                                    "id": subItem?.originPort?.id || '',
+                                    "version": subItem?.originPort?.version || 0
+                                }
+                            }),
+                            ...(subItem?.destinataionPort && {
+                                "destinationPort": {
+                                    "id": subItem?.destinataionPort?.id || '',
+                                    "version": subItem?.destinataionPort?.version || 0
+                                }
+                            }),
+                            ...(item?.tax && { "tax": item?.tax || 0 }),
+                            ...(subItem?.rate && { "rate": subItem?.rate || 0 }),
+                            ...(subItem?.flightNumber && { "flightNumber": subItem?.flightNumber || 0 }),
+                        };
+                        if (!(subItem?.commodity && subItem?.commodity.length > 0)) {
+                            console.log("sub");
+                            return obj;
+                        }
                         let commodityData = subItem?.commodity?.map((commodity) => {
                             let slabData = subItem?.slab?.map((slab) => {
+                                const subbox = subItem.chargeValue?.find(data => subItem.rate == data.rate && data.cargoType.type == cargoType.value && data.commodity.name == commodity.value)
                                 let obj = {
-                                    ...(airLineChargesDataById && {
-                                        id: item.id || "",
-                                        version: item.version || 0
+                                    ...(airLineChargesDataById && subbox && {
+                                        id: subbox.id || "",
+                                        version: subbox.version || 0
                                     }),
                                     ...(item?.chargeCode && {
                                         "surchargeCode": {
@@ -251,8 +304,6 @@ export default function UploadAirLineCharges() {
                     validFrom: chargeValue?.validFrom || "",
                     validTo: chargeValue?.validTo || "",
                     tax: chargeValue?.tax || "",
-                    id: chargeValue?.id || "",
-                    version: chargeValue?.version || 0,
                 }))
             );
             const distinctVendorAirlineChargeValues = Array.from(uniqueValues).map(value => JSON.parse(value));
@@ -291,8 +342,11 @@ export default function UploadAirLineCharges() {
                             chargeValue.validFrom === data.validFrom &&
                             chargeValue.validTo === data.validTo
                         ).map(chargeValue => ({
+                            chargeValue: airLineChargesDataById?.vendorAirlineChargeValues,
                             originPort: chargeValue?.originPort ? chargeValue.originPort : "",
                             destinataionPort: chargeValue?.destinationPort ? chargeValue?.destinationPort : "",
+                            id: chargeValue?.id || "",
+                            version: chargeValue?.version || 0,
                             cargoType: airLineChargesDataById ? (
                                 () => {
                                     const cargoTypesSet = new Set();
@@ -313,8 +367,10 @@ export default function UploadAirLineCharges() {
                                         data?.destinationPort?.name === chargeValue?.destinationPort?.name &&
                                         data?.originPort?.name === chargeValue?.originPort?.name
                                     ).forEach(filteredData => {
-                                        const commodityString = JSON.stringify(commodity_data.find(data => data.value == filteredData.commodity.name));
-                                        commoditysSet.add(commodityString);
+                                        if (filteredData?.commodity) {
+                                            const commodityString = JSON.stringify(commodity_data.find(data => data.value == filteredData.commodity.name));
+                                            commoditysSet.add(commodityString);
+                                        }
                                     });
                                     return Array.from(commoditysSet).map(value => JSON.parse(value))
                                 }
@@ -347,8 +403,8 @@ export default function UploadAirLineCharges() {
                                 originPort: "",
                                 destinataionPort: "",
                                 flightNumber: "",
-                                cargoType: '',
-                                commodity: '',
+                                cargoType: [],
+                                commodity: [],
                                 slab: [{
                                     minVal: "",
                                     fromSlab: "",
@@ -703,6 +759,7 @@ export default function UploadAirLineCharges() {
                                                                                                                                 onChange={(e) => {
                                                                                                                                     formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].commodity`, e);
                                                                                                                                 }}
+                                                                                                                                isDisabled={!formik.values.mainBox[index].subBox[subIndex].cargoType?.find(data=>data.value=="PERISHABLE")}
                                                                                                                                 isMulti
                                                                                                                                 options={commodity_data || []}
                                                                                                                                 classNamePrefix="select2-selection form-select"
@@ -896,8 +953,8 @@ export default function UploadAirLineCharges() {
                                                                                 originPort: "",
                                                                                 destinataionPort: "",
                                                                                 flightNumber: "",
-                                                                                cargoType: '',
-                                                                                commodity: '',
+                                                                                cargoType: [],
+                                                                                commodity: [],
                                                                                 rate: "",
                                                                                 slab: [{
                                                                                     fromSlab: "",
