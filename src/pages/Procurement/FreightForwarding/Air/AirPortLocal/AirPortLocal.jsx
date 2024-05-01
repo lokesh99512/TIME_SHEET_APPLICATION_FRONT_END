@@ -92,7 +92,7 @@ const AirPortLocal = () => {
             }
         },
         {
-            Header: 'Port Name',
+            Header: 'Air Port Name',
             accessor: "airPortName",
             filterable: true,
             disableFilters: true,
@@ -146,7 +146,7 @@ const AirPortLocal = () => {
             }
         },
         {
-            Header: 'Total Charge Pairs',
+            Header: 'Total Charges',
             accessor: 'totalCount',
             filterable: true,
             disableFilters: true,

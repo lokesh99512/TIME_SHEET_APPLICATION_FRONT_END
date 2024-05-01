@@ -112,7 +112,7 @@ const AirLineCharges = () => {
             }
         },
         {
-            Header: 'Total Port Pairs',
+            Header: 'Total Charges',
             accessor: 'totalCount',
             filterable: true,
             disableFilters: true,

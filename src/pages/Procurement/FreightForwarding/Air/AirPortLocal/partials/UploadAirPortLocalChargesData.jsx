@@ -748,7 +748,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                 {(
                                                                                                                     <div className="row mb-3">
                                                                                                                         {/* cargo type */}
-                                                                                                                        <div className="col-md-2 mb-2">
+                                                                                                                        <div className="col-md-3 mb-2">
                                                                                                                             <label className="form-label"> Cargo Type<span className='required_star'>*</span></label>
                                                                                                                             <Select
                                                                                                                                 name={`mainBox[${index}].subBox[${subIndex}].cargoType`}
@@ -787,13 +787,13 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                         </div>
 
                                                                                                                         {/* Commodity */}
-                                                                                                                        <div className="col-md-2 mb-2">
+                                                                                                                        <div className="col-md-3 mb-2">
                                                                                                                             <label className="form-label"> Commodity</label>
                                                                                                                             <Select
                                                                                                                                 isMulti
                                                                                                                                 name={`mainBox[${index}].subBox[${subIndex}].commodity`}
                                                                                                                                 value={formik.values.mainBox[index].subBox[subIndex].commodity}
-                                                                                                                                isDisabled={!formik.values.mainBox[index].subBox[subIndex].cargoType?.find(data=>data.value=="PERISHABLE")}
+                                                                                                                                isDisabled={!(formik.values.mainBox[index].subBox[subIndex].cargoType?.find(data=>data.value=="PERISHABLE") && formik.values.mainBox[index].subBox[subIndex].cargoType.length==1)}
                                                                                                                                 onChange={(e) => {
                                                                                                                                     formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].commodity`, e);
                                                                                                                                 }}
@@ -803,7 +803,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                         </div>
 
                                                                                                                         {/* min value */}
-                                                                                                                        <div className="col-md-2 mb-2">
+                                                                                                                        <div className="col-md-1 mb-2">
                                                                                                                             <label className="form-label"> Min Value</label>
                                                                                                                             <Input
                                                                                                                                 type="number"
@@ -816,7 +816,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                         </div>
 
                                                                                                                         {formik.values.mainBox[index].isSlab && (
-                                                                                                                            <div className="col-md-2 mb-2">
+                                                                                                                            <div className="col-md-1 mb-2">
                                                                                                                                 <label className="form-label">From Slab </label>
                                                                                                                                 <Input
                                                                                                                                     type="number"
@@ -829,7 +829,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                             </div>
                                                                                                                         )}
                                                                                                                         {formik.values.mainBox[index].isSlab && (
-                                                                                                                            <div className="col-md-2 mb-2">
+                                                                                                                            <div className="col-md-1 mb-2">
                                                                                                                                 <label className="form-label"> To Slab</label>
                                                                                                                                 <Input
                                                                                                                                     type="number"
@@ -842,7 +842,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                             </div>
                                                                                                                         )}
 
-                                                                                                                        <div className={"col-md-" + (formik.values.mainBox[index].isSlab && formik.values.mainBox[index].subBox.length > 1 ? "1" : "2") + " mb-2 pr-0"}>
+                                                                                                                        <div className={"col-md-1 mb-2 pr-0"}>
                                                                                                                             <label className="form-label"> Rate<span className='required_star'>*</span></label>
                                                                                                                             <Input
                                                                                                                                 type="number"

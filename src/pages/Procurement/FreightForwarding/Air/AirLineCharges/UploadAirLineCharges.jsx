@@ -114,21 +114,22 @@ export default function UploadAirLineCharges() {
                         }
                     }).required("Please select currency"),
                     validFrom: Yup.string().required("Please select Valid From"),
-                    validTo: Yup.string().required("Please select Valid To")
+                    validTo: Yup.string().required("Please select Valid To"),
 
-                    // subBox: Yup.array().of(
-                    //     Yup.object({
-                    //         cargoType: Yup.mixed().test('is-object-or-string', 'Please select charge code', function (value) {
-                    //             if (typeof value === 'string') {
-                    //                 return true;
-                    //             } else if (typeof value === 'object' && value !== null) {
-                    //                 return true;
-                    //             } else {
-                    //                 return false;
-                    //             }
-                    //         }).required("Please select cargo type"),
-                    //     })
-                    // )
+                    subBox: Yup.array().of(
+                        Yup.object({
+                            // cargoType: Yup.mixed().test('is-object-or-string', 'Please select charge code', function (value) {
+                            //     if (typeof value === 'string') {
+                            //         return true;
+                            //     } else if (typeof value === 'object' && value !== null) {
+                            //         return true;
+                            //     } else {
+                            //         return false;
+                            //     }
+                            // }).required("Please select cargo type"),
+                            rate: Yup.string().required("Please enter rate")
+                        })
+                    )
                 })
             )
         }),
@@ -136,8 +137,56 @@ export default function UploadAirLineCharges() {
         onSubmit: (value) => {
             let surchargeValuesArray = value?.mainBox?.map((item) => {
                 let newData = item?.subBox?.map((subItem, subIndex) => {
+                    const subbox = subItem.chargeValue?.find(data => subItem.rate == data.rate)
+                    let obj = {
+                        ...(airLineChargesDataById && subbox && {
+                            id: subbox.id || "",
+                            version: subbox.version || 0
+                        }),
+                        ...(item?.chargeCode && {
+                            "surchargeCode": {
+                                "id": item?.chargeCode?.id || '',
+                                "version": item?.chargeCode?.version || 0
+                            }
+                        }),
+                        ...(item?.validFrom && { "validFrom": item?.validFrom || 0 }),
+                        ...(item?.validTo && { "validTo": item?.validTo || 0 }),
+                        ...(item?.currency && {
+                            "currency": {
+                                "id": item?.currency?.id || '',
+                                "version": item?.currency?.version || 0
+                            }
+                        }),
+
+                        ...(item?.chargeBasis && {
+                            "unitOfMeasurement": {
+                                "id": item?.chargeBasis?.id || '',
+                                "version": item?.chargeBasis?.version || 0
+                            }
+                        }),
+    
+                        ...(subItem?.originPort && {
+                            "originPort": {
+                                "id": subItem?.originPort?.id || '',
+                                "version": subItem?.originPort?.version || 0
+                            }
+                        }),
+                        ...(subItem?.destinataionPort && {
+                            "destinationPort": {
+                                "id": subItem?.destinataionPort?.id || '',
+                                "version": subItem?.destinataionPort?.version || 0
+                            }
+                        }),
+                        ...(item?.tax && { "tax": item?.tax || 0 }),
+                        ...(subItem?.rate && { "rate": subItem?.rate || 0 }),
+                        ...(subItem?.flightNumber && { "flightNumber": subItem?.flightNumber || 0 }),
+                    };
+                    if (!(subItem?.cargoType && subItem?.cargoType.length > 0)) {
+                        console.log("sub");
+                        return obj;
+                    }
                     let cargoTypeData = subItem?.cargoType?.map((cargoType) => {
-                        const subbox = subItem.chargeValue?.find(data => subItem.rate == data.rate && data.cargoType.type == cargoType.value)
+                        const subbox = subItem.chargeValue?.find(data => subItem.rate == data.rate)
                         let obj = {
                             ...(airLineChargesDataById && subbox && {
                                 id: subbox.id || "",
@@ -192,7 +241,7 @@ export default function UploadAirLineCharges() {
                         }
                         let commodityData = subItem?.commodity?.map((commodity) => {
                             let slabData = subItem?.slab?.map((slab) => {
-                                const subbox = subItem.chargeValue?.find(data => subItem.rate == data.rate && data.cargoType.type == cargoType.value && data.commodity.name == commodity.value)
+                                const subbox = subItem.chargeValue?.find(data => subItem.rate == data.rate)
                                 let obj = {
                                     ...(airLineChargesDataById && subbox && {
                                         id: subbox.id || "",
@@ -354,8 +403,10 @@ export default function UploadAirLineCharges() {
                                         data?.destinationPort?.name === chargeValue?.destinationPort?.name &&
                                         data?.originPort?.name === chargeValue?.originPort?.name
                                     ).forEach(filteredData => {
+                                        if(filteredData?.cargoType){
                                         const cargoTypeString = JSON.stringify(cargoType_data.find(data => data.value == filteredData.cargoType.type));
                                         cargoTypesSet.add(cargoTypeString);
+                                        }
                                     });
                                     return Array.from(cargoTypesSet).map(value => JSON.parse(value))
                                 }
@@ -759,7 +810,7 @@ export default function UploadAirLineCharges() {
                                                                                                                                 onChange={(e) => {
                                                                                                                                     formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].commodity`, e);
                                                                                                                                 }}
-                                                                                                                                isDisabled={!formik.values.mainBox[index].subBox[subIndex].cargoType?.find(data=>data.value=="PERISHABLE")}
+                                                                                                                                // isDisabled={!formik.values.mainBox[index].subBox[subIndex].cargoType?.find(data=>data.value=="PERISHABLE")}
                                                                                                                                 isMulti
                                                                                                                                 options={commodity_data || []}
                                                                                                                                 classNamePrefix="select2-selection form-select"
@@ -776,14 +827,34 @@ export default function UploadAirLineCharges() {
                                                                                                                         </div>
                                                                                                                         {!formik.values.mainBox[index].isSlab && (
                                                                                                                             <div className={"col-md-" + (formik.values.mainBox[index].subBox.length > 1 ? "1" : "2") + " mb-2 pr-0"}>
-                                                                                                                                <label className="form-label"> Rate</label>
+                                                                                                                                <label className="form-label"> Rate<span className='required_star'>*</span></label>
                                                                                                                                 <Input
                                                                                                                                     type="number"
                                                                                                                                     name={`mainBox[${index}].subBox[${subIndex}].rate`}
                                                                                                                                     value={formik.values.mainBox[index].subBox[subIndex].rate || ''}
                                                                                                                                     onChange={formik.handleChange}
                                                                                                                                     className="form-control"
+                                                                                                                                    invalid={
+                                                                                                                                        formik.touched.mainBox &&
+                                                                                                                                            formik.touched.mainBox[index] &&
+                                                                                                                                            formik.errors.mainBox &&
+                                                                                                                                            formik.errors.mainBox[index] &&
+                                                                                                                                            formik.errors.mainBox[index].subBox &&
+                                                                                                                                            formik.errors.mainBox[index].subBox[subIndex] &&
+                                                                                                                                            formik.errors.mainBox[index].subBox[subIndex].rate
+                                                                                                                                            ? true
+                                                                                                                                            : false
+                                                                                                                                    }
                                                                                                                                 />
+                                                                                                                                {formik.touched.mainBox &&
+                                                                                                                                    formik.touched.mainBox[index] &&
+                                                                                                                                    formik.errors.mainBox &&
+                                                                                                                                    formik.errors.mainBox[index] &&
+                                                                                                                                    formik.errors.mainBox[index].subBox &&
+                                                                                                                                    formik.errors.mainBox[index].subBox[subIndex] &&
+                                                                                                                                    formik.errors.mainBox[index].subBox[subIndex].rate ? (
+                                                                                                                                    <FormFeedback>{formik.errors.mainBox[index].subBox[subIndex].rate}</FormFeedback>
+                                                                                                                                ) : null}
 
                                                                                                                             </div>
                                                                                                                         )}
