@@ -1,5 +1,5 @@
 import { FieldArray, FormikProvider, useFormik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, version } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
@@ -143,6 +143,10 @@ export default function UploadAirLineCharges() {
                             id: subbox.id || "",
                             version: subbox.version || 0
                         }),
+                        ...(airLineChargesDataById && !subbox && subItem.id && {
+                            id: subItem.id || "",
+                            version: subItem.version || 0
+                        }),
                         ...(item?.chargeCode && {
                             "surchargeCode": {
                                 "id": item?.chargeCode?.id || '',
@@ -164,7 +168,7 @@ export default function UploadAirLineCharges() {
                                 "version": item?.chargeBasis?.version || 0
                             }
                         }),
-    
+
                         ...(subItem?.originPort && {
                             "originPort": {
                                 "id": subItem?.originPort?.id || '',
@@ -186,11 +190,15 @@ export default function UploadAirLineCharges() {
                         return obj;
                     }
                     let cargoTypeData = subItem?.cargoType?.map((cargoType) => {
-                        const subbox = subItem.chargeValue?.find(data => subItem.rate == data.rate)
+                        const subbox = subItem.chargeValue?.find(data => subItem.rate == data.rate && data.cargoType.type == cargoType.value)
                         let obj = {
                             ...(airLineChargesDataById && subbox && {
                                 id: subbox.id || "",
                                 version: subbox.version || 0
+                            }),
+                            ...(airLineChargesDataById && !subbox && subItem.id && {
+                                id: subItem.id || "",
+                                version: subItem.version || 0
                             }),
                             ...(item?.chargeCode && {
                                 "surchargeCode": {
@@ -241,11 +249,15 @@ export default function UploadAirLineCharges() {
                         }
                         let commodityData = subItem?.commodity?.map((commodity) => {
                             let slabData = subItem?.slab?.map((slab) => {
-                                const subbox = subItem.chargeValue?.find(data => subItem.rate == data.rate)
+                                const subbox = subItem.chargeValue?.find(data => subItem.rate == data.rate && data.cargoType.type == cargoType.value)
                                 let obj = {
                                     ...(airLineChargesDataById && subbox && {
                                         id: subbox.id || "",
                                         version: subbox.version || 0
+                                    }),
+                                    ...(airLineChargesDataById && !subbox && subItem.id && {
+                                        id: subItem.id || "",
+                                        version: subItem.version || 0
                                     }),
                                     ...(item?.chargeCode && {
                                         "surchargeCode": {
@@ -369,7 +381,7 @@ export default function UploadAirLineCharges() {
                         validFrom: chargeValue?.validFrom || '',
                         validTo: chargeValue?.validTo || "",
                         tax: chargeValue?.tax || "",
-                        isSlab: false,
+                        isSlab: airLineChargesDataById?.vendorAirlineChargeValues?.some(chargeValue => chargeValue.fromSlab || chargeValue.toSlab),
                         id: chargeValue?.id,
                         version: chargeValue?.version,
                         addTerms: {},
@@ -391,6 +403,8 @@ export default function UploadAirLineCharges() {
                             chargeValue.validFrom === data.validFrom &&
                             chargeValue.validTo === data.validTo
                         ).map(chargeValue => ({
+                            id: chargeValue.id || "",
+                            version: chargeValue.version || '',
                             chargeValue: airLineChargesDataById?.vendorAirlineChargeValues,
                             originPort: chargeValue?.originPort ? chargeValue.originPort : "",
                             destinataionPort: chargeValue?.destinationPort ? chargeValue?.destinationPort : "",
@@ -403,9 +417,9 @@ export default function UploadAirLineCharges() {
                                         data?.destinationPort?.name === chargeValue?.destinationPort?.name &&
                                         data?.originPort?.name === chargeValue?.originPort?.name
                                     ).forEach(filteredData => {
-                                        if(filteredData?.cargoType){
-                                        const cargoTypeString = JSON.stringify(cargoType_data.find(data => data.value == filteredData.cargoType.type));
-                                        cargoTypesSet.add(cargoTypeString);
+                                        if (filteredData?.cargoType) {
+                                            const cargoTypeString = JSON.stringify(cargoType_data.find(data => data.value == filteredData.cargoType.type));
+                                            cargoTypesSet.add(cargoTypeString);
                                         }
                                     });
                                     return Array.from(cargoTypesSet).map(value => JSON.parse(value))
@@ -429,10 +443,10 @@ export default function UploadAirLineCharges() {
                             flightNumber: chargeValue?.flightNumber || "",
                             rate: chargeValue?.rate || "",
                             slab: [{
-                                minVal: "",
-                                fromSlab: "",
-                                toSlab: "",
-                                rate: "",
+                                minVal: chargeValue.minValue,
+                                fromSlab: chargeValue.fromSlab,
+                                toSlab: chargeValue.toSlab,
+                                rate: chargeValue.rate || "",
                             }],
                         })),
                     }))
@@ -768,7 +782,7 @@ export default function UploadAirLineCharges() {
                                                                                                                                 onChange={(e) => {
                                                                                                                                     formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].originPort`, e);
                                                                                                                                 }}
-                                                                                                                                options={airLocation || []}
+                                                                                                                                options={airLocation.filter(data => data.value != formik.values.mainBox[index].subBox[subIndex].destinataionPort?.value) || []}
                                                                                                                                 classNamePrefix="select2-selection form-select"
                                                                                                                             />
                                                                                                                         </div>
@@ -780,7 +794,7 @@ export default function UploadAirLineCharges() {
                                                                                                                                 onChange={(e) => {
                                                                                                                                     formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].destinataionPort`, e);
                                                                                                                                 }}
-                                                                                                                                options={airLocation || []}
+                                                                                                                                options={airLocation.filter(data => data.value != formik.values.mainBox[index].subBox[subIndex].originPort?.value) || []}
                                                                                                                                 classNamePrefix="select2-selection form-select"
                                                                                                                             />
                                                                                                                         </div>
@@ -913,7 +927,10 @@ export default function UploadAirLineCharges() {
                                                                                                                                                                         type="number"
                                                                                                                                                                         name={`mainBox[${index}].subBox[${subIndex}].slab[${slabIndex}].rate`}
                                                                                                                                                                         value={formik.values.mainBox[index].subBox[subIndex].slab[slabIndex].rate || ''}
-                                                                                                                                                                        onChange={formik.handleChange}
+                                                                                                                                                                        onChange={(e) => {
+                                                                                                                                                                            formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].slab[${slabIndex}].rate`, e.target.value);
+                                                                                                                                                                            formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].rate`, e.target.value)
+                                                                                                                                                                        }}
                                                                                                                                                                         onBlur={formik.handleBlur}
                                                                                                                                                                         className="form-control"
                                                                                                                                                                     />
