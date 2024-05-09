@@ -1,9 +1,9 @@
 import axios from "axios";
-import { GET_INSTANT_RATE_LOCATION_FAILURE, GET_INSTANT_RATE_LOCATION_SUCCESS, ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK, GET_ALL_INCOTERM, GET_ALL_INCOTERM_SUCCESS, GET_INSTANT_SEARCH_RESULT_TYPE, UPDATE_QUOTATION_RESULT_DETAILS, CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_UPDATE, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_SELECTED, POST_INSTANT_SEARCH_LOADER, BLANK_INSTANT_SEARCH, GET_AIR_LOCATION_TYPE_SUCCESS, SEARCH_RESULT_FILTER_UPDATE, CLEAR_SEARCH_RESULT_FILTER, GET_INSTANT_SEARCH_RESULT_ID, GET_INSTANT_AIR_SEARCH_RESULT_DETAILS, INSTANT_RATE_ACTIVE_TAB_TYPE, QUOTATION_RESULT_REMARK_UPDATE } from "./actionType"
+import { GET_INSTANT_RATE_LOCATION_FAILURE, GET_INSTANT_RATE_LOCATION_SUCCESS, ADD_OBJECT_INSTANT_SEARCH, REMOVE_OBJECT_INSTANT_SEARCH, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_RATE_DATA, UPDATE_SEARCH_INSTANT_RATE_DATE, UPDATE_VALUE_BLANK, GET_ALL_INCOTERM, GET_ALL_INCOTERM_SUCCESS, GET_INSTANT_SEARCH_RESULT_TYPE, UPDATE_QUOTATION_RESULT_DETAILS, CONFIRM_PREVIEW_DATA, QUOTATION_RESULT_UPDATE, QUOTATION_RESULT_SELECTED_BLANK, QUOTATION_RESULT_SELECTED, POST_INSTANT_SEARCH_LOADER, BLANK_INSTANT_SEARCH, GET_AIR_LOCATION_TYPE_SUCCESS, SEARCH_RESULT_FILTER_UPDATE, CLEAR_SEARCH_RESULT_FILTER, GET_INSTANT_SEARCH_RESULT_ID, GET_INSTANT_AIR_SEARCH_RESULT_DETAILS, INSTANT_RATE_ACTIVE_TAB_TYPE, QUOTATION_RESULT_REMARK_UPDATE, POST_INSTANT_AIR_SEARCH_DATA_SUCCESS } from "./actionType"
 import { Get_File_URL } from "../../helpers/url_helper";
 
 const INIT_STATE = {
-    $instantActiveTab:{
+    $instantActiveTab: {
         main: 'ocean_freight',
         sub: 'FCL'
     },
@@ -16,6 +16,7 @@ const INIT_STATE = {
         cargo_value: { currency: { label: 'INR', value: 'rupee', currencyCode: "INR", id: 2, version: 0 }, value: '' },
         flight_mode: { label: "GCR", value: "GCR" },
         // incoterm: '',
+        bookingMode: { label: "MAWB", value: "MAWB" },
         customerName: '',
         container_type: {},
         // shipment_details: "",
@@ -34,14 +35,15 @@ const INIT_STATE = {
     quote_selected_data: [],
     result_loader: false,
     error: null,
+    airSearchData: []
 };
 
 const instantRate = (state = INIT_STATE, action) => {
     switch (action.type) {
         case INSTANT_RATE_ACTIVE_TAB_TYPE:
-            return{
+            return {
                 ...state,
-                $instantActiveTab:{
+                $instantActiveTab: {
                     main: action.payload.main,
                     sub: action.payload.sub
                 }
@@ -174,6 +176,57 @@ const instantRate = (state = INIT_STATE, action) => {
                 ...state,
                 instantInquiryId: action.payload,
             }
+
+        case POST_INSTANT_AIR_SEARCH_DATA_SUCCESS:
+            return {
+                ...state,
+                airSearchData: action.payload.map((item, index) => ({
+                    id: index + 1,
+                    quote_id: 'air_' + (index + 1),
+                    flightname: item.airLineSummary?.flightName,
+                    flightno: item.airLineSummary?.flightNumber,
+                    agentname: item.airLineSummary?.agentName,
+                    carrierLogo: '',
+                    originDetails: {
+                        portname: item.airLineSummary?.originAirportName,
+                        time: item.airLineSummary?.etd,
+                        date: item.airLineSummary?.cargoDate
+                    },
+                    destinationDetails: {
+                        portname: item.airLineSummary?.destinationAirportName,
+                        time: item.airLineSummary?.eta,
+                        date: item.airLineSummary?.cargoDate
+                    },
+                    freightMode: item.airLineSummary?.cargoMode,
+                    cargoType: item.airLineSummary?.cargoType,
+                    oceanTransitTime: item.airLineSummary?.totalTravelTime,
+                    airFreightCharges:item?.airFreightCharges,
+                    totalCost:item?.airLineSummary?.totalCost,
+                    tariffDetails: [
+                        {
+                            header: "Pickup_Charges",
+                            fclTariffBreakDowns:  []
+                        },
+                        {
+                            header: "Origin_Airport_Charges",
+                            fclTariffBreakDowns:item?.originAirportCharges || [],
+                        },
+                        {
+                            header: "Air_Freight_Charges",
+                            fclTariffBreakDowns: (item?.airFreightCharges ? [item.airFreightCharges] : []).concat(item?.airLineCharges || [])
+                        },
+                        {
+                            header: "Destination_Airport_Charges",
+                            fclTariffBreakDowns: item?.destinationAirportCharges || []
+                        },
+                        {
+                            header: "Delivery_Charges",
+                            fclTariffBreakDowns: []
+                        }
+                    ]
+                }))
+            };
+
 
         case GET_INSTANT_SEARCH_RESULT_TYPE:
             let newResultArray = [];
@@ -335,7 +388,7 @@ const instantRate = (state = INIT_STATE, action) => {
                 quote_selected_data: newArray
             };
 
-        case QUOTATION_RESULT_REMARK_UPDATE: 
+        case QUOTATION_RESULT_REMARK_UPDATE:
             let newArrayRemark = [...state.quote_selected_data];
             const existingIndexRemark = newArrayRemark.findIndex(obj => obj.quote_id === action.payload.id);
             let updatedItemRemark = {

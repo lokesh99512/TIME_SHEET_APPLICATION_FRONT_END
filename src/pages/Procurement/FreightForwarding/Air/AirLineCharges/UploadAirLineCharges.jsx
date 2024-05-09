@@ -137,60 +137,9 @@ export default function UploadAirLineCharges() {
         onSubmit: (value) => {
             let surchargeValuesArray = value?.mainBox?.map((item) => {
                 let newData = item?.subBox?.map((subItem, subIndex) => {
-                    const subbox = subItem.chargeValue?.find(data => subItem.rate == data.rate)
-                    let obj = {
-                        ...(airLineChargesDataById && subbox && {
-                            id: subbox.id || "",
-                            version: subbox.version || 0
-                        }),
-                        ...(airLineChargesDataById && !subbox && subItem.id && {
-                            id: subItem.id || "",
-                            version: subItem.version || 0
-                        }),
-                        ...(item?.chargeCode && {
-                            "surchargeCode": {
-                                "id": item?.chargeCode?.id || '',
-                                "version": item?.chargeCode?.version || 0
-                            }
-                        }),
-                        ...(item?.validFrom && { "validFrom": item?.validFrom || 0 }),
-                        ...(item?.validTo && { "validTo": item?.validTo || 0 }),
-                        ...(item?.currency && {
-                            "currency": {
-                                "id": item?.currency?.id || '',
-                                "version": item?.currency?.version || 0
-                            }
-                        }),
-
-                        ...(item?.chargeBasis && {
-                            "unitOfMeasurement": {
-                                "id": item?.chargeBasis?.id || '',
-                                "version": item?.chargeBasis?.version || 0
-                            }
-                        }),
-
-                        ...(subItem?.originPort && {
-                            "originPort": {
-                                "id": subItem?.originPort?.id || '',
-                                "version": subItem?.originPort?.version || 0
-                            }
-                        }),
-                        ...(subItem?.destinataionPort && {
-                            "destinationPort": {
-                                "id": subItem?.destinataionPort?.id || '',
-                                "version": subItem?.destinataionPort?.version || 0
-                            }
-                        }),
-                        ...(item?.tax && { "tax": item?.tax || 0 }),
-                        ...(subItem?.rate && { "rate": subItem?.rate || 0 }),
-                        ...(subItem?.flightNumber && { "flightNumber": subItem?.flightNumber || 0 }),
-                    };
-                    if (!(subItem?.cargoType && subItem?.cargoType.length > 0)) {
-                        console.log("sub");
-                        return obj;
-                    }
-                    let cargoTypeData = subItem?.cargoType?.map((cargoType) => {
-                        const subbox = subItem.chargeValue?.find(data => subItem.rate == data.rate && data.cargoType.type == cargoType.value)
+                    let slabData = subItem?.slab?.map((slab) => {
+                        console.log(slab);
+                        const subbox = subItem.chargeValue?.find(data => subItem.rate == data.rate)
                         let obj = {
                             ...(airLineChargesDataById && subbox && {
                                 id: subbox.id || "",
@@ -221,12 +170,7 @@ export default function UploadAirLineCharges() {
                                     "version": item?.chargeBasis?.version || 0
                                 }
                             }),
-                            ...(subItem?.cargoType && {
-                                "cargoType": {
-                                    "id": cargoType?.id || '',
-                                    "version": cargoType?.version || 0
-                                }
-                            }),
+
                             ...(subItem?.originPort && {
                                 "originPort": {
                                     "id": subItem?.originPort?.id || '',
@@ -241,14 +185,75 @@ export default function UploadAirLineCharges() {
                             }),
                             ...(item?.tax && { "tax": item?.tax || 0 }),
                             ...(subItem?.rate && { "rate": subItem?.rate || 0 }),
+                            ...(slab?.fromSlab && { "fromSlab": slab?.fromSlab || 0 }),
+                            ...(slab?.toSlab && { "toSlab": slab?.toSlab || 0 }),
+                            ...(subItem?.rate && { "rate": subItem?.rate || 0 }),
+                            ...(slab?.rate && { "rate": slab?.rate || 0 }),
+                            ...(slab?.minVal && { "minValue": slab?.minVal || 0 }),
                             ...(subItem?.flightNumber && { "flightNumber": subItem?.flightNumber || 0 }),
                         };
-                        if (!(subItem?.commodity && subItem?.commodity.length > 0)) {
-                            console.log("sub");
+                        if (!(subItem?.cargoType && subItem?.cargoType.length > 0)) {
                             return obj;
                         }
-                        let commodityData = subItem?.commodity?.map((commodity) => {
-                            let slabData = subItem?.slab?.map((slab) => {
+                        let cargoTypeData = subItem?.cargoType?.map((cargoType) => {
+                            const subbox = subItem.chargeValue?.find(data => subItem.rate == data.rate && data.cargoType.type == cargoType.value)
+                            let obj = {
+                                ...(airLineChargesDataById && subbox && {
+                                    id: subbox.id || "",
+                                    version: subbox.version || 0
+                                }),
+                                ...(airLineChargesDataById && !subbox && subItem.id && {
+                                    id: subItem.id || "",
+                                    version: subItem.version || 0
+                                }),
+                                ...(item?.chargeCode && {
+                                    "surchargeCode": {
+                                        "id": item?.chargeCode?.id || '',
+                                        "version": item?.chargeCode?.version || 0
+                                    }
+                                }),
+                                ...(item?.validFrom && { "validFrom": item?.validFrom || 0 }),
+                                ...(item?.validTo && { "validTo": item?.validTo || 0 }),
+                                ...(item?.currency && {
+                                    "currency": {
+                                        "id": item?.currency?.id || '',
+                                        "version": item?.currency?.version || 0
+                                    }
+                                }),
+
+                                ...(item?.chargeBasis && {
+                                    "unitOfMeasurement": {
+                                        "id": item?.chargeBasis?.id || '',
+                                        "version": item?.chargeBasis?.version || 0
+                                    }
+                                }),
+                                ...(subItem?.cargoType && {
+                                    "cargoType": {
+                                        "id": cargoType?.id || '',
+                                        "version": cargoType?.version || 0
+                                    }
+                                }),
+                                ...(subItem?.originPort && {
+                                    "originPort": {
+                                        "id": subItem?.originPort?.id || '',
+                                        "version": subItem?.originPort?.version || 0
+                                    }
+                                }),
+                                ...(subItem?.destinataionPort && {
+                                    "destinationPort": {
+                                        "id": subItem?.destinataionPort?.id || '',
+                                        "version": subItem?.destinataionPort?.version || 0
+                                    }
+                                }),
+                                ...(item?.tax && { "tax": item?.tax || 0 }),
+                                ...(subItem?.rate && { "rate": subItem?.rate || 0 }),
+                                ...(subItem?.flightNumber && { "flightNumber": subItem?.flightNumber || 0 }),
+                            };
+                            if (!(subItem?.commodity && subItem?.commodity.length > 0)) {
+                                return obj;
+                            }
+                            let commodityData = subItem?.commodity?.map((commodity) => {
+
                                 const subbox = subItem.chargeValue?.find(data => subItem.rate == data.rate && data.cargoType.type == cargoType.value)
                                 let obj = {
                                     ...(airLineChargesDataById && subbox && {
@@ -313,12 +318,13 @@ export default function UploadAirLineCharges() {
                                     ...(subItem?.flightNumber && { "flightNumber": subItem?.flightNumber || 0 }),
                                 }
                                 return obj
+
                             })
-                            return slabData;
-                        })
-                        return commodityData;
-                    });
-                    return cargoTypeData;
+                            return commodityData;
+                        });
+                        return cargoTypeData;
+                    })
+                    return slabData;
                 });
                 return newData
             });

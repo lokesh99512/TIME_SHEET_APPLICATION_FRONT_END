@@ -86,14 +86,14 @@ const AirFreightCard = ({ data, QuoteModalHandler, mainTab, bookModalHandler }) 
 
     // Total & SubTotal ----------------------------------     
     const innerTotalHandler = (array) => {
-        return array !== undefined ? array?.reduce((total, charge) => total + convertToINR(Number(charge.amount), charge.currencyCode), 0) : 0;
+        return array !== undefined ? array?.reduce((total, charge) => total + convertToINR(Number(charge.totalSaleCost), charge.currency), 0) : 0;
     }
     const TotalQuotationCount = (item) => {
         const totalSum = item?.tariffDetails?.reduce((accOuter, currentOuter) => {
             let innerSum = 0;
             if (currentOuter?.selected) {
                 innerSum = currentOuter?.fclTariffBreakDowns?.reduce((accInner, currentInner) => {
-                    return accInner + convertToINR(Number(currentInner.amount), currentInner.currencyCode);
+                    return accInner + convertToINR(Number(currentInner.totalSaleCost), currentInner.currency);
                 }, 0);
             }
             return accOuter + innerSum;
@@ -152,7 +152,7 @@ const AirFreightCard = ({ data, QuoteModalHandler, mainTab, bookModalHandler }) 
                                     </div>
                                     <div className="right_details">
                                         <div className="total_wrap">
-                                            <p className="total_price text-center text-primary" onClick={() => showDetailsHandler(index,item?.quote_id)}><b>₹ {TotalQuotationCount(item)}</b><i className='mdi mdi-chevron-double-right'></i></p>
+                                            <p className="total_price text-center text-primary" onClick={() => showDetailsHandler(index,item?.quote_id)}><b>₹ {item.totalCost}</b><i className='mdi mdi-chevron-double-right'></i></p>
                                         </div>
                                     </div>
                                 </div>
@@ -236,8 +236,8 @@ const AirFreightCard = ({ data, QuoteModalHandler, mainTab, bookModalHandler }) 
                                                                 <div className="price_details_wrap ps-5">
                                                                     {data?.fclTariffBreakDowns?.length !== 0 && data?.fclTariffBreakDowns?.map((val, ind) => (
                                                                         <div className="details d-flex justify-content-between" key={`key_${ind}`}>
-                                                                            <p className='me-2'>{`${val?.component || ''} `}</p>
-                                                                            <span className='text-primary'>{val?.currencyCode || '₹'} {val?.amount || '0'}</span>
+                                                                            <p className='me-2'>{`${val?.chargeName || ''} `}</p>
+                                                                            <span className='text-primary'>{val?.currency || '₹'} {val?.totalSaleCost || '0'}</span>
                                                                         </div>
                                                                     ))}
                                                                 </div>

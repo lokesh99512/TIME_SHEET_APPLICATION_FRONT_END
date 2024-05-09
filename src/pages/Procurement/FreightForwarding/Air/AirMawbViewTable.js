@@ -205,6 +205,7 @@ const AirMawbDetails = () => {
                     );
                 },
             },
+           
             {
                 Header: '+45kg',
                 accessor: 'slab45',
@@ -317,6 +318,26 @@ const AirMawbDetails = () => {
                             type="number"
                             name="slab1000"
                             value={formik.values.slab1000}
+                            onChange={formik.handleChange}
+                            className="form-control"
+                        />
+                    ) : (
+                        <CommonValue cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
+                    );
+                },
+            },
+            {
+                Header: 'Tax',
+                accessor: 'tax',
+                filterable: true,
+                disableFilters: true,
+                Cell: (cellProps) => {
+                    const rowIndex = cellProps.row.index;
+                    return editingRowIndex === rowIndex ? (
+                        <Input
+                            type="number"
+                            name="tax"
+                            value={formik.values.tax}
                             onChange={formik.handleChange}
                             className="form-control"
                         />

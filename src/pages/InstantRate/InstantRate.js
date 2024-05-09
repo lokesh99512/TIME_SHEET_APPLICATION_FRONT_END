@@ -7,7 +7,7 @@ import { Container, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstra
 import { airSearchData } from "../../common/data/sales";
 import { GET_CARGO_TYPE_DATA, GET_CONTAINER_DATA, GET_UOM_WEIGHT_DATA } from "../../store/Global/actiontype";
 import { ADD_OBJECT_INSTANT_SEARCH, BLANK_INSTANT_SEARCH, GET_INSTANT_AIR_SEARCH_RESULT_DETAILS, INSTANT_RATE_ACTIVE_TAB_TYPE, QUOTATION_RESULT_SELECTED_BLANK, REMOVE_OBJECT_INSTANT_SEARCH } from "../../store/InstantRate/actionType";
-import { postInstantSearchAction } from "../../store/InstantRate/actions";
+import { postAirFrightInstantSearch, postInstantSearchAction } from "../../store/InstantRate/actions";
 import { BLANK_MODAL_CHARGE } from "../../store/Sales/Quotation/actiontype";
 import AirBookQuoteModal from "./AirFreightResult/AirBookQuoteModal";
 import AirFreightResultComp from "./AirFreightResult/AirFreightResultComp";
@@ -37,55 +37,85 @@ const InstantRate = () => {
         console.log($instantActiveTab, "activeTab------------------------------------")
         let dateFrom = moment(searchForm?.cargo_date?.[0]).format("YYYY-MM-DD");
         let dateTo = moment(searchForm?.cargo_date?.[1]).format("YYYY-MM-DD");
-        let data = {
-            inquiryField: {
-                customerId: searchForm?.customerName?.value || null,
-                findAlternativeRoute: searchForm?.alternate_route,
-                originLocationTypeId: searchForm?.location_from?.locationType || null,
-                destinationLocationTypeId: searchForm?.location_to?.locationType || null,
+        if ($instantActiveTab?.sub === 'FCL') {
+            let data = {
+                inquiryField: {
+                    customerId: searchForm?.customerName?.value || null,
+                    findAlternativeRoute: searchForm?.alternate_route,
+                    originLocationTypeId: searchForm?.location_from?.locationType || null,
+                    destinationLocationTypeId: searchForm?.location_to?.locationType || null,
 
-                ...(searchForm?.location_from?.locationType === "PORT" ? {
-                    "originPortId": searchForm?.location_from?.value || null,
-                } : searchForm?.location_from?.locationType === "CITY" ? {
-                    "originCityId": searchForm?.location_from?.value || null,
-                } : searchForm?.location_from?.locationType === "ICD" ? {
-                    "originIcdId": searchForm?.location_from?.value || null,
-                } : ''),
+                    ...(searchForm?.location_from?.locationType === "PORT" ? {
+                        "originPortId": searchForm?.location_from?.value || null,
+                    } : searchForm?.location_from?.locationType === "CITY" ? {
+                        "originCityId": searchForm?.location_from?.value || null,
+                    } : searchForm?.location_from?.locationType === "ICD" ? {
+                        "originIcdId": searchForm?.location_from?.value || null,
+                    } : ''),
 
-                ...(searchForm?.location_to?.locationType === "PORT" ? {
-                    "destinationPortId": searchForm?.location_to?.value || null,
-                } : searchForm?.location_to?.locationType === "CITY" ? {
-                    "destinationCityId": searchForm?.location_to?.value || null,
-                } : searchForm?.location_to?.locationType === "ICD" ? {
-                    "destinationIcdId": searchForm?.location_to?.value || null,
-                } : ''),
+                    ...(searchForm?.location_to?.locationType === "PORT" ? {
+                        "destinationPortId": searchForm?.location_to?.value || null,
+                    } : searchForm?.location_to?.locationType === "CITY" ? {
+                        "destinationCityId": searchForm?.location_to?.value || null,
+                    } : searchForm?.location_to?.locationType === "ICD" ? {
+                        "destinationIcdId": searchForm?.location_to?.value || null,
+                    } : ''),
 
-                cargoDateFrom: dateFrom || null,
-                cargoDateTo: dateTo || null,
-                cargoTypeId: searchForm?.cargo_type?.id || null,
-                cargoValue: searchForm?.cargo_value?.value || 0,
-                cargoWeight: searchForm?.container_type?.cargo_weight?.value || 0,
-                ...(searchForm?.container_type?.cargo_weight?.weight && { cargoWeightUOMId: searchForm?.container_type?.cargo_weight?.weight?.id || null }),
-                intercomId: searchForm?.incoterm?.value || null,
-                containerDetails: (searchForm?.container_type?.containerArray || [])
+                    cargoDateFrom: dateFrom || null,
+                    cargoDateTo: dateTo || null,
+                    cargoTypeId: searchForm?.cargo_type?.id || null,
+                    cargoValue: searchForm?.cargo_value?.value || 0,
+                    cargoWeight: searchForm?.container_type?.cargo_weight?.value || 0,
+                    ...(searchForm?.container_type?.cargo_weight?.weight && { cargoWeightUOMId: searchForm?.container_type?.cargo_weight?.weight?.id || null }),
+                    intercomId: searchForm?.incoterm?.value || null,
+                    containerDetails: (searchForm?.container_type?.containerArray || [])
+                        .map((data) => (
+                            data?.unitNew !== 0
+                                ? {
+                                    id: data?.id,
+                                    size: data?.size,
+                                    noOfUnits: data?.unitNew
+                                }
+                                : null
+                        ))
+                        .filter(Boolean)
+                }
+            }
+            dispatch(postInstantSearchAction(data));
+        }
+        if ($instantActiveTab?.sub === 'dom_air') {
+            let data = {
+                ...(searchForm?.customerName && { customerId: searchForm?.customerName?.value }),
+                originType: "PORT",
+                destinationType: "PORT",
+                originId: searchForm?.location_from.id,
+                destinationId: searchForm?.location_to.id,
+                cargoDate: dateFrom,
+                ...(searchForm?.cargo_type && { cargoTypeId: searchForm?.cargo_type?.id }),
+                // commodityTypeId: null,
+                ...(searchForm?.cargo_value && { cargoValue: searchForm?.cargo_value?.value }),
+                cargoWeight: searchForm?.shipment_details?.v_weight > searchForm?.shipment_details?.weight ?  searchForm?.shipment_details?.v_weight : searchForm?.shipment_details?.weight   || 0,
+                // cargoWeightUOMId: null,
+                // incoterm: null,
+                // // inquiryDate: "2023-06-28",
+                actualWeight: searchForm?.shipment_details?.weight || 0,
+                // volumetricWeight: 1,
+                bookingMode: searchForm?.bookingMode?.value || "MAWB",
+                shipmentDetails: (searchForm?.shipment_details?.array || [])
                     .map((data) => (
                         data?.unitNew !== 0
                             ? {
-                                id: data?.id,
-                                size: data?.size,
-                                noOfUnits: data?.unitNew
+                                noOfUnits: data?.no_unit,
+                                length: data?.dimensions_l,
+                                width: data?.dimensions_w,
+                                height: data?.dimensions_h,
+                                uom: data?.dimensions_unit
                             }
                             : null
                     ))
                     .filter(Boolean)
             }
-        }
-
-        console.log(data, "data");
-        if ($instantActiveTab?.sub === 'FCL') {
-            dispatch(postInstantSearchAction(data));
-        }
-        if ($instantActiveTab?.sub === 'dom_air') {
+            dispatch(postAirFrightInstantSearch(data))
             dispatch({ type: GET_INSTANT_AIR_SEARCH_RESULT_DETAILS, payload: airSearchData });
         }
         setSearchResult(true);

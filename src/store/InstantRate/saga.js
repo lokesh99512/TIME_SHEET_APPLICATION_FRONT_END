@@ -2,7 +2,7 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 import { showErrorToast } from "../../components/Common/CustomToast";
 import { getAirLocation, getAllIncoTerms, getInstantRateLocation } from "../../helpers/services/GlobalService";
-import { filterInstantRateSer, postInstantRateSer } from "../../helpers/services/InstantRateService";
+import { filterInstantRateSer, postAirInstantRateSer, postInstantRateSer } from "../../helpers/services/InstantRateService";
 import {
   FILTER_INSTANT_SEARCH_DATA_TYPE,
   GET_AIR_LOCATION_TYPE,
@@ -14,6 +14,8 @@ import {
   GET_INSTANT_RATE_LOCATION_SUCCESS,
   GET_INSTANT_SEARCH_RESULT_ID,
   GET_INSTANT_SEARCH_RESULT_TYPE,
+  POST_INSTANT_AIR_SEARCH_DATA,
+  POST_INSTANT_AIR_SEARCH_DATA_SUCCESS,
   POST_INSTANT_SEARCH_DATA_TYPE,
   POST_INSTANT_SEARCH_LOADER,
 } from "./actionType";
@@ -68,12 +70,24 @@ function* filterInstantSearchSaga({payload: { url }}) {
   }
 }
 
+function* postAirInstantSearchDataSaga({payload: { data }}) {  
+  yield put({ type: POST_INSTANT_SEARCH_LOADER, payload: true });
+  try {
+    const response = yield call(postAirInstantRateSer, data);
+    yield put({ type: POST_INSTANT_AIR_SEARCH_DATA_SUCCESS, payload: response});
+    yield put({ type: POST_INSTANT_SEARCH_LOADER, payload: false });
+  } catch (error) {
+    yield put({ type: POST_INSTANT_SEARCH_LOADER, payload: false });
+    showErrorToast(error?.response?.data?.message);
+  }
+}
 function* watchGetInstantRate() {
   yield takeEvery(GET_INSTANT_RATE_LOCATION, fetchInstantRateLocation);
   yield takeEvery(GET_AIR_LOCATION_TYPE, fetchAirLocation);
   yield takeEvery(GET_ALL_INCOTERM, fetchAllIncoterm)
   yield takeEvery(POST_INSTANT_SEARCH_DATA_TYPE, postInstantSearchSaga);
   yield takeEvery(FILTER_INSTANT_SEARCH_DATA_TYPE, filterInstantSearchSaga);
+  yield takeEvery(POST_INSTANT_AIR_SEARCH_DATA, postAirInstantSearchDataSaga)
 }
 
 function* instantRateSaga() {

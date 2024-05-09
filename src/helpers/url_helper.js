@@ -250,6 +250,8 @@ export const GET_AIR_LOCATION_URL = "/api/v1/air-port/"
 export const POST_INSTANT_RATE_URL = "/api/v1/fcl-inquiry-detail/"
 export const FILTER_INSTANT_RATE_URL = "/api/v1/fcl-inquiry-detail/filter"
 
+// Instant air Rate search
+export const POST_AIR_INSTANT_RATE_URL = "/api/v1/airfreight-inquiry/"
 
 // --------------------------------------------------------- Kunal ---------------------------------------------------------
 

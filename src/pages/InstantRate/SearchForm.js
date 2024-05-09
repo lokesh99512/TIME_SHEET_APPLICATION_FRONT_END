@@ -12,6 +12,7 @@ import { GET_AIR_LOCATION_TYPE, UPDATE_INSTANT_RATE_SWAP, UPDATE_SEARCH_INSTANT_
 import { getAllIncoTerms, getInstantRateLocation } from "../../store/InstantRate/actions";
 import { getAllPartiesCustomerData } from "../../store/Parties/Customer/action";
 import { instantAirFormValidate, instantFromValidate } from "./partials/ValidationForm";
+import { optionBookingType } from "../../common/data/procurement";
 const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
   let unitobj = {
     _standard1: 0,
@@ -769,6 +770,38 @@ const SearchForm = ({ activeTab, searchQuoteHandler, mainactiveTab }) => {
             </div>
           </div>
 
+          {/* booking mode */}
+          {mainactiveTab === "air_freight" && (
+            <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
+              <div className="common_dropdwon_btn_wrap bottom_drop_field incoterm_field_wrap focus_custom_div" >
+                <div
+                  id="more_menu"
+                  className={`prof_wrap d-flex justify-content-between ${isOpen && dropId === 6 ? "openmenu" : ""}`}
+                  onClick={() => { toggleDropdown(6); }}
+                >
+                  <div className="icon d-flex align-items-center justify-content-center">
+                    <img src={cube_filled} alt="Avatar" />
+                  </div>
+                  <div className="con">
+                    <label className="form-label">Booking Mode</label>
+                    {console.log(searchForm?.bookingMode)}
+                    <Select
+                      value={searchForm?.bookingMode || {value:"MAWB",label:"MAWB"}}
+                      name="bookingMode"
+                      onChange={(opt) => {
+                        handleChangeHandler(opt, "bookingMode");
+                      }}
+                      options={optionBookingType || []}
+                      placeholder="Select Booking Mode"
+                      classNamePrefix="select2-selection form-select"
+                      menuPlacement="auto"
+                    />
+                  </div>
+                  <i className="mdi mdi-chevron-down" />
+                </div>
+              </div>
+            </div>
+          )}
           {/* Customer Name */}
           {mainactiveTab === "ocean_freight" && (
             <div className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 mt-2">
