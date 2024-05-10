@@ -49,7 +49,8 @@ const AirMawbDetails = () => {
             slab250: '',
             slab300: '',
             slab500: '',
-            slab1000: ''
+            slab1000: '',
+            tax:''
         },
         onSubmit: (values) => {
                 values.data.originPort = values.originPort;
@@ -63,6 +64,7 @@ const AirMawbDetails = () => {
                 values.data.slab300 = values.slab300,
                 values.data.slab500 = values.slab500,
                 values.data.slab1000 = values.slab1000
+                values.data.tax=values.tax
             dispatch(postMawbFrightRpDetails( values.data))
         },
     });
@@ -79,7 +81,8 @@ const AirMawbDetails = () => {
             slab250: data?.slab250,
             slab300: data.slab300,
             slab500: data.slab500,
-            slab1000: data.slab1000
+            slab1000: data.slab1000,
+            tax:data.tax
         })
         setEditingRowIndex(rowIndex);
     };
