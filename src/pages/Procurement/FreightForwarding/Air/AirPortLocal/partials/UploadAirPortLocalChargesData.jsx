@@ -278,7 +278,7 @@ export default function UploadAirPortLocalChargesData() {
             }
             console.log(data);
             dispatch(postAirPortLocalChargesData(data));
-            // formik.resetForm();
+            !!navigateState?.state?.id ? "" : formik.resetForm();
         },
     });
 

@@ -180,51 +180,56 @@ const instantRate = (state = INIT_STATE, action) => {
         case POST_INSTANT_AIR_SEARCH_DATA_SUCCESS:
             return {
                 ...state,
-                airSearchData: action.payload.map((item, index) => ({
-                    id: index + 1,
-                    quote_id: 'air_' + (index + 1),
-                    flightname: item.airLineSummary?.flightName,
-                    flightno: item.airLineSummary?.flightNumber,
-                    agentname: item.airLineSummary?.agentName,
-                    carrierLogo: '',
-                    originDetails: {
-                        portname: item.airLineSummary?.originAirportName,
-                        time: item.airLineSummary?.etd,
-                        date: item.airLineSummary?.cargoDate
-                    },
-                    destinationDetails: {
-                        portname: item.airLineSummary?.destinationAirportName,
-                        time: item.airLineSummary?.eta,
-                        date: item.airLineSummary?.cargoDate
-                    },
-                    freightMode: item.airLineSummary?.cargoMode,
-                    cargoType: item.airLineSummary?.cargoType,
-                    oceanTransitTime: item.airLineSummary?.totalTravelTime,
-                    airFreightCharges:item?.airFreightCharges,
-                    totalCost:item?.airLineSummary?.totalCost,
-                    tariffDetails: [
-                        {
-                            header: "Pickup_Charges",
-                            fclTariffBreakDowns:  []
+                airSearchData: action.payload.map((item, index) => {
+                    let url = item.airLineSummary?.logoPath || '';
+                    let fileName = url;
+                    const base64Encoded = window.btoa(fileName);
+                    return {
+                        id: index + 1,
+                        quote_id: 'air_' + (index + 1),
+                        flightname: item.airLineSummary?.flightName,
+                        flightno: item.airLineSummary?.flightNumber,
+                        agentname: item.airLineSummary?.agentName,
+                        carrierLogo: `${axios.defaults.baseURL}${Get_File_URL}${base64Encoded}`,
+                        originDetails: {
+                            portname: item.airLineSummary?.originAirportName,
+                            time: item.airLineSummary?.etd ? item.airLineSummary?.etd.slice(0, 5) : null,
+                            date: item.airLineSummary?.cargoDate
                         },
-                        {
-                            header: "Origin_Airport_Charges",
-                            fclTariffBreakDowns:item?.originAirportCharges || [],
+                        destinationDetails: {
+                            portname: item.airLineSummary?.destinationAirportName,
+                            time: item.airLineSummary?.eta ? item.airLineSummary?.eta.slice(0, 5) : null,
+                            date: item.airLineSummary?.cargoDate
                         },
-                        {
-                            header: "Air_Freight_Charges",
-                            fclTariffBreakDowns: (item?.airFreightCharges ? [item.airFreightCharges] : []).concat(item?.airLineCharges || [])
-                        },
-                        {
-                            header: "Destination_Airport_Charges",
-                            fclTariffBreakDowns: item?.destinationAirportCharges || []
-                        },
-                        {
-                            header: "Delivery_Charges",
-                            fclTariffBreakDowns: []
-                        }
-                    ]
-                }))
+                        freightMode: item.airLineSummary?.cargoMode,
+                        cargoType: item.airLineSummary?.cargoType,
+                        oceanTransitTime: item.airLineSummary?.totalTravelTime,
+                        airFreightCharges: item?.airFreightCharges,
+                        totalCost: item?.airLineSummary?.totalCost,
+                        tariffDetails: [
+                            {
+                                header: "Pickup_Charges",
+                                fclTariffBreakDowns: []
+                            },
+                            {
+                                header: "Origin_Airport_Charges",
+                                fclTariffBreakDowns: item?.originAirportCharges || [],
+                            },
+                            {
+                                header: "Air_Freight_Charges",
+                                fclTariffBreakDowns: (item?.airFreightCharges ? [item.airFreightCharges] : []).concat(item?.airLineCharges || [])
+                            },
+                            {
+                                header: "Destination_Airport_Charges",
+                                fclTariffBreakDowns: item?.destinationAirportCharges || []
+                            },
+                            {
+                                header: "Delivery_Charges",
+                                fclTariffBreakDowns: []
+                            }
+                        ]
+                    }
+                })
             };
 
 

@@ -352,11 +352,12 @@ export default function UploadAirLineCharges() {
                         "version": value?.vendorName?.version || 0
                     },
                 }),
-                ...(value?.bookingMode && { "bookingModeType": value?.bookingMode?.value || "MAWB" }),
+                ...(value?.bookingMode && { "bookingModeType": value?.bookingMode?.value || airLineChargesDataById?.bookingModeType  || "MAWB" }),
                 "vendorAirlineChargeValues": finalArray
             }
             dispatch(postAirlineChargesData(data));
-            //   formik.resetForm();
+            !!navigateState?.state?.id ? "" : formik.resetForm();
+
         },
     });
 
