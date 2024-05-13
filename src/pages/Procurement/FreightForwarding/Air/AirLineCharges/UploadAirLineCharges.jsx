@@ -352,7 +352,7 @@ export default function UploadAirLineCharges() {
                         "version": value?.vendorName?.version || 0
                     },
                 }),
-                ...(value?.bookingMode && { "bookingModeType": value?.bookingMode?.value || airLineChargesDataById?.bookingModeType  || "MAWB" }),
+                ...(value?.bookingMode && { "bookingModeType": value?.bookingMode?.value || airLineChargesDataById?.bookingModeType || "MAWB" }),
                 "vendorAirlineChargeValues": finalArray
             }
             dispatch(postAirlineChargesData(data));
@@ -619,7 +619,7 @@ export default function UploadAirLineCharges() {
                                                                                         onChange={(e) => {
                                                                                             formik.setFieldValue(`mainBox[${index}].chargeBasis`, e);
                                                                                         }}
-                                                                                        options={UOM_data}
+                                                                                        options={UOM_data?.filter(data => data.transportMode == "AIR")}
                                                                                         classNamePrefix="select2-selection form-select"
                                                                                         onBlur={formik.handleBlur}
                                                                                         invalid={
@@ -815,9 +815,7 @@ export default function UploadAirLineCharges() {
                                                                                                                                     formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].cargoType`, e);
                                                                                                                                 }}
                                                                                                                                 isMulti
-                                                                                                                                options={[
-                                                                                                                                    ...cargoType_data || [],
-                                                                                                                                ]}
+                                                                                                                                options={cargoType_data.filter(data => data.transportMode == "AIR")}
                                                                                                                                 classNamePrefix="select2-selection form-select"
                                                                                                                             />
                                                                                                                         </div>

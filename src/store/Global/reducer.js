@@ -51,7 +51,8 @@ const globalReducer = (state = INIT_STATE, action) => {
                         value: item?.code,
                         description: item?.description,
                         id: item?.id,
-                        version: item?.version
+                        version: item?.version,
+                        transportMode:item?.transportMode,
                     }
                 })
             }
@@ -116,6 +117,8 @@ const globalReducer = (state = INIT_STATE, action) => {
                         value: `${item?.type}`,
                         id: `${item?.id}`,
                         version: `${item?.version}`,
+                        transportMode:`${item?.transportMode}`,
+                        cargoTypeCode:`${item?.cargoTypeCode}`
                     }
                 })
             }

@@ -577,7 +577,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                         onChange={(e) => {
                                                                                             formik.setFieldValue(`mainBox[${index}].chargeBasis`, e);
                                                                                         }}
-                                                                                        options={UOM_data}
+                                                                                        options={UOM_data?.filter(data => data.transportMode == "AIR")}
                                                                                         classNamePrefix="select2-selection form-select"
                                                                                         onBlur={formik.handleBlur}
                                                                                         invalid={
@@ -757,10 +757,7 @@ export default function UploadAirPortLocalChargesData() {
                                                                                                                                     formik.setFieldValue(`mainBox[${index}].subBox[${subIndex}].cargoType`, e);
                                                                                                                                 }}
                                                                                                                                 isMulti
-                                                                                                                                options={[
-                                                                                                                                    ...cargoType_data || [],
-
-                                                                                                                                ]}
+                                                                                                                                options={cargoType_data.filter(data => data.transportMode == "AIR")}
                                                                                                                                 classNamePrefix="select2-selection form-select"
                                                                                                                                 onBlur={formik.handleBlur}
                                                                                                                                 invalid={
