@@ -49,24 +49,25 @@ const Settings = () => {
         settings_companyPincode_data,
     } = useSelector((state) => state?.settings);
 
+    const {login_user_data} = useSelector((state) => state?.Login);
+
     useEffect(() => {
         dispatch(getCompanyCityData());
         dispatch(getTenantInfoData());
         dispatch({ type: GET_STATE_ALL_TYPE });
     }, []);
-
     const companyDetailsFormik = useFormik({
         enableReinitialize: true,
         initialValues: {
             image: "",
-            companyName: tenant_info !== undefined && tenant_info?.name || "",
-            contactNumber: tenant_info !== undefined && tenant_info?.contactNumber || "",
-            email: tenant_info !== undefined && tenant_info?.email || "",
-            companyAddress: tenant_info !== undefined && tenant_info?.address || "",
-            city: tenant_info !== undefined && tenant_info?.city?.cityName || "",
-            state: tenant_info !== undefined && tenant_info?.state?.stateName || "",
-            zipcode: tenant_info !== undefined && tenant_info?.pinCode?.pin || "",
-            country: tenant_info !== undefined && tenant_info?.country?.countryName || "",
+            companyName: login_user_data.maCompany !== undefined && login_user_data.maCompany?.name || "",
+            contactNumber: login_user_data.maCompany !== undefined && login_user_data.maCompany?.phoneNumber || "",
+            email: login_user_data.maCompany !== undefined && login_user_data.maCompany?.email || "",
+            companyAddress: login_user_data.maCompany !== undefined && login_user_data.maCompany?.address || "",
+            city: login_user_data.maCompany !== undefined && login_user_data.maCompany?.city || "",
+            state: login_user_data.maCompany !== undefined && login_user_data.maCompany?.state || "",
+            zipcode: login_user_data.maCompany !== undefined && login_user_data.maCompany?.zipcode || "",
+            country: login_user_data.maCompany !== undefined && login_user_data.maCompany?.country || "",
         },
         validationSchema: comapanySchema,
 
@@ -130,60 +131,7 @@ const Settings = () => {
         setModalAllData((prev) => [...prev, data]);
     };
 
-    const taxDetailsFormik = useFormik({
-        enableReinitialize: true,
-        initialValues: {
-            pan: tenant_info !== undefined && tenant_info?.pan || "",
-            cin: tenant_info !== undefined && tenant_info?.cin || "",
-            transporterId: tenant_info !== undefined && tenant_info?.transporterId || "",
-            no: tenant_info !== undefined && tenant_info?.tenantGSTS?.[0]?.no || "",
-            placeOfService: tenant_info !== undefined && tenant_info?.tenantGSTS?.[0]?.placeOfService || "",
-            moreGstNumbers: tenant_info !== undefined && tenant_info?.tenantGSTS?.slice(1)?.map((item) => ({
-                no: item?.no,
-                placeOfService: item?.placeOfService,
-                address: item?.address,
-                city: item?.city,
-                state: item?.state,
-                country: item?.country,
-                pinCode: item?.pinCode,
-            })) || [],
-        },
-        onSubmit: (values) => {
-            let singleVal = values?.no !== "" && values?.placeOfService !== "" && [{ no: values?.no, placeOfService: values?.placeOfService }] || [];
-            let mergeArray = [...values?.moreGstNumbers, ...modalAlldata, ...singleVal];
-
-            const payload = {
-                id: tenant_info !== undefined && tenant_info?.id || null,
-                version: tenant_info !== undefined && tenant_info?.version || null,
-                cin: values.cin || null,
-                pan: values.pan || null,
-                transporterId: values.transporterId || null,
-                tenantGSTS: mergeArray?.length !== 0 && mergeArray || [],
-            };
-
-            console.log(payload, "payload");
-
-            dispatch(getTaxDetailsData(payload));
-        },
-    });
-
-    const bussinessTypeFormik = useFormik({
-        enableReinitialize: true,
-        initialValues: {
-            industryType: tenant_info !== undefined ? tenant_info?.industryType : industryType.find((item) => item.value === 'TRANSPORTATION').value,
-            entityType: tenant_info !== undefined && tenant_info?.entityType || entityType.find((item) => item.value === 'PRIVATE_LTD').value,
-        },
-        onSubmit: (value) => {
-            const projectUATRequestDTO = {
-                id: tenant_info !== undefined && tenant_info?.id || null,
-                version: tenant_info !== undefined && tenant_info?.version || null,
-                entityType: value.entityType || null,
-                industryType: value.industryType || null,
-            };
-
-            dispatch(getBusinessData(projectUATRequestDTO));
-        },
-    });
+   
 
     const onCloseClick = () => {
         setGstModal(false);
@@ -194,7 +142,7 @@ const Settings = () => {
                 <TopBreadcrumbs breadcrumbs={companySettingsBreadcrumb} />
                 <Container fluid>
                     <Row>
-                        <div className="col-12 col-md-2">
+                        {/* <div className="col-12 col-md-2">
                             <Card className="h-100">
                                 <SimpleBar style={{ maxHeight: "100%" }}>
                                     <div id="sidebar-menu" className="settings_sidebar">
@@ -233,7 +181,7 @@ const Settings = () => {
                                                 </span>
                                             </li>
 
-                                            {/* ------disabled options--------- */}
+                                          
                                             <li>
                                                 <span className="opacity-50">
                                                     <a>Security</a>
@@ -254,25 +202,25 @@ const Settings = () => {
                                                     <a>Delete Account</a>
                                                 </span>
                                             </li>
-                                            {/* ------disabled options--------- */}
+                                           
                                         </ul>
                                     </div>
                                 </SimpleBar>
                             </Card>
-                        </div>
+                        </div> */}
 
                         {/* ------------------- */}
-                        <div className="col-12 col-md-10">
-                            <Card className="">
-                                <PerfectScrollbar className="p-4" style={{ height: "802px" }}>
+                        <div>
+                            
+                                <PerfectScrollbar className="p-2" style={{ height: "802px" }}>
                                     {/* Comapany details  */}
                                     <CompanyDetailsForm companyDetailsFormik={companyDetailsFormik} />
 
                                     {/* Tax Details  */}
-                                    <SettingsTaxDetails taxDetailsFormik={taxDetailsFormik} setGstModal={setGstModal} />
+                                    {/* <SettingsTaxDetails taxDetailsFormik={taxDetailsFormik} setGstModal={setGstModal} /> */}
 
                                     {/* Bussiness Type */}
-                                    <Card id="bussinessType" className="my-4 mb-auto">
+                                    {/* <Card id="bussinessType" className="my-4 mb-auto">
                                         <CardBody>
                                             <div>
                                                 <h5>Bussiness Type</h5>
@@ -332,11 +280,11 @@ const Settings = () => {
                                                 </div>
                                             </div>
                                         </CardBody>
-                                    </Card>
+                                    </Card> */}
 
                                     <div style={{ height: "525px" }}></div>
                                 </PerfectScrollbar>
-                            </Card>
+                            
                         </div>
                     </Row>
                     <ModalAddGST

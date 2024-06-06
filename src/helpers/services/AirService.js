@@ -59,7 +59,7 @@ export const postAirPortLocalUploadSer = (dataObj) => postFormData(url.Upload_Ai
 //Air line charges
 export const getAirLineTableData = () => get(url.GET_AIR_LINE_CHARGES_ALL);
 export const getAirLineTableDataById = (id) => get(url.GET_AIR_LINE_CHARGES_ALL + id);
-export const postAirLineUploadSer = (dataObj) => postFormData(url.Upload_Airline_Charge_Data, dataObj);
+export const postAirLineUploadSer = (dataObj) => postFormData(url.GET_Task_URL, dataObj);
 
 // tenant cargo mode
 export const getTenantCargoModeSer=()=> get(url.get_all_cargo_mode)

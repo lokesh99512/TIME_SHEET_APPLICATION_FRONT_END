@@ -22,7 +22,6 @@ const Users = () => {
 
   const { settings_users_data, users_loader } = useSelector((state) => state.settings);
   const { roleData } = useSelector((state) => state.globalReducer);
-
   const onCloseClick = () => {
     setResetModal(false);
   }
@@ -49,9 +48,6 @@ const Users = () => {
     }
   }, [dispatch,currentPage]);
 
-  useEffect(() => {
-    dispatch({ type: GET_ROLE_TYPE });   
-  }, [dispatch]);
 
   const columns = useMemo(() => ([
     {
@@ -97,7 +93,7 @@ const Users = () => {
       disableFilters: true,
       Cell: (cellProps) => {
         return (
-          <Role cellProps={cellProps} viewPopupHandler={viewPopupHandler} roleData={roleData} />
+          <LastName cellProps={cellProps} viewPopupHandler={viewPopupHandler} />
         );
       },
     },

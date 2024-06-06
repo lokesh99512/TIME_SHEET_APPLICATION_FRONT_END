@@ -54,7 +54,7 @@ const Login = props => {
         }),
         onSubmit: async(values) => {
             let dataObj = {
-                "user-name": values?.email,
+                "email": values?.email,
                 'password': values?.password,
                 "remember-me": "false"            
             }   

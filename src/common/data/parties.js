@@ -1,7 +1,7 @@
 // Breadcrumbs
 export const customersBreadcrumb = [
   {
-    label: 'Customers',
+    label: 'Projects',
     link: '/#',
     active: true
   }

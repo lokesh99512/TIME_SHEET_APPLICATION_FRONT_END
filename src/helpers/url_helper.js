@@ -212,7 +212,7 @@ export const save_air_console_data="/api/v1/tenant-console-rp/"
 
 // Air port & local charges
 export const GET_AIR_PORT_LOCAL_CHARGES_ALL = "/api/v1/air-port-and-local-charges/"
-export const Upload_Air_Port_Local_Data= "/api/v1/air-port-and-local-charges/"
+export const Upload_Air_Port_Local_Data= "/api/v1/project/"
 
 export const GET_AIR_LINE_CHARGES_ALL = "/api/v1/air-line-charges/"
 export const Upload_Airline_Charge_Data= "/api/v1/air-line-charges/"
@@ -233,8 +233,10 @@ export const Upload_FCL_INLAND_Carrier = "/api/v1/inland-vendor-charge/"
 export const Upload_FCL_INLAND_Freight = "/api/v1/inland-vendor-freight/"
 export const Upload_FCL_INLAND_Surcharge = "/api/v1/inland-vendor-surcharge/"
 
-// customer
-export const GET_PARTIES_CUSTOMERS_URL = "/api/v1/tenant/customer/"
+// PROJECTS
+export const GET_PARTIES_CUSTOMERS_URL = "/api/v1/project/"
+export const GET_Task_URL = "/api/v1/task/"
+
 export const PARTIES_CUSTOMERS_BASIC_DETAILS = "/api/v1/tenant/customer/update-basic-details"
 export const UPLOAD_CUSTOMER_CONTACT_URL = "/api/v1/tenant/customer/update-contact-details"
 export const UPLOAD_CUSTOMER_DOCUMENT_URL = "/api/v1/tenant/customer/update-document-details"

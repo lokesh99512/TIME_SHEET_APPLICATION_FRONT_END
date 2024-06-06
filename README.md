@@ -1,4 +1,4 @@
-# Getting Started with Tarifftaes-spa-app ---------------------------------
+# Getting Started with Timesheet-application ---------------------------------
 ### `npm install`
 The npm install installs all modules that are listed on package.json file and their dependencies.
 
@@ -21,7 +21,7 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-# Getting Started with Tarifftaes-spa-app ---------------------------------
+# Getting Started with Timesheet-application ---------------------------------
 
 
 

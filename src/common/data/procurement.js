@@ -7468,6 +7468,12 @@ const optionBookingType = [
     { label: "MAWB", value: "MAWB" },
     { label: "CONSOLE", value: "CONSOLE" },
 ]
+
+const optionBillableType = [
+    { label: "BILLABLE", value: "BILLABLE" },
+    { label: "NONBILLABLE", value: "NONBILLABLE" },
+]
+
 const optionValidityApp = [
     { label: "SAILING DATE", value: "SAILING_DATE" },
     { label: "CARGO HANDOVER DATE", value: "CARGO_HANDOVER_DATE" }
@@ -7596,5 +7602,5 @@ export {
     optcurrency, optionOrgPort, optionDestPort, optionCargoType, optionMovementType, optionPortlocalOrgPort,
     optionChargeBasis, optionCalculationType, optionContainerType, optionServiceType, optionIsStandard,instantRateBreadcrumb,airPortLocalBreadcrumb,
 
-    optionAirline,optionBookingMode, optionMode, optionStatus,airLineChargesBreadcrumb,optionBookingType
+    optionAirline,optionBookingMode, optionMode, optionStatus,airLineChargesBreadcrumb,optionBookingType,optionBillableType
 };

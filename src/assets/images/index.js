@@ -81,7 +81,9 @@ import web_search_icon from "./icons/web-search-result-found-icon.svg";
 import download_icon from "./icons/download-cloud-icon.svg";
 import cloud_upload_icon from "./icons/cloud-backup-icon.svg";
 import task_minus_icon from "./icons/task-minus-icon.svg";
-
+import time_sheet_logo from "./time_sheet_logo.jpg"
+import time_sheet_logo1 from "./time_sheet_logo1.jpg"
+import time_sheet_logo2 from "./time_sheet_logo2.jpg"
 export {
   avatar1,
   avatar2,
@@ -101,7 +103,7 @@ export {
   preview1,preview2,
 
 
-
+  time_sheet_logo,time_sheet_logo1,time_sheet_logo2,
   
   
   azerbaijan,australia,india,unitedkingdom,unitedstates,read_book_icon,download_icon,web_search_icon,find_book_icon,writing_icon,folder_plus_icon,book_research_icon,cloud_upload_icon, task_minus_icon

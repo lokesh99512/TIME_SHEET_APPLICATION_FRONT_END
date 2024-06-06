@@ -1,6 +1,6 @@
 import axios from "axios"
 
-axios.defaults.baseURL = "https://demo-api.tarifftales.com";
+axios.defaults.baseURL = "http://localhost:8082";
 // axios.defaults.baseURL = "http://localhost:7005";
 
 // axios.defaults.headers.common["Authorization"] = `${token}`
@@ -11,13 +11,13 @@ axiosInstance.interceptors.request.use(
     const token = localStorage.getItem("token");
     const removequote = JSON.parse(token)
     if (token) {
-      config.headers["Authorization"] = removequote;
+      config.headers["Authorization"] = "Bearer "+removequote;
     }
     return config;
   },
   (error) => {
     console.log(error,"error");
-    if (error.response.status === 401) {
+    if (error.response.status === 403) {
       // Redirect to login page
       window.location.href = '/logout';
     }
@@ -29,7 +29,7 @@ axiosInstance.interceptors.response.use(
   response => response,
   (error) => {
     console.log(error,"error");
-    if (error.response.status === 401) {
+    if (error.response.status === 403) {
       // Redirect to login page
       window.location.href = '/logout';
     }

@@ -161,6 +161,9 @@ import AirLineCharges from "../pages/Procurement/FreightForwarding/Air/AirLineCh
 import UploadAirLineCharges from "../pages/Procurement/FreightForwarding/Air/AirLineCharges/UploadAirLineCharges";
 import AirMawbDetails from "../pages/Procurement/FreightForwarding/Air/AirMawbViewTable";
 import AirConsoleDetails from "../pages/Procurement/FreightForwarding/Air/AirConsoleViewTable";
+import ProjectsPage from "../pages/Projects/ProjectsPage";
+import UploadProjectData from "../pages/Projects/partials/UploadAirPortLocalChargesData";
+import UploadTask from "../pages/Projects/partials/UploadTask";
 
 const userRoutes = [
   //dashboard
@@ -203,16 +206,23 @@ const userRoutes = [
   // Settings
   { path: "/settings/company-settings", component: <Settings /> },
   { path: "/settings/users", component: <Users /> },
-  { path: "/settings/roles", component: <Roles /> },
-  { path: "/settings/addRole", component: <AddRole /> },
-  { path: "/settings/surcharge", component: <FclSurcharge /> },
-  { path: "/settings/users/uploadFile", component: <UploadUser /> },
+  // { path: "/settings/roles", component: <Roles /> },
+  // { path: "/settings/addRole", component: <AddRole /> },
+  // { path: "/settings/surcharge", component: <FclSurcharge /> },
+  // { path: "/settings/users/uploadFile", component: <UploadUser /> },
   { path: "/settings/users/addUser", component: <AddUserData /> }, 
-  { path: "/settings/users/editUser", component: <EditUserData /> }, 
-  { path: "/settings/surcharge/add", component: <UploadRateData /> },
-  { path: "/settings/upload/uploadFile", component: <UploadFile /> },
-  { path: "/Settings/AddTanentLocation", component: <AddTanentLocation /> },
+  // { path: "/settings/users/editUser", component: <EditUserData /> }, 
+  // { path: "/settings/surcharge/add", component: <UploadRateData /> },
+  // { path: "/settings/upload/uploadFile", component: <UploadFile /> },
+  // { path: "/Settings/AddTanentLocation", component: <AddTanentLocation /> },
   // Parties
+
+  {path:"/add/task",component:<UploadTask />},
+
+  { path: "/projects", component: <ProjectsPage /> }, 
+  { path: "/projects/add-project", component: <UploadProjectData /> }, 
+  { path: "/customers/add-customer", component: <UploadCustomerData /> }, 
+
   { path: "/customers", component: <Customers /> }, 
   { path: "/customerRates", component: <CustomerRates /> },
   { path: "/customers/add-customer", component: <UploadCustomerData /> }, 

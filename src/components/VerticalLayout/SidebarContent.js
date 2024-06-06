@@ -183,15 +183,15 @@ const SidebarContent = props => {
                 </li>
               </ul>
             </li>
-            <li onClick={() => {dispatch({ type: BLANK_MODAL_CHARGE, payload: {} }); dispatch({ type: QUOTATION_RESULT_SELECTED_BLANK, payload: {} }); dispatch({ type: BLANK_INSTANT_SEARCH }); dispatch({type: INSTANT_RATE_ACTIVE_TAB_TYPE, payload: { main: "ocean_freight", sub: "FCL"}});}}>
+            {/* <li onClick={() => { dispatch({ type: BLANK_MODAL_CHARGE, payload: {} }); dispatch({ type: QUOTATION_RESULT_SELECTED_BLANK, payload: {} }); dispatch({ type: BLANK_INSTANT_SEARCH }); dispatch({ type: INSTANT_RATE_ACTIVE_TAB_TYPE, payload: { main: "ocean_freight", sub: "FCL" } }); }}>
               <Link to="/instant-rate/search-rate" className="has-arrow">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
                   <path d="M4.5 4.25C4.5 3.83579 4.16421 3.5 3.75 3.5C3.33579 3.5 3 3.83579 3 4.25V14.75C3 16.2688 4.23122 17.5 5.75 17.5H16.25C16.6642 17.5 17 17.1642 17 16.75C17 16.3358 16.6642 16 16.25 16H5.75C5.05964 16 4.5 15.4404 4.5 14.75V4.25ZM12.75 5.5C12.3358 5.5 12 5.83579 12 6.25C12 6.66421 12.3358 7 12.75 7H14.4393L11 10.4393L9.53033 8.96967C9.38968 8.82902 9.19892 8.75 9 8.75C8.80109 8.75 8.61032 8.82902 8.46967 8.96967L5.71967 11.7197C5.42678 12.0126 5.42678 12.4874 5.71967 12.7803C6.01256 13.0732 6.48744 13.0732 6.78033 12.7803L9 10.5607L10.4696 12.0303C10.6103 12.171 10.8011 12.25 11 12.25C11.1989 12.25 11.3896 12.171 11.5303 12.0303L15.5 8.06063V9.75C15.5 10.1642 15.8358 10.5 16.25 10.5C16.6642 10.5 17 10.1642 17 9.75V6.25C17 5.83579 16.6642 5.5 16.25 5.5H12.75Z" fill="#6264A0" />
                 </svg>
                 <span>Instant Rate</span>
               </Link>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <Link to="/#" className="has-arrow">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
                   <path d="M4.5 4.25C4.5 3.83579 4.16421 3.5 3.75 3.5C3.33579 3.5 3 3.83579 3 4.25V14.75C3 16.2688 4.23122 17.5 5.75 17.5H16.25C16.6642 17.5 17 17.1642 17 16.75C17 16.3358 16.6642 16 16.25 16H5.75C5.05964 16 4.5 15.4404 4.5 14.75V4.25ZM12.75 5.5C12.3358 5.5 12 5.83579 12 6.25C12 6.66421 12.3358 7 12.75 7H14.4393L11 10.4393L9.53033 8.96967C9.38968 8.82902 9.19892 8.75 9 8.75C8.80109 8.75 8.61032 8.82902 8.46967 8.96967L5.71967 11.7197C5.42678 12.0126 5.42678 12.4874 5.71967 12.7803C6.01256 13.0732 6.48744 13.0732 6.78033 12.7803L9 10.5607L10.4696 12.0303C10.6103 12.171 10.8011 12.25 11 12.25C11.1989 12.25 11.3896 12.171 11.5303 12.0303L15.5 8.06063V9.75C15.5 10.1642 15.8358 10.5 16.25 10.5C16.6642 10.5 17 10.1642 17 9.75V6.25C17 5.83579 16.6642 5.5 16.25 5.5H12.75Z" fill="#6264A0" />
@@ -216,89 +216,17 @@ const SidebarContent = props => {
                   </Link>
                 </li>
               </ul>
-            </li>
+            </li> */}
             <li>
-              <Link to="/#" className="has-arrow">
+              <Link to="/projects" className="has-arrow">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
                   <path d="M10.0001 8.46137L13.0289 7.24988L5.52875 4.24984L2.94291 5.28418C2.81019 5.33726 2.68812 5.40794 2.57894 5.49288L10.0001 8.46137ZM2.03542 6.35251C2.01215 6.4576 2 6.56624 2 6.67689V14.3228C2 14.9362 2.37343 15.4877 2.94291 15.7155L8.70013 18.0184C8.95942 18.1221 9.22802 18.1936 9.50015 18.2329V9.3384L2.03542 6.35251ZM10.5001 18.2328C10.7722 18.1936 11.0407 18.1221 11.2999 18.0184L17.0571 15.7155C17.6266 15.4877 18 14.9362 18 14.3228V6.67689C18 6.56628 17.9879 6.45767 17.9646 6.35262L10.5001 9.3384V18.2328ZM17.4212 5.49296L14.3751 6.71137L6.87504 3.71132L8.70013 2.98129C9.53457 2.64751 10.4654 2.64751 11.2999 2.98129L17.0571 5.28418C17.1898 5.33728 17.312 5.40798 17.4212 5.49296Z" fill="#6264A0" />
                 </svg>
-                <span>Carrier Rates</span>
+                <span>Projects</span>
               </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="/#" className="has-arrow">
-                    <span>Ocean Freight</span>
-                  </Link>
-                  <ul className="sub-menu">
-                    <li>
-                      <Link to="/freight/ocean/fcl">
-                        <span>FCL</span>
-                      </Link>
-                    </li>
-                    {/* <li>
-                      <Link to="/freight/ocean/lcl" className="opacity-25">
-                      <Link to="/#" className="opacity-25" style={{ pointerEvents: 'none' }}>
-                        <span>LCL</span>
-                      </Link>
-                    </li> */}
-                    <li>
-                      <Link to="/freight/ocean/portlocal">
-                        <span>FCL Port/Local Charges</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/freight/inland">
-                        <span>FCL Inland Charges </span>
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <Link to="/#" className="has-arrow">
-                    <span>Air Freight</span>
-                  </Link>
-                  <ul className="sub-menu">
-                    <li>
-                      <Link to="/freight/air/masterbill">
-                        <span>Master Waybill</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/freight/air/console">
-                        <span>Console</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/freight/air/local">
-                        <span>Airport/Local Charges</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/freight/air/line">
-                        <span>Airline charges</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/freight/air/compare-rate">
-                        <span>Compare Rate</span>
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-                {/* <li>
-                  <Link to="/freight/inland">
-                    <span>Inland Charges</span>
-                  </Link>
-                </li> */}
-                {/* <li>
-                  <Link to="/express">
-                    <span className="menu_circle"></span>
-                    <span>Express</span>
-                  </Link>
-                </li> */}
-              </ul>
+          
             </li>
-            <li>
+            {/* <li>
               <Link to="/#" className="has-arrow">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
                   <path d="M12.5 5C12.5 6.38071 11.3807 7.5 10 7.5C8.61929 7.5 7.5 6.38071 7.5 5C7.5 3.61929 8.61929 2.5 10 2.5C11.3807 2.5 12.5 3.61929 12.5 5ZM17.5 5.5C17.5 6.60457 16.6046 7.5 15.5 7.5C14.3954 7.5 13.5 6.60457 13.5 5.5C13.5 4.39543 14.3954 3.5 15.5 3.5C16.6046 3.5 17.5 4.39543 17.5 5.5ZM4.5 7.5C5.60457 7.5 6.5 6.60457 6.5 5.5C6.5 4.39543 5.60457 3.5 4.5 3.5C3.39543 3.5 2.5 4.39543 2.5 5.5C2.5 6.60457 3.39543 7.5 4.5 7.5ZM6 9.75C6 9.05964 6.55964 8.5 7.25 8.5H12.75C13.4404 8.5 14 9.05964 14 9.75V14.5C14 16.7091 12.2091 18.5 10 18.5C7.79086 18.5 6 16.7091 6 14.5V9.75ZM5 9.75C5 9.28746 5.13957 8.85752 5.37889 8.5H3.25C2.55964 8.5 2 9.05964 2 9.75V13.5C2 15.1569 3.34315 16.5 5 16.5C5.13712 16.5 5.27209 16.4908 5.40434 16.473C5.14412 15.8677 5 15.2007 5 14.5V9.75ZM15 14.5C15 15.2007 14.8559 15.8677 14.5957 16.473C14.7279 16.4908 14.8629 16.5 15 16.5C16.6569 16.5 18 15.1569 18 13.5V9.75C18 9.05964 17.4404 8.5 16.75 8.5H14.6211C14.8604 8.85752 15 9.28746 15 9.75V14.5Z" fill="#6264A0" />
@@ -317,7 +245,7 @@ const SidebarContent = props => {
                   </Link>
                 </li>
               </ul>
-            </li>
+            </li> */}
             <li>
               <Link to="/#" className="has-arrow">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
@@ -332,55 +260,8 @@ const SidebarContent = props => {
                   </Link>
                 </li>
                 <li>
-                <Link className="has-arrow">
+                  <Link to="/settings/users">
                     <span>Users</span>
-                  </Link>
-                  <ul className="sub-menu">
-                    <li>
-                      <Link to="/settings/users">
-                        <span>Users</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/settings/roles">
-                        <span>Roles</span>
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <Link to="/settings/surcharge">
-                    <span>Surcharge Master</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/vendors">
-                    <span>Vendors</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/upload-status">
-                    <span>Upload Status</span>
-                  </Link>
-                </li>
-                <li className="opacity-25">
-                  <Link to="#">
-                    <span>Products</span>
-                  </Link>
-                </li>
-                <li className="opacity-25">
-                  <Link to="#">
-                    <span>Network</span>
-                  </Link>
-                </li>
-                <li className="opacity-25">
-                  <Link to="#">
-                    <span>Integrations</span>
-                  </Link>
-                </li>
-                <li className="opacity-25">
-                  <Link to="#">
-                    <span>Subscription</span>
                   </Link>
                 </li>
               </ul>
